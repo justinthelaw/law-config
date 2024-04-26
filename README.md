@@ -43,7 +43,15 @@ sudo apt-get -y install tailscale
 ```
 
 4. Enabled `ufw`, ensuring `tailscale` and `ssh` are in traffic rules
-5. Connected to team's nodes and network on `tailscale`
+5. Connected to team's `tailscale` and approved device on the network
+
+```bash
+# Login to tailscale with your email
+sudo tailscale login
+
+# Add device to the network, with optional flags and capabilities, e.g. SSH access
+sudo tailscale up # --ssh
+```
 
 ## Usage
 
