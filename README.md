@@ -93,3 +93,18 @@ cp configs/.gitconfig path/to/user/root/directory
 # Check to see the new settings are in place
 git config --list
 ```
+
+### Remote Registries
+
+Logging in to the following registries is recommended:
+
+```bash
+# use your username and harbor key
+docker login registry1.dso.mil
+
+# use your username and self-generated PAT
+docker login ghcr.io
+
+# use your username and password
+docker login
+```
