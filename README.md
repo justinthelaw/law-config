@@ -26,19 +26,19 @@ libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-d
 sudo apt-get -y install libvirt-daemon-system libvirt-clients qemu-kvm qemu-utils virt-manager ovmf 
 
 # Containerization tooling and capability
-# Requires pre-req instructions here: https://docs.docker.com/engine/install/
+# Read instructions here: https://docs.docker.com/engine/install/
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 # NVIDIA CUDA toolkit
-# Requires pre-req instructions here: https://developer.nvidia.com/cuda-downloads
+# Read instructions here: https://developer.nvidia.com/cuda-downloads
 sudo apt-get -y install cuda
 
 # NVIDIA Container Toolkit
-# Requires pre-req instructions here: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
+# Read instructions here: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
 sudo apt-get -y install nvidia-container-toolkit
 
 # Tailscale for teams
-# Requires pre-req instructions here: https://tailscale.com/download/linux
+# Read instructions here: https://tailscale.com/download/linux
 sudo apt-get -y install tailscale
 ```
 
@@ -65,12 +65,12 @@ To use the pre-configured `.zshrc` in this repository, simply do the following:
 
 ```bash
 # Install Oh-My-Zsh for Zsh
-# Requires pre-req instructions here: https://ohmyz.sh/#install
-# Requires pre-req instructions here: https://github.com/ohmyzsh/ohmyzsh/wiki
+# Read instructions here: https://ohmyz.sh/#install
+# Read instructions here: https://github.com/ohmyzsh/ohmyzsh/wiki
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Install Znap as your Zsh plugin manager
-# Requires pre-req instructions here: https://github.com/marlonrichert/zsh-snap#installation
+# Read instructions here: https://github.com/marlonrichert/zsh-snap#installation
 # INFO: feel free to change the `~/Repo/` location as you please
 git clone --depth 1 -- \
         https://github.com/marlonrichert/zsh-snap.git ~/Repos/znap
@@ -95,7 +95,7 @@ cat configs/.gitconfig | grep INSERT
 # Find your current `.gitconfig` location
 git config --list --show-origin
 
-# Copy the `.gitconfig` to your root directory
+# Copy the `.gitconfig` to your desired root directory
 cp configs/.gitconfig path/to/user/root/directory
 
 # Check to see the new settings are in place
@@ -115,4 +115,21 @@ docker login ghcr.io
 
 # use your username and password
 docker login
+```
+
+### PyEnv
+
+PyEnv is an single-purpose utility that enables easy management of Python versions and virtual environments.
+
+```bash
+# Read instructions here: https://github.com/pyenv/pyenv?tab=readme-ov-file#getting-pyenv
+curl https://pyenv.run | bash
+
+# Add the following to your shell's *rc
+echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
+echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
+echo 'eval "$(pyenv init -)"' >> ~/.zshrc
+
+# Reactivate shell
+source ~/.zshrc
 ```
