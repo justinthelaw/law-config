@@ -133,3 +133,19 @@ echo 'eval "$(pyenv init -)"' >> ~/.zshrc
 # Reactivate shell
 source ~/.zshrc
 ```
+
+### UDS Development
+
+The following are minimal dependencies for Unicorn Delivery Service (UDS) development:
+
+```bash
+# Download and install latest UDS CLI: https://github.com/defenseunicorns/uds-cli/releases
+# INFO: requires your `sudo` password
+wget -O uds https://github.com/defenseunicorns/uds-cli/releases/download/v0.10.4/uds-cli_v0.10.4_Linux_amd64 && \
+        sudo chmod +x uds && \
+        sudo mv uds /usr/local/bin/
+
+# Download and install K3d according to this restriction: https://github.com/defenseunicorns/uds-core#prerequisites
+# Read instructions here: https://k3d.io/v5.6.3/#install-script
+curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+```
