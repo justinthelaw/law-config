@@ -61,6 +61,12 @@ To use the pre-configured `.zshrc` in this repository, simply do the following:
 # Requires pre-req instructions here: https://github.com/ohmyzsh/ohmyzsh/wiki
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
+# Install Znap as your Zsh plugin manager
+# Requires pre-req instructions here: https://github.com/marlonrichert/zsh-snap#installation
+# INFO: feel free to change the `~/Repo/` location as you please
+git clone --depth 1 -- \
+        https://github.com/marlonrichert/zsh-snap.git ~/Repos/znap
+
 # Add a singular pointer from your `.zshrc` to to this Git repository's `.zshrc`
 # WARNING: this overwrites anything already in your existing `.zshrc`
 # WARNING: you cannot delete this repository from your machine. else you wil lose the pointer
