@@ -11,6 +11,9 @@ At this point of the development system setup and configuration process, I shoul
 3. Added the following basic packages:
 
 ```bash
+# Zsh
+sudo apt-get -y install zsh
+
 # cURL is required for some of the later pre-req instructions
 sudo apt-get -y install curl
 
@@ -44,6 +47,23 @@ sudo apt-get -y install tailscale
 
 ## Usage
 
+All of the following instruction assume that you have cloned down this Git repository's source code and configuration files.
+
 ### Zsh and Oh-My-Zsh
 
 Zsh and Oh-My-Zsh add a lot of functionality, and therefore it is important for me to set this up as soon as possible.
+
+To use the pre-configured `.zshrc` in this repository, simply do the following:
+
+```bash
+# Install Oh-My-Zsh for Zsh
+# Requires pre-req instructions here: https://ohmyz.sh/#install
+# Requires pre-req instructions here: https://github.com/ohmyzsh/ohmyzsh/wiki
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# Add a singular pointer from your `.zshrc` to to this Git repository's `.zshrc`
+# WARNING: this overwrites anything already in your existing `.zshrc`
+# WARNING: you cannot delete this repository from your machine. else you wil lose the pointer
+# INFO: Recommend using an absolute path to this repository
+echo "source path/to/law-config/.zshrc" > ~/.zshrc
+```
