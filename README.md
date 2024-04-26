@@ -71,5 +71,25 @@ git clone --depth 1 -- \
 # WARNING: this overwrites anything already in your existing `.zshrc`
 # WARNING: you cannot delete this repository from your machine. else you wil lose the pointer
 # INFO: Recommend using an absolute path to this repository
-echo "source path/to/law-config/.zshrc" > ~/.zshrc
+echo "source path/to/law-config/configs/.zshrc" > ~/.zshrc
+```
+
+### Git
+
+The Git config in this repository contains some place holders for the user to replace. Once filled-in, you can copy the `.gitconfig` to your user's root directory, replacing the existing one.
+
+The following assumes that you are within the root of this Git repository.
+
+```bash
+# Check on what needs to be filled in
+cat configs/.gitconfig | grep INSERT
+
+# Find your current `.gitconfig` location
+git config --list --show-origin
+
+# Copy the `.gitconfig` to your root directory
+cp configs/.gitconfig path/to/user/root/directory
+
+# Check to see the new settings are in place
+git config --list
 ```
