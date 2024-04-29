@@ -49,7 +49,7 @@ eval "$(pyenv virtualenv-init -)"
 alias k="uds zarf tools kubectl"
 alias zarf='uds zarf'
 alias k9s='uds zarf tools monitor'
-alias udsclean="uds zarf tools clear-cache && rm -rf ~/.uds-cache && rm -rf /tmp/uds* && rm -rf /tmp/zarf-*"
+alias udsclean="uds zarf tools clear-cache && rm -rf ~/.uds-cache && rm -rf ~/.zarf-cache && rm -rf /tmp/uds* && rm -rf /tmp/zarf-*"
 
 # Docker
 alias dclean="docker system prune -a -f && docker volume prune -f"
