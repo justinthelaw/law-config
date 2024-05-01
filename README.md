@@ -42,7 +42,7 @@ sudo apt-get -y install nvidia-container-toolkit
 sudo apt-get -y install tailscale
 ```
 
-4. Enabled `ufw`, ensuring `tailscale` and `ssh` are in traffic rules
+4. Enabled `ufw`, ensuring `ssh` is enabled
 5. Connected to team's `tailscale` and approved device on the network
 
 ```bash
