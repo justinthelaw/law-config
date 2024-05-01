@@ -1,6 +1,7 @@
 [user]
         name = justinthelaw
         email = <INSERT EMAIL HERE>
+        signingkey = <INSERT GPG KEY HERE>
 
 [init]
         defaultBranch = main
@@ -71,3 +72,6 @@
         
 [maintenance]
         repo = <INSERT ZNAP LOCATION HERE>
+
+[commit]
+        gpgsign = true
