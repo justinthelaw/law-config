@@ -141,7 +141,7 @@ The following are minimal dependencies for Unicorn Delivery Service (UDS) develo
 ```bash
 # Download and install latest UDS CLI: https://github.com/defenseunicorns/uds-cli/releases
 # INFO: requires your `sudo` password
-wget -O uds https://github.com/defenseunicorns/uds-cli/releases/download/v0.10.4/uds-cli_v0.10.4_Linux_amd64 && \
+wget -O uds https://github.com/defenseunicorns/uds-cli/releases/download/v0.12.0/uds-cli_v0.12.0_Linux_amd64 && \
         sudo chmod +x uds && \
         sudo mv uds /usr/local/bin/
 
