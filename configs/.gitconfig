@@ -69,7 +69,7 @@
         f = "!git ls-files | grep -i"
         gr = grep -Ii
         la = "!git config -l | grep alias | cut -c 7-"
-        
+
 [maintenance]
         repo = <INSERT ZNAP LOCATION HERE>
 

@@ -134,6 +134,14 @@ echo 'eval "$(pyenv init -)"' >> ~/.zshrc
 source ~/.zshrc
 ```
 
+### Go
+
+Golang installation instructions here: https://go.dev/doc/install
+
+### Node
+
+NVM, NPM, and Node.js instructions here: https://github.com/nvm-sh/nvm
+
 ### UDS Development
 
 The following are minimal dependencies for Unicorn Delivery Service (UDS) development:
@@ -141,7 +149,7 @@ The following are minimal dependencies for Unicorn Delivery Service (UDS) develo
 ```bash
 # Download and install latest UDS CLI: https://github.com/defenseunicorns/uds-cli/releases
 # INFO: requires your `sudo` password
-wget -O uds https://github.com/defenseunicorns/uds-cli/releases/download/v0.12.0/uds-cli_v0.12.0_Linux_amd64 && \
+wget -O uds https://github.com/defenseunicorns/uds-cli/releases/download/v0.14.0/uds-cli_v0.14.0_Linux_amd64 && \
         sudo chmod +x uds && \
         sudo mv uds /usr/local/bin/
 
