@@ -1,5 +1,5 @@
 ####################
-# DEFAULT ZSH CONFIG 
+# DEFAULT ZSH CONFIG
 ####################
 
 # Path to your oh-my-zsh installation.
@@ -22,7 +22,7 @@ source $ZSH/oh-my-zsh.sh
 [[ -r ~/Repos/znap/znap.zsh ]] ||
     git clone --depth 1 -- \
         https://github.com/marlonrichert/zsh-snap.git ~/Repos/znap
-source ~/Repos/znap/znap.zsh  # Start Znap
+source ~/Repos/znap/znap.zsh # Start Znap
 
 # Faster terminal startup, clean CLI
 znap prompt sindresorhus/pure
@@ -50,8 +50,8 @@ eval "$(pyenv virtualenv-init -)"
 ######
 
 export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 #####
 # GO
@@ -64,6 +64,12 @@ export PATH=$PATH:/usr/local/go/bin
 #################
 
 export XDG_RUNTIME_DIR=/run/user/$UID
+
+############
+# CONTAINERD
+############
+
+export XDG_RUNTIME_DIR=/run/containerd
 
 #########
 # ALIASES

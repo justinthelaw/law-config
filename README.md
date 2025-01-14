@@ -24,21 +24,33 @@ libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-d
 
 # Virtual machine and emulation management
 sudo apt-get -y install libvirt-daemon-system libvirt-clients qemu-kvm qemu-utils virt-manager ovmf 
+```
 
+Read instructions here: https://docs.docker.com/engine/install/
+
+```bash
 # Containerization tooling and capability
-# Read instructions here: https://docs.docker.com/engine/install/
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
 
+Read instructions here: https://developer.nvidia.com/cuda-downloads
+
+```bash
 # NVIDIA CUDA toolkit
-# Read instructions here: https://developer.nvidia.com/cuda-downloads
 sudo apt-get -y install cuda
+```
 
+Read instructions here: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
+
+```bash
 # NVIDIA Container Toolkit
-# Read instructions here: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
 sudo apt-get -y install nvidia-container-toolkit
+```
 
+Read instructions here: https://tailscale.com/download/linux
+
+```bash
 # Tailscale for teams
-# Read instructions here: https://tailscale.com/download/linux
 sudo apt-get -y install tailscale
 ```
 
@@ -53,6 +65,13 @@ sudo tailscale login
 sudo tailscale up # --ssh
 ```
 
+Read instructions here: https://edu.chainguard.dev/chainguard/administration/how-to-install-chainctl/
+
+```bash
+curl -o chainctl "https://dl.enforce.dev/chainctl/latest/chainctl_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/aarch64/arm64/')"
+sudo install -o $UID -g $(id -g) -m 0755 chainctl /usr/local/bin/
+```
+
 ## Usage
 
 All of the following instruction assume that you have cloned down this Git repository's source code and configuration files.
@@ -63,14 +82,17 @@ Zsh and Oh-My-Zsh add a lot of functionality, and therefore it is important for 
 
 To use the pre-configured `.zshrc` in this repository, simply do the following:
 
+Read instructions here:
+
+- https://ohmyz.sh/#install
+- https://github.com/ohmyzsh/ohmyzsh/wiki
+- https://github.com/marlonrichert/zsh-snap#installation
+
 ```bash
 # Install Oh-My-Zsh for Zsh
-# Read instructions here: https://ohmyz.sh/#install
-# Read instructions here: https://github.com/ohmyzsh/ohmyzsh/wiki
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Install Znap as your Zsh plugin manager
-# Read instructions here: https://github.com/marlonrichert/zsh-snap#installation
 # INFO: feel free to change the `~/Repo/` location as you please
 git clone --depth 1 -- \
         https://github.com/marlonrichert/zsh-snap.git ~/Repos/znap
@@ -115,14 +137,18 @@ docker login ghcr.io
 
 # use your username and password
 docker login
+
+# use the SSO prompt
+chainctl auth configure-docker --headless
 ```
 
 ### PyEnv
 
 PyEnv is an single-purpose utility that enables easy management of Python versions and virtual environments.
 
+Read instructions here: https://github.com/pyenv/pyenv?tab=readme-ov-file#getting-pyenv
+
 ```bash
-# Read instructions here: https://github.com/pyenv/pyenv?tab=readme-ov-file#getting-pyenv
 curl https://pyenv.run | bash
 
 # Add the following to your shell's *rc
@@ -146,14 +172,18 @@ NVM, NPM, and Node.js instructions here: https://github.com/nvm-sh/nvm
 
 The following are minimal dependencies for Unicorn Delivery Service (UDS) development:
 
+Read instructions here : https://github.com/defenseunicorns/uds-cli/releases
+
 ```bash
-# Download and install latest UDS CLI: https://github.com/defenseunicorns/uds-cli/releases
 # INFO: requires your `sudo` password
 wget -O uds https://github.com/defenseunicorns/uds-cli/releases/download/v0.14.0/uds-cli_v0.14.0_Linux_amd64 && \
         sudo chmod +x uds && \
         sudo mv uds /usr/local/bin/
+```
 
+Read instructions here: https://k3d.io/stable/
+
+```bash
 # Download and install K3d according to this restriction: https://github.com/defenseunicorns/uds-core#prerequisites
-# Read instructions here: https://k3d.io/v5.6.3/#install-script
 curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
 ```
