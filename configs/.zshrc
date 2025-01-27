@@ -90,3 +90,7 @@ alias gitup='find . -maxdepth 1 -type d -exec sh -c "(cd {} && [ -d .git ] && ec
 
 # VSCode
 alias code="/snap/bin/code"
+
+# MacOS
+export GPG_TTY=$(tty)
+gpgconf --launch gpg-agent
