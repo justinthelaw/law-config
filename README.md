@@ -8,62 +8,8 @@ At this point of the development system setup and configuration process, I shoul
 
 1. Updated and security patched all base OS packages (git, e.g.)
 2. Installed `Brave Browser` and added it to the sync-chain
-3. Added the following basic packages:
 
-```bash
-# Zsh
-sudo apt-get -y install zsh
-
-# cURL is required for some of the later pre-req instructions
-sudo apt-get -y install curl
-
-# Python, NVIDIA CUDA, Rust, C++, Znap, etc. essentials
-sudo apt-get -y install build-essential libssl-dev zlib1g-dev \
-libbz2-dev libreadline-dev libsqlite3-dev curl \
-libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-
-# Virtual machine and emulation management
-sudo apt-get -y install libvirt-daemon-system libvirt-clients qemu-kvm qemu-utils virt-manager ovmf 
-```
-
-Read instructions here: https://docs.docker.com/engine/install/
-
-```bash
-# Containerization tooling and capability
-sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-```
-
-Read instructions here: https://developer.nvidia.com/cuda-downloads
-
-```bash
-# NVIDIA CUDA toolkit
-sudo apt-get -y install cuda
-```
-
-Read instructions here: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
-
-```bash
-# NVIDIA Container Toolkit
-sudo apt-get -y install nvidia-container-toolkit
-```
-
-Read instructions here: https://tailscale.com/download/linux
-
-```bash
-# Tailscale for teams
-sudo apt-get -y install tailscale
-```
-
-4. Enabled `ufw`, ensuring `ssh` is enabled
-5. Connected to team's `tailscale` and approved device on the network
-
-```bash
-# Login to tailscale with your email
-sudo tailscale login
-
-# Add device to the network, with optional flags and capabilities, e.g. SSH access
-sudo tailscale up # --ssh
-```
+Read instructions here: https://tailscale.com/download/macos
 
 Read instructions here: https://edu.chainguard.dev/chainguard/administration/how-to-install-chainctl/
 
@@ -176,7 +122,7 @@ Read instructions here : https://github.com/defenseunicorns/uds-cli/releases
 
 ```bash
 # INFO: requires your `sudo` password
-wget -O uds https://github.com/defenseunicorns/uds-cli/releases/download/v0.14.0/uds-cli_v0.14.0_Linux_amd64 && \
+wget -O uds https://github.com/defenseunicorns/uds-cli/releases/download/v0.14.0/uds-cli_v0.20.0_Darwin_arm64 && \
         sudo chmod +x uds && \
         sudo mv uds /usr/local/bin/
 ```
