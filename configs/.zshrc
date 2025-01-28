@@ -94,3 +94,6 @@ alias code="/snap/bin/code"
 # MacOS
 export GPG_TTY=$(tty)
 gpgconf --launch gpg-agent
+
+alias dfix="docker exec -it k3d-uds-server-0 sh -c 'cat /etc/resolv.conf | grep -v \"^search lan\" > /etc/resolv.conf && sync'"
+
