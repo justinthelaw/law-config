@@ -122,7 +122,7 @@ Read instructions here : https://github.com/defenseunicorns/uds-cli/releases
 
 ```bash
 # INFO: requires your `sudo` password
-wget -O uds https://github.com/defenseunicorns/uds-cli/releases/download/v0.14.0/uds-cli_v0.20.0_Darwin_arm64 && \
+wget -O uds https://github.com/defenseunicorns/uds-cli/releases/download/v0.20.0/uds-cli_v0.20.0_Darwin_arm64 && \
         sudo chmod +x uds && \
         sudo mv uds /usr/local/bin/
 ```
