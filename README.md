@@ -63,6 +63,21 @@ cp configs/.gitconfig path/to/user/root/directory
 git config --list
 ```
 
+#### GPG Keys
+
+Setup your GPG configurations by executing the following:
+
+```bash
+brew install gpg
+
+mkdir ~/.gnupg
+cp configs/gp*.conf ~/.gnupg
+
+chown -R $(whoami) ~/.gnupg/
+chmod 600 ~/.gnupg/*
+chmod 700 ~/.gnupg
+```
+
 ### Remote Registries
 
 #### Install Chainguard CLI
