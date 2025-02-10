@@ -7,16 +7,9 @@ Development system configurations for all of my devices, aptly named `law-*`.
 At this point of the development system setup and configuration process, I should have already done the following:
 
 1. Updated and security patched all base OS packages (git, e.g.)
-2. Installed `Brave Browser` and added it to the sync-chain
+2. Installed `Brave Browser` and added it to the sync-chain (`brew install brave-browser`)
 
 Read instructions here: https://tailscale.com/download/macos
-
-Read instructions here: https://edu.chainguard.dev/chainguard/administration/how-to-install-chainctl/
-
-```bash
-curl -o chainctl "https://dl.enforce.dev/chainctl/latest/chainctl_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/aarch64/arm64/')"
-sudo install -o $UID -g $(id -g) -m 0755 chainctl /usr/local/bin/
-```
 
 ## Usage
 
@@ -72,6 +65,23 @@ git config --list
 
 ### Remote Registries
 
+#### Install Chainguard CLI
+
+Read instructions here: https://edu.chainguard.dev/chainguard/administration/how-to-install-chainctl/
+
+```bash
+curl -o chainctl "https://dl.enforce.dev/chainctl/latest/chainctl_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/aarch64/arm64/')"
+sudo install -o $UID -g $(id -g) -m 0755 chainctl /usr/local/bin/
+```
+
+#### Install Rancher Desktop
+
+```bash
+brew install --cask rancher
+```
+
+#### Logging In
+
 Logging in to the following registries is recommended:
 
 ```bash
@@ -95,24 +105,24 @@ PyEnv is an single-purpose utility that enables easy management of Python versio
 Read instructions here: https://github.com/pyenv/pyenv?tab=readme-ov-file#getting-pyenv
 
 ```bash
-curl https://pyenv.run | bash
-
-# Add the following to your shell's *rc
-echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
-echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
-echo 'eval "$(pyenv init -)"' >> ~/.zshrc
-
-# Reactivate shell
-source ~/.zshrc
+brew install pyenv
 ```
 
 ### Go
 
 Golang installation instructions here: https://go.dev/doc/install
 
+```bash
+brew install go
+```
+
 ### Node
 
 NVM, NPM, and Node.js instructions here: https://github.com/nvm-sh/nvm
+
+```bash
+brew install nvm
+```
 
 ### UDS Development
 
@@ -121,15 +131,11 @@ The following are minimal dependencies for Unicorn Delivery Service (UDS) develo
 Read instructions here : https://github.com/defenseunicorns/uds-cli/releases
 
 ```bash
-# INFO: requires your `sudo` password
-wget -O uds https://github.com/defenseunicorns/uds-cli/releases/download/v0.20.0/uds-cli_v0.20.0_Darwin_arm64 && \
-        sudo chmod +x uds && \
-        sudo mv uds /usr/local/bin/
+brew tap defenseunicorns/tap && brew install uds
 ```
 
 Read instructions here: https://k3d.io/stable/
 
 ```bash
-# Download and install K3d according to this restriction: https://github.com/defenseunicorns/uds-core#prerequisites
-curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+brew install k3d
 ```
