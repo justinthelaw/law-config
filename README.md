@@ -124,7 +124,33 @@ cp configs/.gitconfig path/to/user/root/directory
 git config --list
 ```
 
+#### GPG Keys
+
+Setup your GPG configurations by executing the following:
+
+```bash
+brew install gpg
+
+mkdir ~/.gnupg
+cp configs/gp*.conf ~/.gnupg
+
+chown -R $(whoami) ~/.gnupg/
+chmod 600 ~/.gnupg/*
+chmod 700 ~/.gnupg
+```
+
 ### Remote Registries
+
+#### Install Chainguard CLI
+
+Read instructions here: https://edu.chainguard.dev/chainguard/administration/how-to-install-chainctl/
+
+```bash
+curl -o chainctl "https://dl.enforce.dev/chainctl/latest/chainctl_$(uname -s | tr '[:upper:]' '[:lower:]')_$(uname -m | sed 's/aarch64/arm64/')"
+sudo install -o $UID -g $(id -g) -m 0755 chainctl /usr/local/bin/
+```
+
+#### Logging In
 
 Logging in to the following registries is recommended:
 
@@ -141,6 +167,7 @@ docker login
 # use the SSO prompt
 chainctl auth configure-docker --headless
 ```
+
 
 ### PyEnv
 
@@ -176,7 +203,7 @@ Read instructions here : https://github.com/defenseunicorns/uds-cli/releases
 
 ```bash
 # INFO: requires your `sudo` password
-wget -O uds https://github.com/defenseunicorns/uds-cli/releases/download/v0.14.0/uds-cli_v0.14.0_Linux_amd64 && \
+wget -O uds https://github.com/defenseunicorns/uds-cli/releases/download/v0.20.0/uds-cli_v0.20.0_Linux_amd64 && \
         sudo chmod +x uds && \
         sudo mv uds /usr/local/bin/
 ```
