@@ -33,18 +33,6 @@ znap source zsh-users/zsh-syntax-highlighting
 znap source zdharma-continuum/fast-syntax-highlighting
 znap source marlonrichert/zsh-autocomplete
 
-#######
-# PYENV
-#######
-
-# Load pyenv automatically
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
-# Load pyenv-virtualenv automatically
-eval "$(pyenv virtualenv-init -)"
-
 ######
 # NVM
 ######
