@@ -65,7 +65,6 @@ export XDG_RUNTIME_DIR=/run/containerd
 
 # UDS
 alias k="uds zarf tools kubectl"
-alias kubectl="uds zarf tools kubectl"
 alias zarf='uds zarf'
 alias k9s='uds zarf tools monitor'
 alias udsclean="uds zarf tools clear-cache && rm -rf ~/.uds-cache && rm -rf /tmp/zarf-*"
