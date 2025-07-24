@@ -59,6 +59,12 @@ export XDG_RUNTIME_DIR=/run/user/$UID
 
 export XDG_RUNTIME_DIR=/run/containerd
 
+######
+# NVCR
+######
+
+export PATH="$PATH:/root/dev/ngc-cli"
+
 #########
 # ALIASES
 #########
