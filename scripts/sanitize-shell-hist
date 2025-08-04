@@ -160,4 +160,3 @@ remove_empty "$HIST_FILE"
 dedupe_history "$HIST_FILE"
 
 echo "[+] Done. Backup: ${HIST_FILE}.bak.*"
-
