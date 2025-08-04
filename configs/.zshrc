@@ -65,6 +65,12 @@ export XDG_RUNTIME_DIR=/run/containerd
 
 export PATH="$PATH:/root/dev/ngc-cli"
 
+#####
+# LAW
+#####
+
+export PATH="$PATH:/root/dev/law-config/scripts"
+
 #########
 # ALIASES
 #########
@@ -84,3 +90,7 @@ alias gitclean='git branch | grep -vE "^\*|main|master" | awk "{print \$1}" | xa
 
 # VSCode
 alias code="/snap/bin/code"
+
+# Cleaning
+alias cacheclean="find ~/.cache/ -type f -atime +7 -delete"
+
