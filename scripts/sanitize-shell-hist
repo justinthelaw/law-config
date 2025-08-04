@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+#
+# sanitize_shell_history.sh - Safely sanitize your Bash or Zsh history.
+# Usage: ./sanitize_shell_history.sh [history_file]
+# Example: ./sanitize_shell_history.sh ~/.zsh_history
+
+set -euo pipefail
+
+# === Configuration ===
+SENSITIVE_PATTERNS=(
+    "password"
+    "PASSWORD"
+    "secret"
+    "SECRET"
+    "token"
+    "TOKEN"
+    "apikey"
+    "APIKEY"
+    "authorization"
+    "AUTHORIZATION"
+    "session"
+    "SESSION"
+)
+# Patterns of failed/incorrect commands (expand as needed)
+FAILED_PATTERNS=(
+    "command not found"
+    "No such file or directory"
+    "syntax error"
+    "not recognized as"
+    "is not a function"
+    "zsh:.*not found"
+    "bash:.*not found"
+)
+
+# === Args and setup ===
+if [[ $# -lt 1 ]]; then
+    echo "Usage: $0 [history_file]"
+    exit 1
+fi
+HIST_FILE="$1"
+TMP_FILE="$(mktemp)"
+
+echo "[*] Sanitizing: $HIST_FILE ..."
+
+# === Step 1: Normalize (remove timestamps, extra spaces) ===
+normalize_history() {
+    # Handles Zsh extended history lines with timestamps, strips them
+    # Zsh extended: ': 1651737463:0;command here'
+    sed -E 's/^: [0-9]+:[0-9]+;//' "$1" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+}
+
+# === Step 2: Remove sensitive lines ===
+remove_sensitive() {
+    local f="$1"
+    local pattern
+    cp "$f" "$TMP_FILE"
+    for pattern in "${SENSITIVE_PATTERNS[@]}"; do
+        # Remove any lines containing the pattern (case-insensitive)
+        grep -vi "$pattern" "$TMP_FILE" > "${TMP_FILE}.new"
+        mv "${TMP_FILE}.new" "$TMP_FILE"
+    done
+    mv "$TMP_FILE" "$f"
+}
+
+# === Step 3: Remove failed/incorrect commands ===
+remove_failed() {
+    local f="$1"
+    local pattern
+    cp "$f" "$TMP_FILE"
+    for pattern in "${FAILED_PATTERNS[@]}"; do
+        grep -Ev "$pattern" "$TMP_FILE" > "${TMP_FILE}.new"
+        mv "${TMP_FILE}.new" "$TMP_FILE"
+    done
+    mv "$TMP_FILE" "$f"
+}
+
+# === Step 3b: Remove commands ending with multiple semicolons ===
+remove_multi_semicolon() {
+    local f="$1"
+    # Removes lines ending with two or more semicolons and nothing after
+    grep -Ev ';{2,}[[:space:]]*$' "$f" > "$TMP_FILE"
+    mv "$TMP_FILE" "$f"
+}
+
+# === Step 4: Remove empty and whitespace lines ===
+remove_empty() {
+    local f="$1"
+    grep -v '^[[:space:]]*$' "$f" > "$TMP_FILE"
+    mv "$TMP_FILE" "$f"
+}
+
+# === Step 5: Deduplicate (keep last occurrence of each command) ===
+dedupe_history() {
+    # awk: keep only last unique occurrence, ignoring order
+    awk '!a[$0]++{b[NR]=$0; c[$0]=NR} END{for(i=1;i<=NR;i++)if(c[b[i]]==i)print b[i]}' "$1" > "$TMP_FILE"
+    mv "$TMP_FILE" "$1"
+}
+
+# === Pipeline ===
+cp "$HIST_FILE" "${HIST_FILE}.bak.$(date +%s)"
+normalize_history "$HIST_FILE" > "$TMP_FILE"
+mv "$TMP_FILE" "$HIST_FILE"
+remove_sensitive "$HIST_FILE"
+remove_failed "$HIST_FILE"
+remove_multi_semicolon "$HIST_FILE"
+remove_empty "$HIST_FILE"
+dedupe_history "$HIST_FILE"
+
+echo "[+] Done. Backup: ${HIST_FILE}.bak.*"
+
