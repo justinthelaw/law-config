@@ -72,7 +72,7 @@ export XDG_RUNTIME_DIR=/run/containerd
 # LAW
 #####
 
-export PATH="$PATH:/root/dev/law-config/scripts"
+export PATH="$PATH:/Users/jlaw/dev/law-config/scripts"
 
 #########
 # ALIASES

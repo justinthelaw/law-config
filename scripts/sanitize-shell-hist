@@ -6,6 +6,17 @@
 
 set -euo pipefail
 
+# Set locale to handle non-UTF-8 characters properly on macOS
+export LC_ALL=C
+export LANG=C
+
+# Cleanup function
+cleanup() {
+    [[ -f "$TMP_FILE" ]] && rm -f "$TMP_FILE"
+    [[ -f "${TMP_FILE}.new" ]] && rm -f "${TMP_FILE}.new"
+}
+trap cleanup EXIT
+
 # === Configuration ===
 SENSITIVE_PATTERNS=(
     "password"
@@ -20,6 +31,8 @@ SENSITIVE_PATTERNS=(
     "AUTHORIZATION"
     "session"
     "SESSION"
+    "arn:aws"
+    "ARN:AWS"
 )
 # Patterns of failed/incorrect commands (expand as needed)
 FAILED_PATTERNS=(
@@ -38,7 +51,14 @@ if [[ $# -lt 1 ]]; then
     exit 1
 fi
 HIST_FILE="$1"
-TMP_FILE="$(mktemp)"
+# Create temp file with proper cross-platform support
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS mktemp
+    TMP_FILE="$(mktemp -t sanitize_hist)"
+else
+    # Linux mktemp
+    TMP_FILE="$(mktemp)"
+fi
 
 echo "[*] Sanitizing: $HIST_FILE ..."
 
@@ -46,7 +66,14 @@ echo "[*] Sanitizing: $HIST_FILE ..."
 normalize_history() {
     # Handles Zsh extended history lines with timestamps, strips them
     # Zsh extended: ': 1651737463:0;command here'
-    sed -E 's/^: [0-9]+:[0-9]+;//' "$1" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+    # Use LC_ALL=C to handle binary/non-UTF-8 characters
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS (BSD sed) - use basic regex to avoid encoding issues
+        LC_ALL=C sed 's/^: [0-9][0-9]*:[0-9][0-9]*;//' "$1" | LC_ALL=C sed 's/^[ 	]*//;s/[ 	]*$//'
+    else
+        # Linux (GNU sed)
+        sed -E 's/^: [0-9]+:[0-9]+;//' "$1" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+    fi
 }
 
 # === Step 2: Remove sensitive lines ===
@@ -56,7 +83,14 @@ remove_sensitive() {
     cp "$f" "$TMP_FILE"
     for pattern in "${SENSITIVE_PATTERNS[@]}"; do
         # Remove any lines containing the pattern (case-insensitive)
-        grep -vi "$pattern" "$TMP_FILE" > "${TMP_FILE}.new"
+        # Use LC_ALL=C for macOS to handle encoding issues
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            # macOS grep - use LC_ALL=C
+            LC_ALL=C grep -v -i "$pattern" "$TMP_FILE" > "${TMP_FILE}.new"
+        else
+            # Linux grep
+            grep -vi "$pattern" "$TMP_FILE" > "${TMP_FILE}.new"
+        fi
         mv "${TMP_FILE}.new" "$TMP_FILE"
     done
     mv "$TMP_FILE" "$f"
@@ -68,7 +102,14 @@ remove_failed() {
     local pattern
     cp "$f" "$TMP_FILE"
     for pattern in "${FAILED_PATTERNS[@]}"; do
-        grep -Ev "$pattern" "$TMP_FILE" > "${TMP_FILE}.new"
+        # Use LC_ALL=C for macOS to handle encoding issues
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            # macOS grep - use LC_ALL=C and basic regex
+            LC_ALL=C grep -v "$pattern" "$TMP_FILE" > "${TMP_FILE}.new"
+        else
+            # Linux grep - can use extended regex
+            grep -Ev "$pattern" "$TMP_FILE" > "${TMP_FILE}.new"
+        fi
         mv "${TMP_FILE}.new" "$TMP_FILE"
     done
     mv "$TMP_FILE" "$f"
@@ -78,14 +119,26 @@ remove_failed() {
 remove_multi_semicolon() {
     local f="$1"
     # Removes lines ending with two or more semicolons and nothing after
-    grep -Ev ';{2,}[[:space:]]*$' "$f" > "$TMP_FILE"
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS grep - use LC_ALL=C and simpler pattern
+        LC_ALL=C grep -v ';;' "$f" > "$TMP_FILE"
+    else
+        # Linux grep
+        grep -Ev ';{2,}[[:space:]]*$' "$f" > "$TMP_FILE"
+    fi
     mv "$TMP_FILE" "$f"
 }
 
 # === Step 4: Remove empty and whitespace lines ===
 remove_empty() {
     local f="$1"
-    grep -v '^[[:space:]]*$' "$f" > "$TMP_FILE"
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        # macOS - use LC_ALL=C and simpler pattern
+        LC_ALL=C grep -v '^[ 	]*$' "$f" > "$TMP_FILE"
+    else
+        # Linux
+        grep -v '^[[:space:]]*$' "$f" > "$TMP_FILE"
+    fi
     mv "$TMP_FILE" "$f"
 }
 
