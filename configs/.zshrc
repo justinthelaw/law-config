@@ -68,6 +68,12 @@ export XDG_RUNTIME_DIR=/run/user/$UID
 
 export XDG_RUNTIME_DIR=/run/containerd
 
+#####
+# LAW
+#####
+
+export PATH="$PATH:/root/dev/law-config/scripts"
+
 #########
 # ALIASES
 #########
