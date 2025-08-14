@@ -94,3 +94,5 @@ alias code="/snap/bin/code"
 # Cleaning
 alias cacheclean="find ~/.cache/ -type f -atime +7 -delete"
 
+# Ethernet
+alias ethernet="sudo ip link set eno0 up && sudo dhclient eno0"
