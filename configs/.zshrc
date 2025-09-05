@@ -92,6 +92,9 @@ alias dclean="docker system prune -a -f && docker volume prune -f"
 alias gitup='find . -maxdepth 1 -type d -exec sh -c "(cd {} && [ -d .git ] && echo \"\nUpdating {}\n\" && git fetch && git pull)" ";"'
 alias gitclean='git branch | grep -vE "^\*|main|master" | awk "{print \$1}" | xargs -n 1 git branch -D'
 
+# Cleaning
+alias cacheclean="find ~/.cache/ -type f -atime +7 ! -path '*pre-commit*' ! -path '*uv*' -delete"
+
 # VSCode
 alias code="/snap/bin/code"
 
