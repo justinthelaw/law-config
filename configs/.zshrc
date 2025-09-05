@@ -92,7 +92,7 @@ alias gitclean='git branch | grep -vE "^\*|main|master" | awk "{print \$1}" | xa
 alias code="/snap/bin/code"
 
 # Cleaning
-alias cacheclean="find ~/.cache/ -type f -atime +7 -delete"
+alias cacheclean="find ~/.cache/ -type f -atime +7 ! -path '*pre-commit*' ! -path '*uv*' -delete"
 
 # Ethernet
 alias ethernet="sudo ip link set eno0 up && sudo dhclient eno0"
