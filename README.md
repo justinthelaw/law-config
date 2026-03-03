@@ -74,4 +74,11 @@ chmod 700 ~/.gnupg
 
 - `scripts/sanitize-shell-hist <history_file>`
 - Example: `scripts/sanitize-shell-hist ~/.zsh_history`
-- The script writes a backup (`<history_file>.bak.<epoch>`) before rewriting history.
+- See script file for more details
+
+## Agentic Coding Configuration
+
+### Codex
+
+- Copy the default `.codex/rules/` into your root `~/.codex/rules/` directory
+- Copy the default `.codex/config.toml` into your project directories
