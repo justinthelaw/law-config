@@ -1,98 +1,27 @@
-####################
-# DEFAULT ZSH CONFIG
-####################
+#########################
+# LAW CONFIG ENTRYPOINT #
+#########################
 
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+# Prevent duplicate loading when this file is sourced more than once.
+if [[ -n "${LAW_CONFIG_LOADED:-}" ]]; then
+    return
+fi
+typeset -g LAW_CONFIG_LOADED=1
 
-# Disable for sindresorhus/pure
-ZSH_THEME=""
+# Resolve paths relative to this repository.
+typeset -g LAW_CONFIG_CONFIG_DIR="${${(%):-%N}:A:h}"
+typeset -g LAW_CONFIG_ROOT="${LAW_CONFIG_CONFIG_DIR:h}"
 
-plugins=(
-    git
-)
+source "${LAW_CONFIG_CONFIG_DIR}/zsh/common.zsh"
 
-source $ZSH/oh-my-zsh.sh
-
-#################
-# ZNAP PLUGIN MGR
-#################
-
-# Znap ZSH plugin manager
-[[ -r ~/Repos/znap/znap.zsh ]] ||
-    git clone --depth 1 -- \
-        https://github.com/marlonrichert/zsh-snap.git ~/Repos/znap
-source ~/Repos/znap/znap.zsh # Start Znap
-
-# Faster terminal startup, clean CLI
-znap prompt sindresorhus/pure
-
-# Znap install plugins
-znap source zsh-users/zsh-autosuggestions
-znap source zsh-users/zsh-syntax-highlighting
-znap source zdharma-continuum/fast-syntax-highlighting
-znap source marlonrichert/zsh-autocomplete
-
-######
-# NVM
-######
-
-export NVM_DIR="$HOME/.config/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-
-#####
-# GO
-#####
-
-export PATH=$PATH:/usr/local/go/bin
-
-#################
-# ROOTLESS DOCKER
-#################
-
-export XDG_RUNTIME_DIR=/run/user/$UID
-
-############
-# CONTAINERD
-############
-
-export XDG_RUNTIME_DIR=/run/containerd
-
-######
-# NVCR
-######
-
-export PATH="$PATH:/root/dev/ngc-cli"
-
-#####
-# LAW
-#####
-
-export PATH="$PATH:/root/dev/law-config/scripts"
-
-#########
-# ALIASES
-#########
-
-# UDS
-alias k="uds zarf tools kubectl"
-alias zarf='uds zarf'
-alias k9s='uds zarf tools monitor'
-alias udsclean="uds zarf tools clear-cache && rm -rf ~/.uds-cache && rm -rf /tmp/zarf-*"
-
-# Docker
-alias dclean="docker system prune -a -f && docker volume prune -f"
-
-# Git
-alias gitup='find . -maxdepth 1 -type d -exec sh -c "(cd {} && [ -d .git ] && echo \"\nUpdating {}\n\" && git fetch && git pull)" ";"'
-alias gitclean='git branch | grep -vE "^\*|main|master" | awk "{print \$1}" | xargs -n 1 git branch -D'
-
-# VSCode
-alias code="/snap/bin/code"
-
-# Cleaning
-alias cacheclean="find ~/.cache/ -type f -atime +7 ! -path '*pre-commit*' ! -path '*uv*' -delete"
-
-# Ethernet
-alias ethernet="sudo ip link set eno0 up && sudo dhclient eno0"
+case "$(uname -s)" in
+    Darwin)
+        source "${LAW_CONFIG_CONFIG_DIR}/zsh/macos.zsh"
+        ;;
+    Linux)
+        source "${LAW_CONFIG_CONFIG_DIR}/zsh/linux.zsh"
+        ;;
+    *)
+        echo "law-config: unsupported OS; loaded common zsh settings only." >&2
+        ;;
+esac

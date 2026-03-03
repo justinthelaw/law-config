@@ -1,160 +1,77 @@
 # Law-Config
 
-Development system configurations for all of my devices, aptly named `law-*`.
+Development system configurations for `law-*` machines.
 
-## Pre-Requisites
+## Branch Model
 
-At this point of the development system setup and configuration process, I should have already done the following:
+- `main` is the single canonical branch.
+- OS-specific differences are handled with:
+  - docs: `docs/setup-linux.md` and `docs/setup-macos.md`
+  - config overlays: `configs/zsh/linux.zsh` and `configs/zsh/macos.zsh`
 
-1. Updated and security patched all base OS packages (git, e.g.)
-2. Installed `Brave Browser` and added it to the sync-chain
-3. Added the following basic packages:
+## Directory Strategy
 
-```bash
-# Zsh
-sudo apt-get -y install zsh
-
-# cURL is required for some of the later pre-req instructions
-sudo apt-get -y install curl
-
-# Python, NVIDIA CUDA, Rust, C++, Znap, etc. essentials
-sudo apt-get -y install build-essential libssl-dev zlib1g-dev \
-libbz2-dev libreadline-dev libsqlite3-dev curl \
-libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-
-# Virtual machine and emulation management
-sudo apt-get -y install libvirt-daemon-system libvirt-clients qemu-kvm qemu-utils virt-manager ovmf 
+```text
+configs/
+  .zshrc              # single entrypoint; auto-selects OS config
+  .gitconfig          # global git template (fill placeholders)
+  gpg/
+    gpg.conf
+    gpg-agent.conf
+  zsh/
+    common.zsh        # shared shell config
+    linux.zsh         # Linux-only settings
+    macos.zsh         # macOS-only settings
+docs/
+  setup-linux.md
+  setup-macos.md
+scripts/
+  sanitize-shell-hist
 ```
 
-Read instructions here: https://docs.docker.com/engine/install/
+`configs/.zshrc` auto-detects the host OS with `uname` and sources `configs/zsh/common.zsh` plus the matching OS overlay.
+
+## Quick Start
+
+1. Install Zsh + Oh-My-Zsh + znap:
+   - https://ohmyz.sh/#install
+   - https://github.com/ohmyzsh/ohmyzsh/wiki
+   - https://github.com/marlonrichert/zsh-snap#installation
+2. Point your user `.zshrc` to this repository:
 
 ```bash
-# Containerization tooling and capability
-sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+echo "source /absolute/path/to/law-config/configs/.zshrc" > ~/.zshrc
 ```
 
-Read instructions here: https://developer.nvidia.com/cuda-downloads
+3. Apply Git template settings:
 
 ```bash
-# NVIDIA CUDA toolkit
-sudo apt-get -y install cuda
-```
-
-Read instructions here: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
-
-```bash
-# NVIDIA Container Toolkit
-sudo apt-get -y install nvidia-container-toolkit
-```
-
-Read instructions here: https://tailscale.com/download/linux
-
-```bash
-# Tailscale for teams
-sudo apt-get -y install tailscale
-```
-
-4. Enabled `ufw`, ensuring `ssh` is enabled
-5. Connected to team's `tailscale` and approved device on the network
-
-```bash
-# Login to tailscale with your email
-sudo tailscale login
-
-# Add device to the network, with optional flags and capabilities, e.g. SSH access
-sudo tailscale up # --ssh=[OPTIONS] --advertise-routes=[OPTIONS]
-```
-
-## Usage
-
-All of the following instruction assume that you have cloned down this Git repository's source code and configuration files.
-
-### Zsh and Oh-My-Zsh
-
-Zsh and Oh-My-Zsh add a lot of functionality, and therefore it is important for me to set this up as soon as possible.
-
-To use the pre-configured `.zshrc` in this repository, simply do the following:
-
-Read instructions here:
-
-- https://ohmyz.sh/#install
-- https://github.com/ohmyzsh/ohmyzsh/wiki
-- https://github.com/marlonrichert/zsh-snap#installation
-
-```bash
-# Install Oh-My-Zsh for Zsh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-# Install Znap as your Zsh plugin manager
-# INFO: feel free to change the `~/Repo/` location as you please
-git clone --depth 1 -- \
-        https://github.com/marlonrichert/zsh-snap.git ~/Repos/znap
-
-# Add a singular pointer from your `.zshrc` to to this Git repository's `.zshrc`
-# WARNING: this overwrites anything already in your existing `.zshrc`
-# WARNING: you cannot delete this repository from your machine. else you wil lose the pointer
-# INFO: Recommend using an absolute path to this repository
-echo "source path/to/law-config/configs/.zshrc" > ~/.zshrc
-```
-
-### Git
-
-The Git config in this repository contains some place holders for the user to replace. Once filled-in, you can copy the `.gitconfig` to your user's root directory, replacing the existing one.
-
-The following assumes that you are within the root of this Git repository.
-
-```bash
-# Check on what needs to be filled in
 cat configs/.gitconfig | grep INSERT
-
-# Find your current `.gitconfig` location
-git config --list --show-origin
-
-# Copy the `.gitconfig` to your desired root directory
-cp configs/.gitconfig path/to/user/root/directory
-
-# Check to see the new settings are in place
+cp configs/.gitconfig ~/.gitconfig
 git config --list
 ```
 
-### Remote Registries
-
-#### Logging In
-
-Logging in to the following registries is recommended:
+4. If using commit signing, install/copy GPG defaults:
 
 ```bash
-# use your username and harbor key
-docker login registry1.dso.mil
-
-# use your username and self-generated PAT
-docker login ghcr.io
+mkdir -p ~/.gnupg
+cp configs/gpg/*.conf ~/.gnupg/
+chmod 600 ~/.gnupg/*
+chmod 700 ~/.gnupg
 ```
 
-### Go
+## Environment Setup Guides
 
-Golang installation instructions here: https://go.dev/doc/install
+- Linux: [docs/setup-linux.md](docs/setup-linux.md)
+- macOS: [docs/setup-macos.md](docs/setup-macos.md)
 
-### Node
+## Runtime Manager Preference
 
-NVM, NPM, and Node.js instructions here: https://github.com/nvm-sh/nvm
+- Python: `uv` (install/use examples in the setup guides).
+- Node.js: `nvm` (install plus `nvm install/use` examples in the setup guides).
 
-### UDS Development
+## Utility Script
 
-The following are minimal dependencies for Unicorn Delivery Service (UDS) development:
-
-Read instructions here : https://github.com/defenseunicorns/uds-cli/releases
-
-```bash
-# INFO: requires your `sudo` password
-wget -O uds https://github.com/defenseunicorns/uds-cli/releases/download/v0.27.2/uds-cli_v0.27.2_Linux_amd64 && \
-        sudo chmod +x uds && \
-        sudo mv uds /usr/local/bin/
-```
-
-Read instructions here: https://k3d.io/stable/
-
-```bash
-# Download and install K3d according to this restriction: https://github.com/defenseunicorns/uds-core#prerequisites
-curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
-```
+- `scripts/sanitize-shell-hist <history_file>`
+- Example: `scripts/sanitize-shell-hist ~/.zsh_history`
+- The script writes a backup (`<history_file>.bak.<epoch>`) before rewriting history.

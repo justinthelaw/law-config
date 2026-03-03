@@ -12,8 +12,9 @@ export LANG=C
 
 # Cleanup function
 cleanup() {
-    [[ -f "$TMP_FILE" ]] && rm -f "$TMP_FILE"
-    [[ -f "${TMP_FILE}.new" ]] && rm -f "${TMP_FILE}.new"
+    if [[ -n "${TMP_FILE:-}" ]]; then
+        rm -f "$TMP_FILE" "${TMP_FILE}.new"
+    fi
 }
 trap cleanup EXIT
 
@@ -119,13 +120,7 @@ remove_failed() {
 remove_multi_semicolon() {
     local f="$1"
     # Removes lines ending with two or more semicolons and nothing after
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        # macOS grep - use LC_ALL=C and simpler pattern
-        LC_ALL=C grep -v ';;' "$f" > "$TMP_FILE"
-    else
-        # Linux grep
-        grep -Ev ';{2,}[[:space:]]*$' "$f" > "$TMP_FILE"
-    fi
+    LC_ALL=C grep -Ev ';{2,}[[:space:]]*$' "$f" > "$TMP_FILE"
     mv "$TMP_FILE" "$f"
 }
 

@@ -1,6 +1,6 @@
 [user]
-        name = <INSERT USERNAME HERE>
-        email = <INSERT EMAIL HERE>
+        name = justinthelaw
+        email = justinthelaw@gmail.com
         signingkey = <INSERT GPG KEY HERE>
 
 [init]
@@ -42,14 +42,13 @@
         st = status
         aa = add -A .
         cm = commit -m
-        aacm = !git add -A . && git commit
         aacm = !git add -A . && git commit -m
         cp = cherry-pick
         amend = commit --amend -m
         dev = !git checkout dev && git pull origin dev
         staging = !git checkout staging && git pull origin staging
-        main = !git checkout main && git pull origin 
-        master = !git checkout master && git pull origin 
+        main = !git checkout main && git pull origin main
+        master = !git checkout master && git pull origin master
         po = push origin
         pu = !git push origin `git branch --show-current`
         pod = push origin dev
