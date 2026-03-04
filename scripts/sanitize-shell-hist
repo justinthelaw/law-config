@@ -12,141 +12,141 @@ export LANG=C
 
 # Cleanup function
 cleanup() {
-    if [[ -n "${TMP_FILE:-}" ]]; then
-        rm -f "$TMP_FILE" "${TMP_FILE}.new"
-    fi
+  if [[ -n "${TMP_FILE:-}" ]]; then
+    rm -f "$TMP_FILE" "${TMP_FILE}.new"
+  fi
 }
 trap cleanup EXIT
 
 # === Configuration ===
 SENSITIVE_PATTERNS=(
-    "password"
-    "PASSWORD"
-    "secret"
-    "SECRET"
-    "token"
-    "TOKEN"
-    "apikey"
-    "APIKEY"
-    "authorization"
-    "AUTHORIZATION"
-    "session"
-    "SESSION"
-    "arn:aws"
-    "ARN:AWS"
+  "password"
+  "PASSWORD"
+  "secret"
+  "SECRET"
+  "token"
+  "TOKEN"
+  "apikey"
+  "APIKEY"
+  "authorization"
+  "AUTHORIZATION"
+  "session"
+  "SESSION"
+  "arn:aws"
+  "ARN:AWS"
 )
 # Patterns of failed/incorrect commands (expand as needed)
 FAILED_PATTERNS=(
-    "command not found"
-    "No such file or directory"
-    "syntax error"
-    "not recognized as"
-    "is not a function"
-    "zsh:.*not found"
-    "bash:.*not found"
+  "command not found"
+  "No such file or directory"
+  "syntax error"
+  "not recognized as"
+  "is not a function"
+  "zsh:.*not found"
+  "bash:.*not found"
 )
 
 # === Args and setup ===
 if [[ $# -lt 1 ]]; then
-    echo "Usage: $0 [history_file]"
-    exit 1
+  echo "Usage: $0 [history_file]"
+  exit 1
 fi
 HIST_FILE="$1"
 # Create temp file with proper cross-platform support
 if [[ "$OSTYPE" == "darwin"* ]]; then
-    # macOS mktemp
-    TMP_FILE="$(mktemp -t sanitize_hist)"
+  # macOS mktemp
+  TMP_FILE="$(mktemp -t sanitize_hist)"
 else
-    # Linux mktemp
-    TMP_FILE="$(mktemp)"
+  # Linux mktemp
+  TMP_FILE="$(mktemp)"
 fi
 
 echo "[*] Sanitizing: $HIST_FILE ..."
 
 # === Step 1: Normalize (remove timestamps, extra spaces) ===
 normalize_history() {
-    # Handles Zsh extended history lines with timestamps, strips them
-    # Zsh extended: ': 1651737463:0;command here'
-    # Use LC_ALL=C to handle binary/non-UTF-8 characters
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        # macOS (BSD sed) - use basic regex to avoid encoding issues
-        LC_ALL=C sed 's/^: [0-9][0-9]*:[0-9][0-9]*;//' "$1" | LC_ALL=C sed 's/^[ 	]*//;s/[ 	]*$//'
-    else
-        # Linux (GNU sed)
-        sed -E 's/^: [0-9]+:[0-9]+;//' "$1" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
-    fi
+  # Handles Zsh extended history lines with timestamps, strips them
+  # Zsh extended: ': 1651737463:0;command here'
+  # Use LC_ALL=C to handle binary/non-UTF-8 characters
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS (BSD sed) - use basic regex to avoid encoding issues
+    LC_ALL=C sed 's/^: [0-9][0-9]*:[0-9][0-9]*;//' "$1" | LC_ALL=C sed 's/^[ 	]*//;s/[ 	]*$//'
+  else
+    # Linux (GNU sed)
+    sed -E 's/^: [0-9]+:[0-9]+;//' "$1" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//'
+  fi
 }
 
 # === Step 2: Remove sensitive lines ===
 remove_sensitive() {
-    local f="$1"
-    local pattern
-    cp "$f" "$TMP_FILE"
-    for pattern in "${SENSITIVE_PATTERNS[@]}"; do
-        # Remove any lines containing the pattern (case-insensitive)
-        # Use LC_ALL=C for macOS to handle encoding issues
-        if [[ "$OSTYPE" == "darwin"* ]]; then
-            # macOS grep - use LC_ALL=C
-            LC_ALL=C grep -v -i "$pattern" "$TMP_FILE" > "${TMP_FILE}.new"
-        else
-            # Linux grep
-            grep -vi "$pattern" "$TMP_FILE" > "${TMP_FILE}.new"
-        fi
-        mv "${TMP_FILE}.new" "$TMP_FILE"
-    done
-    mv "$TMP_FILE" "$f"
+  local f="$1"
+  local pattern
+  cp "$f" "$TMP_FILE"
+  for pattern in "${SENSITIVE_PATTERNS[@]}"; do
+    # Remove any lines containing the pattern (case-insensitive)
+    # Use LC_ALL=C for macOS to handle encoding issues
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+      # macOS grep - use LC_ALL=C
+      LC_ALL=C grep -v -i "$pattern" "$TMP_FILE" >"${TMP_FILE}.new"
+    else
+      # Linux grep
+      grep -vi "$pattern" "$TMP_FILE" >"${TMP_FILE}.new"
+    fi
+    mv "${TMP_FILE}.new" "$TMP_FILE"
+  done
+  mv "$TMP_FILE" "$f"
 }
 
 # === Step 3: Remove failed/incorrect commands ===
 remove_failed() {
-    local f="$1"
-    local pattern
-    cp "$f" "$TMP_FILE"
-    for pattern in "${FAILED_PATTERNS[@]}"; do
-        # Use LC_ALL=C for macOS to handle encoding issues
-        if [[ "$OSTYPE" == "darwin"* ]]; then
-            # macOS grep - use LC_ALL=C and basic regex
-            LC_ALL=C grep -v "$pattern" "$TMP_FILE" > "${TMP_FILE}.new"
-        else
-            # Linux grep - can use extended regex
-            grep -Ev "$pattern" "$TMP_FILE" > "${TMP_FILE}.new"
-        fi
-        mv "${TMP_FILE}.new" "$TMP_FILE"
-    done
-    mv "$TMP_FILE" "$f"
+  local f="$1"
+  local pattern
+  cp "$f" "$TMP_FILE"
+  for pattern in "${FAILED_PATTERNS[@]}"; do
+    # Use LC_ALL=C for macOS to handle encoding issues
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+      # macOS grep - use LC_ALL=C and basic regex
+      LC_ALL=C grep -v "$pattern" "$TMP_FILE" >"${TMP_FILE}.new"
+    else
+      # Linux grep - can use extended regex
+      grep -Ev "$pattern" "$TMP_FILE" >"${TMP_FILE}.new"
+    fi
+    mv "${TMP_FILE}.new" "$TMP_FILE"
+  done
+  mv "$TMP_FILE" "$f"
 }
 
 # === Step 3b: Remove commands ending with multiple semicolons ===
 remove_multi_semicolon() {
-    local f="$1"
-    # Removes lines ending with two or more semicolons and nothing after
-    LC_ALL=C grep -Ev ';{2,}[[:space:]]*$' "$f" > "$TMP_FILE"
-    mv "$TMP_FILE" "$f"
+  local f="$1"
+  # Removes lines ending with two or more semicolons and nothing after
+  LC_ALL=C grep -Ev ';{2,}[[:space:]]*$' "$f" >"$TMP_FILE"
+  mv "$TMP_FILE" "$f"
 }
 
 # === Step 4: Remove empty and whitespace lines ===
 remove_empty() {
-    local f="$1"
-    if [[ "$OSTYPE" == "darwin"* ]]; then
-        # macOS - use LC_ALL=C and simpler pattern
-        LC_ALL=C grep -v '^[ 	]*$' "$f" > "$TMP_FILE"
-    else
-        # Linux
-        grep -v '^[[:space:]]*$' "$f" > "$TMP_FILE"
-    fi
-    mv "$TMP_FILE" "$f"
+  local f="$1"
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    # macOS - use LC_ALL=C and simpler pattern
+    LC_ALL=C grep -v '^[ 	]*$' "$f" >"$TMP_FILE"
+  else
+    # Linux
+    grep -v '^[[:space:]]*$' "$f" >"$TMP_FILE"
+  fi
+  mv "$TMP_FILE" "$f"
 }
 
 # === Step 5: Deduplicate (keep last occurrence of each command) ===
 dedupe_history() {
-    # awk: keep only last unique occurrence, ignoring order
-    awk '!a[$0]++{b[NR]=$0; c[$0]=NR} END{for(i=1;i<=NR;i++)if(c[b[i]]==i)print b[i]}' "$1" > "$TMP_FILE"
-    mv "$TMP_FILE" "$1"
+  # awk: keep only last unique occurrence, ignoring order
+  awk '!a[$0]++{b[NR]=$0; c[$0]=NR} END{for(i=1;i<=NR;i++)if(c[b[i]]==i)print b[i]}' "$1" >"$TMP_FILE"
+  mv "$TMP_FILE" "$1"
 }
 
 # === Pipeline ===
 cp "$HIST_FILE" "${HIST_FILE}.bak.$(date +%s)"
-normalize_history "$HIST_FILE" > "$TMP_FILE"
+normalize_history "$HIST_FILE" >"$TMP_FILE"
 mv "$TMP_FILE" "$HIST_FILE"
 remove_sensitive "$HIST_FILE"
 remove_failed "$HIST_FILE"
