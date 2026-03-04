@@ -1,35 +1,10 @@
 # Law-Config
 
-Development system configurations for `law-*` machines.
+## Project Purpose
 
-## Branch Model
+Shared development system configuration for `law-*` machines.
 
-- `main` is the single canonical branch.
-- OS-specific differences are handled with:
-  - docs: `docs/setup-linux.md` and `docs/setup-macos.md`
-  - config overlays: `configs/zsh/linux.zsh` and `configs/zsh/macos.zsh`
-
-## Directory Strategy
-
-```text
-configs/
-  .zshrc              # single entrypoint; auto-selects OS config
-  .gitconfig          # global git template (fill placeholders)
-  gpg/
-    gpg.conf
-    gpg-agent.conf
-  zsh/
-    common.zsh        # shared shell config
-    linux.zsh         # Linux-only settings
-    macos.zsh         # macOS-only settings
-docs/
-  setup-linux.md
-  setup-macos.md
-scripts/
-  sanitize-shell-hist
-```
-
-`configs/.zshrc` auto-detects the host OS with `uname` and sources `configs/zsh/common.zsh` plus the matching OS overlay.
+This repository contains shell, Git, and GPG baseline configuration plus setup documentation for Linux and macOS.
 
 ## Quick Start
 
@@ -60,25 +35,58 @@ chmod 600 ~/.gnupg/*
 chmod 700 ~/.gnupg
 ```
 
-## Environment Setup Guides
+## Development
 
-- Linux: [docs/setup-linux.md](docs/setup-linux.md)
-- macOS: [docs/setup-macos.md](docs/setup-macos.md)
+### Branch model
 
-## Runtime Manager Preference
+- `main` is the canonical branch.
+- OS-specific differences are isolated in:
+  - docs: `docs/setup-linux.md`, `docs/setup-macos.md`
+  - overlays: `configs/zsh/linux.zsh`, `configs/zsh/macos.zsh`
 
-- Python: `uv` (install/use examples in the setup guides).
-- Node.js: `nvm` (install plus `nvm install/use` examples in the setup guides).
+### Directory strategy
 
-## Utility Script
+```text
+configs/
+  .zshrc
+  .gitconfig
+  gpg/
+    gpg.conf
+    gpg-agent.conf
+  zsh/
+    common.zsh
+    linux.zsh
+    macos.zsh
+docs/
+  setup-linux.md
+  setup-macos.md
+  CONTRIBUTING.md
+  SECURITY.md
+  SUPPORT.md
+  CODE_OF_CONDUCT.md
+scripts/
+  sanitize-shell-hist
+```
 
-- `scripts/sanitize-shell-hist <history_file>`
-- Example: `scripts/sanitize-shell-hist ~/.zsh_history`
-- See script file for more details
+### Validation
 
-## Agentic Coding Configuration
+```bash
+pre-commit run --all-files
+bash -n scripts/sanitize-shell-hist
+```
 
-### Codex
+## Contributing
 
-- Copy the default `.codex/rules/` into your root `~/.codex/rules/` directory
-- Copy the default `.codex/config.toml` into your project directories
+See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for workflow and pull request expectations.
+
+## Security
+
+See [docs/SECURITY.md](docs/SECURITY.md) for supported versions and vulnerability reporting.
+
+## Support
+
+See [docs/SUPPORT.md](docs/SUPPORT.md) for bug, feature, and question routing.
+
+## License
+
+This repository currently has no dedicated license file. Add one before broad public reuse.
