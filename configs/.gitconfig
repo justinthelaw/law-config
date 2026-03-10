@@ -27,10 +27,6 @@
 [web]
         browser = brave
 
-[github]
-        user = justinthelaw
-        token = <INSERT TOKEN HERE>
-
 [alias]
         co = checkout
         cob = checkout -b
