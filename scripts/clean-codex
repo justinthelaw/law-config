@@ -78,7 +78,7 @@ if [[ ! -d "$CODEX_HOME" ]]; then
 fi
 
 running_codex_processes() {
-  ps -eo pid=,command= 2>/dev/null | awk -v self="$$" -v parent="${PPID:-0}" '
+  ps -eo pid=,command= 2>/dev/null | awk -v self="$$" '
         function base(path, parts_count, parts) {
             parts_count = split(path, parts, "/")
             return parts[parts_count]
@@ -90,18 +90,38 @@ running_codex_processes() {
             sub(/^[[:space:]]+/, "", $0)
             cmd = $0
 
-            split(cmd, argv, /[[:space:]]+/)
-            argv0 = argv[1]
-            argv0_base = base(argv0)
-            is_codex_binary = (argv0_base == "codex")
-            is_codex_js = (cmd ~ /(^|[[:space:]])[^[:space:]]*\/codex\.js([[:space:]]|$)/)
-            is_codex_package = (cmd ~ /(^|[[:space:]])@openai\/codex([[:space:]]|$)/)
+            argc = split(cmd, argv, /[[:space:]]+/)
+            is_codex_binary = 0
+            is_codex_js = 0
+            is_codex_package = 0
+            is_codex_sandbox = 0
 
-            if (pid == self || pid == parent) {
+            for (i = 1; i <= argc; i++) {
+                token = argv[i]
+                token_base = base(token)
+
+                if (token_base == "codex") {
+                    is_codex_binary = 1
+                }
+
+                if (token_base == "codex.js") {
+                    is_codex_js = 1
+                }
+
+                if (token ~ /^@openai\/codex(@|$)/) {
+                    is_codex_package = 1
+                }
+
+                if (token_base ~ /^codex(-[^[:space:]]+)?-sandbox$/) {
+                    is_codex_sandbox = 1
+                }
+            }
+
+            if (pid == self) {
                 next
             }
 
-            if (is_codex_binary || is_codex_js || is_codex_package) {
+            if (is_codex_binary || is_codex_js || is_codex_package || is_codex_sandbox) {
                 print pid " " cmd
             }
         }

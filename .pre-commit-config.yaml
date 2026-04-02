@@ -82,6 +82,6 @@ repos:
       - id: shell-script-syntax
         name: Shell Script Syntax Check
         language: system
-        entry: bash -n
+        entry: bash -c 'for file; do bash -n "$file" || exit $?; done' --
         files: ^scripts/(clean-codex|sanitize-shell-hist)$
         stages: [pre-commit, pre-push]
