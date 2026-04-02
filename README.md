@@ -65,7 +65,7 @@ docs/
   SUPPORT.md
   CODE_OF_CONDUCT.md
 scripts/
-  clean-codex.sh
+  clean-codex
   sanitize-shell-hist
 ```
 

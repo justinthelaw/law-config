@@ -83,5 +83,5 @@ repos:
         name: Shell Script Syntax Check
         language: system
         entry: bash -n
-        files: ^scripts/(clean-codex\.sh|sanitize-shell-hist)$
+        files: ^scripts/(clean-codex|sanitize-shell-hist)$
         stages: [pre-commit, pre-push]
