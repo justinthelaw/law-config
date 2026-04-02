@@ -79,10 +79,9 @@ repos:
 
   - repo: local
     hooks:
-      - id: sanitize-shell-hist-syntax
-        name: sanitize-shell-hist syntax check
+      - id: shell-script-syntax
+        name: Shell Script Syntax Check
         language: system
-        entry: bash -n scripts/sanitize-shell-hist
-        files: ^scripts/sanitize-shell-hist$
-        pass_filenames: false
+        entry: bash -c 'for file; do bash -n "$file" || exit $?; done' --
+        files: ^scripts/(clean-codex|sanitize-shell-hist)$
         stages: [pre-commit, pre-push]

@@ -21,7 +21,6 @@ Run these checks before pushing:
 
 ```bash
 pre-commit run --all-files
-bash -n scripts/sanitize-shell-hist
 ```
 
 If changing docs, verify links and command examples.
