@@ -65,6 +65,7 @@ docs/
   SUPPORT.md
   CODE_OF_CONDUCT.md
 scripts/
+  clean-codex.sh
   sanitize-shell-hist
 ```
 
@@ -72,7 +73,6 @@ scripts/
 
 ```bash
 pre-commit run --all-files
-bash -n scripts/sanitize-shell-hist
 ```
 
 ## Contributing

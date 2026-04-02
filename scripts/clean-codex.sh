@@ -1,0 +1,228 @@
+#!/usr/bin/env bash
+#
+# clean-codex.sh - Remove local Codex session history/state while preserving
+# preferences, rules, auth, and configuration.
+#
+# Usage:
+#   clean-codex.sh [--dry-run] [--yes] [--force] [codex_home]
+#
+# Examples:
+#   clean-codex.sh --dry-run
+#   clean-codex.sh --yes
+
+set -euo pipefail
+
+usage() {
+    cat <<'EOF'
+Usage: clean-codex.sh [options] [codex_home]
+
+Deletes local Codex session/state artifacts while preserving durable config:
+  preserved: auth.json, config.toml, memories/, skills/, plugins/, version.json
+
+Options:
+  -n, --dry-run         Show what would be removed without deleting anything.
+  -y, --yes             Skip the confirmation prompt.
+  -f, --force           Run even if Codex appears to be running.
+  -h, --help            Show this help text.
+
+Arguments:
+  codex_home            Override the Codex data directory.
+                        Default: $CODEX_HOME or ~/.codex
+EOF
+}
+
+DRY_RUN=0
+SKIP_CONFIRM=0
+FORCE=0
+CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
+CODEX_HOME_ARG_SET=0
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -n|--dry-run)
+            DRY_RUN=1
+            ;;
+        -y|--yes)
+            SKIP_CONFIRM=1
+            ;;
+        -f|--force)
+            FORCE=1
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        -*)
+            echo "Unknown option: $1" >&2
+            usage >&2
+            exit 1
+            ;;
+        *)
+            if [[ "$CODEX_HOME_ARG_SET" -eq 1 ]]; then
+                echo "Only one codex_home argument is supported." >&2
+                usage >&2
+                exit 1
+            fi
+            CODEX_HOME="$1"
+            CODEX_HOME_ARG_SET=1
+            ;;
+    esac
+    shift
+done
+
+CODEX_HOME="${CODEX_HOME%/}"
+
+if [[ ! -d "$CODEX_HOME" ]]; then
+    echo "Codex home not found: $CODEX_HOME" >&2
+    exit 1
+fi
+
+running_codex_processes() {
+    ps -eo pid=,command= 2>/dev/null | awk -v self="$$" -v parent="${PPID:-0}" '
+        function base(path, parts_count, parts) {
+            parts_count = split(path, parts, "/")
+            return parts[parts_count]
+        }
+
+        {
+            pid = $1
+            $1 = ""
+            sub(/^[[:space:]]+/, "", $0)
+            cmd = $0
+
+            split(cmd, argv, /[[:space:]]+/)
+            argv0 = argv[1]
+            argv0_base = base(argv0)
+            is_codex_binary = (argv0_base == "codex")
+            is_codex_js = (cmd ~ /(^|[[:space:]])[^[:space:]]*\/codex\.js([[:space:]]|$)/)
+            is_codex_package = (cmd ~ /(^|[[:space:]])@openai\/codex([[:space:]]|$)/)
+
+            if (pid == self || pid == parent) {
+                next
+            }
+
+            if (is_codex_binary || is_codex_js || is_codex_package) {
+                print pid " " cmd
+            }
+        }
+    '
+}
+
+format_kib() {
+    local kib="$1"
+
+    awk -v kib="$kib" '
+        BEGIN {
+            if (kib >= 1048576) {
+                printf "%.2f GiB", kib / 1048576
+            } else if (kib >= 1024) {
+                printf "%.2f MiB", kib / 1024
+            } else {
+                printf "%d KiB", kib
+            }
+        }
+    '
+}
+
+if [[ "$FORCE" -ne 1 ]]; then
+    running="$(running_codex_processes)"
+    if [[ -n "$running" ]]; then
+        echo "Codex appears to still be running. Close it before cleaning local session data." >&2
+        echo "$running" >&2
+        echo "Re-run with --force if you want to bypass this check." >&2
+        exit 1
+    fi
+fi
+
+static_targets=(
+    "sessions"
+    "history.jsonl"
+    "shell_snapshots"
+    "tmp"
+    "log"
+)
+
+glob_targets=(
+    "logs_*.sqlite"
+    "logs_*.sqlite-shm"
+    "logs_*.sqlite-wal"
+    "state_*.sqlite"
+    "state_*.sqlite-shm"
+    "state_*.sqlite-wal"
+)
+
+cache_targets=(
+    ".tmp"
+    "cache/codex_apps_tools"
+    "models_cache.json"
+)
+
+declare -a targets=()
+
+add_target() {
+    local path="$1"
+
+    if [[ -e "$path" ]]; then
+        targets+=("$path")
+    fi
+}
+
+for rel_path in "${static_targets[@]}"; do
+    add_target "${CODEX_HOME}/${rel_path}"
+done
+
+for rel_path in "${cache_targets[@]}"; do
+    add_target "${CODEX_HOME}/${rel_path}"
+done
+
+shopt -s nullglob
+for pattern in "${glob_targets[@]}"; do
+    matches=( "$CODEX_HOME"/$pattern )
+    if [[ "${#matches[@]}" -gt 0 ]]; then
+        targets+=( "${matches[@]}" )
+    fi
+done
+shopt -u nullglob
+
+if [[ "${#targets[@]}" -eq 0 ]]; then
+    echo "No Codex session data found under $CODEX_HOME."
+    exit 0
+fi
+
+estimated_kib=0
+for path in "${targets[@]}"; do
+    path_kib="$(du -sk "$path" 2>/dev/null | awk '{print $1}')"
+    estimated_kib="$(( estimated_kib + ${path_kib:-0} ))"
+done
+
+echo "Codex home: $CODEX_HOME"
+echo "Removing the following paths:"
+for path in "${targets[@]}"; do
+    echo "  $path"
+done
+echo "Estimated reclaimable space: $(format_kib "$estimated_kib")"
+echo "Runtime caches are included in the default cleanup."
+
+if [[ "$DRY_RUN" -eq 1 ]]; then
+    exit 0
+fi
+
+if [[ "$SKIP_CONFIRM" -ne 1 ]]; then
+    printf 'Delete these Codex session artifacts? [y/N] '
+    read -r response
+    case "$response" in
+        [Yy]|[Yy][Ee][Ss])
+            ;;
+        *)
+            echo "Aborted."
+            exit 1
+            ;;
+    esac
+fi
+
+for path in "${targets[@]}"; do
+    rm -rf -- "$path"
+done
+
+echo "Codex session data removed."
+echo "Preserved: auth.json, config.toml, memories/, skills/, plugins/, version.json."
