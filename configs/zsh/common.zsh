@@ -87,10 +87,3 @@ alias gitclean='git branch | grep -vE "^\*|main|master" | awk "{print \$1}" | xa
 
 # VSCode
 [[ -x "/snap/bin/code" ]] && alias code="/snap/bin/code"
-
-# Cleaning
-if [[ -d "$HOME/.cache" ]]; then
-    alias cacheclean="find ~/.cache/ -type f -atime +7 ! -path '*pre-commit*' ! -path '*uv*' -delete"
-elif [[ -d "$HOME/Library/Caches" ]]; then
-    alias cacheclean="find ~/Library/Caches/ -type f -atime +7 ! -path '*pre-commit*' ! -path '*uv*' -delete"
-fi
