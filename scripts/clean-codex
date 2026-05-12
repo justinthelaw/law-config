@@ -17,9 +17,11 @@ usage() {
 Usage: clean-codex [options] [codex_home]
 
 Deletes local Codex session/state artifacts while preserving durable config.
-Prunes prompt history from .codex-global-state.json while preserving preferences.
+Prunes prompt history from .codex-global-state.json and its backup while
+preserving preferences.
 Preserves: auth.json, config.toml, .codex-global-state.json, memories/,
-skills/, plugins/, .tmp/plugins/, version.json.
+skills/, plugins/, .tmp/plugins/, .tmp/bundled-marketplaces/,
+.tmp/marketplaces/, version.json.
 
 Options:
   -n, --dry-run         Show what would be removed without deleting anything.
@@ -177,17 +179,35 @@ glob_targets=(
 cache_targets=(
   ".tmp/app-server-remote-plugin-sync-v1"
   ".tmp/plugins.sha"
+  ".tmp/plugin-share-local-paths-v1.json"
+  ".tmp/legacy-primary-runtime-skills"
   "cache/codex_apps_tools"
   "cloud-requirements-cache.json"
   "models_cache.json"
+)
+
+cleanup_glob_targets=(
+  ".tmp/plugins-backup-*"
+  ".codex-global-state.json*.tmp-*"
+  "..codex-global-state.json*.tmp-*"
 )
 
 declare -a targets=()
 declare -a archived_session_targets=()
 archived_session_target_count=0
 
+is_protected_target() {
+  local path="${1%/}"
+
+  [[ "$path" == "${CODEX_HOME}/memories" || "$path" == "${CODEX_HOME}/memories/"* ]]
+}
+
 add_target() {
   local path="$1"
+
+  if is_protected_target "$path"; then
+    return 0
+  fi
 
   if [[ -e "$path" ]]; then
     targets+=("$path")
@@ -218,18 +238,28 @@ add_archived_session_targets
 shopt -s nullglob
 for pattern in "${glob_targets[@]}"; do
   while IFS= read -r match; do
-    targets+=("$match")
+    add_target "$match"
+  done < <(compgen -G "$CODEX_HOME/$pattern" || true)
+done
+for pattern in "${cleanup_glob_targets[@]}"; do
+  while IFS= read -r match; do
+    add_target "$match"
   done < <(compgen -G "$CODEX_HOME/$pattern" || true)
 done
 shopt -u nullglob
 
-global_state_path="${CODEX_HOME}/.codex-global-state.json"
-global_state_has_prompt_history=0
-if [[ -f "$global_state_path" ]] && grep -q '"prompt-history"' "$global_state_path"; then
-  global_state_has_prompt_history=1
-fi
+global_state_paths=(
+  "${CODEX_HOME}/.codex-global-state.json"
+  "${CODEX_HOME}/.codex-global-state.json.bak"
+)
+declare -a global_state_prompt_history_paths=()
+for global_state_path in "${global_state_paths[@]}"; do
+  if [[ -f "$global_state_path" ]] && grep -q '"prompt-history"' "$global_state_path"; then
+    global_state_prompt_history_paths+=("$global_state_path")
+  fi
+done
 
-if [[ "${#targets[@]}" -eq 0 && "$archived_session_target_count" -eq 0 && "$global_state_has_prompt_history" -eq 0 ]]; then
+if [[ "${#targets[@]}" -eq 0 && "$archived_session_target_count" -eq 0 && "${#global_state_prompt_history_paths[@]}" -eq 0 ]]; then
   echo "No Codex session data found under $CODEX_HOME."
   exit 0
 fi
@@ -259,20 +289,22 @@ if [[ "$archived_session_target_count" -gt 0 ]]; then
     echo "  $path"
   done
 fi
-if [[ "$global_state_has_prompt_history" -eq 1 ]]; then
+if [[ "${#global_state_prompt_history_paths[@]}" -gt 0 ]]; then
   echo "Pruning prompt history from:"
-  echo "  $global_state_path"
+  for global_state_path in "${global_state_prompt_history_paths[@]}"; do
+    echo "  $global_state_path"
+  done
 fi
 echo "Estimated reclaimable space: $(format_kib "$estimated_kib")"
 echo "Runtime caches are included in the default cleanup."
-echo "Preserving active threads in sessions/, Codex memories in memories/, and installed plugin caches under plugins/ and .tmp/plugins/."
+echo "Preserving active threads in sessions/, Codex memories in memories/, and installed plugin caches under plugins/, .tmp/plugins/, .tmp/bundled-marketplaces/, and .tmp/marketplaces/."
 
 if [[ "$DRY_RUN" -eq 1 ]]; then
   exit 0
 fi
 
-if [[ "$global_state_has_prompt_history" -eq 1 ]] && ! command -v jq >/dev/null 2>&1; then
-  echo "Unable to prune prompt history from .codex-global-state.json: jq not found." >&2
+if [[ "${#global_state_prompt_history_paths[@]}" -gt 0 ]] && ! command -v jq >/dev/null 2>&1; then
+  echo "Unable to prune prompt history from Codex global state files: jq not found." >&2
   exit 1
 fi
 
@@ -298,15 +330,23 @@ if [[ "$archived_session_target_count" -gt 0 ]]; then
   done
 fi
 
-if [[ "$global_state_has_prompt_history" -eq 1 ]]; then
-  global_state_tmp="${global_state_path}.tmp.$$"
-  if ! jq 'del(."electron-persisted-atom-state"."prompt-history")' "$global_state_path" >"$global_state_tmp"; then
+prune_prompt_history() {
+  local state_path="$1"
+  local global_state_tmp="${state_path}.tmp.$$"
+
+  if ! jq 'del(."electron-persisted-atom-state"."prompt-history")' "$state_path" >"$global_state_tmp"; then
     rm -f -- "$global_state_tmp"
-    echo "Unable to prune prompt history from .codex-global-state.json." >&2
+    echo "Unable to prune prompt history from $state_path." >&2
     exit 1
   fi
-  mv "$global_state_tmp" "$global_state_path"
+  mv "$global_state_tmp" "$state_path"
+}
+
+if [[ "${#global_state_prompt_history_paths[@]}" -gt 0 ]]; then
+  for global_state_path in "${global_state_prompt_history_paths[@]}"; do
+    prune_prompt_history "$global_state_path"
+  done
 fi
 
 echo "Codex session data removed."
-echo "Preserved: active threads in sessions/, auth.json, config.toml, .codex-global-state.json, memories/, skills/, plugins/, .tmp/plugins/, version.json."
+echo "Preserved: active threads in sessions/, auth.json, config.toml, .codex-global-state.json, memories/, skills/, plugins/, .tmp/plugins/, .tmp/bundled-marketplaces/, .tmp/marketplaces/, version.json."
