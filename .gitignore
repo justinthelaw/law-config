@@ -1,2 +1,6 @@
 # Zsh compile artifacts
 .zshrc.zwc
+
+# Python test artifacts
+__pycache__/
+*.pyc

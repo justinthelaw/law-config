@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
 #
-# clean-codex - Remove local Codex session history/state while preserving
-# preferences, rules, auth, and configuration.
+# clean-codex - Remove orphaned/deleted Codex thread state and disposable
+# runtime caches without separating live rollout files from their registry.
 #
 # Usage:
 #   clean-codex [--dry-run] [--yes] [--force] [codex_home]
-#
-# Examples:
-#   clean-codex --dry-run
-#   clean-codex --yes
 
 set -euo pipefail
 
@@ -16,22 +12,30 @@ usage() {
   cat <<'EOF'
 Usage: clean-codex [options] [codex_home]
 
-Deletes local Codex session/state artifacts while preserving durable config.
-Prunes prompt history from .codex-global-state.json and its backup while
-preserving preferences.
-Preserves: auth.json, config.toml, .codex-global-state.json, memories/,
-skills/, plugins/, .tmp/plugins/, .tmp/bundled-marketplaces/,
-.tmp/marketplaces/, version.json.
+Prunes deleted and orphaned Codex thread state while preserving registered
+threads, their rollout JSONL files, shell snapshots, indexes, and SQLite rows.
+Related rows in state, logs, goals, and memory databases are reconciled to the
+same surviving thread set. Disposable runtime caches are also removed when not
+in active use.
+
+Preserves: auth.json, config.toml, live sessions/, state databases, supported
+memories/, skills/, plugins/, .tmp/plugins/, .tmp/bundled-marketplaces/,
+.tmp/marketplaces/, and version.json.
 
 Options:
   -n, --dry-run         Show what would be removed without deleting anything.
   -y, --yes             Skip the confirmation prompt.
-  -f, --force           Run even if Codex appears to be running.
+  -f, --force           Allow WAL-safe cleanup while Codex is running.
   -h, --help            Show this help text.
 
 Arguments:
   codex_home            Override the Codex data directory.
                         Default: $CODEX_HOME or ~/.codex
+
+Environment:
+  CLEAN_CODEX_GRACE_MINUTES
+                        Minimum inactivity window for unregistered artifacts.
+                        Default: 15
 EOF
 }
 
@@ -40,6 +44,7 @@ SKIP_CONFIRM=0
 FORCE=0
 CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
 CODEX_HOME_ARG_SET=0
+GRACE_MINUTES="${CLEAN_CODEX_GRACE_MINUTES:-15}"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -75,9 +80,26 @@ while [[ $# -gt 0 ]]; do
 done
 
 CODEX_HOME="${CODEX_HOME%/}"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+STATE_CLEANER="${SCRIPT_DIR}/clean-codex-state.py"
 
 if [[ ! -d "$CODEX_HOME" ]]; then
   echo "Codex home not found: $CODEX_HOME" >&2
+  exit 1
+fi
+
+if [[ ! "$GRACE_MINUTES" =~ ^[0-9]+$ ]]; then
+  echo "CLEAN_CODEX_GRACE_MINUTES must be a non-negative integer." >&2
+  exit 1
+fi
+
+if ! command -v python3 >/dev/null 2>&1; then
+  echo "python3 is required for referentially consistent Codex cleanup." >&2
+  exit 1
+fi
+
+if [[ ! -f "$STATE_CLEANER" ]]; then
+  echo "Missing state cleanup helper: $STATE_CLEANER" >&2
   exit 1
 fi
 
@@ -148,32 +170,32 @@ format_kib() {
     '
 }
 
-if [[ "$FORCE" -ne 1 ]]; then
-  running="$(running_codex_processes)"
+codex_running=0
+process_detection_available=1
+if running="$(running_codex_processes)"; then
   if [[ -n "$running" ]]; then
-    echo "Codex appears to still be running. Close it before cleaning local session data." >&2
-    echo "$running" >&2
-    echo "Re-run with --force if you want to bypass this check." >&2
+    codex_running=1
+    if [[ "$FORCE" -ne 1 ]]; then
+      echo "Codex appears to still be running. Close it before cleaning local session data." >&2
+      echo "$running" >&2
+      echo "Re-run with --force for WAL-safe live cleanup." >&2
+      exit 1
+    fi
+  fi
+else
+  process_detection_available=0
+  if [[ "$FORCE" -ne 1 ]]; then
+    echo "Unable to determine whether Codex is running; refusing unsafe cleanup." >&2
+    echo "Re-run with --force to assume Codex is live and use conservative cleanup." >&2
     exit 1
   fi
+  codex_running=1
 fi
 
-static_targets=(
-  "history.jsonl"
-  "session_index.jsonl"
-  "shell_snapshots"
+volatile_targets=(
   "tmp"
   "log"
   "ambient-suggestions"
-)
-
-glob_targets=(
-  "logs_*.sqlite"
-  "logs_*.sqlite-shm"
-  "logs_*.sqlite-wal"
-  "state_*.sqlite"
-  "state_*.sqlite-shm"
-  "state_*.sqlite-wal"
 )
 
 cache_targets=(
@@ -193,54 +215,35 @@ cleanup_glob_targets=(
 )
 
 declare -a targets=()
-declare -a archived_session_targets=()
-archived_session_target_count=0
-
-is_protected_target() {
-  local path="${1%/}"
-
-  [[ "$path" == "${CODEX_HOME}/memories" || "$path" == "${CODEX_HOME}/memories/"* ]]
-}
+declare -a skipped_volatile_targets=()
+target_count=0
+skipped_volatile_target_count=0
 
 add_target() {
   local path="$1"
-
-  if is_protected_target "$path"; then
-    return 0
-  fi
-
-  if [[ -e "$path" ]]; then
+  if [[ -e "$path" || -L "$path" ]]; then
     targets+=("$path")
+    target_count=$((target_count + 1))
   fi
 }
-
-add_archived_session_targets() {
-  local archived_dir="${CODEX_HOME}/archived_sessions"
-
-  if [[ -d "$archived_dir" ]]; then
-    while IFS= read -r archived_path; do
-      archived_session_targets+=("$archived_path")
-      archived_session_target_count=$((archived_session_target_count + 1))
-    done < <(find "$archived_dir" -mindepth 1 -maxdepth 1 2>/dev/null | sort)
-  fi
-}
-
-for rel_path in "${static_targets[@]}"; do
-  add_target "${CODEX_HOME}/${rel_path}"
-done
 
 for rel_path in "${cache_targets[@]}"; do
   add_target "${CODEX_HOME}/${rel_path}"
 done
 
-add_archived_session_targets
+for rel_path in "${volatile_targets[@]}"; do
+  path="${CODEX_HOME}/${rel_path}"
+  if [[ "$codex_running" -eq 1 ]]; then
+    if [[ -e "$path" || -L "$path" ]]; then
+      skipped_volatile_targets+=("$path")
+      skipped_volatile_target_count=$((skipped_volatile_target_count + 1))
+    fi
+  else
+    add_target "$path"
+  fi
+done
 
 shopt -s nullglob
-for pattern in "${glob_targets[@]}"; do
-  while IFS= read -r match; do
-    add_target "$match"
-  done < <(compgen -G "$CODEX_HOME/$pattern" || true)
-done
 for pattern in "${cleanup_glob_targets[@]}"; do
   while IFS= read -r match; do
     add_target "$match"
@@ -248,68 +251,46 @@ for pattern in "${cleanup_glob_targets[@]}"; do
 done
 shopt -u nullglob
 
-global_state_paths=(
-  "${CODEX_HOME}/.codex-global-state.json"
-  "${CODEX_HOME}/.codex-global-state.json.bak"
-)
-declare -a global_state_prompt_history_paths=()
-for global_state_path in "${global_state_paths[@]}"; do
-  if [[ -f "$global_state_path" ]] && grep -q '"prompt-history"' "$global_state_path"; then
-    global_state_prompt_history_paths+=("$global_state_path")
-  fi
-done
-
-if [[ "${#targets[@]}" -eq 0 && "$archived_session_target_count" -eq 0 && "${#global_state_prompt_history_paths[@]}" -eq 0 ]]; then
-  echo "No Codex session data found under $CODEX_HOME."
-  exit 0
-fi
-
 estimated_kib=0
-for path in "${targets[@]}"; do
-  path_kib="$(du -sk "$path" 2>/dev/null | awk '{print $1}')"
-  estimated_kib="$((estimated_kib + ${path_kib:-0}))"
-done
-if [[ "$archived_session_target_count" -gt 0 ]]; then
-  for path in "${archived_session_targets[@]}"; do
+if [[ "$target_count" -gt 0 ]]; then
+  for path in "${targets[@]}"; do
     path_kib="$(du -sk "$path" 2>/dev/null | awk '{print $1}')"
     estimated_kib="$((estimated_kib + ${path_kib:-0}))"
   done
 fi
 
 echo "Codex home: $CODEX_HOME"
-if [[ "${#targets[@]}" -gt 0 ]]; then
-  echo "Removing the following paths:"
+if [[ "$codex_running" -eq 1 ]]; then
+  echo "Codex is running: using SQLite transactions and a ${GRACE_MINUTES}-minute registration grace window."
+  if [[ "$process_detection_available" -eq 0 ]]; then
+    echo "Process detection was unavailable, so volatile runtime paths will be preserved."
+  fi
+fi
+python3 "$STATE_CLEANER" --dry-run --grace-minutes "$GRACE_MINUTES" "$CODEX_HOME"
+
+if [[ "$target_count" -gt 0 ]]; then
+  echo "Disposable cache paths:"
   for path in "${targets[@]}"; do
     echo "  $path"
   done
+  echo "Estimated cache space: $(format_kib "$estimated_kib")"
 fi
-if [[ "$archived_session_target_count" -gt 0 ]]; then
-  echo "Removing archived thread files:"
-  for path in "${archived_session_targets[@]}"; do
+
+if [[ "$skipped_volatile_target_count" -gt 0 ]]; then
+  echo "Preserving volatile paths while Codex is running:"
+  for path in "${skipped_volatile_targets[@]}"; do
     echo "  $path"
   done
 fi
-if [[ "${#global_state_prompt_history_paths[@]}" -gt 0 ]]; then
-  echo "Pruning prompt history from:"
-  for global_state_path in "${global_state_prompt_history_paths[@]}"; do
-    echo "  $global_state_path"
-  done
-fi
-echo "Estimated reclaimable space: $(format_kib "$estimated_kib")"
-echo "Runtime caches are included in the default cleanup."
-echo "Preserving active threads in sessions/, Codex memories in memories/, and installed plugin caches under plugins/, .tmp/plugins/, .tmp/bundled-marketplaces/, and .tmp/marketplaces/."
+
+echo "Live thread rollouts, state rows, indexes, and shell snapshots are preserved as one consistency set."
 
 if [[ "$DRY_RUN" -eq 1 ]]; then
   exit 0
 fi
 
-if [[ "${#global_state_prompt_history_paths[@]}" -gt 0 ]] && ! command -v jq >/dev/null 2>&1; then
-  echo "Unable to prune prompt history from Codex global state files: jq not found." >&2
-  exit 1
-fi
-
 if [[ "$SKIP_CONFIRM" -ne 1 ]]; then
-  printf 'Delete these Codex session artifacts? [y/N] '
+  printf 'Apply this Codex cleanup? [y/N] '
   read -r response
   case "$response" in
   [Yy] | [Yy][Ee][Ss]) ;;
@@ -320,33 +301,45 @@ if [[ "$SKIP_CONFIRM" -ne 1 ]]; then
   esac
 fi
 
-for path in "${targets[@]}"; do
-  rm -rf -- "$path"
-done
+python3 "$STATE_CLEANER" --apply --grace-minutes "$GRACE_MINUTES" "$CODEX_HOME"
 
-if [[ "$archived_session_target_count" -gt 0 ]]; then
-  for path in "${archived_session_targets[@]}"; do
-    rm -rf -- "$path"
-  done
-fi
+path_has_open_handles() {
+  local path="$1"
 
-prune_prompt_history() {
-  local state_path="$1"
-  local global_state_tmp="${state_path}.tmp.$$"
-
-  if ! jq 'del(."electron-persisted-atom-state"."prompt-history")' "$state_path" >"$global_state_tmp"; then
-    rm -f -- "$global_state_tmp"
-    echo "Unable to prune prompt history from $state_path." >&2
-    exit 1
+  if ! command -v lsof >/dev/null 2>&1; then
+    return 2
   fi
-  mv "$global_state_tmp" "$state_path"
+
+  if [[ -d "$path" ]]; then
+    lsof +D "$path" >/dev/null 2>&1
+  else
+    lsof "$path" >/dev/null 2>&1
+  fi
 }
 
-if [[ "${#global_state_prompt_history_paths[@]}" -gt 0 ]]; then
-  for global_state_path in "${global_state_prompt_history_paths[@]}"; do
-    prune_prompt_history "$global_state_path"
+removed_cache_count=0
+if [[ "$target_count" -gt 0 ]]; then
+  for path in "${targets[@]}"; do
+    if [[ ! -e "$path" && ! -L "$path" ]]; then
+      continue
+    fi
+
+    if path_has_open_handles "$path"; then
+      echo "Preserving open cache path: $path"
+      continue
+    else
+      lsof_status=$?
+    fi
+
+    if [[ "$lsof_status" -eq 2 && "$codex_running" -eq 1 ]]; then
+      echo "Preserving cache path because lsof is unavailable while Codex is running: $path"
+      continue
+    fi
+
+    rm -rf -- "$path"
+    removed_cache_count=$((removed_cache_count + 1))
   done
 fi
 
-echo "Codex session data removed."
-echo "Preserved: active threads in sessions/, auth.json, config.toml, .codex-global-state.json, memories/, skills/, plugins/, .tmp/plugins/, .tmp/bundled-marketplaces/, .tmp/marketplaces/, version.json."
+echo "Codex cleanup completed; removed ${removed_cache_count} disposable cache paths."
+echo "Preserved: registered sessions and their SQLite/index/snapshot state, auth.json, config.toml, supported memories/, skills/, and installed plugin caches."

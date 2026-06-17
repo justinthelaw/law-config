@@ -66,6 +66,7 @@ docs/
   CODE_OF_CONDUCT.md
 scripts/
   clean-codex
+  clean-codex-state.py
   sanitize-shell-hist
 ```
 
