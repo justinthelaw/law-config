@@ -15,6 +15,7 @@ import tempfile
 import time
 import uuid
 from collections import defaultdict
+from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
@@ -64,13 +65,17 @@ def old_enough(value: str, cutoff: float, fallback: float | None = None) -> bool
     return bool(timestamps) and max(timestamps) < cutoff
 
 
-def connect(path: Path, *, readonly: bool = False) -> sqlite3.Connection:
+@contextmanager
+def connect(path: Path, *, readonly: bool = False) -> Iterator[sqlite3.Connection]:
     if readonly:
         connection = sqlite3.connect(f"file:{path}?mode=ro", uri=True, timeout=15)
     else:
         connection = sqlite3.connect(path, timeout=15)
         connection.execute("PRAGMA busy_timeout=15000")
-    return connection
+    try:
+        yield connection
+    finally:
+        connection.close()
 
 
 @contextmanager
@@ -313,7 +318,11 @@ class CleanupPlan:
 
     def _related_db_orphan_ids(self) -> dict[Path, set[str]]:
         mapping: dict[Path, set[str]] = {}
-        specs = {"logs": ("logs", "thread_id"), "goals": ("thread_goals", "thread_id"), "memories": ("stage1_outputs", "thread_id")}
+        specs = {
+            "logs": ("logs", "thread_id"),
+            "goals": ("thread_goals", "thread_id"),
+            "memories": ("stage1_outputs", "thread_id"),
+        }
         for kind, paths in self.related_dbs.items():
             table, column = specs[kind]
             for path in paths:
@@ -539,70 +548,68 @@ def delete_ids(
     return connection.total_changes - before
 
 
+def stale_thread_ids(plan: CleanupPlan, values: list[str]) -> set[str]:
+    return {
+        value
+        for value in values
+        if value not in plan.keep_ids
+        and (value in plan.retired_ids or old_enough(value, plan.cutoff))
+    }
+
+
 def cleanup_state_db(path: Path, plan: CleanupPlan, removed_ids: set[str]) -> None:
     if not path.is_file():
         return
     with connect(path) as connection:
         connection.execute("PRAGMA foreign_keys=ON")
         connection.execute("BEGIN IMMEDIATE")
-        delete_ids(connection, "threads", "id", removed_ids)
 
         if table_exists(connection, "thread_spawn_edges"):
-            stale_children = {
-                str(child).lower()
-                for parent, child in connection.execute(
-                    "SELECT parent_thread_id, child_thread_id FROM thread_spawn_edges"
-                )
-                if (
-                    str(parent).lower() not in plan.keep_ids
-                    and (
-                        str(parent).lower() in plan.retired_ids
-                        or old_enough(str(parent).lower(), plan.cutoff)
+            stale_edges = stale_thread_ids(
+                plan,
+                [
+                    str(endpoint).lower()
+                    for edge in connection.execute(
+                        "SELECT parent_thread_id, child_thread_id "
+                        "FROM thread_spawn_edges"
                     )
-                )
-                or (
-                    str(child).lower() not in plan.keep_ids
-                    and (
-                        str(child).lower() in plan.retired_ids
-                        or old_enough(str(child).lower(), plan.cutoff)
-                    )
-                )
-            }
-            delete_ids(connection, "thread_spawn_edges", "child_thread_id", stale_children)
+                    for endpoint in edge
+                ],
+            )
+            delete_ids(connection, "thread_spawn_edges", "parent_thread_id", stale_edges)
+            delete_ids(connection, "thread_spawn_edges", "child_thread_id", stale_edges)
 
         if table_exists(connection, "thread_dynamic_tools"):
-            stale_tools = {
-                str(row[0]).lower()
-                for row in connection.execute(
-                    "SELECT DISTINCT thread_id FROM thread_dynamic_tools"
-                )
-                if str(row[0]).lower() not in plan.keep_ids
-                and (
-                    str(row[0]).lower() in plan.retired_ids
-                    or old_enough(str(row[0]).lower(), plan.cutoff)
-                )
-            }
+            stale_tools = stale_thread_ids(
+                plan,
+                [
+                    str(row[0]).lower()
+                    for row in connection.execute(
+                        "SELECT DISTINCT thread_id FROM thread_dynamic_tools"
+                    )
+                ],
+            )
             delete_ids(connection, "thread_dynamic_tools", "thread_id", stale_tools)
 
         if table_exists(connection, "agent_job_items"):
-            stale_assignments = {
-                str(row[0]).lower()
-                for row in connection.execute(
-                    "SELECT DISTINCT assigned_thread_id FROM agent_job_items "
-                    "WHERE assigned_thread_id IS NOT NULL"
-                )
-                if str(row[0]).lower() not in plan.keep_ids
-                and (
-                    str(row[0]).lower() in plan.retired_ids
-                    or old_enough(str(row[0]).lower(), plan.cutoff)
-                )
-            }
+            stale_assignments = stale_thread_ids(
+                plan,
+                [
+                    str(row[0]).lower()
+                    for row in connection.execute(
+                        "SELECT DISTINCT assigned_thread_id FROM agent_job_items "
+                        "WHERE assigned_thread_id IS NOT NULL"
+                    )
+                ],
+            )
             if stale_assignments:
                 connection.execute(
                     "UPDATE agent_job_items SET assigned_thread_id=NULL "
                     f"WHERE assigned_thread_id IN ({placeholders(len(stale_assignments))})",
                     tuple(sorted(stale_assignments)),
                 )
+
+        delete_ids(connection, "threads", "id", removed_ids)
         connection.commit()
         connection.execute("PRAGMA optimize")
 
