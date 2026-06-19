@@ -1,5 +1,5 @@
 # Zsh compile artifacts
-.zshrc.zwc
+*.zwc
 
 # Python test artifacts
 __pycache__/
