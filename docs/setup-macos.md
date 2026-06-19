@@ -15,15 +15,15 @@ brew install go gpg uv
 ## Python via uv (Preferred)
 
 ```bash
-uv python install 3.12
-uv python pin 3.12
+uv python install 3.14
+uv python pin 3.14
 uv venv
 ```
 
 ## Node.js via nvm
 
 ```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+PROFILE=/dev/null bash -c 'curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 nvm install --lts
@@ -33,11 +33,17 @@ node -v
 npm -v
 ```
 
+Use the default HTTPS nvm mirror settings unless a trusted internal mirror is required.
+
 ## GPG Configuration
 
 ```bash
 mkdir -p ~/.gnupg
-cp configs/gpg/*.conf ~/.gnupg/
+for file in configs/gpg/*.conf; do
+  target="$HOME/.gnupg/$(basename "$file")"
+  [[ -f "$target" ]] && cp "$target" "$target.bak.$(date +%s).$$"
+  cp "$file" "$target"
+done
 chown -R "$(whoami)" ~/.gnupg/
 chmod 600 ~/.gnupg/*
 chmod 700 ~/.gnupg

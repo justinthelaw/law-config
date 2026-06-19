@@ -17,6 +17,8 @@ sudo apt-get -y install libvirt-daemon-system libvirt-clients qemu-kvm qemu-util
 - NVIDIA Container Toolkit install: <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html>
 - Tailscale install: <https://tailscale.com/download/linux>
 
+Run the official Docker, CUDA, NVIDIA Container Toolkit, and Tailscale repository setup steps before installing the packages below.
+
 ```bash
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo apt-get -y install cuda
@@ -41,15 +43,15 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 After opening a new shell:
 
 ```bash
-uv python install 3.12
-uv python pin 3.12
+uv python install 3.14
+uv python pin 3.14
 uv venv
 ```
 
 ## Node.js via nvm
 
 ```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+PROFILE=/dev/null bash -c 'curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 nvm install --lts
@@ -58,6 +60,8 @@ nvm use --lts
 node -v
 npm -v
 ```
+
+Use the default HTTPS nvm mirror settings unless a trusted internal mirror is required.
 
 ## Registry Login
 

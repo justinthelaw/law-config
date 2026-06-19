@@ -20,7 +20,10 @@ Thanks for improving Justin's shared machine configuration repository.
 Run these checks before pushing:
 
 ```bash
+python3 -m pip install pre-commit==4.6.0
 pre-commit run --all-files
+python3 -m unittest discover -s tests
+zsh -n configs/.zshrc configs/zsh/*.zsh
 ```
 
 If changing docs, verify links and command examples.
@@ -30,6 +33,7 @@ If changing docs, verify links and command examples.
 Install hooks once per clone:
 
 ```bash
+python3 -m pip install pre-commit==4.6.0
 pre-commit install --hook-type pre-commit --hook-type pre-push
 ```
 
