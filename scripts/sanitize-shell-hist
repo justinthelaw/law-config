@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # sanitize_shell_history.sh - Safely sanitize your Bash or Zsh history.
-# Usage: ./sanitize_shell_history.sh [history_file]
+# Usage: ./sanitize_shell_history.sh <history_file>
 # Example: ./sanitize_shell_history.sh ~/.zsh_history
 
 set -euo pipefail
@@ -47,8 +47,8 @@ FAILED_PATTERNS=(
 )
 
 # === Args and setup ===
-if [[ $# -lt 1 ]]; then
-  echo "Usage: $0 [history_file]"
+if [[ $# -ne 1 ]]; then
+  echo "Usage: $0 <history_file>"
   exit 1
 fi
 HIST_FILE="$1"
@@ -62,6 +62,38 @@ else
 fi
 
 echo "[*] Sanitizing: $HIST_FILE ..."
+
+grep_filter() {
+  local output_file="$1"
+  local status
+  shift
+
+  if "$@" >"$output_file"; then
+    return 0
+  fi
+
+  status=$?
+  if [[ "$status" -eq 1 ]]; then
+    return 0
+  fi
+  return "$status"
+}
+
+backup_history() {
+  local epoch
+  local candidate
+  local counter=0
+
+  epoch="$(date +%s)"
+  candidate="${HIST_FILE}.bak.${epoch}"
+  while [[ -e "$candidate" ]]; do
+    counter=$((counter + 1))
+    candidate="${HIST_FILE}.bak.${epoch}.$$.$counter"
+  done
+
+  BACKUP_FILE="$candidate"
+  cp "$HIST_FILE" "$BACKUP_FILE"
+}
 
 # === Step 1: Normalize (remove timestamps, extra spaces) ===
 normalize_history() {
@@ -87,10 +119,10 @@ remove_sensitive() {
     # Use LC_ALL=C for macOS to handle encoding issues
     if [[ "$OSTYPE" == "darwin"* ]]; then
       # macOS grep - use LC_ALL=C
-      LC_ALL=C grep -v -i "$pattern" "$TMP_FILE" >"${TMP_FILE}.new"
+      grep_filter "${TMP_FILE}.new" env LC_ALL=C grep -v -i "$pattern" "$TMP_FILE"
     else
       # Linux grep
-      grep -vi "$pattern" "$TMP_FILE" >"${TMP_FILE}.new"
+      grep_filter "${TMP_FILE}.new" grep -vi "$pattern" "$TMP_FILE"
     fi
     mv "${TMP_FILE}.new" "$TMP_FILE"
   done
@@ -106,10 +138,10 @@ remove_failed() {
     # Use LC_ALL=C for macOS to handle encoding issues
     if [[ "$OSTYPE" == "darwin"* ]]; then
       # macOS grep - use LC_ALL=C and basic regex
-      LC_ALL=C grep -v "$pattern" "$TMP_FILE" >"${TMP_FILE}.new"
+      grep_filter "${TMP_FILE}.new" env LC_ALL=C grep -v "$pattern" "$TMP_FILE"
     else
       # Linux grep - can use extended regex
-      grep -Ev "$pattern" "$TMP_FILE" >"${TMP_FILE}.new"
+      grep_filter "${TMP_FILE}.new" grep -Ev "$pattern" "$TMP_FILE"
     fi
     mv "${TMP_FILE}.new" "$TMP_FILE"
   done
@@ -120,7 +152,7 @@ remove_failed() {
 remove_multi_semicolon() {
   local f="$1"
   # Removes lines ending with two or more semicolons and nothing after
-  LC_ALL=C grep -Ev ';{2,}[[:space:]]*$' "$f" >"$TMP_FILE"
+  grep_filter "$TMP_FILE" env LC_ALL=C grep -Ev ';{2,}[[:space:]]*$' "$f"
   mv "$TMP_FILE" "$f"
 }
 
@@ -129,23 +161,23 @@ remove_empty() {
   local f="$1"
   if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS - use LC_ALL=C and simpler pattern
-    LC_ALL=C grep -v '^[ 	]*$' "$f" >"$TMP_FILE"
+    grep_filter "$TMP_FILE" env LC_ALL=C grep -v '^[ 	]*$' "$f"
   else
     # Linux
-    grep -v '^[[:space:]]*$' "$f" >"$TMP_FILE"
+    grep_filter "$TMP_FILE" grep -v '^[[:space:]]*$' "$f"
   fi
   mv "$TMP_FILE" "$f"
 }
 
 # === Step 5: Deduplicate (keep last occurrence of each command) ===
 dedupe_history() {
-  # awk: keep only last unique occurrence, ignoring order
-  awk '!a[$0]++{b[NR]=$0; c[$0]=NR} END{for(i=1;i<=NR;i++)if(c[b[i]]==i)print b[i]}' "$1" >"$TMP_FILE"
+  # Keep the final copy of a command at the position where it last appeared.
+  awk '{lines[NR]=$0; last[$0]=NR} END{for(i=1;i<=NR;i++)if(last[lines[i]]==i)print lines[i]}' "$1" >"$TMP_FILE"
   mv "$TMP_FILE" "$1"
 }
 
 # === Pipeline ===
-cp "$HIST_FILE" "${HIST_FILE}.bak.$(date +%s)"
+backup_history
 normalize_history "$HIST_FILE" >"$TMP_FILE"
 mv "$TMP_FILE" "$HIST_FILE"
 remove_sensitive "$HIST_FILE"
@@ -154,4 +186,4 @@ remove_multi_semicolon "$HIST_FILE"
 remove_empty "$HIST_FILE"
 dedupe_history "$HIST_FILE"
 
-echo "[+] Done. Backup: ${HIST_FILE}.bak.*"
+echo "[+] Done. Backup: $BACKUP_FILE"

@@ -2,8 +2,10 @@
 # DEFAULT ZSH CONFIG
 ####################
 
+source "${LAW_CONFIG_CONFIG_DIR}/zsh/env.zsh"
+
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH="${ZSH:-$HOME/.oh-my-zsh}"
 
 # Disable for sindresorhus/pure
 ZSH_THEME=""
@@ -19,60 +21,39 @@ source "$ZSH/oh-my-zsh.sh"
 #################
 
 # Znap ZSH plugin manager
-[[ -r "$HOME/Repos/znap/znap.zsh" ]] ||
-    git clone --depth 1 -- \
-        https://github.com/marlonrichert/zsh-snap.git "$HOME/Repos/znap"
-source "$HOME/Repos/znap/znap.zsh" # Start Znap
+typeset -g LAW_CONFIG_ZNAP_DIR="${LAW_CONFIG_ZNAP_DIR:-$HOME/Repos/znap}"
+typeset -g LAW_CONFIG_ZNAP_REF="${LAW_CONFIG_ZNAP_REF:-25754a45d9ceafe6d7d082c9ebe40a08cb85a4f0}"
+
+if [[ ! -r "$LAW_CONFIG_ZNAP_DIR/znap.zsh" ]]; then
+    if command -v git >/dev/null 2>&1; then
+        git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git "$LAW_CONFIG_ZNAP_DIR"
+        git -C "$LAW_CONFIG_ZNAP_DIR" fetch --depth 1 origin "$LAW_CONFIG_ZNAP_REF" >/dev/null 2>&1
+        git -C "$LAW_CONFIG_ZNAP_DIR" checkout --detach "$LAW_CONFIG_ZNAP_REF" >/dev/null 2>&1
+    else
+        echo "law-config: git is required to install znap." >&2
+    fi
+fi
+
+if [[ -r "$LAW_CONFIG_ZNAP_DIR/znap.zsh" ]]; then
+    source "$LAW_CONFIG_ZNAP_DIR/znap.zsh" # Start Znap
+else
+    echo "law-config: znap was not installed; skipping znap plugins." >&2
+    return
+fi
 
 # Faster terminal startup, clean CLI
 znap prompt sindresorhus/pure
 
 # Znap install plugins
-znap source zsh-users/zsh-autosuggestions
-znap source zsh-users/zsh-syntax-highlighting
-znap source zdharma-continuum/fast-syntax-highlighting
 znap source marlonrichert/zsh-autocomplete
+znap source zsh-users/zsh-autosuggestions
 
-######
-# NVM
-######
-
-if [[ -z "${NVM_DIR:-}" ]]; then
-    if [[ -d "$HOME/.nvm" ]]; then
-        export NVM_DIR="$HOME/.nvm"
-    elif [[ -d "$HOME/.config/nvm" ]]; then
-        export NVM_DIR="$HOME/.config/nvm"
-    else
-        export NVM_DIR="$HOME/.nvm"
-    fi
-fi
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-
-#####
-# GO
-#####
-
-[[ -d "/usr/local/go/bin" ]] && export PATH="$PATH:/usr/local/go/bin"
-
-######
-# NVCR
-######
-
-for ngc_dir in "${NGC_CLI_DIR:-}" "$HOME/dev/ngc-cli" "/root/dev/ngc-cli"; do
-    if [[ -n "$ngc_dir" && -d "$ngc_dir" ]]; then
-        export PATH="$PATH:$ngc_dir"
-        break
-    fi
-done
-
-#####
-# LAW
-#####
-
-if [[ -n "${LAW_CONFIG_ROOT:-}" && -d "${LAW_CONFIG_ROOT}/scripts" ]]; then
-    export PATH="$PATH:${LAW_CONFIG_ROOT}/scripts"
-fi
+autoload -Uz add-zsh-hook
+_law_load_syntax_highlighting() {
+    add-zsh-hook -d precmd _law_load_syntax_highlighting
+    znap source zdharma-continuum/fast-syntax-highlighting
+}
+add-zsh-hook precmd _law_load_syntax_highlighting
 
 #########
 # ALIASES
@@ -82,8 +63,28 @@ fi
 alias dclean="docker system prune -a -f && docker volume prune -f"
 
 # Git
-alias gitup='find . -maxdepth 1 -type d -exec sh -c "(cd {} && [ -d .git ] && echo \"\nUpdating {}\n\" && git fetch && git pull)" ";"'
-alias gitclean='git branch | grep -vE "^\*|main|master" | awk "{print \$1}" | xargs -n 1 git branch -D'
+gitup() {
+    local dir
+
+    for dir in ./*(/N); do
+        [[ -d "$dir/.git" ]] || continue
+        printf '\nUpdating %s\n\n' "$dir"
+        git -C "$dir" fetch --all --prune && git -C "$dir" pull --ff-only
+    done
+}
+
+gitclean() {
+    local branch
+    local current
+
+    current="$(git branch --show-current)"
+    git for-each-ref --format='%(refname:short)' refs/heads | while IFS= read -r branch; do
+        case "$branch" in
+            "$current" | main | master) continue ;;
+        esac
+        git branch -D -- "$branch"
+    done
+}
 
 # VSCode
 [[ -x "/snap/bin/code" ]] && alias code="/snap/bin/code"

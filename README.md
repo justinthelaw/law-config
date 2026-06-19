@@ -15,13 +15,15 @@ This repository contains shell, Git, and GPG baseline configuration plus setup d
 2. Point your user `.zshrc` to this repository:
 
 ```bash
-echo "source /absolute/path/to/law-config/configs/.zshrc" > ~/.zshrc
+grep -qxF "source /absolute/path/to/law-config/configs/.zshrc" ~/.zshrc ||
+  printf "\nsource /absolute/path/to/law-config/configs/.zshrc\n" >> ~/.zshrc
 ```
 
 3. Apply Git template settings:
 
 ```bash
-cat configs/.gitconfig | grep INSERT
+grep INSERT configs/.gitconfig
+[[ -f ~/.gitconfig ]] && cp ~/.gitconfig ~/.gitconfig.bak.$(date +%s).$$
 cp configs/.gitconfig ~/.gitconfig
 git config --list
 ```
@@ -30,7 +32,11 @@ git config --list
 
 ```bash
 mkdir -p ~/.gnupg
-cp configs/gpg/*.conf ~/.gnupg/
+for file in configs/gpg/*.conf; do
+  target="$HOME/.gnupg/$(basename "$file")"
+  [[ -f "$target" ]] && cp "$target" "$target.bak.$(date +%s).$$"
+  cp "$file" "$target"
+done
 chmod 600 ~/.gnupg/*
 chmod 700 ~/.gnupg
 ```
@@ -55,6 +61,7 @@ configs/
     gpg-agent.conf
   zsh/
     common.zsh
+    env.zsh
     linux.zsh
     macos.zsh
 docs/
@@ -73,8 +80,17 @@ scripts/
 ### Validation
 
 ```bash
+python3 -m pip install pre-commit==4.6.0
 pre-commit run --all-files
+python3 -m unittest discover -s tests
+zsh -n configs/.zshrc configs/zsh/*.zsh
 ```
+
+### Maintenance Notes
+
+- Keep Oh My Zsh updated with `omz update`, especially before enabling bundled themes or plugins beyond the repo default.
+- Install nvm from a tagged release and keep the default HTTPS mirror settings unless a trusted internal mirror is required.
+- Review `configs/.gitconfig` placeholders before copying it into `~/.gitconfig`.
 
 ## Contributing
 
@@ -90,4 +106,4 @@ See [docs/SUPPORT.md](docs/SUPPORT.md) for bug, feature, and question routing.
 
 ## License
 
-This repository currently has no dedicated license file. Add one before broad public reuse.
+MIT License. See [LICENSE](LICENSE).
