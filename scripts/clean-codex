@@ -125,8 +125,9 @@ running_codex_processes() {
             for (i = 1; i <= argc; i++) {
                 token = argv[i]
                 token_base = base(token)
+                token_base_lower = tolower(token_base)
 
-                if (token_base == "codex") {
+                if (token_base_lower == "codex" || token_base_lower == "chatgpt") {
                     is_codex_binary = 1
                 }
 
