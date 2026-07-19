@@ -29,6 +29,7 @@ export NVM_DIR="$HOME/.nvm"
 nvm install --lts
 nvm alias default 'lts/*'
 nvm use --lts
+npm install --global npm@latest
 node -v
 npm -v
 ```
