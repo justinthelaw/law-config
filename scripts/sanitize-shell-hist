@@ -52,14 +52,9 @@ if [[ $# -ne 1 ]]; then
   exit 1
 fi
 HIST_FILE="$1"
-# Create temp file with proper cross-platform support
-if [[ "$OSTYPE" == "darwin"* ]]; then
-  # macOS mktemp
-  TMP_FILE="$(mktemp -t sanitize_hist)"
-else
-  # Linux mktemp
-  TMP_FILE="$(mktemp)"
-fi
+HIST_DIR="$(dirname -- "$HIST_FILE")"
+# Keep working files beside the history file so the final rename is atomic.
+TMP_FILE="$(mktemp "$HIST_DIR/.sanitize_hist.XXXXXX")"
 
 echo "[*] Sanitizing: $HIST_FILE ..."
 
@@ -70,9 +65,9 @@ grep_filter() {
 
   if "$@" >"$output_file"; then
     return 0
+  else
+    status=$?
   fi
-
-  status=$?
   if [[ "$status" -eq 1 ]]; then
     return 0
   fi
@@ -113,47 +108,43 @@ normalize_history() {
 remove_sensitive() {
   local f="$1"
   local pattern
-  cp "$f" "$TMP_FILE"
   for pattern in "${SENSITIVE_PATTERNS[@]}"; do
     # Remove any lines containing the pattern (case-insensitive)
     # Use LC_ALL=C for macOS to handle encoding issues
     if [[ "$OSTYPE" == "darwin"* ]]; then
       # macOS grep - use LC_ALL=C
-      grep_filter "${TMP_FILE}.new" env LC_ALL=C grep -v -i "$pattern" "$TMP_FILE"
+      grep_filter "${f}.new" env LC_ALL=C grep -v -i "$pattern" "$f"
     else
       # Linux grep
-      grep_filter "${TMP_FILE}.new" grep -vi "$pattern" "$TMP_FILE"
+      grep_filter "${f}.new" grep -vi "$pattern" "$f"
     fi
-    mv "${TMP_FILE}.new" "$TMP_FILE"
+    mv "${f}.new" "$f"
   done
-  mv "$TMP_FILE" "$f"
 }
 
 # === Step 3: Remove failed/incorrect commands ===
 remove_failed() {
   local f="$1"
   local pattern
-  cp "$f" "$TMP_FILE"
   for pattern in "${FAILED_PATTERNS[@]}"; do
     # Use LC_ALL=C for macOS to handle encoding issues
     if [[ "$OSTYPE" == "darwin"* ]]; then
       # macOS grep - use LC_ALL=C and basic regex
-      grep_filter "${TMP_FILE}.new" env LC_ALL=C grep -v "$pattern" "$TMP_FILE"
+      grep_filter "${f}.new" env LC_ALL=C grep -v "$pattern" "$f"
     else
       # Linux grep - can use extended regex
-      grep_filter "${TMP_FILE}.new" grep -Ev "$pattern" "$TMP_FILE"
+      grep_filter "${f}.new" grep -Ev "$pattern" "$f"
     fi
-    mv "${TMP_FILE}.new" "$TMP_FILE"
+    mv "${f}.new" "$f"
   done
-  mv "$TMP_FILE" "$f"
 }
 
 # === Step 3b: Remove commands ending with multiple semicolons ===
 remove_multi_semicolon() {
   local f="$1"
   # Removes lines ending with two or more semicolons and nothing after
-  grep_filter "$TMP_FILE" env LC_ALL=C grep -Ev ';{2,}[[:space:]]*$' "$f"
-  mv "$TMP_FILE" "$f"
+  grep_filter "${f}.new" env LC_ALL=C grep -Ev ';{2,}[[:space:]]*$' "$f"
+  mv "${f}.new" "$f"
 }
 
 # === Step 4: Remove empty and whitespace lines ===
@@ -161,29 +152,29 @@ remove_empty() {
   local f="$1"
   if [[ "$OSTYPE" == "darwin"* ]]; then
     # macOS - use LC_ALL=C and simpler pattern
-    grep_filter "$TMP_FILE" env LC_ALL=C grep -v '^[ 	]*$' "$f"
+    grep_filter "${f}.new" env LC_ALL=C grep -v '^[ 	]*$' "$f"
   else
     # Linux
-    grep_filter "$TMP_FILE" grep -v '^[[:space:]]*$' "$f"
+    grep_filter "${f}.new" grep -v '^[[:space:]]*$' "$f"
   fi
-  mv "$TMP_FILE" "$f"
+  mv "${f}.new" "$f"
 }
 
 # === Step 5: Deduplicate (keep last occurrence of each command) ===
 dedupe_history() {
   # Keep the final copy of a command at the position where it last appeared.
-  awk '{lines[NR]=$0; last[$0]=NR} END{for(i=1;i<=NR;i++)if(last[lines[i]]==i)print lines[i]}' "$1" >"$TMP_FILE"
-  mv "$TMP_FILE" "$1"
+  awk '{lines[NR]=$0; last[$0]=NR} END{for(i=1;i<=NR;i++)if(last[lines[i]]==i)print lines[i]}' "$1" >"${1}.new"
+  mv "${1}.new" "$1"
 }
 
 # === Pipeline ===
 backup_history
 normalize_history "$HIST_FILE" >"$TMP_FILE"
+remove_sensitive "$TMP_FILE"
+remove_failed "$TMP_FILE"
+remove_multi_semicolon "$TMP_FILE"
+remove_empty "$TMP_FILE"
+dedupe_history "$TMP_FILE"
 mv "$TMP_FILE" "$HIST_FILE"
-remove_sensitive "$HIST_FILE"
-remove_failed "$HIST_FILE"
-remove_multi_semicolon "$HIST_FILE"
-remove_empty "$HIST_FILE"
-dedupe_history "$HIST_FILE"
 
 echo "[+] Done. Backup: $BACKUP_FILE"

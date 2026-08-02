@@ -55,7 +55,7 @@
         plos = pull origin staging
         plom = pull origin main
         ploh = pull origin HEAD
-        unstage = reset --soft HEAD^
+        unstage = reset HEAD --
         ls = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
         ll = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
         f = "!git ls-files | grep -i"

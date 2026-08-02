@@ -19,10 +19,12 @@ _law_path_append_unique() {
 }
 
 if [[ -z "${NVM_DIR:-}" ]]; then
-    if [[ -d "$HOME/.nvm" ]]; then
+    if [[ -n "${XDG_CONFIG_HOME:-}" && -d "$XDG_CONFIG_HOME/nvm" ]]; then
+        export NVM_DIR="$XDG_CONFIG_HOME/nvm"
+    elif [[ -d "$HOME/.nvm" ]]; then
         export NVM_DIR="$HOME/.nvm"
-    elif [[ -d "$HOME/.config/nvm" ]]; then
-        export NVM_DIR="$HOME/.config/nvm"
+    elif [[ -n "${XDG_CONFIG_HOME:-}" ]]; then
+        export NVM_DIR="$XDG_CONFIG_HOME/nvm"
     else
         export NVM_DIR="$HOME/.nvm"
     fi
@@ -41,13 +43,31 @@ done
 
 _law_path_append_unique "$LAW_CONFIG_ROOT/scripts"
 
+_law_runtime_dir_valid() {
+    local directory="$1"
+    local mode
+
+    [[ -n "$directory" && -d "$directory" && -O "$directory" ]] || return 1
+    if mode="$(stat -f %Lp "$directory" 2>/dev/null)"; then
+        :
+    elif mode="$(stat -c %a "$directory" 2>/dev/null)"; then
+        :
+    else
+        return 1
+    fi
+    [[ "$mode" == 700 ]]
+}
+
 if [[ "$(uname -s)" == "Linux" ]]; then
-    if [[ -d "/run/user/$UID" ]]; then
-        export XDG_RUNTIME_DIR="/run/user/$UID"
-    elif [[ -d "/run/containerd" ]]; then
-        export XDG_RUNTIME_DIR="/run/containerd"
+    if ! _law_runtime_dir_valid "${XDG_RUNTIME_DIR:-}"; then
+        if _law_runtime_dir_valid "/run/user/$UID"; then
+            export XDG_RUNTIME_DIR="/run/user/$UID"
+        else
+            unset XDG_RUNTIME_DIR
+        fi
     fi
 fi
 
 unset -f _law_path_append_unique
+unset -f _law_runtime_dir_valid
 unset ngc_dir

@@ -2,12 +2,21 @@
 # LINUX OVERRIDES #
 ###################
 
-# Prefer the per-user runtime dir for rootless tooling.
-if [[ -d "/run/user/$UID" ]]; then
-    export XDG_RUNTIME_DIR="/run/user/$UID"
-elif [[ -d "/run/containerd" ]]; then
-    export XDG_RUNTIME_DIR="/run/containerd"
-fi
-
 # Linux network helper.
-alias ethernet="sudo ip link set eno0 up && sudo dhclient eno0"
+ethernet() {
+    local interface="${1:-}"
+
+    if [[ -z "$interface" ]]; then
+        echo "Usage: ethernet <network-interface>" >&2
+        return 2
+    fi
+    command -v ip >/dev/null 2>&1 || {
+        echo "ethernet: ip command is required" >&2
+        return 1
+    }
+    command -v dhclient >/dev/null 2>&1 || {
+        echo "ethernet: dhclient command is required" >&2
+        return 1
+    }
+    sudo ip link set "$interface" up && sudo dhclient "$interface"
+}

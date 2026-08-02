@@ -1062,7 +1062,7 @@ prune_collect_candidates() {
       thread_id="$(lowercase "$thread_id")"
       mtime="$(path_mtime_seconds "$path")"
       old_enough "$thread_id" "$mtime" || continue
-      if [[ "$dirname" == archived_sessions ]] || ! prune_thread_is_kept "$thread_id"; then
+      if ! prune_thread_is_kept "$thread_id"; then
         prune_add_candidate rollout "$path" "$thread_id"
       fi
     done < <(find "$base" -type f -name '*.jsonl' -print 2>/dev/null || true)

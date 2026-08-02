@@ -44,15 +44,17 @@ After opening a new shell:
 
 ```bash
 uv python install 3.14
-uv python pin 3.14
-uv venv
+uv python pin --global 3.14
 ```
+
+Create virtual environments inside individual projects with `uv venv`; do not create one in this configuration repository.
 
 ## Node.js via nvm
 
 ```bash
-PROFILE=/dev/null bash -c 'curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
-export NVM_DIR="$HOME/.nvm"
+export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.nvm}"
+[[ -z "${XDG_CONFIG_HOME:-}" ]] || NVM_DIR="$XDG_CONFIG_HOME/nvm"
+PROFILE=/dev/null bash -c 'curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.6/install.sh | bash'
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 nvm install --lts
 nvm alias default 'lts/*'
@@ -70,3 +72,5 @@ Use the default HTTPS nvm mirror settings unless a trusted internal mirror is re
 docker login ghcr.io
 docker login
 ```
+
+Use a personal access token on headless systems and configure a Docker credential store so credentials are not left base64-encoded in `~/.docker/config.json`; see the [Docker login documentation](https://docs.docker.com/reference/cli/docker/login/).
