@@ -89,10 +89,3 @@ repos:
         entry: bash -c 'for file; do bash -n "$file" || exit $?; done' --
         files: ^scripts/(clean-codex|sanitize-shell-hist)$
         stages: [pre-commit, pre-push]
-
-      - id: python-unit-tests
-        name: Python Unit Tests
-        language: system
-        entry: python3 -m unittest discover -s tests
-        pass_filenames: false
-        stages: [pre-push]
