@@ -909,6 +909,12 @@ Environment:
   CLEAN_CODEX_GRACE_MINUTES
                         Minimum inactivity window for unregistered artifacts.
                         Default: 15
+  CLEAN_CODEX_SQLITE_BUSY_TIMEOUT_MS
+                        Time each SQLite write waits for Codex's active writer.
+                        Default: 15000
+  CLEAN_CODEX_SQLITE_BUSY_RETRIES
+                        Additional attempts after a locked/busy SQLite write.
+                        Default: 2
 EOF
 }
 
@@ -1285,6 +1291,31 @@ prune_delete_ids() {
   printf 'DELETE FROM "%s" WHERE "%s" IN (%s);' "$table" "$column" "$in_list"
 }
 
+prune_sqlite_write() {
+  local database="$1"
+  local sql="$2"
+  local attempt=0
+  local output
+
+  while true; do
+    if output="$(sqlite3 -batch -cmd ".timeout $PRUNE_SQLITE_BUSY_TIMEOUT_MS" \
+      "$database" "$sql" 2>&1)"; then
+      return 0
+    fi
+
+    if [[ "$output" != *"database is locked"* && "$output" != *"database is busy"* ]] ||
+      [[ "$attempt" -ge "$PRUNE_SQLITE_BUSY_RETRIES" ]]; then
+      [[ -z "$output" ]] || printf '%s\n' "$output" >&2
+      return 1
+    fi
+
+    attempt=$((attempt + 1))
+    printf 'SQLite writer busy; retrying %s (%d/%d)...\n' \
+      "$database" "$attempt" "$PRUNE_SQLITE_BUSY_RETRIES" >&2
+    sleep "$attempt"
+  done
+}
+
 prune_cleanup_state_db() {
   local database="$1"
   local removed_ids_file="$2"
@@ -1337,8 +1368,8 @@ prune_cleanup_state_db() {
 
   sql="$sql$(prune_delete_ids "$database" threads id "$removed_ids_file")"
   [[ -n "$sql" ]] || return 0
-  sqlite3 -batch -cmd '.timeout 15000' "$database" \
-    "PRAGMA foreign_keys=ON; BEGIN IMMEDIATE; $sql COMMIT; PRAGMA optimize;" >/dev/null ||
+  prune_sqlite_write "$database" \
+    "PRAGMA foreign_keys=ON; BEGIN IMMEDIATE; $sql COMMIT; PRAGMA optimize;" ||
     reset_die "transactional SQLite cleanup failed: $database"
 }
 
@@ -1351,8 +1382,8 @@ prune_cleanup_related_db() {
 
   in_list="$(sql_in_list_from_file "$ids_file")"
   [[ -n "$in_list" ]] || return 0
-  sqlite3 -batch -cmd '.timeout 15000' "$database" \
-    "BEGIN IMMEDIATE; DELETE FROM \"$table\" WHERE \"$column\" IN ($in_list); COMMIT; PRAGMA optimize;" >/dev/null ||
+  prune_sqlite_write "$database" \
+    "BEGIN IMMEDIATE; DELETE FROM \"$table\" WHERE \"$column\" IN ($in_list); COMMIT; PRAGMA optimize;" ||
     reset_die "transactional SQLite cleanup failed: $database"
 }
 
@@ -1630,6 +1661,8 @@ prune_run() {
   local FORCE=0
   local CODEX_HOME_ARG_SET=0
   local GRACE_MINUTES="${CLEAN_CODEX_GRACE_MINUTES:-15}"
+  local SQLITE_BUSY_TIMEOUT_MS="${CLEAN_CODEX_SQLITE_BUSY_TIMEOUT_MS:-15000}"
+  local SQLITE_BUSY_RETRIES="${CLEAN_CODEX_SQLITE_BUSY_RETRIES:-2}"
   local CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
   local codex_running=0
   local process_detection_available=1
@@ -1677,6 +1710,12 @@ prune_run() {
 
   [[ "$GRACE_MINUTES" =~ ^[0-9]+$ ]] ||
     reset_die "CLEAN_CODEX_GRACE_MINUTES must be a non-negative integer."
+  [[ "$SQLITE_BUSY_TIMEOUT_MS" =~ ^[0-9]+$ ]] ||
+    reset_die "CLEAN_CODEX_SQLITE_BUSY_TIMEOUT_MS must be a non-negative integer."
+  [[ "$SQLITE_BUSY_RETRIES" =~ ^[0-9]+$ ]] ||
+    reset_die "CLEAN_CODEX_SQLITE_BUSY_RETRIES must be a non-negative integer."
+  PRUNE_SQLITE_BUSY_TIMEOUT_MS="$SQLITE_BUSY_TIMEOUT_MS"
+  PRUNE_SQLITE_BUSY_RETRIES="$SQLITE_BUSY_RETRIES"
   PRUNE_CUTOFF_EPOCH="$(($(date +%s) - (GRACE_MINUTES * 60)))"
 
   reset_require_command sqlite3
