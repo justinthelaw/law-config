@@ -41,57 +41,6 @@ chmod 600 ~/.gnupg/*
 chmod 700 ~/.gnupg
 ```
 
-## Development
-
-### Branch model
-
-- `main` is the canonical branch.
-- OS-specific differences are isolated in:
-  - docs: `docs/setup-linux.md`, `docs/setup-macos.md`
-  - overlays: `configs/zsh/linux.zsh`, `configs/zsh/macos.zsh`
-
-### Directory strategy
-
-```text
-configs/
-  .zshrc
-  .gitconfig
-  gpg/
-    gpg.conf
-    gpg-agent.conf
-  zsh/
-    common.zsh
-    env.zsh
-    linux.zsh
-    macos.zsh
-docs/
-  setup-linux.md
-  setup-macos.md
-  CONTRIBUTING.md
-  SECURITY.md
-  SUPPORT.md
-  CODE_OF_CONDUCT.md
-scripts/
-  clean-codex
-  clean-codex-state.py
-  sanitize-shell-hist
-```
-
-### Validation
-
-```bash
-python3 -m pip install pre-commit==4.6.0
-pre-commit run --all-files
-python3 -m unittest discover -s tests
-zsh -n configs/.zshrc configs/zsh/*.zsh
-```
-
-### Maintenance Notes
-
-- Keep Oh My Zsh updated with `omz update`, especially before enabling bundled themes or plugins beyond the repo default.
-- Install nvm from a tagged release and keep the default HTTPS mirror settings unless a trusted internal mirror is required.
-- Review `configs/.gitconfig` placeholders before copying it into `~/.gitconfig`.
-
 ## Contributing
 
 See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for workflow and pull request expectations.

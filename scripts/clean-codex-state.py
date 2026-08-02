@@ -649,7 +649,51 @@ def atomic_write(path: Path, content: str) -> None:
         raise
 
 
+def recovery_stage(root: Path) -> Path:
+    configured = os.environ.get("CLEAN_CODEX_TRASH_DIR")
+    recovery_root = (
+        Path(configured)
+        if configured
+        else Path(tempfile.gettempdir()) / f"codex-clean-recovery-{os.getuid()}"
+    )
+    if not recovery_root.is_absolute():
+        raise RuntimeError(f"Recovery directory must be absolute: {recovery_root}")
+    if recovery_root.is_symlink() or recovery_root.parent.is_symlink():
+        raise RuntimeError(f"Refusing symlinked recovery directory: {recovery_root}")
+    if recovery_root.resolve(strict=False) in {Path("/"), root.resolve()}:
+        raise RuntimeError(f"Refusing unsafe recovery directory: {recovery_root}")
+
+    recovery_root.mkdir(mode=0o700, parents=True, exist_ok=True)
+    os.chmod(recovery_root, 0o700)
+    stage = recovery_root / f"orphan-prune-{time.time_ns()}-{os.getpid()}"
+    stage.mkdir(mode=0o700)
+    return stage
+
+
+def quarantine_candidate(path: Path, root: Path, stage: Path) -> None:
+    if path.is_symlink():
+        raise RuntimeError(f"Refusing symlinked cleanup target: {path}")
+    if not is_under(path, root):
+        raise RuntimeError(f"Cleanup target escapes the Codex home: {path}")
+    relative = path.relative_to(root)
+    destination = stage / relative
+    destination.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+    shutil.move(str(path), str(destination))
+
+
 def apply_plan(plan: CleanupPlan) -> None:
+    candidates = sorted(
+        plan.file_candidates,
+        key=lambda item: len(item.path.parts),
+        reverse=True,
+    )
+    existing_candidates = [
+        candidate
+        for candidate in candidates
+        if candidate.path.exists() or candidate.path.is_symlink()
+    ]
+    stage = recovery_stage(plan.root) if existing_candidates else None
+
     cleanup_state_db(plan.state_db, plan, plan.remove_primary_ids)
     cleanup_state_db(plan.legacy_state_db, plan, plan.remove_legacy_ids)
     for path, ids in plan.db_orphan_ids.items():
@@ -659,15 +703,12 @@ def apply_plan(plan: CleanupPlan) -> None:
         if removed:
             atomic_write(path, content)
 
-    for candidate in sorted(
-        plan.file_candidates, key=lambda item: len(item.path.parts), reverse=True
-    ):
+    for candidate in existing_candidates:
         if not candidate.path.exists() and not candidate.path.is_symlink():
             continue
-        if candidate.path.is_dir() and not candidate.path.is_symlink():
-            shutil.rmtree(candidate.path)
-        else:
-            candidate.path.unlink()
+        if stage is None:
+            raise RuntimeError("Recovery staging disappeared before orphan pruning")
+        quarantine_candidate(candidate.path, plan.root, stage)
 
     for dirname in ("sessions", "archived_sessions", "visualizations"):
         base = plan.root / dirname
