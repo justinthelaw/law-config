@@ -29,6 +29,3 @@ jobs:
 
       - name: Run Pre-Commit
         run: pre-commit run --all-files --hook-stage pre-commit
-
-      - name: Run Unit Tests
-        run: python -m unittest discover -s tests

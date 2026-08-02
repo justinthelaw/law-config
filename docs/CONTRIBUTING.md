@@ -21,8 +21,8 @@ Run these checks before pushing:
 
 ```bash
 python3 -m pip install pre-commit==4.6.0
-pre-commit run --all-files
-python3 -m unittest discover -s tests
+pre-commit run --all-files --hook-stage pre-commit
+pre-commit run --all-files --hook-stage pre-push
 zsh -n configs/.zshrc configs/zsh/*.zsh
 ```
 

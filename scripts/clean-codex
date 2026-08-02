@@ -1,12 +1,885 @@
 #!/usr/bin/env bash
 #
-# clean-codex - Remove orphaned/deleted Codex thread state and disposable
-# runtime caches without separating live rollout files from their registry.
+# clean-codex - Reset disposable Codex state while preserving durable assets.
 #
 # Usage:
-#   clean-codex [--dry-run] [--yes] [--force] [codex_home]
+#   clean-codex [--reset-state|--prune-orphans] [--dry-run] [--yes] [codex_home]
 
 set -euo pipefail
+
+reset_usage() {
+  cat <<'RESET_USAGE'
+Usage: clean-codex [--reset-state|--prune-orphans] [options] [codex_home]
+
+The default reset removes conversations, archives, logs, goals, generated
+memories and disposable application state. Authentication, configuration,
+plugins, skills, durable preferences, automations and remote enrollments stay.
+
+  --reset-state                Perform the default, comprehensive offline reset.
+  --prune-orphans              Use the older conservative orphan-thread pruner.
+  -n, --dry-run                Describe changes without creating files.
+  -y, --yes                    Skip confirmation.
+  -f, --force                  Compatibility only; never bypass reset safeguards.
+  --app-profile PATH           Include one explicitly selected application profile.
+  --app-log-dir PATH           Include one explicitly selected application log root.
+  --aggressive-profile-cleanup  Also reset mixed browser storage; may sign you out.
+  -h, --help                   Show this help.
+
+Recovery files are quarantined rather than permanently deleted. Override the
+private recovery location with CLEAN_CODEX_TRASH_DIR when necessary.
+RESET_USAGE
+}
+
+reset_die() {
+  printf 'clean-codex: %s\n' "$*" >&2
+  exit 1
+}
+
+lowercase() {
+  printf '%s\n' "$1" | tr '[:upper:]' '[:lower:]'
+}
+
+is_uuid() {
+  local value
+
+  value="$(lowercase "$1")"
+  [[ "$value" =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$ ]]
+}
+
+extract_uuid() {
+  local matches
+
+  matches="$(lowercase "$1" | grep -Eo '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' || true)"
+  printf '%s\n' "$matches" | tail -n 1
+}
+
+thread_ref_value() {
+  local value
+
+  value="$(lowercase "$1")"
+  if is_uuid "$value"; then
+    printf '%s\n' "$value"
+    return 0
+  fi
+  if [[ "$value" == local:* ]] && is_uuid "${value#local:}"; then
+    printf '%s\n' "${value#local:}"
+    return 0
+  fi
+  return 1
+}
+
+uuid7_epoch_seconds() {
+  local compact version
+
+  compact="${1//-/}"
+  [[ "${#compact}" -eq 32 ]] || return 1
+  version="${compact:12:1}"
+  [[ "$version" == 7 ]] || return 1
+  printf '%s\n' "$((16#${compact:0:12} / 1000))"
+}
+
+path_within() {
+  local child="$1"
+  local parent="$2"
+
+  [[ "$child" == "$parent" || "$child" == "$parent"/* ]]
+}
+
+resolve_path_allow_missing() {
+  local current="$1"
+  local parent resolved
+  local -a missing=()
+  local index
+
+  [[ "$current" == /* ]] || return 1
+  while [[ ! -e "$current" && ! -L "$current" ]]; do
+    missing+=("$(basename -- "$current")")
+    parent="$(dirname -- "$current")"
+    [[ "$parent" != "$current" ]] || break
+    current="$parent"
+  done
+
+  if [[ "$current" == / ]]; then
+    resolved=/
+  else
+    resolved="$(cd -P -- "$current" && pwd -P)" || return 1
+  fi
+
+  for ((index = ${#missing[@]} - 1; index >= 0; index--)); do
+    if [[ "$resolved" == / ]]; then
+      resolved="/${missing[$index]}"
+    else
+      resolved="$resolved/${missing[$index]}"
+    fi
+  done
+  printf '%s\n' "$resolved"
+}
+
+reset_has_path() {
+  [[ -e "$1" || -L "$1" ]]
+}
+
+reset_resolve_directory() {
+  [[ -d "$1" && ! -L "$1" ]] || return 1
+  (cd -P -- "$1" && pwd -P)
+}
+
+reset_require_command() {
+  command -v "$1" >/dev/null 2>&1 || reset_die "required command unavailable: $1"
+}
+
+clean_temp_root() {
+  local temporary_root
+
+  temporary_root="$(printenv TMPDIR || true)"
+  if [[ -z "$temporary_root" ]]; then
+    case "$(uname -s)" in
+    Darwin) temporary_root=/private/tmp ;;
+    *) temporary_root=/tmp ;;
+    esac
+  fi
+  temporary_root="${temporary_root%/}"
+  [[ -n "$temporary_root" ]] || temporary_root=/
+  printf '%s\n' "$temporary_root"
+}
+
+clean_lock_root() {
+  printf '%s/codex-clean-locks-%s\n' "$(clean_temp_root)" "$(id -u)"
+}
+
+clean_release_lock() {
+  if [[ -n "${CLEAN_CODEX_LOCK_PATH:-}" ]]; then
+    rm -rf -- "$CLEAN_CODEX_LOCK_PATH" 2>/dev/null || true
+  fi
+  if [[ -n "${CLEAN_CODEX_TEMP_DIR:-}" ]]; then
+    rm -rf -- "$CLEAN_CODEX_TEMP_DIR" 2>/dev/null || true
+  fi
+}
+
+clean_acquire_lock() {
+  local target_home="$1"
+  local lock_root hash owner
+
+  hash="$(printf '%s' "$target_home" | cksum | awk '{print $1}')"
+  lock_root="$(clean_lock_root)"
+  [[ ! -L "$lock_root" ]] || reset_die "refusing symlinked cleanup lock root"
+  mkdir -p -- "$lock_root"
+  chmod 700 "$lock_root"
+
+  CLEAN_CODEX_LOCK_PATH="$lock_root/$hash.lock"
+  if ! mkdir -m 700 -- "$CLEAN_CODEX_LOCK_PATH" 2>/dev/null; then
+    owner="$(cat "$CLEAN_CODEX_LOCK_PATH/pid" 2>/dev/null || true)"
+    if [[ "$owner" =~ ^[0-9]+$ ]] && ! kill -0 "$owner" 2>/dev/null; then
+      rm -rf -- "$CLEAN_CODEX_LOCK_PATH"
+      mkdir -m 700 -- "$CLEAN_CODEX_LOCK_PATH" 2>/dev/null ||
+        reset_die "another cleanup already holds the target-home lock"
+    else
+      reset_die "another cleanup already holds the target-home lock"
+    fi
+  fi
+  printf '%s\n' "$$" >"$CLEAN_CODEX_LOCK_PATH/pid"
+  trap 'clean_release_lock' EXIT
+  trap 'exit 129' HUP
+  trap 'exit 130' INT
+  trap 'exit 143' TERM
+}
+
+reset_assert_safe_root() {
+  local root="$1"
+  local label="$2"
+  [[ -n "$root" && "$root" == /* ]] || reset_die "$label must be an absolute path"
+  [[ "$root" != / && "$root" != "$HOME" && "$root" != /tmp && "$root" != /private/tmp ]] ||
+    reset_die "refusing unsafe $label: $root"
+  [[ ! -L "$root" ]] || reset_die "refusing symlinked $label: $root"
+}
+
+reset_assert_target() {
+  local path="$1"
+  local root="$2"
+  local cursor parent resolved
+
+  reset_has_path "$path" || return 0
+  [[ "$path" == "$root"/* ]] || reset_die "cleanup target escapes its approved root: $path"
+  [[ ! -L "$path" ]] || reset_die "refusing symlinked cleanup target: $path"
+
+  cursor="$(dirname -- "$path")"
+  while [[ "$cursor" != "$root" ]]; do
+    [[ "$cursor" == "$root"/* ]] || reset_die "cleanup target escapes its approved root: $path"
+    [[ ! -L "$cursor" ]] || reset_die "refusing symlinked managed directory: $cursor"
+    cursor="$(dirname -- "$cursor")"
+  done
+
+  parent="$(dirname -- "$path")"
+  resolved="$(reset_resolve_directory "$parent")" ||
+    reset_die "unable to resolve cleanup target parent: $parent"
+  [[ "$resolved" == "$root" || "$resolved" == "$root"/* ]] ||
+    reset_die "cleanup target resolves outside its approved root: $path"
+}
+
+reset_recovery_root() {
+  local selected parent resolved_parent resolved_selected resolved_target
+  local temporary_root
+  local target
+
+  if [[ -n "$RESET_RECOVERY_OVERRIDE" ]]; then
+    selected="$RESET_RECOVERY_OVERRIDE"
+  else
+    temporary_root="$(clean_temp_root)"
+    selected="$temporary_root/codex-clean-recovery-$(id -u)"
+  fi
+
+  [[ "$selected" == /* ]] || reset_die "recovery directory must be an absolute path"
+  [[ "$selected" != / && "$selected" != "$RESET_HOME" && "$selected" != "$HOME" &&
+    "$selected" != /tmp && "$selected" != /private/tmp ]] ||
+    reset_die "refusing unsafe recovery directory: $selected"
+  [[ "$selected" != "$RESET_HOME"/* ]] ||
+    reset_die "recovery directory must be outside the Codex home: $selected"
+  if [[ -n "${RESET_APP_PROFILE:-}" ]]; then
+    [[ "$selected" != "$RESET_APP_PROFILE" && "$selected" != "$RESET_APP_PROFILE"/* ]] ||
+      reset_die "recovery directory must be outside the application profile: $selected"
+  fi
+  if [[ -n "${RESET_APP_LOG_DIR:-}" ]]; then
+    [[ "$selected" != "$RESET_APP_LOG_DIR" && "$selected" != "$RESET_APP_LOG_DIR"/* ]] ||
+      reset_die "recovery directory must be outside the application log directory: $selected"
+  fi
+  [[ ! -L "$selected" ]] || reset_die "refusing symlinked recovery directory: $selected"
+
+  resolved_selected="$(resolve_path_allow_missing "$selected")" ||
+    reset_die "unable to resolve recovery directory safely: $selected"
+  [[ "$resolved_selected" != / && "$resolved_selected" != /tmp &&
+    "$resolved_selected" != /private/tmp && "$resolved_selected" != "$HOME" ]] ||
+    reset_die "refusing unsafe recovery directory: $selected"
+  for target in "$RESET_HOME" "${RESET_APP_PROFILE:-}" "${RESET_APP_LOG_DIR:-}"; do
+    [[ -n "$target" ]] || continue
+    [[ "$target" == /* ]] || continue
+    resolved_target="$(resolve_path_allow_missing "$target")" ||
+      reset_die "unable to resolve cleanup root safely: $target"
+    if path_within "$resolved_selected" "$resolved_target"; then
+      reset_die "recovery directory must be outside cleanup targets: $selected"
+    fi
+  done
+
+  parent="$(dirname -- "$selected")"
+  if [[ -e "$parent" || -L "$parent" ]]; then
+    [[ ! -L "$parent" ]] || reset_die "refusing symlinked recovery parent: $parent"
+    resolved_parent="$(resolve_path_allow_missing "$parent")" ||
+      reset_die "unable to resolve recovery parent: $parent"
+    [[ "$resolved_parent" != / ]] || reset_die "refusing filesystem-root recovery parent"
+  fi
+  printf '%s\n' "$selected"
+}
+
+reset_profile_targets() {
+  local profile="$1"
+  local base
+
+  for base in "$profile" "$profile/Default" "$profile/User" "$profile/Partitions/codex-browser-app"; do
+    [[ -d "$base" && ! -L "$base" ]] || continue
+    printf '%s\n' \
+      "$base/Cache" \
+      "$base/Code Cache" \
+      "$base/GPUCache" \
+      "$base/GPUCache.old" \
+      "$base/DawnGraphiteCache" \
+      "$base/DawnWebGPUCache" \
+      "$base/GraphiteDawnCache" \
+      "$base/GPUPersistentCache" \
+      "$base/ShaderCache" \
+      "$base/GrShaderCache" \
+      "$base/Crashpad" \
+      "$base/BrowserMetrics" \
+      "$base/sentry" \
+      "$base/logs" \
+      "$base/History" \
+      "$base/History-journal" \
+      "$base/Network/Reporting and NEL" \
+      "$base/CachedData" \
+      "$base/CachedProfilesData" \
+      "$base/CachedExtensionVSIXs"
+    if [[ "$RESET_AGGRESSIVE_PROFILE" -eq 1 ]]; then
+      printf '%s\n' \
+        "$base/Local Storage" \
+        "$base/IndexedDB" \
+        "$base/Session Storage" \
+        "$base/Service Worker" \
+        "$base/WebStorage"
+    fi
+  done
+}
+
+reset_home_targets() {
+  printf '%s\n' \
+    "$RESET_HOME/sessions" \
+    "$RESET_HOME/archived_sessions" \
+    "$RESET_HOME/log" \
+    "$RESET_HOME/logs" \
+    "$RESET_HOME/history.jsonl" \
+    "$RESET_HOME/session_index.jsonl" \
+    "$RESET_HOME/shell_snapshots" \
+    "$RESET_HOME/generated_images" \
+    "$RESET_HOME/visualizations" \
+    "$RESET_HOME/realtime_sessions" \
+    "$RESET_HOME/realtime-sessions" \
+    "$RESET_HOME/dictation" \
+    "$RESET_HOME/dictation_history" \
+    "$RESET_HOME/dictation-history" \
+    "$RESET_HOME/dictation-history.jsonl" \
+    "$RESET_HOME/transcriptions" \
+    "$RESET_HOME/transcription_history" \
+    "$RESET_HOME/transcription-history" \
+    "$RESET_HOME/transcription-history.jsonl" \
+    "$RESET_HOME/attachments" \
+    "$RESET_HOME/ambient-suggestions" \
+    "$RESET_HOME/tmp" \
+    "$RESET_HOME/node_repl" \
+    "$RESET_HOME/thread-writer-locks" \
+    "$RESET_HOME/process_manager" \
+    "$RESET_HOME/ipc" \
+    "$RESET_HOME/cache/codex_apps_tools" \
+    "$RESET_HOME/cache/remote_plugin_catalog" \
+    "$RESET_HOME/cache/codex_app_directory" \
+    "$RESET_HOME/cache/codex_apps_server_info" \
+    "$RESET_HOME/cloud-config-bundle-cache.json" \
+    "$RESET_HOME/cloud-requirements-cache.json" \
+    "$RESET_HOME/models_cache.json" \
+    "$RESET_HOME/.tmp/app-server-remote-plugin-sync-v1" \
+    "$RESET_HOME/.tmp/plugins.sha" \
+    "$RESET_HOME/.tmp/plugin-share-local-paths-v1.json" \
+    "$RESET_HOME/.tmp/legacy-primary-runtime-skills"
+
+  if [[ -d "$RESET_HOME/.tmp" && ! -L "$RESET_HOME/.tmp" ]]; then
+    shopt -s nullglob dotglob
+    for temporary_entry in "$RESET_HOME/.tmp"/*; do
+      case "$(basename -- "$temporary_entry")" in
+      plugins | bundled-marketplaces | marketplaces) ;;
+      *) printf '%s\n' "$temporary_entry" ;;
+      esac
+    done
+    shopt -u nullglob dotglob
+  fi
+  while IFS= read -r temporary_state; do
+    [[ -n "$temporary_state" ]] && printf '%s\n' "$temporary_state"
+  done < <(
+    compgen -G "$RESET_HOME/.codex-global-state.json*.tmp-*" || true
+    compgen -G "$RESET_HOME/..codex-global-state.json*.tmp-*" || true
+  )
+}
+
+reset_databases() {
+  local pattern path
+
+  for pattern in \
+    "$RESET_HOME/state_*.sqlite" \
+    "$RESET_HOME/logs_*.sqlite" \
+    "$RESET_HOME/goals_*.sqlite" \
+    "$RESET_HOME/memories_*.sqlite" \
+    "$RESET_HOME/codex*.db" \
+    "$RESET_HOME/sqlite/state_*.sqlite" \
+    "$RESET_HOME/sqlite/logs_*.sqlite" \
+    "$RESET_HOME/sqlite/goals_*.sqlite" \
+    "$RESET_HOME/sqlite/memories_*.sqlite" \
+    "$RESET_HOME/sqlite/codex*.db"; do
+    while IFS= read -r path; do
+      [[ -f "$path" ]] && printf '%s\n' "$path"
+    done < <(compgen -G "$pattern" || true)
+  done
+}
+
+reset_open_handles() {
+  local file="$1"
+  local output status
+
+  [[ -e "$file" ]] || return 0
+  set +e
+  output="$(lsof -nP -- "$file" 2>&1)"
+  status=$?
+  set -e
+  if [[ "$status" -eq 0 ]]; then
+    reset_die "active open handle prevents cleaning: $file"
+  fi
+  if [[ "$status" -ne 1 || -n "$output" ]]; then
+    reset_die "unable to verify inactive file safely: $file"
+  fi
+}
+
+reset_verify_inactive() {
+  local db sidecar lock pid lock_value lock_host local_host output status
+  set --
+
+  if [[ -d "$RESET_HOME/.demo-cli-locks" ]]; then
+    shopt -s nullglob dotglob
+    for lock in "$RESET_HOME/.demo-cli-locks"/*; do
+      [[ -f "$lock" && ! -L "$lock" ]] || reset_die "unsafe or active demo CLI lock: $lock"
+      lock_value="$(head -n 1 "$lock")"
+      [[ "$lock_value" =~ ^[0-9]+$ ]] || reset_die "indeterminate demo CLI lock: $lock"
+      if kill -0 "$lock_value" 2>/dev/null; then
+        reset_die "active Codex CLI lock prevents cleaning: $lock"
+      fi
+    done
+    shopt -u nullglob dotglob
+  elif [[ -L "$RESET_HOME/.demo-cli-locks" ]]; then
+    reset_die "refusing symlinked demo CLI lock directory"
+  fi
+
+  while IFS= read -r db; do
+    set -- "$@" "$db"
+    for sidecar in "$db-wal" "$db-shm"; do
+      [[ ! -e "$sidecar" ]] || set -- "$@" "$sidecar"
+    done
+  done < <(reset_databases)
+
+  if [[ "$#" -gt 0 ]]; then
+    set +e
+    output="$(lsof -nP -- "$@" 2>&1)"
+    status=$?
+    set -e
+    if [[ "$status" -eq 0 ]]; then
+      reset_die "active open database handle prevents cleaning"
+    fi
+    if [[ "$status" -ne 1 || -n "$output" ]]; then
+      reset_die "unable to verify inactive databases safely"
+    fi
+  fi
+
+  while IFS= read -r lock; do
+    [[ -n "$lock" ]] || continue
+    if [[ -L "$lock" ]]; then
+      lock_value="$(readlink "$lock")"
+      pid="$(printf '%s\n' "$lock_value" | awk -F- '{print $NF}')"
+      lock_host="${lock_value%-"$pid"}"
+      local_host="$(hostname)"
+      if [[ "$pid" =~ ^[0-9]+$ && ("$lock_host" == "$local_host" || "$lock_host" == "${local_host%%.*}") ]]; then
+        if kill -0 "$pid" 2>/dev/null; then
+          reset_die "active application SingletonLock prevents cleaning: $lock"
+        fi
+        printf '  ignoring stale application SingletonLock: %s\n' "$lock" >&2
+        continue
+      fi
+      reset_die "indeterminate application SingletonLock prevents cleaning: $lock"
+    elif [[ -e "$lock" ]]; then
+      reset_open_handles "$lock"
+      reset_die "application SingletonLock prevents cleaning: $lock"
+    fi
+  done < <(
+    [[ -z "$RESET_APP_PROFILE" ]] || printf '%s\n' "$RESET_APP_PROFILE/SingletonLock"
+    [[ ! -d "$RESET_HOME/electron-user-data" ]] ||
+      printf '%s\n' "$RESET_HOME/electron-user-data/SingletonLock"
+    [[ ! -d "$RESET_HOME/vscode-user-data" ]] ||
+      printf '%s\n' "$RESET_HOME/vscode-user-data/SingletonLock"
+  )
+}
+
+reset_validate_paths() {
+  local target root profile
+
+  while IFS= read -r target; do
+    reset_has_path "$target" || continue
+    reset_assert_target "$target" "$RESET_HOME"
+  done < <(reset_home_targets)
+
+  for profile in "$RESET_HOME/electron-user-data" "$RESET_HOME/vscode-user-data"; do
+    if reset_has_path "$profile"; then
+      reset_assert_target "$profile" "$RESET_HOME"
+      while IFS= read -r target; do
+        reset_has_path "$target" || continue
+        reset_assert_target "$target" "$profile"
+      done < <(reset_profile_targets "$profile")
+    fi
+  done
+
+  if [[ -n "$RESET_APP_PROFILE" ]]; then
+    root="$(reset_resolve_directory "$RESET_APP_PROFILE")" ||
+      reset_die "application profile is missing or symlinked: $RESET_APP_PROFILE"
+    [[ "$root" == "$RESET_APP_PROFILE" ]] ||
+      reset_die "application profile path is not canonical: $RESET_APP_PROFILE"
+    while IFS= read -r target; do
+      reset_has_path "$target" || continue
+      reset_assert_target "$target" "$root"
+    done < <(reset_profile_targets "$root")
+  fi
+
+  if [[ -n "$RESET_APP_LOG_DIR" ]] && reset_has_path "$RESET_APP_LOG_DIR"; then
+    [[ -d "$RESET_APP_LOG_DIR" && ! -L "$RESET_APP_LOG_DIR" ]] ||
+      reset_die "application log directory is missing or symlinked: $RESET_APP_LOG_DIR"
+    [[ "$RESET_APP_LOG_DIR" == /* ]] ||
+      reset_die "unsafe application log directory: $RESET_APP_LOG_DIR"
+    case "$RESET_APP_LOG_DIR" in
+    / | /tmp | /private/tmp | /var | /var/log | /Library | /Users | /home | "$HOME")
+      reset_die "unsafe application log directory: $RESET_APP_LOG_DIR"
+      ;;
+    esac
+  fi
+
+  if reset_has_path "$RESET_HOME/memories"; then
+    reset_assert_target "$RESET_HOME/memories" "$RESET_HOME"
+  fi
+}
+
+reset_acquire_lock() {
+  clean_acquire_lock "$RESET_HOME"
+}
+
+reset_stage() {
+  local target="$1"
+  local hash bucket
+
+  reset_has_path "$target" || return 0
+  hash="$(printf '%s' "$target" | cksum | awk '{print $1}')"
+  bucket="$RESET_STAGE/$hash"
+  mkdir -p -- "$bucket"
+  chmod 700 "$bucket"
+  mv -- "$target" "$bucket/$(basename -- "$target")"
+  RESET_STAGED_COUNT=$((RESET_STAGED_COUNT + 1))
+}
+
+reset_sql_tables() {
+  local base="$1"
+
+  case "$base" in
+  state_*.sqlite)
+    printf '%s\n' agent_job_items agent_jobs thread_spawn_edges \
+      thread_dynamic_tools thread_sections threads
+    ;;
+  logs_*.sqlite)
+    printf '%s\n' logs log_entries events traces
+    ;;
+  goals_*.sqlite)
+    printf '%s\n' thread_goal_continuation_deferrals thread_goals goal_events
+    ;;
+  memories_*.sqlite)
+    printf '%s\n' jobs stage1_outputs memory_facts memory_embeddings memories
+    ;;
+  codex*.db)
+    printf '%s\n' \
+      automation_runs inbox_items local_thread_catalog local_thread_catalog_metadata \
+      local_thread_catalog_sync_state thread_timeline_ledger app_server_history_snapshots
+    ;;
+  esac
+}
+
+reset_scrub_database() {
+  local db="$1"
+  local table present sql result last_line backup hash escaped_backup
+
+  hash="$(printf '%s' "$db" | cksum | awk '{print $1}')"
+  backup="$RESET_STAGE/sqlite-recovery/$hash-$(basename -- "$db")"
+  mkdir -p -- "$RESET_STAGE/sqlite-recovery"
+  chmod 700 "$RESET_STAGE/sqlite-recovery"
+  escaped_backup="$(printf '%s' "$backup" | sed "s/'/''/g")"
+  sqlite3 -batch -cmd '.timeout 15000' "$db" ".backup '$escaped_backup'" ||
+    reset_die "unable to create recoverable SQLite backup: $db"
+
+  sql='PRAGMA secure_delete=ON; PRAGMA foreign_keys=OFF; BEGIN IMMEDIATE;'
+  while IFS= read -r table; do
+    [[ -n "$table" ]] || continue
+    present="$(sqlite3 -batch "$db" \
+      "SELECT count(*) FROM sqlite_schema WHERE type='table' AND name='$table';")" ||
+      reset_die "unable to inspect SQLite schema: $db"
+    if [[ "$present" == 1 ]]; then
+      sql="$sql DELETE FROM \"$table\";"
+    fi
+  done < <(reset_sql_tables "$(basename -- "$db")")
+  sql="$sql COMMIT; PRAGMA wal_checkpoint(TRUNCATE); VACUUM;"
+  sql="$sql PRAGMA wal_checkpoint(TRUNCATE); PRAGMA integrity_check;"
+  result="$(sqlite3 -batch -cmd '.timeout 15000' "$db" "$sql")" ||
+    reset_die "transactional SQLite cleanup failed: $db"
+  last_line="$(printf '%s\n' "$result" | tail -n 1)"
+  [[ "$last_line" == ok ]] || reset_die "SQLite integrity verification failed: $db"
+  printf '  reset database: %s\n' "$db"
+}
+
+reset_json_state() {
+  local file="$1"
+  local temp hash
+
+  [[ -f "$file" && ! -L "$file" ]] || return 0
+  hash="$(printf '%s' "$file" | cksum | awk '{print $1}')"
+  temp="$RESET_STAGE/global-state-$hash.json"
+
+  jq '
+    del(
+      .["active-workspace-roots"],
+      .["pinned-thread-ids"],
+      .["projectless-thread-ids"],
+      .["queued-follow-ups"],
+      .["selected-project"],
+      .["sidebar-project-thread-orders"],
+      .["thread-detail-levels"],
+      .["thread-project-assignments"],
+      .["thread-projectless-output-directories"],
+      .["thread-workspace-root-hints"],
+      .["thread-writable-roots"]
+    )
+    | if (."electron-persisted-atom-state" | type) == "object" then
+        ."electron-persisted-atom-state" |= with_entries(
+          select(
+            (.key | test(
+              "(thread|session|prompt|draft|history|visualization|follow.?up|unread|realtime|dictation|transcription|timeline|sidebar.?width|mascot|avatar.?overlay|composer.?context|agent.?mode|deleted.?conversation)";
+              "i"
+            )) | not
+          )
+        )
+      else . end
+  ' "$file" >"$temp" || reset_die "unable to safely rewrite desktop state: $file"
+  reset_stage "$file"
+  mv -- "$temp" "$file"
+}
+
+reset_profile() {
+  local profile="$1"
+  local target
+
+  [[ -d "$profile" ]] || return 0
+  while IFS= read -r target; do
+    reset_has_path "$target" || continue
+    reset_assert_target "$target" "$profile"
+    reset_stage "$target"
+  done < <(reset_profile_targets "$profile")
+}
+
+reset_run() {
+  local home_argument_set=0
+  local profile_argument_set=0
+  local app_logs_argument_set=0
+  local target db profile
+  local confirm canonical
+
+  RESET_DRY_RUN=0
+  RESET_YES=0
+  RESET_FORCE=0
+  RESET_AGGRESSIVE_PROFILE=0
+  RESET_HOME="$(printenv CODEX_HOME || true)"
+  [[ -n "$RESET_HOME" ]] || RESET_HOME="$HOME/.codex"
+  RESET_APP_PROFILE=''
+  RESET_APP_LOG_DIR=''
+  RESET_RECOVERY_OVERRIDE="$(printenv CLEAN_CODEX_TRASH_DIR || true)"
+  RESET_STAGED_COUNT=0
+
+  while [[ "$#" -gt 0 ]]; do
+    case "$1" in
+    --reset-state) ;;
+    -n | --dry-run) RESET_DRY_RUN=1 ;;
+    -y | --yes) RESET_YES=1 ;;
+    -f | --force) RESET_FORCE=1 ;;
+    --aggressive-profile-cleanup) RESET_AGGRESSIVE_PROFILE=1 ;;
+    --app-profile)
+      [[ "$#" -ge 2 && "$profile_argument_set" -eq 0 ]] ||
+        reset_die "--app-profile requires one path"
+      shift
+      RESET_APP_PROFILE="$1"
+      profile_argument_set=1
+      ;;
+    --app-log-dir)
+      [[ "$#" -ge 2 && "$app_logs_argument_set" -eq 0 ]] ||
+        reset_die "--app-log-dir requires one path"
+      shift
+      RESET_APP_LOG_DIR="$1"
+      app_logs_argument_set=1
+      ;;
+    -h | --help)
+      reset_usage
+      return 0
+      ;;
+    -*)
+      reset_die "unknown reset option: $1"
+      ;;
+    *)
+      [[ "$home_argument_set" -eq 0 ]] || reset_die "only one Codex home is supported"
+      RESET_HOME="$1"
+      home_argument_set=1
+      ;;
+    esac
+    shift
+  done
+
+  [[ -d "$RESET_HOME" && ! -L "$RESET_HOME" ]] ||
+    reset_die "Codex home is missing or symlinked: $RESET_HOME"
+  canonical="$(reset_resolve_directory "$RESET_HOME")" ||
+    reset_die "unable to canonicalize Codex home"
+  RESET_HOME="$canonical"
+  reset_assert_safe_root "$RESET_HOME" "Codex home"
+  [[ -f "$RESET_HOME/config.toml" || -f "$RESET_HOME/auth.json" ]] ||
+    compgen -G "$RESET_HOME/state_*.sqlite" >/dev/null ||
+    reset_die "refusing unrelated Codex home without configuration, authentication, or state markers"
+
+  if [[ "$RESET_HOME" == "$HOME/.codex" ]]; then
+    if [[ "$profile_argument_set" -eq 0 && -d "$HOME/Library/Application Support/Codex" ]]; then
+      RESET_APP_PROFILE="$HOME/Library/Application Support/Codex"
+    fi
+    if [[ "$app_logs_argument_set" -eq 0 && -d "$HOME/Library/Logs/com.openai.codex" ]]; then
+      RESET_APP_LOG_DIR="$HOME/Library/Logs/com.openai.codex"
+    fi
+  fi
+
+  reset_require_command sqlite3
+  reset_require_command jq
+  reset_require_command lsof
+  reset_require_command cksum
+  RESET_RECOVERY="$(reset_recovery_root)"
+  reset_validate_paths
+  reset_verify_inactive
+
+  printf 'Codex home: %s\n' "$RESET_HOME"
+  printf 'Mode: comprehensive offline state reset\n'
+  printf 'Recovery staging: %s\n' "$RESET_RECOVERY"
+  printf '%s\n' 'Preserved: authentication, configuration, plugins, skills, durable preferences, automations and remote enrollments.'
+  if [[ "$RESET_FORCE" -eq 1 ]]; then
+    printf '%s\n' 'Notice: --force cannot bypass active-process or open-database safeguards.'
+  fi
+  if [[ "$RESET_AGGRESSIVE_PROFILE" -eq 1 ]]; then
+    printf '%s\n' 'WARNING: aggressive profile cleanup removes mixed session storage and may sign you out.'
+  fi
+  while IFS= read -r target; do
+    reset_has_path "$target" && printf '  disposable path: %s\n' "$target"
+  done < <(reset_home_targets)
+  while IFS= read -r db; do
+    printf '  disposable rows: %s\n' "$db"
+  done < <(reset_databases)
+  [[ -z "$RESET_APP_PROFILE" ]] || printf '  application profile: %s\n' "$RESET_APP_PROFILE"
+  [[ -z "$RESET_APP_LOG_DIR" ]] || printf '  application log directory: %s\n' "$RESET_APP_LOG_DIR"
+  [[ "$RESET_DRY_RUN" -eq 0 ]] || return 0
+
+  reset_acquire_lock
+  reset_verify_inactive
+  if [[ "$RESET_YES" -eq 0 ]]; then
+    printf 'Reset disposable Codex state while preserving durable assets? [y/N] '
+    read -r confirm
+    [[ "$confirm" == y || "$confirm" == Y || "$confirm" == yes || "$confirm" == YES ]] ||
+      reset_die "cleanup aborted"
+  fi
+  reset_verify_inactive
+
+  umask 077
+  mkdir -p -- "$RESET_RECOVERY"
+  chmod 700 "$RESET_RECOVERY"
+  RESET_STAGE="$RESET_RECOVERY/$(date -u +%Y%m%dT%H%M%SZ)-$$"
+  mkdir -m 700 -- "$RESET_STAGE"
+
+  while IFS= read -r db; do
+    reset_scrub_database "$db"
+  done < <(reset_databases)
+
+  reset_json_state "$RESET_HOME/.codex-global-state.json"
+  reset_json_state "$RESET_HOME/.codex-global-state.json.bak"
+
+  while IFS= read -r target; do
+    reset_has_path "$target" || continue
+    reset_assert_target "$target" "$RESET_HOME"
+    reset_stage "$target"
+  done < <(reset_home_targets)
+
+  if reset_has_path "$RESET_HOME/memories"; then
+    reset_stage "$RESET_HOME/memories"
+    mkdir -m 700 -- "$RESET_HOME/memories"
+  fi
+
+  reset_profile "$RESET_HOME/electron-user-data"
+  reset_profile "$RESET_HOME/vscode-user-data"
+  [[ -z "$RESET_APP_PROFILE" ]] || reset_profile "$RESET_APP_PROFILE"
+  if [[ -n "$RESET_APP_LOG_DIR" ]] && [[ -d "$RESET_APP_LOG_DIR" ]]; then
+    reset_stage "$RESET_APP_LOG_DIR"
+  fi
+
+  printf 'Codex cleanup completed; quarantined %s disposable paths.\n' "$RESET_STAGED_COUNT"
+  printf 'Sensitive recovery data remains under %s until intentionally purged.\n' "$RESET_STAGE"
+}
+
+old_enough() {
+  local thread_id="$1"
+  local fallback="${2:-}"
+  local created_at latest=''
+
+  if created_at="$(uuid7_epoch_seconds "$thread_id" 2>/dev/null)"; then
+    latest="$created_at"
+  fi
+  fallback="${fallback%%.*}"
+  if [[ "$fallback" =~ ^[0-9]+$ ]]; then
+    if [[ -z "$latest" || "$fallback" -gt "$latest" ]]; then
+      latest="$fallback"
+    fi
+  fi
+  [[ -n "$latest" && "$latest" -lt "$PRUNE_CUTOFF_EPOCH" ]]
+}
+
+path_mtime_seconds() {
+  if stat -f %m "$1" >/dev/null 2>&1; then
+    stat -f %m "$1"
+  elif stat -c %Y "$1" >/dev/null 2>&1; then
+    stat -c %Y "$1"
+  else
+    printf '0\n'
+  fi
+}
+
+path_size_kib() {
+  du -sk "$1" 2>/dev/null | awk '{print $1}'
+}
+
+mktemp_dir_portable() {
+  local prefix="$1"
+  local directory
+
+  if directory="$(mktemp -d -t "$prefix" 2>/dev/null)"; then
+    printf '%s\n' "$directory"
+    return 0
+  fi
+  mktemp -d "$(clean_temp_root)/${prefix}.XXXXXX"
+}
+
+mktemp_file_in_dir() {
+  local directory="$1"
+  local template="$2"
+
+  mktemp "$directory/$template"
+}
+
+append_unique_line() {
+  local file="$1"
+  local value="$2"
+
+  [[ -n "$value" ]] || return 0
+  grep -Fqx -- "$value" "$file" 2>/dev/null || printf '%s\n' "$value" >>"$file"
+}
+
+file_has_line() {
+  local file="$1"
+  local value="$2"
+
+  [[ -s "$file" ]] && grep -Fqx -- "$value" "$file" 2>/dev/null
+}
+
+count_lines() {
+  local file="$1"
+
+  if [[ -s "$file" ]]; then
+    wc -l <"$file" | tr -d '[:space:]'
+  else
+    printf '0\n'
+  fi
+}
+
+sqlite_table_exists() {
+  local database="$1"
+  local table="$2"
+
+  [[ "$(sqlite3 -batch "$database" \
+    "SELECT count(*) FROM sqlite_schema WHERE type='table' AND name='$table';")" == 1 ]]
+}
+
+sqlite_column_exists() {
+  local database="$1"
+  local table="$2"
+  local column="$3"
+
+  [[ "$(sqlite3 -batch "$database" "PRAGMA table_info($table);" | awk -F'|' -v column="$column" '$2 == column { print 1 }')" == 1 ]]
+}
+
+sql_in_list_from_file() {
+  local file="$1"
+
+  [[ -s "$file" ]] || return 0
+  sed "s/'/''/g; s/^/'/; s/$/'/" "$file" | paste -sd, -
+}
 
 usage() {
   cat <<'EOF'
@@ -39,69 +912,636 @@ Environment:
 EOF
 }
 
-DRY_RUN=0
-SKIP_CONFIRM=0
-FORCE=0
-CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
-CODEX_HOME_ARG_SET=0
-GRACE_MINUTES="${CLEAN_CODEX_GRACE_MINUTES:-15}"
+prune_prepare_workspace() {
+  if [[ -n "${CLEAN_CODEX_TEMP_DIR:-}" && -d "$CLEAN_CODEX_TEMP_DIR" ]]; then
+    rm -rf -- "$CLEAN_CODEX_TEMP_DIR"
+  fi
+  CLEAN_CODEX_TEMP_DIR="$(mktemp_dir_portable clean-codex)"
+  PRUNE_WORKDIR="$CLEAN_CODEX_TEMP_DIR/prune"
+  mkdir -p -- "$PRUNE_WORKDIR"
 
-while [[ $# -gt 0 ]]; do
-  case "$1" in
-  -n | --dry-run)
-    DRY_RUN=1
-    ;;
-  -y | --yes)
-    SKIP_CONFIRM=1
-    ;;
-  -f | --force)
-    FORCE=1
-    ;;
-  -h | --help)
-    usage
-    exit 0
-    ;;
-  -*)
-    echo "Unknown option: $1" >&2
-    usage >&2
-    exit 1
-    ;;
-  *)
-    if [[ "$CODEX_HOME_ARG_SET" -eq 1 ]]; then
-      echo "Only one codex_home argument is supported." >&2
-      usage >&2
-      exit 1
+  PRUNE_KEEP_IDS_FILE="$PRUNE_WORKDIR/keep_ids.txt"
+  PRUNE_REMOVE_PRIMARY_IDS_FILE="$PRUNE_WORKDIR/remove_primary_ids.txt"
+  PRUNE_REMOVE_LEGACY_IDS_FILE="$PRUNE_WORKDIR/remove_legacy_ids.txt"
+  PRUNE_RETIRED_IDS_FILE="$PRUNE_WORKDIR/retired_ids.txt"
+  PRUNE_CANDIDATES_FILE="$PRUNE_WORKDIR/candidates.tsv"
+  PRUNE_RELATED_DB_SPECS_FILE="$PRUNE_WORKDIR/related_db_specs.tsv"
+  PRUNE_CHECKED_DBS_FILE="$PRUNE_WORKDIR/checked_dbs.txt"
+  : >"$PRUNE_KEEP_IDS_FILE"
+  : >"$PRUNE_REMOVE_PRIMARY_IDS_FILE"
+  : >"$PRUNE_REMOVE_LEGACY_IDS_FILE"
+  : >"$PRUNE_RETIRED_IDS_FILE"
+  : >"$PRUNE_CANDIDATES_FILE"
+  : >"$PRUNE_RELATED_DB_SPECS_FILE"
+  : >"$PRUNE_CHECKED_DBS_FILE"
+  PRUNE_PRIMARY_COUNT=0
+  PRUNE_LEGACY_COUNT=0
+  PRUNE_RELATED_ID_COUNT=0
+  PRUNE_METADATA_REMOVED=0
+  PRUNE_FILE_COUNT=0
+  PRUNE_CANDIDATE_SIZE_KIB=0
+}
+
+prune_thread_is_kept() {
+  file_has_line "$PRUNE_KEEP_IDS_FILE" "$1"
+}
+
+prune_thread_is_stale() {
+  local thread_id="$1"
+
+  prune_thread_is_kept "$thread_id" && return 1
+  file_has_line "$PRUNE_RETIRED_IDS_FILE" "$thread_id" && return 0
+  old_enough "$thread_id"
+}
+
+prune_latest_versioned_db() {
+  local root="$1"
+  local kind="$2"
+  local path version
+  local best_version=-1
+  local best_path=''
+
+  while IFS= read -r path; do
+    version="$(basename -- "$path" | sed -n "s/^${kind}_\\([0-9][0-9]*\\)\\.sqlite$/\\1/p")"
+    [[ -n "$version" ]] || continue
+    if [[ "$best_version" -lt "$version" ]]; then
+      best_version="$version"
+      best_path="$path"
     fi
-    CODEX_HOME="$1"
-    CODEX_HOME_ARG_SET=1
-    ;;
-  esac
-  shift
-done
+  done < <(compgen -G "$root/${kind}_*.sqlite" || true)
+  if [[ -n "$best_path" ]]; then
+    printf '%s\n' "$best_path"
+  fi
+  return 0
+}
 
-CODEX_HOME="${CODEX_HOME%/}"
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-STATE_CLEANER="${SCRIPT_DIR}/clean-codex-state.py"
+prune_add_candidate() {
+  local kind="$1"
+  local path="$2"
+  local thread_id="${3:-}"
+  local kib
 
-if [[ ! -d "$CODEX_HOME" ]]; then
-  echo "Codex home not found: $CODEX_HOME" >&2
-  exit 1
-fi
+  printf '%s\t%s\t%s\n' "$kind" "$path" "$thread_id" >>"$PRUNE_CANDIDATES_FILE"
+  PRUNE_FILE_COUNT=$((PRUNE_FILE_COUNT + 1))
+  kib="$(path_size_kib "$path")"
+  PRUNE_CANDIDATE_SIZE_KIB=$((PRUNE_CANDIDATE_SIZE_KIB + ${kib:-0}))
+}
 
-if [[ ! "$GRACE_MINUTES" =~ ^[0-9]+$ ]]; then
-  echo "CLEAN_CODEX_GRACE_MINUTES must be a non-negative integer." >&2
-  exit 1
-fi
+prune_collect_primary_ids() {
+  local database="$1"
+  local archived_expression updated_expression query
+  local thread_id rollout_path archived updated_at archived_path
 
-if ! command -v python3 >/dev/null 2>&1; then
-  echo "python3 is required for referentially consistent Codex cleanup." >&2
-  exit 1
-fi
+  archived_expression=0
+  updated_expression='NULL'
+  sqlite_column_exists "$database" threads archived && archived_expression=archived
+  if sqlite_column_exists "$database" threads updated_at_ms; then
+    updated_expression='CAST(updated_at_ms / 1000 AS INTEGER)'
+  elif sqlite_column_exists "$database" threads updated_at; then
+    updated_expression='CAST(updated_at AS INTEGER)'
+  fi
 
-if [[ ! -f "$STATE_CLEANER" ]]; then
-  echo "Missing state cleanup helper: $STATE_CLEANER" >&2
-  exit 1
-fi
+  query="SELECT id, rollout_path, $archived_expression, $updated_expression FROM threads;"
+  while IFS=$'\t' read -r thread_id rollout_path archived updated_at; do
+    [[ -n "$thread_id" ]] || continue
+    thread_id="$(lowercase "$thread_id")"
+    if [[ "$rollout_path" != /* ]]; then
+      rollout_path="$PRUNE_CODEX_HOME/$rollout_path"
+    fi
+    archived_path=0
+    path_within "$rollout_path" "$PRUNE_CODEX_HOME/archived_sessions" && archived_path=1
+    if { [[ "$archived" == 1 || "$archived" == true || "$archived_path" -eq 1 || ! -f "$rollout_path" ]]; } &&
+      old_enough "$thread_id" "$updated_at"; then
+      append_unique_line "$PRUNE_REMOVE_PRIMARY_IDS_FILE" "$thread_id"
+    else
+      append_unique_line "$PRUNE_KEEP_IDS_FILE" "$thread_id"
+    fi
+  done < <(sqlite3 -batch -tabs "$database" "$query" 2>/dev/null || true)
+}
+
+prune_collect_legacy_ids() {
+  local database="$1"
+  local archived_expression updated_expression query
+  local thread_id _rollout_path _archived updated_at
+
+  archived_expression=0
+  updated_expression='NULL'
+  sqlite_column_exists "$database" threads archived && archived_expression=archived
+  if sqlite_column_exists "$database" threads updated_at_ms; then
+    updated_expression='CAST(updated_at_ms / 1000 AS INTEGER)'
+  elif sqlite_column_exists "$database" threads updated_at; then
+    updated_expression='CAST(updated_at AS INTEGER)'
+  fi
+
+  query="SELECT id, rollout_path, $archived_expression, $updated_expression FROM threads;"
+  while IFS=$'\t' read -r thread_id _rollout_path _archived updated_at; do
+    [[ -n "$thread_id" ]] || continue
+    thread_id="$(lowercase "$thread_id")"
+    prune_thread_is_kept "$thread_id" && continue
+    if old_enough "$thread_id" "$updated_at"; then
+      append_unique_line "$PRUNE_REMOVE_LEGACY_IDS_FILE" "$thread_id"
+    fi
+  done < <(sqlite3 -batch -tabs "$database" "$query" 2>/dev/null || true)
+}
+
+prune_collect_candidates() {
+  local dirname base path thread_id mtime
+
+  for dirname in sessions archived_sessions; do
+    base="$PRUNE_CODEX_HOME/$dirname"
+    [[ -d "$base" ]] || continue
+    while IFS= read -r path; do
+      thread_id="$(extract_uuid "$(basename -- "$path")")"
+      [[ -n "$thread_id" ]] || continue
+      thread_id="$(lowercase "$thread_id")"
+      mtime="$(path_mtime_seconds "$path")"
+      old_enough "$thread_id" "$mtime" || continue
+      if [[ "$dirname" == archived_sessions ]] || ! prune_thread_is_kept "$thread_id"; then
+        prune_add_candidate rollout "$path" "$thread_id"
+      fi
+    done < <(find "$base" -type f -name '*.jsonl' -print 2>/dev/null || true)
+  done
+
+  base="$PRUNE_CODEX_HOME/shell_snapshots"
+  if [[ -d "$base" ]]; then
+    while IFS= read -r path; do
+      thread_id="$(extract_uuid "$(basename -- "$path")")"
+      [[ -n "$thread_id" ]] || continue
+      thread_id="$(lowercase "$thread_id")"
+      prune_thread_is_kept "$thread_id" && continue
+      mtime="$(path_mtime_seconds "$path")"
+      old_enough "$thread_id" "$mtime" || continue
+      prune_add_candidate "shell snapshot" "$path" "$thread_id"
+    done < <(find "$base" -type f -name '*.sh' -print 2>/dev/null || true)
+  fi
+
+  base="$PRUNE_CODEX_HOME/generated_images"
+  if [[ -d "$base" ]]; then
+    shopt -s nullglob dotglob
+    for path in "$base"/*; do
+      [[ -d "$path" ]] || continue
+      thread_id="$(basename -- "$path")"
+      is_uuid "$thread_id" || continue
+      thread_id="$(lowercase "$thread_id")"
+      prune_thread_is_kept "$thread_id" && continue
+      mtime="$(path_mtime_seconds "$path")"
+      old_enough "$thread_id" "$mtime" || continue
+      prune_add_candidate "generated image directory" "$path" "$thread_id"
+    done
+    shopt -u nullglob dotglob
+  fi
+
+  base="$PRUNE_CODEX_HOME/visualizations"
+  if [[ -d "$base" ]]; then
+    while IFS= read -r path; do
+      thread_id="$(basename -- "$path")"
+      is_uuid "$thread_id" || continue
+      thread_id="$(lowercase "$thread_id")"
+      prune_thread_is_kept "$thread_id" && continue
+      mtime="$(path_mtime_seconds "$path")"
+      old_enough "$thread_id" "$mtime" || continue
+      prune_add_candidate "visualization directory" "$path" "$thread_id"
+    done < <(find "$base" -type d -print 2>/dev/null || true)
+  fi
+
+  while IFS= read -r path; do
+    [[ -n "$path" ]] || continue
+    prune_add_candidate "obsolete cleanup backup" "$path"
+  done < <(compgen -G "$PRUNE_CODEX_HOME/state_*.sqlite.pre-orphan-prune-*.bak*" || true)
+}
+
+prune_collect_related_db_ids_for_path() {
+  local path="$1"
+  local table="$2"
+  local column="$3"
+  local ids_file thread_id count
+
+  [[ -f "$path" ]] || return 0
+  append_unique_line "$PRUNE_CHECKED_DBS_FILE" "$path"
+  sqlite_table_exists "$path" "$table" || return 0
+
+  ids_file="$(mktemp_file_in_dir "$PRUNE_WORKDIR" "related-db.XXXXXX")"
+  : >"$ids_file"
+  while IFS= read -r thread_id; do
+    [[ -n "$thread_id" ]] || continue
+    thread_id="$(lowercase "$thread_id")"
+    prune_thread_is_stale "$thread_id" || continue
+    append_unique_line "$ids_file" "$thread_id"
+  done < <(sqlite3 -batch "$path" \
+    "SELECT DISTINCT $column FROM $table WHERE $column IS NOT NULL;" 2>/dev/null || true)
+
+  count="$(count_lines "$ids_file")"
+  if [[ "$count" -gt 0 ]]; then
+    printf '%s\t%s\t%s\t%s\n' "$path" "$table" "$column" "$ids_file" >>"$PRUNE_RELATED_DB_SPECS_FILE"
+    PRUNE_RELATED_ID_COUNT=$((PRUNE_RELATED_ID_COUNT + count))
+  fi
+}
+
+prune_jsonl_removed_count() {
+  local path="$1"
+  local field="$2"
+  local line value thread_id
+  local removed=0
+
+  [[ -f "$path" ]] || {
+    printf '0\n'
+    return 0
+  }
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    [[ -n "$line" ]] || continue
+    value="$(printf '%s\n' "$line" | jq -er --arg field "$field" '.[$field] // empty' 2>/dev/null || true)"
+    [[ -n "$value" ]] || continue
+    thread_id="$(thread_ref_value "$value" 2>/dev/null || true)"
+    [[ -n "$thread_id" ]] || continue
+    if prune_thread_is_stale "$thread_id"; then
+      removed=$((removed + 1))
+    fi
+  done <"$path"
+  printf '%s\n' "$removed"
+}
+
+prune_collect_global_state_stale_ids() {
+  local path="$1"
+  local ids_file="$2"
+  local value thread_id
+  local removed=0
+
+  : >"$ids_file"
+  [[ -f "$path" ]] || {
+    printf '0\n'
+    return 0
+  }
+  while IFS= read -r value; do
+    [[ -n "$value" ]] || continue
+    thread_id="$(thread_ref_value "$value" 2>/dev/null || true)"
+    [[ -n "$thread_id" ]] || continue
+    if prune_thread_is_stale "$thread_id"; then
+      append_unique_line "$ids_file" "$thread_id"
+      removed=$((removed + 1))
+    fi
+  done < <(
+    jq -r '
+      .["projectless-thread-ids"][]?,
+      .["pinned-thread-ids"][]?,
+      (.["thread-workspace-root-hints"] // {} | keys[]?),
+      (.["queued-follow-ups"] // {} | keys[]?),
+      (.["thread-detail-levels"] // {} | keys[]?),
+      (.["thread-projectless-output-directories"] // {} | keys[]?),
+      (.["thread-project-assignments"] // {} | keys[]?),
+      (.["sidebar-project-thread-orders"] // {} | .[]? | .threadIds[]?),
+      (."electron-persisted-atom-state"["composer-prompt-drafts-v1"] // {} | keys[]?),
+      (."electron-persisted-atom-state"["heartbeat-thread-permissions-by-id"] // {} | keys[]?),
+      (."electron-persisted-atom-state"["prompt-history"] // {} | keys[]?),
+      (."electron-persisted-atom-state"["unread-thread-ids-by-host-v1"] // {} | .[]?[]?)
+    ' "$path" 2>/dev/null || true
+  )
+  printf '%s\n' "$removed"
+}
+
+prune_build_plan() {
+  local related_path related_legacy kind table column ids_file removed
+
+  prune_prepare_workspace
+  PRUNE_STATE_DB="$(prune_latest_versioned_db "$PRUNE_CODEX_HOME" state)"
+  [[ -n "$PRUNE_STATE_DB" ]] || reset_die "No state_N.sqlite database found under $PRUNE_CODEX_HOME"
+  append_unique_line "$PRUNE_CHECKED_DBS_FILE" "$PRUNE_STATE_DB"
+  PRUNE_LEGACY_STATE_DB="$PRUNE_CODEX_HOME/sqlite/$(basename -- "$PRUNE_STATE_DB")"
+  [[ -f "$PRUNE_LEGACY_STATE_DB" ]] || PRUNE_LEGACY_STATE_DB=''
+  [[ -z "$PRUNE_LEGACY_STATE_DB" ]] || append_unique_line "$PRUNE_CHECKED_DBS_FILE" "$PRUNE_LEGACY_STATE_DB"
+
+  prune_collect_primary_ids "$PRUNE_STATE_DB"
+  [[ -z "$PRUNE_LEGACY_STATE_DB" ]] || prune_collect_legacy_ids "$PRUNE_LEGACY_STATE_DB"
+
+  cat "$PRUNE_REMOVE_PRIMARY_IDS_FILE" "$PRUNE_REMOVE_LEGACY_IDS_FILE" 2>/dev/null | sort -u >"$PRUNE_RETIRED_IDS_FILE"
+  PRUNE_PRIMARY_COUNT="$(count_lines "$PRUNE_REMOVE_PRIMARY_IDS_FILE")"
+  PRUNE_LEGACY_COUNT="$(count_lines "$PRUNE_REMOVE_LEGACY_IDS_FILE")"
+  PRUNE_KEEP_COUNT="$(count_lines "$PRUNE_KEEP_IDS_FILE")"
+
+  prune_collect_candidates
+
+  for kind in logs goals memories; do
+    case "$kind" in
+    logs)
+      table=logs
+      column=thread_id
+      ;;
+    goals)
+      table=thread_goals
+      column=thread_id
+      ;;
+    memories)
+      table=stage1_outputs
+      column=thread_id
+      ;;
+    esac
+    related_path="$(prune_latest_versioned_db "$PRUNE_CODEX_HOME" "$kind")"
+    if [[ -n "$related_path" ]]; then
+      prune_collect_related_db_ids_for_path "$related_path" "$table" "$column"
+      related_legacy="$PRUNE_CODEX_HOME/sqlite/$(basename -- "$related_path")"
+      [[ -f "$related_legacy" ]] && prune_collect_related_db_ids_for_path "$related_legacy" "$table" "$column"
+    fi
+  done
+
+  PRUNE_METADATA_REMOVED=0
+  removed="$(prune_jsonl_removed_count "$PRUNE_CODEX_HOME/history.jsonl" session_id)"
+  PRUNE_METADATA_REMOVED=$((PRUNE_METADATA_REMOVED + removed))
+  removed="$(prune_jsonl_removed_count "$PRUNE_CODEX_HOME/session_index.jsonl" id)"
+  PRUNE_METADATA_REMOVED=$((PRUNE_METADATA_REMOVED + removed))
+  ids_file="$(mktemp_file_in_dir "$PRUNE_WORKDIR" "global-state.XXXXXX")"
+  removed="$(prune_collect_global_state_stale_ids "$PRUNE_CODEX_HOME/.codex-global-state.json" "$ids_file")"
+  PRUNE_METADATA_REMOVED=$((PRUNE_METADATA_REMOVED + removed))
+  ids_file="$(mktemp_file_in_dir "$PRUNE_WORKDIR" "global-state-bak.XXXXXX")"
+  removed="$(prune_collect_global_state_stale_ids "$PRUNE_CODEX_HOME/.codex-global-state.json.bak" "$ids_file")"
+  PRUNE_METADATA_REMOVED=$((PRUNE_METADATA_REMOVED + removed))
+}
+
+prune_print_summary() {
+  local verb="$1"
+  local count kind
+
+  echo "Session consistency for: $PRUNE_CODEX_HOME"
+  echo "  State database: $PRUNE_STATE_DB"
+  echo "  Preserved registered threads: $PRUNE_KEEP_COUNT"
+  echo "  $verb thread rows: $PRUNE_PRIMARY_COUNT primary, $PRUNE_LEGACY_COUNT legacy"
+  echo "  $verb dependent SQLite thread IDs: $PRUNE_RELATED_ID_COUNT"
+  echo "  $verb stale metadata entries: $PRUNE_METADATA_REMOVED"
+  if [[ "$PRUNE_FILE_COUNT" -gt 0 ]]; then
+    while read -r count kind; do
+      echo "  $verb $kind: $count"
+    done < <(cut -f1 "$PRUNE_CANDIDATES_FILE" | sort | uniq -c | awk '{$1=$1; print $1 "\t" substr($0, index($0,$2))}')
+  fi
+  echo "  Candidate file space: $(format_kib "$PRUNE_CANDIDATE_SIZE_KIB")"
+}
+
+prune_delete_ids() {
+  local database="$1"
+  local table="$2"
+  local column="$3"
+  local ids_file="$4"
+  local in_list
+
+  in_list="$(sql_in_list_from_file "$ids_file")"
+  [[ -n "$in_list" ]] || return 0
+  printf 'DELETE FROM "%s" WHERE "%s" IN (%s);' "$table" "$column" "$in_list"
+}
+
+prune_cleanup_state_db() {
+  local database="$1"
+  local removed_ids_file="$2"
+  local sql=''
+  local ids_file in_list parent child thread_id
+
+  [[ -f "$database" ]] || return 0
+
+  if sqlite_table_exists "$database" thread_spawn_edges; then
+    ids_file="$(mktemp_file_in_dir "$PRUNE_WORKDIR" "spawn-edges.XXXXXX")"
+    : >"$ids_file"
+    while IFS=$'\t' read -r parent child; do
+      [[ -n "$parent" ]] || continue
+      parent="$(lowercase "$parent")"
+      child="$(lowercase "$child")"
+      prune_thread_is_stale "$parent" && append_unique_line "$ids_file" "$parent"
+      prune_thread_is_stale "$child" && append_unique_line "$ids_file" "$child"
+    done < <(sqlite3 -batch -tabs "$database" \
+      'SELECT parent_thread_id, child_thread_id FROM thread_spawn_edges;' 2>/dev/null || true)
+    sql="$sql$(prune_delete_ids "$database" thread_spawn_edges parent_thread_id "$ids_file")"
+    sql="$sql$(prune_delete_ids "$database" thread_spawn_edges child_thread_id "$ids_file")"
+  fi
+
+  if sqlite_table_exists "$database" thread_dynamic_tools; then
+    ids_file="$(mktemp_file_in_dir "$PRUNE_WORKDIR" "dynamic-tools.XXXXXX")"
+    : >"$ids_file"
+    while IFS= read -r thread_id; do
+      [[ -n "$thread_id" ]] || continue
+      thread_id="$(lowercase "$thread_id")"
+      prune_thread_is_stale "$thread_id" && append_unique_line "$ids_file" "$thread_id"
+    done < <(sqlite3 -batch "$database" \
+      'SELECT DISTINCT thread_id FROM thread_dynamic_tools WHERE thread_id IS NOT NULL;' 2>/dev/null || true)
+    sql="$sql$(prune_delete_ids "$database" thread_dynamic_tools thread_id "$ids_file")"
+  fi
+
+  if sqlite_table_exists "$database" agent_job_items; then
+    ids_file="$(mktemp_file_in_dir "$PRUNE_WORKDIR" "agent-items.XXXXXX")"
+    : >"$ids_file"
+    while IFS= read -r thread_id; do
+      [[ -n "$thread_id" ]] || continue
+      thread_id="$(lowercase "$thread_id")"
+      prune_thread_is_stale "$thread_id" && append_unique_line "$ids_file" "$thread_id"
+    done < <(sqlite3 -batch "$database" \
+      'SELECT DISTINCT assigned_thread_id FROM agent_job_items WHERE assigned_thread_id IS NOT NULL;' 2>/dev/null || true)
+    in_list="$(sql_in_list_from_file "$ids_file")"
+    if [[ -n "$in_list" ]]; then
+      sql="$sql UPDATE agent_job_items SET assigned_thread_id=NULL WHERE assigned_thread_id IN ($in_list);"
+    fi
+  fi
+
+  sql="$sql$(prune_delete_ids "$database" threads id "$removed_ids_file")"
+  [[ -n "$sql" ]] || return 0
+  sqlite3 -batch -cmd '.timeout 15000' "$database" \
+    "PRAGMA foreign_keys=ON; BEGIN IMMEDIATE; $sql COMMIT; PRAGMA optimize;" >/dev/null ||
+    reset_die "transactional SQLite cleanup failed: $database"
+}
+
+prune_cleanup_related_db() {
+  local database="$1"
+  local table="$2"
+  local column="$3"
+  local ids_file="$4"
+  local in_list
+
+  in_list="$(sql_in_list_from_file "$ids_file")"
+  [[ -n "$in_list" ]] || return 0
+  sqlite3 -batch -cmd '.timeout 15000' "$database" \
+    "BEGIN IMMEDIATE; DELETE FROM \"$table\" WHERE \"$column\" IN ($in_list); COMMIT; PRAGMA optimize;" >/dev/null ||
+    reset_die "transactional SQLite cleanup failed: $database"
+}
+
+prune_atomic_replace() {
+  local path="$1"
+  local temporary="$2"
+
+  if [[ -f "$path" ]]; then
+    cp "$path" "$temporary"
+  else
+    : >"$temporary"
+  fi
+}
+
+prune_rewrite_jsonl() {
+  local path="$1"
+  local field="$2"
+  local temporary line value thread_id removed=0
+
+  [[ -f "$path" ]] || return 0
+  temporary="$(mktemp_file_in_dir "$(dirname -- "$path")" ".$(basename -- "$path").XXXXXX")"
+  : >"$temporary"
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    if [[ -n "$line" ]]; then
+      value="$(printf '%s\n' "$line" | jq -er --arg field "$field" '.[$field] // empty' 2>/dev/null || true)"
+      if [[ -n "$value" ]]; then
+        thread_id="$(thread_ref_value "$value" 2>/dev/null || true)"
+        if [[ -n "$thread_id" ]] && prune_thread_is_stale "$thread_id"; then
+          removed=$((removed + 1))
+          continue
+        fi
+      fi
+    fi
+    printf '%s\n' "$line" >>"$temporary"
+  done <"$path"
+  if [[ "$removed" -gt 0 ]]; then
+    mv -- "$temporary" "$path"
+  else
+    rm -f -- "$temporary"
+  fi
+}
+
+prune_rewrite_global_state() {
+  local path="$1"
+  local ids_file stale_json temporary removed
+
+  [[ -f "$path" ]] || return 0
+  ids_file="$(mktemp_file_in_dir "$PRUNE_WORKDIR" "stale-ids.XXXXXX")"
+  removed="$(prune_collect_global_state_stale_ids "$path" "$ids_file")"
+  [[ "$removed" -gt 0 ]] || return 0
+
+  stale_json="$(mktemp_file_in_dir "$PRUNE_WORKDIR" "stale-ids-json.XXXXXX")"
+  if [[ -s "$ids_file" ]]; then
+    jq -R . <"$ids_file" | jq -s . >"$stale_json"
+  else
+    printf '[]\n' >"$stale_json"
+  fi
+
+  temporary="$(mktemp_file_in_dir "$(dirname -- "$path")" ".$(basename -- "$path").XXXXXX")"
+  jq --slurpfile stale "$stale_json" '
+    def thread_ref:
+      if type == "string" and test("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$") then
+        ascii_downcase
+      elif type == "string" and startswith("local:") and (. [6:] | test("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")) then
+        .[6:] | ascii_downcase
+      else
+        null
+      end;
+    def keep_ref:
+      (thread_ref) as $id | ($id == null or (($stale[0] | index($id)) == null));
+    def prune_list:
+      if type == "array" then map(select(keep_ref)) else . end;
+    def prune_map:
+      if type == "object" then with_entries(select(.key | keep_ref)) else . end;
+    .["projectless-thread-ids"] |= prune_list
+    | .["pinned-thread-ids"] |= prune_list
+    | .["thread-workspace-root-hints"] |= prune_map
+    | .["queued-follow-ups"] |= prune_map
+    | .["thread-detail-levels"] |= prune_map
+    | .["thread-projectless-output-directories"] |= prune_map
+    | .["thread-project-assignments"] |= prune_map
+    | .["sidebar-project-thread-orders"] |=
+        (if type == "object" then
+           with_entries(
+             .value |= (
+               if type == "object" and (.threadIds | type? == "array") then
+                 .threadIds |= map(select(keep_ref))
+               else .
+               end
+             )
+           )
+         else . end)
+    | .["electron-persisted-atom-state"] |=
+        (if type == "object" then
+           .["composer-prompt-drafts-v1"] |= prune_map
+           | .["heartbeat-thread-permissions-by-id"] |= prune_map
+           | .["prompt-history"] |= prune_map
+           | .["unread-thread-ids-by-host-v1"] |=
+               (if type == "object" then with_entries(.value |= prune_list) else . end)
+         else . end)
+  ' "$path" >"$temporary" || reset_die "unable to safely rewrite desktop state: $path"
+  mv -- "$temporary" "$path"
+}
+
+prune_quarantine_candidates() {
+  local stage="$1"
+  local sorted _depth kind path relative destination thread_id
+
+  sorted="$(mktemp_file_in_dir "$PRUNE_WORKDIR" "sorted-candidates.XXXXXX")"
+  awk -F'\t' '{depth=gsub(/\//, "/", $2); printf "%s\t%s\t%s\t%s\n", depth, $1, $2, $3}' \
+    "$PRUNE_CANDIDATES_FILE" | sort -rn -k1,1 >"$sorted"
+
+  while IFS=$'\t' read -r _depth kind path thread_id; do
+    [[ -e "$path" || -L "$path" ]] || continue
+    [[ ! -L "$path" ]] || reset_die "refusing symlinked cleanup target: $path"
+    path_within "$path" "$PRUNE_CODEX_HOME" ||
+      reset_die "cleanup target escapes the Codex home: $path"
+    relative="${path#"$PRUNE_CODEX_HOME"/}"
+    destination="$stage/$relative"
+    mkdir -p -- "$(dirname -- "$destination")"
+    mv -- "$path" "$destination"
+  done <"$sorted"
+}
+
+prune_prune_empty_dirs() {
+  local base path
+
+  for base in "$PRUNE_CODEX_HOME/sessions" "$PRUNE_CODEX_HOME/archived_sessions" "$PRUNE_CODEX_HOME/visualizations"; do
+    [[ -d "$base" ]] || continue
+    while IFS= read -r path; do
+      [[ "$path" == "$base" ]] && continue
+      rmdir "$path" 2>/dev/null || true
+    done < <(find "$base" -depth -type d -print 2>/dev/null || true)
+  done
+}
+
+prune_verify_databases() {
+  local path result
+
+  while IFS= read -r path; do
+    [[ -f "$path" ]] || continue
+    result="$(sqlite3 -batch "$path" 'PRAGMA quick_check;')" ||
+      reset_die "SQLite integrity check failed for $path"
+    [[ "$result" == ok ]] || reset_die "SQLite integrity check failed for $path: $result"
+  done <"$PRUNE_CHECKED_DBS_FILE"
+}
+
+prune_apply_plan() {
+  local stage=''
+  local existing_candidates=0
+  local path table column ids_file kind thread_id
+
+  while IFS=$'\t' read -r kind path thread_id; do
+    [[ -e "$path" || -L "$path" ]] || continue
+    [[ ! -L "$path" ]] || reset_die "refusing symlinked cleanup target: $path"
+    path_within "$path" "$PRUNE_CODEX_HOME" ||
+      reset_die "cleanup target escapes the Codex home: $path"
+    existing_candidates=$((existing_candidates + 1))
+  done <"$PRUNE_CANDIDATES_FILE"
+
+  if [[ "$existing_candidates" -gt 0 ]]; then
+    mkdir -p -- "$RESET_RECOVERY"
+    chmod 700 "$RESET_RECOVERY"
+    stage="$RESET_RECOVERY/orphan-prune-$(date -u +%Y%m%dT%H%M%SZ)-$$"
+    mkdir -m 700 -- "$stage"
+  fi
+
+  prune_cleanup_state_db "$PRUNE_STATE_DB" "$PRUNE_REMOVE_PRIMARY_IDS_FILE"
+  [[ -z "$PRUNE_LEGACY_STATE_DB" ]] || prune_cleanup_state_db "$PRUNE_LEGACY_STATE_DB" "$PRUNE_REMOVE_LEGACY_IDS_FILE"
+  while IFS=$'\t' read -r path table column ids_file; do
+    prune_cleanup_related_db "$path" "$table" "$column" "$ids_file"
+  done <"$PRUNE_RELATED_DB_SPECS_FILE"
+
+  prune_rewrite_jsonl "$PRUNE_CODEX_HOME/history.jsonl" session_id
+  prune_rewrite_jsonl "$PRUNE_CODEX_HOME/session_index.jsonl" id
+  prune_rewrite_global_state "$PRUNE_CODEX_HOME/.codex-global-state.json"
+  prune_rewrite_global_state "$PRUNE_CODEX_HOME/.codex-global-state.json.bak"
+
+  [[ -z "$stage" ]] || prune_quarantine_candidates "$stage"
+  prune_prune_empty_dirs
+  prune_verify_databases
+
+  prune_build_plan
+  if [[ "$PRUNE_PRIMARY_COUNT" -gt 0 || "$PRUNE_LEGACY_COUNT" -gt 0 ||
+    "$PRUNE_RELATED_ID_COUNT" -gt 0 || "$PRUNE_METADATA_REMOVED" -gt 0 ||
+    "$PRUNE_FILE_COUNT" -gt 0 ]]; then
+    reset_die "post-cleanup consistency audit still found work"
+  fi
+}
 
 running_codex_processes() {
   ps -eo pid=,command= 2>/dev/null | awk -v self="$$" '
@@ -170,139 +1610,6 @@ format_kib() {
     '
 }
 
-codex_running=0
-process_detection_available=1
-if running="$(running_codex_processes)"; then
-  if [[ -n "$running" ]]; then
-    codex_running=1
-    if [[ "$FORCE" -ne 1 ]]; then
-      echo "Codex appears to still be running. Close it before cleaning local session data." >&2
-      echo "$running" >&2
-      echo "Re-run with --force for WAL-safe live cleanup." >&2
-      exit 1
-    fi
-  fi
-else
-  process_detection_available=0
-  if [[ "$FORCE" -ne 1 ]]; then
-    echo "Unable to determine whether Codex is running; refusing unsafe cleanup." >&2
-    echo "Re-run with --force to assume Codex is live and use conservative cleanup." >&2
-    exit 1
-  fi
-  codex_running=1
-fi
-
-volatile_targets=(
-  "tmp"
-  "log"
-  "ambient-suggestions"
-)
-
-cache_targets=(
-  ".tmp/app-server-remote-plugin-sync-v1"
-  ".tmp/plugins.sha"
-  ".tmp/plugin-share-local-paths-v1.json"
-  ".tmp/legacy-primary-runtime-skills"
-  "cache/codex_apps_tools"
-  "cloud-requirements-cache.json"
-  "models_cache.json"
-)
-
-cleanup_glob_targets=(
-  ".tmp/plugins-backup-*"
-  ".codex-global-state.json*.tmp-*"
-  "..codex-global-state.json*.tmp-*"
-)
-
-declare -a targets=()
-declare -a skipped_volatile_targets=()
-target_count=0
-skipped_volatile_target_count=0
-
-add_target() {
-  local path="$1"
-  if [[ -e "$path" || -L "$path" ]]; then
-    targets+=("$path")
-    target_count=$((target_count + 1))
-  fi
-}
-
-for rel_path in "${cache_targets[@]}"; do
-  add_target "${CODEX_HOME}/${rel_path}"
-done
-
-for rel_path in "${volatile_targets[@]}"; do
-  path="${CODEX_HOME}/${rel_path}"
-  if [[ "$codex_running" -eq 1 ]]; then
-    if [[ -e "$path" || -L "$path" ]]; then
-      skipped_volatile_targets+=("$path")
-      skipped_volatile_target_count=$((skipped_volatile_target_count + 1))
-    fi
-  else
-    add_target "$path"
-  fi
-done
-
-shopt -s nullglob
-for pattern in "${cleanup_glob_targets[@]}"; do
-  while IFS= read -r match; do
-    add_target "$match"
-  done < <(compgen -G "$CODEX_HOME/$pattern" || true)
-done
-shopt -u nullglob
-
-estimated_kib=0
-if [[ "$target_count" -gt 0 ]]; then
-  for path in "${targets[@]}"; do
-    path_kib="$(du -sk "$path" 2>/dev/null | awk '{print $1}')"
-    estimated_kib="$((estimated_kib + ${path_kib:-0}))"
-  done
-fi
-
-echo "Codex home: $CODEX_HOME"
-if [[ "$codex_running" -eq 1 ]]; then
-  echo "Codex is running: using SQLite transactions and a ${GRACE_MINUTES}-minute registration grace window."
-  if [[ "$process_detection_available" -eq 0 ]]; then
-    echo "Process detection was unavailable, so volatile runtime paths will be preserved."
-  fi
-fi
-python3 "$STATE_CLEANER" --dry-run --grace-minutes "$GRACE_MINUTES" "$CODEX_HOME"
-
-if [[ "$target_count" -gt 0 ]]; then
-  echo "Disposable cache paths:"
-  for path in "${targets[@]}"; do
-    echo "  $path"
-  done
-  echo "Estimated cache space: $(format_kib "$estimated_kib")"
-fi
-
-if [[ "$skipped_volatile_target_count" -gt 0 ]]; then
-  echo "Preserving volatile paths while Codex is running:"
-  for path in "${skipped_volatile_targets[@]}"; do
-    echo "  $path"
-  done
-fi
-
-echo "Live thread rollouts, state rows, indexes, and shell snapshots are preserved as one consistency set."
-
-if [[ "$DRY_RUN" -eq 1 ]]; then
-  exit 0
-fi
-
-if [[ "$SKIP_CONFIRM" -ne 1 ]]; then
-  printf 'Apply this Codex cleanup? [y/N] '
-  read -r response
-  case "$response" in
-  [Yy] | [Yy][Ee][Ss]) ;;
-  *)
-    echo "Aborted."
-    exit 1
-    ;;
-  esac
-fi
-
-python3 "$STATE_CLEANER" --apply --grace-minutes "$GRACE_MINUTES" "$CODEX_HOME"
-
 path_has_open_handles() {
   local path="$1"
 
@@ -317,29 +1624,251 @@ path_has_open_handles() {
   fi
 }
 
-removed_cache_count=0
-if [[ "$target_count" -gt 0 ]]; then
-  for path in "${targets[@]}"; do
-    if [[ ! -e "$path" && ! -L "$path" ]]; then
-      continue
-    fi
+prune_run() {
+  local DRY_RUN=0
+  local SKIP_CONFIRM=0
+  local FORCE=0
+  local CODEX_HOME_ARG_SET=0
+  local GRACE_MINUTES="${CLEAN_CODEX_GRACE_MINUTES:-15}"
+  local CODEX_HOME="${CODEX_HOME:-$HOME/.codex}"
+  local codex_running=0
+  local process_detection_available=1
+  local running
+  local rel_path path pattern match path_kib lsof_status
+  local estimated_kib=0
+  local removed_cache_count=0
+  local LEGACY_STAGE=''
 
-    if path_has_open_handles "$path"; then
-      echo "Preserving open cache path: $path"
-      continue
-    else
-      lsof_status=$?
-    fi
-
-    if [[ "$lsof_status" -eq 2 && "$codex_running" -eq 1 ]]; then
-      echo "Preserving cache path because lsof is unavailable while Codex is running: $path"
-      continue
-    fi
-
-    rm -rf -- "$path"
-    removed_cache_count=$((removed_cache_count + 1))
+  shift
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+    -n | --dry-run)
+      DRY_RUN=1
+      ;;
+    -y | --yes)
+      SKIP_CONFIRM=1
+      ;;
+    -f | --force)
+      FORCE=1
+      ;;
+    -h | --help)
+      usage
+      return 0
+      ;;
+    -*)
+      reset_die "Unknown option: $1"
+      ;;
+    *)
+      [[ "$CODEX_HOME_ARG_SET" -eq 0 ]] || reset_die "Only one codex_home argument is supported."
+      CODEX_HOME="$1"
+      CODEX_HOME_ARG_SET=1
+      ;;
+    esac
+    shift
   done
+
+  CODEX_HOME="${CODEX_HOME%/}"
+  PRUNE_CODEX_HOME="$(reset_resolve_directory "$CODEX_HOME")" ||
+    reset_die "Codex home is missing or symlinked: $CODEX_HOME"
+  reset_assert_safe_root "$PRUNE_CODEX_HOME" "Codex home"
+  RESET_HOME="$PRUNE_CODEX_HOME"
+  RESET_RECOVERY_OVERRIDE="$(printenv CLEAN_CODEX_TRASH_DIR || true)"
+  RESET_RECOVERY="$(reset_recovery_root)"
+
+  [[ "$GRACE_MINUTES" =~ ^[0-9]+$ ]] ||
+    reset_die "CLEAN_CODEX_GRACE_MINUTES must be a non-negative integer."
+  PRUNE_CUTOFF_EPOCH="$(($(date +%s) - (GRACE_MINUTES * 60)))"
+
+  reset_require_command sqlite3
+  reset_require_command jq
+  reset_require_command lsof
+  reset_require_command cksum
+
+  if running="$(running_codex_processes)"; then
+    if [[ -n "$running" ]]; then
+      codex_running=1
+      if [[ "$FORCE" -ne 1 ]]; then
+        echo "Codex appears to still be running. Close it before cleaning local session data." >&2
+        echo "$running" >&2
+        echo "Re-run with --force for WAL-safe live cleanup." >&2
+        return 1
+      fi
+    fi
+  else
+    process_detection_available=0
+    if [[ "$FORCE" -ne 1 ]]; then
+      echo "Unable to determine whether Codex is running; refusing unsafe cleanup." >&2
+      echo "Re-run with --force to assume Codex is live and use conservative cleanup." >&2
+      return 1
+    fi
+    codex_running=1
+  fi
+
+  volatile_targets=(
+    "tmp"
+    "log"
+    "ambient-suggestions"
+  )
+
+  cache_targets=(
+    ".tmp/app-server-remote-plugin-sync-v1"
+    ".tmp/plugins.sha"
+    ".tmp/plugin-share-local-paths-v1.json"
+    ".tmp/legacy-primary-runtime-skills"
+    "cache/codex_apps_tools"
+    "cloud-requirements-cache.json"
+    "models_cache.json"
+  )
+
+  cleanup_glob_targets=(
+    ".tmp/plugins-backup-*"
+    ".codex-global-state.json*.tmp-*"
+    "..codex-global-state.json*.tmp-*"
+  )
+
+  targets=()
+  skipped_volatile_targets=()
+  target_count=0
+  skipped_volatile_target_count=0
+
+  add_target() {
+    local candidate="$1"
+    if [[ -e "$candidate" || -L "$candidate" ]]; then
+      targets+=("$candidate")
+      target_count=$((target_count + 1))
+    fi
+  }
+
+  for rel_path in "${cache_targets[@]}"; do
+    add_target "${PRUNE_CODEX_HOME}/${rel_path}"
+  done
+
+  for rel_path in "${volatile_targets[@]}"; do
+    path="${PRUNE_CODEX_HOME}/${rel_path}"
+    if [[ "$codex_running" -eq 1 ]]; then
+      if [[ -e "$path" || -L "$path" ]]; then
+        skipped_volatile_targets+=("$path")
+        skipped_volatile_target_count=$((skipped_volatile_target_count + 1))
+      fi
+    else
+      add_target "$path"
+    fi
+  done
+
+  for pattern in "${cleanup_glob_targets[@]}"; do
+    while IFS= read -r match; do
+      [[ -n "$match" ]] && add_target "$match"
+    done < <(compgen -G "$PRUNE_CODEX_HOME/$pattern" || true)
+  done
+
+  if [[ "$target_count" -gt 0 ]]; then
+    for path in "${targets[@]}"; do
+      path_kib="$(path_size_kib "$path")"
+      estimated_kib=$((estimated_kib + ${path_kib:-0}))
+    done
+  fi
+
+  prune_build_plan
+
+  echo "Codex home: $PRUNE_CODEX_HOME"
+  if [[ "$codex_running" -eq 1 ]]; then
+    echo "Codex is running: using SQLite transactions and a ${GRACE_MINUTES}-minute registration grace window."
+    if [[ "$process_detection_available" -eq 0 ]]; then
+      echo "Process detection was unavailable, so volatile runtime paths will be preserved."
+    fi
+  fi
+  prune_print_summary "Would remove"
+
+  if [[ "$target_count" -gt 0 ]]; then
+    echo "Disposable cache paths:"
+    for path in "${targets[@]}"; do
+      echo "  $path"
+    done
+    echo "Estimated cache space: $(format_kib "$estimated_kib")"
+  fi
+
+  if [[ "$skipped_volatile_target_count" -gt 0 ]]; then
+    echo "Preserving volatile paths while Codex is running:"
+    for path in "${skipped_volatile_targets[@]}"; do
+      echo "  $path"
+    done
+  fi
+
+  echo "Live thread rollouts, state rows, indexes, and shell snapshots are preserved as one consistency set."
+
+  if [[ "$DRY_RUN" -eq 1 ]]; then
+    return 0
+  fi
+
+  if [[ "$SKIP_CONFIRM" -ne 1 ]]; then
+    printf 'Apply this Codex cleanup? [y/N] '
+    read -r response
+    case "$response" in
+    [Yy] | [Yy][Ee][Ss]) ;;
+    *)
+      echo "Aborted."
+      return 1
+      ;;
+    esac
+  fi
+
+  clean_acquire_lock "$PRUNE_CODEX_HOME"
+  prune_build_plan
+  prune_apply_plan
+
+  RESET_STAGED_COUNT=0
+  if [[ "$target_count" -gt 0 ]]; then
+    for path in "${targets[@]}"; do
+      if [[ ! -e "$path" && ! -L "$path" ]]; then
+        continue
+      fi
+
+      if path_has_open_handles "$path"; then
+        echo "Preserving open cache path: $path"
+        continue
+      else
+        lsof_status=$?
+      fi
+
+      if [[ "$lsof_status" -eq 2 && "$codex_running" -eq 1 ]]; then
+        echo "Preserving cache path because lsof is unavailable while Codex is running: $path"
+        continue
+      fi
+
+      reset_assert_target "$path" "$PRUNE_CODEX_HOME"
+      if [[ -z "$LEGACY_STAGE" ]]; then
+        mkdir -p -- "$RESET_RECOVERY"
+        chmod 700 "$RESET_RECOVERY"
+        LEGACY_STAGE="$RESET_RECOVERY/orphan-cache-$(date -u +%Y%m%dT%H%M%SZ)-$$"
+        mkdir -m 700 -- "$LEGACY_STAGE"
+        RESET_STAGE="$LEGACY_STAGE"
+      fi
+      reset_stage "$path"
+      removed_cache_count=$((removed_cache_count + 1))
+    done
+  fi
+
+  echo "Codex cleanup completed; removed ${removed_cache_count} disposable cache paths."
+  echo "SQLite integrity and post-cleanup reference audit: ok"
+  echo "Preserved: registered sessions and their SQLite/index/snapshot state, auth.json, config.toml, supported memories/, skills/, and installed plugin caches."
+}
+
+trap 'clean_release_lock' EXIT
+
+RESET_MODE=reset
+for reset_argument in "$@"; do
+  if [[ "$reset_argument" == --prune-orphans ]]; then
+    RESET_MODE=prune
+  fi
+done
+
+if [[ "$RESET_MODE" == reset ]]; then
+  reset_run "$@"
+  exit "$?"
 fi
 
-echo "Codex cleanup completed; removed ${removed_cache_count} disposable cache paths."
-echo "Preserved: registered sessions and their SQLite/index/snapshot state, auth.json, config.toml, supported memories/, skills/, and installed plugin caches."
+if [[ "$#" -eq 0 || "$1" != --prune-orphans ]]; then
+  reset_die "--prune-orphans must precede legacy pruning options"
+fi
+
+prune_run "$@"
