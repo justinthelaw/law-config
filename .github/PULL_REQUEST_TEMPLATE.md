@@ -4,7 +4,8 @@ Describe what changed and why.
 
 ## Validation
 
-- [ ] `pre-commit run --all-files`
+- [ ] `pre-commit run --all-files --hook-stage pre-commit`
+- [ ] `pre-commit run --all-files --hook-stage pre-push`
 - [ ] Script syntax checks run where applicable
 - [ ] Documentation updates included when needed
 

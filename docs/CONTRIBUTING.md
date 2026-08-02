@@ -24,6 +24,7 @@ python3 -m pip install pre-commit==4.6.0
 pre-commit run --all-files --hook-stage pre-commit
 pre-commit run --all-files --hook-stage pre-push
 zsh -n configs/.zshrc configs/zsh/*.zsh
+python3 -m unittest discover -s tests -v
 ```
 
 If changing docs, verify links and command examples.

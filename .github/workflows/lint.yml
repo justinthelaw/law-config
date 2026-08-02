@@ -1,10 +1,14 @@
+---
 name: Lint
 
 permissions:
   contents: read
 
-on:
+"on":
   pull_request:
+    branches:
+      - main
+  push:
     branches:
       - main
 
@@ -17,15 +21,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
       - name: Setup Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
         with:
           python-version: "3.14"
 
       - name: Install Pre-Commit
         run: python -m pip install pre-commit==4.6.0
 
-      - name: Run Pre-Commit
+      - name: Run Pre-Commit Stage
         run: pre-commit run --all-files --hook-stage pre-commit
+
+      - name: Run Pre-Push Stage
+        run: pre-commit run --all-files --hook-stage pre-push

@@ -6,6 +6,11 @@ Shared development system configuration for `law-*` machines.
 
 This repository contains shell, Git, and GPG baseline configuration plus setup documentation for Linux and macOS.
 
+Start with the environment guide for your machine:
+
+- [Linux setup](docs/setup-linux.md)
+- [macOS setup](docs/setup-macos.md)
+
 ## Quick Start
 
 1. Install Zsh + Oh-My-Zsh + znap:
@@ -19,25 +24,30 @@ grep -qxF "source /absolute/path/to/law-config/configs/.zshrc" ~/.zshrc ||
   printf "\nsource /absolute/path/to/law-config/configs/.zshrc\n" >> ~/.zshrc
 ```
 
-3. Apply Git template settings:
+3. Personalize every `<INSERT ...>` value, then include the Git template without replacing existing global settings:
 
 ```bash
-grep INSERT configs/.gitconfig
-[[ -f ~/.gitconfig ]] && cp ~/.gitconfig ~/.gitconfig.bak.$(date +%s).$$
-cp configs/.gitconfig ~/.gitconfig
+if grep -q '<INSERT' configs/.gitconfig; then
+  echo "Personalize configs/.gitconfig before installing it." >&2
+  exit 1
+fi
+template_path="$(pwd -P)/configs/.gitconfig"
+git config --global --get-all include.path | grep -qxF "$template_path" ||
+  git config --global --add include.path "$template_path"
 git config --list
 ```
 
-4. If using commit signing, install/copy GPG defaults:
+The template enables GPG commit signing; remove the signing settings before installation if signing is not wanted.
+
+4. Install the GPG defaults after backing up only the files this repository manages:
 
 ```bash
 mkdir -p ~/.gnupg
 for file in configs/gpg/*.conf; do
   target="$HOME/.gnupg/$(basename "$file")"
   [[ -f "$target" ]] && cp "$target" "$target.bak.$(date +%s).$$"
-  cp "$file" "$target"
+  install -m 600 "$file" "$target"
 done
-chmod 600 ~/.gnupg/*
 chmod 700 ~/.gnupg
 ```
 

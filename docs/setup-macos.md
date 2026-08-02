@@ -16,15 +16,17 @@ brew install go gpg uv
 
 ```bash
 uv python install 3.14
-uv python pin 3.14
-uv venv
+uv python pin --global 3.14
 ```
+
+Create virtual environments inside individual projects with `uv venv`; do not create one in this configuration repository.
 
 ## Node.js via nvm
 
 ```bash
-PROFILE=/dev/null bash -c 'curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash'
-export NVM_DIR="$HOME/.nvm"
+export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.nvm}"
+[[ -z "${XDG_CONFIG_HOME:-}" ]] || NVM_DIR="$XDG_CONFIG_HOME/nvm"
+PROFILE=/dev/null bash -c 'curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.6/install.sh | bash'
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 nvm install --lts
 nvm alias default 'lts/*'
@@ -43,10 +45,9 @@ mkdir -p ~/.gnupg
 for file in configs/gpg/*.conf; do
   target="$HOME/.gnupg/$(basename "$file")"
   [[ -f "$target" ]] && cp "$target" "$target.bak.$(date +%s).$$"
-  cp "$file" "$target"
+  install -m 600 "$file" "$target"
 done
 chown -R "$(whoami)" ~/.gnupg/
-chmod 600 ~/.gnupg/*
 chmod 700 ~/.gnupg
 ```
 
@@ -64,3 +65,5 @@ brew install --cask rancher
 docker login ghcr.io
 docker login
 ```
+
+Use a personal access token and keep Docker Desktop's configured credential store enabled; see the [Docker login documentation](https://docs.docker.com/reference/cli/docker/login/).

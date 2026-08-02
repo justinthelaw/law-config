@@ -24,22 +24,36 @@ source "$ZSH/oh-my-zsh.sh"
 typeset -g LAW_CONFIG_ZNAP_DIR="${LAW_CONFIG_ZNAP_DIR:-$HOME/Repos/znap}"
 typeset -g LAW_CONFIG_ZNAP_REF="${LAW_CONFIG_ZNAP_REF:-25754a45d9ceafe6d7d082c9ebe40a08cb85a4f0}"
 
-if [[ ! -r "$LAW_CONFIG_ZNAP_DIR/znap.zsh" ]]; then
-    if command -v git >/dev/null 2>&1; then
-        git clone --depth 1 -- https://github.com/marlonrichert/zsh-snap.git "$LAW_CONFIG_ZNAP_DIR"
-        git -C "$LAW_CONFIG_ZNAP_DIR" fetch --depth 1 origin "$LAW_CONFIG_ZNAP_REF" >/dev/null 2>&1
-        git -C "$LAW_CONFIG_ZNAP_DIR" checkout --detach "$LAW_CONFIG_ZNAP_REF" >/dev/null 2>&1
-    else
+_law_znap_at_pinned_ref() {
+    [[ -r "$LAW_CONFIG_ZNAP_DIR/znap.zsh" ]] || return 1
+    [[ "$(git -C "$LAW_CONFIG_ZNAP_DIR" rev-parse HEAD 2>/dev/null)" == "$LAW_CONFIG_ZNAP_REF" ]]
+}
+
+if ! _law_znap_at_pinned_ref; then
+    if ! command -v git >/dev/null 2>&1; then
         echo "law-config: git is required to install znap." >&2
+    elif [[ ! -e "$LAW_CONFIG_ZNAP_DIR" ]]; then
+        git clone --no-checkout --filter=blob:none -- https://github.com/marlonrichert/zsh-snap.git "$LAW_CONFIG_ZNAP_DIR" >/dev/null 2>&1 &&
+            git -C "$LAW_CONFIG_ZNAP_DIR" fetch --depth 1 origin "$LAW_CONFIG_ZNAP_REF" >/dev/null 2>&1 &&
+            git -C "$LAW_CONFIG_ZNAP_DIR" checkout --detach "$LAW_CONFIG_ZNAP_REF" >/dev/null 2>&1 ||
+            echo "law-config: unable to install the pinned znap revision." >&2
+    elif [[ -d "$LAW_CONFIG_ZNAP_DIR/.git" ]]; then
+        git -C "$LAW_CONFIG_ZNAP_DIR" fetch --depth 1 origin "$LAW_CONFIG_ZNAP_REF" >/dev/null 2>&1 &&
+            git -C "$LAW_CONFIG_ZNAP_DIR" checkout --detach "$LAW_CONFIG_ZNAP_REF" >/dev/null 2>&1 ||
+            echo "law-config: unable to select the pinned znap revision." >&2
+    else
+        echo "law-config: znap path exists but is not a Git checkout: $LAW_CONFIG_ZNAP_DIR" >&2
     fi
 fi
 
-if [[ -r "$LAW_CONFIG_ZNAP_DIR/znap.zsh" ]]; then
+if _law_znap_at_pinned_ref; then
     source "$LAW_CONFIG_ZNAP_DIR/znap.zsh" # Start Znap
 else
-    echo "law-config: znap was not installed; skipping znap plugins." >&2
+    echo "law-config: pinned znap revision is unavailable; skipping znap plugins." >&2
+    unset -f _law_znap_at_pinned_ref
     return
 fi
+unset -f _law_znap_at_pinned_ref
 
 # Faster terminal startup, clean CLI
 znap prompt sindresorhus/pure
@@ -59,8 +73,8 @@ add-zsh-hook precmd _law_load_syntax_highlighting
 # ALIASES
 #########
 
-# Docker
-alias dclean="docker system prune -a -f && docker volume prune -f"
+# Docker: retain Docker's interactive confirmation and preserve volumes.
+alias dclean="docker system prune"
 
 # Git
 gitup() {
@@ -82,7 +96,7 @@ gitclean() {
         case "$branch" in
             "$current" | main | master) continue ;;
         esac
-        git branch -D -- "$branch"
+        git branch -d -- "$branch"
     done
 }
 
