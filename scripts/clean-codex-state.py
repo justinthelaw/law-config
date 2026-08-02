@@ -660,7 +660,9 @@ def recovery_stage(root: Path) -> Path:
         raise RuntimeError(f"Recovery directory must be absolute: {recovery_root}")
     if recovery_root.is_symlink() or recovery_root.parent.is_symlink():
         raise RuntimeError(f"Refusing symlinked recovery directory: {recovery_root}")
-    if recovery_root.resolve(strict=False) in {Path("/"), root.resolve()}:
+    resolved_recovery = recovery_root.resolve(strict=False)
+    resolved_root = root.resolve()
+    if resolved_recovery == Path("/") or is_under(resolved_recovery, resolved_root):
         raise RuntimeError(f"Refusing unsafe recovery directory: {recovery_root}")
 
     recovery_root.mkdir(mode=0o700, parents=True, exist_ok=True)
@@ -692,6 +694,18 @@ def apply_plan(plan: CleanupPlan) -> None:
         for candidate in candidates
         if candidate.path.exists() or candidate.path.is_symlink()
     ]
+    # Validate the complete quarantine plan before making any durable database
+    # or JSON changes.  In particular, a symlink must not leave its thread rows
+    # deleted when quarantine subsequently refuses to move it.
+    for candidate in existing_candidates:
+        if candidate.path.is_symlink():
+            raise RuntimeError(
+                f"Refusing symlinked cleanup target: {candidate.path}"
+            )
+        if not is_under(candidate.path, plan.root):
+            raise RuntimeError(
+                f"Cleanup target escapes the Codex home: {candidate.path}"
+            )
     stage = recovery_stage(plan.root) if existing_candidates else None
 
     cleanup_state_db(plan.state_db, plan, plan.remove_primary_ids)

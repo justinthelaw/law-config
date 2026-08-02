@@ -87,13 +87,28 @@ reset_recovery_root() {
     selected="$RESET_RECOVERY_OVERRIDE"
   else
     temporary_root="$(printenv TMPDIR || true)"
-    [[ -n "$temporary_root" ]] || temporary_root=/private/tmp
+    if [[ -z "$temporary_root" ]]; then
+      case "$(uname -s)" in
+      Darwin) temporary_root=/private/tmp ;;
+      *) temporary_root=/tmp ;;
+      esac
+    fi
     selected="$temporary_root/codex-clean-recovery-$(id -u)"
   fi
 
   [[ "$selected" == /* ]] || reset_die "recovery directory must be an absolute path"
   [[ "$selected" != / && "$selected" != "$RESET_HOME" && "$selected" != "$HOME" ]] ||
     reset_die "refusing unsafe recovery directory: $selected"
+  [[ "$selected" != "$RESET_HOME"/* ]] ||
+    reset_die "recovery directory must be outside the Codex home: $selected"
+  if [[ -n "${RESET_APP_PROFILE:-}" ]]; then
+    [[ "$selected" != "$RESET_APP_PROFILE" && "$selected" != "$RESET_APP_PROFILE"/* ]] ||
+      reset_die "recovery directory must be outside the application profile: $selected"
+  fi
+  if [[ -n "${RESET_APP_LOG_DIR:-}" ]]; then
+    [[ "$selected" != "$RESET_APP_LOG_DIR" && "$selected" != "$RESET_APP_LOG_DIR"/* ]] ||
+      reset_die "recovery directory must be outside the application log directory: $selected"
+  fi
   [[ ! -L "$selected" ]] || reset_die "refusing symlinked recovery directory: $selected"
 
   parent="$(dirname -- "$selected")"
@@ -187,8 +202,8 @@ reset_home_targets() {
   if [[ -d "$RESET_HOME/.tmp" && ! -L "$RESET_HOME/.tmp" ]]; then
     while IFS= read -r temporary_entry; do
       case "$(basename -- "$temporary_entry")" in
-        plugins|bundled-marketplaces|marketplaces) ;;
-        *) printf '%s\n' "$temporary_entry" ;;
+      plugins | bundled-marketplaces | marketplaces) ;;
+      *) printf '%s\n' "$temporary_entry" ;;
       esac
     done < <(find "$RESET_HOME/.tmp" -mindepth 1 -maxdepth 1 -print)
   fi
@@ -200,8 +215,8 @@ reset_home_targets() {
 reset_databases() {
   find "$RESET_HOME" -maxdepth 2 -type f \
     \( -name 'state_*.sqlite' -o -name 'logs_*.sqlite' \
-       -o -name 'goals_*.sqlite' -o -name 'memories_*.sqlite' \
-       -o -name 'codex*.db' \) -print
+    -o -name 'goals_*.sqlite' -o -name 'memories_*.sqlite' \
+    -o -name 'codex*.db' \) -print
 }
 
 reset_open_handles() {
@@ -222,7 +237,7 @@ reset_open_handles() {
 }
 
 reset_verify_inactive() {
-  local db sidecar lock pid lock_value output status
+  local db sidecar lock pid lock_value lock_host local_host output status
   set --
 
   if [[ -d "$RESET_HOME/.demo-cli-locks" ]]; then
@@ -263,8 +278,14 @@ reset_verify_inactive() {
     if [[ -L "$lock" ]]; then
       lock_value="$(readlink "$lock")"
       pid="$(printf '%s\n' "$lock_value" | awk -F- '{print $NF}')"
-      if [[ "$pid" =~ ^[0-9]+$ ]] && kill -0 "$pid" 2>/dev/null; then
-        reset_die "active application SingletonLock prevents cleaning: $lock"
+      lock_host="${lock_value%-"$pid"}"
+      local_host="$(hostname)"
+      if [[ "$pid" =~ ^[0-9]+$ && ("$lock_host" == "$local_host" || "$lock_host" == "${local_host%%.*}") ]]; then
+        if kill -0 "$pid" 2>/dev/null; then
+          reset_die "active application SingletonLock prevents cleaning: $lock"
+        fi
+        printf '  ignoring stale application SingletonLock: %s\n' "$lock" >&2
+        continue
       fi
       reset_die "indeterminate application SingletonLock prevents cleaning: $lock"
     elif [[ -e "$lock" ]]; then
@@ -312,8 +333,13 @@ reset_validate_paths() {
   if [[ -n "$RESET_APP_LOG_DIR" ]] && reset_has_path "$RESET_APP_LOG_DIR"; then
     [[ -d "$RESET_APP_LOG_DIR" && ! -L "$RESET_APP_LOG_DIR" ]] ||
       reset_die "application log directory is missing or symlinked: $RESET_APP_LOG_DIR"
-    [[ "$RESET_APP_LOG_DIR" == /* && "$RESET_APP_LOG_DIR" != "$HOME" ]] ||
+    [[ "$RESET_APP_LOG_DIR" == /* ]] ||
       reset_die "unsafe application log directory: $RESET_APP_LOG_DIR"
+    case "$RESET_APP_LOG_DIR" in
+    / | /tmp | /private/tmp | /var | /var/log | /Library | /Users | /home | "$HOME")
+      reset_die "unsafe application log directory: $RESET_APP_LOG_DIR"
+      ;;
+    esac
   fi
 
   if reset_has_path "$RESET_HOME/memories"; then
@@ -322,17 +348,29 @@ reset_validate_paths() {
 }
 
 reset_acquire_lock() {
-  local lock_parent hash
+  local lock_parent hash owner
 
   hash="$(printf '%s' "$RESET_HOME" | cksum | awk '{print $1}')"
-  lock_parent="$(dirname -- "$RESET_RECOVERY")/.clean-codex-locks"
+  lock_parent="$RESET_RECOVERY/.clean-codex-locks"
   [[ ! -L "$lock_parent" ]] || reset_die "refusing symlinked cleanup lock root"
   mkdir -p -- "$lock_parent"
   chmod 700 "$lock_parent"
   RESET_LOCK="$lock_parent/$hash.lock"
-  mkdir -m 700 -- "$RESET_LOCK" 2>/dev/null ||
-    reset_die "another cleanup already holds the target-home lock"
-  trap 'rmdir "$RESET_LOCK" 2>/dev/null || true' EXIT HUP INT TERM
+  if ! mkdir -m 700 -- "$RESET_LOCK" 2>/dev/null; then
+    owner="$(cat "$RESET_LOCK/pid" 2>/dev/null || true)"
+    if [[ "$owner" =~ ^[0-9]+$ ]] && ! kill -0 "$owner" 2>/dev/null; then
+      rm -rf -- "$RESET_LOCK"
+      mkdir -m 700 -- "$RESET_LOCK" 2>/dev/null ||
+        reset_die "another cleanup already holds the target-home lock"
+    else
+      reset_die "another cleanup already holds the target-home lock"
+    fi
+  fi
+  printf '%s\n' "$$" >"$RESET_LOCK/pid"
+  trap 'rm -rf -- "$RESET_LOCK" 2>/dev/null || true' EXIT
+  trap 'exit 129' HUP
+  trap 'exit 130' INT
+  trap 'exit 143' TERM
 }
 
 reset_stage() {
@@ -352,24 +390,24 @@ reset_sql_tables() {
   local base="$1"
 
   case "$base" in
-    state_*.sqlite)
-      printf '%s\n' agent_job_items agent_jobs thread_spawn_edges \
-        thread_dynamic_tools thread_sections threads
-      ;;
-    logs_*.sqlite)
-      printf '%s\n' logs log_entries events traces
-      ;;
-    goals_*.sqlite)
-      printf '%s\n' thread_goal_continuation_deferrals thread_goals goal_events
-      ;;
-    memories_*.sqlite)
-      printf '%s\n' jobs stage1_outputs memory_facts memory_embeddings memories
-      ;;
-    codex*.db)
-      printf '%s\n' \
-        automation_runs inbox_items local_thread_catalog local_thread_catalog_metadata \
-        local_thread_catalog_sync_state thread_timeline_ledger app_server_history_snapshots
-      ;;
+  state_*.sqlite)
+    printf '%s\n' agent_job_items agent_jobs thread_spawn_edges \
+      thread_dynamic_tools thread_sections threads
+    ;;
+  logs_*.sqlite)
+    printf '%s\n' logs log_entries events traces
+    ;;
+  goals_*.sqlite)
+    printf '%s\n' thread_goal_continuation_deferrals thread_goals goal_events
+    ;;
+  memories_*.sqlite)
+    printf '%s\n' jobs stage1_outputs memory_facts memory_embeddings memories
+    ;;
+  codex*.db)
+    printf '%s\n' \
+      automation_runs inbox_items local_thread_catalog local_thread_catalog_metadata \
+      local_thread_catalog_sync_state thread_timeline_ledger app_server_history_snapshots
+    ;;
   esac
 }
 
@@ -473,37 +511,37 @@ reset_run() {
 
   while [[ "$#" -gt 0 ]]; do
     case "$1" in
-      --reset-state) ;;
-      -n|--dry-run) RESET_DRY_RUN=1 ;;
-      -y|--yes) RESET_YES=1 ;;
-      -f|--force) RESET_FORCE=1 ;;
-      --aggressive-profile-cleanup) RESET_AGGRESSIVE_PROFILE=1 ;;
-      --app-profile)
-        [[ "$#" -ge 2 && "$profile_argument_set" -eq 0 ]] ||
-          reset_die "--app-profile requires one path"
-        shift
-        RESET_APP_PROFILE="$1"
-        profile_argument_set=1
-        ;;
-      --app-log-dir)
-        [[ "$#" -ge 2 && "$app_logs_argument_set" -eq 0 ]] ||
-          reset_die "--app-log-dir requires one path"
-        shift
-        RESET_APP_LOG_DIR="$1"
-        app_logs_argument_set=1
-        ;;
-      -h|--help)
-        reset_usage
-        return 0
-        ;;
-      -*)
-        reset_die "unknown reset option: $1"
-        ;;
-      *)
-        [[ "$home_argument_set" -eq 0 ]] || reset_die "only one Codex home is supported"
-        RESET_HOME="$1"
-        home_argument_set=1
-        ;;
+    --reset-state) ;;
+    -n | --dry-run) RESET_DRY_RUN=1 ;;
+    -y | --yes) RESET_YES=1 ;;
+    -f | --force) RESET_FORCE=1 ;;
+    --aggressive-profile-cleanup) RESET_AGGRESSIVE_PROFILE=1 ;;
+    --app-profile)
+      [[ "$#" -ge 2 && "$profile_argument_set" -eq 0 ]] ||
+        reset_die "--app-profile requires one path"
+      shift
+      RESET_APP_PROFILE="$1"
+      profile_argument_set=1
+      ;;
+    --app-log-dir)
+      [[ "$#" -ge 2 && "$app_logs_argument_set" -eq 0 ]] ||
+        reset_die "--app-log-dir requires one path"
+      shift
+      RESET_APP_LOG_DIR="$1"
+      app_logs_argument_set=1
+      ;;
+    -h | --help)
+      reset_usage
+      return 0
+      ;;
+    -*)
+      reset_die "unknown reset option: $1"
+      ;;
+    *)
+      [[ "$home_argument_set" -eq 0 ]] || reset_die "only one Codex home is supported"
+      RESET_HOME="$1"
+      home_argument_set=1
+      ;;
     esac
     shift
   done
@@ -551,6 +589,8 @@ reset_run() {
   while IFS= read -r db; do
     printf '  disposable rows: %s\n' "$db"
   done < <(reset_databases)
+  [[ -z "$RESET_APP_PROFILE" ]] || printf '  application profile: %s\n' "$RESET_APP_PROFILE"
+  [[ -z "$RESET_APP_LOG_DIR" ]] || printf '  application log directory: %s\n' "$RESET_APP_LOG_DIR"
   [[ "$RESET_DRY_RUN" -eq 0 ]] || return 0
 
   reset_acquire_lock
