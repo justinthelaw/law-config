@@ -20,11 +20,10 @@ Thanks for improving Justin's shared machine configuration repository.
 Run these checks before pushing:
 
 ```bash
-python3 -m pip install pre-commit==4.6.0
-pre-commit run --all-files --hook-stage pre-commit
-pre-commit run --all-files --hook-stage pre-push
+uv tool run --python 3.14 pre-commit@4.6.1 run --all-files --hook-stage pre-commit
+uv tool run --python 3.14 pre-commit@4.6.1 run --all-files --hook-stage pre-push
 zsh -n configs/.zshrc configs/zsh/*.zsh
-python3 -m unittest discover -s tests -v
+uv run --python 3.14 python -m unittest discover -s tests -v
 ```
 
 If changing docs, verify links and command examples.
@@ -34,7 +33,13 @@ If changing docs, verify links and command examples.
 Install hooks once per clone:
 
 ```bash
-python3 -m pip install pre-commit==4.6.0
+uv tool install --python 3.14 pre-commit==4.6.1
+uv tool update-shell
+```
+
+Open a new shell, then install the hooks:
+
+```bash
 pre-commit install --hook-type pre-commit --hook-type pre-push
 ```
 

@@ -1,5 +1,5 @@
 ---
-minimum_pre_commit_version: "4.6.0"
+minimum_pre_commit_version: "4.6.1"
 default_install_hook_types: [pre-commit, pre-push]
 default_stages: [pre-commit, pre-push]
 
@@ -88,12 +88,12 @@ repos:
         name: Shell Script Syntax Check
         language: system
         entry: bash -c 'for file; do bash -n "$file" || exit $?; done' --
-        files: ^scripts/(clean-codex|sanitize-shell-hist)$
+        files: ^scripts/sanitize-shell-hist$
         stages: [pre-commit, pre-push]
 
       - id: python-unit-tests
         name: Python Unit Tests
-        language: system
-        entry: python3 -m unittest discover -s tests -v
+        language: python
+        entry: python -m unittest discover -s tests -v
         pass_filenames: false
         stages: [pre-push]

@@ -22,7 +22,7 @@ source "$ZSH/oh-my-zsh.sh"
 
 # Znap ZSH plugin manager
 typeset -g LAW_CONFIG_ZNAP_DIR="${LAW_CONFIG_ZNAP_DIR:-$HOME/Repos/znap}"
-typeset -g LAW_CONFIG_ZNAP_REF="${LAW_CONFIG_ZNAP_REF:-25754a45d9ceafe6d7d082c9ebe40a08cb85a4f0}"
+typeset -g LAW_CONFIG_ZNAP_REF="${LAW_CONFIG_ZNAP_REF:-7a954d507c02269e0c42737a460e5a94dc9b2992}"
 
 _law_znap_at_pinned_ref() {
     [[ -r "$LAW_CONFIG_ZNAP_DIR/znap.zsh" ]] || return 1
@@ -33,7 +33,8 @@ if ! _law_znap_at_pinned_ref; then
     if ! command -v git >/dev/null 2>&1; then
         echo "law-config: git is required to install znap." >&2
     elif [[ ! -e "$LAW_CONFIG_ZNAP_DIR" ]]; then
-        git clone --no-checkout --filter=blob:none -- https://github.com/marlonrichert/zsh-snap.git "$LAW_CONFIG_ZNAP_DIR" >/dev/null 2>&1 &&
+        mkdir -p "${LAW_CONFIG_ZNAP_DIR:h}" &&
+            git clone --no-checkout --filter=blob:none -- https://github.com/marlonrichert/zsh-snap.git "$LAW_CONFIG_ZNAP_DIR" >/dev/null 2>&1 &&
             git -C "$LAW_CONFIG_ZNAP_DIR" fetch --depth 1 origin "$LAW_CONFIG_ZNAP_REF" >/dev/null 2>&1 &&
             git -C "$LAW_CONFIG_ZNAP_DIR" checkout --detach "$LAW_CONFIG_ZNAP_REF" >/dev/null 2>&1 ||
             echo "law-config: unable to install the pinned znap revision." >&2
@@ -48,26 +49,24 @@ fi
 
 if _law_znap_at_pinned_ref; then
     source "$LAW_CONFIG_ZNAP_DIR/znap.zsh" # Start Znap
+
+    # Faster terminal startup, clean CLI
+    znap prompt sindresorhus/pure
+
+    # Znap install plugins
+    znap source marlonrichert/zsh-autocomplete
+    znap source zsh-users/zsh-autosuggestions
+
+    autoload -Uz add-zsh-hook
+    _law_load_syntax_highlighting() {
+        add-zsh-hook -d precmd _law_load_syntax_highlighting
+        znap source zdharma-continuum/fast-syntax-highlighting
+    }
+    add-zsh-hook precmd _law_load_syntax_highlighting
 else
     echo "law-config: pinned znap revision is unavailable; skipping znap plugins." >&2
-    unset -f _law_znap_at_pinned_ref
-    return
 fi
 unset -f _law_znap_at_pinned_ref
-
-# Faster terminal startup, clean CLI
-znap prompt sindresorhus/pure
-
-# Znap install plugins
-znap source marlonrichert/zsh-autocomplete
-znap source zsh-users/zsh-autosuggestions
-
-autoload -Uz add-zsh-hook
-_law_load_syntax_highlighting() {
-    add-zsh-hook -d precmd _law_load_syntax_highlighting
-    znap source zdharma-continuum/fast-syntax-highlighting
-}
-add-zsh-hook precmd _law_load_syntax_highlighting
 
 #########
 # ALIASES

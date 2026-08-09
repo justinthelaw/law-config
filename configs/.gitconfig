@@ -24,9 +24,6 @@
         added = yellow
         changed = green
         untracked = red
-[web]
-        browser = brave
-
 [alias]
         co = checkout
         cob = checkout -b
