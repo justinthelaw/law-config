@@ -3,16 +3,44 @@
 ## Base Packages
 
 ```bash
-sudo apt-get -y install zsh curl
+sudo apt-get update
+sudo apt-get -y install zsh curl git gnupg iproute2 isc-dhcp-client
 sudo apt-get -y install build-essential libssl-dev zlib1g-dev \
   libbz2-dev libreadline-dev libsqlite3-dev \
   libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
-sudo apt-get -y install libvirt-daemon-system libvirt-clients qemu-kvm qemu-utils virt-manager ovmf
+sudo apt-get -y install libvirt-daemon-system libvirt-clients qemu-kvm qemu-utils ovmf
+```
+
+For graphical virtual-machine management on a desktop host, install
+`virt-manager` separately:
+
+```bash
+sudo apt-get -y install virt-manager
+```
+
+## Clone the Repository
+
+```bash
+mkdir -p ~/Repos
+git clone https://github.com/justinthelaw/law-config.git ~/Repos/law-config
+cd ~/Repos/law-config
+```
+
+## GPG Configuration
+
+```bash
+mkdir -p ~/.gnupg
+for file in configs/gpg/*.conf; do
+  target="$HOME/.gnupg/$(basename "$file")"
+  [[ -f "$target" ]] && cp "$target" "$target.bak.$(date +%s).$$"
+  install -m 600 "$file" "$target"
+done
+chmod 700 ~/.gnupg
 ```
 
 ## Container, GPU, and Network Tooling
 
-- Docker Engine install: <https://docs.docker.com/engine/install/>
+- Docker Engine install: <https://docs.docker.com/engine/install/ubuntu/>
 - CUDA install: <https://developer.nvidia.com/cuda-downloads>
 - NVIDIA Container Toolkit install: <https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html>
 - Tailscale install: <https://tailscale.com/download/linux>
@@ -23,6 +51,8 @@ Run the official Docker, CUDA, NVIDIA Container Toolkit, and Tailscale repositor
 sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo apt-get -y install cuda
 sudo apt-get -y install nvidia-container-toolkit
+sudo nvidia-ctk runtime configure --runtime=docker
+sudo systemctl restart docker
 sudo apt-get -y install tailscale
 sudo tailscale login
 sudo tailscale up
@@ -73,4 +103,4 @@ docker login ghcr.io
 docker login
 ```
 
-Use a personal access token on headless systems and configure a Docker credential store so credentials are not left base64-encoded in `~/.docker/config.json`; see the [Docker login documentation](https://docs.docker.com/reference/cli/docker/login/).
+Before using Docker without `sudo`, follow Docker's [post-install steps](https://docs.docker.com/engine/install/linux-postinstall/). Use a personal access token on headless systems and configure a Docker credential store so credentials are not left base64-encoded in `~/.docker/config.json`; see the [Docker login documentation](https://docs.docker.com/reference/cli/docker/login/).

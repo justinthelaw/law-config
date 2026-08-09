@@ -3,14 +3,22 @@
 ## Base Packages
 
 ```bash
-brew install --cask brave-browser tailscale
-brew install go gpg uv
+brew install --cask brave-browser tailscale-app
+brew install git gnupg go uv
 ```
 
 - Tailscale docs: <https://tailscale.com/download/macos>
 - Python (uv) docs: <https://docs.astral.sh/uv/getting-started/installation/>
 - Go docs: <https://go.dev/doc/install>
 - Node/NVM docs: <https://github.com/nvm-sh/nvm>
+
+## Clone the Repository
+
+```bash
+mkdir -p ~/Repos
+git clone https://github.com/justinthelaw/law-config.git ~/Repos/law-config
+cd ~/Repos/law-config
+```
 
 ## Python via uv (Preferred)
 
@@ -47,7 +55,6 @@ for file in configs/gpg/*.conf; do
   [[ -f "$target" ]] && cp "$target" "$target.bak.$(date +%s).$$"
   install -m 600 "$file" "$target"
 done
-chown -R "$(whoami)" ~/.gnupg/
 chmod 700 ~/.gnupg
 ```
 
@@ -59,6 +66,8 @@ chmod 700 ~/.gnupg
 brew install --cask rancher
 ```
 
+Launch Rancher Desktop once and complete its setup before using `docker`.
+
 ### Registry Login
 
 ```bash
@@ -66,4 +75,4 @@ docker login ghcr.io
 docker login
 ```
 
-Use a personal access token and keep Docker Desktop's configured credential store enabled; see the [Docker login documentation](https://docs.docker.com/reference/cli/docker/login/).
+Use a personal access token and keep a configured credential store enabled; see the [Docker login documentation](https://docs.docker.com/reference/cli/docker/login/).

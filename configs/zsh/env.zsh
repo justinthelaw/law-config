@@ -9,6 +9,10 @@ typeset -g LAW_CONFIG_ZSH_DIR="${${(%):-%N}:A:h}"
 typeset -g LAW_CONFIG_CONFIG_DIR="${LAW_CONFIG_ZSH_DIR:h}"
 typeset -g LAW_CONFIG_ROOT="${LAW_CONFIG_CONFIG_DIR:h}"
 
+if [[ -t 0 ]]; then
+    export GPG_TTY="$(tty 2>/dev/null)"
+fi
+
 _law_path_append_unique() {
     local path_entry="$1"
     [[ -n "$path_entry" && -d "$path_entry" ]] || return

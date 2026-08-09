@@ -52,7 +52,13 @@ if [[ $# -ne 1 ]]; then
   exit 1
 fi
 HIST_FILE="$1"
-HIST_DIR="$(dirname -- "$HIST_FILE")"
+case "$HIST_FILE" in
+*/*)
+  HIST_DIR="${HIST_FILE%/*}"
+  [[ -n "$HIST_DIR" ]] || HIST_DIR="/"
+  ;;
+*) HIST_DIR="." ;;
+esac
 # Keep working files beside the history file so the final rename is atomic.
 TMP_FILE="$(mktemp "$HIST_DIR/.sanitize_hist.XXXXXX")"
 
