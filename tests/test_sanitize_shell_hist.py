@@ -66,6 +66,37 @@ class SanitizeShellHistoryTests(unittest.TestCase):
             self.assertEqual(backups[0].read_text(encoding="utf-8"), original)
             self.assertEqual(list(history.parent.glob(".sanitize_hist.*")), [])
 
+    def test_rejects_symlink_history_without_modifying_target(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            target = directory / "real-history"
+            history = directory / "history"
+            original = "echo keep\nTOKEN=abc\n"
+            target.write_text(original, encoding="utf-8")
+            history.symlink_to(target)
+
+            result = self.run_sanitizer(history)
+
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("regular, non-symlink file", result.stderr)
+            self.assertTrue(history.is_symlink())
+            self.assertEqual(history.read_text(encoding="utf-8"), original)
+            self.assertEqual(list(directory.glob("history.bak.*")), [])
+            self.assertEqual(list(directory.glob(".sanitize_hist.*")), [])
+
+    def test_rejects_non_regular_history_without_creating_work_files(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            history = directory / "history"
+            history.mkdir()
+
+            result = self.run_sanitizer(history)
+
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("regular, non-symlink file", result.stderr)
+            self.assertEqual(list(directory.glob("history.bak.*")), [])
+            self.assertEqual(list(directory.glob(".sanitize_hist.*")), [])
+
 
 if __name__ == "__main__":
     unittest.main()

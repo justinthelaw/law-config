@@ -52,6 +52,10 @@ if [[ $# -ne 1 ]]; then
   exit 1
 fi
 HIST_FILE="$1"
+if [[ ! -f "$HIST_FILE" || -L "$HIST_FILE" ]]; then
+  echo "Error: history_file must be a regular, non-symlink file: $HIST_FILE" >&2
+  exit 1
+fi
 case "$HIST_FILE" in
 */*)
   HIST_DIR="${HIST_FILE%/*}"
