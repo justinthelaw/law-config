@@ -15,6 +15,9 @@ cleanup() {
   if [[ -n "${TMP_FILE:-}" ]]; then
     rm -f "$TMP_FILE" "${TMP_FILE}.new"
   fi
+  if [[ -n "${SOURCE_FILE:-}" ]]; then
+    rm -f "$SOURCE_FILE"
+  fi
 }
 trap cleanup EXIT
 
@@ -52,6 +55,10 @@ if [[ $# -ne 1 ]]; then
   exit 1
 fi
 HIST_FILE="$1"
+if [[ ! -f "$HIST_FILE" || -L "$HIST_FILE" ]]; then
+  echo "Error: history_file must be a regular, non-symlink file: $HIST_FILE" >&2
+  exit 1
+fi
 case "$HIST_FILE" in
 */*)
   HIST_DIR="${HIST_FILE%/*}"
@@ -59,6 +66,18 @@ case "$HIST_FILE" in
   ;;
 *) HIST_DIR="." ;;
 esac
+# Keep a stable same-directory hard link to the original inode. This avoids
+# reopening a path that can be replaced by a symlink while the pipeline runs.
+SOURCE_FILE="$(mktemp "$HIST_DIR/.sanitize_source.XXXXXX")"
+rm -f "$SOURCE_FILE"
+if ! ln -P "$HIST_FILE" "$SOURCE_FILE" || [[ -L "$SOURCE_FILE" || ! -f "$SOURCE_FILE" ]]; then
+  echo "Error: history_file must remain a regular, non-symlink file: $HIST_FILE" >&2
+  exit 1
+fi
+if [[ -L "$HIST_FILE" || ! -f "$HIST_FILE" || ! "$HIST_FILE" -ef "$SOURCE_FILE" ]]; then
+  echo "Error: history_file changed before sanitization: $HIST_FILE" >&2
+  exit 1
+fi
 # Keep working files beside the history file so the final rename is atomic.
 TMP_FILE="$(mktemp "$HIST_DIR/.sanitize_hist.XXXXXX")"
 
@@ -93,7 +112,7 @@ backup_history() {
   done
 
   BACKUP_FILE="$candidate"
-  cp "$HIST_FILE" "$BACKUP_FILE"
+  cp "$SOURCE_FILE" "$BACKUP_FILE"
 }
 
 # === Step 1: Normalize (remove timestamps, extra spaces) ===
@@ -175,12 +194,16 @@ dedupe_history() {
 
 # === Pipeline ===
 backup_history
-normalize_history "$HIST_FILE" >"$TMP_FILE"
+normalize_history "$SOURCE_FILE" >"$TMP_FILE"
 remove_sensitive "$TMP_FILE"
 remove_failed "$TMP_FILE"
 remove_multi_semicolon "$TMP_FILE"
 remove_empty "$TMP_FILE"
 dedupe_history "$TMP_FILE"
+if [[ -L "$HIST_FILE" || ! -f "$HIST_FILE" || ! "$HIST_FILE" -ef "$SOURCE_FILE" ]]; then
+  echo "Error: history_file changed during sanitization; refusing to replace it: $HIST_FILE" >&2
+  exit 1
+fi
 mv "$TMP_FILE" "$HIST_FILE"
 
 echo "[+] Done. Backup: $BACKUP_FILE"
