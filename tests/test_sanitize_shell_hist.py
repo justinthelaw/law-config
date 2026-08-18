@@ -97,6 +97,53 @@ class SanitizeShellHistoryTests(unittest.TestCase):
             self.assertEqual(list(directory.glob("history.bak.*")), [])
             self.assertEqual(list(directory.glob(".sanitize_hist.*")), [])
 
+    def test_aborts_if_history_path_is_replaced_during_sanitization(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            directory = Path(tmpdir)
+            history = directory / "history"
+            target = directory / "real-history"
+            marker = directory / "swap-complete"
+            original = "echo keep\nTOKEN=abc\n"
+            history.write_text(original, encoding="utf-8")
+            target.write_text("echo protected\nTOKEN=target\n", encoding="utf-8")
+
+            bin_dir = directory / "bin"
+            bin_dir.mkdir()
+            swapping_grep = bin_dir / "grep"
+            swapping_grep.write_text(
+                "#!/bin/sh\n"
+                "if [ ! -e \"$TEST_SWAP_MARKER\" ]; then\n"
+                "  touch \"$TEST_SWAP_MARKER\"\n"
+                "  mv \"$TEST_HISTORY\" \"$TEST_HISTORY.replaced\"\n"
+                "  ln -s \"$TEST_TARGET\" \"$TEST_HISTORY\"\n"
+                "fi\n"
+                "exec /usr/bin/grep \"$@\"\n",
+                encoding="utf-8",
+            )
+            swapping_grep.chmod(0o755)
+            env = {
+                **os.environ,
+                "PATH": f"{bin_dir}:{os.environ['PATH']}",
+                "TEST_HISTORY": str(history),
+                "TEST_TARGET": str(target),
+                "TEST_SWAP_MARKER": str(marker),
+            }
+
+            result = self.run_sanitizer(history, env=env)
+
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("changed during sanitization", result.stderr)
+            self.assertTrue(history.is_symlink())
+            self.assertEqual(
+                target.read_text(encoding="utf-8"),
+                "echo protected\nTOKEN=target\n",
+            )
+            self.assertEqual(
+                (directory / "history.replaced").read_text(encoding="utf-8"),
+                original,
+            )
+            self.assertEqual(list(directory.glob(".sanitize_hist.*")), [])
+
 
 if __name__ == "__main__":
     unittest.main()
