@@ -65,7 +65,7 @@ repos:
         stages: [pre-commit, pre-push]
 
   - repo: https://github.com/scop/pre-commit-shfmt
-    rev: v3.13.1-1
+    rev: v3.14.1-1
     hooks:
       - id: shfmt
         name: Shell Script Format
