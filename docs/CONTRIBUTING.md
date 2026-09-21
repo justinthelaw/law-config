@@ -26,6 +26,9 @@ zsh -n configs/.zshrc configs/zsh/*.zsh
 uv run --python 3.14 python -m unittest discover -s tests -v
 ```
 
+Use stable upstream tags when updating pre-commit hooks; run both hook stages
+before committing a revision change.
+
 If changing docs, verify links and command examples.
 
 ## Pre-commit
