@@ -14,6 +14,10 @@ updates:
     directory: "/"
     schedule:
       interval: weekly
+    ignore:
+      # This older tag removes the Zsh exclusion in v0.11.0.1-1.
+      - dependency-name: "https://github.com/shellcheck-py/shellcheck-py"
+        versions: ["0.11.0.1"]
     groups:
       pre-commit-hooks:
         patterns:
