@@ -34,15 +34,21 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
         with:
+          # Upgrade deferred: Python 3.15 remains prerelease; retain 3.14 until final is available.
+          # https://www.python.org/downloads/
           python-version: "3.14"
 
       - name: Setup Node.js
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
         with:
+          # Upgrade deferred: Node 26 is Current; retain 24 LTS until its October 28 LTS transition.
+          # https://github.com/nodejs/Release/blob/main/schedule.json
           node-version: "24"
 
+      # Upgrade deferred: bundled brace-expansion/ip-address/undici fixes require a published refreshed npm bundle.
+      # Retain latest stable npm 12.2.0; https://github.com/npm/cli/issues/10062
       - name: Update npm
-        run: npm install --global npm@12.1.0
+        run: npm install --global npm@12.2.0
 
       - name: Install Pre-Commit
         run: python -m pip install pre-commit==4.6.2
