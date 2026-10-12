@@ -1,42 +1,28 @@
 # Contributing
 
-Thanks for improving Justin's shared machine configuration repository.
-
-## Ground Rules
-
-- Keep OS-specific behavior isolated to Linux and macOS overlays.
-- Keep changes minimal and explain why behavior changed.
-- Never commit secrets, personal tokens, or host-specific credentials.
-
-## Development Workflow
-
-1. Create a branch from `main`.
-2. Make focused changes.
-3. Run checks locally.
-4. Open a pull request with clear validation notes.
+Branch from `main`; keep changes focused and Linux/macOS behavior separate.
+Never commit secrets, personal tokens, or host-specific credentials.
 
 ## Validation
 
 Run these checks before pushing:
 
 ```bash
-uv tool run --python 3.14 pre-commit@4.6.2 run --all-files --hook-stage pre-commit
-uv tool run --python 3.14 pre-commit@4.6.2 run --all-files --hook-stage pre-push
-zsh -n configs/.zshrc configs/zsh/*.zsh
-uv run --python 3.14 python -m unittest discover -s tests -v
+uv tool run --python 3.15 pre-commit@4.6.2 run --all-files --hook-stage pre-commit
+uv tool run --python 3.15 pre-commit@4.6.2 run --all-files --hook-stage pre-push
+for file in configs/.zshrc configs/zsh/*.zsh; do zsh -n "$file" || exit $?; done
+uv run --python 3.15 python -m unittest discover -s tests -v
 ```
 
-Use stable upstream tags when updating pre-commit hooks; run both hook stages
-before committing a revision change.
-
-If changing docs, verify links and command examples.
+Use stable hook tags and run both stages before changing revisions.
+Verify documentation links and command examples.
 
 ## Pre-commit
 
 Install hooks once per clone:
 
 ```bash
-uv tool install --python 3.14 pre-commit==4.6.2
+uv tool install --python 3.15 pre-commit==4.6.2
 uv tool update-shell
 ```
 
@@ -46,8 +32,6 @@ Open a new shell, then install the hooks:
 pre-commit install --hook-type pre-commit --hook-type pre-push
 ```
 
-## Pull Request Expectations
+## Pull Requests
 
-- Describe the problem and rationale.
-- Include Linux/macOS impact notes when applicable.
-- Document manual validation steps in the PR description.
+Explain the change, Linux/macOS impacts, and validation results, including manual checks.
