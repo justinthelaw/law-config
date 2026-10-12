@@ -73,11 +73,11 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 After opening a new shell:
 
 ```bash
-uv python install 3.14
-uv python pin --global 3.14
+uv python install 3.15
+uv python pin --global 3.15
 ```
 
-Create virtual environments inside individual projects with `uv venv`; do not create one in this configuration repository.
+Use `uv venv` inside projects, not this configuration repository.
 
 ## Node.js via nvm
 
@@ -94,7 +94,7 @@ node -v
 npm -v
 ```
 
-Use the default HTTPS nvm mirror settings unless a trusted internal mirror is required.
+Keep nvm's default HTTPS mirrors unless a trusted internal mirror is required.
 
 ## Registry Login
 

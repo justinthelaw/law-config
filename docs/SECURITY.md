@@ -4,11 +4,6 @@
 
 Only the latest state of `main` is supported.
 
-| Version       | Supported |
-| ------------- | --------- |
-| `main`        | Yes       |
-| Older commits | No        |
-
 ## Reporting a Vulnerability
 
 Do not open public issues for security vulnerabilities.

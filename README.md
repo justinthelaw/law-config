@@ -1,15 +1,7 @@
 # Law-Config
 
-## Project Purpose
-
-Shared development system configuration for `law-*` machines.
-
-This repository contains shell, Git, and GPG baseline configuration plus setup documentation for Linux and macOS.
-
-Start with the environment guide for your machine:
-
-- [Linux setup](docs/setup-linux.md)
-- [macOS setup](docs/setup-macos.md)
+Shell, Git, and GPG configuration for `law-*` machines.
+Start with [Linux setup](docs/setup-linux.md) or [macOS setup](docs/setup-macos.md).
 
 ## Quick Start
 
@@ -62,18 +54,9 @@ done
 chmod 700 ~/.gnupg
 ```
 
-## Contributing
+## Reference
 
-See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for workflow and pull request expectations.
-
-## Security
-
-See [docs/SECURITY.md](docs/SECURITY.md) for supported versions and vulnerability reporting.
-
-## Support
-
-See [docs/SUPPORT.md](docs/SUPPORT.md) for bug, feature, and question routing.
-
-## License
-
-MIT License. See [LICENSE](LICENSE).
+- [Contributing](docs/CONTRIBUTING.md)
+- [Security and private reporting](docs/SECURITY.md)
+- [Support](docs/SUPPORT.md)
+- [MIT License](LICENSE)
