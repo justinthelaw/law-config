@@ -1,0 +1,44 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "develop",
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "description": "Repository delivery, dependency assessment and upgrades, cleanup, independent review, and scoped workflow improvement for coding agents.",
+  "author": {
+    "name": "justinthelaw",
+    "url": "https://github.com/justinthelaw"
+  },
+  "homepage": "https://github.com/justinthelaw/law-config/tree/main/plugins/develop",
+  "repository": "https://github.com/justinthelaw/law-config.git",
+  "keywords": [
+    "development",
+    "repositories",
+    "upgrades",
+    "review",
+    "kaizen"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Develop",
+        "logo": "./assets/logo.png",
+        "composerIcon": "./assets/logo.png",
+        "brandColor": "#C99554",
+        "shortDescription": "Build, review, and improve",
+        "longDescription": "Use six portable skills for repository delivery, dependency and runtime assessment, upgrades, documentation maintenance, validation, cleanup, independent review, and scoped session improvement with Kaizen. Commit signing is nonblocking. Core workflows need no external skill framework.",
+        "developerName": "justinthelaw",
+        "category": "Developer Tools",
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
+        "websiteURL": "https://github.com/justinthelaw/law-config/tree/main/plugins/develop",
+        "defaultPrompt": [
+          "develop iterate: fix this repository\u2019s failing build.",
+          "develop upgrade: assess and upgrade this repository\u2019s dependencies.",
+          "develop kaizen: review these selected sessions and recommend workflow improvements."
+        ]
+      }
+    }
+  }
+}

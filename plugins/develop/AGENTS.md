@@ -1,0 +1,9 @@
+# Maintaining develop
+
+- Keep this package a portable skills-only plugin. Bundled, explicitly invoked offline/read-only helpers are permitted; they are not executable hooks or services. Do not add machine-specific paths, tokens, executable hooks or a service dependency without a concrete need.
+- Keep shared defaults and handoffs in `skills/develop/references/contract.md`, with domain detail in owning references. Standalone `kaizen` and `adversarial-loop` use their own scoped protocols without repository discovery or coding dependencies.
+- Preserve selected repository/session scope, dependency assessment before upgrades, explicit post-plan bypass, fresh non-forked reviews and original model/effort matching. Bundled implementation guidance works without an external framework. Host-specific metadata and optional adapters must not become generic prerequisites. Keep six entry points and only the singular `upgrade`.
+- Commit signing is nonblocking: prefer an existing noninteractive signer and fall back unsigned; preserve the thread's explicit preference. Do not import donor signing gates. Source consolidation, installation and retirement are distinct actions requiring their own applicable authorization.
+- Change user-facing behavior only within the request; never use internal review as authorization to bypass host controls.
+- From this plugin directory, run `python scripts/validate.py --marketplace-root ../..`, `python -m unittest discover -s tests`, and relevant fresh-context scenarios in `tests/scenarios.md` before publication. Run `git diff --check` from the repository root. Omit `--marketplace-root` for detached installed payloads. Inspect actual artifacts; text matching alone does not validate agent behavior.
+- Keep conversation packets and task-specific findings outside tracked files. Commit only scoped changes, update the plugin version when releasing, and verify the same Git revision on each installed surface.

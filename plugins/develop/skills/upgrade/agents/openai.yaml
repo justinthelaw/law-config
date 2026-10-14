@@ -1,0 +1,7 @@
+---
+interface:
+  icon_small: "./assets/icon.png"
+  icon_large: "./assets/icon.png"
+  display_name: "Develop: Upgrade"
+  short_description: "Assess risks and verify dependency upgrades"
+  default_prompt: "Use $upgrade from the develop plugin to assess dependency risks and plan upgrades for my selected repository."

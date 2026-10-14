@@ -1,0 +1,7 @@
+---
+interface:
+  icon_small: "./assets/icon.png"
+  icon_large: "./assets/icon.png"
+  display_name: "Develop"
+  short_description: "Route repository and workflow improvements"
+  default_prompt: "Use $develop to work on the selected repository or session scope."
