@@ -7,6 +7,10 @@ This repository is the source of truth for Develop and its `law-config` Git
 marketplace. Follow [Install Develop](plugins/develop/INSTALL.md) to install and
 sync the plugin from `main`.
 
+Develop includes `upgrade-codex`, an explicit-only audit of Codex configuration
+and primitives against the installed or a specified version. See the
+[usage examples](plugins/develop/INSTALL.md#use).
+
 ## Quick Start
 
 1. After installing Git with the appropriate setup guide, clone the repository

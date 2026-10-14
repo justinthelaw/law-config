@@ -1,6 +1,6 @@
 ---
 name: kaizen
-description: Use when a user requests session analysis, a workflow retrospective, or evidence-based improvements to agent skills, plugins, instructions, rules or hooks.
+description: Analyze selected sessions and recommend improvements to agent workflows, skills, plugins, instructions, rules or hooks.
 ---
 
 # Kaizen

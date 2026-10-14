@@ -1,6 +1,6 @@
 ---
 name: clean
-description: Use when a Windows, Linux or macOS development environment needs disk/RAM inventory, disposable-file cleanup, or investigation of orphaned or zombie processes.
+description: Inspect disk and RAM, clean disposable files, and investigate orphaned or zombie processes on Windows, Linux or macOS.
 ---
 
 # Clean

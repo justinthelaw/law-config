@@ -1,6 +1,6 @@
 ---
 name: upgrade
-description: Assess dependency and runtime changes, plan or implement upgrades, consolidate dependency PRs, and revisit migration failures or deferred upgrades.
+description: Assess, plan or implement dependency and runtime upgrades, consolidate dependency PRs, and revisit failed or deferred migrations.
 ---
 
 # Upgrade

@@ -3,5 +3,5 @@ interface:
   icon_small: "./assets/icon.png"
   icon_large: "./assets/icon.png"
   display_name: "Develop: Kaizen"
-  short_description: "Improve workflows from selected session evidence"
-  default_prompt: "Use $kaizen from the develop plugin to analyze the sessions I select and recommend focused workflow improvements."
+  short_description: "Improve workflows from selected sessions"
+  default_prompt: "Use $kaizen to analyze my selected sessions and recommend workflow improvements."

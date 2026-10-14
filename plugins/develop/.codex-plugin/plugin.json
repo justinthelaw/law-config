@@ -1,7 +1,7 @@
 {
   "name": "develop",
-  "version": "0.1.0",
-  "description": "Repository delivery, dependency assessment and upgrades, cleanup, independent review, and scoped workflow improvement for coding agents.",
+  "version": "0.2.0",
+  "description": "Deliver repository changes, upgrade dependencies, audit Codex compatibility, review work, clean up, and improve workflows.",
   "author": {
     "name": "justinthelaw",
     "url": "https://github.com/justinthelaw"
@@ -23,7 +23,7 @@
     "composerIcon": "./assets/logo.png",
     "brandColor": "#C99554",
     "shortDescription": "Build, review, and improve",
-    "longDescription": "Use six portable skills for repository delivery, dependency and runtime assessment, upgrades, documentation maintenance, validation, cleanup, independent review, and scoped session improvement with Kaizen. Commit signing is nonblocking. Core workflows need no external skill framework.",
+    "longDescription": "Seven skills for repository changes, dependency upgrades, cleanup, independent review, and workflow improvement. Explicit-only upgrade-codex audits Codex configuration and primitives against an installed or specified version. No external workflow plugin required.",
     "developerName": "justinthelaw",
     "category": "Developer Tools",
     "capabilities": [
