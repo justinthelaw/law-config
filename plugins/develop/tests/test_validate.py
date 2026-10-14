@@ -337,7 +337,8 @@ class PackageValidation(unittest.TestCase):
                     with mock.patch.object(Path, "read_text", guarded_read):
                         errors = validator.validate(self.package, self.repository)
                     self.assertEqual(escaped_reads, [], "metadata containment must precede reading")
-                    self.assertTrue(any("escapes" in error and relative in error for error in errors), errors)
+                    expected_path = str(Path(relative))
+                    self.assertTrue(any("escapes" in error and expected_path in error for error in errors), errors)
                 finally:
                     path.unlink()
                     external.rename(path)
