@@ -2,7 +2,8 @@
 """Offline package lint, not a full JSON Schema validator or agent behavior test.
 
 Requires Python 3.10+. This repository deliberately uses two simple scalar YAML
-frontmatter fields and JSON-compatible quoted UI strings; no YAML dependency.
+frontmatter fields, JSON-compatible quoted UI strings, and a canonical boolean
+policy block for explicit-only skills; no YAML dependency.
 """
 import argparse
 import ast
@@ -16,8 +17,22 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from generate_codex_manifest import codex_manifest
 
-SKILLS = {"develop", "iterate", "upgrade", "clean", "adversarial-loop", "kaizen"}
+SKILLS = {"develop", "iterate", "upgrade", "upgrade-codex", "clean", "adversarial-loop", "kaizen"}
 SCHEMA = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
+
+
+def explicit_only_policy(ui):
+    """Require the package's canonical block, rejecting ambiguous YAML values."""
+    lines = [line.rstrip() for line in ui.splitlines()
+             if line.strip() and not line.lstrip().startswith("#")]
+    headers = [index for index, line in enumerate(lines)
+               if re.match(r'''^(?:policy|"policy"|'policy')\s*:''', line)]
+    if len(headers) != 1 or lines[headers[0]] != "policy:":
+        return False
+    start = headers[0] + 1
+    end = next((index for index in range(start, len(lines))
+                if not lines[index].startswith(" ")), len(lines))
+    return lines[start:end] == ["  allow_implicit_invocation: false"]
 
 
 def validate(root, marketplace_root=None):
@@ -90,7 +105,9 @@ def validate(root, marketplace_root=None):
             errors.append("catalog: expected exactly one develop entry with a local source")
 
     skill_paths = sorted((root / "skills").glob("*/SKILL.md"))
-    check({p.parent.name for p in skill_paths} == SKILLS, "skills: expected exactly six entry points")
+    skill_directories = {p.name for p in (root / "skills").iterdir() if p.is_dir()}
+    check({p.parent.name for p in skill_paths} == skill_directories == SKILLS,
+          "skills: expected exactly seven entry points")
     for path in skill_paths:
         text = path.read_text(encoding="utf-8")
         frontmatter = re.match(r"\A---\n(.*?)\n---\n", text, re.S)
@@ -111,6 +128,9 @@ def validate(root, marketplace_root=None):
         ui_path = path.parent / "agents/openai.yaml"
         try:
             ui = ui_path.read_text(encoding="utf-8")
+            if path.parent.name == "upgrade-codex":
+                check(explicit_only_policy(ui),
+                      f"{ui_path.relative_to(root)}: require one policy block with allow_implicit_invocation: false")
             values = dict(re.findall(r'^  (display_name|short_description|default_prompt): (".*")$', ui, re.M))
             values = {key: json.loads(value) for key, value in values.items()}
             check(len(values) == 3, f"{ui_path.relative_to(root)}: missing interface fields")
@@ -175,7 +195,7 @@ def main():
         print("FAIL:", error, file=sys.stderr)
     if errors:
         return 1
-    print("PASS: package structure, six skills, references, and contextual marketplace checks")
+    print("PASS: package structure, seven skills, references, and contextual marketplace checks")
     return 0
 
 

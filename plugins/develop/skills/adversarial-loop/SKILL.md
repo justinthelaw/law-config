@@ -1,6 +1,6 @@
 ---
 name: adversarial-loop
-description: Run bounded independent review of facts, visuals, writing, plans, code or completion evidence, including develop intent and evidence checkpoints.
+description: Run bounded independent reviews of facts, visuals, writing, plans, code and results, including Develop intent and evidence checks.
 ---
 
 # Adversarial loop

@@ -1,6 +1,6 @@
 ---
 name: develop
-description: Use when the user invokes develop for repository work, dependency upgrades, environment cleanup, session improvement, independent review, or a combination of these tasks.
+description: Use when the user invokes Develop for repository work, dependency upgrades, cleanup, selected-session improvements or independent review.
 ---
 
 # Develop
@@ -23,6 +23,8 @@ Resolve the user's outcome, then route below. Repository workflows read [the sha
 | Learn from selected sessions and improve agent workflows | [kaizen](../kaizen/SKILL.md) | User-selected sessions/sources and limits, desired improvement, action authority |
 
 For mixed requests, use the smallest ordered combination and one coordinator. Reuse relevant review checkpoints across nested skills. A handoff from analysis to implementation preserves its target and existing authorization; it never expands to other repositories or histories.
+
+[upgrade-codex](../upgrade-codex/SKILL.md) is available only when the user explicitly invokes it. Do not select it from general development, maintenance or dependency-upgrade requests.
 
 ## Report
 

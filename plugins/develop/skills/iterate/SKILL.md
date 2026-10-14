@@ -1,6 +1,6 @@
 ---
 name: iterate
-description: Implement or review repository changes, publish selected existing work, and monitor or repair CI and review findings on GitHub, GitLab, Bitbucket or Hugging Face.
+description: Implement or review repository changes, publish selected existing work, and monitor or fix CI and review findings on GitHub, GitLab, Bitbucket or Hugging Face.
 ---
 
 # Iterate

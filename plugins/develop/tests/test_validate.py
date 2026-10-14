@@ -178,7 +178,71 @@ class PackageValidation(unittest.TestCase):
         (self.package / "skills/kaizen/SKILL.md").unlink()
         result = self.validate()
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("six entry points", result.stdout + result.stderr)
+        self.assertIn("seven entry points", result.stdout + result.stderr)
+
+    def test_missing_upgrade_codex_entrypoint_fails(self):
+        (self.package / "skills/upgrade-codex/SKILL.md").unlink()
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("seven entry points", result.stdout + result.stderr)
+
+    def test_unregistered_skill_directory_fails(self):
+        (self.package / "skills/unregistered").mkdir()
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("seven entry points", result.stdout + result.stderr)
+
+    def write_upgrade_codex_policy(self, policy):
+        path = self.package / "skills/upgrade-codex/agents/openai.yaml"
+        # Keep the real interface and replace the policy with hand-written
+        # fixtures, so each case exercises the packaged CLI validator.
+        original = path.read_text(encoding="utf-8")
+        prefix, separator, suffix = original.partition("\npolicy:")
+        self.assertTrue(separator, "upgrade-codex must ship an explicit invocation policy")
+        remaining = suffix.splitlines(keepends=True)
+        while remaining and (not remaining[0].strip() or remaining[0].startswith(" ")):
+            remaining.pop(0)
+        path.write_text(prefix + "\n" + policy + "".join(remaining), encoding="utf-8")
+
+    def test_upgrade_codex_explicit_policy_passes(self):
+        self.write_upgrade_codex_policy("policy:\n  allow_implicit_invocation: false\n")
+        result = self.validate()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_upgrade_codex_implicit_policy_fails(self):
+        self.write_upgrade_codex_policy("policy:\n  allow_implicit_invocation: true\n")
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("allow_implicit_invocation", result.stdout + result.stderr)
+
+    def test_upgrade_codex_missing_policy_fails(self):
+        self.write_upgrade_codex_policy("")
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("allow_implicit_invocation", result.stdout + result.stderr)
+
+    def test_upgrade_codex_malformed_policy_fails(self):
+        fixtures = (
+            'policy:\n  allow_implicit_invocation: "false"\n',
+            "policy:\n  allow_implicit_invocation: null\n",
+            "policy:\n  allow_implicit_invocation: [false]\n",
+            "policy:\n  allow_implicit_invocation: {value: false}\n",
+            "policy:\nallow_implicit_invocation: false\n",
+            "policy:\n  allow_implicit_invocation: false\n  allow_implicit_invocation: true\n",
+            "policy:\n  allow_implicit_invocation: false\npolicy: true\n",
+            "policy:\n  allow_implicit_invocation: false\npolicy : {allow_implicit_invocation: true}\n",
+            'policy:\n  allow_implicit_invocation: false\n"policy": {allow_implicit_invocation: true}\n',
+            "policy:\n  nested:\n    allow_implicit_invocation: false\n",
+        )
+        path = self.package / "skills/upgrade-codex/agents/openai.yaml"
+        original = path.read_text(encoding="utf-8")
+        for policy in fixtures:
+            with self.subTest(policy=policy):
+                path.write_text(original, encoding="utf-8")
+                self.write_upgrade_codex_policy(policy)
+                result = self.validate()
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("allow_implicit_invocation", result.stdout + result.stderr)
 
     def test_missing_icon_fails(self):
         (self.package / "skills/clean/assets/icon.png").unlink()

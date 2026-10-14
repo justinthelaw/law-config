@@ -1,6 +1,6 @@
 # Install Develop
 
-Source of truth: [justinthelaw/law-config, plugins/develop](https://github.com/justinthelaw/law-config/tree/main/plugins/develop). This skills-only package contains six entry points: `develop`, `iterate`, `upgrade`, `clean`, `adversarial-loop` and `kaizen`. Bundled implementation guidance needs no additional workflow plugin. Compatible installed guidance may supplement it. The package is licensed under [Apache-2.0](LICENSE).
+Source: [justinthelaw/law-config, plugins/develop](https://github.com/justinthelaw/law-config/tree/main/plugins/develop). The package contains seven skills: `develop`, `iterate`, `upgrade`, `upgrade-codex`, `clean`, `adversarial-loop` and `kaizen`. It needs no external workflow plugin and uses the [Apache-2.0 license](LICENSE).
 
 ## Choose a host
 
@@ -27,11 +27,19 @@ Other hosts use their documented skill/plugin loading and account/workspace dist
 - `develop iterate: publish these prepared changes; signing is optional.`
 - `develop upgrade: assess and upgrade dependencies in this repository.`
 - `develop upgrade: review this dependency PR only.`
+- `$upgrade-codex: audit this project's Codex setup against the installed version; report only.`
+- `$upgrade-codex: check these configs, instructions, skills and plugins against Codex <version>.`
 - `develop clean: inspect disk and memory usage; do not delete anything.`
 - `develop kaizen: analyze these two selected sessions and recommend workflow improvements; make no changes.`
 - `adversarial-loop: fact-check this draft; report findings only.`
 
 Dependency assessment is upgrade's first stage. A user may explicitly bypass the separate assessment after planning; factual prerequisites, validation and protections still apply. Scope stays with selected repositories and sessions; no author-account fleet or machine-wide history is implied. Repository-specific conventions and user preferences remain with their owners.
+
+`upgrade-codex` runs only when explicitly invoked. It checks every Codex primitive
+in the selected scope against the installed or specified version, reports gaps
+in coverage, and separates required fixes from optional improvements. It starts
+with an audit; applying changes requires a request. Client installation is a
+separate action. See the [skill](skills/upgrade-codex/SKILL.md).
 
 Signing is nonblocking: use an existing noninteractive signer when available, otherwise fall back unsigned, preserving any thread preference. Do not change persistent Git configuration or set up keys to satisfy this workflow. Actual repository/server restrictions still apply.
 
