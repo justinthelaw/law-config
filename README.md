@@ -1,7 +1,11 @@
 # Law-Config
 
-Shell, Git, and GPG configuration for `law-*` machines.
+Shell, Git, and GPG configuration for `law-*` machines, plus the Develop plugin.
 Start with [Linux setup](docs/setup-linux.md) or [macOS setup](docs/setup-macos.md).
+
+This repository is the source of truth for Develop and its `law-config` Git
+marketplace. Follow [Install Develop](plugins/develop/INSTALL.md) to install and
+sync the plugin from `main`.
 
 ## Quick Start
 
@@ -60,3 +64,7 @@ chmod 700 ~/.gnupg
 - [Security and private reporting](docs/SECURITY.md)
 - [Support](docs/SUPPORT.md)
 - [MIT License](LICENSE)
+- [Develop Apache-2.0 License](plugins/develop/LICENSE)
+
+The configuration and helper scripts use the repository's MIT license. The
+Develop package under `plugins/develop/` retains its Apache-2.0 license.

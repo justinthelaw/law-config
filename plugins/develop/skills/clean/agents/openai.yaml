@@ -1,0 +1,7 @@
+---
+interface:
+  icon_small: "./assets/icon.png"
+  icon_large: "./assets/icon.png"
+  display_name: "Develop: Clean"
+  short_description: "Inspect and reclaim disposable workspace data"
+  default_prompt: "Use $clean from the develop plugin to inspect this environment and safely reclaim space."

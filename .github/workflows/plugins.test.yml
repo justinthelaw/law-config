@@ -1,0 +1,46 @@
+---
+name: Plugin Tests
+
+permissions:
+  contents: read
+
+"on":
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".agents/**"
+      - "plugins/**"
+      - ".github/workflows/plugins.test.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - ".agents/**"
+      - "plugins/**"
+      - ".github/workflows/plugins.test.yml"
+
+concurrency:
+  group: plugins-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ["3.10", "3.14"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+      - name: Setup Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97  # v7.0.0
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Validate package and marketplace
+        run: python plugins/develop/scripts/validate.py --marketplace-root .
+      - name: Test package validation
+        run: python -m unittest discover -s plugins/develop/tests -p test_validate.py
+      - name: Test bundled Git inventory and GitHub watcher
+        run: python -m unittest discover -s plugins/develop/skills/iterate/scripts -p 'test_*.py'

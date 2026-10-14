@@ -1,0 +1,7 @@
+---
+interface:
+  icon_small: "./assets/icon.png"
+  icon_large: "./assets/icon.png"
+  display_name: "Develop: Adversarial loop"
+  short_description: "Review artifacts with bounded independent lanes"
+  default_prompt: "Use $adversarial-loop to independently review this artifact against my requests and supplied evidence, track revision-specific findings, and report within the review budget."
