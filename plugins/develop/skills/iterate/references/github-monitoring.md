@@ -13,6 +13,8 @@ The default checks CI only. Reconcile required human and automated reviews throu
 
 Keep one watcher running through a published revision instead of issuing broad repeated queries. The helper uses adaptive polling, bounded failure logs and transition output. Normal monitoring uses continuous mode; `--once` is a diagnostic snapshot and cannot establish terminal success while anything remains pending. Use a task-appropriate `--timeout` when bounded observation is needed.
 
+A request to monitor live CI or archive the chat on completion does not request a persistent schedule. Use the in-session watcher for ordinary monitoring. Create or change a recurring job only when the user's request includes scheduling intent; archive-on-completion does not supply that authority.
+
 ## Evidence and repair
 
 - Identify targets by canonical repository/ref/full SHA; display labels are not unique identities. Re-read remote identity and actual head after publication and before completion.

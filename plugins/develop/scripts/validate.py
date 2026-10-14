@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 """Offline package lint, not a full JSON Schema validator or agent behavior test.
 
-Requires Python 3.10+. This repository deliberately uses two simple scalar YAML
-frontmatter fields, JSON-compatible quoted UI strings, and a canonical boolean
-policy block for explicit-only skills; no YAML dependency.
+Requires Python 3.10+. Supported metadata is deliberately narrow: two simple
+scalar frontmatter fields, a two-level UI mapping with JSON-quoted strings and
+an optional boolean policy. Package icons must be noninterlaced 8-bit RGB/RGBA
+PNGs, at most 1 MiB compressed and 64 MiB of decoded scanlines. Only IHDR, PLTE,
+IDAT, IEND and opaque caBX content-credential chunks are supported. No dependencies.
 """
 import argparse
 import ast
 import json
 from pathlib import Path
 import re
+import struct
 import sys
+import zlib
 
 # Resolve the packaged sibling even when Python safe-path mode omits the
 # script directory. Never import from the caller's current working directory.
@@ -19,20 +23,124 @@ from generate_codex_manifest import codex_manifest
 
 SKILLS = {"develop", "iterate", "upgrade", "upgrade-codex", "clean", "adversarial-loop", "kaizen"}
 SCHEMA = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
+MAX_ICON_BYTES = 1024 * 1024
+MAX_SCANLINE_BYTES = 64 * 1024 * 1024
+INTERFACE_FIELDS = {"display_name", "short_description", "default_prompt", "icon_small", "icon_large"}
 
 
-def explicit_only_policy(ui):
-    """Require the package's canonical block, rejecting ambiguous YAML values."""
-    lines = [line.rstrip() for line in ui.splitlines()
+def parse_ui_metadata(text):
+    """Parse this package's YAML subset; reject other syntax, keys and mappings.
+
+    Only an optional initial document marker, whole-line comments, unquoted
+    keys, two-space child indentation and one-line values are supported.
+    """
+    result = {}
+    section = None
+    lines = [line.rstrip() for line in text.splitlines()
              if line.strip() and not line.lstrip().startswith("#")]
-    headers = [index for index, line in enumerate(lines)
-               if re.match(r'''^(?:policy|"policy"|'policy')\s*:''', line)]
-    if len(headers) != 1 or lines[headers[0]] != "policy:":
-        return False
-    start = headers[0] + 1
-    end = next((index for index in range(start, len(lines))
-                if not lines[index].startswith(" ")), len(lines))
-    return lines[start:end] == ["  allow_implicit_invocation: false"]
+    if lines and lines[0] == "---":
+        lines.pop(0)
+    for line in lines:
+        if line in ("interface:", "policy:"):
+            section = line[:-1]
+            if section in result:
+                raise ValueError(f"duplicate mapping {section}")
+            result[section] = {}
+            continue
+        match = re.fullmatch(r"  ([a-z_]+): (.+)", line)
+        if section is None or match is None:
+            raise ValueError(f"unsupported metadata mapping: {line}")
+        key, raw = match.groups()
+        allowed = INTERFACE_FIELDS if section == "interface" else {"allow_implicit_invocation"}
+        if key not in allowed or key in result[section]:
+            raise ValueError(f"unknown or duplicate {section} field: {key}")
+        if section == "interface":
+            value = json.loads(raw)
+            if not isinstance(value, str):
+                raise ValueError(f"{key}: require a JSON-quoted string")
+        else:
+            if raw not in ("true", "false"):
+                raise ValueError("allow_implicit_invocation: require a boolean")
+            value = raw == "true"
+        result[section][key] = value
+    if set(result.get("interface", {})) != INTERFACE_FIELDS:
+        raise ValueError("interface: require exactly the five supported fields")
+    if "policy" in result and set(result["policy"]) != {"allow_implicit_invocation"}:
+        raise ValueError("policy: require allow_implicit_invocation")
+    return result
+
+
+def validate_png(data):
+    """Check complete critical chunks and bounded decoded RGB/RGBA scanlines.
+
+    All 8-bit channel values are valid. The five permitted row filters are
+    reversible for every byte value, so pixel reconstruction adds no validity
+    check; decoding verifies exact row lengths and filter bytes instead.
+    The shipped caBX metadata is opaque to image decoding. Other ancillary
+    types are unsupported: framing and CRC alone cannot validate their payloads.
+    """
+    if len(data) > MAX_ICON_BYTES:
+        raise ValueError("icon exceeds 1 MiB")
+    if data[:8] != b"\x89PNG\r\n\x1a\n":
+        raise ValueError("expected a PNG image")
+    offset = 8
+    width = height = stride = 0
+    compressed = bytearray()
+    seen = set()
+    idat_closed = False
+    while offset < len(data):
+        if len(data) - offset < 12:
+            raise ValueError("truncated PNG chunk")
+        length, kind = struct.unpack_from(">I4s", data, offset)
+        end = offset + length + 12
+        if end > len(data):
+            raise ValueError("truncated PNG chunk payload")
+        if not re.fullmatch(b"[A-Za-z]{2}[A-Z][A-Za-z]", kind):
+            raise ValueError("invalid PNG chunk type")
+        payload = data[offset + 8:end - 4]
+        crc, = struct.unpack_from(">I", data, end - 4)
+        if zlib.crc32(kind + payload) != crc:
+            raise ValueError(f"invalid PNG {kind.decode()} CRC")
+        if not seen and kind != b"IHDR":
+            raise ValueError("PNG must begin with IHDR")
+        if kind == b"IHDR":
+            if seen or length != 13:
+                raise ValueError("require one 13-byte PNG IHDR")
+            width, height, depth, color, compression, filtering, interlace = struct.unpack(">IIBBBBB", payload)
+            if width != height or width < 64:
+                raise ValueError("use a square icon at least 64px")
+            if depth != 8 or color not in (2, 6) or compression or filtering or interlace:
+                raise ValueError("require a noninterlaced 8-bit RGB/RGBA PNG")
+            stride = 1 + width * (3 if color == 2 else 4)
+            if stride * height > MAX_SCANLINE_BYTES:
+                raise ValueError("decoded PNG scanlines exceed 64 MiB")
+        elif kind == b"PLTE":
+            if b"PLTE" in seen or b"IDAT" in seen or not 0 < length <= 768 or length % 3:
+                raise ValueError("invalid PNG palette")
+        elif kind == b"IDAT":
+            if idat_closed:
+                raise ValueError("PNG IDAT chunks must be consecutive")
+            compressed.extend(payload)
+        elif kind == b"IEND":
+            if length or b"IDAT" not in seen or end != len(data):
+                raise ValueError("invalid PNG end or trailing data")
+        elif kind != b"caBX":
+            raise ValueError(f"unsupported PNG chunk {kind.decode()}")
+        if b"IDAT" in seen and kind != b"IDAT":
+            idat_closed = True
+        seen.add(kind)
+        offset = end
+    if b"IEND" not in seen:
+        raise ValueError("missing PNG IEND")
+    expected = stride * height
+    decoder = zlib.decompressobj()
+    # One extra byte detects excess output without an unbounded flush/decompress.
+    decoded = decoder.decompress(compressed, expected + 1)
+    if (len(decoded) != expected or not decoder.eof
+            or decoder.unconsumed_tail or decoder.unused_data):
+        raise ValueError("invalid, truncated or excessive PNG scanline data")
+    if any(decoded[index] > 4 for index in range(0, expected, stride)):
+        raise ValueError("invalid PNG scanline filter")
 
 
 def validate(root, marketplace_root=None):
@@ -43,30 +151,34 @@ def validate(root, marketplace_root=None):
         if not condition:
             errors.append(message)
 
+    def contained_text(path, base=root):
+        if not path.resolve().is_relative_to(base.resolve()):
+            raise ValueError("metadata escapes its package")
+        return path.read_text(encoding="utf-8")
+
     def read_json(relative, base=root):
         try:
-            return json.loads((base / relative).read_text(encoding="utf-8"))
-        except (OSError, ValueError) as exc:
+            return json.loads(contained_text(base / relative, base))
+        except (OSError, ValueError, RuntimeError) as exc:
             errors.append(f"{relative}: {exc}")
             return {}
+
+    inspected_icons = set()
 
     def check_icon(value, base, label):
         if not isinstance(value, str) or not value.startswith("./"):
             errors.append(f"{label}: use a relative ./ asset path")
             return
-        target = (base / value).resolve()
-        if not target.is_relative_to(base.resolve()):
-            errors.append(f"{label}: asset escapes its package")
-            return
         try:
-            data = target.read_bytes()
-            check(len(data) <= 1024 * 1024, f"{label}: icon exceeds 1 MiB")
-            check(data[:8] == b"\x89PNG\r\n\x1a\n" and data[12:16] == b"IHDR",
-                  f"{label}: expected a PNG image")
-            width = int.from_bytes(data[16:20], "big")
-            height = int.from_bytes(data[20:24], "big")
-            check(width == height and width >= 64, f"{label}: use a square icon at least 64px")
-        except OSError as exc:
+            target = (base / value).resolve()
+            if not target.is_relative_to(base.resolve()) or not target.is_relative_to(root):
+                raise ValueError("asset escapes its package")
+            if target in inspected_icons:
+                return
+            with target.open("rb") as stream:
+                validate_png(stream.read(MAX_ICON_BYTES + 1))
+            inspected_icons.add(target)
+        except (OSError, ValueError, RuntimeError, zlib.error) as exc:
             errors.append(f"{label}: {exc}")
 
     manifest = read_json("plugin.json")
@@ -78,6 +190,13 @@ def validate(root, marketplace_root=None):
     check(bool(re.fullmatch(r"\d+\.\d+\.\d+", str(manifest.get("version", "")))), "plugin.json: use a release version")
     check(manifest.get("repository") == "https://github.com/justinthelaw/law-config.git", "plugin.json: unexpected source repository")
     check(not any(key in manifest for key in ("dependencies", "mcpServers", "hooks")), "plugin.json: keep this package skills-only; no invented dependencies")
+    # The portable format discovers mcp.json; legacy Codex also recognizes
+    # .mcp.json and hooks/hooks.json. All violate this package's skills-only
+    # policy. This does not assert that portable clients execute legacy hooks.
+    for relative in ("mcp.json", ".mcp.json", "hooks/hooks.json"):
+        component = root / relative
+        check(not component.exists() and not component.is_symlink(),
+              f"{relative}: keep this package skills-only; unexpected component declaration")
     interface = manifest.get("extensions", {}).get("com.openai", {}).get("interface", {})
     for key in ("logo", "composerIcon"):
         check_icon(interface.get(key), root, f"plugin.json: {key}")
@@ -109,7 +228,11 @@ def validate(root, marketplace_root=None):
     check({p.parent.name for p in skill_paths} == skill_directories == SKILLS,
           "skills: expected exactly seven entry points")
     for path in skill_paths:
-        text = path.read_text(encoding="utf-8")
+        try:
+            text = contained_text(path)
+        except (OSError, ValueError, RuntimeError) as exc:
+            errors.append(f"{path.relative_to(root)}: {exc}")
+            continue
         frontmatter = re.match(r"\A---\n(.*?)\n---\n", text, re.S)
         if not frontmatter:
             errors.append(f"{path.relative_to(root)}: missing frontmatter")
@@ -127,21 +250,20 @@ def validate(root, marketplace_root=None):
         check("TODO" not in text and "TBD" not in text, f"{path.relative_to(root)}: unfinished template")
         ui_path = path.parent / "agents/openai.yaml"
         try:
-            ui = ui_path.read_text(encoding="utf-8")
+            ui = parse_ui_metadata(contained_text(ui_path))
             if path.parent.name == "upgrade-codex":
-                check(explicit_only_policy(ui),
+                check(ui.get("policy", {}).get("allow_implicit_invocation") is False,
                       f"{ui_path.relative_to(root)}: require one policy block with allow_implicit_invocation: false")
-            values = dict(re.findall(r'^  (display_name|short_description|default_prompt): (".*")$', ui, re.M))
-            values = {key: json.loads(value) for key, value in values.items()}
-            check(len(values) == 3, f"{ui_path.relative_to(root)}: missing interface fields")
-            check(25 <= len(values.get("short_description", "")) <= 64, f"{ui_path.relative_to(root)}: short_description length")
-            check("$" + path.parent.name in values.get("default_prompt", ""), f"{ui_path.relative_to(root)}: prompt must name its skill")
-            icons = dict(re.findall(r'^  (icon_small|icon_large): (".*")$', ui, re.M))
+            values = ui["interface"]
+            check(25 <= len(values["short_description"]) <= 64, f"{ui_path.relative_to(root)}: short_description length")
+            check("$" + path.parent.name in values["default_prompt"], f"{ui_path.relative_to(root)}: prompt must name its skill")
             for key in ("icon_small", "icon_large"):
-                check_icon(json.loads(icons.get(key, "null")), path.parent,
+                check_icon(values[key], path.parent,
                            f"{ui_path.relative_to(root)}: {key}")
-        except (OSError, ValueError) as exc:
+        except (OSError, ValueError, RuntimeError) as exc:
             errors.append(f"{ui_path.relative_to(root)}: {exc}")
+            if path.parent.name == "upgrade-codex":
+                errors.append(f"{ui_path.relative_to(root)}: require one policy block with allow_implicit_invocation: false")
 
     # Delivery helpers ship inside the owning skill. Check their local import
     # closure without importing code or relying on the author's checkout.
@@ -172,7 +294,11 @@ def validate(root, marketplace_root=None):
         if not path.is_file():
             errors.append(f"missing {path.relative_to(root)}")
             continue
-        text = path.read_text(encoding="utf-8")
+        try:
+            text = contained_text(path)
+        except (OSError, ValueError, RuntimeError) as exc:
+            errors.append(f"{path.relative_to(root)}: {exc}")
+            continue
         for link in re.findall(r"\[[^\]]*\]\(([^)]+)\)", text):
             if re.match(r"^(https?://|mailto:|#)", link):
                 continue

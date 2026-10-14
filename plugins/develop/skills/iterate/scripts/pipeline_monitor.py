@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 import time
 from datetime import datetime, timezone
+from functools import partial
 from typing import Any, Callable, Sequence
 
 from pipeline_failure_reporting import FailureReportingMixin
@@ -20,13 +21,16 @@ from pipeline_review import (
 )
 from pipeline_support import (
     VIEW_FILTER,
+    Deadline,
     Runner,
     Target,
     WatchError,
+    WatchTimeout,
     build_target,
     classify,
     redact,
     run_command,
+    validate_timings,
 )
 
 
@@ -35,7 +39,7 @@ class Watcher(FailureReportingMixin, RunStateMixin):
         self,
         targets: Sequence[Target],
         *,
-        runner: Runner = run_command,
+        runner: Runner | None = None,
         emit: Callable[[dict[str, Any]], None] | None = None,
         clock: Callable[[], float] = time.monotonic,
         sleep: Callable[[float], None] = time.sleep,
@@ -46,20 +50,28 @@ class Watcher(FailureReportingMixin, RunStateMixin):
         discovery_grace: float = 120,
         settle: float = 120,
         timeout: float = 0,
+        deadline: Deadline | None = None,
         max_log_lines: int = 40,
         max_log_chars: int = 4000,
         max_failed_jobs: int = 2,
         max_runs: int = 100,
         monitor_reviews: bool = False,
     ) -> None:
+        validate_timings(interval=interval, max_interval=max_interval, heartbeat=heartbeat,
+                         rediscover=rediscover, discovery_grace=discovery_grace, settle=settle, timeout=timeout)
+        self.started = clock()
+        self.deadline = deadline or (Deadline(self.started + timeout, clock) if timeout else None)
+        if runner is None:
+            runner = partial(run_command, deadline=self.deadline, sleep=sleep)
         self.targets = list(targets)
-        self.runner, self.clock, self.sleep = runner, clock, sleep
+        self.runner = self.deadline.bind(runner) if self.deadline is not None else runner
+        self.clock, self.sleep = clock, sleep
         self.emit = emit or self.print_event
         self.interval, self.heartbeat = interval, heartbeat
         self.max_interval = max(interval, max_interval)
         self.current_interval = interval
         self.rediscover, self.discovery_grace = rediscover, discovery_grace
-        self.settle, self.timeout, self.max_log_lines = settle, timeout, max_log_lines
+        self.settle, self.max_log_lines = settle, max_log_lines
         self.max_log_chars, self.max_failed_jobs = max_log_chars, max_failed_jobs
         self.max_runs = max_runs
         self.monitor_reviews = monitor_reviews
@@ -75,7 +87,6 @@ class Watcher(FailureReportingMixin, RunStateMixin):
         self.review_activation: dict[str, datetime] = {}
         self.check_policies: dict[str, CheckPolicy] = {}
         self.check_coverage: dict[str, CheckCoverage] = {}
-        self.started = clock()
         self.last_heartbeat = self.started
         self.last_discovery = self.started
 
@@ -325,8 +336,8 @@ class Watcher(FailureReportingMixin, RunStateMixin):
         ]
         if terminal_since is not None:
             deadlines.append(max(0.0, self.settle - (now - terminal_since)))
-        if self.timeout:
-            deadlines.append(max(0.0, self.timeout - (now - self.started)))
+        if self.deadline is not None:
+            deadlines.append(self.deadline.remaining())
         positive = [deadline for deadline in deadlines if deadline > 0]
         return min(positive, default=self.interval)
 
@@ -345,21 +356,29 @@ class Watcher(FailureReportingMixin, RunStateMixin):
         return [target.label for target in self.targets if target.key not in successful]
 
     def watch(self, *, once: bool = False) -> int:
+        try:
+            return self._watch(once=once)
+        except WatchTimeout:
+            self.emit({"event": "blocked", "reason": "monitor timeout", **self.counts()})
+            return 2
+
+    def check_deadline(self) -> None:
+        if self.deadline is not None:
+            self.deadline.remaining()
+
+    def _watch(self, *, once: bool = False) -> int:
+        self.check_deadline()
         for host in sorted({github_location(target.repository)[0] for target in self.targets}):
             self.runner(["gh", "auth", "status", "--hostname", host])
         self.discover_runs(initial=True)
         terminal_since: float | None = None
         while True:
-            if self.timeout and self.clock() - self.started >= self.timeout:
-                self.emit({"event": "blocked", "reason": "monitor timeout", **self.counts()})
-                return 2
+            self.check_deadline()
             changed = self.poll_active()
             changed |= self.poll_checks()
             changed |= self.poll_reviews()
             now = self.clock()
-            if self.timeout and now - self.started >= self.timeout:
-                self.emit({"event": "blocked", "reason": "monitor timeout", **self.counts()})
-                return 2
+            self.check_deadline()
             missing = self.missing_targets()
             required_missing = [target.key for target in self.targets if self.check_coverage[target.key].missing]
             if required_missing and (once or any(now - self.first_seen[key] >= self.discovery_grace for key in required_missing)):
@@ -404,9 +423,7 @@ class Watcher(FailureReportingMixin, RunStateMixin):
                     self.poll_checks()
                     self.poll_reviews()
                     counts = self.counts()
-                    if self.timeout and self.clock() - self.started >= self.timeout:
-                        self.emit({"event": "blocked", "reason": "monitor timeout", **counts})
-                        return 2
+                    self.check_deadline()
                     missing = self.missing_targets()
                     if (
                         missing
@@ -437,9 +454,7 @@ class Watcher(FailureReportingMixin, RunStateMixin):
             if once:
                 self.emit({"event": "summary", "result": "pending", **counts})
                 return 3
-            if self.timeout and now - self.started >= self.timeout:
-                self.emit({"event": "blocked", "reason": "monitor timeout", **counts})
-                return 2
+            self.check_deadline()
             self.heartbeat_if_due(now)
             self.sleep(self.next_interval(now, changed=changed, terminal_since=terminal_since))
             now = self.clock()

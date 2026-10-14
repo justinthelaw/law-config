@@ -6,6 +6,8 @@ from __future__ import annotations
 import argparse
 import subprocess
 import sys
+import time
+from functools import partial
 from pathlib import Path
 from typing import Sequence
 
@@ -23,6 +25,7 @@ from pipeline_support import (
     TRANSIENT,
     VIEW_FILTER,
     Runner,
+    Deadline,
     Target,
     WatchError,
     bounded_log,
@@ -37,6 +40,7 @@ from pipeline_support import (
     parse_submodules,
     redact,
     run_command,
+    validate_timings,
 )
 
 
@@ -54,7 +58,7 @@ def parser() -> argparse.ArgumentParser:
     argument_parser.add_argument("--rediscover", type=float, default=90, help="Seconds between late-workflow discovery passes")
     argument_parser.add_argument("--discovery-grace", type=float, default=120, help="Seconds allowed for an exact-commit workflow to appear")
     argument_parser.add_argument("--settle", type=float, default=120, help="Quiet seconds before a final exact-commit workflow discovery pass")
-    argument_parser.add_argument("--timeout", type=float, default=0, help="Optional monitoring deadline in seconds; zero waits until terminal")
+    argument_parser.add_argument("--timeout", type=float, default=0, help="Optional total deadline in seconds, including discovery and command retries; zero waits until terminal")
     argument_parser.add_argument("--max-log-lines", type=int, default=40, help="Maximum lines emitted per failed job")
     argument_parser.add_argument("--max-log-chars", type=int, default=4000, help="Maximum characters emitted per failed job")
     argument_parser.add_argument("--max-failed-jobs", type=int, default=2, help="Maximum failed jobs inspected per workflow")
@@ -64,28 +68,30 @@ def parser() -> argparse.ArgumentParser:
 
 def main(argv: Sequence[str] | None = None) -> int:
     options = parser().parse_args(argv)
-    if min(
-        options.interval, options.max_interval, options.heartbeat,
-        options.rediscover, options.discovery_grace,
-    ) <= 0:
-        raise WatchError("Polling, heartbeat, rediscovery, and grace intervals must be positive")
+    validate_timings(
+        interval=options.interval, max_interval=options.max_interval, heartbeat=options.heartbeat,
+        rediscover=options.rediscover, discovery_grace=options.discovery_grace,
+        timeout=options.timeout, settle=options.settle,
+    )
     if min(options.max_log_lines, options.max_log_chars, options.max_failed_jobs, options.max_runs) <= 0:
         raise WatchError("Workflow and failure-output limits must be positive")
-    if options.timeout < 0 or options.settle < 0:
-        raise WatchError("Limits must be positive and timeout or settle windows cannot be negative")
+    deadline = Deadline(time.monotonic() + options.timeout, time.monotonic) if options.timeout else None
+    runner = partial(run_command, deadline=deadline) if deadline is not None else run_command
     roots = discover_roots(
-        options.cwd, options.repo, run_command, include_siblings=options.include_siblings
+        options.cwd, options.repo, runner, include_siblings=options.include_siblings
     )
-    targets = discover_targets(roots, run_command, github_hosts=options.github_host)
+    targets = discover_targets(roots, runner, github_hosts=options.github_host)
     watcher = Watcher(
         targets,
+        runner=runner,
+        deadline=deadline,
+        clock=time.monotonic,
         interval=options.interval,
         max_interval=options.max_interval,
         heartbeat=options.heartbeat,
         rediscover=options.rediscover,
         discovery_grace=options.discovery_grace,
         settle=options.settle,
-        timeout=options.timeout,
         max_log_lines=options.max_log_lines,
         max_log_chars=options.max_log_chars,
         max_failed_jobs=options.max_failed_jobs,

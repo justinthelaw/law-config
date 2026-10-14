@@ -18,6 +18,7 @@ Target artifacts (paths, source links, supplied diffs):
 Evidence authority (named sources that establish each relevant claim or criterion):
 Verification evidence (source citations and dates, rendered views and sizes, style rubric, or tests/CI):
 Allowed tools and sources / access, time or exploration bounds:
+Exact allowed file paths and resolved roots for sensitive local evidence:
 Stop condition (coverage complete, stated bound reached, or missing required evidence):
 Environment and known access limitations:
 Original model/effort profile and runtime matching evidence:
@@ -43,6 +44,8 @@ Output contract:
 ```
 
 For implementation reviews, supply the relevant diff plus contracts and tests. For plan reviews, supply the candidate plan, constraints and acceptance criteria. For information reviews, supply exact claims, named authoritative evidence and known uncertainty. Keep the coordinator's conclusions and other reviewers' findings out of independent packets. A focused rebuttal may quote the disputed finding and raw evidence, but record it as a rebuttal rather than treating it as an independent initial review.
+
+For sensitive local reviews, give reviewers an exact file allowlist instead of a directory scan with exclusion globs. Validate discovered names and resolved paths against the authorized roots before reading any content. Reject unexpected paths and links that resolve outside those roots; protected files must never enter a read command. Pass each approved path as a literal argument, including spaces and hidden components. If discovery is needed, inspect its path-only output first, then read only the approved files. A quoted exclusion pattern is not a substitute for this boundary.
 
 Keep the approval ledger with the coordinator, outside tracked files. Each row records lane responsibility, round, reviewed contract/artifact revisions, verdict, coverage limitations and unresolved finding IDs. On a material contract or artifact change, mark all active approvals for that checkpoint stale and issue new packets. Replacing a lane must not erase its open findings or reset the review budget.
 

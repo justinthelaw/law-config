@@ -171,6 +171,31 @@ class ProductionReviewTests(unittest.TestCase):
         runner = ReviewRunner(current, reactions=[reaction("eyes")], reviews=[review(current)])
         self.assertEqual(self.snapshot(runner)[0], 0)
 
+    def test_complete_no_feedback_review_passes(self):
+        for body in (
+            "Codex reviewed this pull request and didn't find any major issues.",
+            "  Codex reviewed this pull request and didn\u2019t find any major issues.\n",
+        ):
+            with self.subTest(body=body):
+                runner = ReviewRunner(reviews=[review(target(), state="COMMENTED", body=body)])
+                self.assertEqual(self.snapshot(runner)[0], 0)
+
+    def test_neutral_header_cannot_hide_additional_review_text(self):
+        for body in (
+            "Codex reviewed this pull request.\n\n[P1] Fix the authorization bypass.",
+            "Here are some automated review suggestions for this pull request.\n\n[P2] Handle missing values.",
+            "Codex reviewed this pull request and didn't find any major issues.\n\nPlease inspect the retry path.",
+            "Codex reviewed this pull request and didn't find any major issues.\n```\n[P1] unsafe()\n```",
+            "Quoted: Codex reviewed this pull request and didn't find any major issues.",
+            "Here are some automated review suggestions for this pull request.",
+        ):
+            with self.subTest(body=body):
+                runner = ReviewRunner(reviews=[review(target(), state="COMMENTED", body=body)])
+                result, monitor, events = self.snapshot(runner)
+                self.assertEqual(result, 1)
+                self.assertEqual(monitor.review_states[runner.current.key].status, "failed")
+                self.assertTrue(any(event["event"] == "review-finding" for event in events))
+
     def test_review_on_old_sha_never_approves_new_sha(self):
         old, new = target(), target(head="b" * 40)
         runner = ReviewRunner(new, reactions=[reaction("eyes"), reaction("+1", hour=4, identifier=2)], reviews=[review(old)])

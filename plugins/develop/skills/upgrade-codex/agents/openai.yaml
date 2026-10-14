@@ -4,6 +4,6 @@ interface:
   icon_large: "./assets/icon.png"
   display_name: "Develop: Upgrade Codex"
   short_description: "Check Codex setup against a target version"
-  default_prompt: "Use $upgrade-codex to audit my selected Codex setup against its installed or specified version."
+  default_prompt: "Use $upgrade-codex to audit my selected Codex setup against its installed or specified version and report evidence and coverage gaps."
 policy:
   allow_implicit_invocation: false

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import re
 import subprocess
@@ -88,6 +89,39 @@ CHECK_ENDPOINT = re.compile(
 
 class WatchError(RuntimeError):
     """A safe, actionable monitoring failure."""
+
+
+class WatchTimeout(WatchError):
+    """The shared monitoring deadline has expired."""
+
+
+@dataclass(frozen=True)
+class Deadline:
+    expires_at: float
+    clock: Callable[[], float]
+
+    def remaining(self) -> float:
+        remaining = self.expires_at - self.clock()
+        if remaining <= 0:
+            raise WatchTimeout("monitor timeout")
+        return remaining
+
+    def bind(self, runner: Runner) -> Runner:
+        """Guard injected runners as well as the subprocess runner."""
+        def bounded(*args: Any, **kwargs: Any) -> str | None:
+            self.remaining()
+            result = runner(*args, **kwargs)
+            self.remaining()
+            return result
+        return bounded
+
+
+def validate_timings(**timings: float) -> None:
+    for name, value in timings.items():
+        allow_zero = name in {"timeout", "settle"}
+        if not math.isfinite(value) or value < 0 or (value == 0 and not allow_zero):
+            requirement = "nonnegative" if allow_zero else "positive"
+            raise WatchError(f"{name} must be finite and {requirement}")
 
 
 @dataclass(frozen=True)
@@ -230,31 +264,41 @@ def run_command(
     *,
     optional: bool = False,
     sleep: Callable[[float], None] = time.sleep,
+    deadline: Deadline | None = None,
 ) -> str | None:
     ensure_read_only(argv)
+    # Empty disables both hook-based fsmonitor on older Git and the daemon on
+    # newer Git. Older versions interpret "false" as a hook pathname.
+    command = ["git", "-c", "core.fsmonitor=", *argv[1:]] if argv[0] == "git" else list(argv)
     for attempt in range(3):
+        remaining = deadline.remaining() if deadline is not None else 60
         try:
             result = subprocess.run(
-                list(argv),
+                command,
                 cwd=str(cwd) if cwd else None,
                 stdin=subprocess.DEVNULL,
                 capture_output=True,
                 text=True,
                 check=False,
                 env={**os.environ, "GIT_OPTIONAL_LOCKS": "0"},
-                timeout=60,
+                timeout=min(60, remaining),
             )
         except FileNotFoundError as exc:
             raise WatchError(f"Required executable is unavailable: {argv[0]}") from exc
         except subprocess.TimeoutExpired as exc:
+            if deadline is not None and remaining <= 60:
+                raise WatchTimeout("monitor timeout") from exc
             raise WatchError(f"Read-only command timed out: {' '.join(argv[:3])}") from exc
+        if deadline is not None:
+            deadline.remaining()
         if result.returncode == 0:
             return result.stdout.rstrip("\r\n")
         detail = redact((result.stderr or result.stdout or "unknown error").strip())
         if optional:
             return None
         if argv[0] == "gh" and TRANSIENT.search(detail) and attempt < 2:
-            sleep(2**attempt)
+            delay = min(2**attempt, deadline.remaining()) if deadline is not None else 2**attempt
+            sleep(delay)
             continue
         raise WatchError(f"{' '.join(argv[:3])} failed: {detail[:1200]}")
     raise AssertionError("retry loop exited unexpectedly")
