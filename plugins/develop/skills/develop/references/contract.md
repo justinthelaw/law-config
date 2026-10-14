@@ -1,6 +1,6 @@
 # Shared invocation contract
 
-Read once for repository workflows and direct `iterate`, `upgrade` or `clean` calls. Standalone `kaizen` and `adversarial-loop` follow their own scoped protocols without repository discovery or implementation prerequisites.
+Read once for repository workflows and direct `iterate`, `upgrade` or `clean` calls. Standalone `kaizen`, `adversarial-loop` and audit-only [upgrade-codex](../../upgrade-codex/SKILL.md) follow their own scoped completion policies without repository discovery or implementation prerequisites. Requested `upgrade-codex` implementation uses this contract.
 
 ## Intent and ownership
 
@@ -49,7 +49,7 @@ Return handled scope, current artifacts, changes/no-op, verification and limitat
 
 ## Review gates
 
-The coordinator runs `adversarial-loop` at **intent** before consequential work and **evidence** before completion, including read-only, blocked and no-op invocations. Review the actual discovery result when there is no diff. Nested workers reuse these gates; reviewers never recurse.
+For workflows covered by this contract, the coordinator runs `adversarial-loop` at **intent** before consequential work and **evidence** before completion, including read-only, blocked and no-op invocations. Review the actual discovery result when there is no diff. Nested workers reuse these gates; reviewers never recurse.
 
 Repeat affected checkpoints after material steering, design/scope changes, repairs or a new pushed head. Identify both intent and artifact revisions. Missing fresh agents or unverified model/effort means blocked/unverified, never a solo substitute or pass.
 

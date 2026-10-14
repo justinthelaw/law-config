@@ -15,7 +15,7 @@ CODEX_ACTOR = "chatgpt-codex-connector"
 TRUSTED_AUTHORS = frozenset({"OWNER", "MEMBER", "COLLABORATOR"})
 REVIEW_REQUEST = re.compile(r"^\s*@codex\s+review\b", re.IGNORECASE)
 NEUTRAL_REVIEW = re.compile(
-    r"codex reviewed this pull request|automated review suggestions for this pull request",
+    r"codex reviewed this pull request and didn['\u2019]t find any major issues\.",
     re.IGNORECASE,
 )
 PULL_REQUEST_FIELDS = (
@@ -93,7 +93,7 @@ def review_requires_changes(review: dict[str, Any]) -> bool:
     return review.get("state") == "CHANGES_REQUESTED" or (
         review.get("state") == "COMMENTED"
         and bool(body)
-        and not NEUTRAL_REVIEW.search(body)
+        and not NEUTRAL_REVIEW.fullmatch(body)
     )
 
 

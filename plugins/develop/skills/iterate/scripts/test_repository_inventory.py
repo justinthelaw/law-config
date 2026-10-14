@@ -392,6 +392,22 @@ class LocalGitTests(unittest.TestCase):
         self.assertFalse(marker.exists(), "Inventory executed a configured external diff converter")
         self.assertIn("+changed", result["patch"]["unstaged"])
 
+    def test_inventory_suppresses_fsmonitor_without_changing_config(self) -> None:
+        marker = self.workspace / "unexpected-fsmonitor-invocation"
+        hook = self.workspace / "fixture fsmonitor.py"
+        hook.write_text(
+            "from pathlib import Path\n"
+            + f"Path({str(marker)!r}).write_text('invoked')\n"
+        )
+        self.git("config", "core.fsmonitor", shlex.join([sys.executable, str(hook)]))
+        config_before = (self.repo / ".git" / "config").read_bytes()
+        (self.repo / "tracked.txt").write_text("changed\n")
+        result = self.read_snapshot(patch=True)
+        self.assertFalse(marker.exists(), "Inventory executed the configured fsmonitor hook")
+        self.assertEqual(result["changes"], [{"path": "tracked.txt", "status": " M"}])
+        self.assertIn("+changed", result["patch"]["unstaged"])
+        self.assertEqual((self.repo / ".git" / "config").read_bytes(), config_before)
+
     def test_actual_dirty_submodule_and_staged_gitlink(self) -> None:
         source = self.workspace / "submodule-source"
         source.mkdir()
