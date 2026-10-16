@@ -54,6 +54,7 @@ python plugins/develop/scripts/generate_codex_manifest.py
 python plugins/develop/scripts/validate.py --marketplace-root .
 python -m unittest discover -s plugins/develop/tests -p test_validate.py
 python -m unittest discover -s plugins/develop/skills/iterate/scripts -p 'test_*.py'
+python -m unittest discover -s plugins/develop/skills/deep-clean/tests -p 'test_*.py'
 ```
 
 Commit both manifests after portable metadata changes. For a detached installed payload, omit `--marketplace-root`; run fixture-writing package tests on a disposable copy outside the installed cache. Exercise [fresh-context scenarios](tests/scenarios.md), packaged references/helpers from an unrelated working directory, and actual icon legibility. Structure checks and simulated decisions do not prove installation, live publication or deployment.
