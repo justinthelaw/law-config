@@ -130,13 +130,14 @@ class InventoryTests(unittest.TestCase):
         self.assertIn("budget", summary["gaps"])
 
     def test_order_is_stable_and_names_round_trip(self):
-        for name in ("z", "A", "a", "newline\nname", "é"):
+        unusual_name = "space name" if os.name == "nt" else "newline\nname"
+        for name in ("z", "A-upper", "a-lower", unusual_name, "é"):
             self.file(name)
         _, first = self.scan()
         _, second = self.scan()
         paths = lambda records: [r["path"] for r in records if r["type"] == "node"]
         self.assertEqual(paths(first), paths(second))
-        self.assertIn(str(self.root / "newline\nname"), paths(first))
+        self.assertIn(str(self.root / unusual_name), paths(first))
 
     @unittest.skipIf(os.name == "nt", "native Windows long-path support depends on host policy")
     def test_deep_tree_does_not_use_python_recursion(self):
@@ -267,7 +268,7 @@ class PortableRulesTests(unittest.TestCase):
             '1 0 8:1 / / rw - ext4 /dev/sda1 rw\n'
             '2 1 8:1 /source /home/u/bind\\040mount rw - ext4 /dev/sda1 rw\n'
         )
-        self.assertEqual(str(mounts[1][0]), "/home/u/bind mount")
+        self.assertEqual(mounts[1][0], Path("/home/u/bind mount"))
         with mock.patch.object(inventory.sys, "platform", "linux"), \
              mock.patch.object(Path, "read_text", return_value=
                                '1 0 8:1 / / rw - ext4 /dev/sda1 rw\n'
