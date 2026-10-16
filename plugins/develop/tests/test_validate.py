@@ -200,19 +200,19 @@ class PackageValidation(unittest.TestCase):
         (self.package / "skills/kaizen/SKILL.md").unlink()
         result = self.validate()
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("seven entry points", result.stdout + result.stderr)
+        self.assertIn("eight entry points", result.stdout + result.stderr)
 
     def test_missing_upgrade_codex_entrypoint_fails(self):
         (self.package / "skills/upgrade-codex/SKILL.md").unlink()
         result = self.validate()
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("seven entry points", result.stdout + result.stderr)
+        self.assertIn("eight entry points", result.stdout + result.stderr)
 
     def test_unregistered_skill_directory_fails(self):
         (self.package / "skills/unregistered").mkdir()
         result = self.validate()
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("seven entry points", result.stdout + result.stderr)
+        self.assertIn("eight entry points", result.stdout + result.stderr)
 
     def write_upgrade_codex_policy(self, policy):
         path = self.package / "skills/upgrade-codex/agents/openai.yaml"
@@ -265,6 +265,25 @@ class PackageValidation(unittest.TestCase):
                 result = self.validate()
                 self.assertNotEqual(result.returncode, 0)
                 self.assertIn("allow_implicit_invocation", result.stdout + result.stderr)
+
+    def test_deep_clean_requires_explicit_policy(self):
+        path = self.package / "skills/deep-clean/agents/openai.yaml"
+        original = path.read_text(encoding="utf-8")
+        for replacement in ("true", '"false"', "null"):
+            with self.subTest(replacement=replacement):
+                path.write_text(original.replace("allow_implicit_invocation: false",
+                                                "allow_implicit_invocation: " + replacement), encoding="utf-8")
+                result = self.validate()
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("allow_implicit_invocation", result.stdout + result.stderr)
+        path.write_text(original.split("policy:")[0], encoding="utf-8")
+        self.assertNotEqual(self.validate().returncode, 0)
+
+    def test_missing_deep_clean_entrypoint_fails(self):
+        (self.package / "skills/deep-clean/SKILL.md").unlink()
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("eight entry points", result.stdout + result.stderr)
 
     def test_missing_icon_fails(self):
         (self.package / "skills/clean/assets/icon.png").unlink()

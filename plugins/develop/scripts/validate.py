@@ -21,7 +21,7 @@ import zlib
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from generate_codex_manifest import codex_manifest
 
-SKILLS = {"develop", "iterate", "upgrade", "upgrade-codex", "clean", "adversarial-loop", "kaizen"}
+SKILLS = {"develop", "iterate", "upgrade", "upgrade-codex", "clean", "deep-clean", "adversarial-loop", "kaizen"}
 SCHEMA = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
 MAX_ICON_BYTES = 1024 * 1024
 MAX_SCANLINE_BYTES = 64 * 1024 * 1024
@@ -226,7 +226,7 @@ def validate(root, marketplace_root=None):
     skill_paths = sorted((root / "skills").glob("*/SKILL.md"))
     skill_directories = {p.name for p in (root / "skills").iterdir() if p.is_dir()}
     check({p.parent.name for p in skill_paths} == skill_directories == SKILLS,
-          "skills: expected exactly seven entry points")
+          "skills: expected exactly eight entry points")
     for path in skill_paths:
         try:
             text = contained_text(path)
@@ -251,7 +251,7 @@ def validate(root, marketplace_root=None):
         ui_path = path.parent / "agents/openai.yaml"
         try:
             ui = parse_ui_metadata(contained_text(ui_path))
-            if path.parent.name == "upgrade-codex":
+            if path.parent.name in {"upgrade-codex", "deep-clean"}:
                 check(ui.get("policy", {}).get("allow_implicit_invocation") is False,
                       f"{ui_path.relative_to(root)}: require one policy block with allow_implicit_invocation: false")
             values = ui["interface"]
@@ -262,7 +262,7 @@ def validate(root, marketplace_root=None):
                            f"{ui_path.relative_to(root)}: {key}")
         except (OSError, ValueError, RuntimeError) as exc:
             errors.append(f"{ui_path.relative_to(root)}: {exc}")
-            if path.parent.name == "upgrade-codex":
+            if path.parent.name in {"upgrade-codex", "deep-clean"}:
                 errors.append(f"{ui_path.relative_to(root)}: require one policy block with allow_implicit_invocation: false")
 
     # Delivery helpers ship inside the owning skill. Check their local import
@@ -321,7 +321,7 @@ def main():
         print("FAIL:", error, file=sys.stderr)
     if errors:
         return 1
-    print("PASS: package structure, seven skills, references, and contextual marketplace checks")
+    print("PASS: package structure, eight skills, references, and contextual marketplace checks")
     return 0
 
 

@@ -1,6 +1,6 @@
 # Install Develop
 
-Source: [justinthelaw/law-config, plugins/develop](https://github.com/justinthelaw/law-config/tree/main/plugins/develop). The package contains seven skills: `develop`, `iterate`, `upgrade`, `upgrade-codex`, `clean`, `adversarial-loop` and `kaizen`. It needs no external workflow plugin and uses the [Apache-2.0 license](LICENSE).
+Source: [justinthelaw/law-config, plugins/develop](https://github.com/justinthelaw/law-config/tree/main/plugins/develop). The package contains eight skills: `develop`, `iterate`, `upgrade`, `upgrade-codex`, `clean`, `deep-clean`, `adversarial-loop` and `kaizen`. It needs no external workflow plugin and uses the [Apache-2.0 license](LICENSE).
 
 ## Choose a host
 
@@ -63,3 +63,5 @@ Commit both manifests after portable metadata changes. For a detached installed 
 Before replacing another installed skill, inventory its live callers, helpers, links and repository-owned behavior. Verify the chosen replacement's source, version and installation state; disclose any installation gap. Preserve operations that remain specific to a repository. Machine-specific scripts and native transcript parsers are not copied into generic workflows.
 
 Move retired sources and exact matching links to recoverable Trash where supported; preserve Git history, unrelated skills and work. Repair live callers and remove only obsolete grants/packaging entries. Retain repository-owned operations that were not consolidated under their proper owner. Source consolidation alone does not authorize installation, retirement, commits or publication.
+
+`clean` defaults to this thread's disposable artifacts and processes across paths. Explicitly broaden scope (for example, "index and clean my entire machine starting at `/`") to use `deep-clean`; its policy disables implicit invocation. Both preserve retained plugin state, memories, secrets and useful/shared work. Deep inventories require installed Python 3.10+ and do not imply removal eligibility.

@@ -10,6 +10,8 @@ New steering supersedes conflicting requirements, preserves other goals and incr
 
 ## Targets
 
+Cleanup uses activity scope rather than repository scope: `clean` defaults to verified disposable resources attributable to the current thread and delegated work wherever located, with no arbitrary scan cutoff. No repository discovery or new repository selection is required. Only explicit user widening permits [deep-clean](../../deep-clean/SKILL.md); preserve selected roots, exclusions and audit/cleanup authority. Both apply [shared protections](../../clean/references/protections.md), even for entire-machine requests. The repository selection rules below apply to repository workflows.
+
 Use the explicitly selected repositories or an unambiguous current checkout. If repository scope is missing, ask one focused question before expanding discovery. Fleet work requires the user's selected or configured owner, provider and inclusion rules; never infer the package author's account. Enumerate authorized fleets with complete authenticated pagination. Unless narrowed, include owned non-archived repositories and forks; activity, stars and PR counts do not define active. Report disabled/inaccessible targets and incomplete coverage.
 
 Publication of existing changes and monitoring use the explicitly selected repository, or the current checkout and its initialized submodules when unambiguous. They do not expand to the account-wide default or sibling repositories. Record the selected roots once and preserve them across publication and repair handoffs.
