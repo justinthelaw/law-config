@@ -18,9 +18,11 @@ Resolve the user's outcome, then route below. Repository workflows read [the sha
 | Implement, fix, maintain or review repository work | [iterate](../iterate/SKILL.md) | Targets, outcome, implementation constraints |
 | Publish existing changes or monitor/fix CI | [iterate](../iterate/SKILL.md) | Selected roots, delivery mode, existing authority, thread signing preference |
 | Review or upgrade dependencies/runtimes; consolidate dependency PRs | [upgrade](../upgrade/SKILL.md) | Targets, review/implementation boundary, dependency and PR scope |
-| Inspect or reclaim disk/RAM; investigate processes | [clean](../clean/SKILL.md) | Environment, exact scope, protected work |
+| Inspect or reclaim disk/RAM; investigate processes | [clean](../clean/SKILL.md) | Thread activity evidence, audit/cleanup authority, protected work; explicit widening only |
 | Challenge facts, visuals, writing, plans or results | [adversarial-loop](../adversarial-loop/SKILL.md) | Intent, artifacts, evaluation criteria |
 | Learn from selected sessions and improve agent workflows | [kaizen](../kaizen/SKILL.md) | User-selected sessions/sources and limits, desired improvement, action authority |
+
+[deep-clean](../deep-clean/SKILL.md) is explicit-only. Route to it only when the user names it or explicitly expands cleanup/inspection beyond thread activities; pass the selected root and authority. Ordinary cleanup defaults to this thread and requires no repository discovery.
 
 For mixed requests, use the smallest ordered combination and one coordinator. Reuse relevant review checkpoints across nested skills. A handoff from analysis to implementation preserves its target and existing authorization; it never expands to other repositories or histories.
 

@@ -15,6 +15,7 @@ uv run --python 3.15 python -m unittest discover -s tests -v
 uv run --python 3.15 python plugins/develop/scripts/validate.py --marketplace-root .
 uv run --python 3.15 python -m unittest discover -s plugins/develop/tests -p test_validate.py
 uv run --python 3.15 python -m unittest discover -s plugins/develop/skills/iterate/scripts -p 'test_*.py'
+uv run --python 3.15 python -m unittest discover -s plugins/develop/skills/deep-clean/tests -p 'test_*.py'
 ```
 
 Use stable hook tags and run both stages before changing revisions.

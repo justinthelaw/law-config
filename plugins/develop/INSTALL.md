@@ -1,6 +1,6 @@
 # Install Develop
 
-Source: [justinthelaw/law-config, plugins/develop](https://github.com/justinthelaw/law-config/tree/main/plugins/develop). The package contains seven skills: `develop`, `iterate`, `upgrade`, `upgrade-codex`, `clean`, `adversarial-loop` and `kaizen`. It needs no external workflow plugin and uses the [Apache-2.0 license](LICENSE).
+Source: [justinthelaw/law-config, plugins/develop](https://github.com/justinthelaw/law-config/tree/main/plugins/develop). The package contains eight skills: `develop`, `iterate`, `upgrade`, `upgrade-codex`, `clean`, `deep-clean`, `adversarial-loop` and `kaizen`. It needs no external workflow plugin and uses the [Apache-2.0 license](LICENSE).
 
 ## Choose a host
 
@@ -54,6 +54,7 @@ python plugins/develop/scripts/generate_codex_manifest.py
 python plugins/develop/scripts/validate.py --marketplace-root .
 python -m unittest discover -s plugins/develop/tests -p test_validate.py
 python -m unittest discover -s plugins/develop/skills/iterate/scripts -p 'test_*.py'
+python -m unittest discover -s plugins/develop/skills/deep-clean/tests -p 'test_*.py'
 ```
 
 Commit both manifests after portable metadata changes. For a detached installed payload, omit `--marketplace-root`; run fixture-writing package tests on a disposable copy outside the installed cache. Exercise [fresh-context scenarios](tests/scenarios.md), packaged references/helpers from an unrelated working directory, and actual icon legibility. Structure checks and simulated decisions do not prove installation, live publication or deployment.
@@ -63,3 +64,5 @@ Commit both manifests after portable metadata changes. For a detached installed 
 Before replacing another installed skill, inventory its live callers, helpers, links and repository-owned behavior. Verify the chosen replacement's source, version and installation state; disclose any installation gap. Preserve operations that remain specific to a repository. Machine-specific scripts and native transcript parsers are not copied into generic workflows.
 
 Move retired sources and exact matching links to recoverable Trash where supported; preserve Git history, unrelated skills and work. Repair live callers and remove only obsolete grants/packaging entries. Retain repository-owned operations that were not consolidated under their proper owner. Source consolidation alone does not authorize installation, retirement, commits or publication.
+
+`clean` defaults to this thread's disposable artifacts and processes across paths. Explicitly broaden scope (for example, "index and clean my entire machine starting at `/`") to use `deep-clean`; its policy disables implicit invocation. Both preserve retained plugin state, memories, secrets and useful/shared work. Deep inventories require installed Python 3.10+ and do not imply removal eligibility.

@@ -3,5 +3,5 @@ interface:
   icon_small: "./assets/icon.png"
   icon_large: "./assets/icon.png"
   display_name: "Develop: Clean"
-  short_description: "Inspect and clean development environments"
-  default_prompt: "Use $clean to inspect this environment and reclaim space from verified disposable files and processes."
+  short_description: "Clean this thread's disposable resources"
+  default_prompt: "Use $clean to clean verified disposable artifacts and hanging processes attributable to this thread, preserving protected and shared resources."

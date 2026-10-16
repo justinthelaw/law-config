@@ -1,6 +1,6 @@
 {
   "name": "develop",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Deliver repository changes, upgrade dependencies, audit Codex compatibility, review work, clean up, and improve workflows.",
   "author": {
     "name": "justinthelaw",
@@ -23,7 +23,7 @@
     "composerIcon": "./assets/logo.png",
     "brandColor": "#C99554",
     "shortDescription": "Build, review, and improve",
-    "longDescription": "Seven skills for repository changes, dependency upgrades, cleanup, independent review, and workflow improvement. Explicit-only upgrade-codex audits Codex configuration and primitives against an installed or specified version. No external workflow plugin required.",
+    "longDescription": "Eight skills for repository changes, dependency upgrades, thread-scoped cleanup, independent review, and workflow improvement. Explicit-only deep-clean inspects user-expanded machine scope; upgrade-codex audits Codex compatibility. No external workflow plugin required.",
     "developerName": "justinthelaw",
     "category": "Developer Tools",
     "capabilities": [
