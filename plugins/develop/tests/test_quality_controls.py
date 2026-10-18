@@ -52,6 +52,8 @@ class QualityResult(unittest.TextTestResult):
         super().__init__(*args, **kwargs)
         self.skipped_methods = set()
         self.active_test = None
+        self.passed_assertions = set()
+        self.failed_assertions = set()
 
     @property
     def wholly_skipped(self):
@@ -60,6 +62,7 @@ class QualityResult(unittest.TextTestResult):
     def startTest(self, test):
         self.active_test = test
         test._quality_assertion_executed = False
+        test._quality_passed_assertions = set()
         super().startTest(test)
 
     def addSkip(self, test, reason):
@@ -68,10 +71,25 @@ class QualityResult(unittest.TextTestResult):
         super().addSkip(test, reason)
 
     def stopTest(self, test):
+        self.passed_assertions.update(test._quality_passed_assertions)
         if test._quality_assertion_executed:
             self.skipped_methods.discard(id(test))
         super().stopTest(test)
         self.active_test = None
+
+    def record_failure_site(self, err):
+        site = getattr(err[1], "_quality_assertion_site", None)
+        if site is not None:
+            self.failed_assertions.add(site)
+
+    def addFailure(self, test, err):
+        self.record_failure_site(err)
+        super().addFailure(test, err)
+
+    def addSubTest(self, test, subtest, err):
+        if err is not None and issubclass(err[0], test.failureException):
+            self.record_failure_site(err)
+        super().addSubTest(test, subtest, err)
 
 
 @contextmanager
@@ -83,16 +101,32 @@ def body_execution(test):
         ACTIVE_BODY.reset(token)
 
 
-def record_assertion():
+def assertion_site():
+    """Identify the source call, including distinct calls on the same line."""
+    frame = sys._getframe(1)
+    while frame is not None:
+        if frame.f_code.co_filename == "test_shipping.py":
+            return ("call", frame.f_code.co_firstlineno, frame.f_lasti)
+        frame = frame.f_back
+    return None
+
+
+def record_assertion(site, error=None):
     test = ACTIVE_BODY.get()
-    if test is not None:
+    if test is not None and site is not None:
         test._quality_assertion_executed = True
+        site = (test.id(), site)
+        if error is None:
+            test._quality_passed_assertions.add(site)
+        else:
+            error._quality_assertion_site = site
 
 
 class ObservedAssertionContext:
     """Context construction alone is not execution of its assertion."""
-    def __init__(self, context):
+    def __init__(self, context, site):
         self.context = context
+        self.site = site
 
     def __getattr__(self, name):
         return getattr(self.context, name)
@@ -103,33 +137,34 @@ class ObservedAssertionContext:
     def __exit__(self, exc_type, value, traceback):
         try:
             suppressed = self.context.__exit__(exc_type, value, traceback)
-        except AssertionError:
-            record_assertion()
+        except AssertionError as error:
+            record_assertion(self.site, error)
             raise
         if exc_type is None or suppressed:
-            record_assertion()
+            record_assertion(self.site)
         return suppressed
 
 
 def observe_assertion(method):
     @wraps(method)
     def observed(*args, **kwargs):
+        site = assertion_site()
         try:
             result = method(*args, **kwargs)
-        except AssertionError:
-            record_assertion()
+        except AssertionError as error:
+            record_assertion(site, error)
             raise
         if hasattr(result, "__enter__") and hasattr(result, "__exit__"):
-            return ObservedAssertionContext(result)
-        record_assertion()
+            return ObservedAssertionContext(result, site)
+        record_assertion(site)
         return result
     return observed
 
 
-def observe_python_assert(value):
-    truth = bool(value)
-    record_assertion()
-    return truth
+def observe_python_assert(site, failed=False):
+    error = sys.exc_info()[1] if failed else None
+    if not failed or isinstance(error, AssertionError):
+        record_assertion(site, error)
 
 
 class ObservePythonAssertions(ast.NodeTransformer):
@@ -137,9 +172,19 @@ class ObservePythonAssertions(ast.NodeTransformer):
         self.observer_name = observer_name
 
     def visit_Assert(self, node):
-        node.test = ast.Call(func=ast.Name(id=self.observer_name, ctx=ast.Load()),
-                             args=[node.test], keywords=[])
-        return node
+        site = ast.Constant(value=("assert", node.lineno, node.col_offset))
+
+        def observed(failed):
+            return ast.Expr(value=ast.Call(
+                func=ast.Name(id=self.observer_name, ctx=ast.Load()),
+                args=[site, ast.Constant(value=failed)], keywords=[]))
+
+        # Keep Python's original truth/message evaluation and exception object.
+        return ast.copy_location(ast.Try(
+            body=[node],
+            handlers=[ast.ExceptHandler(type=None, name=None,
+                                       body=[observed(True), ast.Raise()])],
+            orelse=[observed(False)], finalbody=[]), node)
 
 
 def track_body(method):
@@ -161,15 +206,21 @@ def run_suite(source, implementation, test_name=None):
     """Run trusted packaged Python in fresh modules, restoring the import table."""
     shipping = types.ModuleType("shipping")
     tests = types.ModuleType("quality_case")
-    exec(compile(implementation, "shipping.py", "exec"), shipping.__dict__)
     with patch.dict(sys.modules, {"shipping": shipping}):
-        observer_name = "_quality_assert"
-        while observer_name in source:
-            observer_name += "_"
-        tree = ast.fix_missing_locations(
-            ObservePythonAssertions(observer_name).visit(ast.parse(source)))
-        tests.__dict__[observer_name] = observe_python_assert
-        exec(compile(tree, "test_shipping.py", "exec"), tests.__dict__)
+        try:
+            exec(compile(implementation, "shipping.py", "exec"), shipping.__dict__)
+            observer_name = "_quality_assert"
+            while observer_name in source:
+                observer_name += "_"
+            tree = ast.fix_missing_locations(
+                ObservePythonAssertions(observer_name).visit(ast.parse(source)))
+            tests.__dict__[observer_name] = observe_python_assert
+            exec(compile(tree, "test_shipping.py", "exec"), tests.__dict__)
+        except Exception:
+            result = QualityResult(io.StringIO(), descriptions=False, verbosity=0)
+            module_load = unittest.FunctionTestCase(lambda: None, description="module loading")
+            result.addError(module_load, sys.exc_info())
+            return result
         loader = unittest.TestLoader()
         for candidate in vars(tests).values():
             if (isinstance(candidate, type) and issubclass(candidate, unittest.TestCase)
@@ -195,7 +246,10 @@ def assess(source, reference):
                    and not result.errors and not result.unexpectedSuccesses
                    for result in results.values())
     accepted = (complete and results["reference"].wasSuccessful()
-                and results["benign"].wasSuccessful() and bool(results["defect"].failures))
+                and results["benign"].wasSuccessful()
+                and bool(results["defect"].failed_assertions
+                         & results["reference"].passed_assertions
+                         & results["benign"].passed_assertions))
     return accepted, results
 
 
@@ -336,6 +390,69 @@ class Tests(unittest.TestCase):
         self.assertFalse(accepted)
         self.assertEqual(len(results["reference"].skipped), 1)
         self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_unrelated_assertion_cannot_replace_skipped_detecting_site(self):
+        for assertion in (
+            "self.assertEqual(shipping_fee(5000), 0)",
+            "assert shipping_fee(5000) == 0",
+            "with self.assertRaises(ZeroDivisionError):\n"
+            "    1 // shipping_fee(5000)",
+        ):
+            source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        self.assertTrue(True)
+        with self.subTest(boundary=True):
+            if shipping_fee(5000) == 0:
+                self.skipTest("detecting assertion never runs on controls")
+ASSERTION
+""".replace("ASSERTION", "\n".join("            " + line
+                                      for line in assertion.splitlines()))
+            with self.subTest(assertion=assertion):
+                accepted, results = assess(source, self.sound["shipping.py"])
+                self.assertFalse(accepted)
+                self.assertEqual(len(results["defect"].failures), 1)
+                self.assertTrue(results["reference"].wasSuccessful())
+                self.assertTrue(results["benign"].wasSuccessful())
+
+    def test_different_assertions_on_same_line_do_not_certify_controls(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        self.assertTrue(True) if shipping_fee(5000) == 0 else self.assertEqual(shipping_fee(5000), 0)
+"""
+        accepted, _ = assess(source, self.sound["shipping.py"])
+        self.assertFalse(accepted)
+
+    def test_same_context_assertion_passes_controls_and_detects_defect(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        with self.assertRaises(ZeroDivisionError):
+            1 // shipping_fee(5000)
+        self.skipTest("unrelated remaining work")
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+        self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_caught_assertion_is_not_the_reported_defect_failure(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        try:
+            self.assertEqual(shipping_fee(5000), 0)
+        except AssertionError:
+            pass
+        if shipping_fee(5000) != 0:
+            self.fail("unmatched assertion site")
+"""
+        accepted, _ = assess(source, self.sound["shipping.py"])
+        self.assertFalse(accepted)
 
     def test_python_assert_before_skip_preserves_boundary_evidence(self):
         source = """import unittest
@@ -589,6 +706,33 @@ class OptionalTests(unittest.TestCase):
         accepted, results = assess("", self.sound["shipping.py"])
         self.assertFalse(accepted)
         self.assertTrue(all(result.testsRun == 0 for result in results.values()))
+
+    def test_module_load_errors_are_recorded_for_every_variant(self):
+        for source, error in (
+            ("import quality_dependency_that_does_not_exist", "ModuleNotFoundError"),
+            ("raise RuntimeError('module load failed')", "RuntimeError"),
+            ("def invalid syntax", "SyntaxError"),
+        ):
+            with self.subTest(error=error):
+                original_shipping = types.ModuleType("shipping")
+                with patch.dict(sys.modules, {"shipping": original_shipping}):
+                    accepted, results = assess(source, self.sound["shipping.py"])
+                    self.assertIs(sys.modules["shipping"], original_shipping)
+                self.assertFalse(accepted)
+                self.assertEqual(set(results), {"reference", "defect", "benign"})
+                for result in results.values():
+                    self.assertEqual(result.testsRun, 0)
+                    self.assertEqual(len(result.errors), 1)
+                    self.assertIn(error, result.errors[0][1])
+                    self.assertFalse(result.failures)
+
+    def test_implementation_load_error_preserves_other_variant_results(self):
+        accepted, results = assess(self.sound["test_shipping.py"],
+                                   "raise RuntimeError('implementation load failed')")
+        self.assertFalse(accepted)
+        self.assertEqual(len(results["reference"].errors), 1)
+        self.assertEqual(len(results["defect"].failures), 1)
+        self.assertTrue(results["benign"].wasSuccessful())
 
     def test_skipped_suite_is_incomplete(self):
         suite = '''import unittest

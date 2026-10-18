@@ -413,6 +413,21 @@ BAD_PEER_PAYLOAD = REGISTER_CALLERS.replace(
 BAD_PENDING_CLOSE_JOB = BAD_IDLE_CLOSE_JOB.replace(
     "if self.requests.pending is None:", "if self.requests.pending is not None:",
 )
+BAD_DUPLICATE_PENDING = COUNT_DELIVERIES.replace(
+    "if self.token is token:",
+    "if self.token is token or (not succeeded and deliveries == 2 and self.pending is not None):",
+)
+BAD_THIRD_PENDING = GOOD.replace(
+    "        if self.pending is not None:\n            self.pending.cancel()\n        token = object()",
+    "        if self.pending is not None and not getattr(self, 'replaced_pending', False):\n"
+    "            self.pending.cancel()\n"
+    "            self.replaced_pending = True\n"
+    "        token = object()",
+).replace(
+    "                self.pending = None",
+    "                self.pending = None\n"
+    "                self.replaced_pending = False",
+)
 
 
 def fixture(name):
@@ -594,6 +609,28 @@ def probe_change(case, app, transport_type):
         close_caller(case, transport, caller)
         case.assertEqual(old.cancel_count, 1, "cancelled job was cancelled again on close")
 
+    # Replacements cancel exactly once throughout a pending burst, for either API.
+    for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
+        transport, values = transport_type(), []
+        caller = caller_type(transport, values.append)
+        old = start_job(case, transport, caller, method, "old")
+        new = start_job(case, transport, caller, method, "new")
+        case.assertEqual(old.cancel_count, 1)
+        for value in ("stale", "duplicate stale"):
+            deliver_job(case, transport, old, value)
+            case.assertEqual(values, [], "stale while replacement pending was published")
+        latest = start_job(case, transport, caller, method, "latest")
+        case.assertEqual(new.cancel_count, 1, "replacement was not cancelled exactly once")
+        case.assertEqual(old.cancel_count, 1, "cancelled job was cancelled again on submit")
+        case.assertEqual(latest.cancel_count, 0)
+        for job in (old, new):
+            for value in ("older", "duplicate older"):
+                deliver_job(case, transport, job, value)
+                case.assertEqual(values, [], "older callback in pending burst was published")
+        deliver_job(case, transport, latest, "latest value")
+        deliver_job(case, transport, latest, "duplicate latest")
+        case.assertEqual(values, ["latest value"])
+
     # Closed callers reject new work without repeating cleanup in any start state.
     for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
         for state in ("fresh", "completed", "pending"):
@@ -678,6 +715,19 @@ def probe_change(case, app, transport_type):
         case.assertEqual(left_values, ["left survives"])
         case.assertEqual(right_values, [])
         probe_idle_peer_close(case, caller_specs, transport_type)
+
+        # A later constructor must preserve work already pending on this transport.
+        transport = transport_type()
+        left_values, right_values = [], []
+        left = left_type(transport, left_values.append)
+        pending = start_job(case, transport, left, left_method, "pending before construction")
+        right = right_type(transport, right_values.append)
+        case.assertEqual(len(transport.jobs), 1, "construction started a job")
+        case.assertEqual(pending.cancel_count, 0, "construction cancelled pending peer")
+        deliver_job(case, transport, pending, "survives construction")
+        deliver_job(case, transport, pending, "duplicate after construction")
+        case.assertEqual(left_values, ["survives construction"])
+        case.assertEqual(right_values, [])
 
 
 
@@ -845,6 +895,37 @@ class ArchitectureProbe(unittest.TestCase):
             with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
                 probe_change(self, module_from_source(source),
                              module_from_source(self.transport).Transport)
+
+    def test_pending_burst_defects_are_detected_for_each_api(self):
+        for callers in (CALLERS, ADAPTATION):
+            for defective, message in (
+                (BAD_DUPLICATE_PENDING, "stale while replacement pending was published"),
+                (BAD_THIRD_PENDING, "replacement was not cancelled exactly once"),
+            ):
+                # Restrict the defective lifecycle owner to one API at a time.
+                source = GOOD.replace(callers, callers.replace("LatestRequest", "DefectiveRequest"))
+                source += defective.partition("class Screen:")[0].replace(
+                    "LatestRequest", "DefectiveRequest")
+                with self.subTest(api=callers, defect=message), self.assertRaisesRegex(AssertionError, message):
+                    probe_change(self, module_from_source(source),
+                                 module_from_source(self.transport).Transport)
+
+    def test_pending_peer_construction_defects_are_detected(self):
+        for existing in ("Screen", "Autosave"):
+            for constructed in ("Screen", "Autosave"):
+                source = REGISTER_MIXED_CALLERS.replace(
+                    "        self.peers.append(self)",
+                    f"        if type(self).__name__ == '{constructed}':\n"
+                    "            for peer in self.peers:\n"
+                    f"                if type(peer).__name__ == '{existing}' and peer.requests.pending is not None:\n"
+                    "                    peer.requests.pending.cancel()\n"
+                    "        self.peers.append(self)",
+                )
+                with self.subTest(existing=existing, constructed=constructed), self.assertRaisesRegex(
+                    AssertionError, "construction cancelled pending peer",
+                ):
+                    probe_change(self, module_from_source(source),
+                                 module_from_source(self.transport).Transport)
 
     def test_simple_control_needs_only_decided_function_edit(self):
         original = fixture("architecture-simple")["agent"]["inputs"][0]["content"]
