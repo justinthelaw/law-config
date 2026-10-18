@@ -914,6 +914,21 @@ def probe_change(case, app, transport_type):
                              "close cancelled completed work")
             reject_closed_request(case, transport, callers[index], caller_specs[index][1], values)
 
+    # Equal payloads still represent distinct requests and callback lifetimes.
+    for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
+        transport, values = transport_type(), []
+        caller = caller_type(transport, values.append)
+        payload = "same payload"
+        old = start_job(case, transport, caller, method, payload)
+        new = start_job(case, transport, caller, method, payload)
+        case.assertEqual([old.cancel_count, new.cancel_count], [1, 0])
+        deliver_job(case, transport, old, "stale")
+        case.assertEqual(values, [], "same-payload stale callback was published")
+        deliver_job(case, transport, new, "fresh")
+        deliver_job(case, transport, old, "duplicate stale")
+        deliver_job(case, transport, new, "duplicate fresh")
+        case.assertEqual(values, ["fresh"], "same-payload replacement did not publish once")
+
 
 
 class ArchitectureProbe(unittest.TestCase):
@@ -1202,6 +1217,17 @@ class ArchitectureProbe(unittest.TestCase):
     def test_additional_retained_metadata_is_benign(self):
         for source in (RETAIN_REQUEST_HISTORY, RETAIN_COMPLETED_TOKEN):
             with self.subTest(source=source):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
+
+    def test_payload_cannot_identify_a_request_for_either_api(self):
+        defective_owner = OWNER.replace("token = object()", "token = query")
+        for callers in (CALLERS, ADAPTATION):
+            source = GOOD.replace(callers, callers.replace("LatestRequest", "DefectiveRequest"))
+            source += defective_owner.replace("LatestRequest", "DefectiveRequest")
+            with self.subTest(api=callers), self.assertRaisesRegex(
+                AssertionError, "same-payload stale callback was published",
+            ):
                 probe_change(self, module_from_source(source),
                              module_from_source(self.transport).Transport)
 
