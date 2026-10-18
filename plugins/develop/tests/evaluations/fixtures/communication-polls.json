@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "communication-polls",
-  "revision": "2",
+  "revision": "3",
   "scenario_ref": "scenarios.md#communication-and-handoff-cases",
   "agent": {
     "prompt": "Use Develop in this isolated local exercise. The supplied records describe a fictional repository; do not contact a provider or perform external writes. Begin read-only monitoring using the current observation in poll-stream.json. The controller will supply each later observation in a separate turn. Process only observations already supplied, then yield for the next one; do not invent a terminal result, sleep or call a provider. The user prefers brief updates only for meaningful changes. Use the host user-facing channel for any updates.",

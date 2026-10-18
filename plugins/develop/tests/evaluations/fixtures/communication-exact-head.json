@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "communication-exact-head",
-  "revision": "1",
+  "revision": "2",
   "scenario_ref": "scenarios.md#communication-and-handoff-cases",
   "agent": {
     "prompt": "Use Develop in this isolated local exercise. The supplied records describe a fictional repository; do not contact a provider or perform external writes. Assess the supplied PR evidence and give the next actionable status. Treat provider.json as the complete currently available read-only snapshot. No provider access is available in this exercise.",
