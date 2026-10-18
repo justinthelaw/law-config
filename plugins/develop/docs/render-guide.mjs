@@ -2,7 +2,7 @@
  * Reproducible local HTML rendering and interaction QA.
  * Prerequisite: an already installed Playwright package and usable browser.
  * Run: node render-guide.mjs
- * Optional: BROWSER_EXECUTABLE=/path/to/chromium node render-guide.mjs
+ * Optional: BROWSER_ENGINE=firefox BROWSER_EXECUTABLE=/path/to/firefox node render-guide.mjs
  * No network requests, package installation, or sandbox bypass flags are used.
  */
 import fs from 'node:fs/promises';
@@ -10,14 +10,21 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createRequire } from 'node:module';
 const require=createRequire(import.meta.url);
-const {chromium}=require('playwright');
+const {chromium,firefox}=require('playwright');
+const engine=process.env.BROWSER_ENGINE||'chromium';
+if(!['chromium','firefox'].includes(engine))throw new Error('BROWSER_ENGINE must be chromium or firefox');
 const base=path.dirname(fileURLToPath(import.meta.url));
 const qa=path.join(base,'qa');
 await fs.mkdir(qa,{recursive:true});
-const launch={headless:true,chromiumSandbox:true};
+const launch={headless:true};
+if(engine==='chromium')launch.chromiumSandbox=true;
+const sandboxVariables=['MOZ_DISABLE_CONTENT_SANDBOX','MOZ_DISABLE_GMP_SANDBOX','MOZ_DISABLE_RDD_SANDBOX','MOZ_DISABLE_GPU_SANDBOX','MOZ_DISABLE_SOCKET_PROCESS_SANDBOX'];
+if(engine==='firefox')for(const key of sandboxVariables){
+ if(process.env[key]&&process.env[key]!=='0')throw new Error(`Refusing sandbox-disabling environment variable ${key}`);
+}
 if(process.env.BROWSER_EXECUTABLE)launch.executablePath=process.env.BROWSER_EXECUTABLE;
-const browser=await chromium.launch(launch);
-const report={timestamp:new Date().toISOString(),browser:browser.version(),networkRequests:[],errors:[],checks:[],screenshots:[]};
+const browser=await ({chromium,firefox}[engine]).launch(launch);
+const report={browserName:engine,timestamp:new Date().toISOString(),browser:browser.version(),networkRequests:[],errors:[],checks:[],screenshots:[]};
 try{
  const page=await browser.newPage({viewport:{width:1600,height:1190},deviceScaleFactor:2});
  page.on('pageerror',e=>report.errors.push(e.message));
