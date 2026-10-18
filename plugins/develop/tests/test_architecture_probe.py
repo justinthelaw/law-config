@@ -75,6 +75,16 @@ BAD = GOOD.replace(
     "            transport.requests = LatestRequest(transport)\n"
     "        self.requests = transport.requests",
 )
+BAD_PAYLOAD = INITIAL + ADAPTATION.replace(
+    "self.requests.send(content, self.on_value)",
+    "self.requests.send('discarded content', self.on_value)",
+)
+BAD_SHARED_SAVE = INITIAL + ADAPTATION.replace(
+    "self.requests = LatestRequest(transport)",
+    "if not hasattr(transport, 'autosave_requests'):\n"
+    "            transport.autosave_requests = LatestRequest(transport)\n"
+    "        self.requests = transport.autosave_requests",
+)
 # Narrow defects that the original probe accepted. Each changes one lifecycle rule.
 BAD_COMPLETED = GOOD.replace("                self.pending = None\n", "")
 BAD_COMPLETED_SAVE = (INITIAL + ADAPTATION.replace("LatestRequest", "RetainsCompleted")
@@ -133,9 +143,11 @@ def probe_change(case, app, transport_type):
     lookup = transport.jobs[-1]
     save.submit("draft 1")
     old_save = transport.jobs[-1]
+    case.assertEqual(old_save.query, "draft 1", "autosave payload was changed")
     case.assertEqual(lookup.cancel_count, 0, "autosave cancelled another caller")
     save.submit("draft 2")
     new_save = transport.jobs[-1]
+    case.assertEqual(new_save.query, "draft 2", "autosave payload was changed")
     case.assertEqual(old_save.cancel_count, 1)
     case.assertEqual(lookup.cancel_count, 0)
     old_save.deliver("stale save")
@@ -152,6 +164,7 @@ def probe_change(case, app, transport_type):
     save.submit("draft 3")
     case.assertEqual(new_save.cancel_count, 0, "completed autosave job was cancelled")
     last_save = transport.jobs[-1]
+    case.assertEqual(last_save.query, "draft 3", "autosave payload was changed")
     save.close()
     save.close()
     case.assertEqual(last_save.cancel_count, 1)
@@ -215,22 +228,25 @@ def probe_change(case, app, transport_type):
                 transport.jobs[-1].deliver("duplicate after close")
                 case.assertEqual(values, ["done"])
 
-    # Two instances of the original caller also need independent lifetimes.
-    transport = transport_type()
-    left_values, right_values = [], []
-    left = app.Screen(transport, left_values.append)
-    right = app.Screen(transport, right_values.append)
-    left.search("left")
-    first = transport.jobs[-1]
-    right.search("right")
-    second = transport.jobs[-1]
-    left.close()
-    first.deliver("late left")
-    second.deliver("right")
-    case.assertEqual(first.cancel_count, 1)
-    case.assertEqual(second.cancel_count, 0)
-    case.assertEqual(left_values, [])
-    case.assertEqual(right_values, ["right"])
+    # Each caller type needs independent lifetimes between its own instances.
+    for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
+        transport = transport_type()
+        left_values, right_values = [], []
+        left = caller_type(transport, left_values.append)
+        right = caller_type(transport, right_values.append)
+        getattr(left, method)("left")
+        first = transport.jobs[-1]
+        getattr(right, method)("right")
+        second = transport.jobs[-1]
+        case.assertEqual(first.cancel_count, 0, "second caller cancelled first")
+        left.close()
+        first.deliver("late left")
+        second.deliver("right")
+        case.assertEqual(first.cancel_count, 1)
+        case.assertEqual(second.cancel_count, 0)
+        case.assertEqual(left_values, [])
+        case.assertEqual(right_values, ["right"])
+
 
 
 class ArchitectureProbe(unittest.TestCase):
@@ -280,6 +296,13 @@ class ArchitectureProbe(unittest.TestCase):
             ("completed terminal close", BAD_COMPLETED_CLOSE, "RuntimeError not raised"),
         ):
             with self.subTest(defect=label), self.assertRaisesRegex(AssertionError, message):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
+
+    def test_autosave_payload_and_instance_defects_are_detected(self):
+        for source, message in ((BAD_PAYLOAD, "autosave payload"),
+                                (BAD_SHARED_SAVE, "second caller cancelled first")):
+            with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
                 probe_change(self, module_from_source(source),
                              module_from_source(self.transport).Transport)
 
