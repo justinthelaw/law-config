@@ -34,6 +34,10 @@ public methods and observable callbacks/cancel counts, not internal class names.
 Additional seeded defects calibrate completed-job cancellation, autosave close
 interference, a stale callback first delivered after its replacement completes,
 and nonterminal idle close. The probe checks both fresh and completed callers.
+The existing peer sequences run with both APIs in either construction order.
+Shared operation checks preserve submitted payloads and job counts, and ensure
+callback delivery does not cancel work. These callback checks use passive value
+collectors; they do not model observers that intentionally submit new requests.
 
 ## Already-decided control
 
