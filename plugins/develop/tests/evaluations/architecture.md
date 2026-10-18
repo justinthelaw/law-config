@@ -38,6 +38,8 @@ The existing peer sequences run with both APIs in either construction order.
 They also construct peers while existing work is pending or completed. For each
 API, a three-request pending burst checks cancellation and duplicate stale
 delivery before completion.
+The open caller is reused after that burst, and a later-constructed peer must
+accept and publish its first request while preserving existing work and observers.
 A repeated identical payload checks that request identity stays independent of
 payload identity: the cancelled callback stays suppressed and its replacement
 publishes once, for either API.
@@ -49,8 +51,8 @@ It reuses that sequence for each three-caller API composition and active positio
 closing with both peers pending or after one peer completes.
 These examples calibrate the stated multiple-caller contract; they are not an
 exhaustive proof over caller counts or operation orderings.
-Shared operation checks preserve submitted payloads and job counts, check job
-identity across callback delivery, close and rejected requests, and ensure
+Shared operation checks preserve submitted payloads and append-only job history,
+check job identity across callback delivery, close and rejected requests, and ensure
 delivery does not cancel work. Repeated close after late callbacks or rejected
 requests must preserve jobs and observers.
 These callback checks use passive value
