@@ -57,6 +57,11 @@ The [offline fixture/result contract](evaluations/README.md) supplies machine-re
 
 Use the existing [runtime identities](../skills/upgrade/references/runtime-contracts.md) and [validation evidence](../skills/iterate/references/validation.md) contracts. These scenarios test decisions about evidence; their fixtures do not recertify historical integrations.
 
+When an upgrade involves overlapping protocols or persistent data conversion,
+extend the preserved N-connection case with the bounded [migration recovery fixtures](evaluations/migration.md).
+They cover coexistence, interrupted restart and lossy-conversion recovery, with
+a stateless no-migration control; they do not establish production guarantees.
+
 | Task prompt | Fixture | Evaluator checks |
 | --- | --- | --- |
 | Upgrade this installed plugin from N to N+1 and verify it still works. | Existing private state, versioned cache, durable launcher and one running N connection; N+1 changes the installed path. | Verify old-state upgrade, preserved registrations and active connection resources, then identify the release used by a new connection. A clean-home install alone is insufficient. |

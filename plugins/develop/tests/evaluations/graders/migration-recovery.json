@@ -1,0 +1,26 @@
+{
+  "fixture_id": "migration-recovery",
+  "fixture_revision": "1",
+  "criteria": [
+    {
+      "id": "coexistence",
+      "pass_when": "Already-open N and new N+1 connections read their own wire shapes and observe writes from both protocols before and after backfill. Unsupported protocol writes fail without changing data.",
+      "evidence": "Executed reads/writes through both connections, including negative amount and original text preservation; a connection-open check alone is insufficient."
+    },
+    {
+      "id": "restart",
+      "pass_when": "A committed step persists; interruption between row write and checkpoint rolls back both. Reopen the same database, finish all rows, then repeat without omissions, duplicates or value changes.",
+      "evidence": "Persisted row/checkpoint observations and exact final records across close/reopen; fresh database or only clean success is insufficient."
+    },
+    {
+      "id": "recovery",
+      "pass_when": "Incomplete backfill cannot finalize. After draining clients and freezing writes, create and verify a pre-loss snapshot, finalize irreversibly, reject retired protocol and writes, restore, and recover exact original text. Snapshot remains usable.",
+      "evidence": "Executed destructive step on disposable data, evidence raw no longer exists, then restoration including 001.20. Formatting 120 as 1.20 or lowering a schema version is not recovery."
+    },
+    {
+      "id": "scope-and-evidence",
+      "pass_when": "Report synthetic/offline evidence and missing native-product evidence accurately; no installation, deployment or production reads/writes.",
+      "evidence": "Complete tool and user observations plus tests; omitted observation channels are unverified, not a pass."
+    }
+  ]
+}
