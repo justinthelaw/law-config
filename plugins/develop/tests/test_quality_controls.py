@@ -1,5 +1,8 @@
 """Execute trusted, bounded test-quality controls; never an agent-code sandbox."""
 import io
+import inspect
+from contextlib import contextmanager
+from functools import wraps
 from pathlib import Path
 import sys
 import types
@@ -41,22 +44,56 @@ def inputs(name):
 
 
 class QualityResult(unittest.TextTestResult):
-    """Distinguish a skipped method from a skipped subtest within a method."""
-    wholly_skipped = 0
-    active_test = None
+    """Keep executed bodies despite later skips; count each unrun method once."""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.skipped_methods = set()
+        self.active_test = None
+
+    @property
+    def wholly_skipped(self):
+        return len(self.skipped_methods)
 
     def startTest(self, test):
         self.active_test = test
+        test._quality_body_executed = False
         super().startTest(test)
 
     def addSkip(self, test, reason):
-        if test is self.active_test:
-            self.wholly_skipped += 1
+        if test is self.active_test and not test._quality_body_executed:
+            self.skipped_methods.add(id(test))
         super().addSkip(test, reason)
 
     def stopTest(self, test):
         super().stopTest(test)
         self.active_test = None
+
+
+@contextmanager
+def body_execution(test):
+    skipped = False
+    try:
+        yield
+    except unittest.SkipTest:
+        skipped = True
+        raise
+    finally:
+        test._quality_body_executed = not skipped
+
+
+def track_body(method):
+    """Observe the trusted test body separately from setup/teardown/cleanup."""
+    if inspect.iscoroutinefunction(method):
+        @wraps(method)
+        async def tracked(test, *args, **kwargs):
+            with body_execution(test):
+                return await method(test, *args, **kwargs)
+    else:
+        @wraps(method)
+        def tracked(test, *args, **kwargs):
+            with body_execution(test):
+                return method(test, *args, **kwargs)
+    return tracked
 
 
 def run_suite(source, implementation, test_name=None):
@@ -67,6 +104,11 @@ def run_suite(source, implementation, test_name=None):
     with patch.dict(sys.modules, {"shipping": shipping}):
         exec(compile(source, "test_shipping.py", "exec"), tests.__dict__)
         loader = unittest.TestLoader()
+        for candidate in vars(tests).values():
+            if (isinstance(candidate, type) and issubclass(candidate, unittest.TestCase)
+                    and candidate.__module__ == tests.__name__):
+                for name in loader.getTestCaseNames(candidate):
+                    setattr(candidate, name, track_body(getattr(candidate, name)))
         suite = (loader.loadTestsFromName(test_name, tests) if test_name
                  else loader.loadTestsFromModule(tests))
         return unittest.TextTestRunner(stream=io.StringIO(), resultclass=QualityResult).run(suite)
@@ -193,6 +235,69 @@ class Tests(unittest.TestCase):
 """
         accepted, _ = assess(source, self.sound["shipping.py"])
         self.assertFalse(accepted)
+
+    def test_post_body_skips_preserve_boundary_evidence(self):
+        for setup in (
+            '    def tearDown(self):\n        self.skipTest("optional teardown")\n',
+            '    def setUp(self):\n        self.addCleanup(self.skipTest, "optional cleanup")\n',
+        ):
+            source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        self.assertEqual(shipping_fee(5000), 0)
+""" + setup
+            with self.subTest(setup=setup):
+                accepted, results = assess(source, self.sound["shipping.py"])
+                self.assertTrue(accepted)
+                self.assertTrue(all(len(result.skipped) == 1 for result in results.values()))
+                self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_repeated_pre_body_skips_preserve_other_executed_tests(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        self.assertEqual(shipping_fee(5000), 0)
+class OptionalTests(unittest.TestCase):
+    def setUp(self):
+        self.addCleanup(self.skipTest, "optional cleanup")
+        self.skipTest("optional setup")
+    def test_optional(self):
+        self.fail("body must not run")
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+        self.assertTrue(all(len(result.skipped) == 2 for result in results.values()))
+
+    def test_async_body_keeps_awaited_assertions_before_teardown_skip(self):
+        source = """import asyncio
+import unittest
+from shipping import shipping_fee
+class Tests(unittest.IsolatedAsyncioTestCase):
+    async def test_boundary(self):
+        await asyncio.sleep(0)
+        self.assertEqual(shipping_fee(5000), 0)
+    async def asyncTearDown(self):
+        self.skipTest("optional async teardown")
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+        self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_pre_body_skip_cannot_certify_reference(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def setUp(self):
+        if shipping_fee(5000) == 0:
+            self.skipTest("reference behavior not exercised")
+    def test_boundary(self):
+        self.assertEqual(shipping_fee(5000), 0)
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertFalse(accepted)
+        self.assertEqual(len(results["defect"].failures), 1)
 
     def test_expected_failure_only_suite_is_incomplete(self):
         suite = """import unittest
