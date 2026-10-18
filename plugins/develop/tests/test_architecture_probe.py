@@ -450,6 +450,40 @@ BAD_REOPEN_AFTER_REJECTION = GOOD.replace(
     "            if self.token is token:",
 )
 
+# Retaining completed references and request counts does not itself violate ownership.
+RETAIN_REQUEST_HISTORY = GOOD.replace(
+    "        self.closed = False",
+    "        self.closed = False\n"
+    "        self.sends = 0\n"
+    "        self.completed = []",
+).replace(
+    "        token = object()",
+    "        self.sends += 1\n"
+    "        token = object()",
+).replace(
+    "                self.pending = None",
+    "                self.completed.append(self.pending)\n"
+    "                self.pending = None",
+)
+BAD_THREE_REQUEST_CLOSE = RETAIN_REQUEST_HISTORY.replace(
+    "    def close(self):\n        self.closed = True",
+    "    def close(self):\n"
+    "        if self.sends == 3 and self.pending is None:\n"
+    "            return\n"
+    "        self.closed = True",
+)
+RETAIN_COMPLETED_TOKEN = REGISTER_MIXED_CALLERS.replace(
+    "                self.token = None",
+    "                self.completed_token = token\n"
+    "                self.token = None",
+)
+BAD_THIRD_CALLER_OWNER = REGISTER_MIXED_CALLERS.replace(
+    "        self.peers.append(self)",
+    "        self.peers.append(self)\n"
+    "        if len(self.peers) == 3:\n"
+    "            self.requests = self.peers[0].requests",
+)
+
 
 def peer_lifecycle_defect(caller_name, peer_name, defect):
     """Scope each seed to one API/peer pairing so every matrix cell is exercised."""
@@ -532,7 +566,7 @@ def redeliver_completed(case, transport, jobs, outputs):
     before = [list(output) for output in outputs]
     for job in jobs:
         deliver_job(case, transport, job, "duplicate completed")
-        case.assertEqual(list(outputs), before, "completed callback repeated with live peers")
+        case.assertEqual(list(outputs), before, "completed callback repeated with peers")
 
 
 def resume_survivor(case, transport, caller, method, values, closed_values):
@@ -683,17 +717,20 @@ def probe_change(case, app, transport_type):
         deliver_job(case, transport, old, "stale again")
         case.assertEqual(values, ["fresh"], "stale after replacement was published")
         # Starting more work must not cancel the job that already completed.
-        start_job(case, transport, caller, method, "next")
+        next_job = start_job(case, transport, caller, method, "next")
         case.assertEqual(new.cancel_count, 0, "completed job was cancelled on next request")
         case.assertEqual(old.cancel_count, 1, "cancelled job was cancelled again on submit")
         case.assertEqual(len(transport.jobs), 3)
         deliver_job(case, transport, new, "duplicate after successor")
         case.assertEqual(values, ["fresh"], "completed callback repeated after successor started")
-        deliver_job(case, transport, transport.jobs[-1], "next value")
+        deliver_job(case, transport, next_job, "next value")
         case.assertEqual(values, ["fresh", "next value"])
-        close_caller(case, transport, caller)
-        close_caller(case, transport, caller)
-        case.assertEqual(old.cancel_count, 1, "cancelled job was cancelled again on close")
+        for _ in range(2):
+            close_caller(case, transport, caller, (values,))
+            case.assertEqual([new.cancel_count, next_job.cancel_count], [0, 0],
+                             "close cancelled completed work")
+            case.assertEqual(old.cancel_count, 1, "cancelled job was cancelled again on close")
+        reject_closed_request(case, transport, caller, method, (values,))
 
     # Replacements cancel exactly once throughout a pending burst, for either API.
     for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
@@ -780,6 +817,7 @@ def probe_change(case, app, transport_type):
             close_caller(case, transport, left, (left_values, right_values))
             case.assertEqual([job.cancel_count for job in completed], [0, 0],
                              "close cancelled completed peer work")
+            redeliver_completed(case, transport, completed, (left_values, right_values))
             deliver_job(case, transport, first, "late left")
             deliver_job(case, transport, replacement, "late replacement")
             deliver_job(case, transport, second, "right survives")
@@ -827,6 +865,54 @@ def probe_change(case, app, transport_type):
         deliver_job(case, transport, pending, "duplicate after construction")
         case.assertEqual(left_values, ["survives construction"])
         case.assertEqual(right_values, [])
+
+    # A bounded third participant checks ownership beyond a single peer pair.
+    # Same-API and mixed groups exercise both APIs without claiming all group sizes.
+    for first_spec, second_spec in ((screen_spec, screen_spec), (save_spec, save_spec),
+                                    (screen_spec, save_spec), (save_spec, screen_spec)):
+        transport, values = transport_type(), [[], [], []]
+        caller_specs = (first_spec, second_spec, first_spec)
+        callers, pending = [], []
+        for index, (caller_type, method) in enumerate(caller_specs):
+            callers.append(caller_type(transport, values[index].append))
+            case.assertEqual([job.cancel_count for job in pending], [0] * len(pending),
+                             "construction cancelled pending peer")
+            pending.append(start_job(case, transport, callers[-1], method, f"caller {index}"))
+            case.assertEqual([job.cancel_count for job in pending], [0] * len(pending),
+                             "third caller cancelled peer work")
+            case.assertEqual(values, [[], [], []])
+        third, third_method = callers[2], caller_specs[2][1]
+        replacement = start_job(case, transport, third, third_method, "third replacement")
+        case.assertEqual([job.cancel_count for job in pending], [0, 0, 1],
+                         "third replacement affected peer work")
+        deliver_job(case, transport, pending[2], "stale third")
+        deliver_job(case, transport, replacement, "third result")
+        redeliver_completed(case, transport, (replacement,), values)
+        case.assertEqual(values, [[], [], ["third result"]], "third callback was misrouted")
+        deliver_job(case, transport, pending[0], "first result")
+        last = start_job(case, transport, third, third_method, "third pending")
+        for _ in range(2):
+            close_caller(case, transport, third, values)
+            case.assertEqual([job.cancel_count for job in transport.jobs], [0, 0, 1, 0, 1],
+                             "third close affected peer or completed work")
+        for job in (pending[2], last):
+            deliver_job(case, transport, job, "late third")
+        redeliver_completed(case, transport, (pending[0], replacement), values)
+        reject_closed_request(case, transport, third, third_method, values)
+        deliver_job(case, transport, pending[1], "second result")
+        redeliver_completed(case, transport, (pending[1],), values)
+        case.assertEqual(values, [["first result"], ["second result"], ["third result"]])
+        for index in (0, 1):
+            peer_before = list(values[1 - index])
+            resume_survivor(case, transport, callers[index], caller_specs[index][1],
+                            values[index], values[2])
+            case.assertEqual(values[1 - index], peer_before, "survivor changed peer observer")
+        cancellations = [job.cancel_count for job in transport.jobs]
+        for index in (0, 1):
+            close_caller(case, transport, callers[index], values)
+            case.assertEqual([job.cancel_count for job in transport.jobs], cancellations,
+                             "close cancelled completed work")
+            reject_closed_request(case, transport, callers[index], caller_specs[index][1], values)
 
 
 
@@ -1031,7 +1117,7 @@ class ArchitectureProbe(unittest.TestCase):
             for peer_name in ("Screen", "Autosave"):
                 for defect, error, message in (
                     ("survivor", RuntimeError, "peer closed"),
-                    ("duplicate", AssertionError, "completed callback repeated with live peers"),
+                    ("duplicate", AssertionError, "completed callback repeated with peers"),
                 ):
                     source = peer_lifecycle_defect(caller_name, peer_name, defect)
                     with self.subTest(caller=caller_name, peer=peer_name, defect=defect):
@@ -1060,6 +1146,64 @@ class ArchitectureProbe(unittest.TestCase):
                 with self.subTest(api=callers, defect=message), self.assertRaisesRegex(AssertionError, message):
                     probe_change(self, module_from_source(source),
                                  module_from_source(self.transport).Transport)
+
+    def test_three_request_close_defects_for_each_api(self):
+        defects = [(BAD_THREE_REQUEST_CLOSE, "RuntimeError not raised")]
+        for completed_index in (0, -1):
+            defective = RETAIN_REQUEST_HISTORY.replace(
+                "    def close(self):\n        self.closed = True",
+                "    def close(self):\n"
+                "        if self.sends == 3 and self.pending is None and self.completed:\n"
+                f"            self.completed[{completed_index}].cancel()\n"
+                "        self.closed = True",
+            )
+            defects.append((defective, "close cancelled completed work"))
+        for callers in (CALLERS, ADAPTATION):
+            for defective, message in defects:
+                source = GOOD.replace(callers, callers.replace("LatestRequest", "DefectiveRequest"))
+                source += defective.partition("class Screen:")[0].replace(
+                    "LatestRequest", "DefectiveRequest")
+                with self.subTest(api=callers, defect=message), self.assertRaisesRegex(AssertionError, message):
+                    probe_change(self, module_from_source(source),
+                                 module_from_source(self.transport).Transport)
+
+    def test_completed_peer_callbacks_stay_suppressed_after_close(self):
+        for caller_name in ("Screen", "Autosave"):
+            for peer_name in ("Screen", "Autosave"):
+                source = RETAIN_COMPLETED_TOKEN.replace(
+                    "        self.requests.close()",
+                    "        self.requests.close()\n"
+                    f"        if type(self).__name__ == '{caller_name}' and any(\n"
+                    f"            peer is not self and type(peer).__name__ == '{peer_name}'\n"
+                    "            for peer in self.peers\n"
+                    "        ):\n"
+                    "            self.requests.token = getattr(self.requests, 'completed_token', None)",
+                )
+                with self.subTest(caller=caller_name, peer=peer_name), self.assertRaisesRegex(
+                    AssertionError, "completed callback repeated",
+                ):
+                    probe_change(self, module_from_source(source),
+                                 module_from_source(self.transport).Transport)
+
+    def test_third_caller_ownership_defect_is_detected(self):
+        for first_name in ("Screen", "Autosave"):
+            for second_name in ("Screen", "Autosave"):
+                condition = (
+                    f"len(self.peers) == 3 and type(self.peers[0]).__name__ == '{first_name}' "
+                    f"and type(self.peers[1]).__name__ == '{second_name}'"
+                )
+                source = BAD_THIRD_CALLER_OWNER.replace("len(self.peers) == 3", condition)
+                with self.subTest(first=first_name, second=second_name), self.assertRaisesRegex(
+                    AssertionError, "third caller cancelled peer work",
+                ):
+                    probe_change(self, module_from_source(source),
+                                 module_from_source(self.transport).Transport)
+
+    def test_additional_retained_metadata_is_benign(self):
+        for source in (RETAIN_REQUEST_HISTORY, RETAIN_COMPLETED_TOKEN):
+            with self.subTest(source=source):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
 
     def test_simple_control_needs_only_decided_function_edit(self):
         original = fixture("architecture-simple")["agent"]["inputs"][0]["content"]
