@@ -124,8 +124,9 @@ def validate_result(result):
             raise ValueError("blocked/missing attempts require a reason")
         if attempt["state"] == "missing":
             if (any(value is not None for value in attempt["cost"].values())
-                    or attempt["application_performance"] or attempt["observations"]):
-                raise ValueError("missing attempts cannot claim observations or measurements")
+                    or attempt["application_performance"] or attempt["observations"]
+                    or attempt["functional"]["evidence"] or attempt["evaluator"]["evidence"]):
+                raise ValueError("missing attempts cannot claim execution evidence or measurements")
 
 
 def _no_symlinks(path):
