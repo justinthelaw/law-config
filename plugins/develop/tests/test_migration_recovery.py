@@ -237,6 +237,50 @@ class ArchivedRaw(Store):
         super().finalize()
 
 
+class RenamedRawArchive(Store):
+    def finalize(self):
+        self.db.execute("CREATE TABLE legacy_payload AS SELECT raw AS saved_text FROM records")
+        super().finalize()
+
+
+class FinalizationMetadata(Store):
+    """Benign control: unrelated metadata need not be forbidden."""
+
+    def finalize(self):
+        super().finalize()
+        with self.db:
+            self.db.execute("CREATE TABLE metadata (note TEXT)")
+            self.db.execute("INSERT INTO metadata VALUES ('complete')")
+
+
+class MetadataRejectedWrite(Store):
+    mutation = "UPDATE migration SET checkpoint = 999"
+
+    def write(self, protocol, key, value):
+        if protocol not in (1, 2):
+            with self.db:
+                self.db.execute(self.mutation)
+        super().write(protocol, key, value)
+
+
+class MutatingRetiredRead(Store):
+    def read(self, protocol, key):
+        if protocol == 1 and self.db.execute("SELECT phase FROM migration").fetchone() == ("final",):
+            with self.db:
+                self.db.execute("UPDATE records SET minor = 0 WHERE id = 2")
+        return super().read(protocol, key)
+
+
+class CollateralWrite(Store):
+    corrupt_protocol = 1
+
+    def write(self, protocol, key, value):
+        super().write(protocol, key, value)
+        if protocol == self.corrupt_protocol:
+            with self.db:
+                self.db.execute("UPDATE records SET raw = '0.00', minor = 0 WHERE id = 3")
+
+
 class OptimisticBackfill(Store):
     """Benign control: compare-and-retry preserves a concurrent writer."""
 
@@ -275,6 +319,12 @@ class MigrationTests(unittest.TestCase):
         store.seed(RECORDS)
         return store
 
+    def assert_write_changes_only_target(self, store, protocol, key, value, expected):
+        before = store.db.execute("SELECT * FROM records ORDER BY id").fetchall()
+        store.write(protocol, key, value)
+        self.assertEqual(store.db.execute("SELECT * FROM records ORDER BY id").fetchall(),
+                         [(key, *expected) if row[0] == key else row for row in before])
+
     def assert_coexistence(self, kind=Store):
         old = self.seeded(kind)
         new = self.open(kind)
@@ -282,18 +332,18 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(new.read(2, 1), {"balance_minor": 120})
         self.assertEqual(new.read(2, 2), {"balance_minor": -50})
         new.migrate_step()
-        old.write(1, 1, "002.35")
+        self.assert_write_changes_only_target(old, 1, 1, "002.35", ("002.35", 235))
         self.assertEqual(new.read(2, 1), {"balance_minor": 235})
-        new.write(2, 2, -75)
+        self.assert_write_changes_only_target(new, 2, 2, -75, ("-0.75", -75))
         self.assertEqual(old.read(1, 2), {"balance": "-0.75"})
         while new.migrate_step():
             pass
         self.assertEqual(old.read(1, 1), {"balance": "002.35"})
         self.assertEqual(new.read(2, 2), {"balance_minor": -75})
-        before = new.db.execute("SELECT * FROM records ORDER BY id").fetchall()
+        before = self.database_state(new)
         with self.assertRaises(ValueError):
             new.write(3, 1, "99.00")
-        self.assertEqual(new.db.execute("SELECT * FROM records ORDER BY id").fetchall(), before)
+        self.assertEqual(self.database_state(new), before)
         with self.assertRaises(ValueError):
             new.read(3, 1)
         self.assertEqual(old.read(1, 1), {"balance": "002.35"})
@@ -416,7 +466,7 @@ class MigrationTests(unittest.TestCase):
 
             writer.db.set_trace_callback(observe)
             try:
-                writer.write(protocol, 1, value)
+                self.assert_write_changes_only_target(writer, protocol, 1, value, expected)
             finally:
                 writer.db.set_trace_callback(None)
             self.assertTrue(observed)
@@ -530,10 +580,15 @@ class MigrationTests(unittest.TestCase):
         for key, minor in expected:
             self.assertEqual(store.read(2, key), {"balance_minor": minor})
         # Inspect logical main-database tables, including renamed archives.
+        original_text = {raw for _, raw in RECORDS}
         for (table,) in store.db.execute("SELECT name FROM sqlite_master WHERE type = 'table'").fetchall():
             quoted = '"' + table.replace('"', '""') + '"'
             columns = [row[1] for row in store.db.execute(f"PRAGMA table_info({quoted})")]
             self.assertNotIn("raw", columns, table)
+            for row in store.db.execute(f"SELECT * FROM {quoted}"):
+                for value in row:
+                    if isinstance(value, str):
+                        self.assertNotIn(value, original_text, table)
 
     def assert_final_phase(self, kind=Store):
         store = self.seeded(kind)
@@ -542,9 +597,10 @@ class MigrationTests(unittest.TestCase):
         expected = store.db.execute("SELECT id, minor FROM records ORDER BY id").fetchall()
         store.finalize()
         self.assert_finalized_records(store, expected)
+        before = self.database_state(store)
         with self.assertRaises(ValueError):
             store.read(1, 1)
-        before = self.database_state(store)
+        self.assertEqual(self.database_state(store), before)
         for protocol, value in ((1, "9.99"), (2, 999)):
             with self.assertRaises(ValueError):
                 store.write(protocol, 1, value)
@@ -628,6 +684,42 @@ class MigrationTests(unittest.TestCase):
 
     def test_optimistic_backfill_is_accepted(self):
         self.assert_concurrent_write(OptimisticBackfill)
+
+    def test_renamed_raw_archive_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_final_phase(RenamedRawArchive)
+
+    def test_unrelated_finalization_metadata_is_accepted(self):
+        self.assert_final_phase(FinalizationMetadata)
+
+    def test_rejected_write_metadata_seeds_are_detected(self):
+        for index, statement in enumerate((
+            "UPDATE migration SET checkpoint = 999",
+            "CREATE TABLE unexpected (value TEXT)",
+        )):
+            with self.subTest(statement=statement):
+                class MetadataMutation(MetadataRejectedWrite):
+                    mutation = statement
+
+                self.path = Path(self.temp.name) / f"rejected-metadata-{index}.sqlite"
+                with self.assertRaises(AssertionError):
+                    self.assert_coexistence(MetadataMutation)
+
+    def test_mutating_retired_read_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_final_phase(MutatingRetiredRead)
+
+    def test_collateral_write_seeds_are_detected(self):
+        for protocol in (1, 2):
+            for name, check in (("coexistence", self.assert_coexistence),
+                                ("sampled", self.assert_sampled_write_atomicity)):
+                with self.subTest(protocol=protocol, check=name):
+                    class CollateralProtocol(CollateralWrite):
+                        corrupt_protocol = protocol
+
+                    self.path = Path(self.temp.name) / f"collateral-{protocol}-{name}.sqlite"
+                    with self.assertRaises(AssertionError):
+                        check(CollateralProtocol)
 
     def test_fixture_and_private_grader_pairs(self):
         fixtures = sorted((ROOT / "fixtures").glob("migration-*.json"))

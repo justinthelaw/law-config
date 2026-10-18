@@ -37,11 +37,16 @@ snapshot mutation or partial restoration. Benign controls accept different
 exception messages, multiple write statements within one transaction and
 optimistic backfill with compare-and-retry. Restore checks
 compare all records, migration metadata and schema with the snapshot, then read
-both protocols and resume completed migration. Rejection checks preserve full
-rows, including writes through both protocols after finalization. The tests also
+both protocols and resume completed migration. Rejected writes and retired reads
+must preserve records, migration metadata and schema. Supported-write probes
+require every unaddressed record to remain unchanged. The tests also
 reject finalization with pending checkpoint work even when all minor values are
 populated or one step has completed. Finalized IDs and values must all survive;
-the main database's logical tables must have no remaining `raw` column.
+the main database's logical tables must have no remaining `raw` column or exact
+original text values, even under renamed columns. The latter check uses the
+fixture's known spellings in scalar text cells; it does not establish forensic
+erasure or detect encoded, fragmented or otherwise transformed copies. Unrelated
+metadata remains permitted, as a benign control verifies.
 Run from the plugin directory:
 
 ```bash
