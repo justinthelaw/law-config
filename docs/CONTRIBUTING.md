@@ -8,8 +8,8 @@ Never commit secrets, personal tokens, or host-specific credentials.
 Run these checks before pushing:
 
 ```bash
-uv tool run --python 3.15 pre-commit@4.6.2 run --all-files --hook-stage pre-commit
-uv tool run --python 3.15 pre-commit@4.6.2 run --all-files --hook-stage pre-push
+uv tool run --python 3.15 pre-commit@4.7.0 run --all-files --hook-stage pre-commit
+uv tool run --python 3.15 pre-commit@4.7.0 run --all-files --hook-stage pre-push
 for file in configs/.zshrc configs/zsh/*.zsh; do zsh -n "$file" || exit $?; done
 uv run --python 3.15 python -m unittest discover -s tests -v
 uv run --python 3.15 python plugins/develop/scripts/validate.py --marketplace-root .
@@ -32,7 +32,7 @@ scripts remain under the repository's MIT license.
 Install hooks once per clone:
 
 ```bash
-uv tool install --python 3.15 pre-commit==4.6.2
+uv tool install --python 3.15 pre-commit==4.7.0
 uv tool update-shell
 ```
 
