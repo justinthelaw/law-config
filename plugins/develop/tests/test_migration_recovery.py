@@ -46,6 +46,8 @@ class FakeRecovery(Store):
 
 
 class StaleBackfill(Store):
+    overwrite_raw = False
+
     def migrate_step(self, interrupt=False):
         # Seed: select before acquiring the write transaction.
         checkpoint = self.db.execute("SELECT checkpoint FROM migration").fetchone()[0]
@@ -55,11 +57,20 @@ class StaleBackfill(Store):
             return False
         key, raw = row
         with self.db:
-            self.db.execute("UPDATE records SET minor = ? WHERE id = ?", (int(Decimal(raw) * 100), key))
+            if self.overwrite_raw:
+                self.db.execute("UPDATE records SET minor = ?, raw = ? WHERE id = ?",
+                                (int(Decimal(raw) * 100), raw, key))
+            else:
+                self.db.execute("UPDATE records SET minor = ? WHERE id = ?", (int(Decimal(raw) * 100), key))
             if interrupt:
                 raise Interrupted("after row update, before checkpoint")
             self.db.execute("UPDATE migration SET checkpoint = ?", (key,))
         return True
+
+
+class StaleRowBackfill(StaleBackfill):
+    # Seed: atomically overwrite both representations of the committed write.
+    overwrite_raw = True
 
 
 class CorruptRejectedWrite(Store):
@@ -317,6 +328,8 @@ class MigrationTests(unittest.TestCase):
             self.assert_database_busy(outcomes[0])
         else:
             self.assertEqual(outcomes, ["written"])
+            self.assertEqual(old.read(1, 1), {"balance": "002.35"})
+            self.assertEqual(new.read(2, 1), {"balance_minor": 235})
         # Both locking and compare-and-retry permit this subsequent write.
         old.write(1, 1, "002.35")
         self.assertEqual(old.read(1, 1), {"balance": "002.35"})
@@ -456,6 +469,10 @@ class MigrationTests(unittest.TestCase):
     def test_stale_backfill_seed_is_detected(self):
         with self.assertRaises(AssertionError):
             self.assert_concurrent_write(StaleBackfill)
+
+    def test_lost_overlapping_write_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_concurrent_write(StaleRowBackfill)
 
     def test_rejected_write_corruption_seed_is_detected(self):
         with self.assertRaises(AssertionError):
