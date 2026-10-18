@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "id": "architecture-ownership",
-  "revision": "1",
+  "revision": "2",
   "scenario_ref": "architecture.md#unresolved-ownership",
   "agent": {
-    "prompt": "Use Develop to implement this local toy search screen. Screen(transport, on_value) exposes search(query) and close(). Each search starts one transport job, cancels any pending previous job exactly once, and publishes only the latest result once. Closing is idempotent, cancels pending work once, suppresses late results, and makes later searches raise RuntimeError without starting a job. Preserve transport.py and the public API/tests. Internal responsibility for request identity and cancellation is undecided: choose a small design and briefly explain its ownership and caller burden within the existing intent checkpoint. Implement and test; no separate design document or framework is required. No network, installation, commits or publication.",
+    "prompt": "Use Develop to implement this local toy search screen. Screen(transport, on_value) exposes search(query) and close(). Each search starts one transport job, cancels any pending previous job exactly once, and publishes only the latest result once. Closing is idempotent, cancels pending work once, suppresses late results, and makes later searches raise RuntimeError without starting a job. Preserve transport.py and the public API/tests. Implement and test; no separate design document or framework is required. No network, installation, commits or publication.",
     "inputs": [
       {
         "path": "transport.py",
