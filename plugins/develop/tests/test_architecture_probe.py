@@ -282,6 +282,46 @@ BAD_COMPLETED_PEER_SUBMIT = RETAIN_COMPLETED_PEERS.replace(
     "                completed.cancel()\n"
     "        self.requests.send(",
 )
+BAD_IDLE_PEER_CLOSE = REGISTER_CALLERS.replace(
+    "        self.requests.close()",
+    "        if not self.requests.closed and self.requests.pending is None:\n"
+    "            for peer in self.peers:\n"
+    "                if peer is not self and peer.requests.pending is not None:\n"
+    "                    peer.requests.pending.cancel()\n"
+    "        self.requests.close()",
+)
+BAD_COMPLETED_PEER_CLOSE = RETAIN_COMPLETED_PEERS.replace(
+    "        self.requests.close()",
+    "        for peer in self.peers:\n"
+    "            completed = getattr(peer.requests, 'completed', None)\n"
+    "            if peer is not self and completed is not None:\n"
+    "                completed.cancel()\n"
+    "        self.requests.close()",
+)
+BAD_REJECTED_PEER = REGISTER_CALLERS.replace(
+    "        self.requests.send(",
+    "        if self.requests.closed:\n"
+    "            for peer in self.peers:\n"
+    "                if peer is not self and peer.requests.pending is not None:\n"
+    "                    peer.requests.pending.cancel()\n"
+    "        self.requests.send(",
+)
+BAD_EXTRA_PEER_JOB = REGISTER_CALLERS.replace(
+    "        self.requests.send(",
+    "        if len(self.peers) > 1:\n"
+    "            self.requests.transport.start('extra', lambda value: None)\n"
+    "        self.requests.send(",
+)
+BAD_REPEATED_STALE = GOOD.replace(
+    "        def receive(value):\n            if self.token is token:",
+    "        deliveries = 0\n"
+    "        succeeded = False\n"
+    "        def receive(value):\n"
+    "            nonlocal deliveries, succeeded\n"
+    "            deliveries += 1\n"
+    "            if self.token is token or (not succeeded and deliveries == 2 and not self.closed):\n"
+    "                succeeded = True",
+)
 
 
 def fixture(name):
@@ -293,6 +333,42 @@ def module_from_source(source):
     module = types.ModuleType("calibration")
     exec(compile(source, "<offline-calibration>", "exec"), module.__dict__)
     return module
+
+
+def start_job(case, transport, caller, method, payload):
+    count = len(transport.jobs)
+    getattr(caller, method)(payload)
+    case.assertEqual(len(transport.jobs), count + 1, "submission must start exactly one job")
+    return transport.jobs[-1]
+
+
+def probe_idle_peer_close(case, caller_type, method, transport_type):
+    """Fresh/completed closers in either creation order leave a pending peer live."""
+    for closer_index in (0, 1):
+        for completed_closer in (False, True):
+            transport, values = transport_type(), [[], []]
+            callers = [caller_type(transport, output.append) for output in values]
+            closer, peer = callers[closer_index], callers[1 - closer_index]
+            completed = [start_job(case, transport, peer, method, "peer complete")]
+            completed[0].deliver("peer complete")
+            if completed_closer:
+                completed.append(start_job(case, transport, closer, method, "closer complete"))
+                completed[-1].deliver("closer complete")
+            pending = start_job(case, transport, peer, method, "peer pending")
+            closer.close()
+            closer.close()
+            case.assertEqual(pending.cancel_count, 0, "idle close cancelled pending peer")
+            case.assertEqual([job.cancel_count for job in completed], [0] * len(completed),
+                             "close cancelled completed peer work")
+            count = len(transport.jobs)
+            with case.assertRaises(RuntimeError):
+                getattr(closer, method)("closed")
+            case.assertEqual(len(transport.jobs), count)
+            case.assertEqual(pending.cancel_count, 0, "rejected request cancelled pending peer")
+            pending.deliver("peer survives")
+            pending.deliver("duplicate peer")
+            case.assertEqual(values[1 - closer_index], ["peer complete", "peer survives"])
+            case.assertEqual(values[closer_index], ["closer complete"] if completed_closer else [])
 
 
 def probe_change(case, app, transport_type):
@@ -401,6 +477,7 @@ def probe_change(case, app, transport_type):
         case.assertEqual(old.cancel_count, 1)
         new.deliver("fresh")
         old.deliver("stale")
+        old.deliver("stale again")
         case.assertEqual(values, ["fresh"], "stale after replacement was published")
         # Starting more work must not cancel the job that already completed.
         submit("next")
@@ -450,10 +527,8 @@ def probe_change(case, app, transport_type):
             left_values, right_values = [], []
             left = caller_type(transport, left_values.append)
             right = caller_type(transport, right_values.append)
-            getattr(left, method)("left")
-            first = transport.jobs[-1]
-            getattr(right, method)("right")
-            second = transport.jobs[-1]
+            first = start_job(case, transport, left, method, "left")
+            second = start_job(case, transport, right, method, "right")
             case.assertEqual(first.cancel_count, 0, "second caller cancelled first")
             completed = (first, second)
             for index in delivery_order:
@@ -463,19 +538,18 @@ def probe_change(case, app, transport_type):
             case.assertEqual(left_values, ["left"], "live caller callback was misrouted")
             case.assertEqual(right_values, ["right"], "live caller callback was misrouted")
             # Start another pair to check close isolation while both jobs are pending.
-            getattr(left, method)("left pending")
+            first = start_job(case, transport, left, method, "left pending")
             case.assertEqual([job.cancel_count for job in completed], [0, 0],
                              "submission cancelled completed peer work")
-            first = transport.jobs[-1]
-            getattr(right, method)("right pending")
+            second = start_job(case, transport, right, method, "right pending")
             case.assertEqual([job.cancel_count for job in completed], [0, 0],
                              "submission cancelled completed peer work")
-            second = transport.jobs[-1]
-            getattr(left, method)("left replacement")
-            replacement = transport.jobs[-1]
+            replacement = start_job(case, transport, left, method, "left replacement")
             case.assertEqual(first.cancel_count, 1)
             case.assertEqual(second.cancel_count, 0, "first caller cancelled second")
             left.close()
+            case.assertEqual([job.cancel_count for job in completed], [0, 0],
+                             "close cancelled completed peer work")
             first.deliver("late left")
             replacement.deliver("late replacement")
             second.deliver("right survives")
@@ -490,10 +564,8 @@ def probe_change(case, app, transport_type):
         left_values, right_values = [], []
         left = caller_type(transport, left_values.append)
         right = caller_type(transport, right_values.append)
-        getattr(left, method)("left pending")
-        first = transport.jobs[-1]
-        getattr(right, method)("right pending")
-        second = transport.jobs[-1]
+        first = start_job(case, transport, left, method, "left pending")
+        second = start_job(case, transport, right, method, "right pending")
         right.close()
         right.close()
         case.assertEqual(first.cancel_count, 0, "second caller close cancelled first")
@@ -502,6 +574,7 @@ def probe_change(case, app, transport_type):
         first.deliver("left survives")
         case.assertEqual(left_values, ["left survives"])
         case.assertEqual(right_values, [])
+        probe_idle_peer_close(case, caller_type, method, transport_type)
 
 
 
@@ -584,6 +657,18 @@ class ArchitectureProbe(unittest.TestCase):
             (BAD_PEER_COMPLETION, "callback cancelled peer work"),
             (BAD_REVERSE_PEER_COMPLETION, "callback cancelled peer work"),
             (BAD_COMPLETED_PEER_SUBMIT, "submission cancelled completed peer work"),
+        ):
+            with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
+
+    def test_peer_close_rejection_job_count_and_repeated_stale_defects(self):
+        for source, message in (
+            (BAD_IDLE_PEER_CLOSE, "idle close cancelled pending peer"),
+            (BAD_COMPLETED_PEER_CLOSE, "close cancelled completed peer work"),
+            (BAD_REJECTED_PEER, "rejected request cancelled pending peer"),
+            (BAD_EXTRA_PEER_JOB, "submission must start exactly one job"),
+            (BAD_REPEATED_STALE, "stale after replacement was published"),
         ):
             with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
                 probe_change(self, module_from_source(source),
