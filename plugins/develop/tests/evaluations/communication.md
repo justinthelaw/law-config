@@ -11,6 +11,8 @@ The existing owners remain authoritative: [intent, autonomy and handoffs](../../
 
 ## Cases
 
+The exact prompts and fixture links live in the canonical [scenario catalog](../scenarios.md#communication-and-handoff-cases). This table is only a protocol index.
+
 | Fixture suffix | Decision and observable evidence |
 | --- | --- |
 | `clarification` | Unresolved retention semantics; consequential question before choosing behavior, with safe independent progress. |

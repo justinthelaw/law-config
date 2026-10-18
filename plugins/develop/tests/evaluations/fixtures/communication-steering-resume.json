@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "id": "communication-steering-resume",
-  "revision": "1",
-  "scenario_ref": "evaluations/communication.md#cases",
+  "revision": "2",
+  "scenario_ref": "scenarios.md#communication-and-handoff-cases",
   "agent": {
     "prompt": "Use Develop in this isolated local exercise. The supplied records describe a fictional repository; do not contact a provider or perform external writes. Continue the work from handoff.md, incorporating the ordered user messages. Update the local plan and finish the corrected scope. Do not re-request already granted local implementation authority.",
     "inputs": [
