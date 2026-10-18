@@ -35,13 +35,21 @@ batched steps, mutation after completion, partial finalization, final-phase N
 writes, lost finalized rows, retained raw archives, lossy reconstruction and
 snapshot mutation or partial restoration. Benign controls accept different
 exception messages, multiple write statements within one transaction and
-optimistic backfill with compare-and-retry. Restore checks
+optimistic backfill with compare-and-retry. Seed checks require the declared core
+columns, types and primary key, the supplied records with null minor values, and
+exactly one initial `(0, 'mixed')` migration row; unrelated metadata tables and
+indexes are permitted. Restore checks
 compare all records, migration metadata and schema with the snapshot, then read
-both protocols and resume completed migration. Rejected writes, retired reads
+both protocols and resume completed migration. Rejected writes, unsupported and retired reads
 and permitted finalized reads must preserve records, migration metadata and
 schema. Final-phase behavior is checked after closing and reopening the candidate,
 so retired reads and frozen writes must follow persisted state. Migration-step
 results must be the booleans `True` and `False`, not merely truthy or falsy values.
+For the finite fixtures, each successful step must transform only the next
+existing ID and advance the checkpoint to that ID. A gapped, unsorted input
+checks that progress does not assume consecutive IDs. Completion uses at most
+the initial pending-row count plus one call, checking progress after each call
+and unchanged state on completion; it does not rely on a timeout.
 Supported-write probes require every unaddressed record to remain unchanged. The tests also
 reject finalization with pending checkpoint work even when all minor values are
 populated or one step has completed. Finalized IDs and values must all survive;
@@ -80,7 +88,9 @@ exports in an isolated evaluator copy and adapt the observation probes first.
 The overlapping-write probe targets the reference's backfill UPDATE. Temporary
 row and checkpoint triggers observe interruption ordering on the exposed
 connection; restart checks reopen immediately after a committed step and inspect
-each remaining step and unchanged completion.
+each remaining step and unchanged completion. An interrupted step may issue
+multiple updates to its next row, but must not touch another row or the
+checkpoint before the controlled exception.
 
 The write-atomicity probe samples a second connection only at statements traced
 on `writer.db`. An implementation that commits through auxiliary connections can

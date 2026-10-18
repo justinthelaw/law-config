@@ -37,7 +37,7 @@ Do not optimize for agreement. Do not invent findings.
 Output contract:
 - Lane and reviewed intent, contract and artifact revisions; coverage and limitations.
 - Verdict: aligned | changes required | blocked.
-- Material findings: severity, exact location/evidence, affected user criterion,
+- Material findings: severity, exact location/evidence, applicable criterion or binding instruction,
   concrete impact, smallest sufficient correction, and verification needed.
   Distinguish introduced and verified pre-existing defects. State none explicitly
   if none; do not use a bare approval with no revision or coverage.
