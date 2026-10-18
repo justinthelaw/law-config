@@ -67,7 +67,9 @@ functional/evaluator verdicts are `pass`.
 
 One manifest describes one exact source revision and host/model/effort selection.
 Use a full Git SHA (40 or 64 lowercase hexadecimal characters); never `main` or a
-moving tag. Record host version and selection basis, including exposed controls,
+moving tag. Identity patterns require the entire string under JSON Schema search
+semantics, rejecting prefixes, suffixes and trailing line terminators. Record host
+version and selection basis, including exposed controls,
 inheritance or the reason identity is unavailable. Do not guess model identity.
 Source, fixture and grader identities are separate: every planned attempt records
 fixture ID, revision and canonical SHA256, plus required `grader_sha256`: the
@@ -84,8 +86,12 @@ record: `completed`, `blocked` or `missing`. Append retries under new planned ID
 never replace failed attempts. Missing means no attempt evidence was obtained;
 it requires a reason, null costs, no observations and no application metrics.
 Blocked attempts can retain partial observations/costs, but both assessments must
-be `not_run`. A completed attempt can fail; completion is not success. Omitted or
-unplanned attempts invalidate the manifest instead of silently dropping failures.
+be `not_run`. A completed attempt requires at least one observation, assessment
+evidence entry, application measurement or non-null agent cost measurement; a
+reason alone is insufficient. Executed but ungraded attempts may retain both
+`not_run` verdicts when this evidence exists. A completed attempt can fail;
+completion is not success. Omitted or unplanned attempts invalidate the manifest
+instead of silently dropping failures.
 
 `functional` records task correctness; `evaluator` records the evaluator's checks.
 Each uses `pass`, `fail` or `not_run` and an evidence list. Pass/fail requires

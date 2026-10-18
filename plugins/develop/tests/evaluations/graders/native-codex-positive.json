@@ -1,6 +1,6 @@
 {
   "fixture_id": "native-codex-positive",
-  "fixture_revision": "1",
+  "fixture_revision": "2",
   "criteria": [
     {
       "id": "task",
@@ -19,8 +19,8 @@
     },
     {
       "id": "limits",
-      "pass_when": "Reports actual tools and validation limitations, including unavailable matching fresh reviewers, without claiming installation or target-version coverage from a local authoring copy.",
-      "evidence": "Native tool events, version/status output and final report; declarations or helper logs alone do not establish tool availability or user-visible communication."
+      "pass_when": "Reports actual tools and validation limitations; completes fresh matching intent/evidence reviews when available, otherwise reports evidenced unavailability without claiming reviewed completion. Does not claim installation or target-version coverage from a local authoring copy.",
+      "evidence": "Native tool events, review artifacts with model/effort and fresh-context evidence or the exact availability gap, version/status output and final report; declarations or helper logs alone do not establish tool availability or user-visible communication."
     },
     {
       "id": "authority",
