@@ -4,7 +4,7 @@ import io
 import inspect
 from contextlib import ExitStack, contextmanager
 from contextvars import ContextVar
-from functools import wraps
+from functools import partial, wraps
 from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 import sys
@@ -49,11 +49,13 @@ def inputs(name):
 
 
 class QualityResult(unittest.TextTestResult):
-    """A skip needs observed assertion evidence; count each affected method once."""
-    def __init__(self, *args, **kwargs):
+    """A skip needs observed assertion evidence; count each affected entry once."""
+    def __init__(self, *args, entries=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.skipped_methods = set()
         self.active_test = None
+        self.active_entry = None
+        self.entries = entries if entries is not None else {}
         self.passed_assertions = set()
         self.failed_assertions = set()
 
@@ -63,26 +65,33 @@ class QualityResult(unittest.TextTestResult):
 
     def startTest(self, test):
         self.active_test = test
+        self.active_entry = self.testsRun
+        entries = self.entries.get(id(test), [])
+        test._quality_entry_id = entries.pop(0) if entries else None
         test._quality_assertion_executed = False
         test._quality_passed_assertions = set()
+        test._quality_failure_sites = {}
         super().startTest(test)
 
     def addSkip(self, test, reason):
         if self.active_test is not None:
-            self.skipped_methods.add(id(self.active_test))
+            self.skipped_methods.add(self.active_entry)
         super().addSkip(test, reason)
 
     def stopTest(self, test):
         self.passed_assertions.update(test._quality_passed_assertions)
         if test._quality_assertion_executed:
-            self.skipped_methods.discard(id(test))
+            self.skipped_methods.discard(self.active_entry)
+        test._quality_failure_sites.clear()
         super().stopTest(test)
         self.active_test = None
+        self.active_entry = None
 
     def record_failure_site(self, err):
-        site = getattr(err[1], "_quality_assertion_site", None)
-        if site is not None:
-            self.failed_assertions.add(site)
+        if self.active_test is not None:
+            observation = self.active_test._quality_failure_sites.get(id(err[1]))
+            if observation is not None and observation[0] is err[1]:
+                self.failed_assertions.add(observation[1])
 
     def addFailure(self, test, err):
         self.record_failure_site(err)
@@ -108,15 +117,14 @@ def body_execution(test):
 
 
 def assertion_site():
-    """Identify a call within its particular compiled source code object."""
+    """Observe the direct submitted caller, never an external helper's caller.
+
+    Nested unittest assertions are accounted for by the outer observed call.
+    """
     sites = SOURCE_CODE_SITES.get()
-    frame = sys._getframe(1)
-    while frame is not None:
-        path = sites.get(id(frame.f_code))
-        if path is not None:
-            return ("call", path, frame.f_lasti)
-        frame = frame.f_back
-    return None
+    frame = sys._getframe(2)
+    path = sites.get(id(frame.f_code))
+    return ("call", path, frame.f_lasti) if path is not None else None
 
 
 def source_code_sites(code, path=()):
@@ -137,11 +145,13 @@ def record_assertion(site, error=None):
     if execution is not None and execution.active and site is not None:
         test = execution.test
         test._quality_assertion_executed = True
-        site = (test.id(), site)
+        site = (test._quality_entry_id, site)
         if error is None:
             test._quality_passed_assertions.add(site)
         else:
-            error._quality_assertion_site = site
+            # Retain the exception until stopTest to prevent identity reuse,
+            # without hashing or mutating a configured failureException.
+            test._quality_failure_sites[id(error)] = (error, site)
 
 
 class ObservedAssertionContext:
@@ -226,22 +236,29 @@ def track_body(method, test):
     return tracked
 
 
-def track_suite(suite, module_name, stack):
+def track_suite(suite, module_name, stack, entries, path=()):
     """Include local cases returned by load_tests, preserving method binding."""
     if isinstance(suite, unittest.BaseTestSuite):
-        for test in suite:
-            track_suite(test, module_name, stack)
-    elif (type(suite) is unittest.FunctionTestCase
+        for index, test in enumerate(suite):
+            track_suite(test, module_name, stack, entries, path + (index,))
+        return
+    if id(suite) in entries:
+        # Reused case objects need distinct entry identities, one body wrapper.
+        entries[id(suite)].append((path, *entries[id(suite)][0][1:]))
+        return
+    if (type(suite) is unittest.FunctionTestCase
           and inspect.isfunction(suite._testFunc)
           and suite._testFunc.__module__ == module_name):
-        stack.enter_context(patch.object(suite, "_testFunc",
-                                        track_body(suite._testFunc, suite)))
+        name = "_testFunc"
     elif isinstance(suite, unittest.TestCase) and type(suite).__module__ == module_name:
         name = suite._testMethodName
-        # Instance replacement leaves static/class descriptors and inheritance
-        # intact. The runner still sees coroutine and skip/expected-failure flags.
-        method = track_body(getattr(suite, name), suite)
-        stack.enter_context(patch.object(suite, name, method))
+    else:
+        return
+    method = getattr(suite, name)
+    origin = SOURCE_CODE_SITES.get().get(id(getattr(method, "__code__", None)))
+    entries[id(suite)] = [(path, name, origin)]
+    # Instance replacement preserves descriptors, coroutines and unittest flags.
+    stack.enter_context(patch.object(suite, name, track_body(method, suite)))
 
 
 def run_suite(source, implementation, test_name=None):
@@ -250,7 +267,8 @@ def run_suite(source, implementation, test_name=None):
     tests = module_from_spec(spec_from_file_location("quality_case", "test_shipping.py"))
     with ExitStack() as stack:
         stack.enter_context(patch.dict(sys.modules, {"shipping": shipping,
-                                                    "quality_case": tests}))
+                                                    "quality_case": tests,
+                                                    "test_shipping": tests}))
         # Patch the standard owner so self, super and direct base calls share
         # observation, including aliases bound while the source module loads.
         for name in dir(unittest.TestCase):
@@ -279,8 +297,10 @@ def run_suite(source, implementation, test_name=None):
         loader = unittest.TestLoader()
         suite = (loader.loadTestsFromName(test_name, tests) if test_name
                  else loader.loadTestsFromModule(tests))
-        track_suite(suite, tests.__name__, stack)
-        return unittest.TextTestRunner(stream=io.StringIO(), resultclass=QualityResult).run(suite)
+        entries = {}
+        track_suite(suite, tests.__name__, stack, entries)
+        return unittest.TextTestRunner(stream=io.StringIO(), resultclass=partial(
+            QualityResult, entries=entries)).run(suite)
 
 
 def assess(source, reference):
@@ -357,6 +377,197 @@ class QualityControls(unittest.TestCase):
         self.assertEqual(results["defect"].testsRun, 2)
         self.assertEqual(len(results["defect"].failures), 1)
         self.assertEqual(results["defect"].errors, [])
+
+    def test_external_assertions_cannot_borrow_submitted_call_site(self):
+        external = types.ModuleType("quality_external")
+        exec("""def check(test, actual):
+    if actual == 0:
+        test.assertTrue(True)
+    else:
+        test.assertEqual(actual, 0)
+""", external.__dict__)
+        source = """import unittest
+from shipping import shipping_fee
+from quality_external import check
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        check(self, shipping_fee(5000))
+"""
+        with patch.dict(sys.modules, {"quality_external": external}):
+            accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertFalse(accepted)
+        self.assertTrue(results["reference"].wasSuccessful())
+        self.assertTrue(results["benign"].wasSuccessful())
+        self.assertEqual(len(results["defect"].failures), 1)
+        self.assertTrue(all(not result.errors and not result.passed_assertions
+                            and not result.failed_assertions for result in results.values()))
+
+    def test_failure_exception_need_not_accept_evaluator_attributes(self):
+        for assertion in (
+            "self.assertEqual(shipping_fee(5000), 0)",
+            "with self.assertRaises(ZeroDivisionError):\n"
+            "    1 // shipping_fee(5000)",
+        ):
+            source = """import unittest
+from shipping import shipping_fee
+class Failure(AssertionError):
+    __hash__ = None
+    def __setattr__(self, name, value):
+        if name == '_quality_assertion_site':
+            raise AttributeError('unsupported evaluator attribute')
+        super().__setattr__(name, value)
+class Tests(unittest.TestCase):
+    failureException = Failure
+    def test_boundary(self):
+ASSERTION
+""".replace("ASSERTION", "\n".join("        " + line for line in assertion.splitlines()))
+            with self.subTest(assertion=assertion):
+                accepted, results = assess(source, self.sound["shipping.py"])
+                self.assertTrue(accepted)
+                self.assertTrue(all(not result.errors for result in results.values()))
+                self.assertEqual(len(results["defect"].failures), 1)
+                self.assertIn("Failure", results["defect"].failures[0][1])
+
+    def test_filename_self_import_is_available_and_restored(self):
+        source = """import sys
+import unittest
+import test_shipping
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        self.assertIs(test_shipping, sys.modules[__name__])
+        self.assertEqual(test_shipping.shipping_fee(5000), 0)
+"""
+        sentinel = types.ModuleType("test_shipping")
+        for preexisting in (False, True):
+            with self.subTest(preexisting=preexisting), patch.dict(sys.modules):
+                if preexisting:
+                    sys.modules["test_shipping"] = sentinel
+                else:
+                    sys.modules.pop("test_shipping", None)
+                accepted, results = assess(source, self.sound["shipping.py"])
+                if preexisting:
+                    self.assertIs(sys.modules["test_shipping"], sentinel)
+                else:
+                    self.assertNotIn("test_shipping", sys.modules)
+                self.assertTrue(accepted)
+                self.assertTrue(all(result.testsRun == 1 and not result.errors
+                                    for result in results.values()))
+                self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_duplicate_display_ids_cannot_correlate_different_methods(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def id(self):
+        return 'same presentation ID'
+    def check(self, actual):
+        self.assertEqual(actual, 0)
+    def test_control(self):
+        self.check(0)
+    def test_detect(self):
+        if shipping_fee(5000) == 0:
+            self.skipTest('detecting site never executes')
+        self.check(shipping_fee(5000))
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertFalse(accepted)
+        self.assertTrue(results["reference"].wasSuccessful())
+        self.assertTrue(results["benign"].wasSuccessful())
+        self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_variant_dependent_display_id_does_not_break_correlation(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def id(self):
+        return str(shipping_fee(5000))
+    def test_boundary(self):
+        self.assertEqual(shipping_fee(5000), 0)
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+        self.assertTrue(all(not result.errors for result in results.values()))
+        self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_separate_suite_entries_cannot_certify_each_other(self):
+        for reuse in (False, True):
+            source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    calls = 0
+    def check(self, actual):
+        self.assertEqual(actual, 0)
+    def test_boundary(self):
+        type(self).calls += 1
+        if self.calls == 1:
+            self.check(0)
+        elif shipping_fee(5000) == 0:
+            self.skipTest('detecting entry never asserts')
+        else:
+            self.check(shipping_fee(5000))
+def load_tests(loader, tests, pattern):
+    case = Tests('test_boundary')
+    return unittest.TestSuite([case, SECOND])
+""".replace("SECOND", "case" if reuse else "Tests('test_boundary')")
+            with self.subTest(reuse=reuse):
+                accepted, results = assess(source, self.sound["shipping.py"])
+                self.assertFalse(accepted)
+                self.assertTrue(all(result.testsRun == 2 and not result.errors
+                                    for result in results.values()))
+                self.assertEqual(len(results["defect"].failures), 1)
+                self.assertEqual(results["reference"].wholly_skipped, 1)
+
+    def test_reused_suite_entry_skips_are_counted_separately(self):
+        source = """import unittest
+class Tests(unittest.TestCase):
+    def test_optional(self):
+        self.skipTest('never asserts')
+def load_tests(loader, tests, pattern):
+    case = Tests('test_optional')
+    return unittest.TestSuite([case, case])
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertFalse(accepted)
+        self.assertTrue(all(result.testsRun == result.wholly_skipped == 2
+                            for result in results.values()))
+
+    def test_reused_case_boundary_assertions_remain_evidence(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        self.assertEqual(shipping_fee(5000), 0)
+def load_tests(loader, tests, pattern):
+    case = Tests('test_boundary')
+    return unittest.TestSuite([case, case])
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+        self.assertTrue(all(result.testsRun == 2 and not result.errors
+                            for result in results.values()))
+        self.assertEqual(len(results["defect"].failures), 2)
+        self.assertEqual(len(results["defect"].failed_assertions), 2)
+        self.assertEqual(len(results["reference"].passed_assertions), 2)
+
+    def test_suite_position_alone_cannot_correlate_different_bodies(self):
+        source = """import unittest
+from shipping import shipping_fee
+def check(actual):
+    unittest.TestCase().assertEqual(actual, 0)
+def control():
+    check(0)
+def detect():
+    check(shipping_fee(5000))
+def load_tests(loader, tests, pattern):
+    body = control if shipping_fee(5000) == 0 else detect
+    return unittest.TestSuite([unittest.FunctionTestCase(body)])
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertFalse(accepted)
+        self.assertTrue(results["reference"].wasSuccessful())
+        self.assertTrue(results["benign"].wasSuccessful())
+        self.assertEqual(len(results["defect"].failures), 1)
 
     def test_load_tests_local_cases_in_nested_suite_detect_boundary(self):
         source = """import unittest
