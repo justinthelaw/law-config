@@ -38,6 +38,10 @@ Preserve production files, run counts, skips, assertion failures and errors for
 all three variants. An exception in the harness is not defect detection. An
 ordinary exception while compiling or loading a module is recorded as an error
 with zero executed tests; evaluation continues with the remaining variants. An
+invalid loader return or an exception escaping suite loading, tracking or execution
+is also an error; already completed test outcomes are retained. A module-level
+`SkipTest` produces one wholly skipped entry rather than a harness error. Process
+interruptions such as `KeyboardInterrupt` and `SystemExit` are not swallowed. An
 unrelated skip or expected failure does not erase an executed assertion that
 detects the defect and passes both controls. Skipped-only and expected-failure-only
 runs remain incomplete; unexpected successes are not passing control evidence.
@@ -62,6 +66,9 @@ The helper correlates standard `unittest` assertion call sites and Python
 method or test function. Calls in separate code objects, including same-line
 lambdas, remain distinct; their identity is correlated only across the unchanged
 submitted source.
+The standard assertion callable is part of each call's identity, including context
+assertions, so selecting different assertions at one call instruction does not
+create matching evidence. Aliases of the same callable share its identity.
 Test identities combine the loaded suite entry's position and body identity;
 overridden display IDs do not participate. Repeated entries using the same case
 object remain distinct, including their skip counts. Correlation assumes unchanged
