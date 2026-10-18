@@ -229,6 +229,32 @@ BAD_SECOND_CLOSE = REGISTER_CALLERS.replace(
     "            first.requests.pending.cancel()\n"
     "        self.requests.close()",
 )
+RETAIN_CLOSED_JOB = GOOD.replace(
+    "        self.closed = True\n",
+    "        if self.pending is not None:\n"
+    "            self.closed_job = self.pending\n"
+    "        self.closed = True\n",
+)
+BAD_CLOSED_SUBMIT = RETAIN_CLOSED_JOB.replace(
+    "        if self.closed:\n            raise RuntimeError('closed')",
+    "        if self.closed:\n"
+    "            if hasattr(self, 'closed_job'):\n"
+    "                self.closed_job.cancel()\n"
+    "            raise RuntimeError('closed')",
+)
+BAD_SAVE_COMPLETION = OWNER + CALLERS.replace(
+    "        self.requests = LatestRequest(transport)",
+    "        self.requests = LatestRequest(transport)\n"
+    "        transport.screen_requests = self.requests",
+) + ADAPTATION.replace(
+    "        self.requests.send(content, self.on_value)",
+    "        def publish(value):\n"
+    "            screen = getattr(self.requests.transport, 'screen_requests', None)\n"
+    "            if screen is not None and screen.pending is not None:\n"
+    "                screen.pending.cancel()\n"
+    "            self.on_value(value)\n"
+    "        self.requests.send(content, publish)",
+)
 
 
 def fixture(name):
@@ -303,6 +329,20 @@ def probe_change(case, app, transport_type):
     case.assertEqual(screen_values, ["screen survives"])
     case.assertEqual(save_values, [])
 
+    # Autosave success must leave an independently pending Screen untouched.
+    transport = transport_type()
+    screen_values, save_values = [], []
+    screen = app.Screen(transport, screen_values.append)
+    save = app.Autosave(transport, save_values.append)
+    screen.search("pending screen")
+    lookup = transport.jobs[-1]
+    save.submit("successful save")
+    transport.jobs[-1].deliver("saved")
+    case.assertEqual(lookup.cancel_count, 0, "autosave completion cancelled pending screen")
+    lookup.deliver("found")
+    case.assertEqual(save_values, ["saved"])
+    case.assertEqual(screen_values, ["found"])
+
     # Starting Screen after Autosave must also preserve the other caller's work.
     transport = transport_type()
     screen_values, save_values = [], []
@@ -348,21 +388,29 @@ def probe_change(case, app, transport_type):
         caller.close()
         case.assertEqual(old.cancel_count, 1, "cancelled job was cancelled again on close")
 
-    # Closing fresh and completed callers is terminal even with no pending job.
+    # Closed callers reject new work without repeating cleanup in any start state.
     for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
-        for completed in (False, True):
+        for state in ("fresh", "completed", "pending"):
             transport, values = transport_type(), []
             caller = caller_type(transport, values.append)
             submit = getattr(caller, method)
-            if completed:
-                submit("complete")
+            if state != "fresh":
+                submit("work")
+            if state == "completed":
                 transport.jobs[-1].deliver("done")
             caller.close()
             caller.close()
+            if state == "pending":
+                case.assertEqual(transport.jobs[-1].cancel_count, 1)
             with case.assertRaises(RuntimeError):
                 submit("closed")
-            case.assertEqual(len(transport.jobs), int(completed))
-            if completed:
+            case.assertEqual(len(transport.jobs), int(state != "fresh"))
+            if state == "pending":
+                case.assertEqual(transport.jobs[-1].cancel_count, 1,
+                                 "rejected request cancelled closed work again")
+                transport.jobs[-1].deliver("late after rejection")
+                case.assertEqual(values, [])
+            if state == "completed":
                 case.assertEqual(transport.jobs[-1].cancel_count, 0,
                                  "completed job was cancelled on close")
                 transport.jobs[-1].deliver("duplicate after close")
@@ -485,8 +533,10 @@ class ArchitectureProbe(unittest.TestCase):
                          module_from_source(self.transport).Transport)
 
     def test_retained_history_is_benign(self):
-        probe_change(self, module_from_source(RETAIN_CANCELLED),
-                     module_from_source(self.transport).Transport)
+        for source in (RETAIN_CANCELLED, RETAIN_CLOSED_JOB):
+            with self.subTest(source=source):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
 
     def test_caller_registration_is_benign(self):
         probe_change(self, module_from_source(REGISTER_CALLERS),
@@ -496,6 +546,15 @@ class ArchitectureProbe(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, "second caller close cancelled first"):
             probe_change(self, module_from_source(BAD_SECOND_CLOSE),
                          module_from_source(self.transport).Transport)
+
+    def test_rejected_request_and_completion_do_not_cancel_other_work(self):
+        for source, message in (
+            (BAD_CLOSED_SUBMIT, "rejected request cancelled closed work again"),
+            (BAD_SAVE_COMPLETION, "autosave completion cancelled pending screen"),
+        ):
+            with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
 
     def test_pending_close_duplicate_and_reverse_instance_defects_are_detected(self):
         for source, message in (
