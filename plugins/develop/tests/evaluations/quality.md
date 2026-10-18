@@ -51,10 +51,14 @@ Body tracking applies to local `TestCase` instances in the loaded suite, includi
 local classes returned by `load_tests` in nested standard suites. It wraps the
 resolved instance callable, preserving static/class method binding, inherited
 methods, coroutine bodies and unittest skip/expected-failure markers.
+Standard `FunctionTestCase` leaves wrapping functions defined in the submitted
+module are tracked around the function body, separately from setup and teardown.
+External functions and custom callable objects in those leaves remain unverified.
 The helper correlates standard `unittest` assertion call sites and Python
 `assert` statements in the submitted source across variants, within the same test
-method. Calls in separate code objects, including same-line lambdas, remain
-distinct; their identity is correlated only across the unchanged submitted source.
+method or test function. Calls in separate code objects, including same-line
+lambdas, remain distinct; their identity is correlated only across the unchanged
+submitted source.
 A reported defect failure must come from an assertion site that passed on
 both controls; an unrelated assertion cannot substitute for a skipped detecting
 site. A body assertion before an in-body, subtest, teardown or cleanup skip remains

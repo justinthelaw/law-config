@@ -226,6 +226,11 @@ def track_suite(suite, module_name, stack):
     if isinstance(suite, unittest.BaseTestSuite):
         for test in suite:
             track_suite(test, module_name, stack)
+    elif (type(suite) is unittest.FunctionTestCase
+          and inspect.isfunction(suite._testFunc)
+          and suite._testFunc.__module__ == module_name):
+        stack.enter_context(patch.object(suite, "_testFunc",
+                                        track_body(suite._testFunc, suite)))
     elif isinstance(suite, unittest.TestCase) and type(suite).__module__ == module_name:
         name = suite._testMethodName
         # Instance replacement leaves static/class descriptors and inheritance
@@ -362,6 +367,76 @@ def load_tests(loader, tests, pattern):
         self.assertTrue(all(result.testsRun == 1 and not result.errors
                             for result in results.values()))
         self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_load_tests_function_cases_detect_boundary(self):
+        for assertion in ("assert shipping_fee(5000) == 0",
+                          "unittest.TestCase().assertEqual(shipping_fee(5000), 0)"):
+            for skip in (False, True):
+                source = """import unittest
+from shipping import shipping_fee
+def load_tests(loader, tests, pattern):
+    def boundary():
+        ASSERTION
+        SKIP
+    return unittest.TestSuite([unittest.TestSuite([
+        unittest.FunctionTestCase(boundary)])])
+""".replace("ASSERTION", assertion).replace(
+                    "SKIP", "raise unittest.SkipTest('after boundary')" if skip else "pass")
+                with self.subTest(assertion=assertion, skip=skip):
+                    accepted, results = assess(source, self.sound["shipping.py"])
+                    self.assertTrue(accepted)
+                    self.assertTrue(all(result.testsRun == 1 and not result.errors
+                                        for result in results.values()))
+                    self.assertEqual(len(results["defect"].failures), 1)
+                    for name in ("reference", "benign"):
+                        self.assertEqual(len(results[name].skipped), int(skip))
+                        self.assertEqual(results[name].wholly_skipped, 0)
+
+    def test_function_case_setup_cannot_certify_skipped_body(self):
+        source = """import unittest
+from shipping import shipping_fee
+def check_boundary():
+    assert shipping_fee(5000) == 0
+def setup():
+    if shipping_fee(5000) == 0:
+        check_boundary()
+        raise unittest.SkipTest('detecting body never runs on controls')
+def load_tests(loader, tests, pattern):
+    return unittest.TestSuite([unittest.FunctionTestCase(check_boundary, setUp=setup)])
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertFalse(accepted)
+        for name in ("reference", "benign"):
+            self.assertEqual(results[name].wholly_skipped, 1)
+            self.assertFalse(results[name].passed_assertions)
+        self.assertEqual(len(results["defect"].failures), 1)
+        self.assertTrue(results["defect"].failed_assertions)
+
+    def test_function_case_external_body_remains_unverified(self):
+        external = types.ModuleType("quality_external")
+
+        def external_boundary():
+            sys.modules["quality_case"].check_boundary()
+
+        external.boundary = external_boundary
+        source = """import unittest
+from quality_external import boundary
+from shipping import shipping_fee
+def check_boundary():
+    assert shipping_fee(5000) == 0
+def load_tests(loader, tests, pattern):
+    return unittest.TestSuite([unittest.FunctionTestCase(boundary)])
+"""
+        with patch.dict(sys.modules, {"quality_external": external}):
+            accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertFalse(accepted)
+        self.assertTrue(results["reference"].wasSuccessful())
+        self.assertTrue(results["benign"].wasSuccessful())
+        self.assertEqual(len(results["defect"].failures), 1)
+        self.assertTrue(all(result.testsRun == 1 and not result.errors
+                            and not result.passed_assertions
+                            and not result.failed_assertions
+                            for result in results.values()))
 
     def test_static_and_class_test_methods_preserve_binding(self):
         for decorator, argument in (("staticmethod", ""), ("classmethod", "cls")):
