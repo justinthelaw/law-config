@@ -268,6 +268,51 @@ class CoincidentMetadata(FinalizationMetadata):
     note = "9.99"
 
 
+class ReopenedCandidate(Store):
+    restored_path = None
+    observed_reopen = False
+    corrupt_read = False
+
+    def __init__(self, path):
+        super().__init__(path)
+        self.restored = str(path) == self.restored_path
+        if self.restored:
+            type(self).observed_reopen = True
+
+    @classmethod
+    def restore(cls, snapshot, destination):
+        Store.restore(snapshot, destination)
+        cls.restored_path = str(destination)
+
+    def read(self, protocol, key):
+        if self.restored and self.corrupt_read and protocol == 1:
+            return {"balance": "corrupted after reopen"}
+        return super().read(protocol, key)
+
+
+class MixedFinalPhase(Store):
+    finalized = False
+
+    def finalize(self):
+        super().finalize()
+        with self.db:
+            self.db.execute("UPDATE migration SET phase = 'mixed'")
+        self.finalized = True
+
+    def read(self, protocol, key):
+        if self.finalized:
+            if protocol != 2:
+                raise ValueError("unavailable")
+            return {"balance_minor": self.db.execute(
+                "SELECT minor FROM records WHERE id = ?", (key,)).fetchone()[0]}
+        return super().read(protocol, key)
+
+    def write(self, protocol, key, value):
+        if self.finalized:
+            raise ValueError("unavailable")
+        return super().write(protocol, key, value)
+
+
 class MetadataRejectedWrite(Store):
     mutation = "UPDATE migration SET checkpoint = 999"
 
@@ -508,10 +553,11 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(self.database_state(backup), expected)
         backup.close()
         store.finalize()
-        self.assert_finalized_records(store, [(key, minor) for key, _, minor in expected["records"]])
+        matches = self.assert_finalized_records(
+            store, [(key, minor) for key, _, minor in expected["records"]])
         store.close()
         kind.restore(snapshot, self.path)
-        recovered = self.open()
+        recovered = self.open(kind)
         self.assertEqual(self.database_state(recovered), expected)
         self.assertEqual([recovered.read(1, key)["balance"] for key, _ in RECORDS],
                          [raw for _, raw in RECORDS])
@@ -521,6 +567,8 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(self.database_state(recovered), expected)
         backup = self.open(path=snapshot)
         self.assertEqual(self.database_state(backup), expected)
+        if matches:
+            raise RetentionUnverified(matches)
 
     def test_old_and_new_connections_share_behavior(self):
         self.assert_coexistence()
@@ -589,9 +637,11 @@ class MigrationTests(unittest.TestCase):
         self.assert_incomplete_backfill()
 
     def assert_finalized_records(self, store, expected):
+        """Check definitive state and return retention matches for later reporting."""
         self.assertEqual(store.db.execute("SELECT id, minor FROM records ORDER BY id").fetchall(), expected)
         self.assertEqual([row[1] for row in store.db.execute("PRAGMA table_info(records)")],
                          ["id", "minor"])
+        self.assertEqual(store.db.execute("SELECT phase FROM migration").fetchall(), [("final",)])
         for key, minor in expected:
             self.assertEqual(store.read(2, key), {"balance_minor": minor})
         # Inspect logical main-database tables, including renamed archives.
@@ -606,8 +656,7 @@ class MigrationTests(unittest.TestCase):
                 for column, value in zip((item[0] for item in contents.description), row):
                     if isinstance(value, str) and value in original_text:
                         matches.append((table, column, value))
-        if matches:
-            raise RetentionUnverified(matches)
+        return matches
 
     def assert_final_phase(self, kind=Store):
         store = self.seeded(kind)
@@ -615,7 +664,7 @@ class MigrationTests(unittest.TestCase):
             pass
         expected = store.db.execute("SELECT id, minor FROM records ORDER BY id").fetchall()
         store.finalize()
-        self.assert_finalized_records(store, expected)
+        matches = self.assert_finalized_records(store, expected)
         before = self.database_state(store)
         with self.assertRaises(ValueError):
             store.read(1, 1)
@@ -625,6 +674,8 @@ class MigrationTests(unittest.TestCase):
                 store.write(protocol, 1, value)
             self.assertEqual(self.database_state(store), before)
         self.assertEqual(store.read(2, 1), {"balance_minor": 120})
+        if matches:
+            raise RetentionUnverified(matches)
 
     def test_final_phase_retires_old_protocol_and_freezes_writes(self):
         self.assert_final_phase()
@@ -719,6 +770,46 @@ class MigrationTests(unittest.TestCase):
         with self.assertRaises(RetentionUnverified) as outcome:
             self.assert_final_phase(CoincidentMetadata)
         self.assertEqual(outcome.exception.matches, [("metadata", "note", "9.99")])
+
+    def test_uncertain_retention_does_not_mask_final_phase_defects(self):
+        for defect in (FinalOldWrite, MutatingRetiredRead):
+            with self.subTest(defect=defect.__name__):
+                class Combined(CoincidentMetadata, defect):
+                    pass
+
+                self.path = Path(self.temp.name) / f"ambiguous-{defect.__name__}.sqlite"
+                with self.assertRaises(AssertionError):
+                    self.assert_final_phase(Combined)
+
+    def test_uncertain_retention_does_not_mask_restore_defect(self):
+        class Combined(CoincidentMetadata, PartialRecovery):
+            pass
+
+        with self.assertRaises(AssertionError):
+            self.assert_recovery(Combined)
+
+    def test_uncertain_retention_is_reported_after_successful_recovery(self):
+        with self.assertRaises(RetentionUnverified) as outcome:
+            self.assert_recovery(CoincidentMetadata)
+        self.assertEqual(outcome.exception.matches, [("metadata", "note", "9.99")])
+        recovered = self.open()
+        self.assertEqual(recovered.read(1, 1), {"balance": "001.20"})
+
+    def test_recovery_uses_candidate_after_reopen(self):
+        ReopenedCandidate.observed_reopen = False
+        self.assert_recovery(ReopenedCandidate)
+        self.assertTrue(ReopenedCandidate.observed_reopen)
+
+    def test_candidate_post_restore_read_defect_is_detected(self):
+        class CorruptedReopen(ReopenedCandidate):
+            corrupt_read = True
+
+        with self.assertRaises(AssertionError):
+            self.assert_recovery(CorruptedReopen)
+
+    def test_wrong_persisted_final_phase_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_final_phase(MixedFinalPhase)
 
     def test_rejected_write_metadata_seeds_are_detected(self):
         for index, statement in enumerate((
