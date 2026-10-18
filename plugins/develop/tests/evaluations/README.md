@@ -39,10 +39,14 @@ No command runner or network integration is included.
 ## Isolation and evidence
 
 Run each attempt in a fresh non-forked host context at the selected model/effort.
-The controller must exclusively own the destination parent during materialization;
-the helper rejects existing destinations, unsafe paths and observed symlinks but
-is not a sandbox against concurrent filesystem changes. A failed write may leave
-a partial root; use a new destination on retry. No existing files are overwritten.
+The controller must exclusively own the existing destination parent during
+materialization. The helper resolves trusted parent aliases, including macOS
+`/tmp` and `/var`, after rejecting unresolved `..` traversal. The destination
+itself must be absent and cannot be a symlink, including a dangling link. Unsafe
+input paths and observed links at or inside the new root remain prohibited.
+Parent ownership is the caller's obligation; these checks are not a sandbox
+against concurrent filesystem changes. A failed write may leave a partial root;
+use a new destination on retry. No existing files are overwritten.
 
 **Separate files alone cannot certify hidden graders.** The tested agent must not
 have filesystem, tool, retrieval or inherited-context access to the controller's
@@ -72,6 +76,8 @@ the evaluator-owned result ledger, outside public fixtures and materialized
 inputs. Check both digests against the supplied fixture and private grader before
 a trial; structural validation cannot authenticate claimed data. Paired trials
 must retain and compare grader hashes as well as fixture identities.
+Repeated attempts with the same fixture ID/revision must have identical fixture
+and grader hashes; conflicting identities invalidate the manifest.
 
 Declare all planned attempt IDs before execution. Every ID must have exactly one
 record: `completed`, `blocked` or `missing`. Append retries under new planned IDs;

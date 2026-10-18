@@ -9,6 +9,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "tests/evaluations"
@@ -117,18 +118,70 @@ class EvaluationContract(unittest.TestCase):
             preserved = destination / "allowed.txt" if destination.is_dir() else destination
             self.assertEqual(preserved.read_text(encoding="utf-8"), "preserve")
 
-    def test_symlink_destination_and_parent_are_rejected(self):
+    def make_directory_link(self, link, target):
+        try:
+            link.symlink_to(target, target_is_directory=True)
+        except (OSError, NotImplementedError) as exc:
+            self.skipTest(f"host cannot create symlinks: {exc}")
+
+    def test_trusted_existing_parent_alias_is_resolved(self):
         actual = self.root / "actual"
         actual.mkdir()
         link = self.root / "link"
-        try:
-            link.symlink_to(actual, target_is_directory=True)
-        except (OSError, NotImplementedError) as exc:
-            self.skipTest(f"host cannot create symlinks: {exc}")
-        for destination in (link, link / "new"):
+        self.make_directory_link(link, actual)
+        hashes = evaluation.materialize(self.fixture, link / "new")
+        for item in self.fixture["agent"]["inputs"]:
+            self.assertEqual((actual / "new" / item["path"]).read_bytes(),
+                             item["content"].encode("utf-8"))
+        self.assertEqual(set(hashes), {item["path"] for item in self.fixture["agent"]["inputs"]})
+
+    def test_symlink_destination_including_dangling_link_is_rejected(self):
+        actual = self.root / "actual"
+        actual.mkdir()
+        link = self.root / "link"
+        dangling = self.root / "dangling"
+        self.make_directory_link(link, actual)
+        self.make_directory_link(dangling, self.root / "absent")
+        for destination in (link, dangling):
             with self.subTest(destination=destination), self.assertRaises(ValueError):
                 evaluation.materialize(self.fixture, destination)
         self.assertEqual(list(actual.iterdir()), [])
+        self.assertFalse((self.root / "absent").exists())
+
+    def test_destination_parent_traversal_is_rejected_before_resolution(self):
+        (self.root / "existing").mkdir()
+        with self.assertRaises(ValueError):
+            evaluation.materialize(self.fixture, self.root / "existing/../escape")
+        self.assertFalse((self.root / "escape").exists())
+
+    def test_observed_link_inside_new_root_cannot_escape(self):
+        outside = self.root / "outside"
+        outside.mkdir()
+        destination = self.root.resolve() / "agent"
+        self.fixture["agent"]["inputs"] = [{"path": "escape/file.txt", "content": "data"}]
+        original_mkdir = Path.mkdir
+
+        def inject_link(path, *args, **kwargs):
+            original_mkdir(path, *args, **kwargs)
+            if path == destination:
+                self.make_directory_link(path / "escape", outside)
+
+        with mock.patch.object(Path, "mkdir", inject_link), self.assertRaises(ValueError):
+            evaluation.materialize(self.fixture, destination)
+        self.assertEqual(list(outside.iterdir()), [])
+
+    def test_repeated_fixture_identity_requires_consistent_inputs_and_grader(self):
+        for field in ("fixture", "grader_sha256"):
+            result = copy.deepcopy(self.result)
+            if field == "fixture":
+                result["planned_attempts"][1][field]["sha256"] = "a" * 64
+            else:
+                result["planned_attempts"][1][field] = "a" * 64
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                evaluation.validate_result(result)
+            # A distinct revision can legitimately use different inputs/criteria.
+            result["planned_attempts"][1]["fixture"]["revision"] = "2"
+            evaluation.validate_result(result)
 
     def test_input_text_is_data_never_executed(self):
         marker = self.root / "executed"

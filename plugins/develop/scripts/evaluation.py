@@ -101,6 +101,13 @@ def validate_result(result):
         raise ValueError("duplicate attempt_id")
     if set(planned) != set(attempts):
         raise ValueError("every planned attempt needs a completed, blocked or missing record")
+    identities = {}
+    for item in result["planned_attempts"]:
+        fixture = item["fixture"]
+        identity = (fixture["id"], fixture["revision"])
+        digests = (fixture["sha256"], item["grader_sha256"])
+        if identities.setdefault(identity, digests) != digests:
+            raise ValueError("conflicting fixture or grader hashes for one fixture identity")
     for attempt in result["attempts"]:
         for key in ("functional", "evaluator"):
             assessment = attempt[key]
@@ -125,14 +132,16 @@ def _no_symlinks(path):
 def materialize(fixture, destination):
     """Create a new root containing only declared inputs; return path -> SHA256.
 
-    The caller must own the parent exclusively, outside agent reach. Symlink
-    checks are not a sandbox against concurrent hostile filesystem mutation.
+    The caller must own the parent exclusively, outside agent reach. Resolve
+    trusted existing parent aliases, but reject links at or inside the new root.
+    These checks are not a sandbox against concurrent hostile filesystem mutation.
     A failed write can leave a partial root; no existing path is overwritten.
     """
     validate_fixture(fixture)
     destination = Path(destination).absolute()
     if ".." in destination.parts:
         raise ValueError("destination cannot contain parent traversal")
+    destination = destination.parent.resolve(strict=True) / destination.name
     _no_symlinks(destination)
     destination.mkdir(mode=0o700, parents=False, exist_ok=False)
     hashes = {}
