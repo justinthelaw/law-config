@@ -35,7 +35,8 @@ Additional seeded defects calibrate completed-job cancellation, autosave close
 interference, a stale callback first delivered after its replacement completes,
 and nonterminal idle close. The probe checks both fresh and completed callers.
 The existing peer sequences run with both APIs in either construction order.
-They also construct peers while existing work is pending or completed. For each
+They also construct peers while existing work is pending or completed, and after
+a peer closes while another caller remains pending. For each
 API, a three-request pending burst checks cancellation and duplicate stale
 delivery before completion.
 The open caller is reused after that burst, and a later-constructed peer must
