@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "native-codex-positive",
+  "revision": "1",
+  "scenario_ref": "tests/scenarios.md",
+  "agent": {
+    "prompt": "$develop: Inspect totals.txt in this selected checkout and report the sum, the selected scope and any validation limitations. This is a read-only task. Do not edit, commit, publish, install anything or change configuration.",
+    "inputs": [
+      {
+        "path": "totals.txt",
+        "content": "12\n-5\n9\n"
+      }
+    ]
+  }
+}

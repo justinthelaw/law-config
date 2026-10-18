@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "id": "native-codex-negative",
+  "revision": "1",
+  "scenario_ref": "tests/scenarios.md",
+  "agent": {
+    "prompt": "What is 2 + 2?",
+    "inputs": []
+  }
+}

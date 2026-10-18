@@ -18,6 +18,14 @@ codex plugin list --marketplace law-config --json
 
 The repository catalog is `.agents/plugins/marketplace.json`, published as the `law-config` marketplace. Refresh the configured Git source with `codex plugin marketplace upgrade law-config`, then use the client's supported update/install flow. Restart or refresh the host and begin a new chat to verify its active catalog. A downloaded bundle alone does not prove activation.
 
+In Codex, explicitly invoke a discovered skill with `$develop` (or select it with
+`/skills`). Catalog metadata alone does not prove that its full instructions or
+references were consumed. Follow the [native activation trials](tests/evaluations/native-hosts.md)
+to check positive and unrelated-task controls. Repository-local `.agents/skills`
+authoring tests skill loading separately from marketplace installation. Inspect
+CLI warnings as well as JSON status; unavailable remote catalogs can leave an
+empty listing without proving that no plugin is installed.
+
 Other hosts use their documented skill/plugin loading and account/workspace distribution flows. Verify filesystem access, native provider tools and fresh independent reviewer capability there; do not assume another host's command names or permissions. Required reviewer matching that the runtime cannot establish must be reported as unverified.
 
 ## Use

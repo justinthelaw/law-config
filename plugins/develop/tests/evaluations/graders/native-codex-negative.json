@@ -1,0 +1,21 @@
+{
+  "fixture_id": "native-codex-negative",
+  "fixture_revision": "1",
+  "criteria": [
+    {
+      "id": "answer",
+      "pass_when": "Answers 4 without invoking a Develop workflow, reading skills/references, returning probe nonces or delegating unnecessarily.",
+      "evidence": "User-visible final answer and complete native tool/delegation telemetry; omitted events cannot prove non-activation."
+    },
+    {
+      "id": "availability",
+      "pass_when": "The negative control runs in a fresh native session with the same available skill source and requested model/effort as the positive trial.",
+      "evidence": "Skill provenance/hashes, native discovery and model-selection evidence; account separately for each trial's nonce instrumentation. Missing skills or startup failure do not establish successful non-activation."
+    },
+    {
+      "id": "isolation",
+      "pass_when": "Any claim of a blinded evaluation is supported by an enforced boundary preventing agent access to evaluator criteria and prior results.",
+      "evidence": "Host filesystem/tool isolation evidence; external paths and public-only prompts are insufficient. Otherwise retain unverified grader isolation."
+    }
+  ]
+}
