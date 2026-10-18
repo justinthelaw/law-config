@@ -3,6 +3,7 @@
 import argparse
 import copy
 import json
+import math
 from pathlib import Path
 import sys
 
@@ -27,13 +28,19 @@ def _outcome(attempt):
     return "pass" if verdicts == ["pass", "pass"] else "incomplete"
 
 
+def _finite_cost(value):
+    if isinstance(value, float) and not math.isfinite(value):
+        raise ValueError("cost arithmetic exceeds finite numeric range")
+    return value
+
+
 def _costs(result):
     costs = {}
     for name in ("wall_seconds", "tokens", "usd"):
         values = [attempt["cost"][name] for attempt in result["attempts"]]
         known = [value for value in values if value is not None]
         costs[name] = {"known_attempts": len(known), "planned_attempts": len(values),
-                       "total": sum(known) if len(known) == len(values) else None}
+                       "total": _finite_cost(sum(known)) if len(known) == len(values) else None}
     return costs
 
 
@@ -69,13 +76,17 @@ def compare_results(baseline, candidate):
     incomplete = any(pair[side]["outcome"] == "incomplete"
                      for pair in pairs for side in ("baseline", "candidate"))
     candidate_failed = any(pair["candidate"]["outcome"] == "fail" for pair in pairs)
-    costs = {side: _costs(result) for side, result in
-             (("baseline", baseline), ("candidate", candidate))}
-    paired_plan = plans[0] == plans[1]
-    delta = {}
-    for name in costs["baseline"]:
-        before, after = [costs[side][name]["total"] for side in ("baseline", "candidate")]
-        delta[name] = after - before if paired_plan and before is not None and after is not None else None
+    try:
+        costs = {side: _costs(result) for side, result in
+                 (("baseline", baseline), ("candidate", candidate))}
+        paired_plan = plans[0] == plans[1]
+        delta = {}
+        for name in costs["baseline"]:
+            before, after = [costs[side][name]["total"] for side in ("baseline", "candidate")]
+            delta[name] = (_finite_cost(after - before)
+                           if paired_plan and before is not None and after is not None else None)
+    except OverflowError as exc:
+        raise ValueError("cost arithmetic exceeds finite numeric range") from exc
     return copy.deepcopy({
         "schema_version": 1,
         "status": "incomplete" if incomplete else "candidate_failed" if candidate_failed else "complete",
@@ -100,10 +111,11 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         report = compare_results(load_json(args.baseline), load_json(args.candidate))
+        output = json.dumps(report, sort_keys=True, indent=2, allow_nan=False)
     except (OSError, ValueError) as exc:
         print(json.dumps({"status": "invalid", "error": str(exc)}, sort_keys=True))
         return 2
-    print(json.dumps(report, sort_keys=True, indent=2))
+    print(output)
     return {"complete": 0, "candidate_failed": 1, "incomplete": 2}[report["status"]]
 
 

@@ -57,8 +57,8 @@ def assess(source, reference):
     """Accept only useful runs on both controls and assertion detection of the bug."""
     results = {name: run_suite(source, implementation)
                for name, implementation in {"reference": reference, **VARIANTS}.items()}
-    complete = all(result.testsRun > len(result.skipped) and not result.errors
-                   and not result.expectedFailures and not result.unexpectedSuccesses
+    complete = all(result.testsRun > len(result.skipped) + len(result.expectedFailures)
+                   and not result.errors and not result.unexpectedSuccesses
                    for result in results.values())
     accepted = (complete and results["reference"].wasSuccessful()
                 and results["benign"].wasSuccessful() and bool(results["defect"].failures))
@@ -138,6 +138,41 @@ class OptionalTests(unittest.TestCase):
             self.assertEqual(result.testsRun, 3)
             self.assertEqual(len(result.skipped), 1)
         self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_unrelated_expected_failure_preserves_boundary_evidence(self):
+        suite = self.sound["test_shipping.py"] + """
+class OptionalTests(unittest.TestCase):
+    @unittest.expectedFailure
+    def test_known_unrelated_bug(self):
+        self.fail("known unrelated behavior")
+"""
+        accepted, results = assess(suite, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+        self.assertTrue(all(len(result.expectedFailures) == 1 for result in results.values()))
+        self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_expected_failure_only_suite_is_incomplete(self):
+        suite = """import unittest
+class Tests(unittest.TestCase):
+    @unittest.expectedFailure
+    def test_expected(self):
+        self.fail("expected")
+"""
+        accepted, results = assess(suite, self.sound["shipping.py"])
+        self.assertFalse(accepted)
+        self.assertTrue(all(result.testsRun == len(result.expectedFailures)
+                            for result in results.values()))
+
+    def test_unexpected_success_is_not_sound_reference_evidence(self):
+        suite = self.sound["test_shipping.py"] + """
+class OptionalTests(unittest.TestCase):
+    @unittest.expectedFailure
+    def test_unexpectedly_passes(self):
+        self.assertTrue(True)
+"""
+        accepted, results = assess(suite, self.sound["shipping.py"])
+        self.assertFalse(accepted)
+        self.assertEqual(len(results["reference"].unexpectedSuccesses), 1)
 
     def test_empty_suite_is_incomplete(self):
         accepted, results = assess("", self.sound["shipping.py"])
