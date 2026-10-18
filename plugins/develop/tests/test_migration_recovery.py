@@ -191,6 +191,14 @@ class AtomicMigrationStep(SplitMigrationStep):
     split_commit = False
 
 
+class IncompleteSplitWrite(SplitWrite):
+    def write(self, protocol, key, value):
+        if self.db.execute("SELECT count(*) FROM records WHERE id > "
+                           "(SELECT checkpoint FROM migration)").fetchone()[0]:
+            return super().write(protocol, key, value)
+        return Store.write(self, protocol, key, value)
+
+
 class AtomicColumnWrites(Store):
     """Benign control: two statements are atomic inside one transaction."""
 
@@ -421,6 +429,39 @@ class SeedMetadataIndex(Store):
             self.db.execute("INSERT INTO metadata VALUES ('complete')")
 
 
+class AuxiliaryRows(SeedMetadataIndex):
+    def seed(self, records):
+        super().seed(records)
+        with self.db:
+            self.db.execute('CREATE TABLE "quoted""metadata" (value)')
+            self.db.executemany('INSERT INTO "quoted""metadata" VALUES (?)',
+                                [(None,), ("unrelated",), (7,), (b"bytes",), (7,)])
+
+
+class MutatingAuxiliary(SeedMetadataIndex):
+    transition = "completed"
+
+    def mutate(self):
+        with self.db:
+            self.db.execute("UPDATE metadata SET note = note || '!'")
+
+    def migrate_step(self, interrupt=False):
+        try:
+            result = super().migrate_step(interrupt)
+        except Interrupted:
+            if self.transition == "interrupted":
+                self.mutate()
+            raise
+        if self.transition == ("step" if result else "completed"):
+            self.mutate()
+        return result
+
+    def write(self, protocol, key, value):
+        super().write(protocol, key, value)
+        if self.transition == "write":
+            self.mutate()
+
+
 class ConsecutiveOnly(Store):
     def migrate_step(self, interrupt=False):
         if self.db.execute("SELECT id FROM records WHERE id = "
@@ -491,6 +532,18 @@ class OptimisticBackfill(Store):
                 return True
 
 
+class ConflictCollateral(OptimisticBackfill):
+    mutation = "UPDATE records SET raw = '0.00', minor = 0 WHERE id = 2"
+
+    def migrate_step(self, interrupt=False):
+        before = self.db.execute("SELECT raw FROM records WHERE id = 1").fetchone()
+        result = super().migrate_step(interrupt)
+        if self.db.execute("SELECT raw FROM records WHERE id = 1").fetchone() != before:
+            with self.db:
+                self.db.execute(self.mutation)
+        return result
+
+
 class MigrationTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -538,11 +591,9 @@ class MigrationTests(unittest.TestCase):
         after = self.database_state(store)
         if pending:
             self.assertIs(result, True)
-            self.assertEqual(after["records"], expected)
-            self.assertEqual(after["migration"], [(checkpoint, phase)])
         else:
             self.assertIs(result, False)
-            self.assertEqual(after, before)
+        self.assertEqual(after, before | {"records": expected, "migration": [(checkpoint, phase)]})
         return result
 
     def finish_migration(self, store):
@@ -553,10 +604,12 @@ class MigrationTests(unittest.TestCase):
         self.assertIs(self.assert_migration_step(store), False)
 
     def assert_write_changes_only_target(self, store, protocol, key, value, expected):
-        before = store.db.execute("SELECT * FROM records ORDER BY id").fetchall()
-        store.write(protocol, key, value)
-        self.assertEqual(store.db.execute("SELECT * FROM records ORDER BY id").fetchall(),
-                         [(key, *expected) if row[0] == key else row for row in before])
+        before = self.database_state(store)
+        records = [(key, *expected) if row[0] == key else row for row in before["records"]]
+        self.assert_sampled_transition(
+            store, lambda: store.write(protocol, key, value),
+            "SELECT * FROM records ORDER BY id", records)
+        self.assertEqual(self.database_state(store), before | {"records": records})
 
     def assert_coexistence(self, kind=Store):
         old = self.seeded(kind)
@@ -587,6 +640,7 @@ class MigrationTests(unittest.TestCase):
         new = self.open(kind)
         old.db.execute("PRAGMA busy_timeout = 0")
         outcomes = []
+        before = self.database_state(new)
 
         def interleave(statement):
             # The trace fires before SQLite executes the backfill UPDATE, after
@@ -609,12 +663,17 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(new.read(2, 1), {"balance_minor": int(Decimal(raw) * 100)})
         if isinstance(outcomes[0], sqlite3.OperationalError):
             self.assert_database_busy(outcomes[0])
+            permitted_raw = before["records"][0][1]
         else:
             self.assertEqual(outcomes, ["written"])
             self.assertEqual(old.read(1, 1), {"balance": "002.35"})
             self.assertEqual(new.read(2, 1), {"balance_minor": 235})
+            permitted_raw = "002.35"
+        records = [(1, permitted_raw, int(Decimal(permitted_raw) * 100)), *before["records"][1:]]
+        self.assertEqual(self.database_state(new),
+                         before | {"records": records, "migration": [(1, "mixed")]})
         # Both locking and compare-and-retry permit this subsequent write.
-        old.write(1, 1, "002.35")
+        self.assert_write_changes_only_target(old, 1, 1, "002.35", ("002.35", 235))
         self.assertEqual(old.read(1, 1), {"balance": "002.35"})
         self.assertEqual(new.read(2, 1), {"balance_minor": 235})
         self.assertEqual(new.db.execute("SELECT checkpoint FROM migration").fetchone(), (1,))
@@ -629,18 +688,29 @@ class MigrationTests(unittest.TestCase):
 
     @staticmethod
     def database_state(store):
+        auxiliary = {}
+        for (table,) in store.db.execute("SELECT name FROM sqlite_master WHERE type = 'table'").fetchall():
+            if table in ("records", "migration") or table.startswith("sqlite_"):
+                continue
+            quoted = '"' + table.replace('"', '""') + '"'
+            # SQLite scalar rows may mix NULL, text, numbers and blobs. repr
+            # gives a stable ordering without comparing incompatible types.
+            auxiliary[table] = sorted(store.db.execute(f"SELECT * FROM {quoted}").fetchall(), key=repr)
         return {
             "records": store.db.execute("SELECT * FROM records ORDER BY id").fetchall(),
             "migration": store.db.execute("SELECT * FROM migration").fetchall(),
             "schema": store.db.execute(
                 "SELECT type, name, tbl_name, sql FROM sqlite_master ORDER BY type, name").fetchall(),
+            "auxiliary": auxiliary,
         }
 
     def assert_restart(self, kind=Store):
         store = self.seeded(kind)
         self.assertIs(self.assert_migration_step(store), True)
+        durable = self.database_state(store)
         store.close()
         store = self.open(kind)
+        self.assertEqual(self.database_state(store), durable)
         expected = [(1, "001.20", 120), (2, "-0.50", None), (3, "9.99", None)]
         self.assertEqual(store.db.execute("SELECT checkpoint FROM migration").fetchone(), (1,))
         self.assertEqual(store.db.execute("SELECT * FROM records ORDER BY id").fetchall(), expected)
@@ -663,6 +733,7 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(checkpoints, [])
         store.close()
         resumed = self.open(kind)
+        self.assertEqual(self.database_state(resumed), durable)
         self.assertEqual(resumed.db.execute("SELECT checkpoint FROM migration").fetchone(), (1,))
         self.assertEqual(resumed.db.execute("SELECT * FROM records ORDER BY id").fetchall(), expected)
         for index, minor in ((1, -50), (2, 999)):
@@ -671,9 +742,10 @@ class MigrationTests(unittest.TestCase):
             expected[index] = (key, raw, minor)
             self.assertEqual(resumed.db.execute("SELECT checkpoint FROM migration").fetchone(), (key,))
             self.assertEqual(resumed.db.execute("SELECT * FROM records ORDER BY id").fetchall(), expected)
+        before = self.database_state(resumed)
         resumed.close()
         again = self.open(kind)
-        before = self.database_state(again)
+        self.assertEqual(self.database_state(again), before)
         self.assertIs(self.assert_migration_step(again), False)
         self.assertEqual(self.database_state(again), before)
 
@@ -712,9 +784,7 @@ class MigrationTests(unittest.TestCase):
         writer = self.seeded(kind)
         self.finish_migration(writer)
         for protocol, value, expected in ((1, "002.35", ("002.35", 235)), (2, -75, ("-0.75", -75))):
-            self.assert_sampled_transition(
-                writer, lambda: self.assert_write_changes_only_target(writer, protocol, 1, value, expected),
-                "SELECT raw, minor FROM records WHERE id = 1", [expected])
+            self.assert_write_changes_only_target(writer, protocol, 1, value, expected)
 
     def assert_recovery(self, kind=Store):
         store = self.seeded(kind)
@@ -802,7 +872,7 @@ class MigrationTests(unittest.TestCase):
         store = self.seeded(kind)
         if populate:
             for key, raw in RECORDS:
-                store.write(1, key, raw)
+                self.assert_write_changes_only_target(store, 1, key, raw, (raw, int(Decimal(raw) * 100)))
         for _ in range(steps):
             self.assertIs(self.assert_migration_step(store), True)
         before = self.database_state(store)
@@ -910,6 +980,38 @@ class MigrationTests(unittest.TestCase):
 
     def test_atomic_multistatement_writes_are_accepted(self):
         self.assert_sampled_write_atomicity(AtomicColumnWrites)
+        self.path = Path(self.temp.name) / "atomic-mixed-write.sqlite"
+        self.assert_coexistence(AtomicColumnWrites)
+
+    def test_incomplete_split_write_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_coexistence(IncompleteSplitWrite)
+
+    def test_conflict_collateral_changes_are_detected(self):
+        for index, statement in enumerate((ConflictCollateral.mutation,
+                                           "CREATE TABLE unexpected (note TEXT)")):
+            with self.subTest(mutation=statement):
+                class CorruptRetry(ConflictCollateral):
+                    mutation = statement
+
+                self.path = Path(self.temp.name) / f"collateral-retry-{index}.sqlite"
+                with self.assertRaises(AssertionError):
+                    self.assert_concurrent_write(CorruptRetry)
+
+    def test_auxiliary_mutations_are_detected(self):
+        for transition in ("step", "completed", "interrupted", "write"):
+            with self.subTest(transition=transition):
+                class CorruptMetadata(MutatingAuxiliary):
+                    pass
+
+                CorruptMetadata.transition = transition
+                self.path = Path(self.temp.name) / f"auxiliary-{transition}.sqlite"
+                check = self.assert_coexistence if transition == "write" else self.assert_restart
+                with self.assertRaises(AssertionError):
+                    check(CorruptMetadata)
+
+    def test_auxiliary_rows_are_preserved(self):
+        self.assert_recovery(AuxiliaryRows)
 
     def test_split_migration_commit_is_detected(self):
         for name, check in (("coexistence", self.assert_coexistence),

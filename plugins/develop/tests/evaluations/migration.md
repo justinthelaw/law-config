@@ -42,7 +42,11 @@ indexes are permitted. Restore checks
 compare all records, migration metadata and schema with the snapshot, then read
 both protocols and resume completed migration. Rejected writes, unsupported and retired reads
 and permitted finalized reads must preserve records, migration metadata and
-schema. Final-phase behavior is checked after closing and reopening the candidate,
+schema. State snapshots also preserve the contents of permitted logical auxiliary
+tables, including across interrupted/repeated work and snapshot restoration.
+Successful steps and writes compare that full state while allowing only their
+specified row/checkpoint changes; the overlap probe allows only the known
+concurrent write and row-1 migration. Final-phase behavior is checked after closing and reopening the candidate,
 so retired reads and frozen writes must follow persisted state. Migration-step
 results must be the booleans `True` and `False`, not merely truthy or falsy values.
 For the finite fixtures, each successful step must transform only the next
@@ -92,6 +96,7 @@ each remaining step and unchanged completion. An interrupted step may issue
 multiple updates to its next row, but must not touch another row or the
 checkpoint before the controlled exception.
 
+The shared successful-write assertion samples writes during and after backfill.
 Write and migration-step checks share a second-connection sampler at statements
 traced on `writer.db`, plus an observation after the operation returns. Migration
 samples read records and checkpoint together in one SQLite snapshot; only the
@@ -100,16 +105,17 @@ commit on this observed path is rejected even when interruption rollback works.
 Multiple statements in one transaction and optimistic compare-and-retry remain
 accepted.
 
-The overlapping-write probe checks writer consistency, not physical transaction
-membership on every retry path. Its concurrent write already updates both
-representations; a retry can write an unchanged minor value. Splitting that
-redundant update from its checkpoint commit produces the same visible states as
-an atomic retry. Value sampling cannot distinguish them, and the legitimate
-concurrent write must not be rejected as a partial migration. Before assigning
-an atomicity verdict for this path, inspect the candidate's transaction
-boundaries or obtain instrumentation that establishes them. Without that
-evidence, physical retry atomicity is **unverified**, even when the functional
-checks pass; the public commit-together requirement remains unchanged.
+These samples check visible consistency at the observed points, not physical
+transaction membership. This limit applies to every value-preserving or redundant
+update: already-consistent backfill rows, same-value protocol writes and retries
+after an overlapping write. Splitting an unchanged update from the remaining
+commit can produce the same visible states as one atomic transaction. Value
+sampling cannot distinguish them, and a legitimate concurrent write must not be
+rejected as a partial migration. Before assigning a physical atomicity verdict,
+inspect the candidate's transaction boundaries or obtain instrumentation that
+establishes them. Without that evidence, physical atomicity is **unverified**,
+even when the functional checks pass; the public atomic-write and commit-together
+requirements remain unchanged.
 
 An implementation that commits through auxiliary connections can pass these
 samples despite a partial transition. Before drawing a candidate verdict,
