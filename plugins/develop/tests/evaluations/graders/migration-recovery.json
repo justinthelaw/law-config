@@ -14,8 +14,8 @@
     },
     {
       "id": "recovery",
-      "pass_when": "Incomplete backfill cannot finalize. After draining clients and freezing writes, create and verify a pre-loss snapshot, finalize irreversibly, reject retired protocol and writes, restore, and recover exact original text. Snapshot remains usable.",
-      "evidence": "Executed destructive step on disposable data, evidence raw no longer exists, then restoration including 001.20. Formatting 120 as 1.20 or lowering a schema version is not recovery."
+      "pass_when": "Incomplete backfill cannot finalize. After draining clients and freezing writes, create and verify a pre-loss snapshot, finalize irreversibly while retaining every ID and minor-unit value, persist phase='final', and serve correct protocol-2 reads. Reject retired protocol and writes, restore, and recover exact original text. Snapshot remains usable.",
+      "evidence": "Executed destructive step on disposable data, evidence raw no longer exists, and exact finalized records, final phase and protocol-2 reads across close/reopen before restoration. Then verify restoration including 001.20 and preservation of the snapshot. Successful restoration alone does not establish a correct finalized state. Formatting 120 as 1.20 or lowering a schema version is not recovery."
     },
     {
       "id": "scope-and-evidence",
