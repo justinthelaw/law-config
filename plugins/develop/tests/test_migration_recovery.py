@@ -6,6 +6,7 @@ from pathlib import Path
 import sqlite3
 import tempfile
 import unittest
+from unittest import mock
 
 from evaluations.migration_store import Interrupted, Store
 
@@ -839,14 +840,15 @@ class VolatileFinalize(Store):
 class KeyUnsupported(Store):
     operation = "read"
     unsupported_key = 2
+    unsupported_protocol = 3
 
     def read(self, protocol, key):
-        if self.operation == "read" and protocol == 3 and key == self.unsupported_key:
+        if self.operation == "read" and protocol == self.unsupported_protocol and key == self.unsupported_key:
             return super().read(2, key)
         return super().read(protocol, key)
 
     def write(self, protocol, key, value):
-        if self.operation == "write" and protocol == 3 and key == self.unsupported_key:
+        if self.operation == "write" and protocol == self.unsupported_protocol and key == self.unsupported_key:
             return super().write(1, key, value)
         return super().write(protocol, key, value)
 
@@ -949,6 +951,9 @@ class TransientRejectedWrite(Store):
         if (protocol != self.rejected_protocol or self.db.execute(
                 "SELECT phase FROM migration").fetchone() != (self.rejected_phase,)):
             return super().write(protocol, key, value)
+        self.change_then_reject(key)
+
+    def change_then_reject(self, key):
         previous = self.db.execute("SELECT minor FROM records WHERE id = ?", (key,)).fetchone()[0]
         with self.db:
             self.db.execute("UPDATE records SET minor = 9999 WHERE id = ?", (key,))
@@ -958,6 +963,42 @@ class TransientRejectedWrite(Store):
             if self.commit_intermediate:
                 self.db.commit()
             raise ValueError("write rejected after temporary change")
+
+
+class TransientRejectedRead(TransientRejectedWrite):
+    def read(self, protocol, key):
+        if (protocol == self.rejected_protocol and self.db.execute(
+                "SELECT phase FROM migration").fetchone() == (self.rejected_phase,)):
+            self.change_then_reject(key)
+        return super().read(protocol, key)
+
+    def write(self, protocol, key, value):
+        return Store.write(self, protocol, key, value)
+
+
+class PendingRowRead(Store):
+    wrong_protocol = 1
+    wrong_key = 3
+    wrong_checkpoint = 2
+
+    def read(self, protocol, key):
+        result = super().read(protocol, key)
+        if (protocol == self.wrong_protocol and key == self.wrong_key
+                and self.db.execute("SELECT checkpoint FROM migration").fetchone() == (self.wrong_checkpoint,)):
+            return {"balance": "wrong"} if protocol == 1 else {"balance_minor": 99999}
+        return result
+
+
+class PopulatedInterruption(Store):
+    def migrate_step(self, interrupt=False):
+        row = self.db.execute("SELECT id, minor FROM records WHERE id > "
+                              "(SELECT checkpoint FROM migration) ORDER BY id LIMIT 1").fetchone()
+        if interrupt and row is not None and row[1] is not None:
+            with self.db:
+                self.db.execute("UPDATE records SET minor = 9999 WHERE id = ?", (row[0],))
+                self.db.execute("UPDATE migration SET checkpoint = ?", (row[0],))
+            raise Interrupted("populated row committed before interruption")
+        return super().migrate_step(interrupt)
 
 
 class MigrationTests(unittest.TestCase):
@@ -985,6 +1026,7 @@ class MigrationTests(unittest.TestCase):
             connection.execute("SELECT 1")
 
     def seeded(self, kind=Store, records=None):
+        self.assertTrue(issubclass(Interrupted, RuntimeError))
         store = self.open(kind)
         records = RECORDS if records is None else records
         store.seed(records)
@@ -1053,9 +1095,7 @@ class MigrationTests(unittest.TestCase):
     def assert_coexistence(self, kind=Store):
         old = self.seeded(kind)
         new = self.open(kind)
-        self.assertEqual(self.read_unchanged(old, 1, 1), {"balance": "001.20"})
-        self.assertEqual(self.read_unchanged(new, 2, 1), {"balance_minor": 120})
-        self.assertEqual(self.read_unchanged(new, 2, 2), {"balance_minor": -50})
+        self.assert_pending_reads(old, new)
         self.assert_unsupported_protocol(new)
         self.assertIs(self.assert_migration_step(new), True)
         self.assert_write_changes_only_target(old, 1, 3, "009.99", ("009.99", 999))
@@ -1065,6 +1105,7 @@ class MigrationTests(unittest.TestCase):
         self.assert_write_changes_only_target(new, 2, 2, -75, ("-0.75", -75))
         self.assertEqual(self.read_unchanged(old, 1, 2), {"balance": "-0.75"})
         for _ in range(len(RECORDS) - 1):
+            self.assert_pending_reads(old, new)
             self.assert_unsupported_protocol(new)
             self.assertIs(self.assert_migration_step(new), True)
         self.assert_completed_migration(new)
@@ -1074,23 +1115,31 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(self.read_unchanged(old, 1, 1), {"balance": "002.35"})
         self.assertEqual(self.read_unchanged(new, 2, 1), {"balance_minor": 235})
 
-    def assert_rejected_write(self, store, protocol, key, value):
+    def assert_pending_reads(self, old, new):
+        state = self.database_state(new)
+        checkpoint, _ = state["migration"][0]
+        for key, raw, _ in state["records"]:
+            if key > checkpoint:
+                self.assertEqual(self.read_unchanged(old, 1, key), {"balance": raw})
+                self.assertEqual(self.read_unchanged(new, 2, key),
+                                 {"balance_minor": int(Decimal(raw) * 100)})
+
+    def assert_rejected_operation(self, store, operation):
         before = self.database_state(store)
 
         def reject():
             with self.assertRaises(ValueError):
-                store.write(protocol, key, value)
+                operation()
 
         self.assert_sampled_transition(store, reject, (before,))
         self.assertEqual(self.database_state(store), before)
 
     def assert_unsupported_protocol(self, store):
-        before = self.database_state(store)
-        for key, _ in RECORDS:
-            self.assert_rejected_write(store, 3, key, "99.00")
-            with self.assertRaises(ValueError):
-                self.read_unchanged(store, 3, key)
-            self.assertEqual(self.database_state(store), before)
+        # Two representative unsupported identifiers, not exhaustive protocol coverage.
+        for protocol in (3, 4):
+            for key, _ in RECORDS:
+                self.assert_rejected_operation(store, lambda: store.write(protocol, key, "99.00"))
+                self.assert_rejected_operation(store, lambda: store.read(protocol, key))
 
     def assert_concurrent_write(self, kind=Store, old_kind=None):
         original_path = self.path
@@ -1181,8 +1230,21 @@ class MigrationTests(unittest.TestCase):
         }
 
     def assert_restart(self, kind=Store):
+        original_path = self.path
+        try:
+            for protocol in (None, 1, 2):
+                self.path = original_path.with_name(f"{original_path.stem}-restart-{protocol}.sqlite")
+                self.assert_restart_case(kind, protocol)
+        finally:
+            self.path = original_path
+
+    def assert_restart_case(self, kind, protocol):
         store = self.seeded(kind)
         for key, raw in sorted(RECORDS):
+            if protocol is not None:
+                value, pair = ("001.15", ("001.15", 115)) if protocol == 1 else (-75, ("-0.75", -75))
+                self.assert_write_changes_only_target(store, protocol, key, value, pair)
+                raw = pair[0]
             durable = self.database_state(store)
             self.assert_closed(store)
             store = self.open(kind)
@@ -1502,11 +1564,9 @@ class MigrationTests(unittest.TestCase):
         self.assert_unsupported_protocol(store)
         before = self.database_state(store)
         for key, minor in expected:
-            with self.assertRaises(ValueError):
-                self.read_unchanged(store, 1, key)
-            self.assertEqual(self.database_state(store), before)
+            self.assert_rejected_operation(store, lambda: store.read(1, key))
             for protocol, value in ((1, "9.99"), (2, 999)):
-                self.assert_rejected_write(store, protocol, key, value)
+                self.assert_rejected_operation(store, lambda: store.write(protocol, key, value))
             self.assertEqual(self.read_unchanged(store, 2, key), {"balance_minor": minor})
             self.assertEqual(self.database_state(store), before)
 
@@ -2095,6 +2155,76 @@ class MigrationTests(unittest.TestCase):
                             check(TemporaryWrite)
                     else:
                         check(TemporaryWrite)
+
+    def test_pending_reads_cover_each_seeded_checkpoint_and_protocol(self):
+        for checkpoint in range(len(RECORDS)):
+            for key, _ in RECORDS:
+                if key <= checkpoint:
+                    continue
+                for protocol in (1, 2):
+                    with self.subTest(checkpoint=checkpoint, key=key, protocol=protocol):
+                        class WrongRead(PendingRowRead):
+                            wrong_checkpoint = checkpoint
+                            wrong_key = key
+                            wrong_protocol = protocol
+
+                        self.path = Path(self.temp.name) / f"pending-read-{checkpoint}-{key}-{protocol}.sqlite"
+                        with self.assertRaises(AssertionError):
+                            self.assert_coexistence(WrongRead)
+
+    def test_rejected_read_samples_distinguish_commits_from_rollback(self):
+        for phase, protocol in (("mixed", 3), ("final", 3), ("final", 1)):
+            for commit in (False, True):
+                with self.subTest(phase=phase, protocol=protocol, commit=commit):
+                    class TemporaryRead(TransientRejectedRead):
+                        rejected_phase = phase
+                        rejected_protocol = protocol
+                        commit_intermediate = commit
+
+                    self.path = Path(self.temp.name) / f"rejected-read-{phase}-{protocol}-{commit}.sqlite"
+                    check = self.assert_coexistence if phase == "mixed" else self.assert_final_phase
+                    if commit:
+                        with self.assertRaises(AssertionError):
+                            check(TemporaryRead)
+                    else:
+                        check(TemporaryRead)
+
+    def test_second_unsupported_protocol_is_rejected(self):
+        for operation in ("read", "write"):
+            with self.subTest(operation=operation):
+                class UnsupportedFour(KeyUnsupported):
+                    unsupported_protocol = 4
+
+                UnsupportedFour.operation = operation
+                self.path = Path(self.temp.name) / f"unsupported-four-{operation}.sqlite"
+                with self.assertRaises(AssertionError):
+                    self.assert_coexistence(UnsupportedFour)
+
+    def test_populated_pending_row_interruption_is_checked(self):
+        with self.assertRaises(AssertionError):
+            self.assert_restart(PopulatedInterruption)
+
+    def test_interrupted_export_is_a_runtime_error(self):
+        original = Interrupted
+        for base in (Exception, RuntimeError):
+            with self.subTest(base=base.__name__):
+                class ExportedError(base):
+                    pass
+
+                class AlternateInterruption(Store):
+                    def migrate_step(self, interrupt=False):
+                        try:
+                            return super().migrate_step(interrupt)
+                        except original as error:
+                            raise ExportedError(str(error)) from error
+
+                self.path = Path(self.temp.name) / f"interrupted-export-{base.__name__}.sqlite"
+                with mock.patch(f"{__name__}.Interrupted", ExportedError):
+                    if base is Exception:
+                        with self.assertRaises(AssertionError):
+                            self.assert_restart(AlternateInterruption)
+                    else:
+                        self.assert_restart(AlternateInterruption)
 
     def test_fixture_and_private_grader_pairs(self):
         fixtures = sorted((ROOT / "fixtures").glob("migration-*.json"))

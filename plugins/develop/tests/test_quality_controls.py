@@ -250,30 +250,39 @@ def track_body(method, test, result):
     return tracked
 
 
-def track_suite(suite, module_name, stack, result, path=()):
-    """Include local cases returned by load_tests, preserving method binding."""
+def body_identity(test, method=None):
+    """Source-code membership defines locality, not mutable display metadata."""
+    if type(test) is unittest.FunctionTestCase and inspect.isfunction(test._testFunc):
+        name, method = "_testFunc", test._testFunc
+    elif isinstance(test, unittest.TestCase):
+        name = test._testMethodName
+        if method is None:
+            method = getattr(test, name)
+    else:
+        return None
+    origin = SOURCE_CODE_SITES.get().get(id(getattr(method, "__code__", None)))
+    return (name, origin) if origin is not None else None
+
+
+def observe_invocation(invoke, result):
+    @wraps(invoke)
+    def observed(test, method):
+        if (result.active_test is test and result.entry_id is not None
+                and body_identity(test, method) == result.entry_id[1:]):
+            method = track_body(method, test, result)
+        return invoke(test, method)
+    return observed
+
+
+def track_suite(suite, result, path=()):
+    """Register local bodies in the loaded suite without changing its cases."""
     if isinstance(suite, unittest.BaseTestSuite):
         for index, test in enumerate(suite):
-            track_suite(test, module_name, stack, result, path + (index,))
+            track_suite(test, result, path + (index,))
         return
-    entries = result.entries
-    if id(suite) in entries:
-        # Reused case objects need distinct entry identities, one body wrapper.
-        entries[id(suite)].append((path, *entries[id(suite)][0][1:]))
-        return
-    if (type(suite) is unittest.FunctionTestCase
-          and inspect.isfunction(suite._testFunc)
-          and suite._testFunc.__module__ == module_name):
-        name = "_testFunc"
-    elif isinstance(suite, unittest.TestCase) and type(suite).__module__ == module_name:
-        name = suite._testMethodName
-    else:
-        return
-    method = getattr(suite, name)
-    origin = SOURCE_CODE_SITES.get().get(id(getattr(method, "__code__", None)))
-    entries[id(suite)] = [(path, name, origin)]
-    # Instance replacement preserves descriptors, coroutines and unittest flags.
-    stack.enter_context(patch.object(suite, name, track_body(method, suite, result)))
+    identity = body_identity(suite)
+    if identity is not None:
+        result.entries.setdefault(id(suite), []).append((path, *identity))
 
 
 def run_suite(source, implementation, test_name=None):
@@ -287,6 +296,11 @@ def run_suite(source, implementation, test_name=None):
         stack.enter_context(patch.dict(sys.modules, {"shipping": shipping,
                                                     "quality_case": tests,
                                                     "test_shipping": tests}))
+        # Observe the standard invocation owners, never replace submitted methods.
+        # The async owner must enter tracking inside the coroutine's own context.
+        for owner in (unittest.TestCase, unittest.IsolatedAsyncioTestCase):
+            stack.enter_context(patch.object(owner, "_callTestMethod",
+                                            observe_invocation(owner._callTestMethod, result)))
         # Patch the standard owner so self, super and direct base calls share
         # observation, including aliases bound while the source module loads.
         assertion_ids = {}
@@ -317,7 +331,7 @@ def run_suite(source, implementation, test_name=None):
             if not isinstance(suite, (unittest.BaseTestSuite, unittest.TestCase)):
                 raise TypeError("test loader must return a unittest suite or case")
             phase = "suite tracking"
-            track_suite(suite, tests.__name__, stack, result)
+            track_suite(suite, result)
             phase = "suite execution"
             return runner.run(suite)
         except Exception as error:
@@ -409,6 +423,93 @@ class QualityControls(unittest.TestCase):
         self.assertEqual(results["defect"].testsRun, 2)
         self.assertEqual(len(results["defect"].failures), 1)
         self.assertEqual(results["defect"].errors, [])
+
+    def test_cases_rejecting_body_replacement_preserve_assertions(self):
+        for asynchronous in (False, True):
+            source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.CASE):
+    def __setattr__(self, name, value):
+        if name == 'test_boundary':
+            raise AttributeError('test method is read-only')
+        super().__setattr__(name, value)
+    ASYNCdef test_boundary(self):
+        assert 'test_boundary' not in self.__dict__
+        self.assertEqual(shipping_fee(5000), 0)
+""".replace("CASE", "IsolatedAsyncioTestCase" if asynchronous else "TestCase").replace(
+                "ASYNC", "async " if asynchronous else "")
+            with self.subTest(asynchronous=asynchronous):
+                accepted, results = assess(source, self.sound["shipping.py"])
+                self.assertTrue(accepted)
+                self.assertTrue(all(result.testsRun == 1 and not result.errors
+                                    for result in results.values()))
+                self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_local_bodies_ignore_changed_module_metadata(self):
+        for asynchronous in (False, True):
+            source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.CASE):
+    ASYNCdef test_boundary(self):
+        self.assertEqual(shipping_fee(5000), 0)
+Tests.__module__ = 'display.module'
+Tests.test_boundary.__module__ = 'display.function'
+""".replace("CASE", "IsolatedAsyncioTestCase" if asynchronous else "TestCase").replace(
+                "ASYNC", "async " if asynchronous else "")
+            with self.subTest(asynchronous=asynchronous):
+                accepted, results = assess(source, self.sound["shipping.py"])
+                self.assertTrue(accepted)
+                self.assertTrue(all(result.testsRun == 1 and not result.errors
+                                    for result in results.values()))
+                self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_function_case_body_is_unchanged_despite_module_metadata(self):
+        source = """import unittest
+from shipping import shipping_fee
+def boundary():
+    assert case._testFunc is boundary
+    assert shipping_fee(5000) == 0
+boundary.__module__ = 'display.function'
+case = unittest.FunctionTestCase(boundary)
+def load_tests(loader, tests, pattern):
+    return unittest.TestSuite([case, case])
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+        self.assertTrue(all(result.testsRun == 2 and not result.errors
+                            for result in results.values()))
+        self.assertEqual(len(results["defect"].failures), 2)
+        self.assertEqual(len(results["defect"].failed_assertions), 2)
+
+    def test_external_body_module_metadata_cannot_enable_tracking(self):
+        external = types.ModuleType("quality_external")
+
+        def external_boundary(*args):
+            sys.modules["quality_case"].check_boundary()
+
+        external_boundary.__module__ = "quality_case"
+        external.boundary = external_boundary
+        for leaf in ("unittest.FunctionTestCase(boundary)", "Tests('test_boundary')"):
+            source = """import unittest
+from quality_external import boundary
+from shipping import shipping_fee
+def check_boundary():
+    assert shipping_fee(5000) == 0
+class Tests(unittest.TestCase):
+    test_boundary = boundary
+def load_tests(loader, tests, pattern):
+    return unittest.TestSuite([LEAF])
+""".replace("LEAF", leaf)
+            with self.subTest(leaf=leaf), patch.dict(sys.modules, {"quality_external": external}):
+                accepted, results = assess(source, self.sound["shipping.py"])
+                self.assertFalse(accepted)
+                self.assertTrue(results["reference"].wasSuccessful())
+                self.assertTrue(results["benign"].wasSuccessful())
+                self.assertEqual(len(results["defect"].failures), 1)
+                self.assertTrue(all(result.testsRun == 1 and not result.errors
+                                    and not result.passed_assertions
+                                    and not result.failed_assertions
+                                    for result in results.values()))
 
     def test_cases_rejecting_evaluator_attributes_preserve_assertions(self):
         for assertion in (
