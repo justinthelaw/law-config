@@ -35,17 +35,22 @@ they are not an arbitrary-submission runner. For actual agent submissions, inspe
 the submitted code and run it only in an appropriately isolated evaluation host.
 Preserve production files, run counts, skips, assertion failures and errors for
 all three variants. An exception in the harness is not defect detection. An
+ordinary exception while compiling or loading a module is recorded as an error
+with zero executed tests; evaluation continues with the remaining variants. An
 unrelated skip or expected failure does not erase an executed assertion that
 detects the defect and passes both controls. Skipped-only and expected-failure-only
 runs remain incomplete; unexpected successes are not passing control evidence.
-For methods that report skips, the helper observes standard `unittest` assertions
-and Python `assert` statements in the submitted source. An assertion before an
-in-body, subtest, teardown or cleanup skip remains evidence; constructing an
+The helper correlates standard `unittest` assertion call sites and Python
+`assert` statements in the submitted source across variants, within the same test
+method. A reported defect failure must come from an assertion site that passed on
+both controls; an unrelated assertion cannot substitute for a skipped detecting
+site. An assertion before an in-body, subtest, teardown or cleanup skip remains
+evidence; constructing an
 assertion context without executing it does not. Custom assertion APIs and
-assertions in external helper modules are not verified for skipped methods.
-Normally completed methods retain their existing treatment. These execution
-events do not prove relevance or general coverage; the bounded defect and benign
-comparisons still determine the verdict.
+assertions in external helper modules are not verified. Matching sites does not
+establish matching inputs for every loop iteration or helper invocation. These
+execution events do not prove relevance or general coverage; the bounded defect
+and benign comparisons still determine the verdict.
 Use the separate matching [weak-test grader](graders/quality-weak-tests.json) or
 [sound-control grader](graders/quality-sound-control.json) for diagnosis, scope
 and unnecessary-change criteria; execution alone cannot judge those criteria.
