@@ -177,7 +177,8 @@ class ObservedAssertionContext:
         return getattr(self.context, name)
 
     def __enter__(self):
-        return self.context.__enter__()
+        entered = self.context.__enter__()
+        return self if entered is self.context else entered
 
     def __exit__(self, exc_type, value, traceback):
         try:
@@ -1552,6 +1553,41 @@ class Tests(unittest.TestCase):
         accepted, _ = assess(source, self.sound["shipping.py"])
         self.assertTrue(accepted)
 
+    def test_assertion_context_self_entry_preserves_identity(self):
+        for context, body, attribute in (
+            ("self.assertRaises(ZeroDivisionError)",
+             "1 // shipping_fee(5000)", "exception"),
+            ("self.assertRaisesRegex(ZeroDivisionError, 'zero')",
+             "1 // shipping_fee(5000)", "exception"),
+            ("self.assertWarns(UserWarning)",
+             "if shipping_fee(5000) == 0:\n    warnings.warn('boundary', UserWarning)",
+             "warning"),
+            ("self.assertWarnsRegex(UserWarning, 'boundary')",
+             "if shipping_fee(5000) == 0:\n    warnings.warn('boundary', UserWarning)",
+             "warning"),
+        ):
+            source = """import unittest
+import warnings
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        context = CONTEXT
+        with context as entered:
+            self.assertIs(entered, context)
+BODY
+        self.assertIs(entered.ATTRIBUTE, context.ATTRIBUTE)
+""".replace("CONTEXT", context).replace("ATTRIBUTE", attribute).replace(
+                "BODY", "\n".join("            " + line for line in body.splitlines()))
+            with self.subTest(context=context):
+                accepted, results = assess(source, self.sound["shipping.py"])
+                self.assertTrue(accepted)
+                self.assertTrue(all(result.testsRun == 1 and not result.errors
+                                    for result in results.values()))
+                self.assertTrue(results["reference"].wasSuccessful())
+                self.assertTrue(results["benign"].wasSuccessful())
+                self.assertEqual(len(results["defect"].failures), 1)
+                self.assertTrue(results["defect"].failed_assertions)
+
     def test_saved_assertion_context_exposes_standard_attributes(self):
         for context_body in (
             "caught = self.assertRaises(ValueError)\n"
@@ -1562,9 +1598,12 @@ class Tests(unittest.TestCase):
             "self.assertIsInstance(caught.warning, UserWarning)",
             "caught = self.assertLogs('quality', level='WARNING')\n"
             "with caught as captured:\n    logging.getLogger('quality').warning('observed')\n"
+            "self.assertIsNot(caught, captured)\n"
             "self.assertIs(caught.watcher, captured)\n"
             "self.assertEqual(caught.watcher.records[0].getMessage(), 'observed')\n"
             "self.assertEqual(captured.output, ['WARNING:quality:observed'])",
+            "caught = self.assertNoLogs('quality', level='WARNING')\n"
+            "with caught as captured:\n    self.assertIsNone(captured)",
         ):
             source = """import logging
 import unittest

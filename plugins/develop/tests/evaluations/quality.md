@@ -55,6 +55,8 @@ and observing direct, inherited and `super()` assertion calls. Runs must
 remain sequential within a process because those wrappers modify shared classes.
 Assertion failure metadata is stored separately from the exception, without
 requiring custom failure exceptions to accept evaluator attributes or be hashable.
+Assertion-context entry preserves self-return identity; distinct return values
+such as a log watcher or `None` pass through unchanged.
 The result owns observation state for its active suite entry; submitted test cases
 receive no evaluator metadata fields. Existing `_quality_*` names on those cases
 are neither reserved nor used for correlation or skip accounting.
