@@ -92,9 +92,14 @@ each remaining step and unchanged completion. An interrupted step may issue
 multiple updates to its next row, but must not touch another row or the
 checkpoint before the controlled exception.
 
-The write-atomicity probe samples a second connection only at statements traced
-on `writer.db`. An implementation that commits through auxiliary connections can
-pass those samples despite a partial write. Before drawing a candidate verdict,
+Write and migration-step checks share a second-connection sampler at statements
+traced on `writer.db`, plus an observation after the operation returns. Migration
+samples read records and checkpoint together in one SQLite snapshot; only the
+complete before or after state may be visible. A split row/checkpoint commit is
+rejected even when interruption rollback works. Multiple statements in one
+transaction and optimistic compare-and-retry remain accepted.
+An implementation that commits through auxiliary connections can pass these
+samples despite a partial transition. Before drawing a candidate verdict,
 the controller must identify and instrument every write connection and adapt
 the controlled interleavings to that implementation. Missing instrumentation is
 **unverified coverage**, never evidence of atomicity. No general connection
