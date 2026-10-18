@@ -422,8 +422,10 @@ class RepeatedNextRow(Store):
         if not interrupt:
             return super().migrate_step()
         with self.db:
+            key, raw = self.db.execute("SELECT id, raw FROM records WHERE id > "
+                                       "(SELECT checkpoint FROM migration) ORDER BY id LIMIT 1").fetchone()
             for _ in range(2):
-                self.db.execute("UPDATE records SET minor = -50 WHERE id = 2")
+                self.db.execute("UPDATE records SET minor = ? WHERE id = ?", (int(Decimal(raw) * 100), key))
             raise Interrupted("multiple statements, only the next row")
 
 
@@ -725,6 +727,115 @@ class OriginalOnlySnapshot(Store):
             backup.close()
 
 
+class UnbackfilledOldWrite(Store):
+    def write(self, protocol, key, value):
+        if protocol == 1 and self.db.execute(
+                "SELECT minor FROM records WHERE id = ?", (key,)).fetchone() == (None,):
+            with self.db:
+                self.db.execute("UPDATE records SET raw = ? WHERE id = ?", (value, key))
+            return
+        return super().write(protocol, key, value)
+
+
+class CachedPendingRead(Store):
+    refresh = False
+
+    def __init__(self, path):
+        super().__init__(path)
+        self.cached = {}
+
+    def read(self, protocol, key):
+        if protocol == 1 and self.db.execute("SELECT count(*) FROM records WHERE id > "
+                                           "(SELECT checkpoint FROM migration)").fetchone()[0]:
+            if self.refresh or key not in self.cached:
+                self.cached[key] = super().read(protocol, key)
+            return self.cached[key]
+        return super().read(protocol, key)
+
+    def write(self, protocol, key, value):
+        super().write(protocol, key, value)
+        self.cached.pop(key, None)
+
+
+class RecoveryFinalGuard(Store):
+    operation = "read"
+    protocol = 1
+
+    def read(self, protocol, key):
+        if (self.operation == "read" and protocol == 1
+                and self.db.execute("SELECT phase FROM migration").fetchone() == ("final",)
+                and self.db.execute("SELECT minor FROM records WHERE id = ?", (key,)).fetchone() == (115,)):
+            return {"balance": "001.15"}
+        return super().read(protocol, key)
+
+    def write(self, protocol, key, value):
+        if (self.operation == "write" and protocol == self.protocol
+                and self.db.execute("SELECT phase FROM migration").fetchone() == ("final",)
+                and self.db.execute("SELECT minor FROM records WHERE id = ?", (key,)).fetchone() == (115,)):
+            return
+        return super().write(protocol, key, value)
+
+
+class LastPendingFinalize(Store):
+    def finalize(self):
+        if self.db.execute("SELECT checkpoint FROM migration").fetchone() == (2,):
+            self.migrate_step()
+        super().finalize()
+
+
+class AcknowledgedLockedWrite(Store):
+    def write(self, protocol, key, value):
+        try:
+            return super().write(protocol, key, value)
+        except sqlite3.OperationalError:
+            return  # Seed: a blocked write is acknowledged without being applied.
+
+
+class UndrainedClose(Store):
+    def close(self):
+        pass
+
+
+class CheckpointInterruption(Store):
+    broken_checkpoint = 0
+
+    def migrate_step(self, interrupt=False):
+        if interrupt and self.db.execute("SELECT checkpoint FROM migration").fetchone() == (self.broken_checkpoint,):
+            super().migrate_step()
+            raise Interrupted("committed before interruption")
+        return super().migrate_step(interrupt)
+
+
+class PendingUnsupported(Store):
+    operation = "read"
+    checkpoint = 0
+
+    def pending_protocol(self, protocol):
+        return protocol == 3 and self.db.execute("SELECT checkpoint FROM migration").fetchone() == (self.checkpoint,)
+
+    def read(self, protocol, key):
+        if self.operation == "read" and self.pending_protocol(protocol):
+            return super().read(2, key)
+        return super().read(protocol, key)
+
+    def write(self, protocol, key, value):
+        if self.operation == "write" and self.pending_protocol(protocol):
+            return super().write(1, key, value)
+        return super().write(protocol, key, value)
+
+
+class VolatileFinalize(Store):
+    def migrate_step(self, interrupt=False):
+        result = super().migrate_step(interrupt)
+        self.ran_step = True
+        return result
+
+    def finalize(self):
+        if not getattr(self, "ran_step", False):
+            raise ValueError("lost instance completion flag")
+        super().finalize()
+
+
 class MigrationTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -733,8 +844,15 @@ class MigrationTests(unittest.TestCase):
 
     def open(self, kind=Store, path=None):
         store = kind(path or self.path)
+        self.addCleanup(store.db.close)
         self.addCleanup(store.close)
         return store
+
+    def assert_closed(self, store):
+        connection = store.db
+        store.close()
+        with self.assertRaises(sqlite3.ProgrammingError):
+            connection.execute("SELECT 1")
 
     def seeded(self, kind=Store, records=None):
         store = self.open(kind)
@@ -795,26 +913,35 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(old.read(1, 1), {"balance": "001.20"})
         self.assertEqual(new.read(2, 1), {"balance_minor": 120})
         self.assertEqual(new.read(2, 2), {"balance_minor": -50})
+        self.assert_unsupported_protocol(new)
         self.assertIs(self.assert_migration_step(new), True)
+        self.assert_write_changes_only_target(old, 1, 3, "009.99", ("009.99", 999))
         self.assert_write_changes_only_target(old, 1, 1, "002.35", ("002.35", 235))
         self.assertEqual(new.read(2, 1), {"balance_minor": 235})
+        self.assertEqual(old.read(1, 2), {"balance": "-0.50"})
         self.assert_write_changes_only_target(new, 2, 2, -75, ("-0.75", -75))
         self.assertEqual(old.read(1, 2), {"balance": "-0.75"})
-        self.finish_migration(new)
+        for _ in range(len(RECORDS) - 1):
+            self.assert_unsupported_protocol(new)
+            self.assertIs(self.assert_migration_step(new), True)
+        self.assertIs(self.assert_migration_step(new), False)
         self.assertEqual(old.read(1, 1), {"balance": "002.35"})
         self.assertEqual(new.read(2, 2), {"balance_minor": -75})
-        before = self.database_state(new)
-        with self.assertRaises(ValueError):
-            new.write(3, 1, "99.00")
-        self.assertEqual(self.database_state(new), before)
-        with self.assertRaises(ValueError):
-            new.read(3, 1)
-        self.assertEqual(self.database_state(new), before)
+        self.assert_unsupported_protocol(new)
         self.assertEqual(old.read(1, 1), {"balance": "002.35"})
         self.assertEqual(new.read(2, 1), {"balance_minor": 235})
 
-    def assert_concurrent_write(self, kind=Store):
-        old = self.seeded()
+    def assert_unsupported_protocol(self, store):
+        before = self.database_state(store)
+        with self.assertRaises(ValueError):
+            store.write(3, 1, "99.00")
+        self.assertEqual(self.database_state(store), before)
+        with self.assertRaises(ValueError):
+            store.read(3, 1)
+        self.assertEqual(self.database_state(store), before)
+
+    def assert_concurrent_write(self, kind=Store, old_kind=None):
+        old = self.seeded(kind if old_kind is None else old_kind)
         new = self.open(kind)
         old.db.execute("PRAGMA busy_timeout = 0")
         for key, _ in sorted(RECORDS):
@@ -895,14 +1022,24 @@ class MigrationTests(unittest.TestCase):
 
     def assert_restart(self, kind=Store):
         store = self.seeded(kind)
-        self.assertIs(self.assert_migration_step(store), True)
-        durable = self.database_state(store)
-        store.close()
-        store = self.open(kind)
-        self.assertEqual(self.database_state(store), durable)
-        expected = [(1, "001.20", 120), (2, "-0.50", None), (3, "9.99", None)]
-        self.assertEqual(store.db.execute("SELECT checkpoint FROM migration").fetchone(), (1,))
-        self.assertEqual(store.db.execute("SELECT * FROM records ORDER BY id").fetchall(), expected)
+        for key, raw in sorted(RECORDS):
+            durable = self.database_state(store)
+            self.assert_closed(store)
+            store = self.open(kind)
+            self.assertEqual(self.database_state(store), durable)
+            self.assert_interrupted_step(store, key, raw, durable)
+            self.assert_closed(store)
+            store = self.open(kind)
+            self.assertEqual(self.database_state(store), durable)
+            self.assertIs(self.assert_migration_step(store), True)
+        before = self.database_state(store)
+        self.assert_closed(store)
+        again = self.open(kind)
+        self.assertEqual(self.database_state(again), before)
+        self.assertIs(self.assert_migration_step(again), False)
+        self.assertEqual(self.database_state(again), before)
+
+    def assert_interrupted_step(self, store, key, raw, durable):
         touched = []
         checkpoints = []
         store.db.create_function("observe_row", 2, lambda key, minor: touched.append((key, minor)))
@@ -920,26 +1057,9 @@ class MigrationTests(unittest.TestCase):
                 store.migrate_step(interrupt=True)
 
         self.assert_sampled_transition(store, interrupt, (durable,))
-        self.assertEqual({key for key, _ in touched}, {2})
-        self.assertEqual(touched[-1], (2, -50))
+        self.assertEqual({touched_key for touched_key, _ in touched}, {key})
+        self.assertEqual(touched[-1], (key, int(Decimal(raw) * 100)))
         self.assertEqual(checkpoints, [])
-        store.close()
-        resumed = self.open(kind)
-        self.assertEqual(self.database_state(resumed), durable)
-        self.assertEqual(resumed.db.execute("SELECT checkpoint FROM migration").fetchone(), (1,))
-        self.assertEqual(resumed.db.execute("SELECT * FROM records ORDER BY id").fetchall(), expected)
-        for index, minor in ((1, -50), (2, 999)):
-            self.assertIs(self.assert_migration_step(resumed), True)
-            key, raw, _ = expected[index]
-            expected[index] = (key, raw, minor)
-            self.assertEqual(resumed.db.execute("SELECT checkpoint FROM migration").fetchone(), (key,))
-            self.assertEqual(resumed.db.execute("SELECT * FROM records ORDER BY id").fetchall(), expected)
-        before = self.database_state(resumed)
-        resumed.close()
-        again = self.open(kind)
-        self.assertEqual(self.database_state(again), before)
-        self.assertIs(self.assert_migration_step(again), False)
-        self.assertEqual(self.database_state(again), before)
 
     def assert_sampled_transition(self, writer, operation, final_states,
                                   interleave=None, intermediate_states=()):
@@ -1033,12 +1153,16 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual([backup.read(1, key)["balance"] for key, _, _ in expected["records"]],
                          [raw for _, raw, _ in expected["records"]])
         self.assertEqual(self.database_state(backup), expected)
-        backup.close()
-        self.assert_finalize_preserves_state(store)
+        self.assert_closed(backup)
+        final = self.assert_finalize_preserves_state(store)
+        self.assert_closed(store)
+        store = self.open(kind)
+        self.assertEqual(self.database_state(store), final)
         matches = self.assert_finalized_records(
             store, [(key, minor) for key, _, minor in expected["records"]],
             original_text={raw for _, raw, _ in expected["records"]})
-        store.close()
+        self.assert_final_guards(store, [(key, minor) for key, _, minor in expected["records"]])
+        self.assert_closed(store)
         kind.restore(snapshot, self.path)
         recovered = self.open(kind)
         self.assertEqual(self.database_state(recovered), expected)
@@ -1117,17 +1241,22 @@ class MigrationTests(unittest.TestCase):
                 with self.assertRaises(AssertionError):
                     self.assert_recovery(CorruptedSnapshot)
 
-    def assert_incomplete_backfill(self, kind=Store, populate=False, steps=0):
+    def assert_incomplete_backfill(self, kind=Store, populate=False, steps=None):
         store = self.seeded(kind)
         if populate:
             for key, raw in RECORDS:
                 self.assert_write_changes_only_target(store, 1, key, raw, (raw, int(Decimal(raw) * 100)))
-        for _ in range(steps):
+        for _ in range(steps or 0):
             self.assertIs(self.assert_migration_step(store), True)
-        before = self.database_state(store)
-        with self.assertRaises(Exception):
-            store.finalize()
-        self.assertEqual(self.database_state(store), before)
+        # Default covers the finite fixture's complete set of pending checkpoints.
+        checks = len(RECORDS) if steps is None else 1
+        for index in range(checks):
+            before = self.database_state(store)
+            with self.assertRaises(Exception):
+                store.finalize()
+            self.assertEqual(self.database_state(store), before)
+            if index + 1 < checks:
+                self.assertIs(self.assert_migration_step(store), True)
 
     def test_incomplete_backfill_cannot_drop_originals(self):
         self.assert_incomplete_backfill()
@@ -1193,11 +1322,21 @@ class MigrationTests(unittest.TestCase):
         store = self.seeded(kind)
         self.finish_migration(store)
         expected = store.db.execute("SELECT id, minor FROM records ORDER BY id").fetchall()
+        completed = self.database_state(store)
+        self.assert_closed(store)
+        store = self.open(kind)
+        self.assertEqual(self.database_state(store), completed)
         before = self.assert_finalize_preserves_state(store)
-        store.close()
+        self.assert_closed(store)
         store = self.open(kind)
         self.assertEqual(self.database_state(store), before)
         matches = self.assert_finalized_records(store, expected)
+        self.assert_final_guards(store, expected)
+        if matches:
+            raise RetentionUnverified(matches)
+
+    def assert_final_guards(self, store, expected):
+        before = self.database_state(store)
         for key, minor in expected:
             with self.assertRaises(ValueError):
                 store.read(1, key)
@@ -1208,8 +1347,6 @@ class MigrationTests(unittest.TestCase):
                 self.assertEqual(self.database_state(store), before)
             self.assertEqual(store.read(2, key), {"balance_minor": minor})
             self.assertEqual(self.database_state(store), before)
-        if matches:
-            raise RetentionUnverified(matches)
 
     def test_final_phase_retires_old_protocol_and_freezes_writes(self):
         self.assert_final_phase()
@@ -1374,7 +1511,10 @@ class MigrationTests(unittest.TestCase):
             self.assert_final_phase(ArchivedRaw)
 
     def test_optimistic_backfill_is_accepted(self):
-        self.assert_concurrent_write(OptimisticBackfill)
+        for old_kind in (Store, OptimisticBackfill):
+            with self.subTest(old_kind=old_kind.__name__):
+                self.path = Path(self.temp.name) / f"optimistic-overlap-{old_kind.__name__}.sqlite"
+                self.assert_concurrent_write(OptimisticBackfill, old_kind=old_kind)
         self.path = Path(self.temp.name) / "optimistic-restart.sqlite"
         self.assert_restart(OptimisticBackfill)
 
@@ -1635,6 +1775,71 @@ class MigrationTests(unittest.TestCase):
     def test_snapshot_must_include_legal_writes(self):
         with self.assertRaises(AssertionError):
             self.assert_recovery(OriginalOnlySnapshot)
+
+    def test_pending_old_write_and_warmed_peer_seeds_are_detected(self):
+        for kind in (UnbackfilledOldWrite, CachedPendingRead):
+            with self.subTest(kind=kind.__name__):
+                self.path = Path(self.temp.name) / f"pending-{kind.__name__}.sqlite"
+                with self.assertRaises(AssertionError):
+                    self.assert_coexistence(kind)
+
+    def test_pending_refreshed_peer_is_accepted(self):
+        class RefreshedPeer(CachedPendingRead):
+            refresh = True
+
+        self.assert_coexistence(RefreshedPeer)
+
+    def test_recovery_final_guards_are_checked(self):
+        for operation, protocol in (("read", 1), ("write", 1), ("write", 2)):
+            with self.subTest(operation=operation, protocol=protocol):
+                class MissingGuard(RecoveryFinalGuard):
+                    pass
+
+                MissingGuard.operation, MissingGuard.protocol = operation, protocol
+                self.path = Path(self.temp.name) / f"recovery-guard-{operation}-{protocol}.sqlite"
+                with self.assertRaises(AssertionError):
+                    self.assert_recovery(MissingGuard)
+
+    def test_last_pending_finalize_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_incomplete_backfill(LastPendingFinalize)
+
+    def test_acknowledged_locked_write_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_concurrent_write(AcknowledgedLockedWrite)
+
+    def test_undrained_close_is_detected(self):
+        for check in (self.assert_restart, self.assert_recovery, self.assert_final_phase):
+            with self.subTest(check=check.__name__):
+                self.path = Path(self.temp.name) / f"undrained-{check.__name__}.sqlite"
+                with self.assertRaises(AssertionError):
+                    check(UndrainedClose)
+
+    def test_interruption_at_each_seeded_checkpoint_is_checked(self):
+        for checkpoint in range(len(RECORDS)):
+            with self.subTest(checkpoint=checkpoint):
+                class BrokenInterruption(CheckpointInterruption):
+                    broken_checkpoint = checkpoint
+
+                self.path = Path(self.temp.name) / f"interruption-{checkpoint}.sqlite"
+                with self.assertRaises(AssertionError):
+                    self.assert_restart(BrokenInterruption)
+
+    def test_pending_unsupported_protocol_is_detected(self):
+        for checkpoint in range(len(RECORDS)):
+            for operation in ("read", "write"):
+                with self.subTest(checkpoint=checkpoint, operation=operation):
+                    class Unsupported(PendingUnsupported):
+                        pass
+
+                    Unsupported.checkpoint, Unsupported.operation = checkpoint, operation
+                    self.path = Path(self.temp.name) / f"unsupported-{checkpoint}-{operation}.sqlite"
+                    with self.assertRaises(AssertionError):
+                        self.assert_coexistence(Unsupported)
+
+    def test_volatile_finalize_is_detected(self):
+        with self.assertRaisesRegex(ValueError, "lost instance completion flag"):
+            self.assert_final_phase(VolatileFinalize)
 
     def test_fixture_and_private_grader_pairs(self):
         fixtures = sorted((ROOT / "fixtures").glob("migration-*.json"))
