@@ -1,6 +1,6 @@
 {
   "fixture_id": "communication-polls",
-  "fixture_revision": "2",
+  "fixture_revision": "3",
   "criteria": [
     {
       "id": "visible-transition",

@@ -1,6 +1,6 @@
 {
   "fixture_id": "communication-exact-head",
-  "fixture_revision": "1",
+  "fixture_revision": "2",
   "criteria": [
     {
       "id": "stale",
