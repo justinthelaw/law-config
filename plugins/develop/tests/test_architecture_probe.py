@@ -179,6 +179,49 @@ BAD_SCREEN_CALLBACK = OWNER + CALLERS.replace(
 BAD_SAVE_CALLBACK = INITIAL + ADAPTATION.replace(
     "self.on_value = on_value", "type(self).on_value = staticmethod(on_value)",
 )
+BAD_PENDING_SCREEN_CLOSE = (
+    OWNER + CALLERS.replace(
+        "    def close(self):",
+        "    def close(self):\n"
+        "        save = getattr(self.requests.transport, 'save_requests', None)\n"
+        "        if self.requests.pending is not None and save is not None:\n"
+        "            if save.pending is not None:\n"
+        "                save.pending.cancel()",
+    ) + ADAPTATION.replace(
+        "        self.requests = LatestRequest(transport)",
+        "        self.requests = LatestRequest(transport)\n"
+        "        transport.save_requests = self.requests",
+    )
+)
+BAD_DUPLICATE_RESET = GOOD.replace(
+    "        def receive(value):\n            if self.token is token:",
+    "        self.delivered = False\n"
+    "        succeeded = False\n"
+    "        def receive(value):\n"
+    "            nonlocal succeeded\n"
+    "            if self.closed:\n"
+    "                return\n"
+    "            if self.token is token or (succeeded and not self.delivered):\n"
+    "                succeeded = self.delivered = True",
+)
+# Registration alone is benign; cancelling a later instance's work is the defect.
+REGISTER_CALLERS = GOOD.replace(
+    "        self.on_value = on_value",
+    "        self.on_value = on_value\n"
+    "        key = type(self).__name__\n"
+    "        if not hasattr(transport, key):\n"
+    "            setattr(transport, key, [])\n"
+    "        self.peers = getattr(transport, key)\n"
+    "        self.peers.append(self)",
+)
+BAD_FIRST_CALLER = REGISTER_CALLERS.replace(
+    "        self.requests.send(",
+    "        if self is self.peers[0]:\n"
+    "            for peer in self.peers[1:]:\n"
+    "                if peer.requests.pending is not None:\n"
+    "                    peer.requests.pending.cancel()\n"
+    "        self.requests.send(",
+)
 
 
 def fixture(name):
@@ -263,10 +306,14 @@ def probe_change(case, app, transport_type):
     screen.search("later screen")
     lookup = transport.jobs[-1]
     case.assertEqual(pending_save.cancel_count, 0, "screen cancelled pending autosave")
+    screen.close()
+    screen.close()
+    case.assertEqual(lookup.cancel_count, 1)
+    case.assertEqual(pending_save.cancel_count, 0, "pending screen close cancelled autosave")
     pending_save.deliver("save survives")
-    lookup.deliver("found")
+    lookup.deliver("late screen")
     case.assertEqual(save_values, ["save survives"])
-    case.assertEqual(screen_values, ["found"])
+    case.assertEqual(screen_values, [])
 
     # A cancelled callback's first delivery may follow replacement completion.
     for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
@@ -286,6 +333,8 @@ def probe_change(case, app, transport_type):
         case.assertEqual(new.cancel_count, 0, "completed job was cancelled on next request")
         case.assertEqual(old.cancel_count, 1, "cancelled job was cancelled again on submit")
         case.assertEqual(len(transport.jobs), 3)
+        new.deliver("duplicate after successor")
+        case.assertEqual(values, ["fresh"], "completed callback repeated after successor started")
         transport.jobs[-1].deliver("next value")
         case.assertEqual(values, ["fresh", "next value"])
         caller.close()
@@ -332,10 +381,16 @@ def probe_change(case, app, transport_type):
         first = transport.jobs[-1]
         getattr(right, method)("right pending")
         second = transport.jobs[-1]
+        getattr(left, method)("left replacement")
+        replacement = transport.jobs[-1]
+        case.assertEqual(first.cancel_count, 1)
+        case.assertEqual(second.cancel_count, 0, "first caller cancelled second")
         left.close()
         first.deliver("late left")
+        replacement.deliver("late replacement")
         second.deliver("right survives")
         case.assertEqual(first.cancel_count, 1)
+        case.assertEqual(replacement.cancel_count, 1)
         case.assertEqual(second.cancel_count, 0)
         case.assertEqual(left_values, ["left"])
         case.assertEqual(right_values, ["right", "right survives"])
@@ -407,6 +462,20 @@ class ArchitectureProbe(unittest.TestCase):
     def test_retained_history_is_benign(self):
         probe_change(self, module_from_source(RETAIN_CANCELLED),
                      module_from_source(self.transport).Transport)
+
+    def test_caller_registration_is_benign(self):
+        probe_change(self, module_from_source(REGISTER_CALLERS),
+                     module_from_source(self.transport).Transport)
+
+    def test_pending_close_duplicate_and_reverse_instance_defects_are_detected(self):
+        for source, message in (
+            (BAD_PENDING_SCREEN_CLOSE, "pending screen close cancelled autosave"),
+            (BAD_DUPLICATE_RESET, "completed callback repeated after successor started"),
+            (BAD_FIRST_CALLER, "first caller cancelled second"),
+        ):
+            with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
 
     def test_recancellation_and_caller_routing_defects_are_detected(self):
         for source, message in (
