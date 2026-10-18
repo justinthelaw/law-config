@@ -37,15 +37,19 @@ snapshot mutation or partial restoration. Additional controls cover auxiliary
 corruption during finalization, guards that apply to only one key, stale peer
 read caches during and after backfill, float conversion and snapshots that omit
 legal writes. Pending-row writes, acknowledged lock failures, undrained close,
-checkpoint-specific interruption/finalization and volatile completion flags also
-have seeded controls. Benign controls accept different
+checkpoint-specific interruption/finalization, volatile completion flags,
+key-specific protocol acceptance, lost final schema constraints, sign-specific
+writes, repeated-completion mutation and mutating mixed reads also have controls.
+Benign controls accept different
 exception messages, multiple write statements within one transaction and
 optimistic backfill with compare-and-retry. A refreshed peer read control remains
 accepted. Precision probes use a legal protocol-1 write of `001.15` and a bounded
 alternate seed of positive and negative `1.15` to check exact fallback and
-backfill conversion separately; the public fixture is unchanged. Seed checks
-require the declared core
-columns, types and primary key, the supplied records with null minor values, and
+backfill conversion separately; the public fixture is unchanged. Seed and final
+schema checks compare column names, declared types and primary-key flags; a
+semantically equivalent table-level primary-key declaration remains accepted.
+Seed checks require the declared core schema, the supplied records with null
+minor values, and
 exactly one initial `(0, 'mixed')` migration row; unrelated metadata tables and
 indexes are permitted. Recovery performs legal writes from both protocols before
 capturing the snapshot, retains an untouched original spelling and compares all
@@ -58,15 +62,19 @@ Successful steps and writes compare that full state while allowing only their
 specified row/checkpoint changes; the overlap probe allows only the known
 concurrent write and next-row migration. It repeats the controlled interleaving
 at each seeded checkpoint, including the second and last backfill rows, with
-candidate instances on both sides. The same parameterized probe also retains a
-reference old-version writer against the optimistic candidate as a compatibility
-control. A correct first transaction cannot mask stale reads in later steps or a
+candidate instances on both sides and each supported write protocol on a
+separate seeded database. The same parameterized probe also retains a reference
+writer against the optimistic candidate as a compatibility control, including
+the preserved old-protocol connection. A correct first transaction cannot mask
+stale reads in later steps or a
 writer acknowledging a rejected lock attempt.
 Finalization is also attempted after reopening completed migration state. Both
 final-phase and recovery paths reopen finalized state and share retired-read and
 frozen-write checks for every key, including the recovery dataset's legal writes.
 Contract-significant closes verify that the old exposed SQLite connection rejects
-queries; cleanup independently closes that handle even when candidate close fails.
+queries. Candidate close runs at most once per instance; cleanup independently
+closes the captured SQLite handle, accepting candidates that invalidate `db` on
+close without requiring idempotence.
 Both final-phase and recovery checks compare full state before and after
 finalization: only the records representation and migration phase may change
 among existing data. Existing auxiliary contents and schema objects not owned by
@@ -89,8 +97,9 @@ results must be the booleans `True` and `False`, not merely truthy or falsy valu
 For the finite fixtures, each successful step must transform only the next
 existing ID and advance the checkpoint to that ID. A gapped, unsorted input
 checks that progress does not assume consecutive IDs. Completion uses at most
-the initial pending-row count plus one call, checking progress after each call
-and unchanged state on completion; it does not rely on a timeout.
+the initial pending-row count plus two completion calls on the same instance,
+checking progress after each call and unchanged state on repeated completion;
+it does not rely on a timeout.
 Supported-write probes require every unaddressed record to remain unchanged. The tests also
 reject finalization at every seeded pending checkpoint, both with originally
 null minor values and with all minor values populated by supported writes.
@@ -140,11 +149,13 @@ checkpoint before the controlled exception.
 The shared successful-write assertion samples writes during and after backfill.
 While work remains, protocol 1 writes an unbackfilled row and a warmed protocol-1
 peer must observe a protocol-2 write. Unsupported protocol reads and writes must
-reject without changing full state at every seeded checkpoint and on completion.
-After backfill, a candidate peer opened before the writes reads both protocols
-before each write and checks both updated representations afterward. This API
-check complements the sampler's direct database observations and detects stale
-per-instance reads on the exercised path.
+reject without changing full state for every seeded key at each checkpoint,
+on completion and after finalization. Permitted reads also compare full state
+before and after, including fallback, peer warm-up and recovered reads. The write
+matrix exercises both signs through each protocol before and after backfill;
+the candidate peer reads both protocols before each write and checks both updated
+representations afterward. These API checks complement the sampler's direct
+database observations and detect stale per-instance reads on the exercised paths.
 Write, normal migration-step and interrupted-step checks share a second-connection sampler at statements
 traced on `writer.db`, plus an observation after the operation returns. Each
 sample reads the covered records, migration metadata, schema and auxiliary
