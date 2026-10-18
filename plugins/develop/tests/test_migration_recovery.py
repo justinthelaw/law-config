@@ -81,6 +81,30 @@ class StaleRowBackfill(StaleBackfill):
     overwrite_raw = True
 
 
+class LaterStaleBackfill(StaleBackfill):
+    safe_steps = 1
+
+    def migrate_step(self, interrupt=False):
+        checkpoint = self.db.execute("SELECT checkpoint FROM migration").fetchone()[0]
+        if checkpoint < self.safe_steps:
+            return Store.migrate_step(self, interrupt=interrupt)
+        return super().migrate_step(interrupt=interrupt)
+
+
+class PreservedView(Store):
+    definition = 'CREATE VIEW "record ""projection""" AS SELECT id, minor FROM records'
+
+    def seed(self, records):
+        super().seed(records)
+        self.db.execute(self.definition)
+
+    def finalize(self):
+        # Drop before the reference's ALTER TABLE, then restore identical DDL.
+        self.db.execute('DROP VIEW "record ""projection"""')
+        super().finalize()
+        self.db.execute(self.definition)
+
+
 class CorruptRejectedWrite(Store):
     def write(self, protocol, key, value):
         if protocol not in (1, 2):
@@ -793,45 +817,55 @@ class MigrationTests(unittest.TestCase):
         old = self.seeded()
         new = self.open(kind)
         old.db.execute("PRAGMA busy_timeout = 0")
+        for key, _ in sorted(RECORDS):
+            self.assert_overlapping_step(old, new, key)
+        self.assertIs(self.assert_migration_step(new), False)
+
+    def assert_overlapping_step(self, old, new, key):
         outcomes = []
         before = self.database_state(new)
+        checkpoint, phase = before["migration"][0]
+        next_row = next(row for row in before["records"] if row[0] > checkpoint)
+        self.assertEqual(next_row[0], key)
 
         def interleave(statement):
             # The trace fires before SQLite executes the backfill UPDATE, after
             # the source row was fetched. No threads, sleeps or timing race.
             if statement.startswith("UPDATE records SET minor") and not outcomes:
                 try:
-                    old.write(1, 1, "002.35")
+                    old.write(1, key, "002.35")
                 except sqlite3.OperationalError as error:
                     outcomes.append(error)
                 else:
                     outcomes.append("written")
 
-        concurrent = before | {"records": [(1, "002.35", 235), *before["records"][1:]]}
-        migrated = {"migration": [(1, "mixed")]}
+        concurrent = before | {"records": [(key, "002.35", 235) if row[0] == key else row
+                                           for row in before["records"]]}
+        migrated = {"migration": [(key, phase)]}
         locked_final = before | migrated | {
-            "records": [(1, "001.20", 120), *before["records"][1:]]}
+            "records": [(key, row[1], int(Decimal(row[1]) * 100)) if row[0] == key else row
+                        for row in before["records"]]}
         written_final = concurrent | migrated
         self.assertIs(self.assert_sampled_transition(
             new, new.migrate_step, (locked_final, written_final),
             interleave=interleave, intermediate_states=(concurrent,)), True)
         self.assertEqual(len(outcomes), 1)
-        raw = old.read(1, 1)["balance"]
-        self.assertEqual(new.read(2, 1), {"balance_minor": int(Decimal(raw) * 100)})
+        raw = old.read(1, key)["balance"]
+        self.assertEqual(new.read(2, key), {"balance_minor": int(Decimal(raw) * 100)})
         if isinstance(outcomes[0], sqlite3.OperationalError):
             self.assert_database_busy(outcomes[0])
             expected = locked_final
         else:
             self.assertEqual(outcomes, ["written"])
-            self.assertEqual(old.read(1, 1), {"balance": "002.35"})
-            self.assertEqual(new.read(2, 1), {"balance_minor": 235})
+            self.assertEqual(old.read(1, key), {"balance": "002.35"})
+            self.assertEqual(new.read(2, key), {"balance_minor": 235})
             expected = written_final
         self.assertEqual(self.database_state(new), expected)
         # Both locking and compare-and-retry permit this subsequent write.
-        self.assert_write_changes_only_target(old, 1, 1, "002.35", ("002.35", 235))
-        self.assertEqual(old.read(1, 1), {"balance": "002.35"})
-        self.assertEqual(new.read(2, 1), {"balance_minor": 235})
-        self.assertEqual(new.db.execute("SELECT checkpoint FROM migration").fetchone(), (1,))
+        self.assert_write_changes_only_target(old, 1, key, "002.35", ("002.35", 235))
+        self.assertEqual(old.read(1, key), {"balance": "002.35"})
+        self.assertEqual(new.read(2, key), {"balance_minor": 235})
+        self.assertEqual(new.db.execute("SELECT checkpoint FROM migration").fetchone(), (key,))
 
     def assert_database_busy(self, error):
         code = getattr(error, "sqlite_errorcode", None)
@@ -1028,6 +1062,19 @@ class MigrationTests(unittest.TestCase):
     def test_backfill_preserves_an_overlapping_old_protocol_write(self):
         self.assert_concurrent_write()
 
+    def test_later_stale_backfill_seeds_are_detected(self):
+        for safe_steps in (1, 2):
+            for overwrite in (False, True):
+                with self.subTest(safe_steps=safe_steps, overwrite=overwrite):
+                    class LaterStale(LaterStaleBackfill):
+                        pass
+
+                    LaterStale.safe_steps = safe_steps
+                    LaterStale.overwrite_raw = overwrite
+                    self.path = Path(self.temp.name) / f"later-stale-{safe_steps}-{overwrite}.sqlite"
+                    with self.assertRaises(AssertionError):
+                        self.assert_concurrent_write(LaterStale)
+
     def test_stale_backfill_seed_is_detected(self):
         with self.assertRaises(AssertionError):
             self.assert_concurrent_write(StaleBackfill)
@@ -1087,20 +1134,36 @@ class MigrationTests(unittest.TestCase):
 
     def assert_finalize_preserves_state(self, store):
         before = self.database_state(store)
+        views = [definition[1] for definition in before["schema"] if definition[0] == "view"]
+        for name in views:
+            self.assert_view_compiles(store, name, before_finalize=True)
         store.finalize()
         after = self.database_state(store)
         self.assertEqual(after["records"], [(key, minor) for key, _, minor in before["records"]])
         self.assertEqual(after["migration"], [(checkpoint, "final")
                                              for checkpoint, _ in before["migration"]])
-        # Rebuilding records may remove its indexes. Existing auxiliary objects
-        # and contents must survive; new unrelated metadata remains permitted.
+        # Objects owned by rebuilt records (including indexes/triggers) are excluded.
+        # Other existing objects/contents survive; new metadata remains permitted.
         for definition in before["schema"]:
             if definition[2] != "records":
                 self.assertIn(definition, after["schema"])
         for table, rows in before["auxiliary"].items():
             self.assertIn(table, after["auxiliary"])
             self.assertEqual(after["auxiliary"][table], rows)
+        for name in views:
+            self.assert_view_compiles(store, name)
         return after
+
+    def assert_view_compiles(self, store, name, before_finalize=False):
+        # Compilation checks column/table dependencies without executing rows or
+        # user-defined expressions. Trigger and result semantics need other probes.
+        quoted = '"' + name.replace('"', '""') + '"'
+        try:
+            store.db.execute(f"SELECT * FROM {quoted} LIMIT 0").fetchall()
+        except sqlite3.DatabaseError as error:
+            if before_finalize:
+                raise ValueError(f"Unusable pre-finalization view {name!r}: {error}") from error
+            self.fail(f"Preserved view {name!r} unusable after finalization: {error}")
 
     def assert_finalized_records(self, store, expected, original_text=()):
         """Check definitive state and return retention matches for later reporting."""
@@ -1487,6 +1550,40 @@ class MigrationTests(unittest.TestCase):
                     self.path = Path(self.temp.name) / f"final-aux-{index}-{check.__name__}.sqlite"
                     with self.assertRaises(AssertionError):
                         check(CorruptFinal)
+
+    def test_finalization_preserves_usable_views(self):
+        for check in (self.assert_final_phase, self.assert_recovery):
+            with self.subTest(check=check.__name__):
+                self.path = Path(self.temp.name) / f"usable-view-{check.__name__}.sqlite"
+                check(PreservedView)
+
+    def test_finalization_rejects_newly_broken_views(self):
+        class RawView(PreservedView):
+            definition = 'CREATE VIEW "record ""projection""" AS SELECT id, raw FROM records'
+
+        for check in (self.assert_final_phase, self.assert_recovery):
+            with self.subTest(check=check.__name__):
+                self.path = Path(self.temp.name) / f"broken-view-{check.__name__}.sqlite"
+                with self.assertRaisesRegex(AssertionError, "Preserved view.*unusable"):
+                    check(RawView)
+
+    def test_preexisting_broken_view_is_invalid_probe_input(self):
+        finalized = []
+
+        class InvalidView(PreservedView):
+            definition = 'CREATE VIEW "record ""projection""" AS SELECT missing FROM records'
+
+            def finalize(self):
+                finalized.append(True)
+                super().finalize()
+
+        store = self.seeded(InvalidView)
+        self.finish_migration(store)
+        before = self.database_state(store)
+        with self.assertRaisesRegex(ValueError, "Unusable pre-finalization view"):
+            self.assert_finalize_preserves_state(store)
+        self.assertEqual(finalized, [])
+        self.assertEqual(self.database_state(store), before)
 
     def test_final_guards_cover_every_seeded_key(self):
         for key, _ in RECORDS:
