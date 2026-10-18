@@ -95,9 +95,22 @@ checkpoint before the controlled exception.
 Write and migration-step checks share a second-connection sampler at statements
 traced on `writer.db`, plus an observation after the operation returns. Migration
 samples read records and checkpoint together in one SQLite snapshot; only the
-complete before or after state may be visible. A split row/checkpoint commit is
-rejected even when interruption rollback works. Multiple statements in one
-transaction and optimistic compare-and-retry remain accepted.
+complete before or after state may be visible. The seeded split row/checkpoint
+commit on this observed path is rejected even when interruption rollback works.
+Multiple statements in one transaction and optimistic compare-and-retry remain
+accepted.
+
+The overlapping-write probe checks writer consistency, not physical transaction
+membership on every retry path. Its concurrent write already updates both
+representations; a retry can write an unchanged minor value. Splitting that
+redundant update from its checkpoint commit produces the same visible states as
+an atomic retry. Value sampling cannot distinguish them, and the legitimate
+concurrent write must not be rejected as a partial migration. Before assigning
+an atomicity verdict for this path, inspect the candidate's transaction
+boundaries or obtain instrumentation that establishes them. Without that
+evidence, physical retry atomicity is **unverified**, even when the functional
+checks pass; the public commit-together requirement remains unchanged.
+
 An implementation that commits through auxiliary connections can pass these
 samples despite a partial transition. Before drawing a candidate verdict,
 the controller must identify and instrument every write connection and adapt
