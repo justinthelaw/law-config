@@ -89,6 +89,10 @@ class CommunicationAccounting(unittest.TestCase):
         self.assertEqual(self.counts(trace), {"user": 1, "tool": 1, "helper": 3})
 
     def test_no_observations_is_not_a_behavior_pass(self):
+        with self.assertRaises(ValueError):
+            self.counts([])  # An evidence-free attempt cannot claim completion.
+        self.attempt["state"] = "missing"
+        self.attempt["reason"] = "No attempt evidence or user-event capture obtained."
         self.assertEqual(self.counts([]), {"user": 0, "tool": 0, "helper": 0})
         self.assertEqual(self.attempt["evaluator"]["verdict"], "not_run")
 
