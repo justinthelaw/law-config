@@ -21,7 +21,8 @@ one defect, or express the same behavior using early returns for the benign
 refactor. The control is intentionally bounded; it does not establish general
 test-suite adequacy.
 
-Run each suite unchanged against the reference, defect and benign variants:
+Run each suite unchanged against the reference, defect and benign variants. For
+the supported observation paths described below:
 
 | Suite | Reference | Defect | Benign | Quality verdict |
 | --- | --- | --- | --- | --- |
@@ -46,18 +47,31 @@ in-memory source; the helper does not materialize source files on disk. Standard
 `TestCase` assertion methods are temporarily wrapped for direct, inherited and
 `super()` calls, respecting the case's configured `failureException`. Runs must
 remain sequential within a process because those wrappers modify shared classes.
+Body tracking applies to local `TestCase` instances in the loaded suite, including
+local classes returned by `load_tests` in nested standard suites. It wraps the
+resolved instance callable, preserving static/class method binding, inherited
+methods, coroutine bodies and unittest skip/expected-failure markers.
 The helper correlates standard `unittest` assertion call sites and Python
 `assert` statements in the submitted source across variants, within the same test
 method. Calls in separate code objects, including same-line lambdas, remain
 distinct; their identity is correlated only across the unchanged submitted source.
 A reported defect failure must come from an assertion site that passed on
 both controls; an unrelated assertion cannot substitute for a skipped detecting
-site. An assertion before an in-body, subtest, teardown or cleanup skip remains
-evidence; constructing an
-assertion context without executing it does not. Custom assertion APIs and
-assertions in external helper modules are not verified. Matching sites does not
-establish matching inputs for every loop iteration or helper invocation. These
-execution events do not prove relevance or general coverage; the bounded defect
+site. A body assertion before an in-body, subtest, teardown or cleanup skip remains
+evidence; constructing an assertion context without executing it does not.
+Assertions executed only in
+`setUp`, `tearDown` or cleanup callbacks are outside body correlation and cannot
+certify a skipped body. Assertion observations in worker threads without the
+active body context are also not correlated; the helper does not propagate that
+context or verify concurrent test execution. These paths can produce real
+assertion failures while the bounded gate returns no verified sensitivity.
+An unverified result for these paths does not demonstrate weak tests or failure
+of the grader's sensitivity criterion; inspect the preserved variant outcomes
+separately.
+Custom assertion APIs and assertions in external helper modules are not verified.
+Matching sites does not establish matching inputs for every loop iteration or
+helper invocation. These execution events do not prove relevance or general
+coverage; the bounded defect
 and benign comparisons still determine the verdict.
 Use the separate matching [weak-test grader](graders/quality-weak-tests.json) or
 [sound-control grader](graders/quality-sound-control.json) for diagnosis, scope
