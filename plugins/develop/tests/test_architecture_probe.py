@@ -341,6 +341,41 @@ BAD_MIXED_IDLE_CLOSE = REGISTER_MIXED_CALLERS.replace(
     "                        peer.requests.pending.cancel()\n"
     "        self.requests.close()",
 )
+BAD_AUTOSAVE_FIRST_OWNER = REGISTER_MIXED_CALLERS.replace(
+    "        self.peers.append(self)",
+    "        self.peers.append(self)\n"
+    "        if type(self).__name__ == 'Screen' and type(self.peers[0]).__name__ == 'Autosave':\n"
+    "            self.requests = self.peers[0].requests",
+)
+BAD_IDLE_CLOSE_JOB = REGISTER_CALLERS.replace(
+    "        self.requests.close()",
+    "        if len(self.peers) > 1 and not self.requests.closed:\n"
+    "            if self.requests.pending is None:\n"
+    "                self.requests.transport.start('close job', lambda value: None)\n"
+    "        self.requests.close()",
+)
+BAD_REPEATED_CLOSE_JOB = BAD_IDLE_CLOSE_JOB.replace(
+    "len(self.peers) > 1 and not self.requests.closed",
+    "len(self.peers) > 1 and self.requests.closed",
+)
+BAD_IDLE_CALLBACK_JOB = REGISTER_CALLERS.replace(
+    "        self.on_value = on_value",
+    "        def publish(value):\n"
+    "            if any(peer is not self and peer.requests.closed for peer in self.peers):\n"
+    "                self.requests.transport.start('callback job', lambda result: None)\n"
+    "            on_value(value)\n"
+    "        self.on_value = publish",
+)
+BAD_IDLE_CALLBACK_COMPLETED = RETAIN_COMPLETED_PEERS.replace(
+    "        self.on_value = on_value",
+    "        def publish(value):\n"
+    "            for peer in self.peers:\n"
+    "                completed = getattr(peer.requests, 'completed', None)\n"
+    "                if peer is not self and peer.requests.closed and completed is not None:\n"
+    "                    completed.cancel()\n"
+    "            on_value(value)\n"
+    "        self.on_value = publish",
+)
 
 
 def fixture(name):
@@ -377,20 +412,25 @@ def probe_idle_peer_close(case, caller_specs, transport_type):
                 completed.append(start_job(case, transport, closer, close_method, "closer complete"))
                 completed[-1].deliver("closer complete")
             pending = start_job(case, transport, peer, peer_method, "peer pending")
-            closer.close()
-            closer.close()
-            case.assertEqual(pending.cancel_count, 0, "idle close cancelled pending peer")
-            case.assertEqual([job.cancel_count for job in completed], [0] * len(completed),
-                             "close cancelled completed peer work")
             count = len(transport.jobs)
+
+            def assert_idle_state(operation):
+                case.assertEqual(len(transport.jobs), count, f"{operation} started a job")
+                case.assertEqual([job.cancel_count for job in completed], [0] * len(completed),
+                                 f"{operation} cancelled completed peer work")
+                case.assertEqual(pending.cancel_count, 0, f"{operation} cancelled pending peer")
+
+            closer.close()
+            assert_idle_state("idle close")
+            closer.close()
+            assert_idle_state("repeated close")
             with case.assertRaises(RuntimeError):
                 getattr(closer, close_method)("closed")
-            case.assertEqual([job.cancel_count for job in completed], [0] * len(completed),
-                             "rejected request cancelled completed peer work")
-            case.assertEqual(len(transport.jobs), count)
-            case.assertEqual(pending.cancel_count, 0, "rejected request cancelled pending peer")
+            assert_idle_state("rejected request")
             pending.deliver("peer survives")
+            assert_idle_state("peer callback")
             pending.deliver("duplicate peer")
+            assert_idle_state("duplicate callback")
             case.assertEqual(values[1 - closer_index], ["peer complete", "peer survives"])
             case.assertEqual(values[closer_index], ["closer complete"] if completed_closer else [])
 
@@ -600,7 +640,9 @@ def probe_change(case, app, transport_type):
         case.assertEqual(right_values, [])
         probe_idle_peer_close(case, ((caller_type, method),) * 2, transport_type)
 
-    probe_idle_peer_close(case, ((app.Screen, "search"), (app.Autosave, "submit")), transport_type)
+    mixed_callers = ((app.Screen, "search"), (app.Autosave, "submit"))
+    for caller_specs in (mixed_callers, mixed_callers[::-1]):
+        probe_idle_peer_close(case, caller_specs, transport_type)
 
 
 
@@ -682,6 +724,18 @@ class ArchitectureProbe(unittest.TestCase):
         for source, message in (
             (BAD_REJECTED_COMPLETED_PEER, "rejected request cancelled completed peer work"),
             (BAD_MIXED_IDLE_CLOSE, "idle close cancelled pending peer"),
+        ):
+            with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
+
+    def test_mixed_construction_order_and_close_job_count_defects(self):
+        for source, message in (
+            (BAD_AUTOSAVE_FIRST_OWNER, "idle close cancelled pending peer"),
+            (BAD_IDLE_CLOSE_JOB, "close started a job"),
+            (BAD_REPEATED_CLOSE_JOB, "repeated close started a job"),
+            (BAD_IDLE_CALLBACK_JOB, "callback started a job"),
+            (BAD_IDLE_CALLBACK_COMPLETED, "callback cancelled completed peer work"),
         ):
             with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
                 probe_change(self, module_from_source(source),

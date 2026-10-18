@@ -351,6 +351,72 @@ class NonBooleanStep(Store):
         return self.successful if super().migrate_step(interrupt) else self.completed
 
 
+class ExtraInterruptedRow(Store):
+    def migrate_step(self, interrupt=False):
+        if not interrupt:
+            return super().migrate_step()
+        with self.db:
+            self.db.execute("UPDATE records SET minor = -50 WHERE id = 2")
+            self.db.execute("UPDATE records SET minor = 999 WHERE id = 3")
+            raise Interrupted("touched an extra row before rollback")
+
+
+class RepeatedNextRow(Store):
+    def migrate_step(self, interrupt=False):
+        if not interrupt:
+            return super().migrate_step()
+        with self.db:
+            for _ in range(2):
+                self.db.execute("UPDATE records SET minor = -50 WHERE id = 2")
+            raise Interrupted("multiple statements, only the next row")
+
+
+class MutatingUnsupportedRead(Store):
+    def read(self, protocol, key):
+        if protocol not in (1, 2):
+            with self.db:
+                self.db.execute("UPDATE migration SET checkpoint = 999")
+        return super().read(protocol, key)
+
+
+class BadSeed(Store):
+    mutation = "ALTER TABLE migration ADD COLUMN unexpected TEXT"
+
+    def seed(self, records):
+        super().seed(records)
+        with self.db:
+            self.db.execute(self.mutation)
+
+
+class SeedMetadataIndex(Store):
+    def seed(self, records):
+        super().seed(records)
+        with self.db:
+            self.db.execute("CREATE INDEX record_text ON records(raw)")
+            self.db.execute("CREATE TABLE metadata (note TEXT)")
+            self.db.execute("INSERT INTO metadata VALUES ('complete')")
+
+
+class ConsecutiveOnly(Store):
+    def migrate_step(self, interrupt=False):
+        if self.db.execute("SELECT id FROM records WHERE id = "
+                           "(SELECT checkpoint + 1 FROM migration)").fetchone() is None:
+            return False
+        return super().migrate_step(interrupt)
+
+
+class StalledStep(Store):
+    calls = 0
+
+    def migrate_step(self, interrupt=False):
+        self.calls += 1
+        if self.calls > len(RECORDS) + 1:
+            # Test-only escape makes the old unbounded checker reproducible
+            # without a wall-clock timeout or hanging the suite.
+            raise RuntimeError("test sentinel: completion checker exceeded finite fixture")
+        return True
+
+
 class MetadataRejectedWrite(Store):
     mutation = "UPDATE migration SET checkpoint = 999"
 
@@ -412,17 +478,47 @@ class MigrationTests(unittest.TestCase):
         self.addCleanup(store.close)
         return store
 
-    def seeded(self, kind=Store):
+    def seeded(self, kind=Store, records=None):
         store = self.open(kind)
-        store.seed(RECORDS)
+        records = RECORDS if records is None else records
+        store.seed(records)
+        schemas = {
+            "records": [("id", "INTEGER", 1), ("raw", "TEXT", 0), ("minor", "INTEGER", 0)],
+            "migration": [("checkpoint", "INTEGER", 0), ("phase", "TEXT", 0)],
+        }
+        for table, columns in schemas.items():
+            actual = [(row[1], row[2].upper(), row[5])
+                      for row in store.db.execute(f"PRAGMA table_info({table})")]
+            self.assertEqual(actual, columns)
+        self.assertEqual(store.db.execute("SELECT * FROM migration").fetchall(), [(0, "mixed")])
+        self.assertEqual(store.db.execute("SELECT * FROM records ORDER BY id").fetchall(),
+                         [(key, raw, None) for key, raw in sorted(records)])
         return store
 
+    def assert_migration_step(self, store):
+        before = self.database_state(store)
+        checkpoint, phase = before["migration"][0]
+        pending = [row for row in before["records"] if row[0] > checkpoint]
+        result = store.migrate_step()
+        after = self.database_state(store)
+        if pending:
+            self.assertIs(result, True)
+            key, raw, _ = pending[0]
+            expected = [(key, raw, int(Decimal(raw) * 100)) if row[0] == key else row
+                        for row in before["records"]]
+            self.assertEqual(after["records"], expected)
+            self.assertEqual(after["migration"], [(key, phase)])
+        else:
+            self.assertIs(result, False)
+            self.assertEqual(after, before)
+        return result
+
     def finish_migration(self, store):
-        while True:
-            result = store.migrate_step()
-            self.assertIs(type(result), bool)
-            if result is False:
-                return
+        checkpoint = store.db.execute("SELECT checkpoint FROM migration").fetchone()[0]
+        remaining = store.db.execute("SELECT count(*) FROM records WHERE id > ?", (checkpoint,)).fetchone()[0]
+        for _ in range(remaining):
+            self.assertIs(self.assert_migration_step(store), True)
+        self.assertIs(self.assert_migration_step(store), False)
 
     def assert_write_changes_only_target(self, store, protocol, key, value, expected):
         before = store.db.execute("SELECT * FROM records ORDER BY id").fetchall()
@@ -436,7 +532,7 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(old.read(1, 1), {"balance": "001.20"})
         self.assertEqual(new.read(2, 1), {"balance_minor": 120})
         self.assertEqual(new.read(2, 2), {"balance_minor": -50})
-        self.assertIs(new.migrate_step(), True)
+        self.assertIs(self.assert_migration_step(new), True)
         self.assert_write_changes_only_target(old, 1, 1, "002.35", ("002.35", 235))
         self.assertEqual(new.read(2, 1), {"balance_minor": 235})
         self.assert_write_changes_only_target(new, 2, 2, -75, ("-0.75", -75))
@@ -450,6 +546,7 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(self.database_state(new), before)
         with self.assertRaises(ValueError):
             new.read(3, 1)
+        self.assertEqual(self.database_state(new), before)
         self.assertEqual(old.read(1, 1), {"balance": "002.35"})
         self.assertEqual(new.read(2, 1), {"balance_minor": 235})
 
@@ -509,7 +606,7 @@ class MigrationTests(unittest.TestCase):
 
     def assert_restart(self, kind=Store):
         store = self.seeded(kind)
-        self.assertIs(store.migrate_step(), True)
+        self.assertIs(self.assert_migration_step(store), True)
         store.close()
         store = self.open(kind)
         expected = [(1, "001.20", 120), (2, "-0.50", None), (3, "9.99", None)]
@@ -529,14 +626,15 @@ class MigrationTests(unittest.TestCase):
                              "BEGIN SELECT observe_checkpoint(); END")
         with self.assertRaises(Interrupted):
             store.migrate_step(interrupt=True)
-        self.assertIn((2, -50), touched)
+        self.assertEqual({key for key, _ in touched}, {2})
+        self.assertEqual(touched[-1], (2, -50))
         self.assertEqual(checkpoints, [])
         store.close()
         resumed = self.open(kind)
         self.assertEqual(resumed.db.execute("SELECT checkpoint FROM migration").fetchone(), (1,))
         self.assertEqual(resumed.db.execute("SELECT * FROM records ORDER BY id").fetchall(), expected)
         for index, minor in ((1, -50), (2, 999)):
-            self.assertIs(resumed.migrate_step(), True)
+            self.assertIs(self.assert_migration_step(resumed), True)
             key, raw, _ = expected[index]
             expected[index] = (key, raw, minor)
             self.assertEqual(resumed.db.execute("SELECT checkpoint FROM migration").fetchone(), (key,))
@@ -544,7 +642,7 @@ class MigrationTests(unittest.TestCase):
         resumed.close()
         again = self.open(kind)
         before = self.database_state(again)
-        self.assertIs(again.migrate_step(), False)
+        self.assertIs(self.assert_migration_step(again), False)
         self.assertEqual(self.database_state(again), before)
 
     def assert_sampled_write_atomicity(self, kind=Store):
@@ -605,7 +703,7 @@ class MigrationTests(unittest.TestCase):
                          [raw for _, raw in RECORDS])
         self.assertEqual([recovered.read(2, key)["balance_minor"] for key, _ in RECORDS],
                          [120, -50, 999])
-        self.assertIs(recovered.migrate_step(), False)
+        self.assertIs(self.assert_migration_step(recovered), False)
         self.assertEqual(self.database_state(recovered), expected)
         backup = self.open(path=snapshot)
         self.assertEqual(self.database_state(backup), expected)
@@ -669,7 +767,7 @@ class MigrationTests(unittest.TestCase):
             for key, raw in RECORDS:
                 store.write(1, key, raw)
         for _ in range(steps):
-            self.assertIs(store.migrate_step(), True)
+            self.assertIs(self.assert_migration_step(store), True)
         before = self.database_state(store)
         with self.assertRaises(Exception):
             store.finalize()
@@ -884,6 +982,53 @@ class MigrationTests(unittest.TestCase):
                     self.path = Path(self.temp.name) / f"step-result-{index}-{check.__name__}.sqlite"
                     with self.assertRaises(AssertionError):
                         check(WrongResult)
+
+    def test_extra_interrupted_row_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_restart(ExtraInterruptedRow)
+
+    def test_repeated_updates_to_next_row_are_accepted(self):
+        self.assert_restart(RepeatedNextRow)
+
+    def test_unsupported_read_mutation_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_coexistence(MutatingUnsupportedRead)
+
+    def test_seed_schema_defect_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.seeded(BadSeed)
+
+    def test_seed_metadata_defects_are_detected(self):
+        for index, statement in enumerate(("UPDATE migration SET checkpoint = 1",
+                                           "INSERT INTO migration VALUES (0, 'mixed')")):
+            with self.subTest(statement=statement):
+                class BadMetadata(BadSeed):
+                    mutation = statement
+
+                self.path = Path(self.temp.name) / f"bad-seed-{index}.sqlite"
+                with self.assertRaises(AssertionError):
+                    self.seeded(BadMetadata)
+
+    def test_seed_metadata_and_index_are_accepted(self):
+        self.assert_recovery(SeedMetadataIndex)
+
+    def test_gapped_ids_migrate_in_order(self):
+        store = self.seeded(records=[(9, "9.99"), (2, "001.20"), (5, "-0.50")])
+        self.finish_migration(store)
+        self.assertEqual(store.db.execute("SELECT checkpoint FROM migration").fetchone(), (9,))
+        self.assertEqual(store.db.execute("SELECT * FROM records ORDER BY id").fetchall(),
+                         [(2, "001.20", 120), (5, "-0.50", -50), (9, "9.99", 999)])
+
+    def test_consecutive_id_assumption_is_detected(self):
+        store = self.seeded(ConsecutiveOnly, records=[(9, "9.99"), (2, "001.20"), (5, "-0.50")])
+        with self.assertRaises(AssertionError):
+            self.finish_migration(store)
+
+    def test_stalled_migration_fails_without_timeout(self):
+        store = self.seeded(StalledStep)
+        with self.assertRaises(AssertionError):
+            self.finish_migration(store)
+        self.assertEqual(store.calls, 1)
 
     def test_rejected_write_metadata_seeds_are_detected(self):
         for index, statement in enumerate((
