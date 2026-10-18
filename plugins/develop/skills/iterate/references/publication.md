@@ -47,6 +47,10 @@ git push \
 
 Derive these variables from the verified target, not example names. Never use plain force, an unqualified lease, another/default/protected ref or a shortened expected SHA. Re-read remote/tracking/local SHAs and restart current-commit validation after an approved update.
 
+## Requested deployment or operations handoff
+
+Readiness and publication do not establish deployment. When deployment or an operational handoff is requested, use the selected owner's existing mechanism and [runtime contracts](../../upgrade/references/runtime-contracts.md); identify the candidate and target environment, required authority, acceptance evidence, rollback/recovery owner and remaining human gates. Carry unknown identities or unavailable checks explicitly. Only execute operational changes already authorized for that target; do not invent a deployment framework or treat merge/push authority as production authority.
+
 ## Completion
 
 Selected changes must be accounted for in verified commits and remote refs, with expected checks and requested reviews complete for the current revision. No intended repair may remain uncommitted. Report preserved unrelated dirty work separately; do not require its removal. An unresolved fixed review thread needing external authorization is a reported blocker, not a reason to republish the same fix.

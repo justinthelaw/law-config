@@ -23,6 +23,12 @@ Choose the mode that matches the request; change modes only within its authorize
 
 Missing implementation access does not prevent safe read-only inspection. If publication validation exposes a code defect, use the implementation workflow for an authorized repair instead of expanding delivery scope.
 
+## Compose around the outcome
+
+For a CI and Codex-review loop, use the [GitHub adapter](references/github-monitoring.md) and explicitly requested [Codex review adapter](references/codex-review.md). CI-only requests retain the CI-only default. One coordinator classifies current-head results, verifies findings, uses [Debug](references/debugging.md) when diagnosis is needed, then performs only authorized in-scope repair, validation and publication. Out-of-scope findings remain recorded; infrastructure failures follow validation's evidence/retry bounds instead of speculative product edits.
+
+Keep one watcher per selected target/revision. A new head replaces its watch and invalidates affected checks/reviews; preserve unresolved findings and the invocation rather than duplicating review requests or resetting budgets. Changed steering updates the shared intent contract. At the requested stop condition, reconcile the unchanged head, stop the watcher and hand off results or the precise blocker. No recurring schedule is created unless requested.
+
 ## Implementation workflow
 
 1. **Resolve.** Inspect the selected checkout's origin/upstream and exact provider identity. Preserve nested groups, change-request paths and artifact namespaces. Resolve an ambiguous shorthand through user/repository context; ask if its provider remains unclear. Use supported native tools for that host; never reroute an unsupported provider to another service.
