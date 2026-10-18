@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "communication-final",
-  "revision": "1",
+  "revision": "2",
   "scenario_ref": "scenarios.md#communication-and-handoff-cases",
   "agent": {
     "prompt": "Use Develop in this isolated local exercise. The supplied records describe a fictional repository; do not contact a provider or perform external writes. Finish this local task by giving the user a concise, self-contained handoff from completion.json. No further execution is available; retain incomplete gates accurately.",
