@@ -40,6 +40,25 @@ def inputs(name):
     return {item["path"]: item["content"] for item in fixture(name)["agent"]["inputs"]}
 
 
+class QualityResult(unittest.TextTestResult):
+    """Distinguish a skipped method from a skipped subtest within a method."""
+    wholly_skipped = 0
+    active_test = None
+
+    def startTest(self, test):
+        self.active_test = test
+        super().startTest(test)
+
+    def addSkip(self, test, reason):
+        if test is self.active_test:
+            self.wholly_skipped += 1
+        super().addSkip(test, reason)
+
+    def stopTest(self, test):
+        super().stopTest(test)
+        self.active_test = None
+
+
 def run_suite(source, implementation, test_name=None):
     """Run trusted packaged Python in fresh modules, restoring the import table."""
     shipping = types.ModuleType("shipping")
@@ -50,14 +69,14 @@ def run_suite(source, implementation, test_name=None):
         loader = unittest.TestLoader()
         suite = (loader.loadTestsFromName(test_name, tests) if test_name
                  else loader.loadTestsFromModule(tests))
-        return unittest.TextTestRunner(stream=io.StringIO()).run(suite)
+        return unittest.TextTestRunner(stream=io.StringIO(), resultclass=QualityResult).run(suite)
 
 
 def assess(source, reference):
     """Accept only useful runs on both controls and assertion detection of the bug."""
     results = {name: run_suite(source, implementation)
                for name, implementation in {"reference": reference, **VARIANTS}.items()}
-    complete = all(result.testsRun > len(result.skipped) + len(result.expectedFailures)
+    complete = all(result.testsRun > result.wholly_skipped + len(result.expectedFailures)
                    and not result.errors and not result.unexpectedSuccesses
                    for result in results.values())
     accepted = (complete and results["reference"].wasSuccessful()
@@ -150,6 +169,30 @@ class OptionalTests(unittest.TestCase):
         self.assertTrue(accepted)
         self.assertTrue(all(len(result.expectedFailures) == 1 for result in results.values()))
         self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_skipped_subtest_does_not_hide_executed_boundary_assertion(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        with self.subTest(optional=True):
+            self.skipTest("unrelated optional case")
+        self.assertEqual(shipping_fee(5000), 0)
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+        self.assertTrue(all(result.testsRun == len(result.skipped) == 1
+                            for result in results.values()))
+
+    def test_only_skipped_subtests_cannot_detect_the_defect(self):
+        source = """import unittest
+class Tests(unittest.TestCase):
+    def test_optional(self):
+        with self.subTest(optional=True):
+            self.skipTest("no executed assertion")
+"""
+        accepted, _ = assess(source, self.sound["shipping.py"])
+        self.assertFalse(accepted)
 
     def test_expected_failure_only_suite_is_incomplete(self):
         suite = """import unittest
