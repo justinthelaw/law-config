@@ -35,7 +35,9 @@ try{
   await page.screenshot({path:path.join(qa,`explorer-${viewport.name}.png`),fullPage:true});
   report.screenshots.push(`qa/explorer-${viewport.name}.png`);
   report.checks.push({test:`${viewport.name}: horizontal overflow`,pass:await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)});
-  for(const id of ['build','review','incident','ci','upgrade','clean','deep','codex']){
+  const routeIds=await page.locator('.choice[data-route]').evaluateAll(buttons=>buttons.map(button=>button.dataset.route));
+  report.checks.push({test:`${viewport.name}: route controls present and unique`,pass:routeIds.length>0&&new Set(routeIds).size===routeIds.length});
+  for(const id of routeIds){
    const button=page.locator(`[data-route="${id}"]`);await button.click();
    const pressed=await button.getAttribute('aria-pressed');
    const selectedCount=await page.locator('.choice[aria-pressed="true"]').count();
