@@ -895,6 +895,18 @@ class KeyUnsupported(Store):
         return super().write(protocol, key, value)
 
 
+class IntegerUnsupportedWrite(Store):
+    alias_integer = True
+
+    def write(self, protocol, key, value):
+        if protocol not in (1, 2):
+            if not isinstance(value, int):
+                raise ValueError("integer required")
+            if self.alias_integer:
+                protocol = 2
+        return super().write(protocol, key, value)
+
+
 class RebuiltFinalSchema(Store):
     columns = "id INTEGER, minor INTEGER"
 
@@ -1180,7 +1192,8 @@ class MigrationTests(unittest.TestCase):
         # Two representative unsupported identifiers, not exhaustive protocol coverage.
         for protocol in (3, 4):
             for key, _ in RECORDS:
-                self.assert_rejected_operation(store, lambda: store.write(protocol, key, "99.00"))
+                for value in ("99.00", 999):
+                    self.assert_rejected_operation(store, lambda: store.write(protocol, key, value))
                 self.assert_rejected_operation(store, lambda: store.read(protocol, key))
 
     def assert_concurrent_write(self, kind=Store, old_kind=None):
@@ -2260,6 +2273,19 @@ class MigrationTests(unittest.TestCase):
                 self.path = Path(self.temp.name) / f"unsupported-four-{operation}.sqlite"
                 with self.assertRaises(AssertionError):
                     self.assert_coexistence(UnsupportedFour)
+
+    def test_unsupported_write_guard_is_independent_of_wire_shape(self):
+        for alias in (True, False):
+            with self.subTest(alias=alias):
+                class ValueShapeFirst(IntegerUnsupportedWrite):
+                    alias_integer = alias
+
+                self.path = Path(self.temp.name) / f"unsupported-wire-{alias}.sqlite"
+                if alias:
+                    with self.assertRaises(AssertionError):
+                        self.assert_coexistence(ValueShapeFirst)
+                else:
+                    self.assert_coexistence(ValueShapeFirst)
 
     def test_populated_pending_row_interruption_is_checked(self):
         with self.assertRaises(AssertionError):
