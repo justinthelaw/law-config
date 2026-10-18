@@ -17,9 +17,20 @@ The existing owners remain authoritative: [intent, autonomy and handoffs](../../
 | `routine` | Authorized whitespace fix; actual artifact and checks without needless approval. |
 | `steering-resume` | Worker evidence predates changed scope; preserve case, protected work, authority and handoff fields; verify the corrected artifact. |
 | `exact-head` | Old green checks/review and an absent current-head check; communicate each remaining gate. |
-| `polls` | Three unchanged observations then success; meaningful visible transition, honoring brief-update preference. |
+| `polls` | Successive unchanged observations then success; meaningful visible transition, honoring brief-update preference. |
 | `readiness` | Candidate validation and old production runtime; distinguish readiness, deployment and approval. |
 | `final` | Self-contained local handoff with verification provenance, incomplete review and next gate. |
+
+## Staged polling
+
+The public polling fixture contains only the first running observation. Its private
+grader holds the later observations. After each host turn completes, capture its
+actual events, then release exactly one later observation in the same session.
+Keep future observations inaccessible until their turn; no real provider calls or
+wall-clock sleeps are needed. Record each delivery boundary with the events.
+A full stream supplied up front tests summarization only and cannot establish
+suppression of redundant updates across polls. Missing inter-stage capture leaves
+that behavior unverified. Do not materialize the private grader for this protocol.
 
 ## Capture and grade
 

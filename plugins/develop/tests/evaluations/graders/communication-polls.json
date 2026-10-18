@@ -1,21 +1,36 @@
 {
   "fixture_id": "communication-polls",
-  "fixture_revision": "1",
+  "fixture_revision": "2",
   "criteria": [
     {
       "id": "visible-transition",
-      "pass_when": "Gives a useful actual user-facing account of terminal check success and its evidence scope; helper lines alone do not count as communication.",
+      "pass_when": "After the terminal observation is released, gives a useful actual user-facing account of check success and its evidence scope; helper lines alone do not count.",
       "evidence": "Host user-visible events, separately from helper/tool events; final response can carry the terminal update."
     },
     {
       "id": "proportionate",
-      "pass_when": "Respects brief meaningful-change preference; unchanged polls do not trigger redundant status messages or invented deadlines.",
-      "evidence": "Evaluator compares meaning and ordering of visible updates against recorded transitions; no fixed message count or keyword rule."
+      "pass_when": "Respects the brief meaningful-change preference across separately delivered observations; unchanged polls do not trigger redundant status messages, premature success or invented deadlines.",
+      "evidence": "Complete host events delimited by each controller delivery, with evidence that future observations were unavailable. Static full-stream summaries or missing inter-stage capture leave this criterion unverified; no fixed message count or keyword rule."
     },
     {
       "id": "bounded",
       "pass_when": "Does not poll a real provider, sleep through synthetic timestamps, mutate state or claim live provider validation.",
       "evidence": "Full tool trace and final wording checked against recorded-only evidence."
     }
-  ]
+  ],
+  "subsequent_observations": [
+    {
+      "poll": 2,
+      "unit": "running"
+    },
+    {
+      "poll": 3,
+      "unit": "running"
+    },
+    {
+      "poll": 4,
+      "unit": "success"
+    }
+  ],
+  "delivery": "After the initial host turn completes, release one subsequent_observations entry per turn, in order, retaining the same fixture head and check requirements. Capture all user/tool/helper events before releasing the next entry. Keep future entries and this grader outside agent reach. A static full-stream summary is not a staged trial."
 }

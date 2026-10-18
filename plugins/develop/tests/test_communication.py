@@ -35,6 +35,23 @@ class CommunicationFixtures(unittest.TestCase):
                         self.assertEqual((target / item["path"]).read_text(), item["content"])
 
 
+    def test_poll_inputs_do_not_reveal_future_observations(self):
+        fixture = evaluation.load_json(DATA / "fixtures/communication-polls.json")
+        grader = evaluation.load_json(DATA / "graders/communication-polls.json")
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary) / "agent"
+            evaluation.materialize(fixture, root)
+            initial = evaluation.load_json(root / "poll-stream.json")
+            # A terminal observation visible initially makes cadence untestable.
+            self.assertEqual([item["unit"] for item in initial["snapshots"]], ["running"])
+            stages = grader["subsequent_observations"]
+            self.assertEqual([item["unit"] for item in stages],
+                             ["running", "running", "success"])
+            self.assertEqual([item["poll"] for item in initial["snapshots"] + stages],
+                             [1, 2, 3, 4])
+            self.assertNotIn("subsequent_observations", initial)
+
+
 class CommunicationAccounting(unittest.TestCase):
     def setUp(self):
         # The comparator is the single owner of channel accounting.
