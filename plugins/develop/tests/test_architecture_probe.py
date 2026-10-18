@@ -573,6 +573,45 @@ BAD_LATE_PEER_OBSERVER = REGISTER_MIXED_CALLERS.replace(
 )
 
 
+# Existing histories may be retained; submitting must append exactly one new job.
+REGISTER_BEFORE_WORK = REGISTER_MIXED_CALLERS.replace(
+    "        self.peers.append(self)",
+    "        self.peers.append(self)\n"
+    "        if len(self.peers) == 2 and not transport.jobs:\n"
+    "            transport.preconstructed = True",
+)
+BAD_SUBMISSION_REPLACES_PREFIX = REGISTER_BEFORE_WORK.replace(
+    "        self.pending = self.transport.start(query, receive)",
+    "        if getattr(self.transport, 'preconstructed', False) and self.transport.jobs:\n"
+    "            self.transport.jobs.pop(0)\n"
+    "            self.transport.start('silent extra', lambda value: None)\n"
+    "        self.pending = self.transport.start(query, receive)",
+)
+COUNT_PENDING_REPLACEMENTS = GOOD.replace(
+    "        self.closed = False",
+    "        self.closed = False\n"
+    "        self.pending_replacements = 0",
+).replace(
+    "        if self.pending is not None:\n            self.pending.cancel()\n        token = object()",
+    "        if self.pending is not None:\n"
+    "            self.pending_replacements += 1\n"
+    "            self.pending.cancel()\n"
+    "        token = object()",
+)
+BAD_BURST_TERMINATES_CALLER = COUNT_PENDING_REPLACEMENTS.replace(
+    "                on_value(value)",
+    "                on_value(value)\n"
+    "                if self.pending_replacements >= 2:\n"
+    "                    self.closed = True",
+)
+BAD_COMPLETED_CONSTRUCTION_CLOSED = RETAIN_TRANSPORT_COMPLETED.replace(
+    "        self.requests = LatestRequest(transport)",
+    "        self.requests = LatestRequest(transport)\n"
+    "        if hasattr(transport, 'completed'):\n"
+    "            self.requests.closed = True",
+)
+
+
 def peer_lifecycle_defect(caller_name, peer_name, defect):
     """Scope each seed to one API/peer pairing so every matrix cell is exercised."""
     condition = (
@@ -612,9 +651,10 @@ def module_from_source(source):
 
 
 def start_job(case, transport, caller, method, payload):
-    count = len(transport.jobs)
+    jobs = tuple(transport.jobs)
     getattr(caller, method)(payload)
-    case.assertEqual(len(transport.jobs), count + 1, "submission must start exactly one job")
+    case.assertEqual(len(transport.jobs), len(jobs) + 1, "submission must start exactly one job")
+    case.assertEqual(tuple(transport.jobs[:-1]), jobs, "submission replaced existing jobs")
     job = transport.jobs[-1]
     case.assertEqual(job.query, payload, "submission payload was changed")
     return job
@@ -669,18 +709,19 @@ def redeliver_completed(case, transport, jobs, outputs):
         case.assertEqual(list(outputs), before, "completed callback repeated with peers")
 
 
-def resume_survivor(case, transport, caller, method, values, closed_values):
+def resume_caller(case, transport, caller, method, values, peer_values=()):
+    """An open caller can start again without changing completed work or peers."""
     jobs = tuple(transport.jobs)
     cancellations = [job.cancel_count for job in jobs]
-    before, closed_before = list(values), list(closed_values)
-    new = start_job(case, transport, caller, method, "after peer close")
+    before, peer_before = list(values), list(peer_values)
+    new = start_job(case, transport, caller, method, "next request")
     case.assertEqual([job.cancel_count for job in jobs], cancellations,
-                     "survivor submission cancelled existing work")
+                     "resumed caller cancelled existing work")
     case.assertEqual(values, before, "submission changed observer")
-    deliver_job(case, transport, new, "new survivor result")
-    deliver_job(case, transport, new, "duplicate survivor result")
-    case.assertEqual(values, before + ["new survivor result"])
-    case.assertEqual(closed_values, closed_before, "survivor changed closed observer")
+    deliver_job(case, transport, new, "next result")
+    deliver_job(case, transport, new, "duplicate next result")
+    case.assertEqual(values, before + ["next result"])
+    case.assertEqual(list(peer_values), peer_before, "resumed caller changed peer observer")
 
 
 def probe_idle_peer_close(case, caller_specs, transport_type):
@@ -715,8 +756,8 @@ def probe_idle_peer_close(case, caller_specs, transport_type):
             deliver_job(case, transport, pending, "duplicate peer")
             case.assertEqual(values[1 - closer_index], ["peer complete", "peer survives"])
             case.assertEqual(values[closer_index], ["closer complete"] if completed_closer else [])
-            resume_survivor(case, transport, peer, peer_method,
-                            values[1 - closer_index], values[closer_index])
+            resume_caller(case, transport, peer, peer_method,
+                          values[1 - closer_index], values[closer_index])
             reject_closed_request(case, transport, closer, close_method, values)
 
 
@@ -763,8 +804,8 @@ def probe_three_callers(case, caller_specs, active_index, peer_completed, transp
     case.assertEqual(values, expected_values)
     for index, peer_index in ((first_peer, second_peer), (second_peer, first_peer)):
         peer_before = list(values[peer_index])
-        resume_survivor(case, transport, callers[index], caller_specs[index][1],
-                        values[index], values[active_index])
+        resume_caller(case, transport, callers[index], caller_specs[index][1],
+                      values[index], values[active_index])
         case.assertEqual(values[peer_index], peer_before, "survivor changed peer observer")
     cancellations = [job.cancel_count for job in transport.jobs]
     for index in (first_peer, second_peer):
@@ -905,6 +946,7 @@ def probe_change(case, app, transport_type):
         deliver_job(case, transport, latest, "latest value")
         deliver_job(case, transport, latest, "duplicate latest")
         case.assertEqual(values, ["latest value"])
+        resume_caller(case, transport, caller, method, values)
 
     # Closed callers reject new work without repeating cleanup in any start state.
     for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
@@ -982,7 +1024,7 @@ def probe_change(case, app, transport_type):
                 deliver_job(case, transport, job, "duplicate after close")
             case.assertEqual(left_values, ["left"], "closed callback was published")
             reject_closed_request(case, transport, left, left_method, (left_values, right_values))
-            resume_survivor(case, transport, right, right_method, right_values, left_values)
+            resume_caller(case, transport, right, right_method, right_values, left_values)
 
         # Reverse close order with fresh instances: the first stays live.
         transport = transport_type()
@@ -1002,7 +1044,7 @@ def probe_change(case, app, transport_type):
         deliver_job(case, transport, second, "duplicate after close")
         case.assertEqual(right_values, [], "closed callback was published")
         reject_closed_request(case, transport, right, right_method, (left_values, right_values))
-        resume_survivor(case, transport, left, left_method, left_values, right_values)
+        resume_caller(case, transport, left, left_method, left_values, right_values)
         probe_idle_peer_close(case, caller_specs, transport_type)
 
         # Construction must preserve either pending or completed peer work.
@@ -1022,6 +1064,7 @@ def probe_change(case, app, transport_type):
             deliver_job(case, transport, existing, "duplicate after construction")
             case.assertEqual(left_values, ["survives construction"])
             case.assertEqual(right_values, [])
+            resume_caller(case, transport, right, right_method, right_values, left_values)
 
     # Reuse one bounded three-participant sequence for each API and active position.
     for caller_specs in product((screen_spec, save_spec), repeat=3):
@@ -1109,7 +1152,8 @@ class ArchitectureProbe(unittest.TestCase):
                          module_from_source(self.transport).Transport)
 
     def test_retained_history_is_benign(self):
-        for source in (RETAIN_CANCELLED, RETAIN_CLOSED_JOB, COUNT_DELIVERIES, RETAIN_TRANSPORT_COMPLETED):
+        for source in (RETAIN_CANCELLED, RETAIN_CLOSED_JOB, COUNT_DELIVERIES, RETAIN_TRANSPORT_COMPLETED,
+                       COUNT_PENDING_REPLACEMENTS, REGISTER_BEFORE_WORK):
             with self.subTest(source=source):
                 probe_change(self, module_from_source(source),
                              module_from_source(self.transport).Transport)
@@ -1371,6 +1415,16 @@ class ArchitectureProbe(unittest.TestCase):
             (BAD_LATE_PEER_OBSERVER, "late callback changed closed observers"),
         ):
             with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
+
+    def test_submission_history_and_open_caller_reuse(self):
+        for source, error, message in (
+            (BAD_SUBMISSION_REPLACES_PREFIX, AssertionError, "submission replaced existing jobs"),
+            (BAD_BURST_TERMINATES_CALLER, RuntimeError, "closed"),
+            (BAD_COMPLETED_CONSTRUCTION_CLOSED, RuntimeError, "closed"),
+        ):
+            with self.subTest(source=source), self.assertRaisesRegex(error, message):
                 probe_change(self, module_from_source(source),
                              module_from_source(self.transport).Transport)
 
