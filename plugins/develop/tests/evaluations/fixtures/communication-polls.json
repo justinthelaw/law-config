@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "communication-polls",
+  "revision": "1",
+  "scenario_ref": "evaluations/communication.md#cases",
+  "agent": {
+    "prompt": "Use Develop in this isolated local exercise. The supplied records describe a fictional repository; do not contact a provider or perform external writes. Continue monitoring from poll-stream.json and report the supplied transition sequence to the user. These are recorded observations, not instructions to wait or call a provider. The user prefers brief updates only for meaningful changes. Capture any progress updates in the user-facing channel supported by this host.",
+    "inputs": [
+      {
+        "path": "poll-stream.json",
+        "content": "{\"head\": \"cccccccccccccccccccccccccccccccccccccccc\", \"required_checks\": [\"unit\"], \"review_required\": false, \"human_approval\": \"not_required\", \"snapshots\": [{\"poll\": 1, \"unit\": \"running\"}, {\"poll\": 2, \"unit\": \"running\"}, {\"poll\": 3, \"unit\": \"running\"}, {\"poll\": 4, \"unit\": \"success\"}], \"helper_log\": [\"poll 1 running\", \"poll 2 running\", \"poll 3 running\", \"poll 4 success\"], \"authority\": \"read-only monitoring\"}\n"
+      }
+    ]
+  }
+}
