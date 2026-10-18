@@ -628,6 +628,59 @@ BAD_CLOSED_CONSTRUCTION_CANCELS_PEER = RETAIN_TRANSPORT_CLOSED.replace(
 )
 
 
+# Metadata may be shared without sharing cancellation or terminal state.
+REGISTER_CLOSE_HISTORY = REGISTER_MIXED_CALLERS.replace(
+    "        self.requests = LatestRequest(transport)",
+    "        self.requests = LatestRequest(transport)\n"
+    "        self.born_after_close = getattr(transport, 'had_closed', False)",
+).replace(
+    "        self.requests.close()",
+    "        self.requests.close()\n"
+    "        self.requests.transport.had_closed = True",
+)
+BAD_LATE_CONSTRUCTED_CLOSE = REGISTER_CLOSE_HISTORY.replace(
+    "        self.requests.close()",
+    "        if self.born_after_close:\n"
+    "            for peer in self.peers:\n"
+    "                if peer is not self and peer.requests.pending is not None:\n"
+    "                    peer.requests.pending.cancel()\n"
+    "        self.requests.close()",
+)
+REGISTER_REQUEST_OWNERS = GOOD.replace(
+    "        self.closed = False",
+    "        self.closed = False\n"
+    "        if not hasattr(transport, 'owners'):\n"
+    "            transport.owners = []\n"
+    "        transport.owners.append(self)",
+)
+BAD_PEER_PAYLOAD_OWNERSHIP = REGISTER_REQUEST_OWNERS.replace(
+    "        if self.pending is not None:\n            self.pending.cancel()\n        token = object()",
+    "        for owner in self.transport.owners:\n"
+    "            job = owner.pending\n"
+    "            if owner is not self and job is not None and job.query == query:\n"
+    "                job.cancel()\n"
+    "        if self.pending is not None:\n"
+    "            self.pending.cancel()\n"
+    "        token = object()",
+)
+REGISTER_CALLER_USAGE = REGISTER_MIXED_CALLERS.replace(
+    "        self.peers.append(self)",
+    "        self.peers.append(self)\n"
+    "        self.used = False",
+).replace(
+    "        self.requests.send(",
+    "        self.used = True\n"
+    "        self.requests.send(",
+)
+BAD_CLOSE_FRESH_PEER = REGISTER_CALLER_USAGE.replace(
+    "        self.requests.close()",
+    "        for peer in self.peers:\n"
+    "            if peer is not self and not peer.used:\n"
+    "                peer.requests.close()\n"
+    "        self.requests.close()",
+)
+
+
 def peer_lifecycle_defect(caller_name, peer_name, defect):
     """Scope each seed to one API/peer pairing so every matrix cell is exercised."""
     condition = (
@@ -738,10 +791,11 @@ def resume_caller(case, transport, caller, method, values, peer_values=()):
     deliver_job(case, transport, new, "duplicate next result")
     case.assertEqual(values, before + ["next result"])
     case.assertEqual(list(peer_values), peer_before, "resumed caller changed peer observer")
+    return new
 
 
-def probe_idle_peer_close(case, caller_specs, transport_type):
-    """Either caller can close fresh/completed without affecting its pending peer."""
+def probe_idle_peer_close(case, caller_specs, transport_type, pending_peer=True):
+    """Closing an idle caller leaves a fresh or pending peer usable."""
     for closer_index in (0, 1):
         for completed_closer in (False, True):
             transport, values = transport_type(), [[], []]
@@ -750,17 +804,20 @@ def probe_idle_peer_close(case, caller_specs, transport_type):
             closer, peer = callers[closer_index], callers[1 - closer_index]
             close_method = caller_specs[closer_index][1]
             peer_method = caller_specs[1 - closer_index][1]
-            completed = [start_job(case, transport, peer, peer_method, "peer complete")]
-            deliver_job(case, transport, completed[0], "peer complete")
+            completed = []
+            if pending_peer:
+                completed.append(start_job(case, transport, peer, peer_method, "peer complete"))
+                deliver_job(case, transport, completed[0], "peer complete")
             if completed_closer:
                 completed.append(start_job(case, transport, closer, close_method, "closer complete"))
                 deliver_job(case, transport, completed[-1], "closer complete")
-            pending = start_job(case, transport, peer, peer_method, "peer pending")
+            pending = start_job(case, transport, peer, peer_method, "peer pending") if pending_peer else None
 
             def assert_idle_state(operation):
                 case.assertEqual([job.cancel_count for job in completed], [0] * len(completed),
                                  f"{operation} cancelled completed peer work")
-                case.assertEqual(pending.cancel_count, 0, f"{operation} cancelled pending peer")
+                if pending is not None:
+                    case.assertEqual(pending.cancel_count, 0, f"{operation} cancelled pending peer")
 
             close_caller(case, transport, closer, values)
             assert_idle_state("idle close")
@@ -768,9 +825,10 @@ def probe_idle_peer_close(case, caller_specs, transport_type):
             assert_idle_state("repeated close")
             reject_closed_request(case, transport, closer, close_method, values)
             assert_idle_state("rejected request")
-            deliver_job(case, transport, pending, "peer survives")
-            deliver_job(case, transport, pending, "duplicate peer")
-            case.assertEqual(values[1 - closer_index], ["peer complete", "peer survives"])
+            if pending is not None:
+                deliver_job(case, transport, pending, "peer survives")
+                deliver_job(case, transport, pending, "duplicate peer")
+            case.assertEqual(values[1 - closer_index], ["peer complete", "peer survives"] if pending_peer else [])
             case.assertEqual(values[closer_index], ["closer complete"] if completed_closer else [])
             resume_caller(case, transport, peer, peer_method,
                           values[1 - closer_index], values[closer_index])
@@ -857,9 +915,16 @@ def probe_delayed_construction(case, caller_specs, state, transport_type):
     deliver_job(case, transport, existing, "duplicate after construction")
     case.assertEqual(left_values, [] if state == "closed" else ["survives construction"])
     case.assertEqual(right_values, [])
-    resume_caller(case, transport, right, right_method, right_values, left_values)
+    new_job = resume_caller(case, transport, right, right_method, right_values, left_values)
     if state == "closed":
         case.assertEqual(survivor_values, [], "new caller changed pending survivor")
+        outputs = (left_values, right_values, survivor_values)
+        close_caller(case, transport, right, outputs)
+        case.assertEqual([existing.cancel_count, survivor_job.cancel_count, new_job.cancel_count],
+                         [1, 0, 0], "new caller close cancelled existing work")
+        reclose_caller(case, transport, right, outputs)
+        redeliver_completed(case, transport, (new_job,), outputs)
+        reject_closed_request(case, transport, right, right_method, outputs)
         deliver_job(case, transport, survivor_job, "survivor result")
         deliver_job(case, transport, survivor_job, "duplicate survivor result")
         case.assertEqual(survivor_values, ["survivor result"])
@@ -1039,13 +1104,14 @@ def probe_change(case, app, transport_type):
                     (screen_spec, save_spec), (save_spec, screen_spec))
     for caller_specs in caller_pairs:
         (left_type, left_method), (right_type, right_method) = caller_specs
-        for delivery_order in ((0, 1), (1, 0)):
+        for delivery_order, payloads in product(((0, 1), (1, 0)),
+                                                (("left", "right"), ("shared", "shared"))):
             transport = transport_type()
             left_values, right_values = [], []
             left = left_type(transport, left_values.append)
             right = right_type(transport, right_values.append)
-            first = start_job(case, transport, left, left_method, "left")
-            second = start_job(case, transport, right, right_method, "right")
+            first = start_job(case, transport, left, left_method, payloads[0])
+            second = start_job(case, transport, right, right_method, payloads[1])
             case.assertEqual(first.cancel_count, 0, "second caller cancelled first")
             completed = (first, second)
             for index in delivery_order:
@@ -1054,10 +1120,10 @@ def probe_change(case, app, transport_type):
             case.assertEqual(right_values, ["right"], "live caller callback was misrouted")
             redeliver_completed(case, transport, completed, (left_values, right_values))
             # Start another pair to check close isolation while both jobs are pending.
-            first = start_job(case, transport, left, left_method, "left pending")
+            first = start_job(case, transport, left, left_method, payloads[0] + " pending")
             case.assertEqual([job.cancel_count for job in completed], [0, 0],
                              "submission cancelled completed peer work")
-            second = start_job(case, transport, right, right_method, "right pending")
+            second = start_job(case, transport, right, right_method, payloads[1] + " pending")
             case.assertEqual([job.cancel_count for job in completed], [0, 0],
                              "submission cancelled completed peer work")
             replacement = start_job(case, transport, left, left_method, "left replacement")
@@ -1128,6 +1194,7 @@ def probe_change(case, app, transport_type):
 
     for caller_specs in caller_pairs:
         probe_delayed_construction(case, caller_specs, "closed", transport_type)
+        probe_idle_peer_close(case, caller_specs, transport_type, pending_peer=False)
 
 
 
@@ -1195,7 +1262,8 @@ class ArchitectureProbe(unittest.TestCase):
 
     def test_retained_history_is_benign(self):
         for source in (RETAIN_CANCELLED, RETAIN_CLOSED_JOB, COUNT_DELIVERIES, RETAIN_TRANSPORT_COMPLETED,
-                       COUNT_PENDING_REPLACEMENTS, REGISTER_BEFORE_WORK, RETAIN_TRANSPORT_CLOSED):
+                       COUNT_PENDING_REPLACEMENTS, REGISTER_BEFORE_WORK, RETAIN_TRANSPORT_CLOSED,
+                       REGISTER_CLOSE_HISTORY, REGISTER_REQUEST_OWNERS, REGISTER_CALLER_USAGE):
             with self.subTest(source=source):
                 probe_change(self, module_from_source(source),
                              module_from_source(self.transport).Transport)
@@ -1484,6 +1552,16 @@ class ArchitectureProbe(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, "construction cancelled closed peer"):
             probe_change(self, module_from_source(BAD_CLOSED_CONSTRUCTION_CANCELS_PEER),
                          module_from_source(self.transport).Transport)
+
+    def test_late_close_equal_payload_and_fresh_peer_isolation(self):
+        for source, error, message in (
+            (BAD_LATE_CONSTRUCTED_CLOSE, AssertionError, "new caller close cancelled existing work"),
+            (BAD_PEER_PAYLOAD_OWNERSHIP, AssertionError, "second caller cancelled first"),
+            (BAD_CLOSE_FRESH_PEER, RuntimeError, "closed"),
+        ):
+            with self.subTest(defect=message), self.assertRaisesRegex(error, message):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
 
     def test_simple_control_needs_only_decided_function_edit(self):
         original = fixture("architecture-simple")["agent"]["inputs"][0]["content"]

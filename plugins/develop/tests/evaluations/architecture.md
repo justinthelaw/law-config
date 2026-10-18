@@ -41,9 +41,13 @@ API, a three-request pending burst checks cancellation and duplicate stale
 delivery before completion.
 The open caller is reused after that burst, and a later-constructed peer must
 accept and publish its first request while preserving existing work and observers.
+That new caller also closes without cancelling the pending survivor or its own
+completed job. Idle-close cases keep a never-used peer usable for its first request.
 A repeated identical payload checks that request identity stays independent of
 payload identity: the cancelled callback stays suppressed and its replacement
 publishes once, for either API.
+Caller-pair sequences use both distinct and equal payloads to check that identical
+text does not transfer ownership between callers.
 The completed replacement sequence rechecks cancellation counts and terminal close
 after its third request. Completed peer callbacks are redelivered after close.
 A bounded three-caller sequence covers same-API and mixed groups, with pending
