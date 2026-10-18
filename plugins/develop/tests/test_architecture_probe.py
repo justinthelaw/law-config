@@ -322,6 +322,25 @@ BAD_REPEATED_STALE = GOOD.replace(
     "            if self.token is token or (not succeeded and deliveries == 2 and not self.closed):\n"
     "                succeeded = True",
 )
+BAD_REJECTED_COMPLETED_PEER = RETAIN_COMPLETED_PEERS.replace(
+    "        self.requests.send(",
+    "        if self.requests.closed:\n"
+    "            for peer in self.peers:\n"
+    "                completed = getattr(peer.requests, 'completed', None)\n"
+    "                if peer is not self and completed is not None:\n"
+    "                    completed.cancel()\n"
+    "        self.requests.send(",
+)
+REGISTER_MIXED_CALLERS = REGISTER_CALLERS.replace("key = type(self).__name__", "key = 'callers'")
+BAD_MIXED_IDLE_CLOSE = REGISTER_MIXED_CALLERS.replace(
+    "        self.requests.close()",
+    "        if type(self).__name__ == 'Autosave' and not self.requests.closed:\n"
+    "            if self.requests.pending is None:\n"
+    "                for peer in self.peers:\n"
+    "                    if type(peer).__name__ == 'Screen' and peer.requests.pending is not None:\n"
+    "                        peer.requests.pending.cancel()\n"
+    "        self.requests.close()",
+)
 
 
 def fixture(name):
@@ -342,19 +361,22 @@ def start_job(case, transport, caller, method, payload):
     return transport.jobs[-1]
 
 
-def probe_idle_peer_close(case, caller_type, method, transport_type):
-    """Fresh/completed closers in either creation order leave a pending peer live."""
+def probe_idle_peer_close(case, caller_specs, transport_type):
+    """Either caller can close fresh/completed without affecting its pending peer."""
     for closer_index in (0, 1):
         for completed_closer in (False, True):
             transport, values = transport_type(), [[], []]
-            callers = [caller_type(transport, output.append) for output in values]
+            callers = [caller_type(transport, output.append)
+                       for (caller_type, _), output in zip(caller_specs, values)]
             closer, peer = callers[closer_index], callers[1 - closer_index]
-            completed = [start_job(case, transport, peer, method, "peer complete")]
+            close_method = caller_specs[closer_index][1]
+            peer_method = caller_specs[1 - closer_index][1]
+            completed = [start_job(case, transport, peer, peer_method, "peer complete")]
             completed[0].deliver("peer complete")
             if completed_closer:
-                completed.append(start_job(case, transport, closer, method, "closer complete"))
+                completed.append(start_job(case, transport, closer, close_method, "closer complete"))
                 completed[-1].deliver("closer complete")
-            pending = start_job(case, transport, peer, method, "peer pending")
+            pending = start_job(case, transport, peer, peer_method, "peer pending")
             closer.close()
             closer.close()
             case.assertEqual(pending.cancel_count, 0, "idle close cancelled pending peer")
@@ -362,7 +384,9 @@ def probe_idle_peer_close(case, caller_type, method, transport_type):
                              "close cancelled completed peer work")
             count = len(transport.jobs)
             with case.assertRaises(RuntimeError):
-                getattr(closer, method)("closed")
+                getattr(closer, close_method)("closed")
+            case.assertEqual([job.cancel_count for job in completed], [0] * len(completed),
+                             "rejected request cancelled completed peer work")
             case.assertEqual(len(transport.jobs), count)
             case.assertEqual(pending.cancel_count, 0, "rejected request cancelled pending peer")
             pending.deliver("peer survives")
@@ -574,7 +598,9 @@ def probe_change(case, app, transport_type):
         first.deliver("left survives")
         case.assertEqual(left_values, ["left survives"])
         case.assertEqual(right_values, [])
-        probe_idle_peer_close(case, caller_type, method, transport_type)
+        probe_idle_peer_close(case, ((caller_type, method),) * 2, transport_type)
+
+    probe_idle_peer_close(case, ((app.Screen, "search"), (app.Autosave, "submit")), transport_type)
 
 
 
@@ -647,8 +673,17 @@ class ArchitectureProbe(unittest.TestCase):
                              module_from_source(self.transport).Transport)
 
     def test_caller_registration_is_benign(self):
-        for source in (REGISTER_CALLERS, RETAIN_COMPLETED_PEERS):
+        for source in (REGISTER_CALLERS, RETAIN_COMPLETED_PEERS, REGISTER_MIXED_CALLERS):
             with self.subTest(source=source):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
+
+    def test_rejected_completed_peer_and_mixed_idle_close_defects(self):
+        for source, message in (
+            (BAD_REJECTED_COMPLETED_PEER, "rejected request cancelled completed peer work"),
+            (BAD_MIXED_IDLE_CLOSE, "idle close cancelled pending peer"),
+        ):
+            with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
                 probe_change(self, module_from_source(source),
                              module_from_source(self.transport).Transport)
 
