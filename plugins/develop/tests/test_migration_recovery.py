@@ -597,6 +597,21 @@ class TransientAuxiliary(SeedMetadataIndex):
             self.disturb()
 
 
+class RegressingStep(Store):
+    def migrate_step(self, interrupt=False):
+        checkpoint = self.db.execute("SELECT checkpoint FROM migration").fetchone()[0]
+        row = self.db.execute("SELECT id, minor FROM records WHERE id > ? ORDER BY id LIMIT 1",
+                              (checkpoint,)).fetchone()
+        result = super().migrate_step(interrupt)
+        if result:
+            key, minor = row
+            with self.db:
+                self.db.execute("UPDATE records SET minor = ? WHERE id = ?", (minor, key))
+                self.db.execute("UPDATE migration SET checkpoint = ?", (checkpoint,))
+            super().migrate_step()
+        return result
+
+
 class MigrationTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -807,6 +822,8 @@ class MigrationTests(unittest.TestCase):
                                   interleave=None, intermediate_states=()):
         # Samples only writer.db. Candidate auxiliary connections require their
         # own instrumentation; passing this reference probe cannot verify them.
+        # Blocked reads and missing/replaced callbacks leave coverage unverified;
+        # a functional return does not certify physical atomicity (migration.md).
         observer = self.open()
         observer.db.execute("PRAGMA busy_timeout = 0")
 
@@ -838,11 +855,22 @@ class MigrationTests(unittest.TestCase):
             writer.db.set_trace_callback(None)
             observer.close()
         self.assertIn(observed[-1], final_states)
+        phases = ((before,), intermediate_states, final_states)
+        phase = 0
+        terminal = None
         for state in observed:
             if isinstance(state, sqlite3.OperationalError):
                 self.assert_database_busy(state)
             else:
-                self.assertIn(state, (before, *intermediate_states, *final_states))
+                matches = [index for index in range(phase, len(phases)) if state in phases[index]]
+                self.assertTrue(matches, f"Sample regressed or left permitted states: {state!r}")
+                # Keep the earliest possible phase when values are identical;
+                # samples cannot establish which redundant update occurred.
+                phase = matches[0]
+                if phase == len(phases) - 1:
+                    if terminal is not None:
+                        self.assertEqual(state, terminal)
+                    terminal = state
         return result
 
     def assert_sampled_write_atomicity(self, kind=Store):
@@ -1081,6 +1109,17 @@ class MigrationTests(unittest.TestCase):
     def test_transient_retry_corruption_is_detected(self):
         with self.assertRaises(AssertionError):
             self.assert_concurrent_write(TransientRetry)
+
+    def test_observed_migration_regression_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_restart(RegressingStep)
+
+    def test_identical_transition_states_are_accepted(self):
+        store = self.seeded()
+        self.assert_write_changes_only_target(store, 1, 1, "001.20", ("001.20", 120))
+        self.assert_write_changes_only_target(store, 1, 1, "001.20", ("001.20", 120))
+        self.finish_migration(store)
+        self.assertIs(self.assert_migration_step(store), False)
 
     def test_transient_auxiliary_changes_are_detected(self):
         for transition in ("step", "write", "interrupted"):

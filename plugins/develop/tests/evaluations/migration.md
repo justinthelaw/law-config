@@ -104,7 +104,10 @@ contents in one read transaction, released before the writer continues. The
 overlap probe uses this same sampler with its controlled write callback and
 permits that known write's intermediate state alongside the initial and final
 states. Other sampled collateral changes fail even if restored before return;
-uncommitted internal changes remain accepted. Whole-state comparisons still run
+distinguishable samples must progress from initial through the optional middle
+state to one final state, without regression or switching final alternatives.
+Identical states do not establish a phase change; uncommitted internal changes
+remain accepted. Whole-state comparisons still run
 after return. These observations do not establish absence of transient changes
 between samples or on other scheduling paths. The seeded split row/checkpoint
 commit on this observed path is rejected even when interruption rollback works.
@@ -122,6 +125,18 @@ inspect the candidate's transaction boundaries or obtain instrumentation that
 establishes them. Without that evidence, physical atomicity is **unverified**,
 even when the functional checks pass; the public atomic-write and commit-together
 requirements remain unchanged.
+
+Observation availability is also limited. Exclusive locking can block samples
+across either atomic or split commits; `SQLITE_BUSY`/`SQLITE_LOCKED` establishes
+only that the observer could not read. Missing callbacks, including a candidate
+clearing or replacing `writer.db`'s callback, can leave only the final snapshot.
+The helper may return after its available functional checks in either case;
+that return is not successful transition coverage or an atomicity verdict.
+The controller must report the affected coverage as **unverified** and obtain
+independent, adapted observation or transaction-boundary evidence before judging
+atomicity. Neither blocked reads nor missing observations alone establish a
+candidate defect. This bounded sampler does not automatically diagnose callback
+replacement or produce a candidate verdict.
 
 An implementation that commits through auxiliary connections can pass these
 samples despite a partial transition. Before drawing a candidate verdict,
