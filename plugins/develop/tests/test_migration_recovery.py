@@ -308,6 +308,28 @@ class RenamedRawArchive(Store):
         super().finalize()
 
 
+class LiteralViewArchive(Store):
+    # None copies raw values; a tuple supplies independent metadata literals.
+    values = None
+
+    def finalize(self):
+        rows = (self.db.execute("SELECT raw FROM records ORDER BY id").fetchall()
+                if self.values is None else [(value,) for value in self.values])
+        literals = [self.db.execute("SELECT quote(?)", row).fetchone()[0] for row in rows]
+        super().finalize()
+        self.db.execute("CREATE VIEW literal_archive(saved_text) AS " +
+                        " UNION ALL ".join("SELECT " + value for value in literals))
+
+
+class SkipZeroWrite(Store):
+    skipped_protocol = 2
+
+    def write(self, protocol, key, value):
+        if protocol == self.skipped_protocol and Decimal(value) == 0:
+            return
+        return super().write(protocol, key, value)
+
+
 class FinalizationMetadata(Store):
     """Benign control: unrelated metadata need not be forbidden."""
 
@@ -1354,8 +1376,10 @@ class MigrationTests(unittest.TestCase):
             for writer, peer in (connections, connections[::-1]):
                 for protocol, value, expected in ((1, "001.15", ("001.15", 115)),
                                                    (1, "-001.15", ("-001.15", -115)),
+                                                   (1, "000.00", ("000.00", 0)),
                                                    (2, -75, ("-0.75", -75)),
-                                                   (2, 115, ("1.15", 115))):
+                                                   (2, 115, ("1.15", 115)),
+                                                   (2, 0, ("0.00", 0))):
                     # Warm both APIs before each write: a per-instance cache must refresh.
                     for version in (1, 2):
                         self.assertEqual(self.read_unchanged(peer, version, 1),
@@ -1529,13 +1553,16 @@ class MigrationTests(unittest.TestCase):
         for key, minor in expected:
             self.assertEqual(self.read_unchanged(store, 2, key), {"balance_minor": minor})
         self.assertEqual(self.database_state(store), before)
-        # Inspect logical main-database tables, including renamed archives.
+        # Inspect scalar table/view results; text matches still require provenance.
         original_text = {raw for _, raw in RECORDS} | set(original_text)
         matches = []
-        for (table,) in store.db.execute("SELECT name FROM sqlite_master WHERE type = 'table'").fetchall():
+        for kind, table in store.db.execute(
+                "SELECT type, name FROM sqlite_master WHERE type IN ('table', 'view')").fetchall():
             quoted = '"' + table.replace('"', '""') + '"'
-            columns = [row[1] for row in store.db.execute(f"PRAGMA table_info({quoted})")]
-            self.assertNotIn("raw", columns, table)
+            if kind == "table":
+                columns = [row[1] for row in store.db.execute(f"PRAGMA table_info({quoted})")]
+                self.assertNotIn("raw", columns, table)
+            # A view alias named raw can refer to minor units; inspect its values.
             contents = store.db.execute(f"SELECT * FROM {quoted}")
             for row in contents:
                 for column, value in zip((item[0] for item in contents.description), row):
@@ -2225,6 +2252,50 @@ class MigrationTests(unittest.TestCase):
                             self.assert_restart(AlternateInterruption)
                     else:
                         self.assert_restart(AlternateInterruption)
+
+    def test_view_retention_matches_require_provenance(self):
+        for values in (None, ("9.99",), ("complete",)):
+            for check in (self.assert_final_phase, self.assert_recovery):
+                with self.subTest(values=values, check=check.__name__):
+                    class View(LiteralViewArchive):
+                        pass
+
+                    View.values = values
+                    self.path = Path(self.temp.name) / f"view-{values}-{check.__name__}.sqlite"
+                    if values == ("complete",):
+                        check(View)
+                        continue
+                    with self.assertRaises(RetentionUnverified) as outcome:
+                        check(View)
+                    expected = (values if values is not None else
+                                ("001.20", "001.15", "-0.75") if check == self.assert_recovery else
+                                tuple(raw for _, raw in RECORDS))
+                    self.assertEqual(sorted(outcome.exception.matches),
+                                     sorted(("literal_archive", "saved_text", raw) for raw in expected))
+                    if check == self.assert_recovery:
+                        restored = self.open()
+                        self.assertEqual(self.read_unchanged(restored, 1, 1), {"balance": "001.20"})
+
+    def test_minor_view_alias_is_not_original_text_retention(self):
+        class MinorView(Store):
+            def finalize(self):
+                super().finalize()
+                self.db.execute('CREATE VIEW "final ""projection""" AS SELECT id, minor AS raw FROM records')
+
+        for check in (self.assert_final_phase, self.assert_recovery):
+            with self.subTest(check=check.__name__):
+                self.path = Path(self.temp.name) / f"minor-view-{check.__name__}.sqlite"
+                check(MinorView)
+
+    def test_zero_write_noop_is_detected(self):
+        for protocol in (1, 2):
+            with self.subTest(protocol=protocol):
+                class MissingZero(SkipZeroWrite):
+                    skipped_protocol = protocol
+
+                self.path = Path(self.temp.name) / f"zero-{protocol}.sqlite"
+                with self.assertRaises(AssertionError):
+                    self.assert_sampled_write_atomicity(MissingZero)
 
     def test_fixture_and_private_grader_pairs(self):
         fixtures = sorted((ROOT / "fixtures").glob("migration-*.json"))
