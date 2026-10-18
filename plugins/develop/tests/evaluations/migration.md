@@ -15,7 +15,12 @@ formatter control requires no migration machinery.
 Use the [shared fixture contract](README.md) for materialization, isolation and
 results. The private coexistence criterion explicitly requires unsupported reads
 and writes to raise `ValueError` with unchanged state, matching the public
-two-protocol contract and executable checks. Give the agent only its prompt,
+two-protocol contract and executable checks. Coexistence and restart criteria
+require transaction-boundary evidence for physical atomicity, or an unverified
+result when the available channel cannot establish it. Restart also requires
+per-call next-row/checkpoint progress, exact boolean results and the declared
+`Interrupted` subtype. These clarify the existing public API rather than add
+candidate requirements. Give the agent only its prompt,
 declared inputs and selected plugin instructions. Keep this page, graders, reference implementation and tests out of
 its accessible context. Record every attempt and fixture digest; do not replace
 failed attempts with repaired outcomes.
@@ -42,7 +47,10 @@ legal writes. Pending-row writes, acknowledged lock failures, undrained close,
 checkpoint-specific interruption/finalization, volatile completion flags,
 key-specific protocol acceptance, lost final schema constraints, sign-specific
 writes, repeated-completion mutation, mutating mixed reads, dropped peer writes
-and transient commits during rejected writes also have controls.
+and transient commits during rejected operations also have controls. Pending-read
+controls cover both protocols on every still-pending row at each of the three
+seeded checkpoints. The common seed check requires `Interrupted` to subclass
+`RuntimeError`; a different valid subtype remains accepted.
 Benign controls accept different
 exception messages, multiple write statements within one transaction and
 optimistic backfill with compare-and-retry. A refreshed peer read control remains
@@ -144,7 +152,10 @@ seeded row; it does not enumerate all concurrent schedules. Temporary
 row and checkpoint triggers observe interruption ordering on the exposed
 connection; restart checks inject interruption at each of the fixture's three
 pending checkpoints, compare full durable state after reopening, then commit and
-reopen each successful step and verify unchanged completion. An interrupted step
+reopen each successful step and verify unchanged completion. The same restart
+check runs on untouched rows and on rows populated through each supported write
+protocol before interruption. The untouched case remains separate so populated,
+value-preserving updates cannot mask the existing split-commit control. An interrupted step
 may issue
 multiple updates to its next row, but must not touch another row or the
 checkpoint before the controlled exception.
@@ -153,18 +164,20 @@ The shared successful-write assertion samples writes during and after backfill.
 While work remains, protocol 1 writes an unbackfilled row and a warmed protocol-1
 peer must observe a protocol-2 write. Unsupported protocol reads and writes must
 reject without changing full state for every seeded key at each checkpoint,
-on completion and after finalization. Permitted reads also compare full state
+on completion and after finalization. Identifiers 3 and 4 provide one bounded
+calibration against special-casing only 3; they do not prove rejection of all
+unsupported identifiers. Permitted reads also compare full state
 before and after, including fallback, peer warm-up and recovered reads. The write
 matrix exercises both signs through each protocol before and after backfill,
 swapping the seeded and already-open peer connections as writer and reader. The
 reader warms both protocols before each write and checks both updated
 representations afterward. These API checks complement the sampler's direct
 database observations and detect stale per-instance reads on the exercised paths.
-Supported writes, rejected writes, normal migration steps and interrupted steps
+Supported writes, rejected operations, normal migration steps and interrupted steps
 share a second-connection sampler at statements traced on `writer.db`, plus an
-observation after the operation returns. Rejected writes must raise `ValueError`
+observation after the operation returns. Rejected operations must raise `ValueError`
 and preserve the initial state at every available sample; this covers unsupported
-protocols and final-phase frozen writes. Transient committed changes fail even
+reads and writes, retired protocol-1 reads and final-phase frozen writes. Transient committed changes fail even
 when restored before rejection, while changes rolled back without becoming
 visible remain accepted. Each sample reads the covered records, migration metadata, schema and auxiliary
 contents in one read transaction, released before the writer continues. The
