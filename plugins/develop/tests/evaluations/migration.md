@@ -30,15 +30,18 @@ The evaluator-only [reference store](migration_store.py) and
 [tests](../test_migration_recovery.py) check executable behaviors and bounded
 seeded defects: incompatible wire output, stale backfill overwriting a writer,
 negative fallback conversion, split write commits, rejected writes corrupting
-minor units, early interruption, premature checkpoints, batched steps, mutation
-after completion, final-phase N writes, lossy reconstruction and snapshot
-mutation or partial restoration. Benign controls accept different exception
-messages and multiple write statements within one transaction. Restore checks
+minor units, early or late interruption, deferred commits, premature checkpoints,
+batched steps, mutation after completion, partial finalization, final-phase N
+writes, lost finalized rows, retained raw archives, lossy reconstruction and
+snapshot mutation or partial restoration. Benign controls accept different
+exception messages, multiple write statements within one transaction and
+optimistic backfill with compare-and-retry. Restore checks
 compare all records, migration metadata and schema with the snapshot, then read
 both protocols and resume completed migration. Rejection checks preserve full
 rows, including writes through both protocols after finalization. The tests also
 reject finalization with pending checkpoint work even when all minor values are
-populated, and verify removal of the original column.
+populated or one step has completed. Finalized IDs and values must all survive;
+the main database's logical tables must have no remaining `raw` column.
 Run from the plugin directory:
 
 ```bash
@@ -46,17 +49,22 @@ python -m unittest discover -s tests -p test_migration_recovery.py -v
 ```
 
 These tests validate the synthetic reference and the sensitivity of its checks.
-They are **not agent runs**. For a candidate implementation, the controller can
-substitute its `Store` and `Interrupted` exports in an isolated evaluator copy
-and run the positive behavior tests. The overlapping-write reproduction uses a
-SQLite trace callback at the reference's backfill UPDATE; adapt that controlled
-interleaving to a candidate's SQL before using it as candidate evidence. Keep
-seeded-defect tests attributed to the reference suite. Temporary row triggers
-verify that interruption follows an executed row change; restart checks inspect
-every step and unchanged completion. Supported-write checks sample a second
-connection at SQL statement boundaries to detect partially committed values.
-These are bounded observations, not an exhaustive concurrency schedule.
-Grade observed agent
+They are **not agent runs** or a universal candidate acceptance harness. To use
+the state assertions for a candidate, substitute its `Store` and `Interrupted`
+exports in an isolated evaluator copy and adapt the observation probes first.
+The overlapping-write probe targets the reference's backfill UPDATE. Temporary
+row and checkpoint triggers observe interruption ordering on the exposed
+connection; restart checks reopen immediately after a committed step and inspect
+each remaining step and unchanged completion.
+
+The write-atomicity probe samples a second connection only at statements traced
+on `writer.db`. An implementation that commits through auxiliary connections can
+pass those samples despite a partial write. Before drawing a candidate verdict,
+the controller must identify and instrument every write connection and adapt
+the controlled interleavings to that implementation. Missing instrumentation is
+**unverified coverage**, never evidence of atomicity. No general connection
+tracing framework or exhaustive concurrency schedule is supplied here. Keep
+seeded-defect tests attributed to the reference suite and grade observed agent
 decisions separately with the linked criteria. A passing reference run cannot
 supply a candidate or native-host verdict.
 

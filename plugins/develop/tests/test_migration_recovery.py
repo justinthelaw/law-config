@@ -183,6 +183,71 @@ class AlternateErrors(Store):
             raise ValueError("unavailable") from error
 
 
+class LateInterrupted(Store):
+    def migrate_step(self, interrupt=False):
+        if not interrupt:
+            return super().migrate_step()
+        with self.db:
+            self.db.execute("UPDATE records SET minor = -50 WHERE id = 2")
+            self.db.execute("UPDATE migration SET checkpoint = 2")
+            raise Interrupted("too late: checkpoint was already updated")
+
+
+class DeferredCommit(Store):
+    def migrate_step(self, interrupt=False):
+        # Seed: a later call commits the first allegedly durable step.
+        self.db.commit()
+        if self.db.execute("SELECT checkpoint FROM migration").fetchone() == (0,):
+            self.db.execute("UPDATE records SET minor = 120 WHERE id = 1")
+            self.db.execute("UPDATE migration SET checkpoint = 1")
+            return True
+        return super().migrate_step(interrupt)
+
+
+class PartialFinalize(Store):
+    def finalize(self):
+        if self.db.execute("SELECT checkpoint FROM migration").fetchone()[0] > 0:
+            # Seed: silently finish instead of refusing incomplete backfill.
+            while self.migrate_step():
+                pass
+        super().finalize()
+
+
+class LostFinalRows(Store):
+    def finalize(self):
+        super().finalize()
+        with self.db:
+            self.db.execute("DELETE FROM records WHERE id != 1")
+
+
+class ArchivedRaw(Store):
+    def finalize(self):
+        self.db.execute("CREATE TABLE raw_archive AS SELECT * FROM records")
+        super().finalize()
+
+
+class OptimisticBackfill(Store):
+    """Benign control: compare-and-retry preserves a concurrent writer."""
+
+    def migrate_step(self, interrupt=False):
+        checkpoint = self.db.execute("SELECT checkpoint FROM migration").fetchone()[0]
+        while True:
+            row = self.db.execute("SELECT id, raw FROM records WHERE id > ? ORDER BY id LIMIT 1",
+                                  (checkpoint,)).fetchone()
+            if row is None:
+                return False
+            key, raw = row
+            with self.db:
+                changed = self.db.execute("UPDATE records SET minor = ? WHERE id = ? AND raw = ?",
+                                          (int(Decimal(raw) * 100), key, raw)).rowcount
+                if not changed:
+                    continue
+                if interrupt:
+                    raise Interrupted("after row update, before checkpoint")
+                self.db.execute("UPDATE migration SET checkpoint = ?", (key,))
+                return True
+
+
 class MigrationTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -232,11 +297,11 @@ class MigrationTests(unittest.TestCase):
         def interleave(statement):
             # The trace fires before SQLite executes the backfill UPDATE, after
             # the source row was fetched. No threads, sleeps or timing race.
-            if statement.startswith("UPDATE records SET minor"):
+            if statement.startswith("UPDATE records SET minor") and not outcomes:
                 try:
                     old.write(1, 1, "002.35")
                 except sqlite3.OperationalError as error:
-                    outcomes.append(str(error))
+                    outcomes.append(error)
                 else:
                     outcomes.append("written")
 
@@ -248,8 +313,12 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(len(outcomes), 1)
         raw = old.read(1, 1)["balance"]
         self.assertEqual(new.read(2, 1), {"balance_minor": int(Decimal(raw) * 100)})
-        self.assertEqual(outcomes, ["database is locked"])
-        # The rejected overlapping write succeeds after backfill commits.
+        if isinstance(outcomes[0], sqlite3.OperationalError):
+            self.assertIn(getattr(outcomes[0], "sqlite_errorcode", None),
+                          (sqlite3.SQLITE_BUSY, sqlite3.SQLITE_LOCKED))
+        else:
+            self.assertEqual(outcomes, ["written"])
+        # Both locking and compare-and-retry permit this subsequent write.
         old.write(1, 1, "002.35")
         self.assertEqual(old.read(1, 1), {"balance": "002.35"})
         self.assertEqual(new.read(2, 1), {"balance_minor": 235})
@@ -267,19 +336,27 @@ class MigrationTests(unittest.TestCase):
     def assert_restart(self, kind=Store):
         store = self.seeded(kind)
         self.assertTrue(store.migrate_step())
+        store.close()
+        store = self.open(kind)
         expected = [(1, "001.20", 120), (2, "-0.50", None), (3, "9.99", None)]
         self.assertEqual(store.db.execute("SELECT checkpoint FROM migration").fetchone(), (1,))
         self.assertEqual(store.db.execute("SELECT * FROM records ORDER BY id").fetchall(), expected)
         touched = []
+        checkpoints = []
         store.db.create_function("observe_row", 2, lambda key, minor: touched.append((key, minor)))
+        store.db.create_function("observe_checkpoint", 0, lambda: checkpoints.append(True))
         # AFTER triggers observe executed row changes, including replacements;
         # unlike transaction state alone, they distinguish an early exception.
         for event in ("UPDATE", "INSERT"):
             store.db.execute(f"CREATE TEMP TRIGGER observe_{event} AFTER {event} ON records "
                              "BEGIN SELECT observe_row(NEW.id, NEW.minor); END")
+        for event in ("UPDATE", "INSERT", "DELETE"):
+            store.db.execute(f"CREATE TEMP TRIGGER checkpoint_{event} AFTER {event} ON migration "
+                             "BEGIN SELECT observe_checkpoint(); END")
         with self.assertRaises(Interrupted):
             store.migrate_step(interrupt=True)
         self.assertIn((2, -50), touched)
+        self.assertEqual(checkpoints, [])
         store.close()
         resumed = self.open(kind)
         self.assertEqual(resumed.db.execute("SELECT checkpoint FROM migration").fetchone(), (1,))
@@ -296,7 +373,9 @@ class MigrationTests(unittest.TestCase):
         self.assertFalse(again.migrate_step())
         self.assertEqual(self.database_state(again), before)
 
-    def assert_supported_write_atomicity(self, kind=Store):
+    def assert_sampled_write_atomicity(self, kind=Store):
+        # Samples only writer.db. Candidate auxiliary connections require their
+        # own instrumentation; passing this reference probe cannot verify them.
         writer = self.seeded(kind)
         observer = self.open()
         observer.db.execute("PRAGMA busy_timeout = 0")
@@ -345,7 +424,7 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(self.database_state(backup), expected)
         backup.close()
         store.finalize()
-        self.assertEqual(store.read(2, 1), {"balance_minor": 120})
+        self.assert_finalized_records(store, [(key, minor) for key, _, minor in expected["records"]])
         store.close()
         kind.restore(snapshot, self.path)
         recovered = self.open()
@@ -365,7 +444,7 @@ class MigrationTests(unittest.TestCase):
     def test_committed_and_interrupted_restart(self):
         self.assert_restart()
 
-    def test_backfill_serializes_an_overlapping_old_protocol_write(self):
+    def test_backfill_preserves_an_overlapping_old_protocol_write(self):
         self.assert_concurrent_write()
 
     def test_stale_backfill_seed_is_detected(self):
@@ -406,11 +485,13 @@ class MigrationTests(unittest.TestCase):
                 with self.assertRaises(AssertionError):
                     self.assert_recovery(CorruptedSnapshot)
 
-    def assert_incomplete_backfill(self, kind=Store, populate=False):
+    def assert_incomplete_backfill(self, kind=Store, populate=False, steps=0):
         store = self.seeded(kind)
         if populate:
             for key, raw in RECORDS:
                 store.write(1, key, raw)
+        for _ in range(steps):
+            self.assertTrue(store.migrate_step())
         before = self.database_state(store)
         with self.assertRaises(Exception):
             store.finalize()
@@ -419,13 +500,25 @@ class MigrationTests(unittest.TestCase):
     def test_incomplete_backfill_cannot_drop_originals(self):
         self.assert_incomplete_backfill()
 
+    def assert_finalized_records(self, store, expected):
+        self.assertEqual(store.db.execute("SELECT id, minor FROM records ORDER BY id").fetchall(), expected)
+        self.assertEqual([row[1] for row in store.db.execute("PRAGMA table_info(records)")],
+                         ["id", "minor"])
+        for key, minor in expected:
+            self.assertEqual(store.read(2, key), {"balance_minor": minor})
+        # Inspect logical main-database tables, including renamed archives.
+        for (table,) in store.db.execute("SELECT name FROM sqlite_master WHERE type = 'table'").fetchall():
+            quoted = '"' + table.replace('"', '""') + '"'
+            columns = [row[1] for row in store.db.execute(f"PRAGMA table_info({quoted})")]
+            self.assertNotIn("raw", columns, table)
+
     def assert_final_phase(self, kind=Store):
         store = self.seeded(kind)
         while store.migrate_step():
             pass
+        expected = store.db.execute("SELECT id, minor FROM records ORDER BY id").fetchall()
         store.finalize()
-        self.assertEqual([row[1] for row in store.db.execute("PRAGMA table_info(records)")],
-                         ["id", "minor"])
+        self.assert_finalized_records(store, expected)
         with self.assertRaises(ValueError):
             store.read(1, 1)
         before = self.database_state(store)
@@ -471,8 +564,8 @@ class MigrationTests(unittest.TestCase):
     def test_populated_minor_units_do_not_complete_backfill(self):
         self.assert_incomplete_backfill(populate=True)
 
-    def test_supported_writes_are_atomic(self):
-        self.assert_supported_write_atomicity()
+    def test_reference_write_samples_are_atomic(self):
+        self.assert_sampled_write_atomicity()
 
     def test_split_write_seed_is_detected(self):
         for protocol in (1, 2):
@@ -482,10 +575,36 @@ class MigrationTests(unittest.TestCase):
 
                 self.path = Path(self.temp.name) / f"split-{protocol}.sqlite"
                 with self.assertRaises(AssertionError):
-                    self.assert_supported_write_atomicity(NonatomicProtocol)
+                    self.assert_sampled_write_atomicity(NonatomicProtocol)
 
     def test_atomic_multistatement_writes_are_accepted(self):
-        self.assert_supported_write_atomicity(AtomicColumnWrites)
+        self.assert_sampled_write_atomicity(AtomicColumnWrites)
+
+    def test_late_interruption_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_restart(LateInterrupted)
+
+    def test_deferred_commit_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_restart(DeferredCommit)
+
+    def test_partially_completed_backfill_cannot_finalize(self):
+        self.assert_incomplete_backfill(steps=1)
+
+    def test_partial_finalize_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_incomplete_backfill(PartialFinalize, steps=1)
+
+    def test_lost_final_rows_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_final_phase(LostFinalRows)
+
+    def test_archived_raw_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_final_phase(ArchivedRaw)
+
+    def test_optimistic_backfill_is_accepted(self):
+        self.assert_concurrent_write(OptimisticBackfill)
 
     def test_fixture_and_private_grader_pairs(self):
         fixtures = sorted((ROOT / "fixtures").glob("migration-*.json"))
