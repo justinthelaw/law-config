@@ -544,6 +544,59 @@ class ConflictCollateral(OptimisticBackfill):
         return result
 
 
+class TransientRetry(OptimisticBackfill):
+    def migrate_step(self, interrupt=False):
+        checkpoint = self.db.execute("SELECT checkpoint FROM migration").fetchone()[0]
+        while True:
+            row = self.db.execute("SELECT id, raw FROM records WHERE id > ? ORDER BY id LIMIT 1",
+                                  (checkpoint,)).fetchone()
+            if row is None:
+                return False
+            key, raw = row
+            with self.db:
+                changed = self.db.execute("UPDATE records SET minor = ? WHERE id = ? AND raw = ?",
+                                          (int(Decimal(raw) * 100), key, raw)).rowcount
+                if not changed:
+                    saved = self.db.execute("SELECT raw, minor FROM records WHERE id = 2").fetchone()
+                    self.db.execute("UPDATE records SET raw = '0.00', minor = 0 WHERE id = 2")
+                    self.db.commit()
+                    self.db.execute("UPDATE records SET raw = ?, minor = ? WHERE id = 2", saved)
+                    continue
+                if interrupt:
+                    raise Interrupted("after row update, before checkpoint")
+                self.db.execute("UPDATE migration SET checkpoint = ?", (key,))
+                return True
+
+
+class TransientAuxiliary(SeedMetadataIndex):
+    transition = "step"
+    commit_intermediate = True
+    statements = ("UPDATE metadata SET note = 'temporary'", "UPDATE metadata SET note = 'complete'")
+
+    def disturb(self):
+        with self.db:
+            self.db.execute(self.statements[0])
+            if self.commit_intermediate:
+                self.db.commit()
+            self.db.execute(self.statements[1])
+
+    def migrate_step(self, interrupt=False):
+        try:
+            result = super().migrate_step(interrupt)
+        except Interrupted:
+            if self.transition == "interrupted":
+                self.disturb()
+            raise
+        if self.transition == "step" and result:
+            self.disturb()
+        return result
+
+    def write(self, protocol, key, value):
+        super().write(protocol, key, value)
+        if self.transition == "write":
+            self.disturb()
+
+
 class MigrationTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -582,18 +635,15 @@ class MigrationTests(unittest.TestCase):
             expected = [(key, raw, int(Decimal(raw) * 100)) if row[0] == key else row
                         for row in before["records"]]
             checkpoint = key
-        # One SELECT keeps each observer sample's records and checkpoint in
-        # the same SQLite read snapshot.
+        final = before | {"records": expected, "migration": [(checkpoint, phase)]}
         result = self.assert_sampled_transition(
-            store, store.migrate_step,
-            "SELECT id, raw, minor, checkpoint, phase FROM records CROSS JOIN migration ORDER BY id",
-            [(*row, checkpoint, phase) for row in expected])
+            store, store.migrate_step, (final,))
         after = self.database_state(store)
         if pending:
             self.assertIs(result, True)
         else:
             self.assertIs(result, False)
-        self.assertEqual(after, before | {"records": expected, "migration": [(checkpoint, phase)]})
+        self.assertEqual(after, final)
         return result
 
     def finish_migration(self, store):
@@ -606,10 +656,10 @@ class MigrationTests(unittest.TestCase):
     def assert_write_changes_only_target(self, store, protocol, key, value, expected):
         before = self.database_state(store)
         records = [(key, *expected) if row[0] == key else row for row in before["records"]]
+        final = before | {"records": records}
         self.assert_sampled_transition(
-            store, lambda: store.write(protocol, key, value),
-            "SELECT * FROM records ORDER BY id", records)
-        self.assertEqual(self.database_state(store), before | {"records": records})
+            store, lambda: store.write(protocol, key, value), (final,))
+        self.assertEqual(self.database_state(store), final)
 
     def assert_coexistence(self, kind=Store):
         old = self.seeded(kind)
@@ -653,25 +703,26 @@ class MigrationTests(unittest.TestCase):
                 else:
                     outcomes.append("written")
 
-        new.db.set_trace_callback(interleave)
-        try:
-            self.assertIs(new.migrate_step(), True)
-        finally:
-            new.db.set_trace_callback(None)
+        concurrent = before | {"records": [(1, "002.35", 235), *before["records"][1:]]}
+        migrated = {"migration": [(1, "mixed")]}
+        locked_final = before | migrated | {
+            "records": [(1, "001.20", 120), *before["records"][1:]]}
+        written_final = concurrent | migrated
+        self.assertIs(self.assert_sampled_transition(
+            new, new.migrate_step, (locked_final, written_final),
+            interleave=interleave, intermediate_states=(concurrent,)), True)
         self.assertEqual(len(outcomes), 1)
         raw = old.read(1, 1)["balance"]
         self.assertEqual(new.read(2, 1), {"balance_minor": int(Decimal(raw) * 100)})
         if isinstance(outcomes[0], sqlite3.OperationalError):
             self.assert_database_busy(outcomes[0])
-            permitted_raw = before["records"][0][1]
+            expected = locked_final
         else:
             self.assertEqual(outcomes, ["written"])
             self.assertEqual(old.read(1, 1), {"balance": "002.35"})
             self.assertEqual(new.read(2, 1), {"balance_minor": 235})
-            permitted_raw = "002.35"
-        records = [(1, permitted_raw, int(Decimal(permitted_raw) * 100)), *before["records"][1:]]
-        self.assertEqual(self.database_state(new),
-                         before | {"records": records, "migration": [(1, "mixed")]})
+            expected = written_final
+        self.assertEqual(self.database_state(new), expected)
         # Both locking and compare-and-retry permit this subsequent write.
         self.assert_write_changes_only_target(old, 1, 1, "002.35", ("002.35", 235))
         self.assertEqual(old.read(1, 1), {"balance": "002.35"})
@@ -726,8 +777,11 @@ class MigrationTests(unittest.TestCase):
         for event in ("UPDATE", "INSERT", "DELETE"):
             store.db.execute(f"CREATE TEMP TRIGGER checkpoint_{event} AFTER {event} ON migration "
                              "BEGIN SELECT observe_checkpoint(); END")
-        with self.assertRaises(Interrupted):
-            store.migrate_step(interrupt=True)
+        def interrupt():
+            with self.assertRaises(Interrupted):
+                store.migrate_step(interrupt=True)
+
+        self.assert_sampled_transition(store, interrupt, (durable,))
         self.assertEqual({key for key, _ in touched}, {2})
         self.assertEqual(touched[-1], (2, -50))
         self.assertEqual(checkpoints, [])
@@ -749,17 +803,28 @@ class MigrationTests(unittest.TestCase):
         self.assertIs(self.assert_migration_step(again), False)
         self.assertEqual(self.database_state(again), before)
 
-    def assert_sampled_transition(self, writer, operation, query, expected):
+    def assert_sampled_transition(self, writer, operation, final_states,
+                                  interleave=None, intermediate_states=()):
         # Samples only writer.db. Candidate auxiliary connections require their
         # own instrumentation; passing this reference probe cannot verify them.
         observer = self.open()
         observer.db.execute("PRAGMA busy_timeout = 0")
-        before = observer.db.execute(query).fetchall()
+
+        def snapshot():
+            # All covered tables and schema share one read snapshot. Release
+            # it before the traced writer statement executes.
+            with observer.db:
+                observer.db.execute("BEGIN")
+                return self.database_state(observer)
+
+        before = snapshot()
         observed = []
 
         def observe(statement):
+            if interleave is not None:
+                interleave(statement)
             try:
-                observed.append(observer.db.execute(query).fetchall())
+                observed.append(snapshot())
             except sqlite3.OperationalError as error:
                 # Check errors outside the callback: sqlite3 suppresses callback
                 # exceptions. Exclusive writers may legitimately block reads.
@@ -768,16 +833,16 @@ class MigrationTests(unittest.TestCase):
         writer.db.set_trace_callback(observe)
         try:
             result = operation()
-            observed.append(observer.db.execute(query).fetchall())
+            observed.append(snapshot())
         finally:
             writer.db.set_trace_callback(None)
             observer.close()
-        self.assertEqual(observed[-1], expected)
+        self.assertIn(observed[-1], final_states)
         for state in observed:
             if isinstance(state, sqlite3.OperationalError):
                 self.assert_database_busy(state)
             else:
-                self.assertIn(state, (before, expected))
+                self.assertIn(state, (before, *intermediate_states, *final_states))
         return result
 
     def assert_sampled_write_atomicity(self, kind=Store):
@@ -1012,6 +1077,36 @@ class MigrationTests(unittest.TestCase):
 
     def test_auxiliary_rows_are_preserved(self):
         self.assert_recovery(AuxiliaryRows)
+
+    def test_transient_retry_corruption_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_concurrent_write(TransientRetry)
+
+    def test_transient_auxiliary_changes_are_detected(self):
+        for transition in ("step", "write", "interrupted"):
+            for index, statements in enumerate((TransientAuxiliary.statements,
+                                               ("CREATE TABLE unexpected (value)", "DROP TABLE unexpected"))):
+                with self.subTest(transition=transition, statements=statements):
+                    class TemporaryChange(TransientAuxiliary):
+                        pass
+
+                    TemporaryChange.transition = transition
+                    TemporaryChange.statements = statements
+                    self.path = Path(self.temp.name) / f"transient-{transition}-{index}.sqlite"
+                    with self.assertRaises(AssertionError):
+                        check = self.assert_restart if transition == "interrupted" else self.assert_coexistence
+                        check(TemporaryChange)
+
+    def test_uncommitted_auxiliary_changes_are_accepted(self):
+        for transition in ("step", "write", "interrupted"):
+            with self.subTest(transition=transition):
+                class InternalChange(TransientAuxiliary):
+                    commit_intermediate = False
+
+                InternalChange.transition = transition
+                self.path = Path(self.temp.name) / f"internal-{transition}.sqlite"
+                check = self.assert_restart if transition == "interrupted" else self.assert_coexistence
+                check(InternalChange)
 
     def test_split_migration_commit_is_detected(self):
         for name, check in (("coexistence", self.assert_coexistence),
