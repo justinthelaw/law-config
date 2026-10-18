@@ -54,6 +54,9 @@ in-memory source; the helper does not materialize source files on disk. Standard
 remain sequential within a process because those wrappers modify shared classes.
 Assertion failure metadata is stored separately from the exception, without
 requiring custom failure exceptions to accept evaluator attributes or be hashable.
+The result owns observation state for its active suite entry; submitted test cases
+receive no evaluator metadata fields. Existing `_quality_*` names on those cases
+are neither reserved nor used for correlation or skip accounting.
 Body tracking applies to local `TestCase` instances in the loaded suite, including
 local classes returned by `load_tests` in nested standard suites. It wraps the
 resolved instance callable, preserving static/class method binding, inherited

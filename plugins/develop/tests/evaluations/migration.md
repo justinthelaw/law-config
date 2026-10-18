@@ -13,8 +13,10 @@ formatter control requires no migration machinery.
 | [migration-not-applicable](fixtures/migration-not-applicable.json) | [grader](graders/migration-not-applicable.json) | Review a stateless upgrade without inventing migration work |
 
 Use the [shared fixture contract](README.md) for materialization, isolation and
-results. Give the agent only its prompt, declared inputs and selected plugin
-instructions. Keep this page, graders, reference implementation and tests out of
+results. The private coexistence criterion explicitly requires unsupported reads
+and writes to raise `ValueError` with unchanged state, matching the public
+two-protocol contract and executable checks. Give the agent only its prompt,
+declared inputs and selected plugin instructions. Keep this page, graders, reference implementation and tests out of
 its accessible context. Record every attempt and fixture digest; do not replace
 failed attempts with repaired outcomes.
 
@@ -39,7 +41,8 @@ read caches during and after backfill, float conversion and snapshots that omit
 legal writes. Pending-row writes, acknowledged lock failures, undrained close,
 checkpoint-specific interruption/finalization, volatile completion flags,
 key-specific protocol acceptance, lost final schema constraints, sign-specific
-writes, repeated-completion mutation and mutating mixed reads also have controls.
+writes, repeated-completion mutation, mutating mixed reads, dropped peer writes
+and transient commits during rejected writes also have controls.
 Benign controls accept different
 exception messages, multiple write statements within one transaction and
 optimistic backfill with compare-and-retry. A refreshed peer read control remains
@@ -152,13 +155,18 @@ peer must observe a protocol-2 write. Unsupported protocol reads and writes must
 reject without changing full state for every seeded key at each checkpoint,
 on completion and after finalization. Permitted reads also compare full state
 before and after, including fallback, peer warm-up and recovered reads. The write
-matrix exercises both signs through each protocol before and after backfill;
-the candidate peer reads both protocols before each write and checks both updated
+matrix exercises both signs through each protocol before and after backfill,
+swapping the seeded and already-open peer connections as writer and reader. The
+reader warms both protocols before each write and checks both updated
 representations afterward. These API checks complement the sampler's direct
 database observations and detect stale per-instance reads on the exercised paths.
-Write, normal migration-step and interrupted-step checks share a second-connection sampler at statements
-traced on `writer.db`, plus an observation after the operation returns. Each
-sample reads the covered records, migration metadata, schema and auxiliary
+Supported writes, rejected writes, normal migration steps and interrupted steps
+share a second-connection sampler at statements traced on `writer.db`, plus an
+observation after the operation returns. Rejected writes must raise `ValueError`
+and preserve the initial state at every available sample; this covers unsupported
+protocols and final-phase frozen writes. Transient committed changes fail even
+when restored before rejection, while changes rolled back without becoming
+visible remain accepted. Each sample reads the covered records, migration metadata, schema and auxiliary
 contents in one read transaction, released before the writer continues. The
 overlap probe uses this same sampler with its controlled write callback and
 permits that known write's intermediate state alongside the initial and final

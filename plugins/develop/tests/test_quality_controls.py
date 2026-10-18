@@ -55,6 +55,10 @@ class QualityResult(unittest.TextTestResult):
         self.skipped_methods = set()
         self.active_test = None
         self.active_entry = None
+        self.entry_id = None
+        self.assertion_executed = False
+        self.passed_in_entry = set()
+        self.failure_sites = {}
         self.entries = entries if entries is not None else {}
         self.passed_assertions = set()
         self.failed_assertions = set()
@@ -67,10 +71,10 @@ class QualityResult(unittest.TextTestResult):
         self.active_test = test
         self.active_entry = self.testsRun
         entries = self.entries.get(id(test), [])
-        test._quality_entry_id = entries.pop(0) if entries else None
-        test._quality_assertion_executed = False
-        test._quality_passed_assertions = set()
-        test._quality_failure_sites = {}
+        self.entry_id = entries.pop(0) if entries else None
+        self.assertion_executed = False
+        self.passed_in_entry.clear()
+        self.failure_sites.clear()
         super().startTest(test)
 
     def addSkip(self, test, reason):
@@ -79,17 +83,32 @@ class QualityResult(unittest.TextTestResult):
         super().addSkip(test, reason)
 
     def stopTest(self, test):
-        self.passed_assertions.update(test._quality_passed_assertions)
-        if test._quality_assertion_executed:
+        self.passed_assertions.update(self.passed_in_entry)
+        if self.assertion_executed:
             self.skipped_methods.discard(self.active_entry)
-        test._quality_failure_sites.clear()
+        self.passed_in_entry.clear()
+        self.failure_sites.clear()
         super().stopTest(test)
         self.active_test = None
         self.active_entry = None
+        self.entry_id = None
+        self.assertion_executed = False
+
+    def record_assertion(self, site, error=None):
+        if self.entry_id is None:
+            return
+        self.assertion_executed = True
+        site = (self.entry_id, site)
+        if error is None:
+            self.passed_in_entry.add(site)
+        else:
+            # Retain the exception until stopTest to prevent identity reuse,
+            # without hashing or mutating a configured failureException.
+            self.failure_sites[id(error)] = (error, site)
 
     def record_failure_site(self, err):
         if self.active_test is not None:
-            observation = self.active_test._quality_failure_sites.get(id(err[1]))
+            observation = self.failure_sites.get(id(err[1]))
             if observation is not None and observation[0] is err[1]:
                 self.failed_assertions.add(observation[1])
 
@@ -104,8 +123,8 @@ class QualityResult(unittest.TextTestResult):
 
 
 @contextmanager
-def body_execution(test):
-    execution = types.SimpleNamespace(test=test, active=True)
+def body_execution(test, result):
+    execution = types.SimpleNamespace(test=test, result=result, active=True)
     token = ACTIVE_BODY.set(execution)
     try:
         yield
@@ -142,16 +161,9 @@ def source_code_sites(code, path=()):
 
 def record_assertion(site, error=None):
     execution = ACTIVE_BODY.get()
-    if execution is not None and execution.active and site is not None:
-        test = execution.test
-        test._quality_assertion_executed = True
-        site = (test._quality_entry_id, site)
-        if error is None:
-            test._quality_passed_assertions.add(site)
-        else:
-            # Retain the exception until stopTest to prevent identity reuse,
-            # without hashing or mutating a configured failureException.
-            test._quality_failure_sites[id(error)] = (error, site)
+    if (execution is not None and execution.active and site is not None
+            and execution.result.active_test is execution.test):
+        execution.result.record_assertion(site, error)
 
 
 class ObservedAssertionContext:
@@ -223,27 +235,28 @@ class ObservePythonAssertions(ast.NodeTransformer):
             orelse=[observed(False)], finalbody=[]), node)
 
 
-def track_body(method, test):
+def track_body(method, test, result):
     """Observe an already-bound body separately from setup/teardown/cleanup."""
     if inspect.iscoroutinefunction(method):
         @wraps(method)
         async def tracked(*args, **kwargs):
-            with body_execution(test):
+            with body_execution(test, result):
                 return await method(*args, **kwargs)
     else:
         @wraps(method)
         def tracked(*args, **kwargs):
-            with body_execution(test):
+            with body_execution(test, result):
                 return method(*args, **kwargs)
     return tracked
 
 
-def track_suite(suite, module_name, stack, entries, path=()):
+def track_suite(suite, module_name, stack, result, path=()):
     """Include local cases returned by load_tests, preserving method binding."""
     if isinstance(suite, unittest.BaseTestSuite):
         for index, test in enumerate(suite):
-            track_suite(test, module_name, stack, entries, path + (index,))
+            track_suite(test, module_name, stack, result, path + (index,))
         return
+    entries = result.entries
     if id(suite) in entries:
         # Reused case objects need distinct entry identities, one body wrapper.
         entries[id(suite)].append((path, *entries[id(suite)][0][1:]))
@@ -260,21 +273,16 @@ def track_suite(suite, module_name, stack, entries, path=()):
     origin = SOURCE_CODE_SITES.get().get(id(getattr(method, "__code__", None)))
     entries[id(suite)] = [(path, name, origin)]
     # Instance replacement preserves descriptors, coroutines and unittest flags.
-    stack.enter_context(patch.object(suite, name, track_body(method, suite)))
+    stack.enter_context(patch.object(suite, name, track_body(method, suite, result)))
 
 
 def run_suite(source, implementation, test_name=None):
     """Run trusted packaged Python in fresh modules, restoring the import table."""
     shipping = module_from_spec(spec_from_file_location("shipping", "shipping.py"))
     tests = module_from_spec(spec_from_file_location("quality_case", "test_shipping.py"))
-    entries = {}
-    result = None
-
-    def make_result(*args, **kwargs):
-        nonlocal result
-        result = QualityResult(*args, entries=entries, **kwargs)
-        return result
-
+    runner = unittest.TextTestRunner(stream=io.StringIO())
+    result = QualityResult(runner.stream, runner.descriptions, runner.verbosity)
+    runner.resultclass = lambda *args, **kwargs: result
     with ExitStack() as stack:
         stack.enter_context(patch.dict(sys.modules, {"shipping": shipping,
                                                     "quality_case": tests,
@@ -309,12 +317,10 @@ def run_suite(source, implementation, test_name=None):
             if not isinstance(suite, (unittest.BaseTestSuite, unittest.TestCase)):
                 raise TypeError("test loader must return a unittest suite or case")
             phase = "suite tracking"
-            track_suite(suite, tests.__name__, stack, entries)
+            track_suite(suite, tests.__name__, stack, result)
             phase = "suite execution"
-            return unittest.TextTestRunner(stream=io.StringIO(), resultclass=make_result).run(suite)
+            return runner.run(suite)
         except Exception as error:
-            if result is None:
-                result = QualityResult(io.StringIO(), descriptions=False, verbosity=0)
             case = result.active_test
             if case is None:
                 case = unittest.FunctionTestCase(lambda: None, description=phase)
@@ -403,6 +409,116 @@ class QualityControls(unittest.TestCase):
         self.assertEqual(results["defect"].testsRun, 2)
         self.assertEqual(len(results["defect"].failures), 1)
         self.assertEqual(results["defect"].errors, [])
+
+    def test_cases_rejecting_evaluator_attributes_preserve_assertions(self):
+        for assertion in (
+            "self.assertEqual(shipping_fee(5000), 0)",
+            "with self.subTest(boundary=True):\n"
+            "    self.assertEqual(shipping_fee(5000), 0)",
+            "with self.assertRaises(ZeroDivisionError):\n"
+            "    1 // shipping_fee(5000)",
+        ):
+            for asynchronous in (False, True):
+                source = """import unittest
+from shipping import shipping_fee
+class Failure(AssertionError):
+    __hash__ = None
+    def __setattr__(self, name, value):
+        if name.startswith('_quality_'):
+            raise AttributeError(name)
+        super().__setattr__(name, value)
+class Tests(unittest.CASE):
+    failureException = Failure
+    def __setattr__(self, name, value):
+        if name.startswith('_quality_'):
+            raise AttributeError(name)
+        super().__setattr__(name, value)
+    ASYNCdef test_boundary(self):
+ASSERTION
+""".replace("CASE", "IsolatedAsyncioTestCase" if asynchronous else "TestCase"
+            ).replace("ASYNC", "async " if asynchronous else ""
+            ).replace("ASSERTION", "\n".join("        " + line
+                                             for line in assertion.splitlines()))
+                with self.subTest(assertion=assertion, asynchronous=asynchronous):
+                    accepted, results = assess(source, self.sound["shipping.py"])
+                    self.assertTrue(accepted)
+                    self.assertTrue(all(result.testsRun == 1 and not result.errors
+                                        and result.active_test is None
+                                        for result in results.values()))
+                    self.assertEqual(len(results["defect"].failures), 1)
+                    self.assertIn("Failure", results["defect"].failures[0][1])
+
+    def test_submitted_quality_names_remain_unchanged_through_cleanup(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    _quality_entry_id = 'submitted entry'
+    _quality_assertion_executed = 'submitted flag'
+    _quality_passed_assertions = 'submitted passes'
+    _quality_failure_sites = 'submitted failures'
+    def check_state(self):
+        self.assertEqual((self._quality_entry_id, self._quality_assertion_executed,
+                          self._quality_passed_assertions, self._quality_failure_sites),
+                         ('submitted entry', 'submitted flag',
+                          'submitted passes', 'submitted failures'))
+        self.assertFalse(any(name.startswith('_quality_') for name in self.__dict__))
+    def setUp(self):
+        self.check_state()
+        self.addCleanup(self.check_state)
+    def test_boundary(self):
+        self.assertEqual(shipping_fee(5000), 0)
+    def tearDown(self):
+        self.check_state()
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+        self.assertTrue(all(result.testsRun == 1 and not result.errors
+                            for result in results.values()))
+        self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_submitted_quality_names_cannot_erase_observed_body_evidence(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        self.assertEqual(shipping_fee(5000), 0)
+        self._quality_assertion_executed = False
+        self._quality_passed_assertions = set()
+        self._quality_failure_sites = None
+        self.skipTest('after observed assertion')
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+        self.assertTrue(all(result.testsRun == 1 and not result.errors
+                            and result.wholly_skipped == 0
+                            for result in results.values()))
+        self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_rejecting_case_start_stop_preserve_errors_and_skips(self):
+        for outcome in ("RuntimeError('case interrupted')", "unittest.SkipTest('optional case')"):
+            source = """import unittest
+class Tests(unittest.TestCase):
+    def __setattr__(self, name, value):
+        if name.startswith('_quality_'):
+            raise AttributeError(name)
+        super().__setattr__(name, value)
+    def test_boundary(self):
+        pass
+    def run(self, result):
+        result.startTest(self)
+        raise OUTCOME
+""".replace("OUTCOME", outcome)
+            with self.subTest(outcome=outcome):
+                accepted, results = assess(source, self.sound["shipping.py"])
+                self.assertFalse(accepted)
+                skipped = outcome.startswith("unittest.SkipTest")
+                self.assertEqual(set(results), {"reference", "defect", "benign"})
+                for result in results.values():
+                    self.assertEqual(result.testsRun, 1)
+                    self.assertEqual(len(result.errors), int(not skipped))
+                    self.assertEqual(len(result.skipped), int(skipped))
+                    self.assertEqual(result.wholly_skipped, int(skipped))
+                    self.assertIsNone(result.active_test)
 
     def test_dynamic_different_assertions_cannot_share_a_call_site(self):
         for body in (
