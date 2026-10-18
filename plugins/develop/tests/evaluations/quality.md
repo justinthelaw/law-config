@@ -49,8 +49,9 @@ The helper temporarily registers the source modules with file/import metadata,
 including `test_shipping` as an alias for the test module, and restores the import
 table after each run. Those filenames identify the
 in-memory source; the helper does not materialize source files on disk. Standard
-`TestCase` assertion methods are temporarily wrapped for direct, inherited and
-`super()` calls, respecting the case's configured `failureException`. Runs must
+`TestCase` assertion methods and standard synchronous/asynchronous body invocation
+methods are temporarily wrapped, respecting the case's configured `failureException`
+and observing direct, inherited and `super()` assertion calls. Runs must
 remain sequential within a process because those wrappers modify shared classes.
 Assertion failure metadata is stored separately from the exception, without
 requiring custom failure exceptions to accept evaluator attributes or be hashable.
@@ -58,9 +59,13 @@ The result owns observation state for its active suite entry; submitted test cas
 receive no evaluator metadata fields. Existing `_quality_*` names on those cases
 are neither reserved nor used for correlation or skip accounting.
 Body tracking applies to local `TestCase` instances in the loaded suite, including
-local classes returned by `load_tests` in nested standard suites. It wraps the
-resolved instance callable, preserving static/class method binding, inherited
-methods, coroutine bodies and unittest skip/expected-failure markers.
+local classes returned by `load_tests` in nested standard suites. Locality comes
+from membership in the compiled submitted source, so changing `__module__` does
+not affect it. The standard invocation receives a wrapper around the resolved
+callable; submitted instances and their methods are not modified. This preserves
+static/class method binding, inherited methods, coroutine bodies and unittest
+skip/expected-failure markers. Bodies changed after suite registration remain
+unverified, as do custom invocation paths that bypass the standard methods.
 Standard `FunctionTestCase` leaves wrapping functions defined in the submitted
 module are tracked around the function body, separately from setup and teardown.
 External functions and custom callable objects in those leaves remain unverified.
