@@ -25,3 +25,7 @@ Counts do not grade communication quality. Agent wall time, tokens and USD are
 reported separately from application metrics; unknown costs remain null. Cost
 deltas require identical plans and complete measurements. Different host/model
 conditions are rejected rather than attributed to the candidate instructions.
+
+Finite attempt costs must also produce finite totals and deltas. Arithmetic
+overflow is invalid input (exit 2), never JSON `Infinity` or `NaN`; integer token
+totals remain exact.
