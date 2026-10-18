@@ -206,19 +206,32 @@ class ObservePythonAssertions(ast.NodeTransformer):
             orelse=[observed(False)], finalbody=[]), node)
 
 
-def track_body(method):
-    """Observe the trusted test body separately from setup/teardown/cleanup."""
+def track_body(method, test):
+    """Observe an already-bound body separately from setup/teardown/cleanup."""
     if inspect.iscoroutinefunction(method):
         @wraps(method)
-        async def tracked(test, *args, **kwargs):
+        async def tracked(*args, **kwargs):
             with body_execution(test):
-                return await method(test, *args, **kwargs)
+                return await method(*args, **kwargs)
     else:
         @wraps(method)
-        def tracked(test, *args, **kwargs):
+        def tracked(*args, **kwargs):
             with body_execution(test):
-                return method(test, *args, **kwargs)
+                return method(*args, **kwargs)
     return tracked
+
+
+def track_suite(suite, module_name, stack):
+    """Include local cases returned by load_tests, preserving method binding."""
+    if isinstance(suite, unittest.BaseTestSuite):
+        for test in suite:
+            track_suite(test, module_name, stack)
+    elif isinstance(suite, unittest.TestCase) and type(suite).__module__ == module_name:
+        name = suite._testMethodName
+        # Instance replacement leaves static/class descriptors and inheritance
+        # intact. The runner still sees coroutine and skip/expected-failure flags.
+        method = track_body(getattr(suite, name), suite)
+        stack.enter_context(patch.object(suite, name, method))
 
 
 def run_suite(source, implementation, test_name=None):
@@ -254,13 +267,9 @@ def run_suite(source, implementation, test_name=None):
             result.addError(module_load, sys.exc_info())
             return result
         loader = unittest.TestLoader()
-        for candidate in vars(tests).values():
-            if (isinstance(candidate, type) and issubclass(candidate, unittest.TestCase)
-                    and candidate.__module__ == tests.__name__):
-                for name in loader.getTestCaseNames(candidate):
-                    setattr(candidate, name, track_body(getattr(candidate, name)))
         suite = (loader.loadTestsFromName(test_name, tests) if test_name
                  else loader.loadTestsFromModule(tests))
+        track_suite(suite, tests.__name__, stack)
         return unittest.TextTestRunner(stream=io.StringIO(), resultclass=QualityResult).run(suite)
 
 
@@ -338,6 +347,105 @@ class QualityControls(unittest.TestCase):
         self.assertEqual(results["defect"].testsRun, 2)
         self.assertEqual(len(results["defect"].failures), 1)
         self.assertEqual(results["defect"].errors, [])
+
+    def test_load_tests_local_cases_in_nested_suite_detect_boundary(self):
+        source = """import unittest
+from shipping import shipping_fee
+def load_tests(loader, tests, pattern):
+    class Local(unittest.TestCase):
+        def test_boundary(self):
+            self.assertEqual(shipping_fee(5000), 0)
+    return unittest.TestSuite([loader.loadTestsFromTestCase(Local)])
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+        self.assertTrue(all(result.testsRun == 1 and not result.errors
+                            for result in results.values()))
+        self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_static_and_class_test_methods_preserve_binding(self):
+        for decorator, argument in (("staticmethod", ""), ("classmethod", "cls")):
+            for asynchronous in (False, True):
+                source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.CASE):
+    @DECORATOR
+    ASYNCdef test_boundary(ARGUMENT):
+        BINDING
+        unittest.TestCase().assertEqual(shipping_fee(5000), 0)
+""".replace("CASE", "IsolatedAsyncioTestCase" if asynchronous else "TestCase"
+            ).replace("DECORATOR", decorator).replace("ARGUMENT", argument
+            ).replace("ASYNC", "async " if asynchronous else ""
+            ).replace("BINDING", "assert cls is Tests" if argument else "pass")
+                with self.subTest(decorator=decorator, asynchronous=asynchronous):
+                    accepted, results = assess(source, self.sound["shipping.py"])
+                    self.assertTrue(accepted)
+                    self.assertTrue(all(result.testsRun == 1 and not result.errors
+                                        for result in results.values()))
+                    self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_lifecycle_only_assertions_are_unverified(self):
+        for hook in ("setUp", "tearDown", "cleanup"):
+            definition = ("    def setUp(self):\n"
+                          "        self.addCleanup(self.check_boundary)\n"
+                          "    def check_boundary(self):\n" if hook == "cleanup"
+                          else f"    def {hook}(self):\n")
+            source = ("import unittest\nfrom shipping import shipping_fee\n"
+                      "class Tests(unittest.TestCase):\n" + definition
+                      + "        self.assertEqual(shipping_fee(5000), 0)\n"
+                      "    def test_boundary(self):\n        pass\n")
+            with self.subTest(hook=hook):
+                accepted, results = assess(source, self.sound["shipping.py"])
+                self.assertFalse(accepted)
+                self.assertTrue(results["reference"].wasSuccessful())
+                self.assertTrue(results["benign"].wasSuccessful())
+                self.assertEqual(len(results["defect"].failures), 1)
+                self.assertTrue(all(result.testsRun == 1 and not result.errors
+                                    and not result.passed_assertions
+                                    and not result.failed_assertions
+                                    for result in results.values()))
+
+    def test_worker_thread_assertions_without_body_context_are_unverified(self):
+        source = """import unittest
+from concurrent.futures import ThreadPoolExecutor
+from contextvars import Context
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            pool.submit(Context().run,
+                        lambda: self.assertEqual(shipping_fee(5000), 0)).result()
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertFalse(accepted)
+        self.assertTrue(results["reference"].wasSuccessful())
+        self.assertTrue(results["benign"].wasSuccessful())
+        self.assertEqual(len(results["defect"].failures), 1)
+        self.assertTrue(all(result.testsRun == 1 and not result.errors
+                            and not result.passed_assertions
+                            and not result.failed_assertions
+                            for result in results.values()))
+
+    def test_setup_assertion_cannot_certify_skipped_detecting_body(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def check_boundary(self):
+        self.assertEqual(shipping_fee(5000), 0)
+    def setUp(self):
+        if shipping_fee(5000) == 0:
+            self.check_boundary()
+            self.skipTest("detecting body never runs on controls")
+    def test_boundary(self):
+        self.check_boundary()
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertFalse(accepted)
+        for name in ("reference", "benign"):
+            self.assertEqual(results[name].wholly_skipped, 1)
+            self.assertFalse(results[name].passed_assertions)
+        self.assertEqual(len(results["defect"].failures), 1)
+        self.assertTrue(results["defect"].failed_assertions)
 
     def test_unrelated_skip_preserves_executed_boundary_evidence(self):
         suite = self.sound["test_shipping.py"] + """
