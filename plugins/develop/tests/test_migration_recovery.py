@@ -94,6 +94,95 @@ class PartialRecovery(Store):
             target.close()
 
 
+class EarlyInterrupted(Store):
+    def migrate_step(self, interrupt=False):
+        if interrupt:
+            raise Interrupted("before touching the row")
+        return super().migrate_step()
+
+
+class NegativeFallback(Store):
+    def read(self, protocol, key):
+        result = super().read(protocol, key)
+        if protocol == 2 and self.db.execute(
+                "SELECT minor FROM records WHERE id = ?", (key,)).fetchone() == (None,):
+            result["balance_minor"] = abs(result["balance_minor"])
+        return result
+
+
+class MutatingSnapshot(Store):
+    def snapshot(self, path):
+        self.db.execute("CREATE TABLE unexpected (value TEXT)")
+        super().snapshot(path)
+
+
+class BatchStep(Store):
+    def migrate_step(self, interrupt=False):
+        checkpoint = self.db.execute("SELECT checkpoint FROM migration").fetchone()[0]
+        result = super().migrate_step(interrupt)
+        if checkpoint == 1 and not interrupt:
+            super().migrate_step()
+        return result
+
+
+class CompletedMutation(Store):
+    def migrate_step(self, interrupt=False):
+        result = super().migrate_step(interrupt)
+        if not result:
+            with self.db:
+                self.db.execute("UPDATE migration SET checkpoint = 999")
+        return result
+
+
+class SplitWrite(Store):
+    split_protocol = 1
+
+    def write(self, protocol, key, value):
+        if protocol != self.split_protocol or self.db.execute(
+                "SELECT phase FROM migration").fetchone()[0] != "mixed":
+            return super().write(protocol, key, value)
+        raw = value if protocol == 1 else format(Decimal(value) / 100, ".2f")
+        with self.db:
+            self.db.execute("UPDATE records SET raw = ? WHERE id = ?", (raw, key))
+        with self.db:
+            self.db.execute("UPDATE records SET minor = ? WHERE id = ?", (int(Decimal(raw) * 100), key))
+
+
+class AtomicColumnWrites(Store):
+    """Benign control: two statements are atomic inside one transaction."""
+
+    def write(self, protocol, key, value):
+        if protocol not in (1, 2) or self.db.execute(
+                "SELECT phase FROM migration").fetchone()[0] != "mixed":
+            return super().write(protocol, key, value)
+        raw = value if protocol == 1 else format(Decimal(value) / 100, ".2f")
+        with self.db:
+            self.db.execute("UPDATE records SET raw = ? WHERE id = ?", (raw, key))
+            self.db.execute("UPDATE records SET minor = ? WHERE id = ?", (int(Decimal(raw) * 100), key))
+
+
+class AlternateErrors(Store):
+    """Benign control: the contract does not require exception message text."""
+
+    def finalize(self):
+        try:
+            super().finalize()
+        except ValueError as error:
+            raise RuntimeError("try later") from error
+
+    def read(self, protocol, key):
+        try:
+            return super().read(protocol, key)
+        except ValueError as error:
+            raise ValueError("unavailable") from error
+
+    def write(self, protocol, key, value):
+        try:
+            super().write(protocol, key, value)
+        except ValueError as error:
+            raise ValueError("unavailable") from error
+
+
 class MigrationTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -115,6 +204,7 @@ class MigrationTests(unittest.TestCase):
         new = self.open(kind)
         self.assertEqual(old.read(1, 1), {"balance": "001.20"})
         self.assertEqual(new.read(2, 1), {"balance_minor": 120})
+        self.assertEqual(new.read(2, 2), {"balance_minor": -50})
         new.migrate_step()
         old.write(1, 1, "002.35")
         self.assertEqual(new.read(2, 1), {"balance_minor": 235})
@@ -177,20 +267,68 @@ class MigrationTests(unittest.TestCase):
     def assert_restart(self, kind=Store):
         store = self.seeded(kind)
         self.assertTrue(store.migrate_step())
+        expected = [(1, "001.20", 120), (2, "-0.50", None), (3, "9.99", None)]
+        self.assertEqual(store.db.execute("SELECT checkpoint FROM migration").fetchone(), (1,))
+        self.assertEqual(store.db.execute("SELECT * FROM records ORDER BY id").fetchall(), expected)
+        touched = []
+        store.db.create_function("observe_row", 2, lambda key, minor: touched.append((key, minor)))
+        # AFTER triggers observe executed row changes, including replacements;
+        # unlike transaction state alone, they distinguish an early exception.
+        for event in ("UPDATE", "INSERT"):
+            store.db.execute(f"CREATE TEMP TRIGGER observe_{event} AFTER {event} ON records "
+                             "BEGIN SELECT observe_row(NEW.id, NEW.minor); END")
         with self.assertRaises(Interrupted):
             store.migrate_step(interrupt=True)
+        self.assertIn((2, -50), touched)
         store.close()
         resumed = self.open(kind)
         self.assertEqual(resumed.db.execute("SELECT checkpoint FROM migration").fetchone(), (1,))
-        self.assertEqual(resumed.db.execute("SELECT minor FROM records WHERE id = 2").fetchone(), (None,))
-        while resumed.migrate_step():
-            pass
-        expected = [(1, "001.20", 120), (2, "-0.50", -50), (3, "9.99", 999)]
         self.assertEqual(resumed.db.execute("SELECT * FROM records ORDER BY id").fetchall(), expected)
+        for index, minor in ((1, -50), (2, 999)):
+            self.assertTrue(resumed.migrate_step())
+            key, raw, _ = expected[index]
+            expected[index] = (key, raw, minor)
+            self.assertEqual(resumed.db.execute("SELECT checkpoint FROM migration").fetchone(), (key,))
+            self.assertEqual(resumed.db.execute("SELECT * FROM records ORDER BY id").fetchall(), expected)
         resumed.close()
         again = self.open(kind)
+        before = self.database_state(again)
         self.assertFalse(again.migrate_step())
-        self.assertEqual(again.db.execute("SELECT * FROM records ORDER BY id").fetchall(), expected)
+        self.assertEqual(self.database_state(again), before)
+
+    def assert_supported_write_atomicity(self, kind=Store):
+        writer = self.seeded(kind)
+        observer = self.open()
+        observer.db.execute("PRAGMA busy_timeout = 0")
+        while writer.migrate_step():
+            pass
+        for protocol, value, expected in ((1, "002.35", ("002.35", 235)), (2, -75, ("-0.75", -75))):
+            before = observer.db.execute("SELECT raw, minor FROM records WHERE id = 1").fetchone()
+            observed = []
+
+            def observe(statement):
+                try:
+                    observed.append(observer.db.execute(
+                        "SELECT raw, minor FROM records WHERE id = 1").fetchone())
+                except sqlite3.OperationalError as error:
+                    # Exclusive writers may block reads; partial committed rows
+                    # must never be visible. Record errors outside the callback.
+                    observed.append(error)
+
+            writer.db.set_trace_callback(observe)
+            try:
+                writer.write(protocol, 1, value)
+            finally:
+                writer.db.set_trace_callback(None)
+            self.assertTrue(observed)
+            for row in observed:
+                if isinstance(row, sqlite3.OperationalError):
+                    self.assertIn(getattr(row, "sqlite_errorcode", None),
+                                  (sqlite3.SQLITE_BUSY, sqlite3.SQLITE_LOCKED))
+                else:
+                    self.assertIn(row, (before, expected))
+            self.assertEqual(observer.db.execute(
+                "SELECT raw, minor FROM records WHERE id = 1").fetchone(), expected)
 
     def assert_recovery(self, kind=Store):
         store = self.seeded(kind)
@@ -198,11 +336,12 @@ class MigrationTests(unittest.TestCase):
             pass
         # Both protocols are drained; writes remain frozen through recovery.
         snapshot = Path(self.temp.name) / "before.sqlite"
+        expected = self.database_state(store)
         store.snapshot(snapshot)
+        self.assertEqual(self.database_state(store), expected)
         backup = self.open(path=snapshot)
         self.assertEqual([backup.read(1, key)["balance"] for key, _ in RECORDS],
                          [raw for _, raw in RECORDS])
-        expected = self.database_state(store)
         self.assertEqual(self.database_state(backup), expected)
         backup.close()
         store.finalize()
@@ -267,11 +406,18 @@ class MigrationTests(unittest.TestCase):
                 with self.assertRaises(AssertionError):
                     self.assert_recovery(CorruptedSnapshot)
 
-    def test_incomplete_backfill_cannot_drop_originals(self):
-        store = self.seeded()
-        with self.assertRaisesRegex(ValueError, "incomplete"):
+    def assert_incomplete_backfill(self, kind=Store, populate=False):
+        store = self.seeded(kind)
+        if populate:
+            for key, raw in RECORDS:
+                store.write(1, key, raw)
+        before = self.database_state(store)
+        with self.assertRaises(Exception):
             store.finalize()
-        self.assertEqual(store.read(1, 1), {"balance": "001.20"})
+        self.assertEqual(self.database_state(store), before)
+
+    def test_incomplete_backfill_cannot_drop_originals(self):
+        self.assert_incomplete_backfill()
 
     def assert_final_phase(self, kind=Store):
         store = self.seeded(kind)
@@ -280,11 +426,11 @@ class MigrationTests(unittest.TestCase):
         store.finalize()
         self.assertEqual([row[1] for row in store.db.execute("PRAGMA table_info(records)")],
                          ["id", "minor"])
-        with self.assertRaisesRegex(ValueError, "retired"):
+        with self.assertRaises(ValueError):
             store.read(1, 1)
         before = self.database_state(store)
         for protocol, value in ((1, "9.99"), (2, 999)):
-            with self.assertRaisesRegex(ValueError, "frozen"):
+            with self.assertRaises(ValueError):
                 store.write(protocol, 1, value)
             self.assertEqual(self.database_state(store), before)
         self.assertEqual(store.read(2, 1), {"balance_minor": 120})
@@ -295,6 +441,51 @@ class MigrationTests(unittest.TestCase):
     def test_final_old_protocol_write_seed_is_detected(self):
         with self.assertRaises(AssertionError):
             self.assert_final_phase(FinalOldWrite)
+
+    def test_early_interruption_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_restart(EarlyInterrupted)
+
+    def test_negative_fallback_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_coexistence(NegativeFallback)
+
+    def test_mutating_snapshot_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_recovery(MutatingSnapshot)
+
+    def test_batch_step_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_restart(BatchStep)
+
+    def test_completed_step_mutation_seed_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_restart(CompletedMutation)
+
+    def test_alternate_final_phase_errors_are_accepted(self):
+        self.assert_final_phase(AlternateErrors)
+
+    def test_alternate_incomplete_backfill_error_is_accepted(self):
+        self.assert_incomplete_backfill(AlternateErrors)
+
+    def test_populated_minor_units_do_not_complete_backfill(self):
+        self.assert_incomplete_backfill(populate=True)
+
+    def test_supported_writes_are_atomic(self):
+        self.assert_supported_write_atomicity()
+
+    def test_split_write_seed_is_detected(self):
+        for protocol in (1, 2):
+            with self.subTest(protocol=protocol):
+                class NonatomicProtocol(SplitWrite):
+                    split_protocol = protocol
+
+                self.path = Path(self.temp.name) / f"split-{protocol}.sqlite"
+                with self.assertRaises(AssertionError):
+                    self.assert_supported_write_atomicity(NonatomicProtocol)
+
+    def test_atomic_multistatement_writes_are_accepted(self):
+        self.assert_supported_write_atomicity(AtomicColumnWrites)
 
     def test_fixture_and_private_grader_pairs(self):
         fixtures = sorted((ROOT / "fixtures").glob("migration-*.json"))

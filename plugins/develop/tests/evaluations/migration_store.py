@@ -78,7 +78,8 @@ class Store:
             target.close()
 
     def finalize(self):
-        if self.db.execute("SELECT count(*) FROM records WHERE minor IS NULL").fetchone()[0]:
+        if self.db.execute("SELECT count(*) FROM records WHERE minor IS NULL "
+                           "OR id > (SELECT checkpoint FROM migration)").fetchone()[0]:
             raise ValueError("backfill incomplete")
         with self.db:
             self.db.execute("CREATE TABLE final_records (id INTEGER PRIMARY KEY, minor INTEGER)")

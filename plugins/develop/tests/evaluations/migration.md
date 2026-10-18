@@ -29,12 +29,16 @@ There are no post-snapshot writes or replay requirements in this toy.
 The evaluator-only [reference store](migration_store.py) and
 [tests](../test_migration_recovery.py) check executable behaviors and bounded
 seeded defects: incompatible wire output, stale backfill overwriting a writer,
-rejected writes corrupting minor units, premature checkpoints, final-phase N
-writes, lossy reconstruction and partial snapshot restoration. Restore checks
+negative fallback conversion, split write commits, rejected writes corrupting
+minor units, early interruption, premature checkpoints, batched steps, mutation
+after completion, final-phase N writes, lossy reconstruction and snapshot
+mutation or partial restoration. Benign controls accept different exception
+messages and multiple write statements within one transaction. Restore checks
 compare all records, migration metadata and schema with the snapshot, then read
 both protocols and resume completed migration. Rejection checks preserve full
 rows, including writes through both protocols after finalization. The tests also
-reject premature finalization and verify removal of the original column.
+reject finalization with pending checkpoint work even when all minor values are
+populated, and verify removal of the original column.
 Run from the plugin directory:
 
 ```bash
@@ -47,7 +51,12 @@ substitute its `Store` and `Interrupted` exports in an isolated evaluator copy
 and run the positive behavior tests. The overlapping-write reproduction uses a
 SQLite trace callback at the reference's backfill UPDATE; adapt that controlled
 interleaving to a candidate's SQL before using it as candidate evidence. Keep
-seeded-defect tests attributed to the reference suite. Grade observed agent
+seeded-defect tests attributed to the reference suite. Temporary row triggers
+verify that interruption follows an executed row change; restart checks inspect
+every step and unchanged completion. Supported-write checks sample a second
+connection at SQL statement boundaries to detect partially committed values.
+These are bounded observations, not an exhaustive concurrency schedule.
+Grade observed agent
 decisions separately with the linked criteria. A passing reference run cannot
 supply a candidate or native-host verdict.
 
