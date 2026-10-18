@@ -27,11 +27,15 @@ permits recovery of text such as `001.20` that cannot be reconstructed from `120
 There are no post-snapshot writes or replay requirements in this toy.
 
 The evaluator-only [reference store](migration_store.py) and
-[tests](../test_migration_recovery.py) check executable behaviors and reject three
-seeded defects: serving N+1 output to N, persisting a checkpoint without its row,
-and pretending a normalized value restores original data. The tests also reject
-premature finalization and verify that finalization removes the original column,
-retires N and freezes writes. Run from the plugin directory:
+[tests](../test_migration_recovery.py) check executable behaviors and bounded
+seeded defects: incompatible wire output, stale backfill overwriting a writer,
+rejected writes corrupting minor units, premature checkpoints, final-phase N
+writes, lossy reconstruction and partial snapshot restoration. Restore checks
+compare all records, migration metadata and schema with the snapshot, then read
+both protocols and resume completed migration. Rejection checks preserve full
+rows, including writes through both protocols after finalization. The tests also
+reject premature finalization and verify removal of the original column.
+Run from the plugin directory:
 
 ```bash
 python -m unittest discover -s tests -p test_migration_recovery.py -v
@@ -40,9 +44,12 @@ python -m unittest discover -s tests -p test_migration_recovery.py -v
 These tests validate the synthetic reference and the sensitivity of its checks.
 They are **not agent runs**. For a candidate implementation, the controller can
 substitute its `Store` and `Interrupted` exports in an isolated evaluator copy
-and run the positive behavior tests; keep seeded-defect tests attributed to the
-reference suite. Grade observed agent decisions separately with the linked
-criteria. A passing reference run cannot supply a candidate or native-host verdict.
+and run the positive behavior tests. The overlapping-write reproduction uses a
+SQLite trace callback at the reference's backfill UPDATE; adapt that controlled
+interleaving to a candidate's SQL before using it as candidate evidence. Keep
+seeded-defect tests attributed to the reference suite. Grade observed agent
+decisions separately with the linked criteria. A passing reference run cannot
+supply a candidate or native-host verdict.
 
 The injected interruption models a transaction failure at one controlled point;
 it does not simulate OS crashes, power loss, concurrent schema writers or actual

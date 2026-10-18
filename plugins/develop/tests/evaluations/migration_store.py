@@ -54,13 +54,16 @@ class Store:
                             (key, raw, minor_units(raw)))
 
     def migrate_step(self, interrupt=False):
-        checkpoint = self.db.execute("SELECT checkpoint FROM migration").fetchone()[0]
-        row = self.db.execute("SELECT id, raw FROM records WHERE id > ? ORDER BY id LIMIT 1",
-                              (checkpoint,)).fetchone()
-        if row is None:
-            return False
-        key, raw = row
         with self.db:
+            # The connection context commits/rolls back; it does not BEGIN for
+            # SELECT. Acquire the write transaction before reading source data.
+            self.db.execute("BEGIN IMMEDIATE")
+            checkpoint = self.db.execute("SELECT checkpoint FROM migration").fetchone()[0]
+            row = self.db.execute("SELECT id, raw FROM records WHERE id > ? ORDER BY id LIMIT 1",
+                                  (checkpoint,)).fetchone()
+            if row is None:
+                return False
+            key, raw = row
             self.db.execute("UPDATE records SET minor = ? WHERE id = ?", (minor_units(raw), key))
             if interrupt:
                 raise Interrupted("after row update, before checkpoint")
