@@ -1,6 +1,6 @@
 ---
 name: develop
-description: Use when the user invokes Develop for repository work, dependency upgrades, cleanup, selected-session improvements or independent review.
+description: Use when the user invokes Develop for repository work, dependency upgrades, incident diagnosis, cleanup, selected-session improvements or independent review.
 ---
 
 # Develop
@@ -16,6 +16,7 @@ Resolve the user's outcome, then route below. Repository workflows read [the sha
 | Intent | Required skill | Handoff |
 | --- | --- | --- |
 | Implement, fix, maintain or review repository work | [iterate](../iterate/SKILL.md) | Targets, outcome, implementation constraints |
+| Diagnose a failure or local, staged or live incident | [iterate](../iterate/SKILL.md) | Selected service/environment/log bundle, time window, diagnosis/repair boundary |
 | Publish existing changes or monitor/fix CI | [iterate](../iterate/SKILL.md) | Selected roots, delivery mode, existing authority, thread signing preference |
 | Review or upgrade dependencies/runtimes; consolidate dependency PRs | [upgrade](../upgrade/SKILL.md) | Targets, review/implementation boundary, dependency and PR scope |
 | Inspect or reclaim disk/RAM; investigate processes | [clean](../clean/SKILL.md) | Thread activity evidence, audit/cleanup authority, protected work; explicit widening only |
