@@ -23,7 +23,8 @@
         "id": "no-op",
         "revision": "1",
         "sha256": "cae953b9699d9cd306a9586bd43106fec20e9f1c9baa1943920e4e28b830cc03"
-      }
+      },
+      "grader_sha256": "20da8c27d44d94583dda6222e0fb30b7c9057f45fd839bf6790396ed2954096a"
     },
     {
       "attempt_id": "blocked",
@@ -31,7 +32,8 @@
         "id": "no-op",
         "revision": "1",
         "sha256": "cae953b9699d9cd306a9586bd43106fec20e9f1c9baa1943920e4e28b830cc03"
-      }
+      },
+      "grader_sha256": "20da8c27d44d94583dda6222e0fb30b7c9057f45fd839bf6790396ed2954096a"
     },
     {
       "attempt_id": "missing",
@@ -39,7 +41,8 @@
         "id": "no-op",
         "revision": "1",
         "sha256": "cae953b9699d9cd306a9586bd43106fec20e9f1c9baa1943920e4e28b830cc03"
-      }
+      },
+      "grader_sha256": "20da8c27d44d94583dda6222e0fb30b7c9057f45fd839bf6790396ed2954096a"
     }
   ],
   "attempts": [

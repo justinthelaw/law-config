@@ -38,6 +38,28 @@ class EvaluationContract(unittest.TestCase):
         identity = self.result["planned_attempts"][0]["fixture"]
         fixture = evaluation.load_json(DATA / "fixtures/no-op.json")
         self.assertEqual(identity["sha256"], evaluation.fixture_digest(fixture))
+        grader_digest = hashlib.sha256((DATA / "graders/no-op.json").read_bytes()).hexdigest()
+        for planned in self.result["planned_attempts"]:
+            self.assertEqual(planned["grader_sha256"], grader_digest)
+
+    def test_each_planned_attempt_requires_exact_grader_hash(self):
+        for index in range(len(self.result["planned_attempts"])):
+            result = copy.deepcopy(self.result)
+            del result["planned_attempts"][index]["grader_sha256"]
+            with self.subTest(attempt=index, missing=True), self.assertRaises(ValueError):
+                evaluation.validate_result(result)
+            for invalid in (None, 0, "", "a" * 63, "a" * 65, "A" * 64,
+                            "g" * 64, "x" + "a" * 64, "a" * 64 + "\n"):
+                result = copy.deepcopy(self.result)
+                result["planned_attempts"][index]["grader_sha256"] = invalid
+                with self.subTest(attempt=index, invalid=invalid), self.assertRaises(ValueError):
+                    evaluation.validate_result(result)
+
+    def test_grader_hash_is_not_a_public_fixture_field(self):
+        self.fixture["grader_sha256"] = "a" * 64
+        with self.assertRaises(ValueError):
+            evaluation.materialize(self.fixture, self.root / "agent")
+        self.assertFalse((self.root / "agent").exists())
 
     def test_digest_is_order_independent_but_content_sensitive(self):
         reordered = dict(reversed(list(self.fixture.items())))

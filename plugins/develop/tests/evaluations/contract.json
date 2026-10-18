@@ -188,11 +188,16 @@
                   "sha256"
                 ],
                 "additionalProperties": false
+              },
+              "grader_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
               }
             },
             "required": [
               "attempt_id",
-              "fixture"
+              "fixture",
+              "grader_sha256"
             ],
             "additionalProperties": false
           },

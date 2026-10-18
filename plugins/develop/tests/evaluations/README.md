@@ -65,9 +65,13 @@ One manifest describes one exact source revision and host/model/effort selection
 Use a full Git SHA (40 or 64 lowercase hexadecimal characters); never `main` or a
 moving tag. Record host version and selection basis, including exposed controls,
 inheritance or the reason identity is unavailable. Do not guess model identity.
-Source identity and fixture identity are separate: every planned attempt records
-fixture ID, revision and canonical SHA256. Check these against the supplied
-fixture before a trial; structural validation cannot authenticate claimed data.
+Source, fixture and grader identities are separate: every planned attempt records
+fixture ID, revision and canonical SHA256, plus required `grader_sha256`: the
+64-character lowercase SHA256 of the exact grader file bytes. Keep this field in
+the evaluator-owned result ledger, outside public fixtures and materialized
+inputs. Check both digests against the supplied fixture and private grader before
+a trial; structural validation cannot authenticate claimed data. Paired trials
+must retain and compare grader hashes as well as fixture identities.
 
 Declare all planned attempt IDs before execution. Every ID must have exactly one
 record: `completed`, `blocked` or `missing`. Append retries under new planned IDs;
