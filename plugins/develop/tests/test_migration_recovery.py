@@ -836,21 +836,114 @@ class VolatileFinalize(Store):
         super().finalize()
 
 
+class KeyUnsupported(Store):
+    operation = "read"
+    unsupported_key = 2
+
+    def read(self, protocol, key):
+        if self.operation == "read" and protocol == 3 and key == self.unsupported_key:
+            return super().read(2, key)
+        return super().read(protocol, key)
+
+    def write(self, protocol, key, value):
+        if self.operation == "write" and protocol == 3 and key == self.unsupported_key:
+            return super().write(1, key, value)
+        return super().write(protocol, key, value)
+
+
+class RebuiltFinalSchema(Store):
+    columns = "id INTEGER, minor INTEGER"
+
+    def finalize(self):
+        super().finalize()
+        with self.db:
+            self.db.execute(f"CREATE TABLE replacement ({self.columns})")
+            self.db.execute("INSERT INTO replacement SELECT * FROM records")
+            self.db.execute("DROP TABLE records")
+            self.db.execute("ALTER TABLE replacement RENAME TO records")
+
+
+class WrongSignWrite(Store):
+    wrong_protocol = 1
+
+    def write(self, protocol, key, value):
+        if self.wrong_protocol == protocol:
+            if protocol == 1 and value.startswith("-"):
+                value = value[1:]
+            elif protocol == 2 and value > 0:
+                value = -value
+        return super().write(protocol, key, value)
+
+
+class AcknowledgedProtocolTwoLock(Store):
+    def write(self, protocol, key, value):
+        try:
+            return super().write(protocol, key, value)
+        except sqlite3.OperationalError:
+            if protocol != 2:
+                raise
+
+
+class SingleClose(Store):
+    """Benign control: close need not accept a second invocation."""
+
+    def close(self):
+        super().close()
+        self.db = None
+
+
+class RepeatedCompletionMutation(Store):
+    completed_calls = 0
+
+    def migrate_step(self, interrupt=False):
+        result = super().migrate_step(interrupt)
+        if not result:
+            self.completed_calls += 1
+            if self.completed_calls > 1:
+                with self.db:
+                    self.db.execute("UPDATE migration SET checkpoint = 999")
+        return result
+
+
+class MixedReadMutation(Store):
+    mutating_protocol = 1
+
+    def seed(self, records):
+        super().seed(records)
+        with self.db:
+            self.db.execute("CREATE TABLE metadata (reads INTEGER)")
+            self.db.execute("INSERT INTO metadata VALUES (0)")
+
+    def read(self, protocol, key):
+        result = super().read(protocol, key)
+        if protocol == self.mutating_protocol and self.db.execute(
+                "SELECT checkpoint FROM migration").fetchone() == (0,):
+            with self.db:
+                self.db.execute("UPDATE metadata SET reads = reads + 1")
+        return result
+
+
 class MigrationTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.path = Path(self.temp.name) / "store.sqlite"
+        self.closed_stores = set()
 
     def open(self, kind=Store, path=None):
         store = kind(path or self.path)
         self.addCleanup(store.db.close)
-        self.addCleanup(store.close)
+        self.addCleanup(self.close_once, store)
         return store
+
+    def close_once(self, store):
+        if id(store) not in self.closed_stores:
+            self.closed_stores.add(id(store))
+            store.close()
 
     def assert_closed(self, store):
         connection = store.db
-        store.close()
+        self.close_once(store)
         with self.assertRaises(sqlite3.ProgrammingError):
             connection.execute("SELECT 1")
 
@@ -863,13 +956,22 @@ class MigrationTests(unittest.TestCase):
             "migration": [("checkpoint", "INTEGER", 0), ("phase", "TEXT", 0)],
         }
         for table, columns in schemas.items():
-            actual = [(row[1], row[2].upper(), row[5])
-                      for row in store.db.execute(f"PRAGMA table_info({table})")]
-            self.assertEqual(actual, columns)
+            self.assert_columns(store, table, columns)
         self.assertEqual(store.db.execute("SELECT * FROM migration").fetchall(), [(0, "mixed")])
         self.assertEqual(store.db.execute("SELECT * FROM records ORDER BY id").fetchall(),
                          [(key, raw, None) for key, raw in sorted(records)])
         return store
+
+    def read_unchanged(self, store, protocol, key):
+        before = self.database_state(store)
+        value = store.read(protocol, key)
+        self.assertEqual(self.database_state(store), before)
+        return value
+
+    def assert_columns(self, store, table, columns):
+        actual = [(row[1], row[2].upper(), row[5])
+                  for row in store.db.execute(f"PRAGMA table_info({table})")]
+        self.assertEqual(actual, columns)
 
     def assert_migration_step(self, store):
         before = self.database_state(store)
@@ -892,12 +994,16 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(after, final)
         return result
 
+    def assert_completed_migration(self, store):
+        for _ in range(2):
+            self.assertIs(self.assert_migration_step(store), False)
+
     def finish_migration(self, store):
         checkpoint = store.db.execute("SELECT checkpoint FROM migration").fetchone()[0]
         remaining = store.db.execute("SELECT count(*) FROM records WHERE id > ?", (checkpoint,)).fetchone()[0]
         for _ in range(remaining):
             self.assertIs(self.assert_migration_step(store), True)
-        self.assertIs(self.assert_migration_step(store), False)
+        self.assert_completed_migration(store)
 
     def assert_write_changes_only_target(self, store, protocol, key, value, expected):
         before = self.database_state(store)
@@ -910,45 +1016,54 @@ class MigrationTests(unittest.TestCase):
     def assert_coexistence(self, kind=Store):
         old = self.seeded(kind)
         new = self.open(kind)
-        self.assertEqual(old.read(1, 1), {"balance": "001.20"})
-        self.assertEqual(new.read(2, 1), {"balance_minor": 120})
-        self.assertEqual(new.read(2, 2), {"balance_minor": -50})
+        self.assertEqual(self.read_unchanged(old, 1, 1), {"balance": "001.20"})
+        self.assertEqual(self.read_unchanged(new, 2, 1), {"balance_minor": 120})
+        self.assertEqual(self.read_unchanged(new, 2, 2), {"balance_minor": -50})
         self.assert_unsupported_protocol(new)
         self.assertIs(self.assert_migration_step(new), True)
         self.assert_write_changes_only_target(old, 1, 3, "009.99", ("009.99", 999))
         self.assert_write_changes_only_target(old, 1, 1, "002.35", ("002.35", 235))
-        self.assertEqual(new.read(2, 1), {"balance_minor": 235})
-        self.assertEqual(old.read(1, 2), {"balance": "-0.50"})
+        self.assertEqual(self.read_unchanged(new, 2, 1), {"balance_minor": 235})
+        self.assertEqual(self.read_unchanged(old, 1, 2), {"balance": "-0.50"})
         self.assert_write_changes_only_target(new, 2, 2, -75, ("-0.75", -75))
-        self.assertEqual(old.read(1, 2), {"balance": "-0.75"})
+        self.assertEqual(self.read_unchanged(old, 1, 2), {"balance": "-0.75"})
         for _ in range(len(RECORDS) - 1):
             self.assert_unsupported_protocol(new)
             self.assertIs(self.assert_migration_step(new), True)
-        self.assertIs(self.assert_migration_step(new), False)
-        self.assertEqual(old.read(1, 1), {"balance": "002.35"})
-        self.assertEqual(new.read(2, 2), {"balance_minor": -75})
+        self.assert_completed_migration(new)
+        self.assertEqual(self.read_unchanged(old, 1, 1), {"balance": "002.35"})
+        self.assertEqual(self.read_unchanged(new, 2, 2), {"balance_minor": -75})
         self.assert_unsupported_protocol(new)
-        self.assertEqual(old.read(1, 1), {"balance": "002.35"})
-        self.assertEqual(new.read(2, 1), {"balance_minor": 235})
+        self.assertEqual(self.read_unchanged(old, 1, 1), {"balance": "002.35"})
+        self.assertEqual(self.read_unchanged(new, 2, 1), {"balance_minor": 235})
 
     def assert_unsupported_protocol(self, store):
         before = self.database_state(store)
-        with self.assertRaises(ValueError):
-            store.write(3, 1, "99.00")
-        self.assertEqual(self.database_state(store), before)
-        with self.assertRaises(ValueError):
-            store.read(3, 1)
-        self.assertEqual(self.database_state(store), before)
+        for key, _ in RECORDS:
+            with self.assertRaises(ValueError):
+                store.write(3, key, "99.00")
+            self.assertEqual(self.database_state(store), before)
+            with self.assertRaises(ValueError):
+                self.read_unchanged(store, 3, key)
+            self.assertEqual(self.database_state(store), before)
 
     def assert_concurrent_write(self, kind=Store, old_kind=None):
-        old = self.seeded(kind if old_kind is None else old_kind)
-        new = self.open(kind)
-        old.db.execute("PRAGMA busy_timeout = 0")
-        for key, _ in sorted(RECORDS):
-            self.assert_overlapping_step(old, new, key)
-        self.assertIs(self.assert_migration_step(new), False)
+        original_path = self.path
+        try:
+            for protocol, value, expected in ((1, "002.35", ("002.35", 235)),
+                                               (2, -75, ("-0.75", -75))):
+                self.path = original_path.with_name(f"{original_path.stem}-protocol-{protocol}.sqlite")
+                old = self.seeded(kind if old_kind is None else old_kind)
+                new = self.open(kind)
+                old.db.execute("PRAGMA busy_timeout = 0")
+                for key, _ in sorted(RECORDS):
+                    self.assert_overlapping_step(old, new, key, protocol, value, expected)
+                self.assert_completed_migration(new)
+        finally:
+            self.path = original_path
 
-    def assert_overlapping_step(self, old, new, key):
+    def assert_overlapping_step(self, old, new, key, protocol, value, pair):
+        expected_raw, expected_minor = pair
         outcomes = []
         before = self.database_state(new)
         checkpoint, phase = before["migration"][0]
@@ -960,13 +1075,13 @@ class MigrationTests(unittest.TestCase):
             # the source row was fetched. No threads, sleeps or timing race.
             if statement.startswith("UPDATE records SET minor") and not outcomes:
                 try:
-                    old.write(1, key, "002.35")
+                    old.write(protocol, key, value)
                 except sqlite3.OperationalError as error:
                     outcomes.append(error)
                 else:
                     outcomes.append("written")
 
-        concurrent = before | {"records": [(key, "002.35", 235) if row[0] == key else row
+        concurrent = before | {"records": [(key, *pair) if row[0] == key else row
                                            for row in before["records"]]}
         migrated = {"migration": [(key, phase)]}
         locked_final = before | migrated | {
@@ -977,21 +1092,21 @@ class MigrationTests(unittest.TestCase):
             new, new.migrate_step, (locked_final, written_final),
             interleave=interleave, intermediate_states=(concurrent,)), True)
         self.assertEqual(len(outcomes), 1)
-        raw = old.read(1, key)["balance"]
-        self.assertEqual(new.read(2, key), {"balance_minor": int(Decimal(raw) * 100)})
+        raw = self.read_unchanged(old, 1, key)["balance"]
+        self.assertEqual(self.read_unchanged(new, 2, key), {"balance_minor": int(Decimal(raw) * 100)})
         if isinstance(outcomes[0], sqlite3.OperationalError):
             self.assert_database_busy(outcomes[0])
             expected = locked_final
         else:
             self.assertEqual(outcomes, ["written"])
-            self.assertEqual(old.read(1, key), {"balance": "002.35"})
-            self.assertEqual(new.read(2, key), {"balance_minor": 235})
+            self.assertEqual(self.read_unchanged(old, 1, key), {"balance": expected_raw})
+            self.assertEqual(self.read_unchanged(new, 2, key), {"balance_minor": expected_minor})
             expected = written_final
         self.assertEqual(self.database_state(new), expected)
         # Both locking and compare-and-retry permit this subsequent write.
-        self.assert_write_changes_only_target(old, 1, key, "002.35", ("002.35", 235))
-        self.assertEqual(old.read(1, key), {"balance": "002.35"})
-        self.assertEqual(new.read(2, key), {"balance_minor": 235})
+        self.assert_write_changes_only_target(old, protocol, key, value, pair)
+        self.assertEqual(self.read_unchanged(old, 1, key), {"balance": expected_raw})
+        self.assertEqual(self.read_unchanged(new, 2, key), {"balance_minor": expected_minor})
         self.assertEqual(new.db.execute("SELECT checkpoint FROM migration").fetchone(), (key,))
 
     def assert_database_busy(self, error):
@@ -1036,7 +1151,7 @@ class MigrationTests(unittest.TestCase):
         self.assert_closed(store)
         again = self.open(kind)
         self.assertEqual(self.database_state(again), before)
-        self.assertIs(self.assert_migration_step(again), False)
+        self.assert_completed_migration(again)
         self.assertEqual(self.database_state(again), before)
 
     def assert_interrupted_step(self, store, key, raw, durable):
@@ -1096,7 +1211,7 @@ class MigrationTests(unittest.TestCase):
             observed.append(snapshot())
         finally:
             writer.db.set_trace_callback(None)
-            observer.close()
+            self.close_once(observer)
         self.assertIn(observed[-1], final_states)
         phases = ((before,), intermediate_states, final_states)
         phase = 0
@@ -1121,23 +1236,27 @@ class MigrationTests(unittest.TestCase):
         # from protocol-1 write conversion, without changing the public fixture.
         store = self.seeded(kind, records=[(1, "1.15"), (2, "-1.15"), (3, "9.99")])
         for key, raw in store.db.execute("SELECT id, raw FROM records ORDER BY id").fetchall():
-            self.assertEqual(store.read(2, key), {"balance_minor": int(Decimal(raw) * 100)})
+            self.assertEqual(self.read_unchanged(store, 2, key), {"balance_minor": int(Decimal(raw) * 100)})
         self.finish_migration(store)
 
     def assert_sampled_write_atomicity(self, kind=Store):
         writer = self.seeded(kind)
-        self.finish_migration(writer)
         peer = self.open(kind)
-        for protocol, value, expected in ((1, "001.15", ("001.15", 115)), (2, -75, ("-0.75", -75))):
-            # Warm both APIs before each write: a per-instance cache must refresh.
-            for version in (1, 2):
-                self.assertEqual(peer.read(version, 1), writer.read(version, 1))
-            self.assert_write_changes_only_target(writer, protocol, 1, value, expected)
-            before = self.database_state(writer)
-            raw, minor = expected
-            self.assertEqual(peer.read(1, 1), {"balance": raw})
-            self.assertEqual(peer.read(2, 1), {"balance_minor": minor})
-            self.assertEqual(self.database_state(writer), before)
+        for completed in (False, True):
+            if completed:
+                self.finish_migration(writer)
+            for protocol, value, expected in ((1, "001.15", ("001.15", 115)),
+                                               (1, "-001.15", ("-001.15", -115)),
+                                               (2, -75, ("-0.75", -75)),
+                                               (2, 115, ("1.15", 115))):
+                # Warm both APIs before each write: a per-instance cache must refresh.
+                for version in (1, 2):
+                    self.assertEqual(self.read_unchanged(peer, version, 1),
+                                     self.read_unchanged(writer, version, 1))
+                self.assert_write_changes_only_target(writer, protocol, 1, value, expected)
+                raw, minor = expected
+                self.assertEqual(self.read_unchanged(peer, 1, 1), {"balance": raw})
+                self.assertEqual(self.read_unchanged(peer, 2, 1), {"balance_minor": minor})
 
     def assert_recovery(self, kind=Store):
         store = self.seeded(kind)
@@ -1150,7 +1269,7 @@ class MigrationTests(unittest.TestCase):
         store.snapshot(snapshot)
         self.assertEqual(self.database_state(store), expected)
         backup = self.open(path=snapshot)
-        self.assertEqual([backup.read(1, key)["balance"] for key, _, _ in expected["records"]],
+        self.assertEqual([self.read_unchanged(backup, 1, key)["balance"] for key, _, _ in expected["records"]],
                          [raw for _, raw, _ in expected["records"]])
         self.assertEqual(self.database_state(backup), expected)
         self.assert_closed(backup)
@@ -1166,11 +1285,11 @@ class MigrationTests(unittest.TestCase):
         kind.restore(snapshot, self.path)
         recovered = self.open(kind)
         self.assertEqual(self.database_state(recovered), expected)
-        self.assertEqual([recovered.read(1, key)["balance"] for key, _, _ in expected["records"]],
+        self.assertEqual([self.read_unchanged(recovered, 1, key)["balance"] for key, _, _ in expected["records"]],
                          [raw for _, raw, _ in expected["records"]])
-        self.assertEqual([recovered.read(2, key)["balance_minor"] for key, _, _ in expected["records"]],
+        self.assertEqual([self.read_unchanged(recovered, 2, key)["balance_minor"] for key, _, _ in expected["records"]],
                          [minor for _, _, minor in expected["records"]])
-        self.assertIs(self.assert_migration_step(recovered), False)
+        self.assert_completed_migration(recovered)
         self.assertEqual(self.database_state(recovered), expected)
         backup = self.open(path=snapshot)
         self.assertEqual(self.database_state(backup), expected)
@@ -1297,12 +1416,11 @@ class MigrationTests(unittest.TestCase):
     def assert_finalized_records(self, store, expected, original_text=()):
         """Check definitive state and return retention matches for later reporting."""
         self.assertEqual(store.db.execute("SELECT id, minor FROM records ORDER BY id").fetchall(), expected)
-        self.assertEqual([row[1] for row in store.db.execute("PRAGMA table_info(records)")],
-                         ["id", "minor"])
+        self.assert_columns(store, "records", [("id", "INTEGER", 1), ("minor", "INTEGER", 0)])
         self.assertEqual(store.db.execute("SELECT phase FROM migration").fetchall(), [("final",)])
         before = self.database_state(store)
         for key, minor in expected:
-            self.assertEqual(store.read(2, key), {"balance_minor": minor})
+            self.assertEqual(self.read_unchanged(store, 2, key), {"balance_minor": minor})
         self.assertEqual(self.database_state(store), before)
         # Inspect logical main-database tables, including renamed archives.
         original_text = {raw for _, raw in RECORDS} | set(original_text)
@@ -1336,16 +1454,17 @@ class MigrationTests(unittest.TestCase):
             raise RetentionUnverified(matches)
 
     def assert_final_guards(self, store, expected):
+        self.assert_unsupported_protocol(store)
         before = self.database_state(store)
         for key, minor in expected:
             with self.assertRaises(ValueError):
-                store.read(1, key)
+                self.read_unchanged(store, 1, key)
             self.assertEqual(self.database_state(store), before)
             for protocol, value in ((1, "9.99"), (2, 999)):
                 with self.assertRaises(ValueError):
                     store.write(protocol, key, value)
                 self.assertEqual(self.database_state(store), before)
-            self.assertEqual(store.read(2, key), {"balance_minor": minor})
+            self.assertEqual(self.read_unchanged(store, 2, key), {"balance_minor": minor})
             self.assertEqual(self.database_state(store), before)
 
     def test_final_phase_retires_old_protocol_and_freezes_writes(self):
@@ -1445,7 +1564,7 @@ class MigrationTests(unittest.TestCase):
         self.assert_write_changes_only_target(store, 1, 1, "001.20", ("001.20", 120))
         self.assert_write_changes_only_target(store, 1, 1, "001.20", ("001.20", 120))
         self.finish_migration(store)
-        self.assertIs(self.assert_migration_step(store), False)
+        self.assert_completed_migration(store)
 
     def test_transient_auxiliary_changes_are_detected(self):
         for transition in ("step", "write", "interrupted"):
@@ -1556,7 +1675,7 @@ class MigrationTests(unittest.TestCase):
             self.assert_recovery(CoincidentMetadata)
         self.assertEqual(outcome.exception.matches, [("metadata", "note", "9.99")])
         recovered = self.open()
-        self.assertEqual(recovered.read(1, 1), {"balance": "001.20"})
+        self.assertEqual(self.read_unchanged(recovered, 1, 1), {"balance": "001.20"})
 
     def test_recovery_uses_candidate_after_reopen(self):
         ReopenedCandidate.observed_reopen = False
@@ -1840,6 +1959,72 @@ class MigrationTests(unittest.TestCase):
     def test_volatile_finalize_is_detected(self):
         with self.assertRaisesRegex(ValueError, "lost instance completion flag"):
             self.assert_final_phase(VolatileFinalize)
+
+    def test_unsupported_protocol_covers_each_seeded_key(self):
+        for key, _ in RECORDS:
+            for operation in ("read", "write"):
+                with self.subTest(key=key, operation=operation):
+                    class Unsupported(KeyUnsupported):
+                        unsupported_key = key
+
+                    Unsupported.operation = operation
+                    self.path = Path(self.temp.name) / f"unsupported-key-{key}-{operation}.sqlite"
+                    with self.assertRaises(AssertionError):
+                        self.assert_coexistence(Unsupported)
+
+    def test_finalized_schema_preserves_types_and_primary_key(self):
+        for index, columns in enumerate(("id INTEGER, minor INTEGER",
+                                         "id NUMERIC PRIMARY KEY, minor INTEGER",
+                                         "id INTEGER PRIMARY KEY, minor NUMERIC")):
+            for check in (self.assert_final_phase, self.assert_recovery):
+                with self.subTest(columns=columns, check=check.__name__):
+                    class WrongSchema(RebuiltFinalSchema):
+                        pass
+
+                    WrongSchema.columns = columns
+                    self.path = Path(self.temp.name) / f"final-schema-{index}-{check.__name__}.sqlite"
+                    with self.assertRaises(AssertionError):
+                        check(WrongSchema)
+
+    def test_equivalent_final_schema_is_accepted(self):
+        class EquivalentSchema(RebuiltFinalSchema):
+            columns = "id integer, minor integer, PRIMARY KEY (id)"
+
+        self.assert_final_phase(EquivalentSchema)
+
+    def test_each_write_protocol_preserves_both_signs(self):
+        for protocol in (1, 2):
+            with self.subTest(protocol=protocol):
+                class WrongSign(WrongSignWrite):
+                    wrong_protocol = protocol
+
+                self.path = Path(self.temp.name) / f"wrong-sign-{protocol}.sqlite"
+                with self.assertRaises(AssertionError):
+                    self.assert_sampled_write_atomicity(WrongSign)
+
+    def test_protocol_two_acknowledged_lock_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_concurrent_write(AcknowledgedProtocolTwoLock)
+
+    def test_nonidempotent_close_is_accepted(self):
+        for check in (self.assert_restart, self.assert_final_phase, self.assert_recovery):
+            with self.subTest(check=check.__name__):
+                self.path = Path(self.temp.name) / f"single-close-{check.__name__}.sqlite"
+                check(SingleClose)
+
+    def test_repeated_completion_mutation_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_restart(RepeatedCompletionMutation)
+
+    def test_mixed_reads_preserve_full_state(self):
+        for protocol in (1, 2):
+            with self.subTest(protocol=protocol):
+                class MutatingRead(MixedReadMutation):
+                    mutating_protocol = protocol
+
+                self.path = Path(self.temp.name) / f"mixed-read-{protocol}.sqlite"
+                with self.assertRaises(AssertionError):
+                    self.assert_coexistence(MutatingRead)
 
     def test_fixture_and_private_grader_pairs(self):
         fixtures = sorted((ROOT / "fixtures").glob("migration-*.json"))
