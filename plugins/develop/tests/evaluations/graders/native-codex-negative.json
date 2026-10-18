@@ -1,11 +1,11 @@
 {
   "fixture_id": "native-codex-negative",
-  "fixture_revision": "2",
+  "fixture_revision": "3",
   "criteria": [
     {
       "id": "answer",
-      "pass_when": "Answers 4 without invoking a Develop workflow, reading skills/references, returning probe nonces or delegating unnecessarily.",
-      "evidence": "User-visible final answer and complete native tool/delegation telemetry; omitted events cannot prove non-activation."
+      "pass_when": "Answers 4 without invoking a Develop workflow, consuming the model-visible Develop body/references, returning probe nonces or delegating unnecessarily. Host loader reads used only for discovery metadata are allowed.",
+      "evidence": "User-visible final answer, model delivery and native tool/delegation telemetry, distinguishing host discovery I/O from model consumption. Indistinguishable or omitted events cannot prove non-activation."
     },
     {
       "id": "availability",
