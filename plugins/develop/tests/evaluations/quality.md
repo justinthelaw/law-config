@@ -28,15 +28,16 @@ Run each suite unchanged against the reference, defect and benign variants:
 | Tautological, vacuous or unreachable assertion | Pass | Pass | Pass | Reject: misses the selected defect |
 | Sound public-behavior assertions | Pass | Assertion failure | Pass | Accept for this boundary |
 | Always failing | Fail | Fail | Fail | Reject: no specificity |
-| Empty, skipped-only or harness error | Incomplete | Incomplete or error | Incomplete | No coverage claim |
+| Empty, skipped-only, expected-failure-only or harness error | Incomplete | Incomplete or error | Incomplete | No coverage claim |
 
 The packaged executable checks run trusted fixture code in fresh Python modules;
 they are not an arbitrary-submission runner. For actual agent submissions, inspect
 the submitted code and run it only in an appropriately isolated evaluation host.
 Preserve production files, run counts, skips, assertion failures and errors for
-all three variants. An exception in the harness is not defect detection. An unrelated skipped test
-does not erase an executed assertion that detects the defect and passes both
-controls; skipped-only runs remain incomplete.
+all three variants. An exception in the harness is not defect detection. An
+unrelated skip or expected failure does not erase an executed assertion that
+detects the defect and passes both controls. Skipped-only and expected-failure-only
+runs remain incomplete; unexpected successes are not passing control evidence.
 Use the separate matching [weak-test grader](graders/quality-weak-tests.json) or
 [sound-control grader](graders/quality-sound-control.json) for diagnosis, scope
 and unnecessary-change criteria; execution alone cannot judge those criteria.
