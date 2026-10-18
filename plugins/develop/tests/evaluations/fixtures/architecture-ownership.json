@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "architecture-ownership",
+  "revision": "1",
+  "scenario_ref": "architecture.md#unresolved-ownership",
+  "agent": {
+    "prompt": "Use Develop to implement this local toy search screen. Screen(transport, on_value) exposes search(query) and close(). Each search starts one transport job, cancels any pending previous job exactly once, and publishes only the latest result once. Closing is idempotent, cancels pending work once, suppresses late results, and makes later searches raise RuntimeError without starting a job. Preserve transport.py and the public API/tests. Internal responsibility for request identity and cancellation is undecided: choose a small design and briefly explain its ownership and caller burden within the existing intent checkpoint. Implement and test; no separate design document or framework is required. No network, installation, commits or publication.",
+    "inputs": [
+      {
+        "path": "transport.py",
+        "content": "class Job:\n    def __init__(self, query, callback):\n        self.query = query\n        self.callback = callback\n        self.cancel_count = 0\n\n    def cancel(self):\n        self.cancel_count += 1\n\n    def deliver(self, value):\n        # The transport can deliver late or duplicate callbacks after cancel.\n        self.callback(value)\n\n\nclass Transport:\n    def __init__(self):\n        self.jobs = []\n\n    def start(self, query, callback):\n        # Callback delivery is deferred until Job.deliver; start never raises.\n        job = Job(query, callback)\n        self.jobs.append(job)\n        return job\n"
+      },
+      {
+        "path": "app.py",
+        "content": "class Screen:\n    def __init__(self, transport, on_value):\n        self.transport = transport\n        self.on_value = on_value\n\n    def search(self, query):\n        raise NotImplementedError\n\n    def close(self):\n        raise NotImplementedError\n"
+      },
+      {
+        "path": "test_public.py",
+        "content": "import unittest\nfrom app import Screen\nfrom transport import Transport\n\n\nclass PublicBehavior(unittest.TestCase):\n    def test_latest_value_and_close(self):\n        transport, values = Transport(), []\n        screen = Screen(transport, values.append)\n        screen.search('old')\n        old = transport.jobs[-1]\n        screen.search('new')\n        new = transport.jobs[-1]\n        self.assertEqual([job.query for job in transport.jobs], ['old', 'new'])\n        self.assertEqual(old.cancel_count, 1)\n        old.deliver('stale')\n        new.deliver('fresh')\n        new.deliver('duplicate')\n        self.assertEqual(values, ['fresh'])\n        screen.search('pending')\n        pending = transport.jobs[-1]\n        screen.close()\n        screen.close()\n        self.assertEqual(pending.cancel_count, 1)\n        pending.deliver('late')\n        self.assertEqual(values, ['fresh'])\n        with self.assertRaises(RuntimeError):\n            screen.search('closed')\n        self.assertEqual(len(transport.jobs), 3)\n\n\nif __name__ == '__main__':\n    unittest.main()\n"
+      }
+    ]
+  }
+}
