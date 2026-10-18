@@ -35,8 +35,9 @@ Additional seeded defects calibrate completed-job cancellation, autosave close
 interference, a stale callback first delivered after its replacement completes,
 and nonterminal idle close. The probe checks both fresh and completed callers.
 The existing peer sequences run with both APIs in either construction order.
-They also construct peers while work is pending. For each API, a three-request
-pending burst checks cancellation and duplicate stale delivery before completion.
+They also construct peers while existing work is pending or completed. For each
+API, a three-request pending burst checks cancellation and duplicate stale
+delivery before completion.
 A repeated identical payload checks that request identity stays independent of
 payload identity: the cancelled callback stays suppressed and its replacement
 publishes once, for either API.
@@ -44,10 +45,13 @@ The completed replacement sequence rechecks cancellation counts and terminal clo
 after its third request. Completed peer callbacks are redelivered after close.
 A bounded three-caller sequence covers same-API and mixed groups, with pending
 work during construction, replacement, callback routing, close and survivor reuse.
+It reuses that sequence for each three-caller API composition and active position,
+closing with both peers pending or after one peer completes.
 These examples calibrate the stated multiple-caller contract; they are not an
 exhaustive proof over caller counts or operation orderings.
-Shared operation checks preserve submitted payloads and job counts, and ensure
-callback delivery does not cancel work. These callback checks use passive value
+Shared operation checks preserve submitted payloads and job counts, check job
+identity across callback delivery, and ensure delivery does not cancel work.
+These callback checks use passive value
 collectors; they do not model observers that intentionally submit new requests.
 
 ## Already-decided control
