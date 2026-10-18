@@ -4,4 +4,4 @@ interface:
   icon_large: "./assets/icon.png"
   display_name: "Develop"
   short_description: "Route development, incidents and workflow tasks"
-  default_prompt: "Use $develop for my selected repository, incident or workflow outcome and route the necessary steps through their existing owners."
+  default_prompt: "Use $develop for my selected repository, incident, deployment handoff or workflow outcome and route the necessary steps through their existing owners."

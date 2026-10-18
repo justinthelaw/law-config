@@ -1,6 +1,6 @@
 ---
 name: iterate
-description: Diagnose incidents, implement or review repository changes, publish selected existing work, and monitor or fix CI and review findings on GitHub, GitLab, Bitbucket or Hugging Face.
+description: Diagnose incidents, prepare deployment/operations handoffs, implement or review repository changes, publish selected existing work, and monitor or fix CI and review findings on GitHub, GitLab, Bitbucket or Hugging Face.
 ---
 
 # Iterate
@@ -19,6 +19,7 @@ Choose the mode that matches the request; change modes only within its authorize
 | **Debug** | Investigate a selected failure, service/environment or log bundle using [incident diagnosis](references/debugging.md). Keep diagnosis, repair and operational authority distinct; a checkout is optional until code repair. |
 | **Review** | Inspect selected code or [documentation drift](references/documentation.md). Report findings without repair or publication unless authorized. |
 | **Publish existing changes** | Use selected checkouts and initialized recursive submodules; otherwise resolve the current checkout. Preserve unrelated siblings. Read [publication](references/publication.md); prepared work needs no new design process. |
+| **Deployment/operations handoff** | Prepare the requested handoff for a selected release/repository and target environment using [publication](references/publication.md#requested-deployment-or-operations-handoff). Identify the candidate, owner mechanism, acceptance/recovery evidence and missing authority; preparing the handoff does not execute deployment or operational changes. |
 | **Monitor/fix** | Use the selected published repository/ref/SHA and submodules. Monitor through native provider tools or the [GitHub adapter](references/github-monitoring.md). Actual code repairs re-enter implementation requirements for that bounded target. |
 
 Missing implementation access does not prevent safe read-only inspection. If publication validation exposes a code defect, use the implementation workflow for an authorized repair instead of expanding delivery scope.
