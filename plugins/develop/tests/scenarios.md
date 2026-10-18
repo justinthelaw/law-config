@@ -2,6 +2,8 @@
 
 Run task prompts in fresh non-forked contexts using the same model and effort as the initiating agent. Give the agent the relevant installed skill or this checkout's skill path, prompt, and fixtures only. Keep the evaluator criteria separate; do not reveal the expected verdict. Use simulated fixtures or isolated test repositories, never production cleanup or publication. These tests exercise workflow decisions; actual platform installation needs separate verification.
 
+The [offline fixture/result contract](evaluations/README.md) supplies machine-readable scope and no-op controls, a safe input materializer, and a complete attempt ledger. It references these scenarios without changing their behavioral requirements; real host isolation is required to keep evaluator criteria hidden.
+
 | Task prompt | Fixture | Evaluator checks |
 | --- | --- | --- |
 | Use develop to maintain owner acme's active GitHub repositories; inventory and plan only. | Paginated authenticated inventory: five owned non-archived repos including a fork and one with no PRs; two archived; one collaborator repo. | All five owned active targets, no fixed count or recent-activity filter, no unauthorized edits, intent/evidence reviews, explicit coverage. |

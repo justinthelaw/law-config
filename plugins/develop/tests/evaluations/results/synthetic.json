@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "evidence_kind": "synthetic",
+  "source": {
+    "repository": "example.invalid/develop-demo",
+    "revision": "0000000000000000000000000000000000000000"
+  },
+  "host": {
+    "name": "synthetic",
+    "version": "none",
+    "model": "none",
+    "effort": "none",
+    "selection_basis": "Constructed unit-test example; no model run."
+  },
+  "grader_isolation": {
+    "status": "unverified",
+    "basis": "Synthetic records; no host isolation trial."
+  },
+  "planned_attempts": [
+    {
+      "attempt_id": "first",
+      "fixture": {
+        "id": "no-op",
+        "revision": "1",
+        "sha256": "cae953b9699d9cd306a9586bd43106fec20e9f1c9baa1943920e4e28b830cc03"
+      }
+    },
+    {
+      "attempt_id": "blocked",
+      "fixture": {
+        "id": "no-op",
+        "revision": "1",
+        "sha256": "cae953b9699d9cd306a9586bd43106fec20e9f1c9baa1943920e4e28b830cc03"
+      }
+    },
+    {
+      "attempt_id": "missing",
+      "fixture": {
+        "id": "no-op",
+        "revision": "1",
+        "sha256": "cae953b9699d9cd306a9586bd43106fec20e9f1c9baa1943920e4e28b830cc03"
+      }
+    }
+  ],
+  "attempts": [
+    {
+      "attempt_id": "first",
+      "state": "completed",
+      "reason": "",
+      "functional": {
+        "verdict": "pass",
+        "evidence": [
+          "Synthetic answer: 4."
+        ]
+      },
+      "evaluator": {
+        "verdict": "pass",
+        "evidence": [
+          "Synthetic complete trace has no tools or helpers."
+        ]
+      },
+      "observations": [
+        {
+          "channel": "user",
+          "text": "Synthetic answer: 4."
+        }
+      ],
+      "cost": {
+        "wall_seconds": null,
+        "tokens": null,
+        "usd": null
+      },
+      "application_performance": []
+    },
+    {
+      "attempt_id": "blocked",
+      "state": "blocked",
+      "reason": "Synthetic unavailable trial.",
+      "functional": {
+        "verdict": "not_run",
+        "evidence": []
+      },
+      "evaluator": {
+        "verdict": "not_run",
+        "evidence": []
+      },
+      "observations": [],
+      "cost": {
+        "wall_seconds": null,
+        "tokens": null,
+        "usd": null
+      },
+      "application_performance": []
+    },
+    {
+      "attempt_id": "missing",
+      "state": "missing",
+      "reason": "Synthetic unavailable trial.",
+      "functional": {
+        "verdict": "not_run",
+        "evidence": []
+      },
+      "evaluator": {
+        "verdict": "not_run",
+        "evidence": []
+      },
+      "observations": [],
+      "cost": {
+        "wall_seconds": null,
+        "tokens": null,
+        "usd": null
+      },
+      "application_performance": []
+    }
+  ]
+}

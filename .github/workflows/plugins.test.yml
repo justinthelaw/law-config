@@ -8,6 +8,7 @@ permissions:
   pull_request:
     branches:
       - main
+      - "develop/eval-*"
     paths:
       - ".agents/**"
       - "plugins/**"
@@ -40,8 +41,8 @@ jobs:
           python-version: ${{ matrix.python }}
       - name: Validate package and marketplace
         run: python plugins/develop/scripts/validate.py --marketplace-root .
-      - name: Test package validation
-        run: python -m unittest discover -s plugins/develop/tests -p test_validate.py
+      - name: Test package and evaluation helpers
+        run: python -m unittest discover -s plugins/develop/tests
       - name: Test bundled Git inventory and GitHub watcher
         run: python -m unittest discover -s plugins/develop/skills/iterate/scripts -p 'test_*.py'
       - name: Test deep cleanup inventory
