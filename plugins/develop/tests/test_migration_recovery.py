@@ -612,6 +612,95 @@ class RegressingStep(Store):
         return result
 
 
+class CorruptFinalAuxiliary(SeedMetadataIndex):
+    mutation = "UPDATE metadata SET note = 'corrupted'"
+
+    def finalize(self):
+        super().finalize()
+        with self.db:
+            self.db.execute(self.mutation)
+
+
+class KeySpecificFinalGuard(Store):
+    guarded_operation = "read"
+    unguarded_key = 2
+    unguarded_protocol = 1
+
+    def read(self, protocol, key):
+        if (self.guarded_operation == "read" and protocol == 1 and key == self.unguarded_key
+                and self.db.execute("SELECT phase FROM migration").fetchone() == ("final",)):
+            return {"balance": "retired value"}
+        return super().read(protocol, key)
+
+    def write(self, protocol, key, value):
+        if (self.guarded_operation == "write" and protocol == self.unguarded_protocol
+                and key == self.unguarded_key
+                and self.db.execute("SELECT phase FROM migration").fetchone() == ("final",)):
+            return  # Accepting a frozen write is a defect even without mutation.
+        return super().write(protocol, key, value)
+
+
+class CachedCompletedRead(Store):
+    cached_protocol = 1
+    invalidate = False
+
+    def __init__(self, path):
+        super().__init__(path)
+        self.cached = {}
+
+    def read(self, protocol, key):
+        if protocol == self.cached_protocol and not self.db.execute(
+                "SELECT count(*) FROM records WHERE id > "
+                "(SELECT checkpoint FROM migration)").fetchone()[0]:
+            if self.invalidate or key not in self.cached:
+                self.cached[key] = super().read(protocol, key)
+            return self.cached[key]
+        return super().read(protocol, key)
+
+
+class FloatWrite(Store):
+    def write(self, protocol, key, value):
+        super().write(protocol, key, value)
+        if protocol == 1:
+            with self.db:
+                self.db.execute("UPDATE records SET minor = ? WHERE id = ?",
+                                (int(float(value) * 100), key))
+
+
+class FloatFallback(Store):
+    def read(self, protocol, key):
+        result = super().read(protocol, key)
+        if protocol == 2:
+            raw, minor = self.db.execute("SELECT raw, minor FROM records WHERE id = ?", (key,)).fetchone()
+            if minor is None:
+                return {"balance_minor": int(float(raw) * 100)}
+        return result
+
+
+class FloatBackfill(Store):
+    def migrate_step(self, interrupt=False):
+        result = super().migrate_step(interrupt)
+        if result:
+            with self.db:
+                key, raw = self.db.execute("SELECT id, raw FROM records WHERE id = "
+                                           "(SELECT checkpoint FROM migration)").fetchone()
+                self.db.execute("UPDATE records SET minor = ? WHERE id = ?",
+                                (int(float(raw) * 100), key))
+        return result
+
+
+class OriginalOnlySnapshot(Store):
+    def snapshot(self, path):
+        super().snapshot(path)
+        backup = sqlite3.connect(path)
+        try:
+            with backup:
+                backup.executemany("UPDATE records SET raw = ?, minor = ? WHERE id = ?",
+                                   [(raw, int(Decimal(raw) * 100), key) for key, raw in RECORDS])
+        finally:
+            backup.close()
+
+
 class MigrationTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -873,36 +962,56 @@ class MigrationTests(unittest.TestCase):
                     terminal = state
         return result
 
+    def assert_exact_conversion(self, kind=Store):
+        # Legal alternate seed values exercise fallback and backfill separately
+        # from protocol-1 write conversion, without changing the public fixture.
+        store = self.seeded(kind, records=[(1, "1.15"), (2, "-1.15"), (3, "9.99")])
+        for key, raw in store.db.execute("SELECT id, raw FROM records ORDER BY id").fetchall():
+            self.assertEqual(store.read(2, key), {"balance_minor": int(Decimal(raw) * 100)})
+        self.finish_migration(store)
+
     def assert_sampled_write_atomicity(self, kind=Store):
         writer = self.seeded(kind)
         self.finish_migration(writer)
-        for protocol, value, expected in ((1, "002.35", ("002.35", 235)), (2, -75, ("-0.75", -75))):
+        peer = self.open(kind)
+        for protocol, value, expected in ((1, "001.15", ("001.15", 115)), (2, -75, ("-0.75", -75))):
+            # Warm both APIs before each write: a per-instance cache must refresh.
+            for version in (1, 2):
+                self.assertEqual(peer.read(version, 1), writer.read(version, 1))
             self.assert_write_changes_only_target(writer, protocol, 1, value, expected)
+            before = self.database_state(writer)
+            raw, minor = expected
+            self.assertEqual(peer.read(1, 1), {"balance": raw})
+            self.assertEqual(peer.read(2, 1), {"balance_minor": minor})
+            self.assertEqual(self.database_state(writer), before)
 
     def assert_recovery(self, kind=Store):
         store = self.seeded(kind)
         self.finish_migration(store)
+        self.assert_write_changes_only_target(store, 1, 2, "001.15", ("001.15", 115))
+        self.assert_write_changes_only_target(store, 2, 3, -75, ("-0.75", -75))
         # Both protocols are drained; writes remain frozen through recovery.
         snapshot = Path(self.temp.name) / "before.sqlite"
         expected = self.database_state(store)
         store.snapshot(snapshot)
         self.assertEqual(self.database_state(store), expected)
         backup = self.open(path=snapshot)
-        self.assertEqual([backup.read(1, key)["balance"] for key, _ in RECORDS],
-                         [raw for _, raw in RECORDS])
+        self.assertEqual([backup.read(1, key)["balance"] for key, _, _ in expected["records"]],
+                         [raw for _, raw, _ in expected["records"]])
         self.assertEqual(self.database_state(backup), expected)
         backup.close()
-        store.finalize()
+        self.assert_finalize_preserves_state(store)
         matches = self.assert_finalized_records(
-            store, [(key, minor) for key, _, minor in expected["records"]])
+            store, [(key, minor) for key, _, minor in expected["records"]],
+            original_text={raw for _, raw, _ in expected["records"]})
         store.close()
         kind.restore(snapshot, self.path)
         recovered = self.open(kind)
         self.assertEqual(self.database_state(recovered), expected)
-        self.assertEqual([recovered.read(1, key)["balance"] for key, _ in RECORDS],
-                         [raw for _, raw in RECORDS])
-        self.assertEqual([recovered.read(2, key)["balance_minor"] for key, _ in RECORDS],
-                         [120, -50, 999])
+        self.assertEqual([recovered.read(1, key)["balance"] for key, _, _ in expected["records"]],
+                         [raw for _, raw, _ in expected["records"]])
+        self.assertEqual([recovered.read(2, key)["balance_minor"] for key, _, _ in expected["records"]],
+                         [minor for _, _, minor in expected["records"]])
         self.assertIs(self.assert_migration_step(recovered), False)
         self.assertEqual(self.database_state(recovered), expected)
         backup = self.open(path=snapshot)
@@ -976,7 +1085,24 @@ class MigrationTests(unittest.TestCase):
     def test_incomplete_backfill_cannot_drop_originals(self):
         self.assert_incomplete_backfill()
 
-    def assert_finalized_records(self, store, expected):
+    def assert_finalize_preserves_state(self, store):
+        before = self.database_state(store)
+        store.finalize()
+        after = self.database_state(store)
+        self.assertEqual(after["records"], [(key, minor) for key, _, minor in before["records"]])
+        self.assertEqual(after["migration"], [(checkpoint, "final")
+                                             for checkpoint, _ in before["migration"]])
+        # Rebuilding records may remove its indexes. Existing auxiliary objects
+        # and contents must survive; new unrelated metadata remains permitted.
+        for definition in before["schema"]:
+            if definition[2] != "records":
+                self.assertIn(definition, after["schema"])
+        for table, rows in before["auxiliary"].items():
+            self.assertIn(table, after["auxiliary"])
+            self.assertEqual(after["auxiliary"][table], rows)
+        return after
+
+    def assert_finalized_records(self, store, expected, original_text=()):
         """Check definitive state and return retention matches for later reporting."""
         self.assertEqual(store.db.execute("SELECT id, minor FROM records ORDER BY id").fetchall(), expected)
         self.assertEqual([row[1] for row in store.db.execute("PRAGMA table_info(records)")],
@@ -987,7 +1113,7 @@ class MigrationTests(unittest.TestCase):
             self.assertEqual(store.read(2, key), {"balance_minor": minor})
         self.assertEqual(self.database_state(store), before)
         # Inspect logical main-database tables, including renamed archives.
-        original_text = {raw for _, raw in RECORDS}
+        original_text = {raw for _, raw in RECORDS} | set(original_text)
         matches = []
         for (table,) in store.db.execute("SELECT name FROM sqlite_master WHERE type = 'table'").fetchall():
             quoted = '"' + table.replace('"', '""') + '"'
@@ -1004,21 +1130,21 @@ class MigrationTests(unittest.TestCase):
         store = self.seeded(kind)
         self.finish_migration(store)
         expected = store.db.execute("SELECT id, minor FROM records ORDER BY id").fetchall()
-        store.finalize()
-        before = self.database_state(store)
+        before = self.assert_finalize_preserves_state(store)
         store.close()
         store = self.open(kind)
         self.assertEqual(self.database_state(store), before)
         matches = self.assert_finalized_records(store, expected)
-        with self.assertRaises(ValueError):
-            store.read(1, 1)
-        self.assertEqual(self.database_state(store), before)
-        for protocol, value in ((1, "9.99"), (2, 999)):
+        for key, minor in expected:
             with self.assertRaises(ValueError):
-                store.write(protocol, 1, value)
+                store.read(1, key)
             self.assertEqual(self.database_state(store), before)
-        self.assertEqual(store.read(2, 1), {"balance_minor": 120})
-        self.assertEqual(self.database_state(store), before)
+            for protocol, value in ((1, "9.99"), (2, 999)):
+                with self.assertRaises(ValueError):
+                    store.write(protocol, key, value)
+                self.assertEqual(self.database_state(store), before)
+            self.assertEqual(store.read(2, key), {"balance_minor": minor})
+            self.assertEqual(self.database_state(store), before)
         if matches:
             raise RetentionUnverified(matches)
 
@@ -1347,6 +1473,71 @@ class MigrationTests(unittest.TestCase):
                     self.path = Path(self.temp.name) / f"collateral-{protocol}-{name}.sqlite"
                     with self.assertRaises(AssertionError):
                         check(CollateralProtocol)
+
+    def test_finalization_preserves_existing_auxiliary_state(self):
+        for index, mutation in enumerate((CorruptFinalAuxiliary.mutation, "DROP TABLE metadata",
+                                         "ALTER TABLE metadata ADD COLUMN extra TEXT",
+                                         "UPDATE migration SET checkpoint = 999")):
+            for check in (self.assert_final_phase, self.assert_recovery):
+                with self.subTest(mutation=mutation, check=check.__name__):
+                    class CorruptFinal(CorruptFinalAuxiliary):
+                        pass
+
+                    CorruptFinal.mutation = mutation
+                    self.path = Path(self.temp.name) / f"final-aux-{index}-{check.__name__}.sqlite"
+                    with self.assertRaises(AssertionError):
+                        check(CorruptFinal)
+
+    def test_final_guards_cover_every_seeded_key(self):
+        for key, _ in RECORDS:
+            for operation, protocol in (("read", 1), ("write", 1), ("write", 2)):
+                with self.subTest(key=key, operation=operation, protocol=protocol):
+                    class MissingGuard(KeySpecificFinalGuard):
+                        guarded_operation = operation
+                        unguarded_key = key
+                        unguarded_protocol = protocol
+
+                    self.path = Path(self.temp.name) / f"guard-{key}-{operation}-{protocol}.sqlite"
+                    with self.assertRaises(AssertionError):
+                        self.assert_final_phase(MissingGuard)
+
+    def test_completed_backfill_peer_cache_is_detected(self):
+        for protocol in (1, 2):
+            with self.subTest(protocol=protocol):
+                class StalePeer(CachedCompletedRead):
+                    cached_protocol = protocol
+
+                self.path = Path(self.temp.name) / f"stale-peer-{protocol}.sqlite"
+                with self.assertRaises(AssertionError):
+                    self.assert_sampled_write_atomicity(StalePeer)
+
+    def test_completed_backfill_refreshed_peer_is_accepted(self):
+        for protocol in (1, 2):
+            with self.subTest(protocol=protocol):
+                class RefreshedPeer(CachedCompletedRead):
+                    cached_protocol = protocol
+                    invalidate = True
+
+                self.path = Path(self.temp.name) / f"refreshed-peer-{protocol}.sqlite"
+                self.assert_sampled_write_atomicity(RefreshedPeer)
+
+    def test_float_protocol_write_is_detected(self):
+        with self.assertRaises(AssertionError):
+            self.assert_sampled_write_atomicity(FloatWrite)
+
+    def test_exact_fallback_and_backfill_are_accepted(self):
+        self.assert_exact_conversion()
+
+    def test_float_fallback_and_backfill_are_detected(self):
+        for kind in (FloatFallback, FloatBackfill):
+            with self.subTest(kind=kind.__name__):
+                self.path = Path(self.temp.name) / f"precision-{kind.__name__}.sqlite"
+                with self.assertRaises(AssertionError):
+                    self.assert_exact_conversion(kind)
+
+    def test_snapshot_must_include_legal_writes(self):
+        with self.assertRaises(AssertionError):
+            self.assert_recovery(OriginalOnlySnapshot)
 
     def test_fixture_and_private_grader_pairs(self):
         fixtures = sorted((ROOT / "fixtures").glob("migration-*.json"))

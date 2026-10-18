@@ -9,7 +9,7 @@
     },
     {
       "id": "resume",
-      "pass_when": "Carries invocation sample-17, the original coordinator selection fixture-model/high and its explicit selection basis, and the intent revision forward; invalidates affected pre-steering evidence while retaining selected root, local-only authority and signing preference. Distinguishes the supplied fictional coordinator identity from the current runtime rather than overwriting either.",
+      "pass_when": "Carries invocation sample-17 and the original coordinator selection fixture-model/high with its explicit selection basis forward; increments intent revision from 1 to 2 for the later trim-only steering and invalidates affected revision-1 evidence while retaining selected root, local-only authority and signing preference. Distinguishes the supplied fictional coordinator identity from the current runtime rather than overwriting either.",
       "evidence": "Local continuation record or explicit user-visible handoff retaining both invocation and coordinator identity, checked against handoff.md, ordered messages and actual actions."
     },
     {
