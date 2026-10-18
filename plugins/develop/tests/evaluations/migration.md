@@ -37,9 +37,12 @@ snapshot mutation or partial restoration. Benign controls accept different
 exception messages, multiple write statements within one transaction and
 optimistic backfill with compare-and-retry. Restore checks
 compare all records, migration metadata and schema with the snapshot, then read
-both protocols and resume completed migration. Rejected writes and retired reads
-must preserve records, migration metadata and schema. Supported-write probes
-require every unaddressed record to remain unchanged. The tests also
+both protocols and resume completed migration. Rejected writes, retired reads
+and permitted finalized reads must preserve records, migration metadata and
+schema. Final-phase behavior is checked after closing and reopening the candidate,
+so retired reads and frozen writes must follow persisted state. Migration-step
+results must be the booleans `True` and `False`, not merely truthy or falsy values.
+Supported-write probes require every unaddressed record to remain unchanged. The tests also
 reject finalization with pending checkpoint work even when all minor values are
 populated or one step has completed. Finalized IDs and values must all survive;
 the main database's logical tables must have no remaining `raw` column.

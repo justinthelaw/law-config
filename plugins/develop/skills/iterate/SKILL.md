@@ -45,9 +45,11 @@ An explicit request for one remaining consolidated PR permits closing fully inco
 
 ## Report
 
-Complete the final adversarial checkpoint and reread the current head, required checks, reviews and threads. Claim readiness only when applicable gates pass; list outstanding human approvals separately. Never merge without authorization. Continue unaffected targets. Report remaining protected unrelated work rather than cleaning it to manufacture a clean-worktree result.
+Complete the final adversarial checkpoint. For **Debug**, use the [incident diagnosis report](references/debugging.md): impact, cause/confidence, supporting and missing evidence, and the next gate. Preserve the selected service/environment/log-bundle scope; do not discover a repository merely to populate delivery fields.
 
-Use the caller's format, otherwise:
+For repository delivery, reread the current head, required checks, reviews and threads. Claim readiness only when applicable gates pass; list outstanding human approvals separately. Never merge without authorization. Continue unaffected targets. Report remaining protected unrelated work rather than cleaning it to manufacture a clean-worktree result.
+
+For that delivery report, use the caller's format, otherwise:
 
 | Repository | Change | Result and evidence |
 | --- | --- | --- |
