@@ -54,14 +54,28 @@ schema. State snapshots also preserve the contents of permitted logical auxiliar
 tables, including across interrupted/repeated work and snapshot restoration.
 Successful steps and writes compare that full state while allowing only their
 specified row/checkpoint changes; the overlap probe allows only the known
-concurrent write and row-1 migration. Final-phase behavior is checked after closing and reopening the candidate,
+concurrent write and next-row migration. It repeats the controlled interleaving
+at each seeded checkpoint, including the second and last backfill rows, so a
+correct first transaction cannot mask stale reads in later steps. Final-phase
+behavior is checked after closing and reopening the candidate,
 so retired reads and frozen writes must follow persisted state for every seeded
 key. Both final-phase and recovery checks compare full state before and after
 finalization: only the records representation and migration phase may change
-among existing data. Existing auxiliary contents and schema objects must survive;
-rebuilding records may remove its indexes, and new unrelated finalization
-metadata remains permitted subject to the retention checks. These finalization
+among existing data. Existing auxiliary contents and schema objects not owned by
+`records` must survive. The preservation check excludes the rebuilt `records`
+table and its owned indexes and triggers; it does not establish trigger retention.
+New unrelated finalization metadata remains permitted subject to the retention checks. These finalization
 comparisons cover returned state, not transient changes within `finalize()`.
+Existing views also undergo `SELECT * ... LIMIT 0` before and after finalization:
+preserving identical DDL must not leave a previously compilable view with missing
+column or table dependencies. An unusable pre-finalization view raises
+`ValueError` as invalid probe input before `finalize()` runs; it is not attributed
+to finalization. Controls accept a preserved `id, minor` view and reject a
+recreated `id, raw` view after `raw` removal through both final-phase and recovery
+checks. This bounded compilation check does not execute view rows, establish
+result semantics or validate arbitrary triggers and other SQL dependencies. It
+adds no auxiliary-schema requirement to the public fixture; candidate-specific
+schema semantics still require adapted probes.
 Migration-step
 results must be the booleans `True` and `False`, not merely truthy or falsy values.
 For the finite fixtures, each successful step must transform only the next
@@ -104,7 +118,8 @@ These tests validate the synthetic reference and the sensitivity of its checks.
 They are **not agent runs** or a universal candidate acceptance harness. To use
 the state assertions for a candidate, substitute its `Store` and `Interrupted`
 exports in an isolated evaluator copy and adapt the observation probes first.
-The overlapping-write probe targets the reference's backfill UPDATE. Temporary
+The overlapping-write probe targets the reference's backfill UPDATE on each
+seeded row; it does not enumerate all concurrent schedules. Temporary
 row and checkpoint triggers observe interruption ordering on the exposed
 connection; restart checks reopen immediately after a committed step and inspect
 each remaining step and unchanged completion. An interrupted step may issue
