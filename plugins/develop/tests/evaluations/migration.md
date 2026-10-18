@@ -45,8 +45,8 @@ corruption during finalization, guards that apply to only one key, stale peer
 read caches during and after backfill, float conversion and snapshots that omit
 legal writes. Pending-row writes, acknowledged lock failures, undrained close,
 checkpoint-specific interruption/finalization, volatile completion flags,
-key-specific protocol acceptance, lost final schema constraints, sign-specific
-writes, repeated-completion mutation, mutating mixed reads, dropped peer writes
+key-specific protocol acceptance, lost final schema constraints, value-specific
+writes (including zero), repeated-completion mutation, mutating mixed reads, dropped peer writes
 and transient commits during rejected operations also have controls. Pending-read
 controls cover both protocols on every still-pending row at each of the three
 seeded checkpoints. The common seed check requires `Interrupted` to subclass
@@ -100,8 +100,10 @@ column or table dependencies. An unusable pre-finalization view raises
 to finalization. Controls accept a preserved `id, minor` view and reject a
 recreated `id, raw` view after `raw` removal through both final-phase and recovery
 checks. This bounded compilation check does not execute view rows, establish
-result semantics or validate arbitrary triggers and other SQL dependencies. It
-adds no auxiliary-schema requirement to the public fixture; candidate-specific
+result semantics or validate arbitrary triggers and other SQL dependencies.
+The separate retention check below reads scalar table and view results for exact
+original-text matches; compilation alone does not detect literal view archives.
+These checks add no auxiliary-schema requirement to the public fixture; candidate-specific
 schema semantics still require adapted probes.
 Migration-step
 results must be the booleans `True` and `False`, not merely truthy or falsy values.
@@ -116,8 +118,10 @@ reject finalization at every seeded pending checkpoint, both with originally
 null minor values and with all minor values populated by supported writes.
 Finalized IDs and values must all survive;
 the main database's logical tables must have no remaining `raw` column.
-Matching original spellings in other scalar text cells is collected as table,
-column and value evidence. `assert_finalized_records` returns these matches;
+Matching original spellings in scalar table or view results is collected as
+object name, column and value evidence. A view column named `raw` may simply
+alias minor units; the alias alone is not evidence of original-text retention.
+`assert_finalized_records` returns these matches;
 the final-phase and recovery probes finish their independent checks before
 raising `RetentionUnverified`. Definite violations of final-state, read/write or
 restore behavior take precedence over uncertain retention. Recovery reopens the
@@ -129,14 +133,20 @@ unverified retention coverage and obtain provenance before assigning a candidate
 pass or defect. It must not translate this outcome into either verdict.
 
 Controls verify both outcomes: unrelated nonmatching metadata passes, while
-coincident metadata and a renamed raw archive produce `RetentionUnverified`.
+coincident metadata and renamed table or literal view archives produce
+`RetentionUnverified`.
 Combined controls verify that coincident metadata cannot hide definite defects,
 and successful recovery finishes before retention uncertainty is reported.
-The archive is a known defect because its seeded source explicitly copies
-`records.raw`; the value scan does not establish that provenance. Passing these
-calibration tests verifies their outcome classification, not candidate erasure.
+The archives are known defects because their seeded source explicitly copies
+`records.raw`; the value scan does not establish that provenance. An unrelated
+scalar view and a minor-unit projection with a `raw` alias remain accepted.
+Coincident view literals require provenance just like coincident table cells.
+Passing these calibration tests verifies their outcome classification, not candidate erasure.
 The scan does not establish forensic erasure or detect encoded, fragmented or
-otherwise transformed copies.
+otherwise transformed copies. It does not parse view DDL or establish arbitrary
+SQL behavior, safe evaluation of untrusted expressions, or complete retention
+coverage. Candidate views requiring unavailable functions or unsuitable execution
+need adapted observation; inability to inspect them is unverified coverage.
 Run from the plugin directory:
 
 ```bash
@@ -168,11 +178,12 @@ on completion and after finalization. Identifiers 3 and 4 provide one bounded
 calibration against special-casing only 3; they do not prove rejection of all
 unsupported identifiers. Permitted reads also compare full state
 before and after, including fallback, peer warm-up and recovered reads. The write
-matrix exercises both signs through each protocol before and after backfill,
-swapping the seeded and already-open peer connections as writer and reader. The
+matrix exercises positive, negative and zero values through each protocol before
+and after backfill, swapping the seeded and already-open peer connections as writer and reader. The
 reader warms both protocols before each write and checks both updated
-representations afterward. These API checks complement the sampler's direct
-database observations and detect stale per-instance reads on the exercised paths.
+representations afterward, including preserved protocol-1 `000.00` and protocol-2
+`0.00` with integer zero. This finite value partition is not an all-value proof.
+These API checks complement the sampler's direct database observations and detect stale per-instance reads on the exercised paths.
 Supported writes, rejected operations, normal migration steps and interrupted steps
 share a second-connection sampler at statements traced on `writer.db`, plus an
 observation after the operation returns. Rejected operations must raise `ValueError`
