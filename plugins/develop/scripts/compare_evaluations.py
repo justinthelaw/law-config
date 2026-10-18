@@ -51,7 +51,8 @@ def compare_results(baseline, candidate):
         raise ValueError("different host/model/effort/selection identity")
     if baseline["evidence_kind"] != candidate["evidence_kind"]:
         raise ValueError("different evidence kinds")
-    plans = [{row["attempt_id"]: row["fixture"] for row in result["planned_attempts"]}
+    plans = [{row["attempt_id"]: {"fixture": row["fixture"], "grader_sha256": row["grader_sha256"]}
+              for row in result["planned_attempts"]}
              for result in (baseline, candidate)]
     attempts = [{row["attempt_id"]: row for row in result["attempts"]}
                 for result in (baseline, candidate)]
@@ -60,7 +61,7 @@ def compare_results(baseline, candidate):
         fixtures = [plan.get(attempt_id) for plan in plans]
         if all(fixtures) and fixtures[0] != fixtures[1]:
             raise ValueError(f"incompatible fixture identity for {attempt_id}")
-        pair = {"attempt_id": attempt_id, "fixture": fixtures[0] or fixtures[1]}
+        pair = {"attempt_id": attempt_id, **(fixtures[0] or fixtures[1])}
         for index, side in enumerate(("baseline", "candidate")):
             attempt = attempts[index].get(attempt_id)
             pair[side] = {"outcome": _outcome(attempt), "attempt": attempt}

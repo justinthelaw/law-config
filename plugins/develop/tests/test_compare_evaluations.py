@@ -85,6 +85,11 @@ class ComparisonTests(unittest.TestCase):
         self.assertEqual(report["agent_cost_delta"], {"wall_seconds": -5, "tokens": 20, "usd": None})
         self.assertEqual(report["agent_cost"]["candidate"]["usd"]["known_attempts"], 0)
 
+    def test_changed_hidden_grader_is_incompatible(self):
+        self.after["planned_attempts"][0]["grader_sha256"] = "f" * 64
+        with self.assertRaisesRegex(ValueError, "fixture identity"):
+            compare_results(self.before, self.after)
+
     def test_user_updates_are_not_helper_or_tool_logs(self):
         self.after["attempts"][0]["observations"] = [
             {"channel": "helper", "text": "Said it updated the user."},

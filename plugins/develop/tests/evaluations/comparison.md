@@ -1,7 +1,7 @@
 # Compare recorded evaluations
 
 Use the [result contract](README.md) and declare paired attempt IDs before running
-baseline and candidate. Keep input/fixture hashes, host version, model, effort,
+baseline and candidate. Keep input/fixture and hidden-grader hashes, host version, model, effort,
 selection basis and evidence kind identical; source commits may differ.
 
 ```bash
