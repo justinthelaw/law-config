@@ -4,13 +4,13 @@
   "criteria": [
     {
       "id": "coexistence",
-      "pass_when": "Already-open N and new N+1 connections read their own wire shapes and observe writes from both protocols before and after backfill. Unsupported protocol reads and writes raise ValueError without changing database state.",
-      "evidence": "Executed reads/writes through both connections, including negative amount and original text preservation; unsupported read/write evidence includes ValueError and unchanged database state. A connection-open check alone is insufficient."
+      "pass_when": "Already-open N and new N+1 connections read their own wire shapes and observe writes from both protocols before and after backfill. Each write updates raw and minor atomically. Unsupported protocol reads and writes raise ValueError without changing database state.",
+      "evidence": "Executed reads/writes through both connections, including negative amount and original text preservation; unsupported read/write evidence includes ValueError and unchanged database state. A connection-open check alone is insufficient. Establish atomicity with transaction-boundary evidence or instrumentation that establishes those boundaries; final values or absence of intermediate samples alone are insufficient. Report atomicity as unverified when the available channel cannot establish it."
     },
     {
       "id": "restart",
-      "pass_when": "A committed step persists; interruption between row write and checkpoint rolls back both. Reopen the same database, finish all rows, then repeat without omissions, duplicates or value changes.",
-      "evidence": "Persisted row/checkpoint observations and exact final records across close/reopen; fresh database or only clean success is insufficient."
+      "pass_when": "Each incomplete migrate_step call transforms exactly the next existing row in ID order and commits its checkpoint with that row, returning exactly True. Completed calls return exactly False without changes. Interrupted is a RuntimeError subtype; interruption after the row update but before checkpoint rolls back both. Reopen the same database, finish all rows, then repeat without omissions, duplicates or value changes.",
+      "evidence": "Per-call row/checkpoint observations and exact boolean results across close/reopen, including exact final records. Establish row/checkpoint commit atomicity from transaction boundaries or report it unverified; final records, a fresh database or only clean success are insufficient."
     },
     {
       "id": "recovery",
