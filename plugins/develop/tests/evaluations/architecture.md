@@ -47,7 +47,9 @@ A repeated identical payload checks that request identity stays independent of
 payload identity: the cancelled callback stays suppressed and its replacement
 publishes once, for either API.
 Caller-pair sequences use both distinct and equal payloads to check that identical
-text does not transfer ownership between callers.
+text does not transfer ownership between callers. Replacement and close rotate
+through both existing caller positions. A completed caller is reused after peer
+construction, as well as the newly constructed caller.
 The completed replacement sequence rechecks cancellation counts and terminal close
 after its third request. Completed peer callbacks are redelivered after close.
 A bounded three-caller sequence covers same-API and mixed groups, with pending
@@ -58,7 +60,10 @@ These examples calibrate the stated multiple-caller contract; they are not an
 exhaustive proof over caller counts or operation orderings.
 Shared operation checks preserve submitted payloads and append-only job history,
 check job identity across callback delivery, close and rejected requests, and ensure
-delivery does not cancel work. Repeated close after late callbacks or rejected
+delivery does not cancel work. Submission and close preserve cancellation counts
+for every existing job except the scenario's explicitly identified own pending
+job, which must be cancelled exactly once. Completed and already-cancelled history
+remain untouched. Repeated close after late callbacks or rejected
 requests must preserve jobs and observers.
 These callback checks use passive value
 collectors; they do not model observers that intentionally submit new requests.
