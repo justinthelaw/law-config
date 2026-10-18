@@ -65,7 +65,9 @@ site. A body assertion before an in-body, subtest, teardown or cleanup skip rema
 evidence; constructing an assertion context without executing it does not.
 Assertions executed only in
 `setUp`, `tearDown` or cleanup callbacks are outside body correlation and cannot
-certify a skipped body. Assertion observations in worker threads without the
+certify a skipped body. Saved context copies cannot extend body tracking after
+that body invocation ends, even if the same test instance runs again.
+Assertion observations in worker threads without the
 active body context are also not correlated; the helper does not propagate that
 context or verify concurrent test execution. These paths can produce real
 assertion failures while the bounded gate returns no verified sensitivity.
