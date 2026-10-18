@@ -13,7 +13,7 @@ Eight portable skills for scoped development, review and maintenance. Invoke `de
 | [kaizen](skills/kaizen/SKILL.md) | Learns from selected sessions and proposes workflow improvements; uses Iterate when implementation is requested. |
 | [upgrade-codex](skills/upgrade-codex/SKILL.md) | Audits selected Codex configuration; explicit invocation only, with requested implementation handed to Iterate. |
 
-Explore the [interactive workflow guide](docs/develop-route-explorer.html) locally in a browser. The Roux-themed [overview source](docs/develop-overview.html) shows the same skill ownership and authority boundaries.
+The Roux-themed [one-page overview source](docs/develop-overview.html) explains the skill owners, explicit-only paths, shared review and delivery loop without interaction. The [interactive explorer](docs/develop-route-explorer.html) is an optional supplement; it is not needed to understand the plugin.
 
 Debug and deployment/operations handoffs are **Iterate modes**, not additional entrypoints. Review rubrics extend the existing adversarial review engine. Repository workflows share intent/evidence checkpoints; standalone analysis follows its owner's completion policy. Handoffs preserve scope, authority and review budgets. CI-only requests do not start Codex reviews; preparation or publication does not authorize deployment or merging.
 
