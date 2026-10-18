@@ -114,6 +114,17 @@ class EvaluationContract(unittest.TestCase):
             with self.subTest(evidence=update):
                 evaluation.validate_result(result)
 
+    def test_missing_attempt_cannot_claim_assessment_evidence(self):
+        for assessment in ("functional", "evaluator"):
+            result = copy.deepcopy(self.result)
+            attempt = next(row for row in result["attempts"] if row["state"] == "missing")
+            attempt[assessment]["evidence"] = ["Execution artifact from an unlaunched attempt"]
+            with self.subTest(assessment=assessment), self.assertRaisesRegex(ValueError, "missing attempts"):
+                evaluation.validate_result(result)
+            # A launched but blocked attempt may preserve diagnostic evidence.
+            attempt["state"] = "blocked"
+            evaluation.validate_result(result)
+
     def test_materializes_exact_inputs_without_grader_or_prompt(self):
         destination = self.root / "agent"
         hashes = evaluation.materialize(self.fixture, destination)
