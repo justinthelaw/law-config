@@ -378,6 +378,43 @@ BAD_IDLE_CALLBACK_COMPLETED = RETAIN_COMPLETED_PEERS.replace(
 )
 
 
+# The same operation invariants apply with live peers and either construction order.
+BAD_REVERSE_PENDING_MIXED = REGISTER_MIXED_CALLERS.replace(
+    "        self.requests.close()",
+    "        if isinstance(self, Screen) and isinstance(self.peers[0], Autosave):\n"
+    "            if self.requests.pending is not None:\n"
+    "                for peer in self.peers:\n"
+    "                    if peer is not self and peer.requests.pending is not None:\n"
+    "                        peer.requests.pending.cancel()\n"
+    "        self.requests.close()",
+)
+COUNT_DELIVERIES = GOOD.replace(
+    "        def receive(value):\n            if self.token is token:",
+    "        deliveries, succeeded = 0, False\n"
+    "        def receive(value):\n"
+    "            nonlocal deliveries, succeeded\n"
+    "            deliveries += 1\n"
+    "            if self.token is token:\n"
+    "                succeeded = True",
+)
+BAD_DUPLICATE_AFTER_CLOSE = COUNT_DELIVERIES.replace(
+    "if self.token is token:",
+    "if self.token is token or (self.closed and not succeeded and deliveries == 2):",
+)
+BAD_LIVE_CALLBACK_JOB = BAD_IDLE_CALLBACK_JOB.replace(
+    "any(peer is not self and peer.requests.closed for peer in self.peers)",
+    "len(self.peers) > 1 and all(not peer.requests.closed for peer in self.peers)",
+)
+BAD_PEER_PAYLOAD = REGISTER_CALLERS.replace(
+    "self.requests.send(query,", "self.requests.send('changed query' if len(self.peers) > 1 else query,",
+).replace(
+    "self.requests.send(content,", "self.requests.send('changed content' if len(self.peers) > 1 else content,",
+)
+BAD_PENDING_CLOSE_JOB = BAD_IDLE_CLOSE_JOB.replace(
+    "if self.requests.pending is None:", "if self.requests.pending is not None:",
+)
+
+
 def fixture(name):
     return json.loads((ROOT / "fixtures" / f"{name}.json").read_text(encoding="utf-8"))
 
@@ -393,7 +430,25 @@ def start_job(case, transport, caller, method, payload):
     count = len(transport.jobs)
     getattr(caller, method)(payload)
     case.assertEqual(len(transport.jobs), count + 1, "submission must start exactly one job")
-    return transport.jobs[-1]
+    job = transport.jobs[-1]
+    case.assertEqual(job.query, payload, "submission payload was changed")
+    return job
+
+
+def deliver_job(case, transport, job, value):
+    """Probe observers only append values; delivery must not start or cancel work."""
+    jobs = tuple(transport.jobs)
+    cancellations = [existing.cancel_count for existing in jobs]
+    job.deliver(value)
+    case.assertEqual(len(transport.jobs), len(jobs), "callback started a job")
+    case.assertEqual([existing.cancel_count for existing in jobs], cancellations,
+                     "callback cancelled existing work")
+
+
+def close_caller(case, transport, caller):
+    count = len(transport.jobs)
+    caller.close()
+    case.assertEqual(len(transport.jobs), count, "close started a job")
 
 
 def probe_idle_peer_close(case, caller_specs, transport_type):
@@ -407,30 +462,28 @@ def probe_idle_peer_close(case, caller_specs, transport_type):
             close_method = caller_specs[closer_index][1]
             peer_method = caller_specs[1 - closer_index][1]
             completed = [start_job(case, transport, peer, peer_method, "peer complete")]
-            completed[0].deliver("peer complete")
+            deliver_job(case, transport, completed[0], "peer complete")
             if completed_closer:
                 completed.append(start_job(case, transport, closer, close_method, "closer complete"))
-                completed[-1].deliver("closer complete")
+                deliver_job(case, transport, completed[-1], "closer complete")
             pending = start_job(case, transport, peer, peer_method, "peer pending")
-            count = len(transport.jobs)
 
             def assert_idle_state(operation):
-                case.assertEqual(len(transport.jobs), count, f"{operation} started a job")
                 case.assertEqual([job.cancel_count for job in completed], [0] * len(completed),
                                  f"{operation} cancelled completed peer work")
                 case.assertEqual(pending.cancel_count, 0, f"{operation} cancelled pending peer")
 
-            closer.close()
+            close_caller(case, transport, closer)
             assert_idle_state("idle close")
-            closer.close()
+            close_caller(case, transport, closer)
             assert_idle_state("repeated close")
+            count = len(transport.jobs)
             with case.assertRaises(RuntimeError):
                 getattr(closer, close_method)("closed")
+            case.assertEqual(len(transport.jobs), count, "rejected request started a job")
             assert_idle_state("rejected request")
-            pending.deliver("peer survives")
-            assert_idle_state("peer callback")
-            pending.deliver("duplicate peer")
-            assert_idle_state("duplicate callback")
+            deliver_job(case, transport, pending, "peer survives")
+            deliver_job(case, transport, pending, "duplicate peer")
             case.assertEqual(values[1 - closer_index], ["peer complete", "peer survives"])
             case.assertEqual(values[closer_index], ["closer complete"] if completed_closer else [])
 
@@ -441,36 +494,29 @@ def probe_change(case, app, transport_type):
     screen_values, save_values = [], []
     screen = app.Screen(transport, screen_values.append)
     save = app.Autosave(transport, save_values.append)
-    screen.search("lookup")
-    lookup = transport.jobs[-1]
-    save.submit("draft 1")
-    old_save = transport.jobs[-1]
-    case.assertEqual(old_save.query, "draft 1", "autosave payload was changed")
+    lookup = start_job(case, transport, screen, "search", "lookup")
+    old_save = start_job(case, transport, save, "submit", "draft 1")
     case.assertEqual(lookup.cancel_count, 0, "autosave cancelled another caller")
-    save.submit("draft 2")
-    new_save = transport.jobs[-1]
-    case.assertEqual(new_save.query, "draft 2", "autosave payload was changed")
+    new_save = start_job(case, transport, save, "submit", "draft 2")
     case.assertEqual(old_save.cancel_count, 1)
     case.assertEqual(lookup.cancel_count, 0)
-    old_save.deliver("stale save")
-    lookup.deliver("found")
-    lookup.deliver("duplicate lookup")
-    screen.close()
-    screen.close()
+    deliver_job(case, transport, old_save, "stale save")
+    deliver_job(case, transport, lookup, "found")
+    deliver_job(case, transport, lookup, "duplicate lookup")
+    close_caller(case, transport, screen)
+    close_caller(case, transport, screen)
     case.assertEqual(lookup.cancel_count, 0, "completed screen job was cancelled")
     case.assertEqual(new_save.cancel_count, 0, "screen close cancelled autosave")
-    new_save.deliver("saved")
-    new_save.deliver("duplicate save")
+    deliver_job(case, transport, new_save, "saved")
+    deliver_job(case, transport, new_save, "duplicate save")
     case.assertEqual(screen_values, ["found"])
     case.assertEqual(save_values, ["saved"])
-    save.submit("draft 3")
+    last_save = start_job(case, transport, save, "submit", "draft 3")
     case.assertEqual(new_save.cancel_count, 0, "completed autosave job was cancelled")
-    last_save = transport.jobs[-1]
-    case.assertEqual(last_save.query, "draft 3", "autosave payload was changed")
-    save.close()
-    save.close()
+    close_caller(case, transport, save)
+    close_caller(case, transport, save)
     case.assertEqual(last_save.cancel_count, 1)
-    last_save.deliver("late save")
+    deliver_job(case, transport, last_save, "late save")
     case.assertEqual(save_values, ["saved"])
     with case.assertRaises(RuntimeError):
         save.submit("closed")
@@ -483,16 +529,14 @@ def probe_change(case, app, transport_type):
     screen_values, save_values = [], []
     screen = app.Screen(transport, screen_values.append)
     save = app.Autosave(transport, save_values.append)
-    screen.search("pending screen")
-    lookup = transport.jobs[-1]
-    save.submit("pending save")
-    pending_save = transport.jobs[-1]
-    save.close()
-    save.close()
+    lookup = start_job(case, transport, screen, "search", "pending screen")
+    pending_save = start_job(case, transport, save, "submit", "pending save")
+    close_caller(case, transport, save)
+    close_caller(case, transport, save)
     case.assertEqual(lookup.cancel_count, 0, "autosave close cancelled screen")
     case.assertEqual(pending_save.cancel_count, 1)
-    pending_save.deliver("late save")
-    lookup.deliver("screen survives")
+    deliver_job(case, transport, pending_save, "late save")
+    deliver_job(case, transport, lookup, "screen survives")
     case.assertEqual(screen_values, ["screen survives"])
     case.assertEqual(save_values, [])
 
@@ -501,12 +545,11 @@ def probe_change(case, app, transport_type):
     screen_values, save_values = [], []
     screen = app.Screen(transport, screen_values.append)
     save = app.Autosave(transport, save_values.append)
-    screen.search("pending screen")
-    lookup = transport.jobs[-1]
-    save.submit("successful save")
-    transport.jobs[-1].deliver("saved")
+    lookup = start_job(case, transport, screen, "search", "pending screen")
+    start_job(case, transport, save, "submit", "successful save")
+    deliver_job(case, transport, transport.jobs[-1], "saved")
     case.assertEqual(lookup.cancel_count, 0, "autosave completion cancelled pending screen")
-    lookup.deliver("found")
+    deliver_job(case, transport, lookup, "found")
     case.assertEqual(save_values, ["saved"])
     case.assertEqual(screen_values, ["found"])
 
@@ -515,17 +558,15 @@ def probe_change(case, app, transport_type):
     screen_values, save_values = [], []
     screen = app.Screen(transport, screen_values.append)
     save = app.Autosave(transport, save_values.append)
-    save.submit("pending save")
-    pending_save = transport.jobs[-1]
-    screen.search("later screen")
-    lookup = transport.jobs[-1]
+    pending_save = start_job(case, transport, save, "submit", "pending save")
+    lookup = start_job(case, transport, screen, "search", "later screen")
     case.assertEqual(pending_save.cancel_count, 0, "screen cancelled pending autosave")
-    screen.close()
-    screen.close()
+    close_caller(case, transport, screen)
+    close_caller(case, transport, screen)
     case.assertEqual(lookup.cancel_count, 1)
     case.assertEqual(pending_save.cancel_count, 0, "pending screen close cancelled autosave")
-    pending_save.deliver("save survives")
-    lookup.deliver("late screen")
+    deliver_job(case, transport, pending_save, "save survives")
+    deliver_job(case, transport, lookup, "late screen")
     case.assertEqual(save_values, ["save survives"])
     case.assertEqual(screen_values, [])
 
@@ -533,27 +574,24 @@ def probe_change(case, app, transport_type):
     for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
         transport, values = transport_type(), []
         caller = caller_type(transport, values.append)
-        submit = getattr(caller, method)
-        submit("old")
-        old = transport.jobs[-1]
-        submit("new")
-        new = transport.jobs[-1]
+        old = start_job(case, transport, caller, method, "old")
+        new = start_job(case, transport, caller, method, "new")
         case.assertEqual(old.cancel_count, 1)
-        new.deliver("fresh")
-        old.deliver("stale")
-        old.deliver("stale again")
+        deliver_job(case, transport, new, "fresh")
+        deliver_job(case, transport, old, "stale")
+        deliver_job(case, transport, old, "stale again")
         case.assertEqual(values, ["fresh"], "stale after replacement was published")
         # Starting more work must not cancel the job that already completed.
-        submit("next")
+        start_job(case, transport, caller, method, "next")
         case.assertEqual(new.cancel_count, 0, "completed job was cancelled on next request")
         case.assertEqual(old.cancel_count, 1, "cancelled job was cancelled again on submit")
         case.assertEqual(len(transport.jobs), 3)
-        new.deliver("duplicate after successor")
+        deliver_job(case, transport, new, "duplicate after successor")
         case.assertEqual(values, ["fresh"], "completed callback repeated after successor started")
-        transport.jobs[-1].deliver("next value")
+        deliver_job(case, transport, transport.jobs[-1], "next value")
         case.assertEqual(values, ["fresh", "next value"])
-        caller.close()
-        caller.close()
+        close_caller(case, transport, caller)
+        close_caller(case, transport, caller)
         case.assertEqual(old.cancel_count, 1, "cancelled job was cancelled again on close")
 
     # Closed callers reject new work without repeating cleanup in any start state.
@@ -561,62 +599,63 @@ def probe_change(case, app, transport_type):
         for state in ("fresh", "completed", "pending"):
             transport, values = transport_type(), []
             caller = caller_type(transport, values.append)
-            submit = getattr(caller, method)
             if state != "fresh":
-                submit("work")
+                start_job(case, transport, caller, method, "work")
             if state == "completed":
-                transport.jobs[-1].deliver("done")
-            caller.close()
-            caller.close()
+                deliver_job(case, transport, transport.jobs[-1], "done")
+            close_caller(case, transport, caller)
+            close_caller(case, transport, caller)
             if state == "pending":
                 case.assertEqual(transport.jobs[-1].cancel_count, 1)
             with case.assertRaises(RuntimeError):
-                submit("closed")
+                getattr(caller, method)("closed")
             case.assertEqual(len(transport.jobs), int(state != "fresh"))
             if state == "pending":
                 case.assertEqual(transport.jobs[-1].cancel_count, 1,
                                  "rejected request cancelled closed work again")
-                transport.jobs[-1].deliver("late after rejection")
-                case.assertEqual(values, [])
+                deliver_job(case, transport, transport.jobs[-1], "late after rejection")
+                deliver_job(case, transport, transport.jobs[-1], "duplicate after rejection")
+                case.assertEqual(values, [], "closed callback was published")
             if state == "completed":
                 case.assertEqual(transport.jobs[-1].cancel_count, 0,
                                  "completed job was cancelled on close")
-                transport.jobs[-1].deliver("duplicate after close")
+                deliver_job(case, transport, transport.jobs[-1], "duplicate after close")
                 case.assertEqual(values, ["done"])
 
-    # Each caller type needs independent lifetimes between its own instances.
-    for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
+    # The same peer transitions apply to either API in either construction order.
+    screen_spec, save_spec = (app.Screen, "search"), (app.Autosave, "submit")
+    for caller_specs in ((screen_spec, screen_spec), (save_spec, save_spec),
+                         (screen_spec, save_spec), (save_spec, screen_spec)):
+        (left_type, left_method), (right_type, right_method) = caller_specs
         for delivery_order in ((0, 1), (1, 0)):
             transport = transport_type()
             left_values, right_values = [], []
-            left = caller_type(transport, left_values.append)
-            right = caller_type(transport, right_values.append)
-            first = start_job(case, transport, left, method, "left")
-            second = start_job(case, transport, right, method, "right")
+            left = left_type(transport, left_values.append)
+            right = right_type(transport, right_values.append)
+            first = start_job(case, transport, left, left_method, "left")
+            second = start_job(case, transport, right, right_method, "right")
             case.assertEqual(first.cancel_count, 0, "second caller cancelled first")
             completed = (first, second)
             for index in delivery_order:
-                completed[index].deliver(("left", "right")[index])
-                case.assertEqual([job.cancel_count for job in completed], [0, 0],
-                                 "callback cancelled peer work")
+                deliver_job(case, transport, completed[index], ("left", "right")[index])
             case.assertEqual(left_values, ["left"], "live caller callback was misrouted")
             case.assertEqual(right_values, ["right"], "live caller callback was misrouted")
             # Start another pair to check close isolation while both jobs are pending.
-            first = start_job(case, transport, left, method, "left pending")
+            first = start_job(case, transport, left, left_method, "left pending")
             case.assertEqual([job.cancel_count for job in completed], [0, 0],
                              "submission cancelled completed peer work")
-            second = start_job(case, transport, right, method, "right pending")
+            second = start_job(case, transport, right, right_method, "right pending")
             case.assertEqual([job.cancel_count for job in completed], [0, 0],
                              "submission cancelled completed peer work")
-            replacement = start_job(case, transport, left, method, "left replacement")
+            replacement = start_job(case, transport, left, left_method, "left replacement")
             case.assertEqual(first.cancel_count, 1)
             case.assertEqual(second.cancel_count, 0, "first caller cancelled second")
-            left.close()
+            close_caller(case, transport, left)
             case.assertEqual([job.cancel_count for job in completed], [0, 0],
                              "close cancelled completed peer work")
-            first.deliver("late left")
-            replacement.deliver("late replacement")
-            second.deliver("right survives")
+            deliver_job(case, transport, first, "late left")
+            deliver_job(case, transport, replacement, "late replacement")
+            deliver_job(case, transport, second, "right survives")
             case.assertEqual(first.cancel_count, 1)
             case.assertEqual(replacement.cancel_count, 1)
             case.assertEqual(second.cancel_count, 0)
@@ -626,22 +665,18 @@ def probe_change(case, app, transport_type):
         # Reverse close order with fresh instances: the first stays live.
         transport = transport_type()
         left_values, right_values = [], []
-        left = caller_type(transport, left_values.append)
-        right = caller_type(transport, right_values.append)
-        first = start_job(case, transport, left, method, "left pending")
-        second = start_job(case, transport, right, method, "right pending")
-        right.close()
-        right.close()
+        left = left_type(transport, left_values.append)
+        right = right_type(transport, right_values.append)
+        first = start_job(case, transport, left, left_method, "left pending")
+        second = start_job(case, transport, right, right_method, "right pending")
+        close_caller(case, transport, right)
+        close_caller(case, transport, right)
         case.assertEqual(first.cancel_count, 0, "second caller close cancelled first")
         case.assertEqual(second.cancel_count, 1)
-        second.deliver("late right")
-        first.deliver("left survives")
+        deliver_job(case, transport, second, "late right")
+        deliver_job(case, transport, first, "left survives")
         case.assertEqual(left_values, ["left survives"])
         case.assertEqual(right_values, [])
-        probe_idle_peer_close(case, ((caller_type, method),) * 2, transport_type)
-
-    mixed_callers = ((app.Screen, "search"), (app.Autosave, "submit"))
-    for caller_specs in (mixed_callers, mixed_callers[::-1]):
         probe_idle_peer_close(case, caller_specs, transport_type)
 
 
@@ -697,7 +732,7 @@ class ArchitectureProbe(unittest.TestCase):
                              module_from_source(self.transport).Transport)
 
     def test_autosave_payload_and_instance_defects_are_detected(self):
-        for source, message in ((BAD_PAYLOAD, "autosave payload"),
+        for source, message in ((BAD_PAYLOAD, "submission payload was changed"),
                                 (BAD_SHARED_SAVE, "second caller cancelled first")):
             with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
                 probe_change(self, module_from_source(source),
@@ -709,7 +744,7 @@ class ArchitectureProbe(unittest.TestCase):
                          module_from_source(self.transport).Transport)
 
     def test_retained_history_is_benign(self):
-        for source in (RETAIN_CANCELLED, RETAIN_CLOSED_JOB):
+        for source in (RETAIN_CANCELLED, RETAIN_CLOSED_JOB, COUNT_DELIVERIES):
             with self.subTest(source=source):
                 probe_change(self, module_from_source(source),
                              module_from_source(self.transport).Transport)
@@ -731,11 +766,11 @@ class ArchitectureProbe(unittest.TestCase):
 
     def test_mixed_construction_order_and_close_job_count_defects(self):
         for source, message in (
-            (BAD_AUTOSAVE_FIRST_OWNER, "idle close cancelled pending peer"),
+            (BAD_AUTOSAVE_FIRST_OWNER, "second caller cancelled first"),
             (BAD_IDLE_CLOSE_JOB, "close started a job"),
-            (BAD_REPEATED_CLOSE_JOB, "repeated close started a job"),
+            (BAD_REPEATED_CLOSE_JOB, "close started a job"),
             (BAD_IDLE_CALLBACK_JOB, "callback started a job"),
-            (BAD_IDLE_CALLBACK_COMPLETED, "callback cancelled completed peer work"),
+            (BAD_IDLE_CALLBACK_COMPLETED, "callback cancelled existing work"),
         ):
             with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
                 probe_change(self, module_from_source(source),
@@ -743,8 +778,8 @@ class ArchitectureProbe(unittest.TestCase):
 
     def test_peer_jobs_survive_completion_and_later_submissions(self):
         for source, message in (
-            (BAD_PEER_COMPLETION, "callback cancelled peer work"),
-            (BAD_REVERSE_PEER_COMPLETION, "callback cancelled peer work"),
+            (BAD_PEER_COMPLETION, "callback cancelled existing work"),
+            (BAD_REVERSE_PEER_COMPLETION, "callback cancelled existing work"),
             (BAD_COMPLETED_PEER_SUBMIT, "submission cancelled completed peer work"),
         ):
             with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
@@ -771,7 +806,7 @@ class ArchitectureProbe(unittest.TestCase):
     def test_rejected_request_and_completion_do_not_cancel_other_work(self):
         for source, message in (
             (BAD_CLOSED_SUBMIT, "rejected request cancelled closed work again"),
-            (BAD_SAVE_COMPLETION, "autosave completion cancelled pending screen"),
+            (BAD_SAVE_COMPLETION, "callback cancelled existing work"),
         ):
             with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
                 probe_change(self, module_from_source(source),
@@ -794,6 +829,18 @@ class ArchitectureProbe(unittest.TestCase):
             (BAD_REVERSE_CALLER, "screen cancelled pending autosave"),
             (BAD_SCREEN_CALLBACK, "live caller callback was misrouted"),
             (BAD_SAVE_CALLBACK, "live caller callback was misrouted"),
+        ):
+            with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
+
+    def test_shared_transition_defects_are_detected(self):
+        for source, message in (
+            (BAD_REVERSE_PENDING_MIXED, "second caller close cancelled first"),
+            (BAD_DUPLICATE_AFTER_CLOSE, "closed callback was published"),
+            (BAD_LIVE_CALLBACK_JOB, "callback started a job"),
+            (BAD_PEER_PAYLOAD, "payload was changed"),
+            (BAD_PENDING_CLOSE_JOB, "close started a job"),
         ):
             with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
                 probe_change(self, module_from_source(source),
