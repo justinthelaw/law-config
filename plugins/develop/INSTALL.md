@@ -37,8 +37,8 @@ Other hosts use their documented skill/plugin loading and account/workspace dist
 - `develop iterate: publish these prepared changes; signing is optional.`
 - `develop upgrade: assess and upgrade dependencies in this repository.`
 - `develop upgrade: review this dependency PR only.`
-- `$upgrade-codex: audit this project's Codex setup against the installed version; report only.`
-- `$upgrade-codex: check these configs, instructions, skills and plugins against Codex <version>.`
+- `$develop:upgrade-codex audit this project's Codex setup against the installed version; report only.`
+- `$develop:upgrade-codex check these configs, instructions, skills and plugins against Codex <version>.`
 - `develop clean: inspect disk and memory usage; do not delete anything.`
 - `develop kaizen: analyze these two selected sessions and recommend workflow improvements; make no changes.`
 - `adversarial-loop: fact-check this draft; report findings only.`
