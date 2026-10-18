@@ -176,7 +176,10 @@ peer must observe a protocol-2 write. Unsupported protocol reads and writes must
 reject without changing full state for every seeded key at each checkpoint,
 on completion and after finalization. Identifiers 3 and 4 provide one bounded
 calibration against special-casing only 3; they do not prove rejection of all
-unsupported identifiers. Permitted reads also compare full state
+unsupported identifiers. Unsupported writes use both decimal text and integer
+minor-unit payloads so neither supported wire shape is omitted. A control that
+validates value shape before rejecting the protocol remains accepted; no arbitrary
+payload-type enumeration is implied. Permitted reads also compare full state
 before and after, including fallback, peer warm-up and recovered reads. The write
 matrix exercises positive, negative and zero values through each protocol before
 and after backfill, swapping the seeded and already-open peer connections as writer and reader. The
