@@ -452,6 +452,26 @@ class RepeatedNextRow(Store):
             raise Interrupted("multiple statements, only the next row")
 
 
+class DeletedInterruptedRow(RepeatedNextRow):
+    deleted = "other"
+
+    def migrate_step(self, interrupt=False):
+        if not interrupt:
+            return super().migrate_step()
+        with self.db:
+            row = self.db.execute("SELECT id, raw, minor FROM records WHERE id > "
+                                  "(SELECT checkpoint FROM migration) ORDER BY id LIMIT 1").fetchone()
+            if self.deleted == "other":
+                victim = self.db.execute("SELECT id FROM records WHERE id != ? ORDER BY id LIMIT 1",
+                                         (row[0],)).fetchone()[0]
+            else:
+                victim = row[0] if self.deleted == "next" else -1
+            self.db.execute("DELETE FROM records WHERE id = ?", (victim,))
+            if self.deleted == "next":
+                self.db.execute("INSERT INTO records VALUES (?, ?, ?)", row)
+            return super().migrate_step(interrupt=True)
+
+
 class MutatingUnsupportedRead(Store):
     def read(self, protocol, key):
         if protocol not in (1, 2):
@@ -1290,9 +1310,9 @@ class MigrationTests(unittest.TestCase):
         store.db.create_function("observe_checkpoint", 0, lambda: checkpoints.append(True))
         # AFTER triggers observe executed row changes, including replacements;
         # unlike transaction state alone, they distinguish an early exception.
-        for event in ("UPDATE", "INSERT"):
+        for event, row in (("UPDATE", "NEW"), ("INSERT", "NEW"), ("DELETE", "OLD")):
             store.db.execute(f"CREATE TEMP TRIGGER observe_{event} AFTER {event} ON records "
-                             "BEGIN SELECT observe_row(NEW.id, NEW.minor); END")
+                             f"BEGIN SELECT observe_row({row}.id, {row}.minor); END")
         for event in ("UPDATE", "INSERT", "DELETE"):
             store.db.execute(f"CREATE TEMP TRIGGER checkpoint_{event} AFTER {event} ON migration "
                              "BEGIN SELECT observe_checkpoint(); END")
@@ -1853,6 +1873,20 @@ class MigrationTests(unittest.TestCase):
     def test_extra_interrupted_row_seed_is_detected(self):
         with self.assertRaises(AssertionError):
             self.assert_restart(ExtraInterruptedRow)
+
+    def test_interrupted_deletes_distinguish_collateral_from_target_work(self):
+        for deleted in ("other", "next", "none"):
+            with self.subTest(deleted=deleted):
+                class DeletedRow(DeletedInterruptedRow):
+                    pass
+
+                DeletedRow.deleted = deleted
+                self.path = Path(self.temp.name) / f"deleted-interrupted-{deleted}.sqlite"
+                if deleted == "other":
+                    with self.assertRaises(AssertionError):
+                        self.assert_restart(DeletedRow)
+                else:
+                    self.assert_restart(DeletedRow)
 
     def test_repeated_updates_to_next_row_are_accepted(self):
         self.assert_restart(RepeatedNextRow)
