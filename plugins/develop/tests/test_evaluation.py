@@ -5,6 +5,7 @@ import importlib.util
 import json
 from pathlib import Path
 import random
+import re
 import subprocess
 import sys
 import tempfile
@@ -67,6 +68,51 @@ class EvaluationContract(unittest.TestCase):
         self.assertEqual(evaluation.fixture_digest(self.fixture), evaluation.fixture_digest(reordered))
         reordered["revision"] = "2"
         self.assertNotEqual(evaluation.fixture_digest(self.fixture), evaluation.fixture_digest(reordered))
+
+    def test_identity_patterns_are_exact_with_schema_search_semantics(self):
+        properties = evaluation.SCHEMA["$defs"]["result"]["properties"]
+        planned = properties["planned_attempts"]["items"]["properties"]
+        patterns = {
+            "source": (properties["source"]["properties"]["revision"]["pattern"], (40, 64)),
+            "fixture": (planned["fixture"]["properties"]["sha256"]["pattern"], (64,)),
+            "grader": (planned["grader_sha256"]["pattern"], (64,)),
+        }
+        for identity, (pattern, lengths) in patterns.items():
+            for length in lengths:
+                valid = "a" * length
+                with self.subTest(identity=identity, valid=valid):
+                    self.assertIsNotNone(re.search(pattern, valid))
+                invalids = ["x" + valid, valid + "x", valid.upper(), valid[:-1], valid + "a"]
+                invalids.extend(valid + ending for ending in ("\n", "\r", "\r\n", "\u2028", "\u2029"))
+                for invalid in invalids:
+                    with self.subTest(identity=identity, invalid=invalid):
+                        self.assertIsNone(re.search(pattern, invalid))
+
+    def test_completed_attempt_needs_execution_evidence_not_only_reason(self):
+        attempt = self.result["attempts"][0]
+        attempt.update(functional={"verdict": "not_run", "evidence": []},
+                       evaluator={"verdict": "not_run", "evidence": []}, observations=[])
+        for reason in ("", "Claimed complete without execution evidence"):
+            attempt["reason"] = reason
+            with self.subTest(reason=reason), self.assertRaises(ValueError):
+                evaluation.validate_result(self.result)
+
+    def test_executed_but_ungraded_attempt_can_retain_observable_evidence(self):
+        attempt = self.result["attempts"][0]
+        attempt.update(functional={"verdict": "not_run", "evidence": []},
+                       evaluator={"verdict": "not_run", "evidence": []}, observations=[])
+        evidence_updates = [
+            {"observations": [{"channel": "tool", "text": "Execution trace reference"}]},
+            {"functional": {"verdict": "not_run", "evidence": ["Partial execution trace"]}},
+            {"evaluator": {"verdict": "not_run", "evidence": ["Ungraded execution artifact"]}},
+            {"application_performance": [{"name": "latency", "value": 0.1, "unit": "seconds"}]},
+            {"cost": {"wall_seconds": 0, "tokens": None, "usd": None}},
+        ]
+        for update in evidence_updates:
+            result = copy.deepcopy(self.result)
+            result["attempts"][0].update(update)
+            with self.subTest(evidence=update):
+                evaluation.validate_result(result)
 
     def test_materializes_exact_inputs_without_grader_or_prompt(self):
         destination = self.root / "agent"

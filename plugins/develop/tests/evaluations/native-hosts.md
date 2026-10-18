@@ -16,15 +16,18 @@ configuration to obtain a pass.
    with `codex plugin list --json`. Retain stderr and exit status: a failed remote
    catalog request can accompany an empty list and exit zero. Report that scope
    as unknown, not an absent or successfully installed plugin.
-3. Use fresh sessions and supported host loading. An existing authorized plugin
+3. Materialize each public fixture into a separate, previously absent scratch
+   root under an existing owned parent. Do this before creating `.agents/skills`
+   or initializing a repository: the materializer rejects existing destinations.
+   Never copy result manifests, grader criteria or prior transcripts into agent
+   inputs.
+4. Use fresh sessions and supported host loading. An existing authorized plugin
    installation tests that installed revision. Without one, an authorized local
    authoring trial may copy the exact selected package's `skills/` tree into a
    disposable repository's `.agents/skills/`. Preserve sibling references and
    metadata. This tests local skill loading, not marketplace installation.
-4. Materialize each public fixture into a separate new scratch root. Treat the
-   skills tree as additional host context: record its provenance and all file
-   hashes. Never copy result manifests, grader criteria or prior transcripts into
-   agent inputs. Resolve duplicate skill names before claiming which copy ran.
+   Treat the skills tree as additional host context: record its provenance and
+   all file hashes. Resolve duplicate skill names before claiming which copy ran.
 5. For a consumption probe, instrument only the disposable copy: append an
    instruction to `develop/SKILL.md` to include a fresh random body nonce in the
    final response, and another to `develop/references/contract.md` for a distinct
@@ -36,8 +39,14 @@ configuration to obtain a pass.
 
 | Fixture | Purpose | Required observations |
 | --- | --- | --- |
-| [native-codex-positive.json](fixtures/native-codex-positive.json) | Explicit `$develop` invocation on a read-only repository task | Resolved skill path; full body and shared-reference loading evidence; both nonce responses; tool events; computed total; honest unavailable-review status |
+| [native-codex-positive.json](fixtures/native-codex-positive.json) | Explicit `$develop` invocation on a read-only repository task | Resolved skill path; full body and shared-reference loading evidence; both nonce responses; tool events; computed total; completed matching reviews or evidenced unavailability |
 | [native-codex-negative.json](fixtures/native-codex-negative.json) | Unrelated arithmetic with the same available skills | Correct answer; no Develop workflow, skill/reference read, nonce response or unnecessary delegation |
+
+The positive fixture targets an unnamespaced local authoring copy. For an
+installed plugin, create a separately revised fixture using the exact discovered
+name (`$develop:develop` for this package) and matching grader revision; retain
+its digest and prompt. Follow either mention with whitespace before task text:
+a trailing colon is part of the name, so `$develop:` does not select `develop`.
 
 Do not paste skill contents into the prompt: that bypasses discovery. A body
 nonce response supports instruction consumption only when its sole available
@@ -97,3 +106,6 @@ fixture hashes establish input provenance only.
   command support against the installed client's help.
 - [Codex releases](https://github.com/openai/codex/releases): record the target
   version and publication date separately from the executable tested.
+- Codex 0.163.0 [mention parser](https://github.com/openai/codex/blob/rust-v0.163.0/codex-rs/skills/src/mentions.rs)
+  and [plugin namespaces](https://github.com/openai/codex/blob/rust-v0.163.0/codex-rs/ext/skills/src/loader/namespace.rs):
+  colon handling and qualified installed skill names.
