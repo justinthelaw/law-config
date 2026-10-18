@@ -35,8 +35,10 @@ batched steps, mutation after completion, partial finalization, final-phase N
 writes, lost finalized rows, retained raw archives, lossy reconstruction and
 snapshot mutation or partial restoration. Additional controls cover auxiliary
 corruption during finalization, guards that apply to only one key, stale peer
-read caches after completed backfill, float conversion and snapshots that omit
-legal writes. Benign controls accept different
+read caches during and after backfill, float conversion and snapshots that omit
+legal writes. Pending-row writes, acknowledged lock failures, undrained close,
+checkpoint-specific interruption/finalization and volatile completion flags also
+have seeded controls. Benign controls accept different
 exception messages, multiple write statements within one transaction and
 optimistic backfill with compare-and-retry. A refreshed peer read control remains
 accepted. Precision probes use a legal protocol-1 write of `001.15` and a bounded
@@ -55,11 +57,17 @@ tables, including across interrupted/repeated work and snapshot restoration.
 Successful steps and writes compare that full state while allowing only their
 specified row/checkpoint changes; the overlap probe allows only the known
 concurrent write and next-row migration. It repeats the controlled interleaving
-at each seeded checkpoint, including the second and last backfill rows, so a
-correct first transaction cannot mask stale reads in later steps. Final-phase
-behavior is checked after closing and reopening the candidate,
-so retired reads and frozen writes must follow persisted state for every seeded
-key. Both final-phase and recovery checks compare full state before and after
+at each seeded checkpoint, including the second and last backfill rows, with
+candidate instances on both sides. The same parameterized probe also retains a
+reference old-version writer against the optimistic candidate as a compatibility
+control. A correct first transaction cannot mask stale reads in later steps or a
+writer acknowledging a rejected lock attempt.
+Finalization is also attempted after reopening completed migration state. Both
+final-phase and recovery paths reopen finalized state and share retired-read and
+frozen-write checks for every key, including the recovery dataset's legal writes.
+Contract-significant closes verify that the old exposed SQLite connection rejects
+queries; cleanup independently closes that handle even when candidate close fails.
+Both final-phase and recovery checks compare full state before and after
 finalization: only the records representation and migration phase may change
 among existing data. Existing auxiliary contents and schema objects not owned by
 `records` must survive. The preservation check excludes the rebuilt `records`
@@ -84,8 +92,9 @@ checks that progress does not assume consecutive IDs. Completion uses at most
 the initial pending-row count plus one call, checking progress after each call
 and unchanged state on completion; it does not rely on a timeout.
 Supported-write probes require every unaddressed record to remain unchanged. The tests also
-reject finalization with pending checkpoint work even when all minor values are
-populated or one step has completed. Finalized IDs and values must all survive;
+reject finalization at every seeded pending checkpoint, both with originally
+null minor values and with all minor values populated by supported writes.
+Finalized IDs and values must all survive;
 the main database's logical tables must have no remaining `raw` column.
 Matching original spellings in other scalar text cells is collected as table,
 column and value evidence. `assert_finalized_records` returns these matches;
@@ -121,12 +130,17 @@ exports in an isolated evaluator copy and adapt the observation probes first.
 The overlapping-write probe targets the reference's backfill UPDATE on each
 seeded row; it does not enumerate all concurrent schedules. Temporary
 row and checkpoint triggers observe interruption ordering on the exposed
-connection; restart checks reopen immediately after a committed step and inspect
-each remaining step and unchanged completion. An interrupted step may issue
+connection; restart checks inject interruption at each of the fixture's three
+pending checkpoints, compare full durable state after reopening, then commit and
+reopen each successful step and verify unchanged completion. An interrupted step
+may issue
 multiple updates to its next row, but must not touch another row or the
 checkpoint before the controlled exception.
 
 The shared successful-write assertion samples writes during and after backfill.
+While work remains, protocol 1 writes an unbackfilled row and a warmed protocol-1
+peer must observe a protocol-2 write. Unsupported protocol reads and writes must
+reject without changing full state at every seeded checkpoint and on completion.
 After backfill, a candidate peer opened before the writes reads both protocols
 before each write and checks both updated representations afterward. This API
 check complements the sampler's direct database observations and detects stale
