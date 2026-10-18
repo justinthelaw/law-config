@@ -40,9 +40,17 @@ with zero executed tests; evaluation continues with the remaining variants. An
 unrelated skip or expected failure does not erase an executed assertion that
 detects the defect and passes both controls. Skipped-only and expected-failure-only
 runs remain incomplete; unexpected successes are not passing control evidence.
+The helper temporarily registers the source modules with file/import metadata
+and restores the import table after each run. Those filenames identify the
+in-memory source; the helper does not materialize source files on disk. Standard
+`TestCase` assertion methods are temporarily wrapped for direct, inherited and
+`super()` calls, respecting the case's configured `failureException`. Runs must
+remain sequential within a process because those wrappers modify shared classes.
 The helper correlates standard `unittest` assertion call sites and Python
 `assert` statements in the submitted source across variants, within the same test
-method. A reported defect failure must come from an assertion site that passed on
+method. Calls in separate code objects, including same-line lambdas, remain
+distinct; their identity is correlated only across the unchanged submitted source.
+A reported defect failure must come from an assertion site that passed on
 both controls; an unrelated assertion cannot substitute for a skipped detecting
 site. An assertion before an in-body, subtest, teardown or cleanup skip remains
 evidence; constructing an
