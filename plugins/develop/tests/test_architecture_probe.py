@@ -130,6 +130,55 @@ BAD_COMPLETED_CLOSE = BAD_IDLE_CLOSE.replace(
     "if self.requests.pending is not None:",
     "if self.requests.pending is not None or not self.requests.transport.jobs:",
 )
+# Retaining cancelled job history is benign; cancelling that history again is not.
+RETAIN_CANCELLED = GOOD + '''
+class RetainsCancelled(LatestRequest):
+    def __init__(self, transport):
+        super().__init__(transport)
+        self.cancelled = []
+
+    def send(self, query, on_value):
+        previous = self.pending
+        super().send(query, on_value)
+        if previous is not None:
+            self.cancelled.append(previous)
+
+    def close(self):
+        super().close()
+
+LatestRequest = RetainsCancelled
+'''
+BAD_RECANCEL_SUBMIT = RETAIN_CANCELLED.replace(
+    "        previous = self.pending",
+    "        for job in self.cancelled:\n"
+    "            job.cancel()\n"
+    "        previous = self.pending",
+)
+BAD_RECANCEL_CLOSE = RETAIN_CANCELLED.replace(
+    "        super().close()",
+    "        for job in self.cancelled:\n"
+    "            job.cancel()\n"
+    "        super().close()",
+)
+BAD_REVERSE_CALLER = (
+    OWNER + CALLERS.replace(
+        "    def search(self, query):",
+        "    def search(self, query):\n"
+        "        save = getattr(self.requests.transport, 'save_requests', None)\n"
+        "        if save is not None and save.pending is not None:\n"
+        "            save.pending.cancel()",
+    ) + ADAPTATION.replace(
+        "        self.requests = LatestRequest(transport)",
+        "        self.requests = LatestRequest(transport)\n"
+        "        transport.save_requests = self.requests",
+    )
+)
+BAD_SCREEN_CALLBACK = OWNER + CALLERS.replace(
+    "self.on_value = on_value", "type(self).on_value = staticmethod(on_value)",
+) + ADAPTATION
+BAD_SAVE_CALLBACK = INITIAL + ADAPTATION.replace(
+    "self.on_value = on_value", "type(self).on_value = staticmethod(on_value)",
+)
 
 
 def fixture(name):
@@ -204,6 +253,21 @@ def probe_change(case, app, transport_type):
     case.assertEqual(screen_values, ["screen survives"])
     case.assertEqual(save_values, [])
 
+    # Starting Screen after Autosave must also preserve the other caller's work.
+    transport = transport_type()
+    screen_values, save_values = [], []
+    screen = app.Screen(transport, screen_values.append)
+    save = app.Autosave(transport, save_values.append)
+    save.submit("pending save")
+    pending_save = transport.jobs[-1]
+    screen.search("later screen")
+    lookup = transport.jobs[-1]
+    case.assertEqual(pending_save.cancel_count, 0, "screen cancelled pending autosave")
+    pending_save.deliver("save survives")
+    lookup.deliver("found")
+    case.assertEqual(save_values, ["save survives"])
+    case.assertEqual(screen_values, ["found"])
+
     # A cancelled callback's first delivery may follow replacement completion.
     for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
         transport, values = transport_type(), []
@@ -220,9 +284,13 @@ def probe_change(case, app, transport_type):
         # Starting more work must not cancel the job that already completed.
         submit("next")
         case.assertEqual(new.cancel_count, 0, "completed job was cancelled on next request")
+        case.assertEqual(old.cancel_count, 1, "cancelled job was cancelled again on submit")
         case.assertEqual(len(transport.jobs), 3)
         transport.jobs[-1].deliver("next value")
         case.assertEqual(values, ["fresh", "next value"])
+        caller.close()
+        caller.close()
+        case.assertEqual(old.cancel_count, 1, "cancelled job was cancelled again on close")
 
     # Closing fresh and completed callers is terminal even with no pending job.
     for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
@@ -255,13 +323,22 @@ def probe_change(case, app, transport_type):
         getattr(right, method)("right")
         second = transport.jobs[-1]
         case.assertEqual(first.cancel_count, 0, "second caller cancelled first")
+        first.deliver("left")
+        second.deliver("right")
+        case.assertEqual(left_values, ["left"], "live caller callback was misrouted")
+        case.assertEqual(right_values, ["right"], "live caller callback was misrouted")
+        # Start another pair to check close isolation while both jobs are pending.
+        getattr(left, method)("left pending")
+        first = transport.jobs[-1]
+        getattr(right, method)("right pending")
+        second = transport.jobs[-1]
         left.close()
         first.deliver("late left")
-        second.deliver("right")
+        second.deliver("right survives")
         case.assertEqual(first.cancel_count, 1)
         case.assertEqual(second.cancel_count, 0)
-        case.assertEqual(left_values, [])
-        case.assertEqual(right_values, ["right"])
+        case.assertEqual(left_values, ["left"])
+        case.assertEqual(right_values, ["right", "right survives"])
 
 
 
@@ -326,6 +403,22 @@ class ArchitectureProbe(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError, "completed job was cancelled on next request"):
             probe_change(self, module_from_source(BAD_SCREEN_RESUBMIT),
                          module_from_source(self.transport).Transport)
+
+    def test_retained_history_is_benign(self):
+        probe_change(self, module_from_source(RETAIN_CANCELLED),
+                     module_from_source(self.transport).Transport)
+
+    def test_recancellation_and_caller_routing_defects_are_detected(self):
+        for source, message in (
+            (BAD_RECANCEL_SUBMIT, "cancelled job was cancelled again on submit"),
+            (BAD_RECANCEL_CLOSE, "cancelled job was cancelled again on close"),
+            (BAD_REVERSE_CALLER, "screen cancelled pending autosave"),
+            (BAD_SCREEN_CALLBACK, "live caller callback was misrouted"),
+            (BAD_SAVE_CALLBACK, "live caller callback was misrouted"),
+        ):
+            with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
 
     def test_simple_control_needs_only_decided_function_edit(self):
         original = fixture("architecture-simple")["agent"]["inputs"][0]["content"]
