@@ -33,21 +33,36 @@ negative fallback conversion, split write commits, rejected writes corrupting
 minor units, early or late interruption, deferred commits, premature checkpoints,
 batched steps, mutation after completion, partial finalization, final-phase N
 writes, lost finalized rows, retained raw archives, lossy reconstruction and
-snapshot mutation or partial restoration. Benign controls accept different
+snapshot mutation or partial restoration. Additional controls cover auxiliary
+corruption during finalization, guards that apply to only one key, stale peer
+read caches after completed backfill, float conversion and snapshots that omit
+legal writes. Benign controls accept different
 exception messages, multiple write statements within one transaction and
-optimistic backfill with compare-and-retry. Seed checks require the declared core
+optimistic backfill with compare-and-retry. A refreshed peer read control remains
+accepted. Precision probes use a legal protocol-1 write of `001.15` and a bounded
+alternate seed of positive and negative `1.15` to check exact fallback and
+backfill conversion separately; the public fixture is unchanged. Seed checks
+require the declared core
 columns, types and primary key, the supplied records with null minor values, and
 exactly one initial `(0, 'mixed')` migration row; unrelated metadata tables and
-indexes are permitted. Restore checks
-compare all records, migration metadata and schema with the snapshot, then read
-both protocols and resume completed migration. Rejected writes, unsupported and retired reads
+indexes are permitted. Recovery performs legal writes from both protocols before
+capturing the snapshot, retains an untouched original spelling and compares all
+records, migration metadata and schema with the snapshot, then reads
+both protocols and resumes completed migration. Rejected writes, unsupported and retired reads
 and permitted finalized reads must preserve records, migration metadata and
 schema. State snapshots also preserve the contents of permitted logical auxiliary
 tables, including across interrupted/repeated work and snapshot restoration.
 Successful steps and writes compare that full state while allowing only their
 specified row/checkpoint changes; the overlap probe allows only the known
 concurrent write and row-1 migration. Final-phase behavior is checked after closing and reopening the candidate,
-so retired reads and frozen writes must follow persisted state. Migration-step
+so retired reads and frozen writes must follow persisted state for every seeded
+key. Both final-phase and recovery checks compare full state before and after
+finalization: only the records representation and migration phase may change
+among existing data. Existing auxiliary contents and schema objects must survive;
+rebuilding records may remove its indexes, and new unrelated finalization
+metadata remains permitted subject to the retention checks. These finalization
+comparisons cover returned state, not transient changes within `finalize()`.
+Migration-step
 results must be the booleans `True` and `False`, not merely truthy or falsy values.
 For the finite fixtures, each successful step must transform only the next
 existing ID and advance the checkpoint to that ID. A gapped, unsorted input
@@ -97,6 +112,10 @@ multiple updates to its next row, but must not touch another row or the
 checkpoint before the controlled exception.
 
 The shared successful-write assertion samples writes during and after backfill.
+After backfill, a candidate peer opened before the writes reads both protocols
+before each write and checks both updated representations afterward. This API
+check complements the sampler's direct database observations and detects stale
+per-instance reads on the exercised path.
 Write, normal migration-step and interrupted-step checks share a second-connection sampler at statements
 traced on `writer.db`, plus an observation after the operation returns. Each
 sample reads the covered records, migration metadata, schema and auxiliary
