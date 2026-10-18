@@ -75,6 +75,41 @@ BAD = GOOD.replace(
     "            transport.requests = LatestRequest(transport)\n"
     "        self.requests = transport.requests",
 )
+# Narrow defects that the original probe accepted. Each changes one lifecycle rule.
+BAD_COMPLETED = GOOD.replace("                self.pending = None\n", "")
+BAD_COMPLETED_SAVE = (INITIAL + ADAPTATION.replace("LatestRequest", "RetainsCompleted")
+                      + OWNER.replace("LatestRequest", "RetainsCompleted")
+                      .replace("                self.pending = None\n", ""))
+BAD_SAVE_CLOSE = GOOD + '''
+original_save_close = Autosave.close
+def close_all(self):
+    original_save_close(self)
+    for job in self.requests.transport.jobs:
+        if job.cancel_count == 0:
+            job.cancel()
+Autosave.close = close_all
+'''
+BAD_LATE = GOOD.replace(
+    "        def receive(value):\n            if self.token is token:",
+    "        delivered = False\n"
+    "        def receive(value):\n"
+    "            nonlocal delivered\n"
+    "            if delivered or self.closed:\n"
+    "                return\n"
+    "            delivered = True\n"
+    "            if self.token is token or self.token is None:",
+)
+BAD_IDLE_CLOSE = GOOD + '''
+original_save_close = Autosave.close
+def close_only_pending(self):
+    if self.requests.pending is not None:
+        original_save_close(self)
+Autosave.close = close_only_pending
+'''
+BAD_COMPLETED_CLOSE = BAD_IDLE_CLOSE.replace(
+    "if self.requests.pending is not None:",
+    "if self.requests.pending is not None or not self.requests.transport.jobs:",
+)
 
 
 def fixture(name):
@@ -108,12 +143,14 @@ def probe_change(case, app, transport_type):
     lookup.deliver("duplicate lookup")
     screen.close()
     screen.close()
+    case.assertEqual(lookup.cancel_count, 0, "completed screen job was cancelled")
     case.assertEqual(new_save.cancel_count, 0, "screen close cancelled autosave")
     new_save.deliver("saved")
     new_save.deliver("duplicate save")
     case.assertEqual(screen_values, ["found"])
     case.assertEqual(save_values, ["saved"])
     save.submit("draft 3")
+    case.assertEqual(new_save.cancel_count, 0, "completed autosave job was cancelled")
     last_save = transport.jobs[-1]
     save.close()
     save.close()
@@ -125,6 +162,58 @@ def probe_change(case, app, transport_type):
     with case.assertRaises(RuntimeError):
         screen.search("closed")
     case.assertEqual(len(transport.jobs), 4)
+
+    # Autosave close must leave an independently pending screen deliverable.
+    transport = transport_type()
+    screen_values, save_values = [], []
+    screen = app.Screen(transport, screen_values.append)
+    save = app.Autosave(transport, save_values.append)
+    screen.search("pending screen")
+    lookup = transport.jobs[-1]
+    save.submit("pending save")
+    pending_save = transport.jobs[-1]
+    save.close()
+    save.close()
+    case.assertEqual(lookup.cancel_count, 0, "autosave close cancelled screen")
+    case.assertEqual(pending_save.cancel_count, 1)
+    pending_save.deliver("late save")
+    lookup.deliver("screen survives")
+    case.assertEqual(screen_values, ["screen survives"])
+    case.assertEqual(save_values, [])
+
+    # A cancelled callback's first delivery may follow replacement completion.
+    for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
+        transport, values = transport_type(), []
+        caller = caller_type(transport, values.append)
+        submit = getattr(caller, method)
+        submit("old")
+        old = transport.jobs[-1]
+        submit("new")
+        new = transport.jobs[-1]
+        case.assertEqual(old.cancel_count, 1)
+        new.deliver("fresh")
+        old.deliver("stale")
+        case.assertEqual(values, ["fresh"], "stale after replacement was published")
+
+    # Closing fresh and completed callers is terminal even with no pending job.
+    for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
+        for completed in (False, True):
+            transport, values = transport_type(), []
+            caller = caller_type(transport, values.append)
+            submit = getattr(caller, method)
+            if completed:
+                submit("complete")
+                transport.jobs[-1].deliver("done")
+            caller.close()
+            caller.close()
+            with case.assertRaises(RuntimeError):
+                submit("closed")
+            case.assertEqual(len(transport.jobs), int(completed))
+            if completed:
+                case.assertEqual(transport.jobs[-1].cancel_count, 0,
+                                 "completed job was cancelled on close")
+                transport.jobs[-1].deliver("duplicate after close")
+                case.assertEqual(values, ["done"])
 
     # Two instances of the original caller also need independent lifetimes.
     transport = transport_type()
@@ -180,6 +269,19 @@ class ArchitectureProbe(unittest.TestCase):
     def test_seeded_global_owner_fails_held_out_change(self):
         with self.assertRaisesRegex(AssertionError, "autosave cancelled another caller"):
             probe_change(self, module_from_source(BAD), module_from_source(self.transport).Transport)
+
+    def test_seeded_lifecycle_defects_fail_held_out_change(self):
+        for label, source, message in (
+            ("completed screen cancellation", BAD_COMPLETED, "completed screen"),
+            ("completed autosave cancellation", BAD_COMPLETED_SAVE, "completed autosave"),
+            ("autosave close isolation", BAD_SAVE_CLOSE, "autosave close cancelled screen"),
+            ("late first delivery", BAD_LATE, "stale after replacement"),
+            ("fresh terminal close", BAD_IDLE_CLOSE, "RuntimeError not raised"),
+            ("completed terminal close", BAD_COMPLETED_CLOSE, "RuntimeError not raised"),
+        ):
+            with self.subTest(defect=label), self.assertRaisesRegex(AssertionError, message):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
 
     def test_simple_control_needs_only_decided_function_edit(self):
         original = fixture("architecture-simple")["agent"]["inputs"][0]["content"]

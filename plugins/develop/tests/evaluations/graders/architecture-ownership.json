@@ -1,6 +1,6 @@
 {
   "fixture_id": "architecture-ownership",
-  "fixture_revision": "1",
+  "fixture_revision": "2",
   "criteria": [
     {
       "id": "ownership",
@@ -9,7 +9,7 @@
     },
     {
       "id": "correctness",
-      "pass_when": "Public tests pass unchanged; held-out adaptation preserves those results and isolates callers, stale results, duplicate results and closing.",
+      "pass_when": "Public tests pass unchanged; held-out adaptation isolates callers in both close directions, suppresses stale first deliveries before and after replacement completion and duplicates, never cancels completed jobs, and makes fresh/idle close terminal without starting a job.",
       "evidence": "Original tests plus test_architecture_probe.py probe_change against the adapted module; preserve every failure and rerun."
     },
     {

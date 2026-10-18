@@ -115,6 +115,11 @@ def validate_result(result):
                 raise ValueError(f"{key}: verdict requires evidence")
             if attempt["state"] != "completed" and assessment["verdict"] != "not_run":
                 raise ValueError("blocked/missing attempts cannot claim a verdict")
+        if attempt["state"] == "completed" and not (
+                attempt["observations"] or attempt["application_performance"]
+                or attempt["functional"]["evidence"] or attempt["evaluator"]["evidence"]
+                or any(value is not None for value in attempt["cost"].values())):
+            raise ValueError("completed attempts require execution evidence, not only a reason")
         if attempt["state"] != "completed" and not attempt["reason"]:
             raise ValueError("blocked/missing attempts require a reason")
         if attempt["state"] == "missing":

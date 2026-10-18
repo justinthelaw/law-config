@@ -31,6 +31,9 @@ fails when autosave cancels a screen's request. A per-caller lifecycle owner
 passes both, with the second caller delegating the same rules. These are authored
 calibration implementations, not baseline/candidate agent results. The probe uses
 public methods and observable callbacks/cancel counts, not internal class names.
+Additional seeded defects calibrate completed-job cancellation, autosave close
+interference, a stale callback first delivered after its replacement completes,
+and nonterminal idle close. The probe checks both fresh and completed callers.
 
 ## Already-decided control
 
@@ -51,11 +54,21 @@ python -m unittest discover -s plugins/develop/tests -p test_architecture_probe.
 For fresh paired trials, materialize only `agent.inputs` using the shared
 [fixture helper](../../scripts/evaluation.py). Give both arms the same initial
 prompt/files, model/effort, tool budget and transport contract. The baseline uses
-existing implementation guidance; the pilot adds a short ownership/caller-burden
-consideration in the existing intent checkpoint. Do not give tested agents this
+existing implementation guidance. Only the candidate receives this treatment:
+"Within the existing intent checkpoint, identify the owner of request identity,
+cancellation and close; briefly consider ownership and caller burden when choosing
+a small design." Record that candidate-only addition with its exact guidance
+revision; the shared revision-2 task prompt contains no such instruction.
+Do not give tested agents this
 document, grader JSON, probe source or calibration implementations. A working
 directory alone is not isolation: use a host read boundary excluding the evaluator
 tree and record verified/unverified isolation in the result contract.
+
+Revision 1 included the ownership/caller-burden treatment in the shared prompt.
+Any actual revision-1 pilot remains historical evidence from a single prompted
+pilot, not an untreated baseline or a paired treatment comparison. Preserve its
+original fixture/grader revisions and phase artifacts; do not relabel it as a
+revision-2 trial. Grader isolation and unavailable agent costs remain unverified.
 
 Freeze phase one, then release `held_out_change.prompt` to both arms with their
 own implementation. Freeze phase two before an evaluator runs the unchanged

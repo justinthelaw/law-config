@@ -57,7 +57,7 @@ def assess(source, reference):
     """Accept only useful runs on both controls and assertion detection of the bug."""
     results = {name: run_suite(source, implementation)
                for name, implementation in {"reference": reference, **VARIANTS}.items()}
-    complete = all(result.testsRun > 0 and not result.errors and not result.skipped
+    complete = all(result.testsRun > len(result.skipped) and not result.errors
                    and not result.expectedFailures and not result.unexpectedSuccesses
                    for result in results.values())
     accepted = (complete and results["reference"].wasSuccessful()
@@ -124,6 +124,20 @@ class QualityControls(unittest.TestCase):
         self.assertEqual(results["defect"].testsRun, 2)
         self.assertEqual(len(results["defect"].failures), 1)
         self.assertEqual(results["defect"].errors, [])
+
+    def test_unrelated_skip_preserves_executed_boundary_evidence(self):
+        suite = self.sound["test_shipping.py"] + """
+class OptionalTests(unittest.TestCase):
+    @unittest.skip("unrelated optional platform")
+    def test_optional(self):
+        self.fail()
+"""
+        accepted, results = assess(suite, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+        for result in results.values():
+            self.assertEqual(result.testsRun, 3)
+            self.assertEqual(len(result.skipped), 1)
+        self.assertEqual(len(results["defect"].failures), 1)
 
     def test_empty_suite_is_incomplete(self):
         accepted, results = assess("", self.sound["shipping.py"])
