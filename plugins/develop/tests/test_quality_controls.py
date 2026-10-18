@@ -96,10 +96,14 @@ class QualityResult(unittest.TextTestResult):
 
 @contextmanager
 def body_execution(test):
-    token = ACTIVE_BODY.set(test)
+    execution = types.SimpleNamespace(test=test, active=True)
+    token = ACTIVE_BODY.set(execution)
     try:
         yield
     finally:
+        # Context copies share the marker: resetting this context alone would
+        # leave a saved context able to certify assertions after the body ends.
+        execution.active = False
         ACTIVE_BODY.reset(token)
 
 
@@ -129,8 +133,9 @@ def source_code_sites(code, path=()):
 
 
 def record_assertion(site, error=None):
-    test = ACTIVE_BODY.get()
-    if test is not None and site is not None:
+    execution = ACTIVE_BODY.get()
+    if execution is not None and execution.active and site is not None:
+        test = execution.test
         test._quality_assertion_executed = True
         site = (test.id(), site)
         if error is None:
@@ -497,6 +502,76 @@ class Tests(unittest.TestCase):
         self.assertTrue(results["benign"].wasSuccessful())
         self.assertEqual(len(results["defect"].failures), 1)
         self.assertTrue(all(result.testsRun == 1 and not result.errors
+                            and not result.passed_assertions
+                            and not result.failed_assertions
+                            for result in results.values()))
+
+    def test_copied_body_context_cannot_certify_cleanup_assertions(self):
+        for skip in (False, True):
+            source = """import unittest
+from contextvars import copy_context
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def check_boundary(self):
+        self.assertEqual(shipping_fee(5000), 0)
+    def test_boundary(self):
+        saved = copy_context()
+        self.addCleanup(saved.run, self.check_boundary)
+        SKIP
+""".replace("SKIP", "self.skipTest('no body assertion')" if skip else "pass")
+            with self.subTest(skip=skip):
+                accepted, results = assess(source, self.sound["shipping.py"])
+                self.assertFalse(accepted)
+                self.assertTrue(results["reference"].wasSuccessful())
+                self.assertTrue(results["benign"].wasSuccessful())
+                self.assertEqual(len(results["defect"].failures), 1)
+                self.assertTrue(all(result.testsRun == 1 and not result.errors
+                                    and result.wholly_skipped == int(skip)
+                                    and not result.passed_assertions
+                                    and not result.failed_assertions
+                                    for result in results.values()))
+
+    def test_copied_context_assertion_during_body_remains_evidence(self):
+        source = """import unittest
+from contextvars import copy_context
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def check_boundary(self):
+        assert shipping_fee(5000) == 0
+    def test_boundary(self):
+        copy_context().run(self.check_boundary)
+        self.skipTest('after boundary')
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+        self.assertTrue(all(result.testsRun == 1 and not result.errors
+                            and result.wholly_skipped == 0
+                            for result in results.values()))
+        self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_later_body_cannot_reactivate_saved_context_from_same_case(self):
+        source = """import unittest
+from contextvars import copy_context
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    saved = None
+    def check_boundary(self):
+        assert shipping_fee(5000) == 0
+    def test_boundary(self):
+        if self.saved is None:
+            self.saved = copy_context()
+        else:
+            self.saved.run(self.check_boundary)
+def load_tests(loader, tests, pattern):
+    case = Tests('test_boundary')
+    return unittest.TestSuite([case, case])
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertFalse(accepted)
+        self.assertTrue(results["reference"].wasSuccessful())
+        self.assertTrue(results["benign"].wasSuccessful())
+        self.assertEqual(len(results["defect"].failures), 1)
+        self.assertTrue(all(result.testsRun == 2 and not result.errors
                             and not result.passed_assertions
                             and not result.failed_assertions
                             for result in results.values()))
