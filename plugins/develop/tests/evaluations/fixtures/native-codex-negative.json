@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "id": "native-codex-negative",
-  "revision": "1",
-  "scenario_ref": "tests/scenarios.md",
+  "revision": "2",
+  "scenario_ref": "tests/scenarios.md — What is 2 + 2?",
   "agent": {
     "prompt": "What is 2 + 2?",
     "inputs": []

@@ -85,6 +85,47 @@ class ComparisonTests(unittest.TestCase):
         self.assertEqual(report["agent_cost_delta"], {"wall_seconds": -5, "tokens": 20, "usd": None})
         self.assertEqual(report["agent_cost"]["candidate"]["usd"]["known_attempts"], 0)
 
+    def overflowing_result(self, values):
+        data = result()
+        plan, attempt = data["planned_attempts"][0], data["attempts"][0]
+        data["planned_attempts"], data["attempts"] = [], []
+        for index, value in enumerate(values):
+            row, run = copy.deepcopy(plan), copy.deepcopy(attempt)
+            row["attempt_id"] = run["attempt_id"] = str(index)
+            run["cost"]["usd"] = value
+            data["planned_attempts"].append(row)
+            data["attempts"].append(run)
+        return data
+
+    def test_nonfinite_cost_totals_and_unrepresentable_deltas_are_invalid(self):
+        for values in ([1e308, 1e308], [10 ** 400, 1.0]):
+            data = self.overflowing_result(values)
+            with self.subTest(values=values), self.assertRaisesRegex(ValueError, "finite"):
+                compare_results(data, data)
+        before = self.overflowing_result([10 ** 400])
+        after = self.overflowing_result([1.0])
+        with self.assertRaisesRegex(ValueError, "finite"):
+            compare_results(before, after)
+
+    def test_large_integer_token_totals_remain_exact(self):
+        data = self.overflowing_result([0, 0])
+        for attempt in data["attempts"]:
+            attempt["cost"]["tokens"] = 10 ** 400
+        report = compare_results(data, data)
+        self.assertEqual(report["agent_cost"]["baseline"]["tokens"]["total"], 2 * 10 ** 400)
+        self.assertEqual(report["agent_cost_delta"]["tokens"], 0)
+
+    def test_cli_overflow_returns_strict_json_error(self):
+        from evaluation import load_json
+        with tempfile.TemporaryDirectory() as directory:
+            source, output = Path(directory) / "source.json", Path(directory) / "output.json"
+            source.write_text(json.dumps(self.overflowing_result([1e308, 1e308])))
+            proc = subprocess.run([sys.executable, str(SCRIPTS / "compare_evaluations.py"),
+                                   str(source), str(source)], text=True, capture_output=True)
+            self.assertEqual(proc.returncode, 2, proc.stderr)
+            output.write_text(proc.stdout)
+            self.assertEqual(load_json(output)["status"], "invalid")
+
     def test_changed_hidden_grader_is_incompatible(self):
         self.after["planned_attempts"][0]["grader_sha256"] = "f" * 64
         with self.assertRaisesRegex(ValueError, "fixture identity"):
