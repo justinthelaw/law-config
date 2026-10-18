@@ -1,7 +1,9 @@
 """Execute trusted, bounded test-quality controls; never an agent-code sandbox."""
+import ast
 import io
 import inspect
 from contextlib import contextmanager
+from contextvars import ContextVar
 from functools import wraps
 from pathlib import Path
 import sys
@@ -14,6 +16,7 @@ sys.path.insert(0, str(ROOT / "scripts"))
 from evaluation import load_json, materialize, validate_fixture
 
 CASES = ROOT / "tests/evaluations"
+ACTIVE_BODY = ContextVar("quality_active_body", default=None)
 
 # Evaluator-owned variants: one boundary defect and one equivalent refactor.
 # They stay outside the materialized agent inputs.
@@ -44,7 +47,7 @@ def inputs(name):
 
 
 class QualityResult(unittest.TextTestResult):
-    """Keep executed bodies despite later skips; count each unrun method once."""
+    """A skip needs observed assertion evidence; count each affected method once."""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.skipped_methods = set()
@@ -56,29 +59,81 @@ class QualityResult(unittest.TextTestResult):
 
     def startTest(self, test):
         self.active_test = test
-        test._quality_body_executed = False
+        test._quality_assertion_executed = False
         super().startTest(test)
 
     def addSkip(self, test, reason):
-        if test is self.active_test and not test._quality_body_executed:
-            self.skipped_methods.add(id(test))
+        if self.active_test is not None:
+            self.skipped_methods.add(id(self.active_test))
         super().addSkip(test, reason)
 
     def stopTest(self, test):
+        if test._quality_assertion_executed:
+            self.skipped_methods.discard(id(test))
         super().stopTest(test)
         self.active_test = None
 
 
 @contextmanager
 def body_execution(test):
-    skipped = False
+    token = ACTIVE_BODY.set(test)
     try:
         yield
-    except unittest.SkipTest:
-        skipped = True
-        raise
     finally:
-        test._quality_body_executed = not skipped
+        ACTIVE_BODY.reset(token)
+
+
+def record_assertion():
+    test = ACTIVE_BODY.get()
+    if test is not None:
+        test._quality_assertion_executed = True
+
+
+class ObservedAssertionContext:
+    """Context construction alone is not execution of its assertion."""
+    def __init__(self, context):
+        self.context = context
+
+    def __enter__(self):
+        return self.context.__enter__()
+
+    def __exit__(self, exc_type, value, traceback):
+        try:
+            suppressed = self.context.__exit__(exc_type, value, traceback)
+        except AssertionError:
+            record_assertion()
+            raise
+        if exc_type is None or suppressed:
+            record_assertion()
+        return suppressed
+
+
+def observe_assertion(method):
+    @wraps(method)
+    def observed(*args, **kwargs):
+        try:
+            result = method(*args, **kwargs)
+        except AssertionError:
+            record_assertion()
+            raise
+        if hasattr(result, "__enter__") and hasattr(result, "__exit__"):
+            return ObservedAssertionContext(result)
+        record_assertion()
+        return result
+    return observed
+
+
+def observe_python_assert(value):
+    truth = bool(value)
+    record_assertion()
+    return truth
+
+
+class ObservePythonAssertions(ast.NodeTransformer):
+    def visit_Assert(self, node):
+        node.test = ast.Call(func=ast.Name(id="_quality_assert", ctx=ast.Load()),
+                             args=[node.test], keywords=[])
+        return node
 
 
 def track_body(method):
@@ -102,11 +157,18 @@ def run_suite(source, implementation, test_name=None):
     tests = types.ModuleType("quality_case")
     exec(compile(implementation, "shipping.py", "exec"), shipping.__dict__)
     with patch.dict(sys.modules, {"shipping": shipping}):
-        exec(compile(source, "test_shipping.py", "exec"), tests.__dict__)
+        tree = ast.fix_missing_locations(ObservePythonAssertions().visit(ast.parse(source)))
+        tests._quality_assert = observe_python_assert
+        exec(compile(tree, "test_shipping.py", "exec"), tests.__dict__)
         loader = unittest.TestLoader()
         for candidate in vars(tests).values():
             if (isinstance(candidate, type) and issubclass(candidate, unittest.TestCase)
                     and candidate.__module__ == tests.__name__):
+                for name in dir(unittest.TestCase):
+                    method = getattr(unittest.TestCase, name)
+                    if (callable(method) and (name.startswith("assert") or name == "fail")
+                            and getattr(candidate, name, None) is method):
+                        setattr(candidate, name, observe_assertion(method))
                 for name in loader.getTestCaseNames(candidate):
                     setattr(candidate, name, track_body(getattr(candidate, name)))
         suite = (loader.loadTestsFromName(test_name, tests) if test_name
@@ -235,6 +297,122 @@ class Tests(unittest.TestCase):
 """
         accepted, _ = assess(source, self.sound["shipping.py"])
         self.assertFalse(accepted)
+
+    def test_boundary_assertion_before_in_body_skip_is_preserved(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        self.assertEqual(shipping_fee(5000), 0)
+        self.skipTest("unrelated remaining work")
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+        self.assertEqual(len(results["reference"].skipped), 1)
+        self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_conditional_skipped_only_subtests_cannot_certify_controls(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        with self.subTest(boundary=True):
+            if shipping_fee(5000) == 0:
+                self.skipTest("control assertion never runs")
+            self.assertEqual(shipping_fee(5000), 0)
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertFalse(accepted)
+        self.assertEqual(len(results["reference"].skipped), 1)
+        self.assertEqual(len(results["defect"].failures), 1)
+
+    def test_python_assert_before_skip_preserves_boundary_evidence(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        assert shipping_fee(5000) == 0, "boundary"
+        self.skipTest("unrelated remaining work")
+"""
+        accepted, _ = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+
+    def test_python_assert_keeps_truth_evaluation_and_failure_message(self):
+        source = """import unittest
+class Truth:
+    calls = 0
+    def __bool__(self):
+        self.calls += 1
+        return True
+class Tests(unittest.TestCase):
+    def test_truth(self):
+        value = Truth()
+        assert value
+        self.assertEqual(value.calls, 1)
+    def test_message(self):
+        assert False, "preserved assertion message"
+"""
+        result = run_suite(source, self.sound["shipping.py"])
+        self.assertEqual(len(result.failures), 1)
+        self.assertEqual(result.errors, [])
+        self.assertIn("preserved assertion message", result.failures[0][1])
+
+    def test_unentered_assertion_contexts_do_not_certify_skipped_controls(self):
+        for context in ('self.assertRaises(ValueError)', 'self.assertLogs("quality")'):
+            source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        CONTEXT
+        if shipping_fee(5000) == 0:
+            self.skipTest("context was never entered")
+        self.assertEqual(shipping_fee(5000), 0)
+""".replace("CONTEXT", context)
+            with self.subTest(context=context):
+                accepted, results = assess(source, self.sound["shipping.py"])
+                self.assertFalse(accepted)
+                self.assertEqual(results["reference"].wholly_skipped, 1)
+
+    def test_skip_inside_assertion_context_does_not_certify_controls(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        with self.assertRaises(ValueError):
+            if shipping_fee(5000) == 0:
+                self.skipTest("assertion context did not finish")
+            self.assertEqual(shipping_fee(5000), 0)
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertFalse(accepted)
+        self.assertEqual(results["reference"].wholly_skipped, 1)
+
+    def test_completed_assertion_context_retains_its_exception(self):
+        source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        with self.assertRaises(ValueError) as caught:
+            shipping_fee(-1)
+        self.assertIsInstance(caught.exception, ValueError)
+        self.assertEqual(shipping_fee(5000), 0)
+        self.skipTest("unrelated remaining work")
+"""
+        accepted, _ = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+
+    def test_async_assertion_before_in_body_skip_is_preserved(self):
+        source = """import asyncio
+import unittest
+from shipping import shipping_fee
+class Tests(unittest.IsolatedAsyncioTestCase):
+    async def test_boundary(self):
+        await asyncio.sleep(0)
+        self.assertEqual(shipping_fee(5000), 0)
+        self.skipTest("unrelated remaining work")
+"""
+        accepted, _ = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
 
     def test_post_body_skips_preserve_boundary_evidence(self):
         for setup in (
