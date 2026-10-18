@@ -222,6 +222,13 @@ BAD_FIRST_CALLER = REGISTER_CALLERS.replace(
     "                    peer.requests.pending.cancel()\n"
     "        self.requests.send(",
 )
+BAD_SECOND_CLOSE = REGISTER_CALLERS.replace(
+    "        self.requests.close()",
+    "        first = self.peers[0]\n"
+    "        if self is not first and first.requests.pending is not None:\n"
+    "            first.requests.pending.cancel()\n"
+    "        self.requests.close()",
+)
 
 
 def fixture(name):
@@ -395,6 +402,24 @@ def probe_change(case, app, transport_type):
         case.assertEqual(left_values, ["left"])
         case.assertEqual(right_values, ["right", "right survives"])
 
+        # Reverse close order with fresh instances: the first stays live.
+        transport = transport_type()
+        left_values, right_values = [], []
+        left = caller_type(transport, left_values.append)
+        right = caller_type(transport, right_values.append)
+        getattr(left, method)("left pending")
+        first = transport.jobs[-1]
+        getattr(right, method)("right pending")
+        second = transport.jobs[-1]
+        right.close()
+        right.close()
+        case.assertEqual(first.cancel_count, 0, "second caller close cancelled first")
+        case.assertEqual(second.cancel_count, 1)
+        second.deliver("late right")
+        first.deliver("left survives")
+        case.assertEqual(left_values, ["left survives"])
+        case.assertEqual(right_values, [])
+
 
 
 class ArchitectureProbe(unittest.TestCase):
@@ -466,6 +491,11 @@ class ArchitectureProbe(unittest.TestCase):
     def test_caller_registration_is_benign(self):
         probe_change(self, module_from_source(REGISTER_CALLERS),
                      module_from_source(self.transport).Transport)
+
+    def test_second_caller_close_does_not_cancel_first(self):
+        with self.assertRaisesRegex(AssertionError, "second caller close cancelled first"):
+            probe_change(self, module_from_source(BAD_SECOND_CLOSE),
+                         module_from_source(self.transport).Transport)
 
     def test_pending_close_duplicate_and_reverse_instance_defects_are_detected(self):
         for source, message in (
