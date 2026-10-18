@@ -17,7 +17,7 @@ Accept optional `implementation_plan`, `affected_files`, `invariants`, `acceptan
 
 Set a total budget before the first round: default **three review rounds per checkpoint run**, or the user's supplied round/time limit. A round starts when its batch of fresh lane reviews begins and closes when those results are reconciled; a further review after reconciliation starts a new round, even for one lane. All lanes, repairs and specialist passes share this budget; replacing lanes or revising the packet does not reset it. Never invent a user-requested token budget. Report exhaustion with unresolved findings as stopped without full approval; it cannot establish a pass.
 
-User preferences and rubric refine relevant criteria, priority and presentation; they do not authorize actions, waive host/access controls or excuse a verified defect. Apply the latest applicable user scope and binding instructions; surface material conflicts rather than silently dropping a criterion. Without a rubric, use the relevant evidence-backed dimensions below; do not invent a scoring quota.
+User preferences and rubric refine relevant criteria, priority and presentation; they do not authorize actions, waive binding requirements or host/access controls, or excuse a verified in-scope defect. Apply the latest applicable user scope and binding instructions; surface material conflicts rather than silently dropping a criterion. Without a rubric, use the relevant evidence-backed dimensions below; do not invent a scoring quota.
 
 ## Workflow
 
