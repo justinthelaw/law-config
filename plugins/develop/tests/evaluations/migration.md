@@ -97,10 +97,16 @@ multiple updates to its next row, but must not touch another row or the
 checkpoint before the controlled exception.
 
 The shared successful-write assertion samples writes during and after backfill.
-Write and migration-step checks share a second-connection sampler at statements
-traced on `writer.db`, plus an observation after the operation returns. Migration
-samples read records and checkpoint together in one SQLite snapshot; only the
-complete before or after state may be visible. The seeded split row/checkpoint
+Write, normal migration-step and interrupted-step checks share a second-connection sampler at statements
+traced on `writer.db`, plus an observation after the operation returns. Each
+sample reads the covered records, migration metadata, schema and auxiliary
+contents in one read transaction, released before the writer continues. The
+overlap probe uses this same sampler with its controlled write callback and
+permits that known write's intermediate state alongside the initial and final
+states. Other sampled collateral changes fail even if restored before return;
+uncommitted internal changes remain accepted. Whole-state comparisons still run
+after return. These observations do not establish absence of transient changes
+between samples or on other scheduling paths. The seeded split row/checkpoint
 commit on this observed path is rejected even when interruption rollback works.
 Multiple statements in one transaction and optimistic compare-and-retry remain
 accepted.
