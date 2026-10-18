@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "id": "quality-sound-control",
+  "revision": "1",
+  "scenario_ref": "quality.md: Bounded shipping threshold",
+  "agent": {
+    "prompt": "Use Develop to review test_shipping.py for the documented shipping threshold contract. Change tests only if you demonstrate a relevant coverage gap. Keep the task bounded to this contract; preserve production behavior and report your evidence.",
+    "inputs": [
+      {
+        "path": "README.md",
+        "content": "shipping_fee accepts integer subtotal cents. Negative subtotals raise ValueError. Shipping costs 500 cents below 5000 cents and is free at or above 5000 cents. Preserve this public behavior.\n"
+      },
+      {
+        "path": "shipping.py",
+        "content": "def shipping_fee(subtotal_cents):\n    if subtotal_cents < 0:\n        raise ValueError(\"subtotal must be nonnegative\")\n    return 0 if subtotal_cents >= 5000 else 500\n"
+      },
+      {
+        "path": "test_shipping.py",
+        "content": "import unittest\nfrom shipping import shipping_fee\n\n\nclass ShippingTests(unittest.TestCase):\n    def test_threshold(self):\n        for subtotal, fee in [(0, 500), (4999, 500), (5000, 0), (5001, 0)]:\n            with self.subTest(subtotal=subtotal):\n                self.assertEqual(shipping_fee(subtotal), fee)\n\n    def test_negative_subtotal(self):\n        with self.assertRaises(ValueError):\n            shipping_fee(-1)\n"
+      }
+    ]
+  }
+}
