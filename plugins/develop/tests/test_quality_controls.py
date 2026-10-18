@@ -94,6 +94,9 @@ class ObservedAssertionContext:
     def __init__(self, context):
         self.context = context
 
+    def __getattr__(self, name):
+        return getattr(self.context, name)
+
     def __enter__(self):
         return self.context.__enter__()
 
@@ -130,8 +133,11 @@ def observe_python_assert(value):
 
 
 class ObservePythonAssertions(ast.NodeTransformer):
+    def __init__(self, observer_name):
+        self.observer_name = observer_name
+
     def visit_Assert(self, node):
-        node.test = ast.Call(func=ast.Name(id="_quality_assert", ctx=ast.Load()),
+        node.test = ast.Call(func=ast.Name(id=self.observer_name, ctx=ast.Load()),
                              args=[node.test], keywords=[])
         return node
 
@@ -157,8 +163,12 @@ def run_suite(source, implementation, test_name=None):
     tests = types.ModuleType("quality_case")
     exec(compile(implementation, "shipping.py", "exec"), shipping.__dict__)
     with patch.dict(sys.modules, {"shipping": shipping}):
-        tree = ast.fix_missing_locations(ObservePythonAssertions().visit(ast.parse(source)))
-        tests._quality_assert = observe_python_assert
+        observer_name = "_quality_assert"
+        while observer_name in source:
+            observer_name += "_"
+        tree = ast.fix_missing_locations(
+            ObservePythonAssertions(observer_name).visit(ast.parse(source)))
+        tests.__dict__[observer_name] = observe_python_assert
         exec(compile(tree, "test_shipping.py", "exec"), tests.__dict__)
         loader = unittest.TestLoader()
         for candidate in vars(tests).values():
@@ -166,7 +176,8 @@ def run_suite(source, implementation, test_name=None):
                     and candidate.__module__ == tests.__name__):
                 for name in dir(unittest.TestCase):
                     method = getattr(unittest.TestCase, name)
-                    if (callable(method) and (name.startswith("assert") or name == "fail")
+                    if (callable(method)
+                            and (name.startswith(("assert", "failUnless", "failIf")) or name == "fail")
                             and getattr(candidate, name, None) is method):
                         setattr(candidate, name, observe_assertion(method))
                 for name in loader.getTestCaseNames(candidate):
@@ -400,6 +411,80 @@ class Tests(unittest.TestCase):
 """
         accepted, _ = assess(source, self.sound["shipping.py"])
         self.assertTrue(accepted)
+
+    def test_saved_assertion_context_exposes_standard_attributes(self):
+        for context_body in (
+            "caught = self.assertRaises(ValueError)\n"
+            "with caught:\n    shipping_fee(-1)\n"
+            "self.assertIsInstance(caught.exception, ValueError)",
+            "caught = self.assertWarns(UserWarning)\n"
+            "with caught:\n    warnings.warn('observed', UserWarning)\n"
+            "self.assertIsInstance(caught.warning, UserWarning)",
+            "caught = self.assertLogs('quality', level='WARNING')\n"
+            "with caught as captured:\n    logging.getLogger('quality').warning('observed')\n"
+            "self.assertIs(caught.watcher, captured)\n"
+            "self.assertEqual(caught.watcher.records[0].getMessage(), 'observed')\n"
+            "self.assertEqual(captured.output, ['WARNING:quality:observed'])",
+        ):
+            source = """import logging
+import unittest
+import warnings
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+CONTEXT
+        self.assertEqual(shipping_fee(5000), 0)
+        self.skipTest("unrelated remaining work")
+""".replace("CONTEXT", "\n".join("        " + line for line in context_body.splitlines()))
+            with self.subTest(context=context_body):
+                accepted, results = assess(source, self.sound["shipping.py"])
+                self.assertTrue(accepted)
+                self.assertTrue(all(not result.errors for result in results.values()))
+
+    def test_available_legacy_assertions_before_skip_remain_evidence(self):
+        assertions = {
+            "failUnlessEqual": "self.failUnlessEqual(shipping_fee(5000), 0)",
+            "failIfEqual": "self.failIfEqual(shipping_fee(5000), 500)",
+            "failUnlessAlmostEqual": "self.failUnlessAlmostEqual(shipping_fee(5000), 0)",
+            "failIfAlmostEqual": "self.failIfAlmostEqual(shipping_fee(5000), 500)",
+            "failUnless": "self.failUnless(shipping_fee(5000) == 0)",
+            "failIf": "self.failIf(shipping_fee(5000) != 0)",
+            "failUnlessRaises": "with self.failUnlessRaises(ZeroDivisionError):\n"
+                                "    1 // shipping_fee(5000)",
+        }
+        available = {name: body for name, body in assertions.items()
+                     if hasattr(unittest.TestCase, name)}
+        if not available:
+            self.skipTest("this Python has removed the legacy assertion aliases")
+        for name, body in available.items():
+            source = """import unittest
+from shipping import shipping_fee
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+ASSERTION
+        self.skipTest("unrelated remaining work")
+""".replace("ASSERTION", "\n".join("        " + line for line in body.splitlines()))
+            with self.subTest(alias=name):
+                accepted, _ = assess(source, self.sound["shipping.py"])
+                self.assertTrue(accepted)
+
+    def test_python_assert_observer_does_not_shadow_source_bindings(self):
+        source = """import unittest
+from shipping import shipping_fee
+_quality_assert = lambda value: bool(value)
+def _quality_assert_():
+    return 'candidate helper'
+class Tests(unittest.TestCase):
+    def test_boundary(self):
+        _quality_assert__ = 'candidate local'
+        assert shipping_fee(5000) == 0
+        assert _quality_assert_() == 'candidate helper'
+        assert _quality_assert__ == 'candidate local'
+        self.skipTest("unrelated remaining work")
+"""
+        accepted, results = assess(source, self.sound["shipping.py"])
+        self.assertTrue(accepted)
+        self.assertEqual(len(results["defect"].failures), 1)
 
     def test_async_assertion_before_in_body_skip_is_preserved(self):
         source = """import asyncio
