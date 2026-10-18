@@ -7,6 +7,7 @@
  */
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { tmpdir } from 'node:os';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createRequire } from 'node:module';
 const require=createRequire(import.meta.url);
@@ -14,10 +15,8 @@ const {chromium,firefox}=require('playwright');
 const engine=process.env.BROWSER_ENGINE||'chromium';
 if(!['chromium','firefox'].includes(engine))throw new Error('BROWSER_ENGINE must be chromium or firefox');
 const base=path.dirname(fileURLToPath(import.meta.url));
-const qaRoot=path.join(base,'qa');
-await fs.mkdir(qaRoot,{recursive:true});
-const qa=await fs.mkdtemp(path.join(qaRoot,'run-'));
-const evidencePath=name=>path.relative(base,path.join(qa,name)).split(path.sep).join('/');
+const qa=await fs.mkdtemp(path.join(tmpdir(),'develop-browser-qa-'));
+const evidencePath=name=>path.resolve(qa,name);
 const launch={headless:true};
 if(engine==='chromium')launch.chromiumSandbox=true;
 const sandboxVariables=['MOZ_DISABLE_CONTENT_SANDBOX','MOZ_DISABLE_GMP_SANDBOX','MOZ_DISABLE_RDD_SANDBOX','MOZ_DISABLE_GPU_SANDBOX','MOZ_DISABLE_SOCKET_PROCESS_SANDBOX'];
