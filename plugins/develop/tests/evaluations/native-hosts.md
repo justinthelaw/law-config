@@ -66,9 +66,12 @@ codex exec --ephemeral --json --sandbox read-only \
 ```
 
 Set variables from the selected invocation and scratch paths. Store prompts and
-logs outside the tested root. Initialize the disposable repository or use the
-documented `--skip-git-repo-check` option when appropriate. Retain ordinary host
-approvals and rules. Use a bounded timeout and capture stdout, stderr, exit status
+logs outside the tested root. After materialization, initialize the disposable
+repository before running the positive fixture: its task requires a selected
+checkout. `--skip-git-repo-check` only bypasses a host trust check; it does not
+create that task context. Use it only when appropriate for an existing selected
+checkout. Retain ordinary host approvals and rules. Use a bounded timeout and
+capture stdout, stderr, exit status
 and timestamps. Unsupported model, authentication, permission or missing tool
 errors are blocked attempts; never silently substitute another model or broader
 permissions. Preserve the original attempt before any justified bounded retry.
