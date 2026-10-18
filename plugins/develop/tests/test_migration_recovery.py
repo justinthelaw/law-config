@@ -167,6 +167,30 @@ class SplitWrite(Store):
             self.db.execute("UPDATE records SET minor = ? WHERE id = ?", (int(Decimal(raw) * 100), key))
 
 
+class SplitMigrationStep(Store):
+    split_commit = True
+
+    def migrate_step(self, interrupt=False):
+        if interrupt:
+            return super().migrate_step(interrupt=True)
+        with self.db:
+            self.db.execute("BEGIN IMMEDIATE")
+            row = self.db.execute("SELECT id, raw FROM records WHERE id > "
+                                  "(SELECT checkpoint FROM migration) ORDER BY id LIMIT 1").fetchone()
+            if row is None:
+                return False
+            key, raw = row
+            self.db.execute("UPDATE records SET minor = ? WHERE id = ?", (int(Decimal(raw) * 100), key))
+            if self.split_commit:
+                self.db.commit()
+            self.db.execute("UPDATE migration SET checkpoint = ?", (key,))
+        return True
+
+
+class AtomicMigrationStep(SplitMigrationStep):
+    split_commit = False
+
+
 class AtomicColumnWrites(Store):
     """Benign control: two statements are atomic inside one transaction."""
 
@@ -499,15 +523,23 @@ class MigrationTests(unittest.TestCase):
         before = self.database_state(store)
         checkpoint, phase = before["migration"][0]
         pending = [row for row in before["records"] if row[0] > checkpoint]
-        result = store.migrate_step()
-        after = self.database_state(store)
+        expected = before["records"]
         if pending:
-            self.assertIs(result, True)
             key, raw, _ = pending[0]
             expected = [(key, raw, int(Decimal(raw) * 100)) if row[0] == key else row
                         for row in before["records"]]
+            checkpoint = key
+        # One SELECT keeps each observer sample's records and checkpoint in
+        # the same SQLite read snapshot.
+        result = self.assert_sampled_transition(
+            store, store.migrate_step,
+            "SELECT id, raw, minor, checkpoint, phase FROM records CROSS JOIN migration ORDER BY id",
+            [(*row, checkpoint, phase) for row in expected])
+        after = self.database_state(store)
+        if pending:
+            self.assertIs(result, True)
             self.assertEqual(after["records"], expected)
-            self.assertEqual(after["migration"], [(key, phase)])
+            self.assertEqual(after["migration"], [(checkpoint, phase)])
         else:
             self.assertIs(result, False)
             self.assertEqual(after, before)
@@ -645,39 +677,44 @@ class MigrationTests(unittest.TestCase):
         self.assertIs(self.assert_migration_step(again), False)
         self.assertEqual(self.database_state(again), before)
 
-    def assert_sampled_write_atomicity(self, kind=Store):
+    def assert_sampled_transition(self, writer, operation, query, expected):
         # Samples only writer.db. Candidate auxiliary connections require their
         # own instrumentation; passing this reference probe cannot verify them.
-        writer = self.seeded(kind)
         observer = self.open()
         observer.db.execute("PRAGMA busy_timeout = 0")
+        before = observer.db.execute(query).fetchall()
+        observed = []
+
+        def observe(statement):
+            try:
+                observed.append(observer.db.execute(query).fetchall())
+            except sqlite3.OperationalError as error:
+                # Check errors outside the callback: sqlite3 suppresses callback
+                # exceptions. Exclusive writers may legitimately block reads.
+                observed.append(error)
+
+        writer.db.set_trace_callback(observe)
+        try:
+            result = operation()
+            observed.append(observer.db.execute(query).fetchall())
+        finally:
+            writer.db.set_trace_callback(None)
+            observer.close()
+        self.assertEqual(observed[-1], expected)
+        for state in observed:
+            if isinstance(state, sqlite3.OperationalError):
+                self.assert_database_busy(state)
+            else:
+                self.assertIn(state, (before, expected))
+        return result
+
+    def assert_sampled_write_atomicity(self, kind=Store):
+        writer = self.seeded(kind)
         self.finish_migration(writer)
         for protocol, value, expected in ((1, "002.35", ("002.35", 235)), (2, -75, ("-0.75", -75))):
-            before = observer.db.execute("SELECT raw, minor FROM records WHERE id = 1").fetchone()
-            observed = []
-
-            def observe(statement):
-                try:
-                    observed.append(observer.db.execute(
-                        "SELECT raw, minor FROM records WHERE id = 1").fetchone())
-                except sqlite3.OperationalError as error:
-                    # Exclusive writers may block reads; partial committed rows
-                    # must never be visible. Record errors outside the callback.
-                    observed.append(error)
-
-            writer.db.set_trace_callback(observe)
-            try:
-                self.assert_write_changes_only_target(writer, protocol, 1, value, expected)
-            finally:
-                writer.db.set_trace_callback(None)
-            self.assertTrue(observed)
-            for row in observed:
-                if isinstance(row, sqlite3.OperationalError):
-                    self.assert_database_busy(row)
-                else:
-                    self.assertIn(row, (before, expected))
-            self.assertEqual(observer.db.execute(
-                "SELECT raw, minor FROM records WHERE id = 1").fetchone(), expected)
+            self.assert_sampled_transition(
+                writer, lambda: self.assert_write_changes_only_target(writer, protocol, 1, value, expected),
+                "SELECT raw, minor FROM records WHERE id = 1", [expected])
 
     def assert_recovery(self, kind=Store):
         store = self.seeded(kind)
@@ -874,6 +911,20 @@ class MigrationTests(unittest.TestCase):
     def test_atomic_multistatement_writes_are_accepted(self):
         self.assert_sampled_write_atomicity(AtomicColumnWrites)
 
+    def test_split_migration_commit_is_detected(self):
+        for name, check in (("coexistence", self.assert_coexistence),
+                            ("restart", self.assert_restart),
+                            ("recovery", self.assert_recovery),
+                            ("final", self.assert_final_phase),
+                            ("sampled", self.assert_sampled_write_atomicity)):
+            with self.subTest(scenario=name):
+                self.path = Path(self.temp.name) / f"split-migration-{name}.sqlite"
+                with self.assertRaises(AssertionError):
+                    check(SplitMigrationStep)
+
+    def test_atomic_multistatement_migration_is_accepted(self):
+        self.assert_restart(AtomicMigrationStep)
+
     def test_late_interruption_seed_is_detected(self):
         with self.assertRaises(AssertionError):
             self.assert_restart(LateInterrupted)
@@ -899,6 +950,8 @@ class MigrationTests(unittest.TestCase):
 
     def test_optimistic_backfill_is_accepted(self):
         self.assert_concurrent_write(OptimisticBackfill)
+        self.path = Path(self.temp.name) / "optimistic-restart.sqlite"
+        self.assert_restart(OptimisticBackfill)
 
     def test_renamed_raw_archive_seed_is_flagged_unverified(self):
         # The seed's source establishes copying. Text equality alone cannot
