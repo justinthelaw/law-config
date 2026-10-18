@@ -40,7 +40,7 @@ configuration to obtain a pass.
 | Fixture | Purpose | Required observations |
 | --- | --- | --- |
 | [native-codex-positive.json](fixtures/native-codex-positive.json) | Explicit `$develop` invocation on a read-only repository task | Resolved skill path; full body and shared-reference loading evidence; both nonce responses; tool events; computed total; completed matching reviews or evidenced unavailability |
-| [native-codex-negative.json](fixtures/native-codex-negative.json) | Unrelated arithmetic with the same available skills | Correct answer; no Develop workflow, skill/reference read, nonce response or unnecessary delegation |
+| [native-codex-negative.json](fixtures/native-codex-negative.json) | Unrelated arithmetic with the same available skills | Correct answer; no Develop workflow, model consumption of body/references, nonce response or unnecessary delegation; discovery metadata scans are allowed |
 
 The positive fixture targets an unnamespaced local authoring copy. For an
 installed plugin, create a separately revised fixture using the exact discovered
@@ -66,15 +66,32 @@ codex exec --ephemeral --json --sandbox read-only \
 ```
 
 Set variables from the selected invocation and scratch paths. Store prompts and
-logs outside the tested root. After materialization, initialize the disposable
-repository before running the positive fixture: its task requires a selected
-checkout. `--skip-git-repo-check` only bypasses a host trust check; it does not
+logs outside the tested root. After materialization, initialize both disposable
+repositories so the shared command can run both controls. The positive task also
+requires a selected checkout. `--skip-git-repo-check` only bypasses a host trust check; it does not
 create that task context. Use it only when appropriate for an existing selected
 checkout. Retain ordinary host approvals and rules. Use a bounded timeout and
-capture stdout, stderr, exit status
-and timestamps. Unsupported model, authentication, permission or missing tool
+capture stdout, stderr, exit status and timestamps. Unsupported model,
+authentication, permission or missing tool
 errors are blocked attempts; never silently substitute another model or broader
 permissions. Preserve the original attempt before any justified bounded retry.
+
+Choose review-evidence capture before launch. In Codex 0.163.0, `--ephemeral`
+discards session files and JSON collaboration events omit child model, effort and
+fork settings. That capture alone cannot certify matching fresh reviewers.
+For such a trial, omit `--ephemeral` only in an already authorized isolated trial
+home and retain its parent/child records, correlated by thread ID: effective
+model/effort from spawn or turn-context records, and fresh creation/launch evidence
+excluding resume and forked history. A missing field or a new ID alone is
+insufficient. Inspect only this trial's records, never unrelated session stores.
+Do not create/copy credentials or change persistent configuration to obtain them.
+If this capture is unavailable, keep the ephemeral trial and report reviewer
+matching as unverified; an agent's self-report cannot fill the gap.
+
+For the negative control, distinguish host discovery I/O from model consumption.
+Codex's loader reads `SKILL.md` to parse metadata; that scan alone is not activation.
+Judge model-visible body/reference delivery and agent tool actions separately.
+If telemetry cannot distinguish them, report non-activation as unverified.
 
 ## Assess independently
 
@@ -112,3 +129,9 @@ fixture hashes establish input provenance only.
 - Codex 0.163.0 [mention parser](https://github.com/openai/codex/blob/rust-v0.163.0/codex-rs/skills/src/mentions.rs)
   and [plugin namespaces](https://github.com/openai/codex/blob/rust-v0.163.0/codex-rs/ext/skills/src/loader/namespace.rs):
   colon handling and qualified installed skill names.
+- Codex 0.163.0 [exec capture](https://github.com/openai/codex/blob/rust-v0.163.0/codex-rs/exec/src/exec_events.rs),
+  [ephemeral option](https://github.com/openai/codex/blob/rust-v0.163.0/codex-rs/exec/src/cli.rs)
+  and [session protocol](https://github.com/openai/codex/blob/rust-v0.163.0/codex-rs/protocol/src/protocol.rs):
+  distinguish JSON event fields from retained trial metadata.
+- Codex 0.163.0 [metadata loader](https://github.com/openai/codex/blob/rust-v0.163.0/codex-rs/ext/skills/src/loader/environment.rs):
+  discovery file reads do not establish model consumption.
