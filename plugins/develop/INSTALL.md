@@ -52,7 +52,7 @@ With Python 3.10 or newer, from the repository root:
 ```sh
 python plugins/develop/scripts/generate_codex_manifest.py
 python plugins/develop/scripts/validate.py --marketplace-root .
-python -m unittest discover -s plugins/develop/tests -p test_validate.py
+python -m unittest discover -s plugins/develop/tests
 python -m unittest discover -s plugins/develop/skills/iterate/scripts -p 'test_*.py'
 python -m unittest discover -s plugins/develop/skills/deep-clean/tests -p 'test_*.py'
 ```
