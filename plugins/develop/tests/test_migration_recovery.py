@@ -16,6 +16,14 @@ RECORDS = [tuple(row) for row in json.loads(next(
     item["content"] for item in FIXTURE["agent"]["inputs"] if item["path"] == "records.json"))]
 
 
+class RetentionUnverified(RuntimeError):
+    """Text matches need provenance; this is not a candidate defect verdict."""
+
+    def __init__(self, matches):
+        self.matches = matches
+        super().__init__(f"Raw retention unverified; inspect provenance for {matches!r}")
+
+
 class Incompatible(Store):
     def read(self, protocol, key):
         # Seed: active N connection is silently served N+1's wire contract.
@@ -246,11 +254,18 @@ class RenamedRawArchive(Store):
 class FinalizationMetadata(Store):
     """Benign control: unrelated metadata need not be forbidden."""
 
+    note = "complete"
+
     def finalize(self):
         super().finalize()
         with self.db:
             self.db.execute("CREATE TABLE metadata (note TEXT)")
-            self.db.execute("INSERT INTO metadata VALUES ('complete')")
+            self.db.execute("INSERT INTO metadata VALUES (?)", (self.note,))
+
+
+class CoincidentMetadata(FinalizationMetadata):
+    # Independent literal metadata, not copied from records.raw.
+    note = "9.99"
 
 
 class MetadataRejectedWrite(Store):
@@ -581,14 +596,18 @@ class MigrationTests(unittest.TestCase):
             self.assertEqual(store.read(2, key), {"balance_minor": minor})
         # Inspect logical main-database tables, including renamed archives.
         original_text = {raw for _, raw in RECORDS}
+        matches = []
         for (table,) in store.db.execute("SELECT name FROM sqlite_master WHERE type = 'table'").fetchall():
             quoted = '"' + table.replace('"', '""') + '"'
             columns = [row[1] for row in store.db.execute(f"PRAGMA table_info({quoted})")]
             self.assertNotIn("raw", columns, table)
-            for row in store.db.execute(f"SELECT * FROM {quoted}"):
-                for value in row:
-                    if isinstance(value, str):
-                        self.assertNotIn(value, original_text, table)
+            contents = store.db.execute(f"SELECT * FROM {quoted}")
+            for row in contents:
+                for column, value in zip((item[0] for item in contents.description), row):
+                    if isinstance(value, str) and value in original_text:
+                        matches.append((table, column, value))
+        if matches:
+            raise RetentionUnverified(matches)
 
     def assert_final_phase(self, kind=Store):
         store = self.seeded(kind)
@@ -685,12 +704,21 @@ class MigrationTests(unittest.TestCase):
     def test_optimistic_backfill_is_accepted(self):
         self.assert_concurrent_write(OptimisticBackfill)
 
-    def test_renamed_raw_archive_seed_is_detected(self):
-        with self.assertRaises(AssertionError):
+    def test_renamed_raw_archive_seed_is_flagged_unverified(self):
+        # The seed's source establishes copying. Text equality alone cannot
+        # distinguish that known defect from independent coincident metadata.
+        with self.assertRaises(RetentionUnverified) as outcome:
             self.assert_final_phase(RenamedRawArchive)
+        self.assertEqual(sorted(outcome.exception.matches),
+                         sorted(("legacy_payload", "saved_text", raw) for _, raw in RECORDS))
 
     def test_unrelated_finalization_metadata_is_accepted(self):
         self.assert_final_phase(FinalizationMetadata)
+
+    def test_coincident_metadata_requires_provenance(self):
+        with self.assertRaises(RetentionUnverified) as outcome:
+            self.assert_final_phase(CoincidentMetadata)
+        self.assertEqual(outcome.exception.matches, [("metadata", "note", "9.99")])
 
     def test_rejected_write_metadata_seeds_are_detected(self):
         for index, statement in enumerate((
