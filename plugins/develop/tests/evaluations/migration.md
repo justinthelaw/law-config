@@ -43,8 +43,13 @@ require every unaddressed record to remain unchanged. The tests also
 reject finalization with pending checkpoint work even when all minor values are
 populated or one step has completed. Finalized IDs and values must all survive;
 the main database's logical tables must have no remaining `raw` column.
-Matching original spellings in other scalar text cells raises
-`RetentionUnverified`, with table, column and value evidence. Equality alone
+Matching original spellings in other scalar text cells is collected as table,
+column and value evidence. `assert_finalized_records` returns these matches;
+the final-phase and recovery probes finish their independent checks before
+raising `RetentionUnverified`. Definite violations of final-state, read/write or
+restore behavior take precedence over uncertain retention. Recovery reopens the
+restored database using the candidate implementation, and finalized state must
+persist `migration.phase='final'`. Equality alone
 cannot distinguish copied raw data from unrelated metadata such as a literal
 `9.99`. This exception is distinct from `AssertionError`: a controller must report
 unverified retention coverage and obtain provenance before assigning a candidate
@@ -52,6 +57,8 @@ pass or defect. It must not translate this outcome into either verdict.
 
 Controls verify both outcomes: unrelated nonmatching metadata passes, while
 coincident metadata and a renamed raw archive produce `RetentionUnverified`.
+Combined controls verify that coincident metadata cannot hide definite defects,
+and successful recovery finishes before retention uncertainty is reported.
 The archive is a known defect because its seeded source explicitly copies
 `records.raw`; the value scan does not establish that provenance. Passing these
 calibration tests verifies their outcome classification, not candidate erasure.
