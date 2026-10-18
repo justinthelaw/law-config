@@ -50,7 +50,9 @@ closing with both peers pending or after one peer completes.
 These examples calibrate the stated multiple-caller contract; they are not an
 exhaustive proof over caller counts or operation orderings.
 Shared operation checks preserve submitted payloads and job counts, check job
-identity across callback delivery, and ensure delivery does not cancel work.
+identity across callback delivery, close and rejected requests, and ensure
+delivery does not cancel work. Repeated close after late callbacks or rejected
+requests must preserve jobs and observers.
 These callback checks use passive value
 collectors; they do not model observers that intentionally submit new requests.
 

@@ -41,12 +41,15 @@ with zero executed tests; evaluation continues with the remaining variants. An
 unrelated skip or expected failure does not erase an executed assertion that
 detects the defect and passes both controls. Skipped-only and expected-failure-only
 runs remain incomplete; unexpected successes are not passing control evidence.
-The helper temporarily registers the source modules with file/import metadata
-and restores the import table after each run. Those filenames identify the
+The helper temporarily registers the source modules with file/import metadata,
+including `test_shipping` as an alias for the test module, and restores the import
+table after each run. Those filenames identify the
 in-memory source; the helper does not materialize source files on disk. Standard
 `TestCase` assertion methods are temporarily wrapped for direct, inherited and
 `super()` calls, respecting the case's configured `failureException`. Runs must
 remain sequential within a process because those wrappers modify shared classes.
+Assertion failure metadata is stored separately from the exception, without
+requiring custom failure exceptions to accept evaluator attributes or be hashable.
 Body tracking applies to local `TestCase` instances in the loaded suite, including
 local classes returned by `load_tests` in nested standard suites. It wraps the
 resolved instance callable, preserving static/class method binding, inherited
@@ -59,6 +62,10 @@ The helper correlates standard `unittest` assertion call sites and Python
 method or test function. Calls in separate code objects, including same-line
 lambdas, remain distinct; their identity is correlated only across the unchanged
 submitted source.
+Test identities combine the loaded suite entry's position and body identity;
+overridden display IDs do not participate. Repeated entries using the same case
+object remain distinct, including their skip counts. Correlation assumes unchanged
+suite structure and does not establish equivalent inputs for parameterized cases.
 A reported defect failure must come from an assertion site that passed on
 both controls; an unrelated assertion cannot substitute for a skipped detecting
 site. A body assertion before an in-body, subtest, teardown or cleanup skip remains
@@ -75,6 +82,9 @@ An unverified result for these paths does not demonstrate weak tests or failure
 of the grader's sensitivity criterion; inspect the preserved variant outcomes
 separately.
 Custom assertion APIs and assertions in external helper modules are not verified.
+Standard assertion calls require a direct submitted caller; an external helper's
+assertions cannot borrow the submitted caller's site. Nested standard unittest
+assertions are accounted for by their outer observed call.
 Matching sites does not establish matching inputs for every loop iteration or
 helper invocation. These execution events do not prove relevance or general
 coverage; the bounded defect
