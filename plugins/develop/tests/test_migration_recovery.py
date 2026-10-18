@@ -923,6 +923,43 @@ class MixedReadMutation(Store):
         return result
 
 
+class DroppedCompletedPeerWrite(Store):
+    seeded_connection = False
+    dropped_protocol = 1
+
+    def seed(self, records):
+        super().seed(records)
+        self.seeded_connection = True
+
+    def write(self, protocol, key, value):
+        if (protocol == self.dropped_protocol and not self.seeded_connection
+                and self.db.execute("SELECT phase FROM migration").fetchone() == ("mixed",)
+                and not self.db.execute("SELECT count(*) FROM records WHERE id > "
+                                        "(SELECT checkpoint FROM migration)").fetchone()[0]):
+            return
+        return super().write(protocol, key, value)
+
+
+class TransientRejectedWrite(Store):
+    rejected_phase = "mixed"
+    rejected_protocol = 3
+    commit_intermediate = True
+
+    def write(self, protocol, key, value):
+        if (protocol != self.rejected_protocol or self.db.execute(
+                "SELECT phase FROM migration").fetchone() != (self.rejected_phase,)):
+            return super().write(protocol, key, value)
+        previous = self.db.execute("SELECT minor FROM records WHERE id = ?", (key,)).fetchone()[0]
+        with self.db:
+            self.db.execute("UPDATE records SET minor = 9999 WHERE id = ?", (key,))
+            if self.commit_intermediate:
+                self.db.commit()
+            self.db.execute("UPDATE records SET minor = ? WHERE id = ?", (previous, key))
+            if self.commit_intermediate:
+                self.db.commit()
+            raise ValueError("write rejected after temporary change")
+
+
 class MigrationTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
@@ -1037,12 +1074,20 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(self.read_unchanged(old, 1, 1), {"balance": "002.35"})
         self.assertEqual(self.read_unchanged(new, 2, 1), {"balance_minor": 235})
 
+    def assert_rejected_write(self, store, protocol, key, value):
+        before = self.database_state(store)
+
+        def reject():
+            with self.assertRaises(ValueError):
+                store.write(protocol, key, value)
+
+        self.assert_sampled_transition(store, reject, (before,))
+        self.assertEqual(self.database_state(store), before)
+
     def assert_unsupported_protocol(self, store):
         before = self.database_state(store)
         for key, _ in RECORDS:
-            with self.assertRaises(ValueError):
-                store.write(3, key, "99.00")
-            self.assertEqual(self.database_state(store), before)
+            self.assert_rejected_write(store, 3, key, "99.00")
             with self.assertRaises(ValueError):
                 self.read_unchanged(store, 3, key)
             self.assertEqual(self.database_state(store), before)
@@ -1240,23 +1285,23 @@ class MigrationTests(unittest.TestCase):
         self.finish_migration(store)
 
     def assert_sampled_write_atomicity(self, kind=Store):
-        writer = self.seeded(kind)
-        peer = self.open(kind)
+        connections = self.seeded(kind), self.open(kind)
         for completed in (False, True):
             if completed:
-                self.finish_migration(writer)
-            for protocol, value, expected in ((1, "001.15", ("001.15", 115)),
-                                               (1, "-001.15", ("-001.15", -115)),
-                                               (2, -75, ("-0.75", -75)),
-                                               (2, 115, ("1.15", 115))):
-                # Warm both APIs before each write: a per-instance cache must refresh.
-                for version in (1, 2):
-                    self.assertEqual(self.read_unchanged(peer, version, 1),
-                                     self.read_unchanged(writer, version, 1))
-                self.assert_write_changes_only_target(writer, protocol, 1, value, expected)
-                raw, minor = expected
-                self.assertEqual(self.read_unchanged(peer, 1, 1), {"balance": raw})
-                self.assertEqual(self.read_unchanged(peer, 2, 1), {"balance_minor": minor})
+                self.finish_migration(connections[0])
+            for writer, peer in (connections, connections[::-1]):
+                for protocol, value, expected in ((1, "001.15", ("001.15", 115)),
+                                                   (1, "-001.15", ("-001.15", -115)),
+                                                   (2, -75, ("-0.75", -75)),
+                                                   (2, 115, ("1.15", 115))):
+                    # Warm both APIs before each write: a per-instance cache must refresh.
+                    for version in (1, 2):
+                        self.assertEqual(self.read_unchanged(peer, version, 1),
+                                         self.read_unchanged(writer, version, 1))
+                    self.assert_write_changes_only_target(writer, protocol, 1, value, expected)
+                    raw, minor = expected
+                    self.assertEqual(self.read_unchanged(peer, 1, 1), {"balance": raw})
+                    self.assertEqual(self.read_unchanged(peer, 2, 1), {"balance_minor": minor})
 
     def assert_recovery(self, kind=Store):
         store = self.seeded(kind)
@@ -1461,9 +1506,7 @@ class MigrationTests(unittest.TestCase):
                 self.read_unchanged(store, 1, key)
             self.assertEqual(self.database_state(store), before)
             for protocol, value in ((1, "9.99"), (2, 999)):
-                with self.assertRaises(ValueError):
-                    store.write(protocol, key, value)
-                self.assertEqual(self.database_state(store), before)
+                self.assert_rejected_write(store, protocol, key, value)
             self.assertEqual(self.read_unchanged(store, 2, key), {"balance_minor": minor})
             self.assertEqual(self.database_state(store), before)
 
@@ -2025,6 +2068,33 @@ class MigrationTests(unittest.TestCase):
                 self.path = Path(self.temp.name) / f"mixed-read-{protocol}.sqlite"
                 with self.assertRaises(AssertionError):
                     self.assert_coexistence(MutatingRead)
+
+    def test_completed_peer_writes_are_exercised(self):
+        for protocol in (1, 2):
+            with self.subTest(protocol=protocol):
+                class DroppedPeer(DroppedCompletedPeerWrite):
+                    dropped_protocol = protocol
+
+                self.path = Path(self.temp.name) / f"dropped-peer-{protocol}.sqlite"
+                with self.assertRaises(AssertionError):
+                    self.assert_sampled_write_atomicity(DroppedPeer)
+
+    def test_rejected_write_samples_distinguish_commits_from_rollback(self):
+        for phase, protocol in (("mixed", 3), ("final", 1), ("final", 2), ("final", 3)):
+            for commit in (False, True):
+                with self.subTest(phase=phase, protocol=protocol, commit=commit):
+                    class TemporaryWrite(TransientRejectedWrite):
+                        rejected_phase = phase
+                        rejected_protocol = protocol
+                        commit_intermediate = commit
+
+                    self.path = Path(self.temp.name) / f"rejected-{phase}-{protocol}-{commit}.sqlite"
+                    check = self.assert_coexistence if phase == "mixed" else self.assert_final_phase
+                    if commit:
+                        with self.assertRaises(AssertionError):
+                            check(TemporaryWrite)
+                    else:
+                        check(TemporaryWrite)
 
     def test_fixture_and_private_grader_pairs(self):
         fixtures = sorted((ROOT / "fixtures").glob("migration-*.json"))
