@@ -90,6 +90,16 @@ BAD_COMPLETED = GOOD.replace("                self.pending = None\n", "")
 BAD_COMPLETED_SAVE = (INITIAL + ADAPTATION.replace("LatestRequest", "RetainsCompleted")
                       + OWNER.replace("LatestRequest", "RetainsCompleted")
                       .replace("                self.pending = None\n", ""))
+# Screen retains completed jobs until close, so only its next search is defective.
+BAD_SCREEN_RESUBMIT = (
+    OWNER + CALLERS.replace("LatestRequest", "RetainsUntilClose") + ADAPTATION
+    + OWNER.replace("LatestRequest", "RetainsUntilClose")
+    .replace("                self.pending = None\n", "")
+    .replace("    def close(self):\n",
+             "    def close(self):\n"
+             "        if self.token is None:\n"
+             "            self.pending = None\n")
+)
 BAD_SAVE_CLOSE = GOOD + '''
 original_save_close = Autosave.close
 def close_all(self):
@@ -207,6 +217,12 @@ def probe_change(case, app, transport_type):
         new.deliver("fresh")
         old.deliver("stale")
         case.assertEqual(values, ["fresh"], "stale after replacement was published")
+        # Starting more work must not cancel the job that already completed.
+        submit("next")
+        case.assertEqual(new.cancel_count, 0, "completed job was cancelled on next request")
+        case.assertEqual(len(transport.jobs), 3)
+        transport.jobs[-1].deliver("next value")
+        case.assertEqual(values, ["fresh", "next value"])
 
     # Closing fresh and completed callers is terminal even with no pending job.
     for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
@@ -305,6 +321,11 @@ class ArchitectureProbe(unittest.TestCase):
             with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
                 probe_change(self, module_from_source(source),
                              module_from_source(self.transport).Transport)
+
+    def test_completed_screen_job_is_not_cancelled_on_next_search(self):
+        with self.assertRaisesRegex(AssertionError, "completed job was cancelled on next request"):
+            probe_change(self, module_from_source(BAD_SCREEN_RESUBMIT),
+                         module_from_source(self.transport).Transport)
 
     def test_simple_control_needs_only_decided_function_edit(self):
         original = fixture("architecture-simple")["agent"]["inputs"][0]["content"]
