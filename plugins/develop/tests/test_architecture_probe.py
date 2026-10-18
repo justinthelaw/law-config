@@ -255,6 +255,33 @@ BAD_SAVE_COMPLETION = OWNER + CALLERS.replace(
     "            self.on_value(value)\n"
     "        self.requests.send(content, publish)",
 )
+BAD_PEER_COMPLETION = REGISTER_CALLERS.replace(
+    "        self.on_value = on_value",
+    "        def publish(value):\n"
+    "            for peer in self.peers:\n"
+    "                if peer is not self:\n"
+    "                    if peer.requests.pending is not None:\n"
+    "                        peer.requests.pending.cancel()\n"
+    "            on_value(value)\n"
+    "        self.on_value = publish",
+)
+BAD_REVERSE_PEER_COMPLETION = BAD_PEER_COMPLETION.replace(
+    "if peer is not self:", "if peer is not self and self is self.peers[-1]:",
+)
+# Keeping a completed-job reference is benign; cancelling a peer's reference is not.
+RETAIN_COMPLETED_PEERS = REGISTER_CALLERS.replace(
+    "                self.pending = None",
+    "                self.completed = self.pending\n"
+    "                self.pending = None",
+)
+BAD_COMPLETED_PEER_SUBMIT = RETAIN_COMPLETED_PEERS.replace(
+    "        self.requests.send(",
+    "        for peer in self.peers:\n"
+    "            completed = getattr(peer.requests, 'completed', None)\n"
+    "            if peer is not self and completed is not None:\n"
+    "                completed.cancel()\n"
+    "        self.requests.send(",
+)
 
 
 def fixture(name):
@@ -418,37 +445,45 @@ def probe_change(case, app, transport_type):
 
     # Each caller type needs independent lifetimes between its own instances.
     for caller_type, method in ((app.Screen, "search"), (app.Autosave, "submit")):
-        transport = transport_type()
-        left_values, right_values = [], []
-        left = caller_type(transport, left_values.append)
-        right = caller_type(transport, right_values.append)
-        getattr(left, method)("left")
-        first = transport.jobs[-1]
-        getattr(right, method)("right")
-        second = transport.jobs[-1]
-        case.assertEqual(first.cancel_count, 0, "second caller cancelled first")
-        first.deliver("left")
-        second.deliver("right")
-        case.assertEqual(left_values, ["left"], "live caller callback was misrouted")
-        case.assertEqual(right_values, ["right"], "live caller callback was misrouted")
-        # Start another pair to check close isolation while both jobs are pending.
-        getattr(left, method)("left pending")
-        first = transport.jobs[-1]
-        getattr(right, method)("right pending")
-        second = transport.jobs[-1]
-        getattr(left, method)("left replacement")
-        replacement = transport.jobs[-1]
-        case.assertEqual(first.cancel_count, 1)
-        case.assertEqual(second.cancel_count, 0, "first caller cancelled second")
-        left.close()
-        first.deliver("late left")
-        replacement.deliver("late replacement")
-        second.deliver("right survives")
-        case.assertEqual(first.cancel_count, 1)
-        case.assertEqual(replacement.cancel_count, 1)
-        case.assertEqual(second.cancel_count, 0)
-        case.assertEqual(left_values, ["left"])
-        case.assertEqual(right_values, ["right", "right survives"])
+        for delivery_order in ((0, 1), (1, 0)):
+            transport = transport_type()
+            left_values, right_values = [], []
+            left = caller_type(transport, left_values.append)
+            right = caller_type(transport, right_values.append)
+            getattr(left, method)("left")
+            first = transport.jobs[-1]
+            getattr(right, method)("right")
+            second = transport.jobs[-1]
+            case.assertEqual(first.cancel_count, 0, "second caller cancelled first")
+            completed = (first, second)
+            for index in delivery_order:
+                completed[index].deliver(("left", "right")[index])
+                case.assertEqual([job.cancel_count for job in completed], [0, 0],
+                                 "callback cancelled peer work")
+            case.assertEqual(left_values, ["left"], "live caller callback was misrouted")
+            case.assertEqual(right_values, ["right"], "live caller callback was misrouted")
+            # Start another pair to check close isolation while both jobs are pending.
+            getattr(left, method)("left pending")
+            case.assertEqual([job.cancel_count for job in completed], [0, 0],
+                             "submission cancelled completed peer work")
+            first = transport.jobs[-1]
+            getattr(right, method)("right pending")
+            case.assertEqual([job.cancel_count for job in completed], [0, 0],
+                             "submission cancelled completed peer work")
+            second = transport.jobs[-1]
+            getattr(left, method)("left replacement")
+            replacement = transport.jobs[-1]
+            case.assertEqual(first.cancel_count, 1)
+            case.assertEqual(second.cancel_count, 0, "first caller cancelled second")
+            left.close()
+            first.deliver("late left")
+            replacement.deliver("late replacement")
+            second.deliver("right survives")
+            case.assertEqual(first.cancel_count, 1)
+            case.assertEqual(replacement.cancel_count, 1)
+            case.assertEqual(second.cancel_count, 0)
+            case.assertEqual(left_values, ["left"])
+            case.assertEqual(right_values, ["right", "right survives"])
 
         # Reverse close order with fresh instances: the first stays live.
         transport = transport_type()
@@ -539,8 +574,20 @@ class ArchitectureProbe(unittest.TestCase):
                              module_from_source(self.transport).Transport)
 
     def test_caller_registration_is_benign(self):
-        probe_change(self, module_from_source(REGISTER_CALLERS),
-                     module_from_source(self.transport).Transport)
+        for source in (REGISTER_CALLERS, RETAIN_COMPLETED_PEERS):
+            with self.subTest(source=source):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
+
+    def test_peer_jobs_survive_completion_and_later_submissions(self):
+        for source, message in (
+            (BAD_PEER_COMPLETION, "callback cancelled peer work"),
+            (BAD_REVERSE_PEER_COMPLETION, "callback cancelled peer work"),
+            (BAD_COMPLETED_PEER_SUBMIT, "submission cancelled completed peer work"),
+        ):
+            with self.subTest(defect=message), self.assertRaisesRegex(AssertionError, message):
+                probe_change(self, module_from_source(source),
+                             module_from_source(self.transport).Transport)
 
     def test_second_caller_close_does_not_cancel_first(self):
         with self.assertRaisesRegex(AssertionError, "second caller close cancelled first"):

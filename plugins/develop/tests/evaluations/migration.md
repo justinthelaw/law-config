@@ -42,11 +42,21 @@ must preserve records, migration metadata and schema. Supported-write probes
 require every unaddressed record to remain unchanged. The tests also
 reject finalization with pending checkpoint work even when all minor values are
 populated or one step has completed. Finalized IDs and values must all survive;
-the main database's logical tables must have no remaining `raw` column or exact
-original text values, even under renamed columns. The latter check uses the
-fixture's known spellings in scalar text cells; it does not establish forensic
-erasure or detect encoded, fragmented or otherwise transformed copies. Unrelated
-metadata remains permitted, as a benign control verifies.
+the main database's logical tables must have no remaining `raw` column.
+Matching original spellings in other scalar text cells raises
+`RetentionUnverified`, with table, column and value evidence. Equality alone
+cannot distinguish copied raw data from unrelated metadata such as a literal
+`9.99`. This exception is distinct from `AssertionError`: a controller must report
+unverified retention coverage and obtain provenance before assigning a candidate
+pass or defect. It must not translate this outcome into either verdict.
+
+Controls verify both outcomes: unrelated nonmatching metadata passes, while
+coincident metadata and a renamed raw archive produce `RetentionUnverified`.
+The archive is a known defect because its seeded source explicitly copies
+`records.raw`; the value scan does not establish that provenance. Passing these
+calibration tests verifies their outcome classification, not candidate erasure.
+The scan does not establish forensic erasure or detect encoded, fragmented or
+otherwise transformed copies.
 Run from the plugin directory:
 
 ```bash
