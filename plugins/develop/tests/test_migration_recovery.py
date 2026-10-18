@@ -314,8 +314,7 @@ class MigrationTests(unittest.TestCase):
         raw = old.read(1, 1)["balance"]
         self.assertEqual(new.read(2, 1), {"balance_minor": int(Decimal(raw) * 100)})
         if isinstance(outcomes[0], sqlite3.OperationalError):
-            self.assertIn(getattr(outcomes[0], "sqlite_errorcode", None),
-                          (sqlite3.SQLITE_BUSY, sqlite3.SQLITE_LOCKED))
+            self.assert_database_busy(outcomes[0])
         else:
             self.assertEqual(outcomes, ["written"])
         # Both locking and compare-and-retry permit this subsequent write.
@@ -323,6 +322,14 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(old.read(1, 1), {"balance": "002.35"})
         self.assertEqual(new.read(2, 1), {"balance_minor": 235})
         self.assertEqual(new.db.execute("SELECT checkpoint FROM migration").fetchone(), (1,))
+
+    def assert_database_busy(self, error):
+        code = getattr(error, "sqlite_errorcode", None)
+        if code is None:
+            # Python 3.10 lacks SQLite error codes and their named constants.
+            self.assertRegex(str(error), r"^database(?: table| schema)? is locked(?:$|:)")
+        else:
+            self.assertIn(code & 0xff, (sqlite3.SQLITE_BUSY, sqlite3.SQLITE_LOCKED))
 
     @staticmethod
     def database_state(store):
@@ -402,8 +409,7 @@ class MigrationTests(unittest.TestCase):
             self.assertTrue(observed)
             for row in observed:
                 if isinstance(row, sqlite3.OperationalError):
-                    self.assertIn(getattr(row, "sqlite_errorcode", None),
-                                  (sqlite3.SQLITE_BUSY, sqlite3.SQLITE_LOCKED))
+                    self.assert_database_busy(row)
                 else:
                     self.assertIn(row, (before, expected))
             self.assertEqual(observer.db.execute(
