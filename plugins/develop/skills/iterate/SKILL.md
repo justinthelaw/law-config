@@ -30,6 +30,8 @@ For a CI and Codex-review loop, use the [GitHub adapter](references/github-monit
 
 Keep one watcher per selected target/revision. A new head replaces its watch and invalidates affected checks/reviews; preserve unresolved findings and the invocation rather than duplicating review requests or resetting budgets. Changed steering updates the shared intent contract. At the requested stop condition, reconcile the unchanged head, stop the watcher and hand off results or the precise blocker. No recurring schedule is created unless requested.
 
+For implementation/delivery intent, carry the authorized workflow below through its requested outcome in one invocation. Preserve the selected repositories, exclusions and stack-versus-consolidation choice. Apply the existing planning/review gates, [documentation checks](references/documentation.md) and [validation](references/validation.md). When publication and current-head review are requested, a finished patch or push alone is not completion. Continue authorized repairs until success or a genuine authority, access, evidence or review-budget blocker, while completing unaffected work. Review, Debug and CI-only requests do not acquire implementation, publication or operational authority from this loop.
+
 ## Implementation workflow
 
 1. **Resolve.** Inspect the selected checkout's origin/upstream and exact provider identity. Preserve nested groups, change-request paths and artifact namespaces. Resolve an ambiguous shorthand through user/repository context; ask if its provider remains unclear. Use supported native tools for that host; never reroute an unsupported provider to another service.
@@ -47,11 +49,11 @@ An explicit request for one remaining consolidated PR permits closing fully inco
 
 Complete the final adversarial checkpoint. For **Debug**, use the [incident diagnosis report](references/debugging.md): impact, cause/confidence, supporting and missing evidence, and the next gate. Preserve the selected service/environment/log-bundle scope; do not discover a repository merely to populate delivery fields.
 
-For repository delivery, reread the current head, required checks, reviews and threads. Claim readiness only when applicable gates pass; list outstanding human approvals separately. Never merge without authorization. Continue unaffected targets. Report remaining protected unrelated work rather than cleaning it to manufacture a clean-worktree result.
+For repository delivery, reread the current head, required checks, reviews and threads. Claim readiness only when applicable gates pass; reconcile GitHub ready/draft status with the requested delivery state rather than treating it as acceptance. Never merge without authorization. Stop task-owned watchers and use [Clean's protections](../clean/references/protections.md) for authorized task-disposable cleanup, preserving useful evidence, source and unrelated/shared resources. Continue unaffected targets; report anything retained or blocked instead of manufacturing a clean-worktree result.
 
 For that delivery report, use the caller's format, otherwise:
 
 | Repository | Change | Result and evidence |
 | --- | --- | --- |
 
-Link actual change requests and current-head evidence. Include commits/destinations, signed or unsigned status, executed validation, branch updates and any authorized history replacement or issue tracking. Report no-ops/blockers; use `—` for unpublished work.
+Use the shared handoff fields: changed scope and actual PR links; exact verified revision/destination and signing status; local checks, CI and requested provider reviews; skips/not-run and residual limitations; documentation and cleanup outcomes; remaining user action. Include branch/stack updates, authorized history replacement or issue tracking when applicable. Report no-ops/blockers; use `—` for unpublished work. Readiness, publication and deployment remain distinct.

@@ -8,4 +8,6 @@ Use when reviewing or maintaining selected documentation. Review-only produces f
 - Report confirmed drift with the document location, conflicting current evidence and smallest correction. Distinguish a verified no-change result from unavailable evidence or out-of-scope material. Do not claim documentation is current when its relevant source could not be inspected.
 - Repair only confirmed in-scope drift. Validate local links, referenced commands and relevant doc/build checks at the touched owner. Do not execute deployment or destructive examples as link verification, or hand-edit generated outputs.
 
+For Codex skill/plugin changes, compare layout, triggers, metadata and references with current official [skill](https://learn.chatgpt.com/docs/build-skills) and [plugin](https://developers.openai.com/plugins/build/plugins) guidance. Separate requirements, optional guidance and local design choices; record dated traceability in the handoff, not bulky skill context. Structural agreement does not establish native discovery or instruction consumption.
+
 When a table helps, use `Document | Finding | Current evidence | Correction or limitation`. A short no-change explanation is enough when nothing is stale.

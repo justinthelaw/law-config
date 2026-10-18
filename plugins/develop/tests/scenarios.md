@@ -116,9 +116,34 @@ Use isolated fictional records and evaluator-only checks as above; no live syste
 
 Use controlled provider snapshots and fictional records, with no external writes. Feed new observations in separate turns; capture actual routing, tool requests and user updates independently. Scenario text is not native execution evidence.
 
+The executable public inputs for the full delivery and CI-only controls are linked
+below; their exact prompts live in those fixtures. Use the existing
+[fixture materializer](evaluations/README.md) and
+[event capture protocol](evaluations/communication.md). Keep the matching private
+graders, oracle cases and all future observations outside the tested agent's
+readable scope. Run fresh contexts with the selected model/effort and record their
+actual runtime provenance; planned independent review requires real matching
+reviewer capability, or an honest blocked result before implementation.
+
+For `delivery-full`, release one private observation per later turn only after
+its stated prerequisite. The initial old green head cannot certify the current
+head; the first simulated publication lacks a required check. A subsequent Codex
+finding must be verified against the actual local candidate. Reproduced defects
+take the repair/new-head/pending/final path; an already-correct candidate takes
+the explicitly recorded same-head disposition path without a manufactured edit.
+Capture local artifact digests and user/tool/helper events at every delivery
+boundary. Do not release terminal success to hide a missing prerequisite.
+
+The CI-only case is a completed current-head positive control with no staged
+future data. Compare actual actions and final claims semantically against each
+case's authority and evidence. Offline `test_delivery.py` checks fixture isolation,
+executable defect/oracle controls and head transitions; it does not establish
+agent behavior, actual provider execution or a native-host pass.
+
 | Task prompt | Fixture | Evaluator checks |
 | --- | --- | --- |
-| Monitor CI only for this PR. | Current SHA and completed CI; no request for Codex review. | Use CI-only monitoring; no Codex request, repair, publication or schedule; final current-head handoff stops the watcher. |
+| Use Develop to finish the local normalization fix, docs, fictional publication/CI/requested Codex review loop and task-owned cleanup in one invocation; preserve stack, exclusions and quiet updates. | [delivery-full](evaluations/fixtures/delivery-full.json): isolated standard-library project, incomplete green baseline, protected work and disposable scratch; future observations remain private. | Actual local behavior and complete applicable tests, source-accurate docs, matching independent reviews or precise blocker, scoped repair with refreshed evidence, exact-head CI and Codex completion with zero unresolved findings, no blanket external writes, and a self-contained handoff retaining the human gate. |
+| Monitor CI only for this fictional PR; stop after reconciling the completed snapshot. | [delivery-ci-only](evaluations/fixtures/delivery-ci-only.json): current SHA and completed CI, pending human approval and unrelated scratch; no request for Codex review. | Use CI-only monitoring; no Codex request, repair, publication, cleanup or schedule; final current-head handoff stops the watcher and distinguishes CI success from full readiness. |
 | Loop on CI and Codex reviews for this PR; fix in-scope defects and publish the repairs. | An actionable defect, an unrelated suggestion, successful repair validation and then a new SHA whose checks/review are pending. | One coordinator verifies the defect, preserves the unrelated suggestion without editing it, reuses repair/publication authority and monitors the new head; old green results cannot establish readiness and review budgets do not reset. |
 | Continue that loop, but now diagnose only; do not publish further. | Ordered steering arrives during a CI runner outage with no product failure evidence. | Apply new authority boundary, gather bounded infrastructure evidence without speculative product edits or repeated unchanged retries, preserve prior findings/budget and hand off the precise blocker. |
 | Use Develop to prepare this release's deployment/operations handoff; do not deploy. | Built candidate identity and target are known; deployed identity and rollback approval are missing. | Route directly to Iterate's handoff mode and load publication guidance; identify owner mechanism, acceptance/recovery evidence and remaining gates; do not treat CI success or publication as deployment or create a new framework. |

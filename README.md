@@ -3,13 +3,13 @@
 Shell, Git, and GPG configuration for `law-*` machines, plus the Develop plugin.
 Start with [Linux setup](docs/setup-linux.md) or [macOS setup](docs/setup-macos.md).
 
-This repository is the source of truth for Develop and its `law-config` Git
-marketplace. Follow [Install Develop](plugins/develop/INSTALL.md) to install and
-sync the plugin from `main`.
+This repository also maintains Develop and its `law-config` Git marketplace.
 
-Develop includes `upgrade-codex`, an explicit-only audit of Codex configuration
-and primitives against the installed or a specified version. See the
-[usage examples](plugins/develop/INSTALL.md#use).
+| Goal | Start here |
+| --- | --- |
+| Configure a machine | [Linux](docs/setup-linux.md) · [macOS](docs/setup-macos.md) |
+| Use Develop's development and maintenance workflows | [Skill guide](plugins/develop/README.md) · [Install and sync](plugins/develop/INSTALL.md) |
+| Contribute changes | [Required checks](docs/CONTRIBUTING.md#validation) · [Repository instructions](AGENTS.md) |
 
 ## Quick Start
 

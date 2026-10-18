@@ -32,4 +32,4 @@ For mixed requests, select the initial owner from the requested outcome, then us
 
 ## Report
 
-Use the selected skill's report. For mixed work, combine target, result and evidence with required dependency/resource details; identify incomplete gates.
+Carry an implementation/delivery invocation through Iterate's [completion and report](../iterate/SKILL.md#report); users need not invoke each phase separately. Narrow review, diagnosis, monitoring and analysis requests keep their selected stop condition and authority. For mixed work, combine the owning reports and identify incomplete gates.

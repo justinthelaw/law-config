@@ -1,6 +1,6 @@
 # Develop
 
-Eight portable skills for scoped development, review and maintenance. Invoke `develop` with the outcome you want, or call the owning skill directly. See [installation](INSTALL.md).
+Eight portable skills for scoped development, review and maintenance. Invoke `develop` once with the outcome you want, or call the owning skill directly. It carries authorized work through the requested checks and handoff, preserving narrow review or diagnosis requests. See [installation](INSTALL.md).
 
 | Skill | Owns |
 | --- | --- |

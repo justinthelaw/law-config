@@ -51,6 +51,8 @@ Pass the invocation/intent revisions, literal messages, delivery mode, selected 
 
 Return handled scope, current artifacts, changes/no-op, verification and limitations, findings, blockers and next gate. `iterate` owns repository/CI delivery; `upgrade` owns its dependency ledger and combined report; `clean` owns resource measurements. The coordinator integrates results. A mode or skill transition preserves this contract and its review budget; it does not restart discovery, create a second coordinator or require renewed permission for already-authorized actions.
 
+Honor the user's quiet/progress preference and host reporting requirements. Report meaningful findings, changed scope and genuine blockers without repeating unchanged polls or routine approval requests. The final owning report reconciles the requested outcome with actual evidence, including skipped or unavailable checks; helper logs do not substitute for a user-visible handoff.
+
 ## Review gates
 
 For workflows covered by this contract, the coordinator runs `adversarial-loop` at **intent** before consequential work and **evidence** before completion, including read-only, blocked and no-op invocations. Review the actual discovery result when there is no diff. Nested workers reuse these gates; reviewers never recurse.
