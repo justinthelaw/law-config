@@ -1142,8 +1142,8 @@ class MigrationTests(unittest.TestCase):
         self.assertEqual(after["records"], [(key, minor) for key, _, minor in before["records"]])
         self.assertEqual(after["migration"], [(checkpoint, "final")
                                              for checkpoint, _ in before["migration"]])
-        # Rebuilding records may remove its indexes. Existing auxiliary objects
-        # and contents must survive; new unrelated metadata remains permitted.
+        # Objects owned by rebuilt records (including indexes/triggers) are excluded.
+        # Other existing objects/contents survive; new metadata remains permitted.
         for definition in before["schema"]:
             if definition[2] != "records":
                 self.assertIn(definition, after["schema"])

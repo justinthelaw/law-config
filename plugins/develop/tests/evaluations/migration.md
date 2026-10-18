@@ -61,9 +61,10 @@ behavior is checked after closing and reopening the candidate,
 so retired reads and frozen writes must follow persisted state for every seeded
 key. Both final-phase and recovery checks compare full state before and after
 finalization: only the records representation and migration phase may change
-among existing data. Existing auxiliary contents and schema objects must survive;
-rebuilding records may remove its indexes, and new unrelated finalization
-metadata remains permitted subject to the retention checks. These finalization
+among existing data. Existing auxiliary contents and schema objects not owned by
+`records` must survive. The preservation check excludes the rebuilt `records`
+table and its owned indexes and triggers; it does not establish trigger retention.
+New unrelated finalization metadata remains permitted subject to the retention checks. These finalization
 comparisons cover returned state, not transient changes within `finalize()`.
 Existing views also undergo `SELECT * ... LIMIT 0` before and after finalization:
 preserving identical DDL must not leave a previously compilable view with missing
