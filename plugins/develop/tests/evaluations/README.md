@@ -4,6 +4,11 @@ These fixtures extend [fresh-context scenarios](../scenarios.md). They test
 contract plumbing and supply controlled tasks; passing offline checks does not
 establish behavioral gains, native activation, publication or deployment.
 
+Protocols cover [paired comparison](comparison.md), [native Codex activation](native-hosts.md),
+[communication](communication.md), [test quality](quality.md),
+[architecture choices](architecture.md) and [migration recovery](migration.md).
+Each separates offline calibration from actual agent and native-host evidence.
+
 ## Files and API
 
 - [contract.json](contract.json) defines JSON Schema `$defs.fixture` and
