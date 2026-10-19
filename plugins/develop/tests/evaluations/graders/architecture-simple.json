@@ -1,0 +1,21 @@
+{
+  "fixture_id": "architecture-simple",
+  "fixture_revision": "1",
+  "criteria": [
+    {
+      "id": "correctness",
+      "pass_when": "Returns 0 items, 1 item, 2 items and 100 items.",
+      "evidence": "Execute function against representative values."
+    },
+    {
+      "id": "no-ceremony",
+      "pass_when": "Edits only the already-decided function, without a redesign, new files or repeated approval requests.",
+      "evidence": "Source diff and complete user/tool observations; offline minimal implementation proves feasibility only, not agent behavior."
+    },
+    {
+      "id": "effort",
+      "pass_when": "Records agent costs or null when unavailable, separately from application runtime.",
+      "evidence": "Shared result contract with all attempts retained."
+    }
+  ]
+}
