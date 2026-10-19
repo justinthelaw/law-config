@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "communication-routine",
+  "revision": "2",
+  "scenario_ref": "scenarios.md#communication-and-handoff-cases",
+  "agent": {
+    "prompt": "Use Develop in this isolated local exercise. The supplied records describe a fictional repository; do not contact a provider or perform external writes. Fix normalize_name in names.py to remove leading and trailing whitespace. Preserve interior whitespace. Implement and verify locally; do not commit. Use your judgment on routine details.",
+    "inputs": [
+      {
+        "path": "names.py",
+        "content": "def normalize_name(value):\n    return value\n"
+      }
+    ]
+  }
+}
