@@ -23,7 +23,7 @@ Verify documentation links and command examples.
 
 This repository owns the Develop source and `law-config` marketplace. Follow
 [plugin instructions](../plugins/develop/AGENTS.md) and the
-[release checks](../plugins/develop/INSTALL.md#verify-and-release) for package
+[release checks](../plugins/develop/AGENTS.md#verify-and-release) for package
 changes. Preserve the plugin's Apache-2.0 license; configuration and other helper
 scripts remain under the repository's MIT license.
 

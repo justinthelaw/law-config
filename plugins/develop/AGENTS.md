@@ -1,9 +1,55 @@
 # Maintaining develop
 
+## Package and workflow contracts
+
 - Keep this package a portable skills-only plugin. Bundled, explicitly invoked offline/read-only helpers are permitted; they are not executable hooks or services. Do not add machine-specific paths, tokens, executable hooks or a service dependency without a concrete need.
 - Keep shared defaults and handoffs in `skills/develop/references/contract.md`, with domain detail in owning references. Standalone `kaizen`, `adversarial-loop` and audit-only `upgrade-codex` use their entrypoint's completion policy without repository discovery or coding dependencies.
-- Preserve selected repository/session scope, dependency assessment before upgrades, explicit post-plan bypass, fresh non-forked reviews and original model/effort matching. Bundled implementation guidance works without an external framework. Host-specific metadata and optional adapters must not become generic prerequisites. Keep eight entry points; `upgrade` owns dependency upgrades and explicit-only `upgrade-codex` owns Codex compatibility sweeps. Never route a generic upgrade or Kaizen request to `upgrade-codex` without an explicit invocation.
-- Commit signing is nonblocking: prefer an existing noninteractive signer and fall back unsigned; preserve the thread's explicit preference. Do not import donor signing gates. Source consolidation, installation and retirement are distinct actions requiring their own applicable authorization.
-- Change user-facing behavior only within the request; never use internal review as authorization to bypass host controls.
-- From this plugin directory, run `python scripts/validate.py --marketplace-root ../..`, `python -m unittest discover -s tests`, and relevant fresh-context scenarios in `tests/scenarios.md` before publication. Run `git diff --check` from the repository root. Omit `--marketplace-root` for detached installed payloads. Inspect actual artifacts; text matching alone does not validate agent behavior.
-- Keep conversation packets and task-specific findings outside tracked files. Commit only scoped changes, update the plugin version when releasing, and verify the same Git revision on each installed surface.
+- Preserve selected repository/session scope, dependency assessment before upgrades, explicit post-plan bypass, fresh non-forked reviews and original model/effort matching. Bundled implementation guidance works without an external framework. Host metadata and optional adapters must not become generic prerequisites. Keep eight entry points; `upgrade` owns dependency upgrades and explicit-only `upgrade-codex` owns Codex compatibility sweeps. Never route generic upgrades or Kaizen requests to `upgrade-codex`.
+- Commit signing is nonblocking: prefer an existing noninteractive signer and fall back unsigned, preserving the thread's explicit preference and actual repository/server restrictions. Do not import donor signing gates, change persistent Git configuration or set up keys to satisfy this workflow.
+- Change user-facing behavior only within the request; never use internal review as authorization to bypass host controls. Keep conversation packets and task-specific findings outside tracked files.
+
+## Verify and release
+
+With Python 3.10 or newer, from this plugin directory:
+
+```sh
+python scripts/generate_codex_manifest.py
+python scripts/validate.py --marketplace-root ../..
+python -m unittest discover -s tests
+python -m unittest discover -s skills/iterate/scripts -p 'test_*.py'
+python -m unittest discover -s skills/deep-clean/tests -p 'test_*.py'
+```
+
+Run `git diff --check` and the [contribution checks](../../docs/CONTRIBUTING.md#validation) from the repository root. Commit both manifests after portable metadata changes. For detached installed payloads, omit `--marketplace-root`; run fixture-writing package tests on a disposable copy outside the installed cache.
+
+Before publication, exercise relevant [fresh-context scenarios](tests/scenarios.md), packaged references/helpers from an unrelated working directory, and actual icon legibility. Inspect actual artifacts; structure checks, text matching and simulated decisions do not prove agent behavior, installation, live publication or deployment. Commit only scoped changes, update the plugin version when releasing, and verify the same Git revision on each installed surface.
+
+## Host metadata and activation
+
+The root `plugin.json` is portable metadata. Generated `.codex-plugin/plugin.json`, the `com.openai` namespace and skill `agents/openai.yaml` files are compatibility adapters, not product-specific workflow requirements. Both manifests resolve assets from the package root. Keep these names accurate; do not edit installed caches. The repository catalog is `.agents/plugins/marketplace.json`, published as `law-config`.
+
+Use each host's supported installer and update flow. Checkout, publication, installation, enablement and runtime discovery are separate states. Verify version and skill discovery in a fresh session on every intended device/environment; a local install or downloaded bundle does not establish cloud/remote activation. Inspect CLI warnings as well as JSON: unavailable remote catalogs can leave an empty listing without proving absence.
+
+In Codex, installed invocation uses `$develop:develop` or the exact `/skills` entry; an unnamespaced repository-local copy uses `$develop`. Put whitespace before task text; a trailing colon becomes part of the skill name. Catalog metadata does not prove instruction/reference consumption. Follow the [native activation trials](tests/evaluations/native-hosts.md), including positive and unrelated-task controls. Repository-local `.agents/skills` authoring tests loading separately from marketplace installation.
+
+Other hosts use their documented loading and account/workspace distribution flows. Verify filesystem access, native provider tools and fresh independent reviewer capability; do not assume another host's commands or permissions. Report required reviewer matching as unverified when the runtime cannot establish it.
+
+## Artwork and overview rendering
+
+Follow [artwork ownership](assets/AGENTS.md) and [skill icon rules](skills/AGENTS.md). Preserve approved logo/icon pixels; new skill icons must match the existing Roux palette, proportions and crisp pixel edges, with transparent backgrounds and a clear task prop. Declare both `icon_small` and `icon_large` in each skill's `agents/openai.yaml`; inspect the set together at 48 px and smaller.
+
+Keep the README's linked PNG, [HTML source](docs/develop-overview.html) and [explorer](docs/develop-route-explorer.html) consistent with current skill ownership and conditions. From this plugin directory, use an already installed Playwright package and sandbox-capable browser:
+
+```sh
+node docs/render-guide.mjs
+```
+
+Chromium is the default. Set `BROWSER_ENGINE=firefox` for an existing Firefox; `BROWSER_EXECUTABLE` may select an existing executable for that engine. Do not install dependencies or disable sandboxing merely to run this optional documentation helper; it is not a plugin runtime requirement.
+
+The renderer captures the 1000-pixel-wide overview at 2× scale, checks the actual PNG at an 860-pixel README display width, and checks desktop/mobile explorer interactions without network dependencies. Inspect the screenshots, not just the pass flag. Each run retains screenshots and `browser-qa.json`, including failures/partial results, in a unique system-temporary `develop-browser-qa-*` directory outside the package. Printed evidence paths are absolute; passing runs update `docs/develop-overview.png`, and retries retain earlier evidence. Copy evidence elsewhere if it must survive temporary-file cleanup.
+
+## Source and installation changes
+
+Source consolidation, installation, retirement, commits and publication require their own applicable authorization. Before replacing an installed skill, inventory its live callers, helpers, links and repository-owned behavior. Verify replacement source, version and installation state; disclose gaps. Preserve repository-specific operations under their owner; do not copy machine-specific scripts or native transcript parsers into generic workflows.
+
+Move retired sources and exact matching links to recoverable Trash where supported; preserve Git history, unrelated skills and work. Repair live callers and remove only obsolete grants/packaging entries.

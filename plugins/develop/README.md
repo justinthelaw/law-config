@@ -1,53 +1,48 @@
 # Develop
 
-Eight portable skills for scoped development, review and maintenance. Invoke `develop` once with the outcome you want, or call the owning skill directly. It carries authorized work through the requested checks and handoff, preserving narrow review or diagnosis requests. These are instructions followed by an agent, not a runtime-enforced skill router; native-host execution needs separate verification. See [installation](INSTALL.md).
+Eight portable skills for scoped development, review and maintenance. [Install in Codex](INSTALL.md), then invoke `$develop:develop` with the outcome you want, or call the owning skill directly. Develop carries authorized work through the requested checks and handoff, preserving narrow review or diagnosis requests. No external workflow plugin is required.
 
-| Skill | Owns |
-| --- | --- |
-| [develop](skills/develop/SKILL.md) | Routes the user's outcome and keeps one coordinator across handoffs. |
-| [iterate](skills/iterate/SKILL.md) | Implements, refactors, reviews, diagnoses incidents, publishes, monitors CI/reviews and prepares deployment handoffs. |
-| [upgrade](skills/upgrade/SKILL.md) | Assesses dependencies/runtimes and plans migrations; uses Iterate for authorized implementation. |
-| [adversarial-loop](skills/adversarial-loop/SKILL.md) | Independently reviews artifacts and evidence using optional user rubrics/preferences and bounded fresh review rounds. |
-| [clean](skills/clean/SKILL.md) | Removes verified disposable artifacts/processes attributable to the current thread. |
-| [deep-clean](skills/deep-clean/SKILL.md) | Inspects or cleans explicitly widened filesystem scope using Clean's protections. |
-| [kaizen](skills/kaizen/SKILL.md) | Learns from selected sessions and proposes workflow improvements; uses Iterate when implementation is requested. |
-| [upgrade-codex](skills/upgrade-codex/SKILL.md) | Audits selected Codex configuration; explicit invocation only, with requested implementation handed to Iterate. |
+[![Develop workflow: eight skills, conditional handoffs, shared review and the Iterate CI repair loop.](docs/develop-overview.png)](docs/develop-overview.png)
 
-![Develop skill calls: conditional handoffs into Iterate, shared adversarial review, resource cleanup and an example CI/review repair loop.](docs/develop-overview.png)
+Open the image for the full-size guide. The [HTML overview source](docs/develop-overview.html) and optional [interactive explorer](docs/develop-route-explorer.html) explain the same workflow. These are instructions followed by an agent; native-host execution needs separate verification.
 
-The Roux-themed [one-page overview source](docs/develop-overview.html) shows instructed skill handoffs and their conditions, with an example CI/requested-review repair loop. It is readable without interaction. The [interactive explorer](docs/develop-route-explorer.html) is an optional supplement.
+## Choose a skill
 
-## Who calls whom
-
-These instructions describe conditional calls or workflow reuse, not a sequence every task runs.
-Composed work returns through the [shared handoff](skills/develop/references/contract.md#handoffs);
-direct standalone calls keep their owner's completion policy.
-
-| Caller | Calls / reuses | Condition and return |
+| Icon | Skill | Use it for |
 | --- | --- | --- |
-| Develop | Iterate, Upgrade, Clean, Kaizen or adversarial-loop | Select the owner for the requested outcome. Deep-clean and upgrade-codex require their explicit scope/invocation; a generic upgrade never selects upgrade-codex. |
-| Iterate | adversarial-loop; optionally Clean | The coordinator runs intent/evidence checkpoints, reusing current nested gates. Call Clean only for requested cleanup or an identified authorized resource need; return measurements and protected/blocked targets. |
-| Upgrade | adversarial-loop; Iterate; optionally Clean | Review assessment and final evidence through shared gates. Call Iterate only for authorized implementation/delivery, then combine its result with the dependency ledger. Clean requires a demonstrated authorized resource need, not a mandatory preparation phase. |
-| upgrade-codex | Iterate; conditionally adversarial-loop | A bare explicit invocation audits only. Audit review is opt-in; requested implementation uses Iterate and the shared gates. Return implementation evidence to the Codex coverage report. |
-| Kaizen | adversarial-loop; conditionally Iterate | Review selected-session recommendations. Call Iterate only for specifically authorized improvements; return tested outcomes without expanding session/repository scope. |
-| Clean | adversarial-loop; conditionally Deep-clean | Review proposed targets and outcome. Explicitly widened inspection/cleanup may hand off to Deep-clean with the same scope and authority. |
-| Deep-clean | Clean's execution/protection workflow and shared review gates | Reuse the existing Clean workflow for eligible targets; do not route recursively back through Clean's start. Return coverage, measurements and dispositions to the caller. |
-| adversarial-loop | Fresh independent reviewers | Reviewers return findings to the calling coordinator. They never invoke nested reviews or acquire implementation authority. |
+| <img src="skills/develop/assets/icon.png" width="48" height="48" alt="Develop Roux icon"> | [develop](skills/develop/SKILL.md) | Route an outcome to its owner and keep one coordinator across handoffs. |
+| <img src="skills/iterate/assets/icon.png" width="48" height="48" alt="Iterate Roux icon"> | [iterate](skills/iterate/SKILL.md) | Implement, refactor, review, diagnose incidents, publish, monitor CI/reviews and prepare deployment handoffs. |
+| <img src="skills/upgrade/assets/icon.png" width="48" height="48" alt="Upgrade Roux icon"> | [upgrade](skills/upgrade/SKILL.md) | Assess dependencies and runtimes and plan migrations; hand authorized implementation to Iterate. |
+| <img src="skills/adversarial-loop/assets/icon.png" width="48" height="48" alt="Adversarial Loop Roux icon"> | [adversarial-loop](skills/adversarial-loop/SKILL.md) | Independently review facts, visuals, writing, plans and results with bounded fresh review rounds and optional user rubrics. |
+| <img src="skills/clean/assets/icon.png" width="48" height="48" alt="Clean Roux icon"> | [clean](skills/clean/SKILL.md) | Inspect or remove verified disposable artifacts/processes attributable to this thread. |
+| <img src="skills/deep-clean/assets/icon.png" width="48" height="48" alt="Deep Clean Roux icon"> | [deep-clean](skills/deep-clean/SKILL.md) | Inspect or clean explicitly widened filesystem scope using Clean's protections. |
+| <img src="skills/kaizen/assets/icon.png" width="48" height="48" alt="Kaizen Roux icon"> | [kaizen](skills/kaizen/SKILL.md) | Learn from selected sessions and recommend workflow improvements; use Iterate for requested implementation. |
+| <img src="skills/upgrade-codex/assets/icon.png" width="48" height="48" alt="Upgrade Codex Roux icon"> | [upgrade-codex](skills/upgrade-codex/SKILL.md) | Explicitly audit selected Codex configuration against the installed or specified version; report coverage gaps and required versus optional changes. |
 
-Iterate owns repository delivery, including **Refactor**, Debug and deployment/operations
-handoff modes. [Refactor](skills/iterate/references/refactoring.md) can use a focused
-worker with bounded files, an objective, preserved behavior/performance and
-acceptance checks. The worker returns its diff and evidence; the coordinator
-integrates, runs applicable full tests and reviews the result. Its goal is
-maintainability within requested or justified scope; it is neither a ninth skill
-nor automatic repository-wide polishing. Clean continues to mean disposable
-resource cleanup.
+## How work moves
 
-Review rubrics extend the existing adversarial engine. Handoffs preserve scope,
-authority and review budgets; nested work does not create another delivery owner,
-review engine or watcher. CI-only requests do not start Codex reviews; preparation
-or publication does not authorize deployment or merging.
+These are conditional handoffs, not a sequence every task runs. Composed work returns through the [shared handoff](skills/develop/references/contract.md#handoffs); standalone calls keep their owner's completion policy.
 
-To render the overview PNG and check the interactive guide, use an already installed Playwright package and sandbox-capable browser: `node docs/render-guide.mjs`. Use the default Chromium engine, or set `BROWSER_ENGINE=firefox` for an existing Firefox. Set `BROWSER_EXECUTABLE` only to select an existing executable for that engine. The renderer captures the 1000-pixel-wide static overview at 2× scale, checks its actual PNG at an 860-pixel README display width, and checks desktop/mobile explorer interactions without network dependencies. It is an optional documentation helper, not a plugin runtime requirement. Do not disable browser sandboxing to work around a host restriction.
+| Owner | Handoff and boundary |
+| --- | --- |
+| Develop | Selects the requested outcome's owner. Deep-clean needs explicit scope or invocation; upgrade-codex always needs explicit invocation. Generic dependency upgrades stay with Upgrade. |
+| Iterate | Runs intent/evidence checkpoints through adversarial-loop, reusing current nested gates. Calls Clean only for requested cleanup or an identified authorized resource need. |
+| Upgrade | Reviews assessment and final evidence through shared gates. Calls Iterate for authorized implementation/delivery, then combines its evidence with the dependency ledger. Clean is conditional on an authorized resource need. |
+| upgrade-codex | Starts with an audit; audit review is opt-in. Requested changes use Iterate and shared gates, returning evidence to the Codex coverage report. Client installation is separate. |
+| Kaizen | Reviews selected-session recommendations through adversarial-loop. Only specifically authorized improvements go to Iterate; tested outcomes return within the selected scope. |
+| Clean / Deep-clean | Review targets and outcomes. Explicitly widened scope can pass to Deep-clean, which reuses Clean's execution/protections without restarting it. Return coverage, measurements and protected/blocked dispositions. |
+| adversarial-loop | Fresh independent reviewers return findings to the coordinator. Reviewers never start nested reviews or acquire implementation authority. |
 
-Each run preserves its screenshots and `browser-qa.json` in a unique `develop-browser-qa-*` directory under the system temporary directory, outside the plugin package by default. This includes failed checks and partial results after browser errors. The printed report path and screenshot paths are absolute. A passing run also updates `docs/develop-overview.png`; retries leave earlier QA evidence intact. Copy evidence elsewhere if it must outlast system temporary-file cleanup.
+Upgrade assesses dependencies before implementation. The user may explicitly bypass the separate assessment after planning; factual prerequisites, validation and protections still apply. Handoffs preserve scope, authority and review budgets, with one delivery owner, review engine and watcher. CI-only requests do not start Codex reviews; publication does not authorize deployment or merging.
+
+## Iterate tools and guidance
+
+- [Staged-file size check](skills/iterate/references/staged-file-size.md): an explicitly invoked, offline, read-only Python 3.10+ and Git helper, with optional repository-owned profiles and inert hook examples. It never edits or stages files, discovers profiles or installs hooks; repositories may retain a reviewed standalone copy.
+- [Focused source reading](skills/iterate/references/documentation.md#focused-source-reading): narrow paths and searches before reading large documents or corpora, while preserving necessary context and reporting coverage gaps.
+- [Visual validation](skills/iterate/references/visual-validation.md): inspect actual structure and screenshots, exercise changed interactions, and report the surfaces and states verified.
+- [Refactoring](skills/iterate/references/refactoring.md): an Iterate mode with bounded objectives, preserved behavior/performance and acceptance checks. A focused worker returns its diff/evidence; the coordinator integrates, runs applicable full tests and reviews the result.
+- [GitHub monitoring](skills/iterate/references/github-monitoring.md): the bundled watcher tracks CI. Its vendor-specific review adapter is explicit; other required reviews use native evidence. Passing CI alone does not certify all PR approvals.
+
+Scope stays with selected repositories and sessions. Clean defaults to this thread; deep inventories require installed Python 3.10+ and do not imply removal eligibility. Both cleanup skills preserve retained plugin state, memories, secrets and useful/shared work. Signing is nonblocking: prefer an existing noninteractive signer, otherwise fall back unsigned while preserving the thread's preference and actual server restrictions.
+
+Develop uses the [Apache-2.0 license](LICENSE). Maintainers should follow [package, release and artwork instructions](AGENTS.md).
