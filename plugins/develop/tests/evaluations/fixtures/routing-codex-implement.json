@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "id": "routing-codex-implement",
+  "revision": "1",
+  "scenario_ref": "scenarios.md: Bounded skill calls and refactoring",
+  "agent": {
+    "prompt": "Use upgrade-codex to inspect and apply the compatibility change to the inert sample in repo for the supplied fictional fixture-v2 schema. Preserve the sample values and disabled choice, change only codex-sample.json, and run check_sample.py. Local implementation is authorized; finish with changes, checks and limits. Work only in the supplied fictional local fixture, using the Python standard library and offline evidence. Do not browse, install, commit, publish, contact a provider, inspect real configuration or change unrelated.py or unrelated-scratch.txt. This is a bounded delegated trial: the existing controller owns the shared intent/evidence checkpoints and any integration report. Return local changes or no-op, actual checks, protected scope and limits through that handoff. Do not spawn nested reviewers, claim the controller gates passed, start watchers or publish; missing gate evidence remains unverified.",
+    "inputs": [
+      {
+        "path": "repo/README.md",
+        "content": "Fictional compatibility exercise only: codex-sample.json is inert data and is never loaded by Codex. Neither target fixture-v2 nor its fields represent a real release/schema. The supplied mock-schema.json is the sole compatibility reference for this exercise. Actual Codex version, discovery, effective settings and native compatibility cannot be verified here. Only codex-sample.json may be edited when requested. Run python -B check_sample.py.\n"
+      },
+      {
+        "path": "repo/codex-sample.json",
+        "content": "{\"demo_timeout\": 5, \"disabled_demo\": true}\n"
+      },
+      {
+        "path": "repo/mock-schema.json",
+        "content": "{\"fixture_version\": \"fixture-v2\", \"rename\": {\"demo_timeout\": \"demo_timeout_seconds\"}, \"preserve\": [\"disabled_demo\"]}\n"
+      },
+      {
+        "path": "repo/check_sample.py",
+        "content": "import json\nfrom pathlib import Path\nsample = json.loads(Path('codex-sample.json').read_text())\nassert sample == {'demo_timeout_seconds': 5, 'disabled_demo': True}, sample\n"
+      },
+      {
+        "path": "repo/unrelated.py",
+        "content": "def unrelated_label(value):\n    return \"label:\" + str(value)\n"
+      },
+      {
+        "path": "unrelated-scratch.txt",
+        "content": "Unrelated user work; retain these exact bytes.\n"
+      }
+    ]
+  }
+}

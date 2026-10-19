@@ -3,5 +3,5 @@ interface:
   icon_small: "./assets/icon.png"
   icon_large: "./assets/icon.png"
   display_name: "Develop: Iterate"
-  short_description: "Diagnose, deliver and hand off repository work"
-  default_prompt: "Use $iterate for my selected repository task, incident or deployment/operations handoff, composing the authorized diagnosis, repair, validation and delivery steps needed for my outcome."
+  short_description: "Implement, refactor, diagnose and deliver scoped work"
+  default_prompt: "Use $iterate for my selected implementation, bounded refactor, incident or deployment/operations handoff, composing the authorized work, validation and delivery needed for my outcome."

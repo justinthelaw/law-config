@@ -1,4 +1,5 @@
 """Offline delivery fixture construction controls, not agent or native-host trials."""
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -204,6 +205,180 @@ for case in json.loads(CASES):
         self.assertNotIn("subsequent_observations", grader)
         self.assertEqual({path.relative_to(target).as_posix() for path in target.rglob("*")
                           if path.is_file()}, {"provider.json", "unrelated-scratch.txt"})
+
+
+class RoutingFixtures(unittest.TestCase):
+    """Calibrate bounded public inputs and private executable controls.
+
+    These tests do not grade skill calls. That requires actual tool/user traces
+    and the semantic criteria in each private grader, with isolation disclosed.
+    """
+
+    NAMES = ("routing-upgrade-assess", "routing-upgrade-implement",
+             "routing-codex-audit", "routing-codex-implement",
+             "routing-refactor", "routing-clean", "routing-simple-implement")
+
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory(prefix="develop-routing-")
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+
+    def materialize(self, name):
+        fixture = evaluation.load_json(DATA / "fixtures" / (name + ".json"))
+        grader = evaluation.load_json(DATA / "graders" / (name + ".json"))
+        target = self.root / name
+        hashes = evaluation.materialize(fixture, target)
+        return fixture, grader, target, hashes
+
+    @staticmethod
+    def inventory(target):
+        return {path.relative_to(target).as_posix(): path.read_bytes()
+                for path in target.rglob("*") if path.is_file()}
+
+    @staticmethod
+    def run_python(target, *arguments):
+        return subprocess.run([sys.executable, "-B", *arguments], cwd=target,
+                              capture_output=True, text=True, check=False,
+                              timeout=20)
+
+    def test_all_routing_inputs_materialize_exactly_without_private_criteria(self):
+        for name in self.NAMES:
+            with self.subTest(fixture=name):
+                fixture, grader, target, hashes = self.materialize(name)
+                evaluation.validate_fixture(fixture)
+                self.assertEqual((grader["fixture_id"], grader["fixture_revision"]),
+                                 (fixture["id"], fixture["revision"]))
+                expected = {row["path"]: row["content"].encode("utf-8")
+                            for row in fixture["agent"]["inputs"]}
+                self.assertEqual(self.inventory(target), expected)
+                self.assertEqual(hashes, {path: hashlib.sha256(data).hexdigest()
+                                          for path, data in expected.items()})
+                self.assertEqual(set(fixture), {"schema_version", "id", "revision",
+                                               "scenario_ref", "agent"})
+                self.assertEqual(set(fixture["agent"]), {"prompt", "inputs"})
+                public = json.dumps(fixture, ensure_ascii=False)
+                ids = [criterion["id"] for criterion in grader["criteria"]]
+                self.assertEqual(len(ids), len(set(ids)))
+                for criterion in grader["criteria"]:
+                    self.assertTrue(criterion["evidence"])
+                    self.assertNotIn(criterion["pass_when"], public)
+                    self.assertNotIn(criterion["evidence"], public)
+                for key in ("oracle_python", "candidates"):
+                    self.assertNotIn(key, fixture)
+                    if key in grader:
+                        self.assertNotIn(json.dumps(grader[key]), public)
+
+    def test_assessment_implementation_pairs_have_identical_evidence(self):
+        # The task authority changes; supplied dependency/schema facts do not.
+        for prefix, audit in (("upgrade", "assess"), ("codex", "audit")):
+            with self.subTest(owner=prefix):
+                readonly, _, _, _ = self.materialize(f"routing-{prefix}-{audit}")
+                writable, _, _, _ = self.materialize(f"routing-{prefix}-implement")
+                self.assertEqual(readonly["agent"]["inputs"],
+                                 writable["agent"]["inputs"])
+                self.assertNotEqual(readonly["agent"]["prompt"],
+                                    writable["agent"]["prompt"])
+
+    def test_refactor_oracle_accepts_baseline_and_shared_helper_rejects_regressions(self):
+        _, grader, target, _ = self.materialize("routing-refactor")
+        before = self.inventory(target)
+        repo = target / "repo"
+        source = repo / "report.py"
+        original = source.read_text(encoding="utf-8")
+        candidates = [{"id": "unchanged-baseline", "passes": True,
+                       "source": original}, *grader["candidates"]]
+        for candidate in candidates:
+            with self.subTest(candidate=candidate["id"]):
+                source.write_text(candidate["source"], encoding="utf-8")
+                result = self.run_python(repo, "-c", grader["oracle_python"], "-v")
+                self.assertIn("Ran 6 tests", result.stderr)
+                if candidate["passes"]:
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                    public = self.run_python(repo, "-m", "unittest", "discover",
+                                             "-s", "tests", "-v")
+                    self.assertEqual(public.returncode, 0, public.stderr)
+                    self.assertIn("Ran 2 tests", public.stderr)
+                else:
+                    self.assertNotEqual(result.returncode, 0, result.stderr)
+                    # The named behavior must fail by assertion, not merely an
+                    # import/syntax error or unrelated exception in another test.
+                    self.assertIn("FAIL: " + candidate["rejected_by"], result.stderr)
+                    self.assertIn("AssertionError", result.stderr)
+        after = self.inventory(target)
+        self.assertEqual(set(before), set(after))
+        for path in before.keys() - {"repo/report.py"}:
+            self.assertEqual(before[path], after[path], path)
+
+    def test_upgrade_control_uses_target_and_preserves_public_results(self):
+        _, _, target, _ = self.materialize("routing-upgrade-implement")
+        repo = target / "repo"
+        before = self.inventory(target)
+        for content in (before["repo/invoice.py"].decode("utf-8"),
+                        "from vendor_v2 import total\n\ndef invoice(cents):\n"
+                        "    return total(cents)\n"):
+            (repo / "invoice.py").write_text(content, encoding="utf-8")
+            result = self.run_python(repo, "-m", "unittest", "discover", "-s", "tests")
+            self.assertEqual(result.returncode, 0, result.stderr)
+        # In this evaluator-owned copy, absence of v1 proves the candidate does
+        # not merely retain the old implementation while passing its old tests.
+        (repo / "vendor_v1.py").rename(repo / "vendor_v1.saved")
+        result = self.run_python(repo, "-m", "unittest", "discover", "-s", "tests")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        (repo / "vendor_v1.saved").rename(repo / "vendor_v1.py")
+        after = self.inventory(target)
+        self.assertEqual(set(before), set(after))
+        for path in before.keys() - {"repo/invoice.py"}:
+            self.assertEqual(before[path], after[path], path)
+
+    def test_fictional_codex_check_detects_then_accepts_scoped_sample_repair(self):
+        _, _, target, _ = self.materialize("routing-codex-implement")
+        before = self.inventory(target)
+        result = self.run_python(target / "repo", "check_sample.py")
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("AssertionError", result.stderr)
+        sample = target / "repo/codex-sample.json"
+        data = json.loads(sample.read_text(encoding="utf-8"))
+        data["demo_timeout_seconds"] = data.pop("demo_timeout")
+        sample.write_text(json.dumps(data) + "\n", encoding="utf-8")
+        result = self.run_python(target / "repo", "check_sample.py")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        after = self.inventory(target)
+        self.assertEqual(set(before), set(after))
+        for path in before.keys() - {"repo/codex-sample.json"}:
+            self.assertEqual(before[path], after[path], path)
+
+    def test_cleanup_output_is_reconstructable_and_unrelated_inputs_survive(self):
+        _, _, target, _ = self.materialize("routing-clean")
+        before = self.inventory(target)
+        output = target / ".task-work/generated.txt"
+        output.unlink()
+        self.assertEqual(self.inventory(target),
+                         {path: content for path, content in before.items()
+                          if path != ".task-work/generated.txt"})
+        result = self.run_python(target / "repo", "rebuild.py")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(self.inventory(target), before)
+
+    def test_simple_fix_leaves_visible_duplication_and_scratch_unchanged(self):
+        _, _, target, _ = self.materialize("routing-simple-implement")
+        before = self.inventory(target)
+        oracle = ("from labels import item_label\n"
+                  "for n in (0, 1, 2, 100):\n"
+                  "    expected = '1 item' if n == 1 else f'{n} items'\n"
+                  "    assert item_label(n) == expected, (n, item_label(n))\n")
+        result = self.run_python(target / "repo", "-c", oracle)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("AssertionError", result.stderr)
+        (target / "repo/labels.py").write_text(
+            'def item_label(count):\n'
+            '    return "1 item" if count == 1 else f"{count} items"\n',
+            encoding="utf-8")
+        result = self.run_python(target / "repo", "-c", oracle)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        after = self.inventory(target)
+        self.assertEqual(set(before), set(after))
+        for path in before.keys() - {"repo/labels.py"}:
+            self.assertEqual(before[path], after[path], path)
 
 
 if __name__ == "__main__":

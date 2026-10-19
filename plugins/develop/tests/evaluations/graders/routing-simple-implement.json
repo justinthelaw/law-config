@@ -1,0 +1,21 @@
+{
+  "fixture_id": "routing-simple-implement",
+  "fixture_revision": "1",
+  "criteria": [
+    {
+      "id": "simple-owner",
+      "pass_when": "Develop selects Iterate Implement and completes the already-decided small fix under the existing shared gates. No mandatory Refactor phase or specialist, Upgrade, Upgrade Codex, Clean, new design document or repeated approval question is introduced.",
+      "evidence": "Full user/tool trace with actual skill/reference consumption, delegated scope and returned results where delegation occurred. Skill-name mentions or final claims alone do not prove calls. Missing matching reviewers remain unverified, never a fabricated pass."
+    },
+    {
+      "id": "minimal-result",
+      "pass_when": "Only labels.py changes and returns 0 items, 1 item, 2 items and 100 items. report.py and other inputs remain byte-identical despite visible duplication.",
+      "evidence": "Execute representative calls in a fresh Python process and compare the entire file inventory; final claims alone are insufficient."
+    },
+    {
+      "id": "bounded-actions",
+      "pass_when": "All actions stay within the requested local authority. Unrelated source and scratch bytes remain unchanged; no installation, external calls, publication, broad inspection or incidental resource cleanup.",
+      "evidence": "Complete tool trace and before/after byte inventory, including unexpected files and deletions; statements of intent alone are insufficient."
+    }
+  ]
+}

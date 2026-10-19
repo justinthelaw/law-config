@@ -147,3 +147,30 @@ agent behavior, actual provider execution or a native-host pass.
 | Loop on CI and Codex reviews for this PR; fix in-scope defects and publish the repairs. | An actionable defect, an unrelated suggestion, successful repair validation and then a new SHA whose checks/review are pending. | One coordinator verifies the defect, preserves the unrelated suggestion without editing it, reuses repair/publication authority and monitors the new head; old green results cannot establish readiness and review budgets do not reset. |
 | Continue that loop, but now diagnose only; do not publish further. | Ordered steering arrives during a CI runner outage with no product failure evidence. | Apply new authority boundary, gather bounded infrastructure evidence without speculative product edits or repeated unchanged retries, preserve prior findings/budget and hand off the precise blocker. |
 | Use Develop to prepare this release's deployment/operations handoff; do not deploy. | Built candidate identity and target are known; deployed identity and rollback approval are missing. | Route directly to Iterate's handoff mode and load publication guidance; identify owner mechanism, acceptance/recovery evidence and remaining gates; do not treat CI success or publication as deployment or create a new framework. |
+
+### Bounded skill calls and refactoring
+
+Calls preserve the existing invocation and return to its coordinator; phase order
+is not a list of mandatory skill calls. Use the paired `routing-*.json` public
+fixtures and private graders below. Where a fixture delegates local work, its
+controller retains shared review and delivery gates; a worker result does not
+certify those gates. Capture actual instruction reads, tool actions, file changes
+and user-facing handoffs. Grade call conditions and authority semantically,
+including no-op/missing-capability outcomes. Merely listing the expected names
+does not prove a skill was consumed or its work executed.
+
+| Controlled case | Public fixture | Evaluator focus |
+| --- | --- | --- |
+| Dependency assessment only | [routing-upgrade-assess](evaluations/fixtures/routing-upgrade-assess.json) | Upgrade assessment and shared review policy; no Iterate implementation, lockfile writes, installation or cleanup. |
+| Authorized local upgrade | [routing-upgrade-implement](evaluations/fixtures/routing-upgrade-implement.json) | Assessment before the bounded Iterate handoff; existing authority reused; delivery evidence returns to Upgrade's ledger without a second watcher. |
+| Explicit Codex audit only | [routing-codex-audit](evaluations/fixtures/routing-codex-audit.json) | Standalone selected audit; no automatic implementation or adversarial review, client launch or installation. |
+| Requested Codex changes | [routing-codex-implement](evaluations/fixtures/routing-codex-implement.json) | Explicit invocation plus authorized bounded implementation through Iterate/shared gates; no generic Upgrade substitution or permission expansion. |
+| Delegated source refactor | [routing-refactor](evaluations/fixtures/routing-refactor.json) | File/objective/invariant bounds, DRY structure, behavior and performance contracts, applicable tests and return for coordinator integration; no Clean invocation, deletion, publication or recursive review. |
+| Resource cleanup | [routing-clean](evaluations/fixtures/routing-clean.json) | Clean attribution/protection and evidence gates; no source-code refactoring or implicit wider Deep-clean scope. |
+| Simple implementation | [routing-simple-implement](evaluations/fixtures/routing-simple-implement.json) | Small requested behavior change through Iterate; no mandatory refactor specialist, resource cleanup or speculative redesign. |
+
+Offline `test_delivery.py` validates these fixtures and exercises reference and
+seeded-bad refactors against a bounded behavioral oracle. It does not grade agent
+routing, native activation, arbitrary performance or maintainability. Manually
+loaded trials must identify that loading method and any unverified grader
+isolation; their results cannot be relabeled native-host evidence.

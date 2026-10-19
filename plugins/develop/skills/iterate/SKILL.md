@@ -1,6 +1,6 @@
 ---
 name: iterate
-description: Diagnose incidents, prepare deployment/operations handoffs, implement or review repository changes, publish selected existing work, and monitor or fix CI and review findings on GitHub, GitLab, Bitbucket or Hugging Face.
+description: Implement, refactor or review repository changes, diagnose incidents, prepare deployment handoffs, publish selected work, and monitor or fix CI and reviews on GitHub, GitLab, Bitbucket or Hugging Face.
 ---
 
 # Iterate
@@ -16,6 +16,7 @@ Choose the mode that matches the request; change modes only within its authorize
 | Mode | Target default and workflow |
 | --- | --- |
 | **Implement** | Build, fix or maintain behavior in selected repositories. Use the bundled [implementation guidance](references/implementation.md) for planning, isolation, debugging and meaningful tests. |
+| **Refactor** | Improve the structure of affected code/docs while preserving behavior and performance. Use [bounded refactoring](references/refactoring.md) for an explicit request or a demonstrated need within authorized implementation; this is not resource cleanup or a mandatory polish phase. |
 | **Debug** | Investigate a selected failure, service/environment or log bundle using [incident diagnosis](references/debugging.md). Keep diagnosis, repair and operational authority distinct; a checkout is optional until code repair. |
 | **Review** | Inspect selected code or [documentation drift](references/documentation.md). Report findings without repair or publication unless authorized. |
 | **Publish existing changes** | Use selected checkouts and initialized recursive submodules; otherwise resolve the current checkout. Preserve unrelated siblings. Read [publication](references/publication.md); prepared work needs no new design process. |
@@ -36,7 +37,7 @@ For implementation/delivery intent, carry the authorized workflow below through 
 
 1. **Resolve.** Inspect the selected checkout's origin/upstream and exact provider identity. Preserve nested groups, change-request paths and artifact namespaces. Resolve an ambiguous shorthand through user/repository context; ask if its provider remains unclear. Use supported native tools for that host; never reroute an unsupported provider to another service.
 2. **Prepare.** Inspect access, current default branch, related PRs/issues, instructions/templates, `CODEOWNERS`, security/CLA/DCO requirements, CI, manifests, lockfiles and pinned tools. Honor required maintainer acceptance; create prerequisite issues only when required and authorized. Reuse matching branches/requests in an isolated checkout. Preserve dirty/untracked work, stashes, unpublished commits and other worktrees. Start new work from the current default branch; use an authorized fork if upstream writes are unavailable.
-3. **Implement.** Follow the scoped plan and [implementation guidance](references/implementation.md). Preserve interfaces, fix causes once and generate artifacts with pinned native tools. For documentation changes, use [current-source evidence](references/documentation.md).
+3. **Implement.** Follow the scoped plan and [implementation guidance](references/implementation.md). Preserve interfaces, fix causes once and generate artifacts with pinned native tools. Use the [Refactor mode](references/refactoring.md) only when its bounded trigger applies. For documentation changes, use [current-source evidence](references/documentation.md).
 4. **Validate.** Run repository-required checks and affected regression coverage using [validation evidence](references/validation.md). Inspect the full diff and `git diff --check`. Resolve material findings and rerun affected checks; distinguish defects from infrastructure/access failures.
 5. **Publish.** When authorized, follow [publication](references/publication.md) for scoped staging, submodule order, nonblocking signing and remote readback. Open/update the native change request only within granted authority, preserving its template and stating purpose, behavior and actual validation evidence. Use [optional issue tracking](references/issue-tracking.md) when requested or required by repository policy; a normal delivery does not create an issue automatically.
 6. **Verify each head.** Reconcile expected checks with actual provider results and complete required CI and configured/requested reviews for the unchanged current SHA. Diagnose failures; rerun unchanged code only for evidenced transient problems and within authorization. Inspect comments and unresolved threads, fix actionable findings and support disagreements with evidence. Resolve addressed threads only when that external write is authorized. Every push invalidates affected checks and reviews.

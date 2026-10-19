@@ -15,7 +15,7 @@ Resolve the user's outcome, then route below. Repository workflows read [the sha
 
 | Intent | Required skill | Handoff |
 | --- | --- | --- |
-| Implement, fix, maintain or review repository work | [iterate](../iterate/SKILL.md) | Targets, outcome, implementation constraints |
+| Implement, fix, refactor, maintain or review repository work | [iterate](../iterate/SKILL.md) | Targets, outcome, implementation constraints; bounded refactor objective/invariants when relevant |
 | Diagnose a failure or local, staged or live incident | [iterate](../iterate/SKILL.md) | Selected service/environment/log bundle, time window, diagnosis/repair boundary |
 | Publish existing changes or monitor/fix CI | [iterate](../iterate/SKILL.md) | Selected roots, delivery mode, existing authority, thread signing preference |
 | Prepare a deployment or operations handoff | [iterate](../iterate/SKILL.md) | Selected release/repository, target environment, candidate identity, evidence and authority gaps |

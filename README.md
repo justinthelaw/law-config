@@ -8,7 +8,7 @@ This repository also maintains Develop and its `law-config` Git marketplace.
 | Goal | Start here |
 | --- | --- |
 | Configure a machine | [Linux](docs/setup-linux.md) · [macOS](docs/setup-macos.md) |
-| Use Develop's development and maintenance workflows | [Skill guide](plugins/develop/README.md) · [Install and sync](plugins/develop/INSTALL.md) |
+| Use Develop's development and maintenance workflows | [Skill calls and bounded refactoring](plugins/develop/README.md) · [Install and sync](plugins/develop/INSTALL.md) |
 | Contribute changes | [Required checks](docs/CONTRIBUTING.md#validation) · [Repository instructions](AGENTS.md) |
 
 ## Quick Start
