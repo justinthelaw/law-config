@@ -44,13 +44,13 @@ jobs:
           # https://github.com/nodejs/Release/blob/main/schedule.json
           node-version: "24"
 
-      # Upgrade deferred: npm bundled security fixes require a refreshed upstream release.
-      # Retain 12.2.0; see docs/dependency-upgrades/2026-10-12.md and npm/cli#10062.
+      # Exact security patch; next-12 is 12.2.1 while latest remains 12.2.0.
+      # See docs/dependency-upgrades/2026-10-18.md for bundle verification.
       - name: Update npm
-        run: npm install --global npm@12.2.0
+        run: npm install --global npm@12.2.1
 
       - name: Install Pre-Commit
-        run: python -m pip install pre-commit==4.6.2
+        run: python -m pip install pre-commit==4.7.0
 
       - name: Check Zsh Configuration Syntax
         run: |
