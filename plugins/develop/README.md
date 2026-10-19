@@ -1,6 +1,6 @@
 # Develop
 
-Eight portable skills for scoped development, review and maintenance. Invoke `develop` once with the outcome you want, or call the owning skill directly. It carries authorized work through the requested checks and handoff, preserving narrow review or diagnosis requests. See [installation](INSTALL.md).
+Eight portable skills for scoped development, review and maintenance. Invoke `develop` once with the outcome you want, or call the owning skill directly. It carries authorized work through the requested checks and handoff, preserving narrow review or diagnosis requests. These are instructions followed by an agent, not a runtime-enforced skill router; native-host execution needs separate verification. See [installation](INSTALL.md).
 
 | Skill | Owns |
 | --- | --- |
@@ -13,13 +13,13 @@ Eight portable skills for scoped development, review and maintenance. Invoke `de
 | [kaizen](skills/kaizen/SKILL.md) | Learns from selected sessions and proposes workflow improvements; uses Iterate when implementation is requested. |
 | [upgrade-codex](skills/upgrade-codex/SKILL.md) | Audits selected Codex configuration; explicit invocation only, with requested implementation handed to Iterate. |
 
-![Develop skill calls: conditional handoffs into Iterate, shared adversarial review, resource cleanup and a separate delivery phase loop.](docs/develop-overview.png)
+![Develop skill calls: conditional handoffs into Iterate, shared adversarial review, resource cleanup and an example CI/review repair loop.](docs/develop-overview.png)
 
-The Roux-themed [one-page overview source](docs/develop-overview.html) shows skill calls and their conditions separately from delivery phase order. It is readable without interaction. The [interactive explorer](docs/develop-route-explorer.html) is an optional supplement.
+The Roux-themed [one-page overview source](docs/develop-overview.html) shows instructed skill handoffs and their conditions, with an example CI/requested-review repair loop. It is readable without interaction. The [interactive explorer](docs/develop-route-explorer.html) is an optional supplement.
 
 ## Who calls whom
 
-These are conditional calls or workflow reuse, not a sequence every task runs.
+These instructions describe conditional calls or workflow reuse, not a sequence every task runs.
 Composed work returns through the [shared handoff](skills/develop/references/contract.md#handoffs);
 direct standalone calls keep their owner's completion policy.
 
