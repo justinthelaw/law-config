@@ -38,7 +38,7 @@ Other hosts use their documented loading and account/workspace distribution flow
 
 Follow [artwork ownership](assets/AGENTS.md) and [skill icon rules](skills/AGENTS.md). Preserve approved logo/icon pixels; new skill icons must match the existing Roux palette, proportions and crisp pixel edges, with transparent backgrounds and a clear task prop. Declare both `icon_small` and `icon_large` in each skill's `agents/openai.yaml`; inspect the set together at 48 px and smaller.
 
-Keep the README's linked PNG, [HTML source](docs/develop-overview.html) and [explorer](docs/develop-route-explorer.html) consistent with current skill ownership and conditions. From this plugin directory, use an already installed Playwright package and sandbox-capable browser:
+Keep the README's linked PNG and [HTML source](docs/develop-overview.html) to one workflow and one skill directory. Show each skill's logo and description once; keep detailed policy in the owning skill. The former [explorer](docs/develop-route-explorer.html) redirects to this overview. From this plugin directory, use an already installed Playwright package and sandbox-capable browser:
 
 ```sh
 node docs/render-guide.mjs
@@ -46,7 +46,7 @@ node docs/render-guide.mjs
 
 Chromium is the default. Set `BROWSER_ENGINE=firefox` for an existing Firefox; `BROWSER_EXECUTABLE` may select an existing executable for that engine. Do not install dependencies or disable sandboxing merely to run this optional documentation helper; it is not a plugin runtime requirement.
 
-The renderer captures the 1000-pixel-wide overview at 2× scale, checks the actual PNG at an 860-pixel README display width, and checks desktop/mobile explorer interactions without network dependencies. Inspect the screenshots, not just the pass flag. Each run retains screenshots and `browser-qa.json`, including failures/partial results, in a unique system-temporary `develop-browser-qa-*` directory outside the package. Printed evidence paths are absolute; passing runs update `docs/develop-overview.png`, and retries retain earlier evidence. Copy evidence elsewhere if it must survive temporary-file cleanup.
+The renderer captures the 1000-pixel-wide overview at 2× scale, checks the actual PNG at an 860-pixel README display width, and checks the responsive HTML at desktop, mobile and short viewports, skill links and the legacy explorer redirect without network dependencies. Inspect the screenshots, not just the pass flag. Each run retains screenshots and `browser-qa.json`, including failures/partial results, in a unique system-temporary `develop-browser-qa-*` directory outside the package. Printed evidence paths are absolute; passing runs update `docs/develop-overview.png`, and retries retain earlier evidence. Copy evidence elsewhere if it must survive temporary-file cleanup.
 
 ## Source and installation changes
 

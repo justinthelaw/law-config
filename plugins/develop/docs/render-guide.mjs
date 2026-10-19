@@ -1,5 +1,5 @@
 /**
- * Reproducible local HTML rendering and interaction QA.
+ * Reproducible local overview rendering and responsive layout QA.
  * Prerequisite: an already installed Playwright package and usable browser.
  * Run: node render-guide.mjs
  * Optional: BROWSER_ENGINE=firefox BROWSER_EXECUTABLE=/path/to/firefox node render-guide.mjs
@@ -38,31 +38,32 @@ try{
  await page.route('**/*',route=>{const url=route.request().url();if(url.startsWith('file:')||url.startsWith('data:'))return route.continue();report.networkRequests.push(url);return route.abort();});
  await page.goto(pathToFileURL(path.join(base,'develop-overview.html')).href);
  await page.evaluate(()=>document.fonts.ready);
+ await page.locator('.skill-card img').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
+ await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  await page.locator('.sheet').screenshot({path:path.join(qa,'develop-overview.png')});
  report.screenshots.push(evidencePath('develop-overview.png'));
+ const expectedSkills=['develop','iterate','upgrade','adversarial-loop','clean','deep-clean','kaizen','upgrade-codex'];
  const overviewChecks=await page.evaluate(()=>{
   const sheet=document.querySelector('.sheet'),boundary=sheet.getBoundingClientRect();
-  const within=(r,b)=>r.left>=b.left-1&&r.right<=b.right+1&&r.top>=b.top-1&&r.bottom<=b.bottom+1;
-  const elements=[...sheet.querySelectorAll('.card,.call,.review-source,.route-pills,.shared,.loop,.legend,.foot')].map(el=>{
-   const r=el.getBoundingClientRect();
-   return{target:el.className,withinSheet:within(r,boundary),contentFits:el.scrollHeight<=el.clientHeight+2&&el.scrollWidth<=el.clientWidth+2};
-  });
-  const textFailures=[],walker=document.createTreeWalker(sheet,NodeFilter.SHOW_TEXT);
-  while(walker.nextNode()){
-   const node=walker.currentNode;if(!node.textContent.trim())continue;
-   const range=document.createRange();range.selectNodeContents(node);
-   const owner=node.parentElement.closest('.card,.call,.review-source,.route-pills,.shared,.loop,.legend,.foot')||sheet;
-   for(const r of range.getClientRects())if(!within(r,boundary)||!within(r,owner.getBoundingClientRect()))textFailures.push(node.textContent);
-  }
-  return{elements,textFailures,width:boundary.width,height:boundary.height,minBodyFont:Math.min(...[...sheet.querySelectorAll('p,.call,.route-pills span')].map(el=>parseFloat(getComputedStyle(el).fontSize)))};
+  const cards=[...document.querySelectorAll('.skill-card')];
+  const sections=[...sheet.querySelectorAll(':scope > section')].map(el=>el.id);
+  const bodyFonts=[...sheet.querySelectorAll('.skill-card p,.flow-node p')].map(el=>parseFloat(getComputedStyle(el).fontSize));
+  return{width:boundary.width,height:boundary.height,sections,skills:cards.map(el=>el.dataset.skill),minBodyFont:Math.min(...bodyFonts),logos:cards.map(el=>{const img=el.querySelector('img');return{src:img?.getAttribute('src'),loaded:img?.complete&&img.naturalWidth>0,width:img?.getBoundingClientRect().width};})};
  });
- report.checks.push({test:'overview element and text bounds',pass:overviewChecks.elements.every(c=>c.withinSheet&&c.contentFits)&&overviewChecks.textFailures.length===0,results:overviewChecks});
- report.checks.push({test:'overview README typography floor',pass:overviewChecks.width===1000&&overviewChecks.minBodyFont>=20,readmeWidth:860,minBodyDisplayPx:overviewChecks.minBodyFont*860/overviewChecks.width});
+ report.checks.push({test:'one workflow and one skill directory',pass:overviewChecks.sections.length===2&&overviewChecks.sections.includes('workflow')&&overviewChecks.sections.includes('skills'),results:overviewChecks});
+ report.checks.push({test:'eight unique skill descriptions and existing logos',pass:JSON.stringify([...overviewChecks.skills].sort())===JSON.stringify([...expectedSkills].sort())&&overviewChecks.logos.every(logo=>logo.loaded&&logo.width>=48)&&new Set(overviewChecks.logos.map(logo=>logo.src)).size===8&&await page.locator('.sheet img').count()===8});
+ report.checks.push({test:'compact overview with legible README typography',pass:overviewChecks.width===1000&&overviewChecks.height<=1400&&overviewChecks.minBodyFont>=20,readmeWidth:860,minBodyDisplayPx:overviewChecks.minBodyFont*860/overviewChecks.width});
+ const links=await page.locator('.skill-card a').evaluateAll(anchors=>anchors.map(a=>({href:a.href,label:a.textContent.trim()})));
+ for(const link of links){
+  const target=fileURLToPath(link.href);
+  const content=await fs.readFile(target,'utf8');
+  report.checks.push({test:`skill link: ${link.label}`,pass:content.startsWith('---')&&target.endsWith('/SKILL.md'),target});
+ }
  const png=await fs.readFile(path.join(qa,'develop-overview.png'));
  report.generatedImage={sha256:sha256(png),width:png.readUInt32BE(16),height:png.readUInt32BE(20)};
  // Render the generated PNG as an actual <img>, not a scaled copy of its source DOM.
  const readmeFile=path.join(qa,'readme-preview.html');
- await fs.writeFile(readmeFile,`<!doctype html><meta charset="utf-8"><title>README image QA</title><style>body{margin:32px;background:#fff;font:16px system-ui}p{margin:0 0 16px}img{display:block;width:860px;height:auto}</style><p>README image · 860 CSS px · generated PNG</p><img src="${pathToFileURL(path.join(qa,'develop-overview.png')).href}" alt="Develop skill call map">`);
+ await fs.writeFile(readmeFile,`<!doctype html><meta charset="utf-8"><title>README image QA</title><style>body{margin:32px;background:#fff;font:16px system-ui}p{margin:0 0 16px}img{display:block;width:860px;height:auto}</style><p>README image · 860 CSS px · generated PNG</p><img src="${pathToFileURL(path.join(qa,'develop-overview.png')).href}" alt="Develop workflow and skill directory">`);
  const readme=await browser.newPage({viewport:{width:924,height:1000},deviceScaleFactor:1});
  readme.on('pageerror',e=>report.errors.push(e.message));
  await readme.route('**/*',route=>{const url=route.request().url();if(url.startsWith('file:')||url.startsWith('data:'))return route.continue();report.networkRequests.push(url);return route.abort();});
@@ -82,48 +83,34 @@ try{
  }
  report.checks.push({test:'actual PNG at README display width',pass:imageCheck.complete&&imageCheck.naturalWidth===report.generatedImage.width&&imageCheck.naturalHeight===report.generatedImage.height&&imageCheck.displayWidth===860&&imageCheck.dpr===1,results:imageCheck});
  await readme.close();
- for(const viewport of [{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844}]){
+ for(const viewport of [{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844},{name:'short',width:924,height:560}]){
   await page.setViewportSize({width:viewport.width,height:viewport.height});
-  await page.goto(pathToFileURL(path.join(base,'develop-route-explorer.html')).href);
+  await page.goto(pathToFileURL(path.join(base,'develop-overview.html')).href);
   await page.evaluate(()=>document.fonts.ready);
-  await page.screenshot({path:path.join(qa,`explorer-${viewport.name}.png`),fullPage:true});
-  report.screenshots.push(evidencePath(`explorer-${viewport.name}.png`));
-  report.checks.push({test:`${viewport.name}: horizontal overflow`,pass:await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)});
-  const routeIds=await page.locator('.choice[data-route]').evaluateAll(buttons=>buttons.map(button=>button.dataset.route));
-  report.checks.push({test:`${viewport.name}: route controls present and unique`,pass:routeIds.length>0&&new Set(routeIds).size===routeIds.length});
-  for(const id of routeIds){
-   const button=page.locator(`[data-route="${id}"]`);await button.click();
-   const pressed=await button.getAttribute('aria-pressed');
-   const selectedCount=await page.locator('.choice[aria-pressed="true"]').count();
-   const text=await page.locator('#route-title').innerText();
-   report.checks.push({test:`${viewport.name}: route ${id}`,pass:pressed==='true'&&selectedCount===1&&text.length>5,title:text});
-  }
-  for(const id of ['failure','success','blocked','infra']){
-   const button=page.locator(`[data-loop="${id}"]`);await button.click();
-   report.checks.push({test:`${viewport.name}: branch ${id}`,pass:await button.getAttribute('aria-pressed')==='true',title:await page.locator('#loop-title').innerText()});
-  }
-  await page.locator('[data-route="refactor"]').click();
-  await page.locator('#explore').screenshot({path:path.join(qa,`explorer-${viewport.name}-refactor.png`)});
-  report.screenshots.push(evidencePath(`explorer-${viewport.name}-refactor.png`));
-  const explorerBounds=await page.evaluate(()=>[...document.querySelectorAll('.node,.choice,.path-card,.skill-card,.loop-step')].flatMap(el=>{
-   // Phase connectors intentionally extend beyond their cards; test the actual text.
-   const bounds=el.getBoundingClientRect(),walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT),failures=[];
-   while(walker.nextNode()){
-    const node=walker.currentNode;if(!node.textContent.trim())continue;
-    const range=document.createRange();range.selectNodeContents(node);
-    if([...range.getClientRects()].some(r=>r.left<bounds.left-1||r.right>bounds.right+1||r.top<bounds.top-1||r.bottom>bounds.bottom+1))failures.push({target:el.id||el.className,text:node.textContent.trim()});
+  await page.locator('.skill-card img').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
+  // Allow layout-driven connectors to settle across two animation frames.
+  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  const layout=await page.evaluate(()=>{
+   const elements=[...document.querySelectorAll('.flow-node,.skill-card')];
+   const failures=[];
+   for(const el of elements){
+    const bounds=el.getBoundingClientRect(),walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
+    while(walker.nextNode()){
+     const node=walker.currentNode;if(!node.textContent.trim())continue;
+     const range=document.createRange();range.selectNodeContents(node);
+     for(const r of range.getClientRects())if(r.left<bounds.left-1||r.right>bounds.right+1||r.top<bounds.top-1||r.bottom>bounds.bottom+1)failures.push({target:el.id||el.className,text:node.textContent.trim()});
+    }
    }
-   return failures;
-  }));
-  report.checks.push({test:`${viewport.name}: explorer content bounds`,pass:explorerBounds.length===0,failures:explorerBounds});
-  await page.locator('[data-route="deep"]').click();
-  await page.locator('#explore').screenshot({path:path.join(qa,`explorer-${viewport.name}-explicit-route.png`)});
-  report.screenshots.push(evidencePath(`explorer-${viewport.name}-explicit-route.png`));
+   return{horizontalOverflow:document.documentElement.scrollWidth>innerWidth,failures,nodeCount:document.querySelectorAll('.flow-node').length,visibleLogos:[...document.querySelectorAll('.skill-card img')].filter(img=>img.complete&&img.naturalWidth>0).length};
+  });
+  report.checks.push({test:`${viewport.name}: visible content fits`,pass:!layout.horizontalOverflow&&layout.failures.length===0&&layout.visibleLogos===8&&layout.nodeCount>0,results:layout});
+  const screenshot=`overview-${viewport.name}.png`;
+  await page.screenshot({path:path.join(qa,screenshot),fullPage:true});
+  report.screenshots.push(evidencePath(screenshot));
  }
- await page.setViewportSize({width:1440,height:1000});
  await page.goto(pathToFileURL(path.join(base,'develop-route-explorer.html')).href);
- await page.keyboard.press('Tab');
- report.checks.push({test:'keyboard skip link',pass:await page.locator('.skip').evaluate(el=>el===document.activeElement)});
+ await page.waitForURL(pathToFileURL(path.join(base,'develop-overview.html')).href);
+ report.checks.push({test:'legacy explorer resolves to single overview',pass:await page.locator('#workflow').count()===1&&await page.locator('.skill-card').count()===8,url:page.url()});
  report.pass=report.errors.length===0&&report.networkRequests.length===0&&report.checks.every(c=>c.pass!==false);
  const finalHashes=Object.fromEntries(await Promise.all(sourceFiles.map(async name=>[name,sha256(await fs.readFile(path.join(base,name)))])));
  report.checks.push({test:'source provenance unchanged during rendering',pass:JSON.stringify(sourceHashes)===JSON.stringify(finalHashes)});
