@@ -263,7 +263,7 @@ class RoutingFixtures(unittest.TestCase):
                     self.assertTrue(criterion["evidence"])
                     self.assertNotIn(criterion["pass_when"], public)
                     self.assertNotIn(criterion["evidence"], public)
-                for key in ("oracle_python", "candidates"):
+                for key in ("oracle_python", "candidates", "native_sum_control"):
                     self.assertNotIn(key, fixture)
                     if key in grader:
                         self.assertNotIn(json.dumps(grader[key]), public)
@@ -291,7 +291,7 @@ class RoutingFixtures(unittest.TestCase):
             with self.subTest(candidate=candidate["id"]):
                 source.write_text(candidate["source"], encoding="utf-8")
                 result = self.run_python(repo, "-c", grader["oracle_python"], "-v")
-                self.assertIn("Ran 6 tests", result.stderr)
+                self.assertIn("Ran 7 tests", result.stderr)
                 if candidate["passes"]:
                     self.assertEqual(result.returncode, 0, result.stderr)
                     public = self.run_python(repo, "-m", "unittest", "discover",
@@ -308,6 +308,25 @@ class RoutingFixtures(unittest.TestCase):
         self.assertEqual(set(before), set(after))
         for path in before.keys() - {"repo/report.py"}:
             self.assertEqual(before[path], after[path], path)
+
+    def test_refactor_oracle_distinguishes_native_sum_rounding(self):
+        _, grader, target, _ = self.materialize("routing-refactor")
+        repo = target / "repo"
+        (repo / "report.py").write_text(grader["native_sum_control"],
+                                       encoding="utf-8")
+        result = self.run_python(repo, "-c", grader["oracle_python"], "-v")
+        self.assertIn("Ran 7 tests", result.stderr)
+        # Native sum is sequential on some supported interpreters and uses
+        # different float rounding on others. Assert the observed bounded
+        # outcome without calling the substitution universally equivalent.
+        differs = (sum([1e16, 1.0, -1e16]) != 0.0 or
+                   sum([0.1, 0.2, 0.3]) != 0.6000000000000001)
+        if differs:
+            self.assertEqual(result.returncode, 1, result.stderr)
+            self.assertIn("FAIL: test_sequential_float_accumulation", result.stderr)
+            self.assertIn("AssertionError", result.stderr)
+        else:
+            self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_upgrade_control_uses_target_and_preserves_public_results(self):
         _, _, target, _ = self.materialize("routing-upgrade-implement")
