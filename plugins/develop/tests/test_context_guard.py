@@ -13,6 +13,14 @@ ROOT = Path(__file__).resolve().parents[1]
 HANDLER = ROOT / "hooks/context_guard.py"
 
 
+def packaged_command(shell, command, windows=False):
+    # Match Codex command_runner.rs build_command: /c uses an outer-quoted
+    # raw_arg. CRT argv quoting would instead backslash-escape embedded quotes.
+    if windows and any(argument.lower() == "/c" for argument in shell[1:]):
+        return subprocess.list2cmdline(shell) + ' "' + command + '"'
+    return shell + [command]
+
+
 class ContextGuard(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="develop-context-guard-")
@@ -294,11 +302,19 @@ class ContextGuard(unittest.TestCase):
         for event in ("PreToolUse", "PostToolUse"):
             hook = commands[event][0]["hooks"][0]
             command = hook["commandWindows" if windows else "command"]
-            args = shell + [command]
+            args = packaged_command(shell, command, windows)
             self.passes(self.invoke(self.event("small", event), command=args, environment=env))
             self.blocked(self.invoke(self.event("PRIVATE_CONTENT" * 2000, event), command=args, environment=env), event)
         self.assertFalse(list(package.rglob("__pycache__")))
         self.assertEqual(sorted(p.name for p in self.directory.iterdir()), [name])
+
+    def test_cmd_commandline_preserves_nested_quotes_without_crt_escaping(self):
+        shell = [r"C:\Program Files\Command\cmd.exe", "/d", "/s", "/C"]
+        command = 'py -3 -c "print(123)"'
+        self.assertEqual(packaged_command(shell, command, windows=True),
+                         r'"C:\Program Files\Command\cmd.exe" /d /s /C "py -3 -c "print(123)""')
+        powershell = ["powershell.exe", "-NoProfile", "-Command"]
+        self.assertEqual(packaged_command(powershell, command, windows=True), powershell + [command])
 
     @unittest.skipIf(os.name == "nt", "POSIX packaged command")
     def test_detached_packaged_commands_launch_safely_in_available_posix_shells(self):
