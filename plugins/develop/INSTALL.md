@@ -18,6 +18,16 @@ codex plugin list --marketplace law-config --json
 
 The repository catalog is `.agents/plugins/marketplace.json`, published as the `law-config` marketplace. Refresh the configured Git source with `codex plugin marketplace upgrade law-config`, then use the client's supported update/install flow. Restart or refresh the host and begin a new chat to verify its active catalog. A downloaded bundle alone does not prove activation.
 
+In Codex, invoke the installed plugin's skill with `$develop:develop`, or select
+the exact discovered entry with `/skills`. An unnamespaced repository-local copy
+uses `$develop`. Follow the mention with whitespace before the task text;
+a trailing colon becomes part of the skill name. Catalog metadata alone does not
+prove that its full instructions or references were consumed. Follow the [native activation trials](tests/evaluations/native-hosts.md)
+to check positive and unrelated-task controls. Repository-local `.agents/skills`
+authoring tests skill loading separately from marketplace installation. Inspect
+CLI warnings as well as JSON status; unavailable remote catalogs can leave an
+empty listing without proving that no plugin is installed.
+
 Other hosts use their documented skill/plugin loading and account/workspace distribution flows. Verify filesystem access, native provider tools and fresh independent reviewer capability there; do not assume another host's command names or permissions. Required reviewer matching that the runtime cannot establish must be reported as unverified.
 
 ## Use
@@ -27,8 +37,8 @@ Other hosts use their documented skill/plugin loading and account/workspace dist
 - `develop iterate: publish these prepared changes; signing is optional.`
 - `develop upgrade: assess and upgrade dependencies in this repository.`
 - `develop upgrade: review this dependency PR only.`
-- `$upgrade-codex: audit this project's Codex setup against the installed version; report only.`
-- `$upgrade-codex: check these configs, instructions, skills and plugins against Codex <version>.`
+- `$develop:upgrade-codex audit this project's Codex setup against the installed version; report only.`
+- `$develop:upgrade-codex check these configs, instructions, skills and plugins against Codex <version>.`
 - `develop clean: inspect disk and memory usage; do not delete anything.`
 - `develop kaizen: analyze these two selected sessions and recommend workflow improvements; make no changes.`
 - `adversarial-loop: fact-check this draft; report findings only.`
