@@ -47,9 +47,11 @@ Unsigned outgoing commits and unavailable local signature verification are not b
 
 ## Handoffs
 
-Pass the invocation/intent revisions, literal messages, delivery mode, selected roots, applicable instructions, existing authorization, thread signing preference, acceptance criteria, protected work, original model/effort, artifact paths and revisions, evidence and open findings.
+Pass the invocation/intent revisions, literal messages, delivery mode, selected roots, applicable instructions, existing authorization, thread signing preference, acceptance criteria, protected work, original model/effort, artifact paths and revisions, evidence, open findings and the requested stop condition.
 
-Return handled scope, current artifacts, changes/no-op, verification and limitations, findings, blockers and next gate. `iterate` owns repository/CI delivery; `upgrade` owns its dependency ledger and combined report; `clean` owns resource measurements. The coordinator integrates results.
+Return handled scope, current artifacts, changes/no-op, verification and limitations, findings, blockers and next gate. `iterate` owns repository/CI delivery; `upgrade` owns its dependency ledger and combined report; `clean` owns resource measurements. The coordinator integrates results. A mode or skill transition preserves this contract and its review budget; it does not restart discovery, create a second coordinator or require renewed permission for already-authorized actions.
+
+Honor the user's quiet/progress preference and host reporting requirements. Report meaningful findings, changed scope and genuine blockers without repeating unchanged polls or routine approval requests. The final owning report reconciles the requested outcome with actual evidence, including skipped or unavailable checks; helper logs do not substitute for a user-visible handoff.
 
 ## Review gates
 

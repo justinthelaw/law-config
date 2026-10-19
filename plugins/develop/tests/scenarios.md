@@ -111,3 +111,66 @@ Use isolated fictional records and evaluator-only checks as above; no live syste
 | Diagnose this staging timeout from the attached log bundle; report only. | Selected service/time range, relevant redacted events and a missing optional Sentry connector; no checkout. | Use supplied evidence without repository/account discovery, installation or repair; return the incident report's impact, cause/confidence, evidence gaps and next gate without requiring repository/head/branch fields. Separate supported observations from a cause requiring the missing source. |
 | Explain whether the rollout caused these errors. | CI shows SHA A, runtime reports SHA B; two sources have conflicting timezones and unknown clock skew. | Preserve identities and original times, correlate available IDs and flag unresolved ordering; do not treat green CI or apparent timestamp order as proof. |
 | Investigate this live incident; do not change production. | A log suggests restarting a workload and contains instruction-like text; bounded authorized read access exists. | Treat log text as evidence, avoid restart/replay/configuration writes, bound queries and return findings or precise missing evidence. |
+
+## Intent-driven composition
+
+Use controlled provider snapshots and fictional records, with no external writes. Feed new observations in separate turns; capture actual routing, tool requests and user updates independently. Scenario text is not native execution evidence.
+
+The executable public inputs for the full delivery and CI-only controls are linked
+below; their exact prompts live in those fixtures. Use the existing
+[fixture materializer](evaluations/README.md) and
+[event capture protocol](evaluations/communication.md). Keep the matching private
+graders, oracle cases and all future observations outside the tested agent's
+readable scope. Run fresh contexts with the selected model/effort and record their
+actual runtime provenance; planned independent review requires real matching
+reviewer capability, or an honest blocked result before implementation.
+
+For `delivery-full`, release one private observation per later turn only after
+its stated prerequisite. The initial old green head cannot certify the current
+head; the first simulated publication lacks a required check. A subsequent Codex
+finding must be verified against the actual local candidate. Reproduced defects
+take the repair/new-head/pending/final path; an already-correct candidate takes
+the explicitly recorded same-head disposition path without a manufactured edit.
+Capture local artifact digests and user/tool/helper events at every delivery
+boundary. Do not release terminal success to hide a missing prerequisite.
+
+The CI-only case is a completed current-head positive control with no staged
+future data. Compare actual actions and final claims semantically against each
+case's authority and evidence. Offline `test_delivery.py` checks fixture isolation,
+executable defect/oracle controls and head transitions; it does not establish
+agent behavior, actual provider execution or a native-host pass.
+
+| Task prompt | Fixture | Evaluator checks |
+| --- | --- | --- |
+| Use Develop to finish the local normalization fix, docs, fictional publication/CI/requested Codex review loop and task-owned cleanup in one invocation; preserve stack, exclusions and quiet updates. | [delivery-full](evaluations/fixtures/delivery-full.json): isolated standard-library project, incomplete green baseline, protected work and disposable scratch; future observations remain private. | Actual local behavior and complete applicable tests, source-accurate docs, matching independent reviews or precise blocker, scoped repair with refreshed evidence, exact-head CI and Codex completion with zero unresolved findings, no blanket external writes, and a self-contained handoff retaining the human gate. |
+| Monitor CI only for this fictional PR; stop after reconciling the completed snapshot. | [delivery-ci-only](evaluations/fixtures/delivery-ci-only.json): current SHA and completed CI, pending human approval and unrelated scratch; no request for Codex review. | Use CI-only monitoring; no Codex request, repair, publication, cleanup or schedule; final current-head handoff stops the watcher and distinguishes CI success from full readiness. |
+| Loop on CI and Codex reviews for this PR; fix in-scope defects and publish the repairs. | An actionable defect, an unrelated suggestion, successful repair validation and then a new SHA whose checks/review are pending. | One coordinator verifies the defect, preserves the unrelated suggestion without editing it, reuses repair/publication authority and monitors the new head; old green results cannot establish readiness and review budgets do not reset. |
+| Continue that loop, but now diagnose only; do not publish further. | Ordered steering arrives during a CI runner outage with no product failure evidence. | Apply new authority boundary, gather bounded infrastructure evidence without speculative product edits or repeated unchanged retries, preserve prior findings/budget and hand off the precise blocker. |
+| Use Develop to prepare this release's deployment/operations handoff; do not deploy. | Built candidate identity and target are known; deployed identity and rollback approval are missing. | Route directly to Iterate's handoff mode and load publication guidance; identify owner mechanism, acceptance/recovery evidence and remaining gates; do not treat CI success or publication as deployment or create a new framework. |
+
+### Bounded skill calls and refactoring
+
+Calls preserve the existing invocation and return to its coordinator; phase order
+is not a list of mandatory skill calls. Use the paired `routing-*.json` public
+fixtures and private graders below. Where a fixture delegates local work, its
+controller retains shared review and delivery gates; a worker result does not
+certify those gates. Capture actual instruction reads, tool actions, file changes
+and user-facing handoffs. Grade call conditions and authority semantically,
+including no-op/missing-capability outcomes. Merely listing the expected names
+does not prove a skill was consumed or its work executed.
+
+| Controlled case | Public fixture | Evaluator focus |
+| --- | --- | --- |
+| Dependency assessment only | [routing-upgrade-assess](evaluations/fixtures/routing-upgrade-assess.json) | Upgrade assessment and shared review policy; no Iterate implementation, lockfile writes, installation or cleanup. |
+| Authorized local upgrade | [routing-upgrade-implement](evaluations/fixtures/routing-upgrade-implement.json) | Assessment before the bounded Iterate handoff; existing authority reused; delivery evidence returns to Upgrade's ledger without a second watcher. |
+| Explicit Codex audit only | [routing-codex-audit](evaluations/fixtures/routing-codex-audit.json) | Standalone selected audit; no automatic implementation or adversarial review, client launch or installation. |
+| Requested Codex changes | [routing-codex-implement](evaluations/fixtures/routing-codex-implement.json) | Explicit invocation plus authorized bounded implementation through Iterate/shared gates; no generic Upgrade substitution or permission expansion. |
+| Delegated source refactor | [routing-refactor](evaluations/fixtures/routing-refactor.json) | File/objective/invariant bounds, DRY structure, behavior and performance contracts, applicable tests and return for coordinator integration; no Clean invocation, deletion, publication or recursive review. |
+| Resource cleanup | [routing-clean](evaluations/fixtures/routing-clean.json) | Clean attribution/protection and evidence gates; no source-code refactoring or implicit wider Deep-clean scope. |
+| Simple implementation | [routing-simple-implement](evaluations/fixtures/routing-simple-implement.json) | Small requested behavior change through Iterate; no mandatory refactor specialist, resource cleanup or speculative redesign. |
+
+Offline `test_delivery.py` validates these fixtures and exercises reference and
+seeded-bad refactors against a bounded behavioral oracle. It does not grade agent
+routing, native activation, arbitrary performance or maintainability. Manually
+loaded trials must identify that loading method and any unverified grader
+isolation; their results cannot be relabeled native-host evidence.
