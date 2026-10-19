@@ -3,5 +3,5 @@ interface:
   icon_small: "./assets/icon.png"
   icon_large: "./assets/icon.png"
   display_name: "Develop"
-  short_description: "Route development and workflow tasks"
-  default_prompt: "Use $develop for my selected repository or workflow task."
+  short_description: "Route development, incidents and workflow tasks"
+  default_prompt: "Use $develop for my selected repository, incident or workflow task."

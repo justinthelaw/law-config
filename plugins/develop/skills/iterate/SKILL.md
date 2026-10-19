@@ -1,6 +1,6 @@
 ---
 name: iterate
-description: Implement or review repository changes, publish selected existing work, and monitor or fix CI and review findings on GitHub, GitLab, Bitbucket or Hugging Face.
+description: Diagnose incidents, implement or review repository changes, publish selected existing work, and monitor or fix CI and review findings on GitHub, GitLab, Bitbucket or Hugging Face.
 ---
 
 # Iterate
@@ -16,6 +16,7 @@ Choose the mode that matches the request; change modes only within its authorize
 | Mode | Target default and workflow |
 | --- | --- |
 | **Implement** | Build, fix or maintain behavior in selected repositories. Use the bundled [implementation guidance](references/implementation.md) for planning, isolation, debugging and meaningful tests. |
+| **Debug** | Investigate a selected failure, service/environment or log bundle using [incident diagnosis](references/debugging.md). Keep diagnosis, repair and operational authority distinct; a checkout is optional until code repair. |
 | **Review** | Inspect selected code or [documentation drift](references/documentation.md). Report findings without repair or publication unless authorized. |
 | **Publish existing changes** | Use selected checkouts and initialized recursive submodules; otherwise resolve the current checkout. Preserve unrelated siblings. Read [publication](references/publication.md); prepared work needs no new design process. |
 | **Monitor/fix** | Use the selected published repository/ref/SHA and submodules. Monitor through native provider tools or the [GitHub adapter](references/github-monitoring.md). Actual code repairs re-enter implementation requirements for that bounded target. |
@@ -37,9 +38,11 @@ An explicit request for one remaining consolidated PR permits closing fully inco
 
 ## Report
 
-Complete the final adversarial checkpoint and reread the current head, required checks, reviews and threads. Claim readiness only when applicable gates pass; list outstanding human approvals separately. Never merge without authorization. Continue unaffected targets. Report remaining protected unrelated work rather than cleaning it to manufacture a clean-worktree result.
+Complete the final adversarial checkpoint. For **Debug**, use the [incident diagnosis report](references/debugging.md): impact, cause/confidence, supporting and missing evidence, and the next gate. Preserve the selected service/environment/log-bundle scope; do not discover a repository merely to populate delivery fields.
 
-Use the caller's format, otherwise:
+For repository delivery, reread the current head, required checks, reviews and threads. Claim readiness only when applicable gates pass; list outstanding human approvals separately. Never merge without authorization. Continue unaffected targets. Report remaining protected unrelated work rather than cleaning it to manufacture a clean-worktree result.
+
+For that delivery report, use the caller's format, otherwise:
 
 | Repository | Change | Result and evidence |
 | --- | --- | --- |
