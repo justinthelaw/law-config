@@ -4,7 +4,7 @@
 
 - Maintain shared development environment configuration for `law-*` machines.
 - Maintain the canonical Develop plugin source and `law-config` Git marketplace.
-- Scope is dotfiles, helper scripts, and portable development skills.
+- Scope is dotfiles, helper scripts, portable development skills, and the native Codex context guard.
 
 ## Repo Layout
 
@@ -17,6 +17,7 @@
 - `scripts/sanitize-shell-hist`: utility to sanitize shell history files safely.
 - `docs/setup-linux.md` and `docs/setup-macos.md`: environment-specific bootstrap docs.
 - `plugins/develop/`: Develop package; follow [plugin instructions](plugins/develop/AGENTS.md).
+- `plugins/develop/hooks/`: Codex context guard; see its [runtime requirements and behavior](plugins/develop/docs/context-guard.md).
 - `.agents/plugins/marketplace.json`: repository-root catalog; follow [.agents/AGENTS.md](.agents/AGENTS.md).
 - `.github/workflows/plugins.test.yml`: package and helper checks on Linux and Windows.
 - `README.md`: high-level setup and config selection model.
@@ -38,6 +39,7 @@
 - `.zshrc.zwc` is a compiled artifact; update it only when intentionally recompiling.
 - Do not commit secrets, personal tokens, or host-specific credentials.
 - Keep Develop self-contained and install it from this repository's Git marketplace; see [installation](plugins/develop/INSTALL.md).
+- Keep root documentation concise and link to the owning plugin guides for workflow, runtime, and hook trust details.
 - Preserve the repository's MIT license and Develop's separate Apache-2.0 [package license](plugins/develop/LICENSE).
 
 ## Quick Validation

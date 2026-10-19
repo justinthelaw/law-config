@@ -3,15 +3,22 @@
 Shell, Git, and GPG configuration for `law-*` machines, plus the Develop plugin.
 Start with [Linux setup](docs/setup-linux.md) or [macOS setup](docs/setup-macos.md).
 
-This repository also maintains Develop and its `law-config` Git marketplace.
-
 | Goal | Start here |
 | --- | --- |
 | Configure a machine | [Linux](docs/setup-linux.md) · [macOS](docs/setup-macos.md) |
-| Use Develop's development and maintenance workflows | [Skill calls and bounded refactoring](plugins/develop/README.md) · [Install and sync](plugins/develop/INSTALL.md) |
+| Use Develop | [Workflow guide](plugins/develop/README.md) · [Install and sync](plugins/develop/INSTALL.md) |
 | Contribute changes | [Required checks](docs/CONTRIBUTING.md#validation) · [Repository instructions](AGENTS.md) |
 
-## Quick Start
+## Plugins
+
+The `law-config` Git marketplace distributes [Develop](plugins/develop/README.md):
+eight skills for development, upgrades, reviews, cleanup, and workflow improvement.
+Its [Codex context guard](plugins/develop/docs/context-guard.md) blocks oversized
+tool text and recommends focused searches and bounded reads. The guard requires
+supported local Codex sessions, Python 3.10+, and hook trust; see the
+[installation guide](plugins/develop/INSTALL.md).
+
+## Machine Setup
 
 1. After installing Git with the appropriate setup guide, clone the repository
    and work from its root:
