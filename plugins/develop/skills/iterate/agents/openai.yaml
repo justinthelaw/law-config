@@ -4,4 +4,4 @@ interface:
   icon_large: "./assets/icon.png"
   display_name: "Develop: Iterate"
   short_description: "Implement, refactor, diagnose and deliver scoped work"
-  default_prompt: "Use $iterate for my selected implementation, bounded refactor, incident or deployment/operations handoff, composing the authorized work, validation and delivery needed for my outcome."
+  default_prompt: "Use $iterate for my selected implementation, bounded refactor, incident or deployment/operations handoff, composing authorized work, focused source search, relevant visual validation and delivery. Invoke the staged-file check only when requested or required by the repository."

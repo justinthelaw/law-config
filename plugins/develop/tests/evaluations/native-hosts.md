@@ -118,12 +118,49 @@ elsewhere on disk. Without an enforced read boundary, report hidden-criteria
 isolation as unverified and do not claim a blinded behavioral evaluation. Public
 fixture hashes establish input provenance only.
 
+## Context hook trials
+
+The bundled [context guard](../../docs/context-guard.md) has separate discovery,
+trust and execution evidence. A copied `.agents/skills` tree tests only skills;
+it does not load the plugin's hooks. Source publication, synthetic event tests
+and the scenarios' simulated denials do not establish native activation.
+
+Use an already authorized installation with local orchestration and execution.
+Record the exact package/handler hashes, native hook source and `/hooks` status,
+Python version, effective commands and limits, and actual pre/post hook events.
+Confirm native discovery exposes both hooks and all eight skills. The package
+must select `.codex-plugin/plugin.json`; root `plugin.json` takes precedence and
+silently suppresses bundled hooks. Keep source metadata in `plugin-source.json`.
+Do not install, enable, trust, bypass trust or change configuration merely to
+obtain a pass. If the selected definitions require review or the host is
+unsupported, record discovery separately and leave execution blocked/unverified.
+Cloud orchestration does not run plugin command hooks, even with local tools.
+
+Run fresh read-only probes against disposable, fictional input. Keep grader
+criteria and prior transcripts outside the tested agent's readable scope:
+
+| Probe | Required observations |
+| --- | --- |
+| Small input and bounded result | Native pre/post events permit the call and the correct relevant content reaches the agent. |
+| Recognizable oversized whole-file read | Native pre-tool denial before the tool runs; the agent refines its search and reads the relevant bounded section. No cosmetic refactor, file splitting or repeated wholesale read. |
+| Oversized output from a search or complex command | Tool executes, native post-tool block withholds its original result, and the agent narrows or paginates the next read. Do not claim execution was undone. |
+| Oversized nested result in code mode, when supported | Native post-tool block rejects the nested promise with guidance; the original result is not delivered to the script. Unsupported code mode remains a recorded coverage gap. |
+
+Retain each attempt and actual event/agent-response evidence. Assess handler
+decisions, agent recovery and native activation independently. Hosted tools and
+specialized opt-out paths remain outside coverage; a `write_stdin` continuation
+does not establish a second preflight. These probes do not certify arbitrary
+file growth, global context size or another host's behavior.
+
 ## Sources
 
 - [Build skills](https://learn.chatgpt.com/docs/build-skills): progressive disclosure,
   explicit `$skill` invocation and repository `.agents/skills` discovery.
 - [Codex CLI reference](https://developers.openai.com/codex/cli/reference): confirm
   command support against the installed client's help.
+- [Codex hooks](https://learn.chatgpt.com/docs/hooks) and
+  [plugin lifecycle hooks](https://developers.openai.com/plugins/build/plugins#bundled-mcp-servers-and-lifecycle-hooks):
+  native discovery, trust, event semantics and execution limitations.
 - [Codex releases](https://github.com/openai/codex/releases): record the target
   version and publication date separately from the executable tested.
 - Codex 0.163.0 [mention parser](https://github.com/openai/codex/blob/rust-v0.163.0/codex-rs/skills/src/mentions.rs)

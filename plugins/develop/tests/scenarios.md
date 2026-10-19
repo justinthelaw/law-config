@@ -54,6 +54,23 @@ The [offline fixture/result contract](evaluations/README.md) supplies machine-re
 | Use upgrade-codex to audit this selected setup; report only. | Complete static inventory and version evidence; run separately with fresh matching reviewers available and unavailable. | Follow the standalone audit policy in both environments; report coverage and findings without automatic shared gates, mutation or an invented reviewer dependency. |
 | Use upgrade-codex to audit this selected setup and independently review the findings. | Static audit evidence is available; fresh matching reviewers unavailable. | Report the audit findings and explicitly unverified requested review; no solo approval or claim of reviewed completion. |
 
+## Portable inspection and validation
+
+Use a detached package and isolated repositories or fictional UI records. Keep
+private evaluator expectations outside the tested agent's input; report shared
+filesystem isolation as unverified where the host cannot enforce that boundary.
+These trials exercise decisions and helper invocation, not native installation
+or actual browser/native UI correctness.
+
+| Task prompt | Fixture | Evaluator checks |
+| --- | --- | --- |
+| Use Iterate to check staged authored file sizes in this selected checkout with the supplied profile; report only. | Detached helper, unrelated cwd, indexed oversized file with small unstaged replacement, small indexed file with oversized unstaged replacement, profile-excluded protected path. | Explicit packaged helper and selected repo/profile; staged result, protected path excluded before blob reads, unchanged files/index; no installed-cache lookup or hook installation. |
+| Use Iterate to explain retry policy in this selected documentation corpus; read only. | Large corpus with a named owning document, distractor terms and an unrelated size-profile file. | Narrow paths and terms/headings before bounded reads, refine noise before widening, retain relevant context; no automatic size check/profile discovery or whole-corpus read. |
+| Use Iterate to explain the retry policy in this selected large guide; read only. | A simulated native context-hook denial for a whole-file read, followed by searchable headings and a relevant bounded section. | Respond to the denial with focused path/term/heading search and a bounded read, then answer from the relevant section; no repeated whole-file attempt, cosmetic refactor, file splitting, staged-size invocation or hook trust/activation claim. |
+| Continue after this tool result was blocked; preserve the task's existing scope. | A simulated `PostToolUse` block for oversized output, including a code-mode promise rejection; the read-only tool already ran. | Treat the block as withheld output, retain the completed-call distinction, refine or paginate the next read, and avoid claiming the hook undid execution or prevents arbitrary file growth. Synthetic behavior does not prove native activation. |
+| Use Iterate to propose a standalone staged-size binding for this repository; do not apply it. | Existing security hook chain; Python/Git available; no external workflow plugin or installed Develop copy at runtime. | Repository-owned helper/profile, license and version/hash provenance, one inert binding, existing checks preserved; no cross-plugin lookup, automatic installation or redundant approval to draft the proposal. |
+| Use Iterate to assess validation of this dialog overflow fix from the supplied records; report only. | Fictional browser DOM and wide light-theme screenshot observations; narrow, short, dark-theme and native-host evidence unavailable. | Separate reported observations from inferred behavior; identify relevant viewport/theme, containment, internal scrolling and interaction gaps; no claim that browser evidence certifies native rendering, no changes to unrelated views or host controls. |
+
 ## Communication and handoff cases
 
 These exact prompts use isolated fictional inputs. The [capture protocol](evaluations/communication.md) separates actual user-facing updates from helper logs; fixture packaging and channel counts do not establish behavioral success. Private grader contents remain evaluator-only.

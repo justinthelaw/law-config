@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "develop",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "license": "Apache-2.0",
   "description": "Deliver repository changes, upgrade dependencies, audit Codex compatibility, review work, clean up, and improve workflows.",
   "author": {
@@ -19,13 +19,14 @@
   ],
   "extensions": {
     "com.openai": {
+      "hooks": "./hooks/hooks.json",
       "interface": {
         "displayName": "Develop",
         "logo": "./assets/logo.png",
         "composerIcon": "./assets/logo.png",
         "brandColor": "#C99554",
         "shortDescription": "Build, review, and improve",
-        "longDescription": "Eight skills for repository changes, dependency upgrades, thread-scoped cleanup, independent review, and workflow improvement. Explicit-only deep-clean inspects user-expanded machine scope; upgrade-codex audits Codex compatibility. No external workflow plugin required.",
+        "longDescription": "Eight skills for repository changes, dependency upgrades, thread-scoped cleanup, independent review, and workflow improvement. Explicit-only deep-clean inspects user-expanded machine scope; upgrade-codex audits Codex compatibility. A native Codex context guard blocks oversized tool text and guides focused reads. No external workflow plugin required.",
         "developerName": "justinthelaw",
         "category": "Developer Tools",
         "capabilities": [

@@ -5,4 +5,4 @@
 - Repository entry points reuse the shared invocation and adversarial gates. Standalone Kaizen, adversarial reviews and audit-only `upgrade-codex` follow their entrypoint's completion policy; requested implementation uses the shared gates. Avoid recursive reviews.
 - Preserve original/steering user intent, fresh non-forked review, and original model/effort matching. Never turn review into permission to bypass host controls.
 - Update `agents/openai.yaml` with each skill's behavior; keep references relative and packaged. Test changes with fresh-context [scenarios](../tests/scenarios.md).
-- Keep each `assets/icon.png` square and transparent, using Roux's chocolate/cream pixel style and a clear task prop. Verify all icons together at small display sizes.
+- Keep each `assets/icon.png` square and transparent. Match existing Roux icons' chocolate/cream palette, character proportions and crisp pixel edges; vary only the clear task prop. Declare the asset in both `icon_small` and `icon_large` in `agents/openai.yaml`. Preserve approved pixels and verify the whole set together at 48 px and smaller.
