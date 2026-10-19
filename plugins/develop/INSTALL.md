@@ -1,28 +1,35 @@
 # Install Develop
 
-In a terminal with Codex installed, add the marketplace and plugin:
+With Codex installed, add the marketplace and plugin:
 
 ```sh
 codex plugin marketplace add justinthelaw/law-config --ref main
 codex plugin add develop@law-config
 ```
 
-Start a **new Codex chat**, then invoke Develop with your task:
+Start a **new local Codex chat**. Open `/hooks`, review the bundled
+[context guard](docs/context-guard.md), and trust only the reviewed definitions.
+Untrusted or changed hooks are skipped. The hook requires Python 3.10+: `python3`
+on Unix or `py -3` on Windows. No runtime is installed automatically.
+
+Invoke Develop with your task:
 
 ```text
 $develop:develop fix this checkout's failing build; preserve its public API.
 ```
 
-You can also select a skill with `/skills`. Put a space after the skill name.
+Select other skills with `/skills`; leave whitespace before task text.
 
-To refresh the marketplace and inspect available plugin status:
+To refresh the marketplace and inspect status:
 
 ```sh
 codex plugin marketplace upgrade law-config
 codex plugin list --marketplace law-config --json
 ```
 
-Use Codex's supported update flow to apply an available update, then check
-`/skills` in a new chat. Install separately on each intended environment.
+Apply updates through Codex's supported flow; check `/skills` and `/hooks` in a
+new chat. Install and verify each intended environment separately. The hook
+requires local orchestration and execution; cloud orchestration does not run it,
+even with local tools. Publication alone does not activate it.
 
-See the [README](README.md) for the visual guide and all eight skills.
+See the [README](README.md) for the eight-skill visual guide.

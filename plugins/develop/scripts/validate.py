@@ -19,7 +19,8 @@ import zlib
 # Resolve the packaged sibling even when Python safe-path mode omits the
 # script directory. Never import from the caller's current working directory.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from generate_codex_manifest import codex_manifest
+from generate_codex_manifest import codex_manifest, load_json, openai_extension
+from validate_context_hooks import HOOK_PATH, validate_context_hooks
 
 SKILLS = {"develop", "iterate", "upgrade", "upgrade-codex", "clean", "deep-clean", "adversarial-loop", "kaizen"}
 SCHEMA = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
@@ -158,7 +159,14 @@ def validate(root, marketplace_root=None):
 
     def read_json(relative, base=root):
         try:
-            return json.loads(contained_text(base / relative, base))
+            path = base / relative
+            if not path.resolve().is_relative_to(base.resolve()):
+                raise ValueError("metadata escapes its package")
+            with path.open("rb") as stream:
+                data = stream.read(1024 * 1024 + 1)
+            if len(data) > 1024 * 1024:
+                raise ValueError("metadata exceeds 1 MiB")
+            return load_json(data.decode("utf-8"))
         except (OSError, ValueError, RuntimeError) as exc:
             errors.append(f"{relative}: {exc}")
             return {}
@@ -189,23 +197,36 @@ def validate(root, marketplace_root=None):
     check(manifest.get("name") == "develop", "plugin.json: name must be develop")
     check(bool(re.fullmatch(r"\d+\.\d+\.\d+", str(manifest.get("version", "")))), "plugin.json: use a release version")
     check(manifest.get("repository") == "https://github.com/justinthelaw/law-config.git", "plugin.json: unexpected source repository")
-    check(not any(key in manifest for key in ("dependencies", "mcpServers", "hooks")), "plugin.json: keep this package skills-only; no invented dependencies")
-    # The portable format discovers mcp.json; legacy Codex also recognizes
-    # .mcp.json and hooks/hooks.json. All violate this package's skills-only
-    # policy. This does not assert that portable clients execute legacy hooks.
-    for relative in ("mcp.json", ".mcp.json", "hooks/hooks.json"):
+    check(not any(key in manifest for key in ("dependencies", "mcpServers", "hooks")),
+          "plugin.json: eight skills plus the native context guard only; no root hooks, dependencies or MCP")
+    # Both discovery formats remain forbidden; the native guard adds no server
+    # or service dependency and is registered only through the OpenAI adapter.
+    for relative in ("mcp.json", ".mcp.json"):
         component = root / relative
         check(not component.exists() and not component.is_symlink(),
-              f"{relative}: keep this package skills-only; unexpected component declaration")
-    interface = manifest.get("extensions", {}).get("com.openai", {}).get("interface", {})
+              f"{relative}: eight skills plus the native context guard only; unexpected MCP declaration")
+    try:
+        extension = openai_extension(manifest)
+    except ValueError as exc:
+        errors.append(str(exc))
+        extension = {}
+    check(set(extension) == {"interface", "hooks"},
+          "plugin.json: extensions.com.openai permits only interface and the native context guard hooks")
+    check(extension.get("hooks") == HOOK_PATH,
+          "plugin.json: extensions.com.openai.hooks must be ./hooks/hooks.json")
+    interface = extension.get("interface", {})
     for key in ("logo", "composerIcon"):
         check_icon(interface.get(key), root, f"plugin.json: {key}")
 
     # Older Codex clients ingest this file, with paths relative to the package
     # root. Validate the shipped artifact without regenerating it during lint.
     codex = read_json(".codex-plugin/plugin.json")
-    check(codex == codex_manifest(manifest),
-          ".codex-plugin/plugin.json: regenerate from plugin.json; expected matching metadata, top-level interface and skills")
+    try:
+        check(codex == codex_manifest(manifest),
+              ".codex-plugin/plugin.json: regenerate from plugin.json; expected matching metadata, top-level interface, skills and hooks")
+    except ValueError as exc:
+        errors.append(f".codex-plugin/plugin.json: cannot derive from invalid portable metadata: {exc}")
+    errors.extend(validate_context_hooks(root))
 
     # Repository catalogs are not part of the installed plugin payload.
     if marketplace_root is not None:
@@ -321,7 +342,7 @@ def main():
         print("FAIL:", error, file=sys.stderr)
     if errors:
         return 1
-    print("PASS: package structure, eight skills, references, and contextual marketplace checks")
+    print("PASS: package structure, eight skills, native context guard, references, and contextual marketplace checks")
     return 0
 
 

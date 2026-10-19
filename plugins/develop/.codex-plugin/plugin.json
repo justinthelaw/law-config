@@ -23,7 +23,7 @@
     "composerIcon": "./assets/logo.png",
     "brandColor": "#C99554",
     "shortDescription": "Build, review, and improve",
-    "longDescription": "Eight skills for repository changes, dependency upgrades, thread-scoped cleanup, independent review, and workflow improvement. Explicit-only deep-clean inspects user-expanded machine scope; upgrade-codex audits Codex compatibility. No external workflow plugin required.",
+    "longDescription": "Eight skills for repository changes, dependency upgrades, thread-scoped cleanup, independent review, and workflow improvement. Explicit-only deep-clean inspects user-expanded machine scope; upgrade-codex audits Codex compatibility. A native Codex context guard blocks oversized tool text and guides focused reads. No external workflow plugin required.",
     "developerName": "justinthelaw",
     "category": "Developer Tools",
     "capabilities": [
@@ -36,5 +36,6 @@
       "develop upgrade: assess and upgrade this repository\u2019s dependencies.",
       "develop kaizen: review these selected sessions and recommend workflow improvements."
     ]
-  }
+  },
+  "hooks": "./hooks/hooks.json"
 }

@@ -63,6 +63,8 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 .reviews h3 { white-space: nowrap; }
 .reviews p { text-align: left; max-width: 480px; }
 .review-return { font-size: 20px; color: var(--muted); text-align: center; margin-top: 11px; }
+.context-guard { margin-top: 12px; padding-top: 8px; border-top: 1px solid #73533e; font-size: 20px; color: var(--muted); text-align: center; }
+.context-guard a { color: var(--accent); }
 #skills { margin-top: 26px; padding-top: 23px; border-top: 1px solid #73533e; }
 #skills .section-heading { margin-bottom: 17px; }
 .skill-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
@@ -92,7 +94,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
   .route-caption { font-size: 18px; margin-top: 12px; }
   .branches { grid-template-columns: 1fr; gap: 55px; margin-top: 28px; }
   .flow-node h3 { font-size: 22px; }
-  .flow-node p, .branch-label, .audit-note, .delivery-steps, .handoff, .review-return { font-size: 18px; }
+  .flow-node p, .branch-label, .audit-note, .delivery-steps, .handoff, .review-return, .context-guard { font-size: 18px; }
   .assessment-lane { gap: 16px; }
   .explicit-entry { margin-top: 16px; }
   .cleanup-lane .explicit-entry { margin-top: 46px; }
@@ -153,6 +155,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
     <div class="flow-node reviews" id="node-adversarial-loop" data-skill="adversarial-loop"><h3>Adversarial loop</h3><p>Review at applicable checkpoints.<br>Return findings; recheck within the budget.</p></div>
     <p class="review-return">* Delivery and repairs require authorization. Reviews return to the owner.</p>
   </div>
+  <p class="context-guard"><a href="context-guard.md">Shared Codex context guard</a> · trusted local orchestration + execution<br>20 KB/tool input/result · blocks oversized text → refine search, bound reads.</p>
 </section>
 <section id="skills" aria-labelledby="skills-title">
   <div class="section-heading"><span class="section-number">02</span><h2 id="skills-title">Eight skills, each with one job</h2></div>

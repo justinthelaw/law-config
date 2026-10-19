@@ -6,6 +6,8 @@ Use only when requested or required by the selected repository. The bundled
 profiles or call other plugins. A successful check is a size-policy result, not
 a security scan or proof that source is well structured.
 
+This Git-index helper is separate from the bundled [Codex context guard](../../../docs/context-guard.md), which checks tool inputs/results without Git or staging. Their default 20,000-byte thresholds serve different checks; invoking this helper does not activate or configure the native hook.
+
 Resolve `ITERATE_SKILL_DIR` to the selected Iterate skill's directory and
 `ITERATE_REPO` to the selected checkout's absolute root. Invoke from any working
 directory:

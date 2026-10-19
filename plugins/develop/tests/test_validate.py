@@ -57,7 +57,7 @@ class PackageValidation(unittest.TestCase):
             command.extend(["--marketplace-root", str(self.repository)])
         return subprocess.run(
             command,
-            capture_output=True, text=True, check=False,
+            capture_output=True, text=True, check=False, timeout=30,
         )
 
     def test_valid_package_passes(self):
@@ -71,9 +71,9 @@ class PackageValidation(unittest.TestCase):
 
     def portable_as_codex(self):
         manifest = json.loads((self.package / 'plugin.json').read_text(encoding='utf-8'))
-        interface = manifest.pop('extensions')['com.openai']['interface']
+        extension = manifest.pop('extensions')['com.openai']
         manifest.pop('$schema')
-        return dict(manifest, skills='./skills/', interface=interface)
+        return dict(manifest, skills='./skills/', interface=extension['interface'], hooks=extension['hooks'])
 
     def test_missing_codex_ingestion_manifest_fails(self):
         (self.package / '.codex-plugin/plugin.json').unlink(missing_ok=True)
@@ -124,6 +124,251 @@ class PackageValidation(unittest.TestCase):
         self.assertEqual(json.loads(path.read_text(encoding='utf-8')), self.portable_as_codex())
         result = self.validate()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_context_hook_is_explicitly_registered_in_both_manifests(self):
+        portable = json.loads((self.package / 'plugin.json').read_text(encoding='utf-8'))
+        codex = json.loads((self.package / '.codex-plugin/plugin.json').read_text(encoding='utf-8'))
+        self.assertEqual(portable['extensions']['com.openai'].get('hooks'), './hooks/hooks.json')
+        self.assertEqual(codex.get('hooks'), './hooks/hooks.json')
+
+    def test_context_hook_registration_cannot_be_disconnected_or_redirected(self):
+        path = self.package / 'plugin.json'
+        original = path.read_text(encoding='utf-8')
+        for value in (None, './missing.json', '../hooks.json', {}, []):
+            with self.subTest(hooks=value):
+                manifest = json.loads(original)
+                manifest['extensions']['com.openai']['hooks'] = value
+                path.write_text(json.dumps(manifest), encoding='utf-8')
+                result = self.validate()
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('com.openai.hooks', result.stderr)
+        manifest = json.loads(original)
+        manifest['extensions']['com.openai'].pop('hooks', None)
+        path.write_text(json.dumps(manifest), encoding='utf-8')
+        self.assertIn('com.openai.hooks', self.validate().stderr)
+
+    def test_codex_context_hook_registration_cannot_be_disconnected(self):
+        manifest = self.portable_as_codex()
+        manifest.pop('hooks')
+        self.write_codex_manifest(manifest)
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('.codex-plugin/plugin.json', result.stderr)
+
+    def test_context_hook_sources_are_required(self):
+        for relative in ('hooks/hooks.json', 'hooks/context_guard.py'):
+            with self.subTest(path=relative):
+                path = self.package / relative
+                backup = path.with_suffix('.saved')
+                path.rename(backup)
+                try:
+                    result = self.validate()
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn(relative, result.stderr)
+                finally:
+                    backup.rename(path)
+
+    def test_context_hook_sources_must_be_regular_files(self):
+        for relative in ('hooks/hooks.json', 'hooks/context_guard.py'):
+            with self.subTest(path=relative):
+                path = self.package / relative
+                backup = path.with_suffix('.saved')
+                path.rename(backup)
+                try:
+                    path.mkdir()
+                    result = self.validate()
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn('regular source files', result.stderr)
+                    path.rmdir()
+                    if hasattr(os, 'mkfifo'):
+                        os.mkfifo(path)
+                        result = self.validate()
+                        self.assertNotEqual(result.returncode, 0)
+                        self.assertIn('regular source files', result.stderr)
+                        path.unlink()
+                finally:
+                    if path.is_dir():
+                        path.rmdir()
+                    elif path.exists():
+                        path.unlink()
+                    backup.rename(path)
+
+    def test_context_hook_rejects_invalid_or_unbounded_json(self):
+        path = self.package / 'hooks/hooks.json'
+        original = path.read_text(encoding='utf-8')
+        fixtures = ('{', '[]', original.replace('"hooks": {', '"hooks": {}, "hooks": {', 1),
+                    '{"hooks": NaN}', ' ' * (64 * 1024 + 1), '\ud800')
+        for content in fixtures:
+            with self.subTest(content=content[:40]):
+                path.write_bytes(content.encode('utf-8', errors='surrogatepass'))
+                result = self.validate()
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('hooks/hooks.json', result.stderr)
+                self.assertNotIn('Traceback', result.stderr)
+
+    def test_context_hook_allows_only_exact_synchronous_commands(self):
+        path = self.package / 'hooks/hooks.json'
+        original = path.read_text(encoding='utf-8')
+        changes = (
+            ('command', 'echo bypass'), ('commandWindows', 'echo bypass'),
+            ('command', "python3 ${PLUGIN_ROOT}/hooks/context_guard.py"),
+            ('timeout', 0), ('timeout', True), ('timeout', 5.0),
+            ('type', 'prompt'), ('async', True), ('continueOnError', True),
+            ('disableAllHooks', True), ('trusted', True),
+        )
+        for event in ('PreToolUse', 'PostToolUse'):
+            for field, value in changes:
+                with self.subTest(event=event, field=field, value=value):
+                    config = json.loads(original)
+                    config['hooks'][event][0]['hooks'][0][field] = value
+                    path.write_text(json.dumps(config), encoding='utf-8')
+                    result = self.validate()
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn('hooks/hooks.json', result.stderr)
+
+    def test_context_hook_rejects_extra_events_handlers_and_settings(self):
+        path = self.package / 'hooks/hooks.json'
+        original = path.read_text(encoding='utf-8')
+        fixtures = []
+        for event in ('PreToolUse', 'PostToolUse'):
+            for replacement in ([], {}, [None], [dict(matcher='Bash', hooks=[])],
+                                json.loads(original)['hooks'][event] * 2):
+                config = json.loads(original)
+                config['hooks'][event] = replacement
+                fixtures.append(config)
+            config = json.loads(original)
+            config['hooks'][event][0]['hooks'] *= 2
+            fixtures.append(config)
+            config = json.loads(original)
+            config['hooks'][event][0]['matcher'] = 'Bash'
+            fixtures.append(config)
+        for key, value in (('SessionStart', []), ('PreToolUse', None)):
+            config = json.loads(original)
+            config['hooks'][key] = value
+            fixtures.append(config)
+        for key, value in (('disableAllHooks', True), ('description', [])):
+            config = json.loads(original)
+            config[key] = value
+            fixtures.append(config)
+        for config in fixtures:
+            with self.subTest(config=config):
+                path.write_text(json.dumps(config), encoding='utf-8')
+                result = self.validate()
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('hooks/hooks.json', result.stderr)
+                self.assertNotIn('Traceback', result.stderr)
+
+    def test_context_handler_requires_python310_self_contained_source(self):
+        path = self.package / 'hooks/context_guard.py'
+        for content in ('def invalid(:\n', 'type Alias = int\n', 'import missing_local_helper\n',
+                        'from . import sibling\n', 'import requests\n', 'import tomllib\n',
+                        'import importlib\n', "__import__('missing_helper')\n",
+                        'x' * (256 * 1024 + 1)):
+            with self.subTest(content=content[:40]):
+                path.write_text(content, encoding='utf-8')
+                result = self.validate()
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('hooks/context_guard.py', result.stderr)
+                self.assertNotIn('Traceback', result.stderr)
+
+    def test_context_handler_validation_never_executes_source(self):
+        path = self.package / 'hooks/context_guard.py'
+        path.write_text("raise RuntimeError('must not execute during validation')\n", encoding='utf-8')
+        result = self.validate()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_context_hook_sources_reject_symlinks_before_read(self):
+        spec = importlib.util.spec_from_file_location('develop_validator', ROOT / 'scripts/validate.py')
+        validator = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(validator)
+        path_open = Path.open
+        for relative in ('hooks/hooks.json', 'hooks/context_guard.py', 'hooks'):
+            for external in (False, True):
+                with self.subTest(path=relative, external=external):
+                    path = self.package / relative
+                    target = (Path(self.temp.name) / 'hook-source' if external
+                              else path.with_name(path.name + '.source'))
+                    path.rename(target)
+                    try:
+                        path.symlink_to(target, target_is_directory=target.is_dir())
+                    except OSError as exc:
+                        target.rename(path)
+                        self.skipTest(f'symlink creation unavailable: {exc}')
+                    source_reads = []
+
+                    def guarded_open(candidate, *args, **kwargs):
+                        if candidate.resolve().is_relative_to(target.resolve()):
+                            source_reads.append(candidate)
+                        return path_open(candidate, *args, **kwargs)
+
+                    try:
+                        with mock.patch.object(Path, 'open', guarded_open):
+                            errors = validator.validate(self.package, self.repository)
+                        self.assertEqual(source_reads, [], 'hook containment must precede reading')
+                        self.assertTrue(any('symlink' in error and 'hooks' in error for error in errors), errors)
+                    finally:
+                        path.unlink()
+                        target.rename(path)
+
+    def test_malformed_native_extension_metadata_fails_cleanly(self):
+        path = self.package / 'plugin.json'
+        original = path.read_text(encoding='utf-8')
+        for extensions in (None, [], {'com.openai': None}, {'com.openai': []},
+                           {'com.openai': {'interface': []}},
+                           {'com.openai': {'interface': {}, 'hooks': './hooks/hooks.json', 'mcpServers': {}}}):
+            with self.subTest(extensions=extensions):
+                manifest = json.loads(original)
+                manifest['extensions'] = extensions
+                path.write_text(json.dumps(manifest), encoding='utf-8')
+                result = self.validate()
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('FAIL:', result.stderr)
+                self.assertNotIn('Traceback', result.stderr)
+
+    def test_manifests_reject_duplicate_json_keys(self):
+        for relative in ('plugin.json', '.codex-plugin/plugin.json'):
+            path = self.package / relative
+            original = path.read_text(encoding='utf-8')
+            path.write_text(original.replace('"name": "develop",', '"name": "other", "name": "develop",'),
+                            encoding='utf-8')
+            try:
+                result = self.validate()
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('duplicate', result.stderr)
+            finally:
+                path.write_text(original, encoding='utf-8')
+
+    def test_manifests_reject_oversized_json(self):
+        for relative in ('plugin.json', '.codex-plugin/plugin.json'):
+            path = self.package / relative
+            original = path.read_bytes()
+            path.write_bytes(b' ' * (1024 * 1024 + 1))
+            try:
+                result = self.validate()
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('metadata exceeds 1 MiB', result.stderr)
+            finally:
+                path.write_bytes(original)
+
+    def test_generator_rejects_invalid_metadata_without_overwriting(self):
+        source = self.package / 'plugin.json'
+        target = self.package / '.codex-plugin/plugin.json'
+        original = source.read_text(encoding='utf-8')
+        previous = target.read_bytes()
+        for content in ('[]', '{"extensions": []}', '{"name": "other", "name": "develop"}',
+                        ' ' * (1024 * 1024 + 1)):
+            with self.subTest(content=content[:40]):
+                source.write_text(content, encoding='utf-8')
+                result = subprocess.run(
+                    [sys.executable, str(ROOT / 'scripts/generate_codex_manifest.py'),
+                     '--root', str(self.package)],
+                    capture_output=True, text=True, check=False, timeout=30,
+                )
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('FAIL:', result.stderr)
+                self.assertNotIn('Traceback', result.stderr)
+                self.assertEqual(target.read_bytes(), previous)
+        source.write_text(original, encoding='utf-8')
 
     def test_missing_skill_reference_fails(self):
         skill = self.package / "skills/develop/SKILL.md"
@@ -332,7 +577,7 @@ class PackageValidation(unittest.TestCase):
         spec = importlib.util.spec_from_file_location("develop_validator", ROOT / "scripts/validate.py")
         validator = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(validator)
-        read_text = Path.read_text
+        path_open = Path.open
         fixtures = ("plugin.json", ".codex-plugin/plugin.json", "skills/clean/SKILL.md",
                     "skills/clean/agents/openai.yaml", "skills/clean/agents")
         for relative in fixtures:
@@ -350,10 +595,10 @@ class PackageValidation(unittest.TestCase):
                 def guarded_read(candidate, *args, **kwargs):
                     if candidate.resolve().is_relative_to(external.resolve()):
                         escaped_reads.append(candidate)
-                    return read_text(candidate, *args, **kwargs)
+                    return path_open(candidate, *args, **kwargs)
 
                 try:
-                    with mock.patch.object(Path, "read_text", guarded_read):
+                    with mock.patch.object(Path, "open", guarded_read):
                         errors = validator.validate(self.package, self.repository)
                     self.assertEqual(escaped_reads, [], "metadata containment must precede reading")
                     self.assertTrue(any("escapes" in error and relative in error.replace("\\", "/")
@@ -373,18 +618,16 @@ class PackageValidation(unittest.TestCase):
         result = self.validate()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
-    def test_portable_mcp_discovery_violates_skills_only_policy(self):
+    def test_portable_mcp_discovery_violates_context_guard_only_policy(self):
         (self.package / "mcp.json").write_text('{"mcpServers": {"extra": {"command": "unused"}}}',
                                                encoding="utf-8")
         result = self.validate()
         self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("mcp.json", result.stderr)
-        self.assertIn("skills-only", result.stderr)
+        self.assertIn("native context guard only", result.stderr)
 
-    def test_legacy_components_violate_skills_only_policy(self):
-        # These are legacy declarations. Rejection of hooks is package policy,
-        # not evidence that a portable loader executes them.
-        for relative in (".mcp.json", "hooks/hooks.json"):
+    def test_legacy_mcp_violates_context_guard_only_policy(self):
+        for relative in (".mcp.json",):
             with self.subTest(path=relative):
                 path = self.package / relative
                 path.parent.mkdir(parents=True, exist_ok=True)
@@ -393,11 +636,11 @@ class PackageValidation(unittest.TestCase):
                     result = self.validate()
                     self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
                     self.assertIn(relative, result.stderr)
-                    self.assertIn("skills-only", result.stderr)
+                    self.assertIn("native context guard only", result.stderr)
                 finally:
                     path.unlink()
 
-    def test_portable_component_fields_violate_skills_only_policy(self):
+    def test_portable_component_fields_violate_context_guard_only_policy(self):
         path = self.package / "plugin.json"
         original = json.loads(path.read_text(encoding="utf-8"))
         for key in ("dependencies", "mcpServers", "hooks"):
@@ -405,7 +648,7 @@ class PackageValidation(unittest.TestCase):
                 path.write_text(json.dumps(dict(original, **{key: {}})), encoding="utf-8")
                 result = self.validate()
                 self.assertNotEqual(result.returncode, 0)
-                self.assertIn("skills-only", result.stderr)
+                self.assertIn("native context guard only", result.stderr)
 
     def test_legacy_manifest_component_fields_fail(self):
         original = self.portable_as_codex()

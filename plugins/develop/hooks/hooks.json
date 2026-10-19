@@ -1,0 +1,33 @@
+{
+  "description": "Block oversized tool text and guide focused searches, bounded reads, and targeted edits.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I -B -c \"import os,runpy;runpy.run_path(os.path.join(os.environ['PLUGIN_ROOT'],'hooks','context_guard.py'),run_name='__main__')\" --event PreToolUse --max-bytes 20000",
+            "commandWindows": "py -3 -I -B -c \"import os,runpy;runpy.run_path(os.path.join(os.environ['PLUGIN_ROOT'],'hooks','context_guard.py'),run_name='__main__')\" --event PreToolUse --max-bytes 20000",
+            "timeout": 5,
+            "statusMessage": "Checking tool context size"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I -B -c \"import os,runpy;runpy.run_path(os.path.join(os.environ['PLUGIN_ROOT'],'hooks','context_guard.py'),run_name='__main__')\" --event PostToolUse --max-bytes 20000",
+            "commandWindows": "py -3 -I -B -c \"import os,runpy;runpy.run_path(os.path.join(os.environ['PLUGIN_ROOT'],'hooks','context_guard.py'),run_name='__main__')\" --event PostToolUse --max-bytes 20000",
+            "timeout": 5,
+            "statusMessage": "Checking tool context size"
+          }
+        ]
+      }
+    ]
+  }
+}
