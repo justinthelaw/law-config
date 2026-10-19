@@ -128,6 +128,9 @@ and the scenarios' simulated denials do not establish native activation.
 Use an already authorized installation with local orchestration and execution.
 Record the exact package/handler hashes, native hook source and `/hooks` status,
 Python version, effective commands and limits, and actual pre/post hook events.
+Confirm native discovery exposes both hooks and all eight skills. The package
+must select `.codex-plugin/plugin.json`; root `plugin.json` takes precedence and
+silently suppresses bundled hooks. Keep source metadata in `plugin-source.json`.
 Do not install, enable, trust, bypass trust or change configuration merely to
 obtain a pass. If the selected definitions require review or the host is
 unsupported, record discovery separately and leave execution blocked/unverified.

@@ -189,16 +189,19 @@ def validate(root, marketplace_root=None):
         except (OSError, ValueError, RuntimeError, zlib.error) as exc:
             errors.append(f"{label}: {exc}")
 
-    manifest = read_json("plugin.json")
-    check(isinstance(manifest, dict), "plugin.json: expected an object")
+    shadow = root / "plugin.json"
+    check(not shadow.exists() and not shadow.is_symlink(),
+          "plugin.json: shadows native hook discovery; use plugin-source.json for source metadata")
+    manifest = read_json("plugin-source.json")
+    check(isinstance(manifest, dict), "plugin-source.json: expected an object")
     if not isinstance(manifest, dict):
         manifest = {}
-    check(manifest.get("$schema") == SCHEMA, "plugin.json: portable schema missing")
-    check(manifest.get("name") == "develop", "plugin.json: name must be develop")
-    check(bool(re.fullmatch(r"\d+\.\d+\.\d+", str(manifest.get("version", "")))), "plugin.json: use a release version")
-    check(manifest.get("repository") == "https://github.com/justinthelaw/law-config.git", "plugin.json: unexpected source repository")
+    check(manifest.get("$schema") == SCHEMA, "plugin-source.json: portable schema missing")
+    check(manifest.get("name") == "develop", "plugin-source.json: name must be develop")
+    check(bool(re.fullmatch(r"\d+\.\d+\.\d+", str(manifest.get("version", "")))), "plugin-source.json: use a release version")
+    check(manifest.get("repository") == "https://github.com/justinthelaw/law-config.git", "plugin-source.json: unexpected source repository")
     check(not any(key in manifest for key in ("dependencies", "mcpServers", "hooks")),
-          "plugin.json: eight skills plus the native context guard only; no root hooks, dependencies or MCP")
+          "plugin-source.json: eight skills plus the native context guard only; no root hooks, dependencies or MCP")
     # Both discovery formats remain forbidden; the native guard adds no server
     # or service dependency and is registered only through the OpenAI adapter.
     for relative in ("mcp.json", ".mcp.json"):
@@ -211,19 +214,19 @@ def validate(root, marketplace_root=None):
         errors.append(str(exc))
         extension = {}
     check(set(extension) == {"interface", "hooks"},
-          "plugin.json: extensions.com.openai permits only interface and the native context guard hooks")
+          "plugin-source.json: extensions.com.openai permits only interface and the native context guard hooks")
     check(extension.get("hooks") == HOOK_PATH,
-          "plugin.json: extensions.com.openai.hooks must be ./hooks/hooks.json")
+          "plugin-source.json: extensions.com.openai.hooks must be ./hooks/hooks.json")
     interface = extension.get("interface", {})
     for key in ("logo", "composerIcon"):
-        check_icon(interface.get(key), root, f"plugin.json: {key}")
+        check_icon(interface.get(key), root, f"plugin-source.json: {key}")
 
-    # Older Codex clients ingest this file, with paths relative to the package
-    # root. Validate the shipped artifact without regenerating it during lint.
+    # Codex must select this manifest to load bundled hooks. Paths resolve from
+    # the package root; validate without regenerating the shipped artifact.
     codex = read_json(".codex-plugin/plugin.json")
     try:
         check(codex == codex_manifest(manifest),
-              ".codex-plugin/plugin.json: regenerate from plugin.json; expected matching metadata, top-level interface, skills and hooks")
+              ".codex-plugin/plugin.json: regenerate from plugin-source.json; expected matching metadata, top-level interface, skills and hooks")
     except ValueError as exc:
         errors.append(f".codex-plugin/plugin.json: cannot derive from invalid portable metadata: {exc}")
     errors.extend(validate_context_hooks(root))

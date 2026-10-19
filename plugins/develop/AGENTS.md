@@ -20,13 +20,13 @@ python -m unittest discover -s skills/iterate/scripts -p 'test_*.py'
 python -m unittest discover -s skills/deep-clean/tests -p 'test_*.py'
 ```
 
-Run `git diff --check` and the [contribution checks](../../docs/CONTRIBUTING.md#validation) from the repository root. Commit both manifests after portable metadata changes. For detached installed payloads, omit `--marketplace-root`; run fixture-writing package tests on a disposable copy outside the installed cache.
+Run `git diff --check` and the [contribution checks](../../docs/CONTRIBUTING.md#validation) from the repository root. Commit the source metadata and generated manifest together. For detached installed payloads, omit `--marketplace-root`; run fixture-writing package tests on a disposable copy outside the installed cache.
 
 Before publication, exercise relevant [fresh-context scenarios](tests/scenarios.md), packaged references/helpers from an unrelated working directory, and actual icon legibility. Inspect actual artifacts; structure checks, text matching and simulated decisions do not prove agent behavior, installation, live publication or deployment. Commit only scoped changes, update the plugin version when releasing, and verify the same Git revision on each installed surface.
 
 ## Host metadata and activation
 
-The root `plugin.json` is portable metadata. Generated `.codex-plugin/plugin.json`, the `com.openai` namespace and skill `agents/openai.yaml` files are compatibility adapters, not product-specific workflow requirements. Both manifests resolve assets from the package root. Keep these names accurate; do not edit installed caches. The repository catalog is `.agents/plugins/marketplace.json`, published as `law-config`.
+`plugin-source.json` preserves portable source metadata; generated `.codex-plugin/plugin.json` is the sole runtime manifest in this Codex distributable. Do not add root `plugin.json`: Codex gives it precedence and skips bundled hooks for that format. Source metadata is not a discoverable package for other hosts. Asset paths resolve from the package root. The `com.openai` namespace and skill `agents/openai.yaml` files remain host adapters. Do not edit installed caches. The repository catalog is `.agents/plugins/marketplace.json`, published as `law-config`.
 
 Use each host's supported installer and update flow. Checkout, publication, installation, enablement and runtime discovery are separate states. Verify version and skill discovery in a fresh session on every intended device/environment; a local install or downloaded bundle does not establish cloud/remote activation. Inspect CLI warnings as well as JSON: unavailable remote catalogs can leave an empty listing without proving absence.
 

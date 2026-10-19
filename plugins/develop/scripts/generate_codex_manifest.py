@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the Codex compatibility manifest from the portable plugin manifest."""
+"""Generate the Codex compatibility manifest from portable source metadata."""
 import argparse
 import json
 from pathlib import Path
@@ -32,15 +32,15 @@ def load_json(text):
 
 def openai_extension(manifest):
     if not isinstance(manifest, dict):
-        raise ValueError("plugin.json: expected an object")
+        raise ValueError("plugin-source.json: expected an object")
     extensions = manifest.get("extensions", {})
     if not isinstance(extensions, dict):
-        raise ValueError("plugin.json: extensions must be an object")
+        raise ValueError("plugin-source.json: extensions must be an object")
     extension = extensions.get("com.openai", {})
     if not isinstance(extension, dict):
-        raise ValueError("plugin.json: extensions.com.openai must be an object")
+        raise ValueError("plugin-source.json: extensions.com.openai must be an object")
     if not isinstance(extension.get("interface", {}), dict):
-        raise ValueError("plugin.json: extensions.com.openai.interface must be an object")
+        raise ValueError("plugin-source.json: extensions.com.openai.interface must be an object")
     return extension
 
 
@@ -59,10 +59,10 @@ def main():
     parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
     args = parser.parse_args()
     try:
-        with (args.root / "plugin.json").open("rb") as stream:
+        with (args.root / "plugin-source.json").open("rb") as stream:
             data = stream.read(1024 * 1024 + 1)
         if len(data) > 1024 * 1024:
-            raise ValueError("plugin.json: metadata exceeds 1 MiB")
+            raise ValueError("plugin-source.json: metadata exceeds 1 MiB")
         manifest = load_json(data.decode("utf-8"))
         content = json.dumps(codex_manifest(manifest), indent=2) + "\n"
         target = args.root / ".codex-plugin/plugin.json"

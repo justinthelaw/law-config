@@ -64,13 +64,32 @@ class PackageValidation(unittest.TestCase):
         result = self.validate()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
+    def test_root_manifest_cannot_shadow_native_hooks(self):
+        # A root Agent Plugin manifest wins discovery but skips bundled hooks.
+        shadow = self.package / 'plugin.json'
+        shutil.copy2(self.package / 'plugin-source.json', shadow)
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('plugin.json: shadows native hook discovery', result.stderr)
+
+    def test_dangling_root_manifest_symlink_is_rejected(self):
+        shadow = self.package / 'plugin.json'
+        shadow.unlink(missing_ok=True)
+        try:
+            shadow.symlink_to('missing-manifest.json')
+        except OSError as exc:
+            self.skipTest(f'symlinks unavailable: {exc}')
+        result = self.validate()
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('plugin.json: shadows native hook discovery', result.stderr)
+
     def write_codex_manifest(self, manifest):
         path = self.package / '.codex-plugin/plugin.json'
         path.parent.mkdir(exist_ok=True)
         path.write_text(json.dumps(manifest), encoding='utf-8')
 
     def portable_as_codex(self):
-        manifest = json.loads((self.package / 'plugin.json').read_text(encoding='utf-8'))
+        manifest = json.loads((self.package / 'plugin-source.json').read_text(encoding='utf-8'))
         extension = manifest.pop('extensions')['com.openai']
         manifest.pop('$schema')
         return dict(manifest, skills='./skills/', interface=extension['interface'], hooks=extension['hooks'])
@@ -82,7 +101,7 @@ class PackageValidation(unittest.TestCase):
         self.assertIn('.codex-plugin/plugin.json', result.stdout + result.stderr)
 
     def test_codex_manifest_rejects_portable_fields(self):
-        manifest = json.loads((self.package / 'plugin.json').read_text(encoding='utf-8'))
+        manifest = json.loads((self.package / 'plugin-source.json').read_text(encoding='utf-8'))
         self.write_codex_manifest(manifest)
         result = self.validate()
         self.assertNotEqual(result.returncode, 0)
@@ -126,13 +145,13 @@ class PackageValidation(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_context_hook_is_explicitly_registered_in_both_manifests(self):
-        portable = json.loads((self.package / 'plugin.json').read_text(encoding='utf-8'))
+        portable = json.loads((self.package / 'plugin-source.json').read_text(encoding='utf-8'))
         codex = json.loads((self.package / '.codex-plugin/plugin.json').read_text(encoding='utf-8'))
         self.assertEqual(portable['extensions']['com.openai'].get('hooks'), './hooks/hooks.json')
         self.assertEqual(codex.get('hooks'), './hooks/hooks.json')
 
     def test_context_hook_registration_cannot_be_disconnected_or_redirected(self):
-        path = self.package / 'plugin.json'
+        path = self.package / 'plugin-source.json'
         original = path.read_text(encoding='utf-8')
         for value in (None, './missing.json', '../hooks.json', {}, []):
             with self.subTest(hooks=value):
@@ -311,7 +330,7 @@ class PackageValidation(unittest.TestCase):
                         target.rename(path)
 
     def test_malformed_native_extension_metadata_fails_cleanly(self):
-        path = self.package / 'plugin.json'
+        path = self.package / 'plugin-source.json'
         original = path.read_text(encoding='utf-8')
         for extensions in (None, [], {'com.openai': None}, {'com.openai': []},
                            {'com.openai': {'interface': []}},
@@ -326,7 +345,7 @@ class PackageValidation(unittest.TestCase):
                 self.assertNotIn('Traceback', result.stderr)
 
     def test_manifests_reject_duplicate_json_keys(self):
-        for relative in ('plugin.json', '.codex-plugin/plugin.json'):
+        for relative in ('plugin-source.json', '.codex-plugin/plugin.json'):
             path = self.package / relative
             original = path.read_text(encoding='utf-8')
             path.write_text(original.replace('"name": "develop",', '"name": "other", "name": "develop",'),
@@ -339,7 +358,7 @@ class PackageValidation(unittest.TestCase):
                 path.write_text(original, encoding='utf-8')
 
     def test_manifests_reject_oversized_json(self):
-        for relative in ('plugin.json', '.codex-plugin/plugin.json'):
+        for relative in ('plugin-source.json', '.codex-plugin/plugin.json'):
             path = self.package / relative
             original = path.read_bytes()
             path.write_bytes(b' ' * (1024 * 1024 + 1))
@@ -351,7 +370,7 @@ class PackageValidation(unittest.TestCase):
                 path.write_bytes(original)
 
     def test_generator_rejects_invalid_metadata_without_overwriting(self):
-        source = self.package / 'plugin.json'
+        source = self.package / 'plugin-source.json'
         target = self.package / '.codex-plugin/plugin.json'
         original = source.read_text(encoding='utf-8')
         previous = target.read_bytes()
@@ -578,7 +597,7 @@ class PackageValidation(unittest.TestCase):
         validator = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(validator)
         path_open = Path.open
-        fixtures = ("plugin.json", ".codex-plugin/plugin.json", "skills/clean/SKILL.md",
+        fixtures = ("plugin-source.json", ".codex-plugin/plugin.json", "skills/clean/SKILL.md",
                     "skills/clean/agents/openai.yaml", "skills/clean/agents")
         for relative in fixtures:
             with self.subTest(path=relative):
@@ -641,7 +660,7 @@ class PackageValidation(unittest.TestCase):
                     path.unlink()
 
     def test_portable_component_fields_violate_context_guard_only_policy(self):
-        path = self.package / "plugin.json"
+        path = self.package / "plugin-source.json"
         original = json.loads(path.read_text(encoding="utf-8"))
         for key in ("dependencies", "mcpServers", "hooks"):
             with self.subTest(field=key):

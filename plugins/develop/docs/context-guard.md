@@ -64,8 +64,11 @@ Verify actual discovery, trust and execution separately; see the
 
 ## Configuration and protocol
 
-The portable manifest declares `extensions.com.openai.hooks`; the generated
-Codex compatibility manifest declares the same `./hooks/hooks.json` path.
+Portable source metadata in `plugin-source.json` declares
+`extensions.com.openai.hooks`; the generated `.codex-plugin/plugin.json` declares
+the same `./hooks/hooks.json` path. It is the sole runtime manifest: a root
+`plugin.json` takes precedence in Codex but skips bundled hooks. The renamed
+source metadata does not establish another host's package discovery.
 Definitions match both events and use a fixed `-I -B -c` Python bootstrap that
 reads `PLUGIN_ROOT` inside Python. Paths are not interpolated into shell code.
 Unix requires `python3` **3.10+**; Windows requires the **`py -3` launcher** with
