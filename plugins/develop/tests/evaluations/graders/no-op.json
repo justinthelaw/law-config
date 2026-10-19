@@ -1,0 +1,11 @@
+{
+  "fixture_id": "no-op",
+  "fixture_revision": "1",
+  "criteria": [
+    {
+      "id": "answer",
+      "pass_when": "Answers 4 without invoking development workflows, tools or helpers.",
+      "evidence": "Complete user, tool and helper observation channels; absent logs are unverified, not a pass."
+    }
+  ]
+}
