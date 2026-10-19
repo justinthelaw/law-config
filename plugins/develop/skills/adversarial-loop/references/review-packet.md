@@ -13,6 +13,8 @@ Steering messages (ordered, verbatim, secrets redacted):
 Resolved acceptance criteria / lane scope / exclusions and non-goals:
 Applicable instructions and authorized action boundaries:
 Implementation plan / affected files / invariants / acceptance tests (supplied or not provided):
+User preferences / review rubric (optional; supplied or not provided):
+Criterion precedence / material conflicts (if any):
 Artifact baseline / current revision (document version, file/image hashes, or SHA plus dirty diff hashes):
 Target artifacts (paths, source links, supplied diffs):
 Evidence authority (named sources that establish each relevant claim or criterion):
@@ -35,13 +37,15 @@ Do not optimize for agreement. Do not invent findings.
 Output contract:
 - Lane and reviewed intent, contract and artifact revisions; coverage and limitations.
 - Verdict: aligned | changes required | blocked.
-- Material findings: severity, exact location/evidence, affected user criterion,
+- Material findings: severity, exact location/evidence, applicable criterion or binding instruction,
   concrete impact, smallest sufficient correction, and verification needed.
   Distinguish introduced and verified pre-existing defects. State none explicitly
   if none; do not use a bare approval with no revision or coverage.
 - Separate optional nonblocking observations.
 - Additional specialist recommendation with a specific uncovered risk, or none.
 ```
+
+Translate a supplied rubric into observable criteria and connect findings to the relevant criterion. Keep verified defects, uncertainty and nonblocking preferences distinct. Apply the entrypoint's precedence and default criteria; absence of optional preferences or a rubric creates no extra gate.
 
 For implementation reviews, supply the relevant diff plus contracts and tests. For plan reviews, supply the candidate plan, constraints and acceptance criteria. For information reviews, supply exact claims, named authoritative evidence and known uncertainty. Keep the coordinator's conclusions and other reviewers' findings out of independent packets. A focused rebuttal may quote the disputed finding and raw evidence, but record it as a rebuttal rather than treating it as an independent initial review.
 

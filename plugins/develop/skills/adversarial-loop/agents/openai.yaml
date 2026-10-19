@@ -4,4 +4,4 @@ interface:
   icon_large: "./assets/icon.png"
   display_name: "Develop: Adversarial loop"
   short_description: "Independently review artifacts and evidence"
-  default_prompt: "Use $adversarial-loop to review this artifact against my request and evidence."
+  default_prompt: "Use $adversarial-loop to review this artifact against my request, evidence and any supplied rubric or preferences."
