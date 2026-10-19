@@ -178,7 +178,7 @@ class PackageValidation(unittest.TestCase):
     def test_installed_helpers_load_from_an_unrelated_directory(self):
         environment = {**os.environ, "PYTHONSAFEPATH": "1"}
         environment.pop("PYTHONDONTWRITEBYTECODE", None)
-        for name in ("repository_inventory.py", "watch_pipelines.py"):
+        for name in ("repository_inventory.py", "watch_pipelines.py", "check_staged_file_size.py"):
             with self.subTest(helper=name):
                 result = subprocess.run(
                     [sys.executable, str(self.package / "skills/iterate/scripts" / name), "--help"],

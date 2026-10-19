@@ -17,10 +17,18 @@ cancellation, retry and cleanup checks in the existing
 [runtime contract guidance](../../upgrade/references/runtime-contracts.md#inspect-consumed-contracts);
 this does not start a dependency upgrade.
 
+Use [focused source reading](documentation.md#focused-source-reading) to locate
+affected definitions, callers and tests by owner path and relevant terms before
+expanding discovery. Read enough surrounding context to preserve the invariants;
+small excerpts do not replace required complete coverage.
+
 Prefer clear responsibilities, shared fixes and small reusable units. Remove
 demonstrated duplication; keep code and documentation concise without obscuring
 intent or discarding constraints. Fewer lines alone are not evidence of better
-design. Preserve functionality and performance; use affected complexity/resource
+design. Do not split cohesive files or remove useful comments solely to satisfy a
+[staged-file byte budget](staged-file-size.md); choose a genuine ownership
+improvement or report the policy conflict. Preserve functionality and performance;
+use affected complexity/resource
 contracts or existing performance checks, adding a bounded measurement when a
 credible regression risk requires it. Keep application performance separate from
 agent time/token cost.

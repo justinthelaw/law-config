@@ -55,6 +55,8 @@ Signing is nonblocking: use an existing noninteractive signer when available, ot
 
 The bundled watcher supports GitHub CI. Its optional vendor-specific review adapter is selected explicitly; other required reviews use native evidence. A successful CI-only watcher does not certify all PR approvals. See [monitoring](skills/iterate/references/github-monitoring.md).
 
+Iterate also bundles an explicitly invoked, offline [staged-file size checker](skills/iterate/references/staged-file-size.md), with optional repository-owned profiles and inert binding examples. It requires Python 3.10+ and Git; it never edits or stages files, discovers profiles, or installs hooks. Repositories may retain a reviewed standalone copy without an installed plugin dependency. Use the [search guidance](skills/iterate/references/documentation.md) for large corpora and [visual validation](skills/iterate/references/visual-validation.md) for changed rendered surfaces. These additions preserve the eight skills and require no external workflow plugin.
+
 ## Verify and release
 
 With Python 3.10 or newer, from the repository root:

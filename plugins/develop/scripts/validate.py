@@ -268,7 +268,7 @@ def validate(root, marketplace_root=None):
     # Delivery helpers ship inside the owning skill. Check their local import
     # closure without importing code or relying on the author's checkout.
     helper_root = root / "skills/iterate/scripts"
-    pending = ["repository_inventory", "watch_pipelines"]
+    pending = ["repository_inventory", "watch_pipelines", "check_staged_file_size"]
     inspected = set()
     while pending:
         module = pending.pop()
