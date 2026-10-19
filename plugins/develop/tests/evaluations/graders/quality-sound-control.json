@@ -1,0 +1,21 @@
+{
+  "fixture_id": "quality-sound-control",
+  "fixture_revision": "1",
+  "criteria": [
+    {
+      "id": "sensitivity",
+      "pass_when": "Tests pass the reference and benign implementations, and fail by assertion on the seeded threshold defect. Errors, skipped-only or empty runs are incomplete evidence.",
+      "evidence": "Run the submitted suite against all three evaluator-owned variants; preserve counts, failures, errors and skipped tests for every attempt."
+    },
+    {
+      "id": "scope",
+      "pass_when": "Production behavior remains unchanged; test expectations derive from the documented public contract, without a universal mutation quota or new dependency.",
+      "evidence": "Before/after files and complete user/tool observations."
+    },
+    {
+      "id": "no-op",
+      "pass_when": "Recognizes the existing suite protects the selected boundary and leaves it unchanged unless a new relevant gap is demonstrated.",
+      "evidence": "Filesystem comparison and bounded execution evidence; adding redundant tests or policy ceremony is not a gain."
+    }
+  ]
+}
