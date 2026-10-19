@@ -48,6 +48,11 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 .audit-note { margin-top: 8px; text-align: center; font-size: 20px; line-height: 1.3; color: var(--muted); }
 .delivery { border-color: #d8ac7d; background: #493425; padding: 13px 10px 16px; }
 .delivery h3 { margin-bottom: 10px; }
+.implementation-lane { min-width: 0; }
+.external { margin-top: 28px; border-style: dashed; background: #2b2420; }
+.external-title { display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 22px; font-weight: 600; text-decoration-color: #997352; }
+.external img { display: block; width: 48px; height: 48px; border-radius: 6px; background: #fff; }
+.external p { margin-top: 5px; }
 .delivery p { margin-bottom: 12px; }
 .delivery-steps { display: grid; gap: 9px; font-size: 20px; color: var(--accent); }
 .delivery-steps span { display: block; }
@@ -111,8 +116,8 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 <section id="workflow" aria-labelledby="workflow-title">
   <div class="section-heading"><span class="section-number">01</span><h1 id="workflow-title">Develop · One connected workflow</h1></div>
   <p class="intro">Start with your outcome. Follow only the branches it needs.</p>
-  <div class="workflow-map" role="img" aria-labelledby="workflow-title" aria-describedby="workflow-description">
-    <p id="workflow-description" class="sr-only">Start with Develop or invoke an owner directly. Develop routes the requested outcome to Upgrade, Kaizen, Iterate, Clean or Adversarial loop. Upgrade Codex is available only by explicit invocation. Upgrade, Kaizen and Upgrade Codex may return findings; they hand changes to Iterate only when implementation is authorized. Iterate performs the requested work and can loop through validation, authorized delivery, monitoring and authorized repair. Clean expands to Deep clean only for explicitly widened scope. Adversarial loop reviews applicable checkpoints and returns findings to the owner within a bounded review budget. An audit-only Upgrade Codex review is opt-in.</p>
+  <div class="workflow-map" role="group" aria-labelledby="workflow-title" aria-describedby="workflow-description">
+    <p id="workflow-description" class="sr-only">Start with Develop or invoke an owner directly. Develop routes the requested outcome to Upgrade, Kaizen, Iterate, Clean or Adversarial loop. Upgrade Codex is available only by explicit invocation. Upgrade, Kaizen and Upgrade Codex may return findings; they hand changes to Iterate only when implementation is authorized. Iterate performs the requested work and can loop through validation, authorized delivery, monitoring and authorized repair. Clean expands to Deep clean only for explicitly widened scope. Adversarial loop reviews applicable checkpoints and returns findings to the owner within a bounded review budget. An audit-only Upgrade Codex review is opt-in. Iterate may use compatible installed Superpowers guidance for planning, debugging and testing, then resumes with its existing scope and gates.</p>
     <svg class="connectors" aria-hidden="true"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#e8c8a6"/></marker><marker id="feedback-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#bc9471"/></marker></defs><g id="edge-layer"></g></svg>
     <div class="flow-node router" id="node-develop" data-skill="develop"><h3>Develop</h3></div>
     <p class="route-caption">Route by outcome · or invoke an owner directly</p>
@@ -126,10 +131,15 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
           <p class="audit-note">Audit review is opt-in</p>
         </div>
       </div>
-      <div class="flow-node delivery" id="node-iterate" data-skill="iterate">
-        <h3>Iterate</h3>
-        <p>As requested</p>
-        <div class="delivery-steps"><span>Prepare → change</span><span>Verify → deliver*</span><span>Monitor → diagnose</span><span class="loop-back">↶ Authorized repair</span></div>
+      <div class="implementation-lane">
+        <div class="flow-node delivery" id="node-iterate" data-skill="iterate">
+          <h3>Iterate</h3>
+          <div class="delivery-steps"><span>Prepare → change</span><span>Verify → deliver*</span><span class="loop-back">Monitor ↶ repair*</span></div>
+        </div>
+        <div class="flow-node external" id="node-superpowers" data-external="superpowers">
+          <a class="external-title" href="https://github.com/openai/plugins/tree/main/plugins/superpowers" title="Official Superpowers Codex source"><img src="assets/superpowers-logo.png" width="48" height="48" alt="Official Superpowers logo"><span>Superpowers ↗</span></a>
+          <p>Optional when installed</p><p>Plan · debug · test</p>
+        </div>
       </div>
       <div class="cleanup-lane">
         <div class="flow-node" id="node-clean" data-skill="clean"><h3>Clean</h3></div>
@@ -141,7 +151,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
     </div>
     <p class="handoff" id="handoff-label">Return findings · implement only when authorized</p>
     <div class="flow-node reviews" id="node-adversarial-loop" data-skill="adversarial-loop"><h3>Adversarial loop</h3><p>Review at applicable checkpoints.<br>Return findings; recheck within the budget.</p></div>
-    <p class="review-return">* Delivery requires authorization. Reviews return to the owning workflow.</p>
+    <p class="review-return">* Delivery and repairs require authorization. Reviews return to the owner.</p>
   </div>
 </section>
 <section id="skills" aria-labelledby="skills-title">
@@ -181,7 +191,8 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
       if (both) path.setAttribute('marker-start', `url(#${marker})`);
       layer.append(path);
     };
-    const D = box('develop'), I = box('iterate'), C = box('clean'), X = box('deep-clean'), R = box('adversarial-loop');
+    const D = box('develop'), I = box('iterate'), C = box('clean'), X = box('deep-clean'), R = box('adversarial-loop'), S = box('superpowers');
+    edge(`M ${I.x} ${I.bottom + 3} V ${S.top - 3}`, 'conditional', true);
     const mobile = matchMedia('(max-width: 620px)').matches;
     if (mobile) {
       const routeX = 10, handoffX = bounds.width - 9;

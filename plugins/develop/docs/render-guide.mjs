@@ -19,7 +19,7 @@ const base=path.dirname(fileURLToPath(import.meta.url));
 const qa=await fs.mkdtemp(path.join(tmpdir(),'develop-browser-qa-'));
 const evidencePath=name=>path.resolve(qa,name);
 const sha256=data=>createHash('sha256').update(data).digest('hex');
-const sourceFiles=['develop-overview.html','develop-route-explorer.html','render-guide.mjs'];
+const sourceFiles=['develop-overview.html','develop-route-explorer.html','render-guide.mjs','assets/superpowers-logo.png'];
 const sourceHashes=Object.fromEntries(await Promise.all(sourceFiles.map(async name=>[name,sha256(await fs.readFile(path.join(base,name)))])));
 const launch={headless:true};
 if(engine==='chromium')launch.chromiumSandbox=true;
@@ -51,8 +51,10 @@ try{
   return{width:boundary.width,height:boundary.height,sections,skills:cards.map(el=>el.dataset.skill),minBodyFont:Math.min(...bodyFonts),logos:cards.map(el=>{const img=el.querySelector('img');return{src:img?.getAttribute('src'),loaded:img?.complete&&img.naturalWidth>0,width:img?.getBoundingClientRect().width};})};
  });
  report.checks.push({test:'one workflow and one skill directory',pass:overviewChecks.sections.length===2&&overviewChecks.sections.includes('workflow')&&overviewChecks.sections.includes('skills'),results:overviewChecks});
- report.checks.push({test:'eight unique skill descriptions and existing logos',pass:JSON.stringify([...overviewChecks.skills].sort())===JSON.stringify([...expectedSkills].sort())&&overviewChecks.logos.every(logo=>logo.loaded&&logo.width>=48)&&new Set(overviewChecks.logos.map(logo=>logo.src)).size===8&&await page.locator('.sheet img').count()===8});
- report.checks.push({test:'compact overview with legible README typography',pass:overviewChecks.width===1000&&overviewChecks.height<=1400&&overviewChecks.minBodyFont>=20,readmeWidth:860,minBodyDisplayPx:overviewChecks.minBodyFont*860/overviewChecks.width});
+ report.checks.push({test:'eight unique skill descriptions and existing logos',pass:JSON.stringify([...overviewChecks.skills].sort())===JSON.stringify([...expectedSkills].sort())&&overviewChecks.logos.every(logo=>logo.loaded&&logo.width>=48)&&new Set(overviewChecks.logos.map(logo=>logo.src)).size===8&&await page.locator('.sheet img').count()===9});
+ report.checks.push({test:'compact overview with legible README typography',pass:overviewChecks.width===1000&&overviewChecks.height<=1450&&overviewChecks.minBodyFont>=20,readmeWidth:860,minBodyDisplayPx:overviewChecks.minBodyFont*860/overviewChecks.width});
+ const external=await page.locator('[data-external=superpowers]').evaluate(el=>({count:document.querySelectorAll('[data-external=superpowers]').length,href:el.querySelector('a').href,loaded:el.querySelector('img').complete&&el.querySelector('img').naturalWidth>0}));
+ report.checks.push({test:'one optional Superpowers box with official source link and logo',pass:external.count===1&&external.loaded&&external.href==='https://github.com/openai/plugins/tree/main/plugins/superpowers',results:external});
  const links=await page.locator('.skill-card a').evaluateAll(anchors=>anchors.map(a=>({href:a.href,label:a.textContent.trim()})));
  for(const link of links){
   const target=fileURLToPath(link.href);
