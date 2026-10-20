@@ -13,8 +13,8 @@ Start with [Linux setup](docs/setup-linux.md) or [macOS setup](docs/setup-macos.
 
 The `law-config` Git marketplace distributes [Develop](plugins/develop/README.md):
 eight skills for development, upgrades, reviews, cleanup, and workflow improvement.
-Its [Codex context guard](plugins/develop/docs/context-guard.md) blocks oversized
-tool text and recommends focused searches and bounded reads. The guard requires
+Its [Codex context guard](plugins/develop/docs/context-guard.md) guides bounded
+reads and optionally preserves oversized received results before replacement. The guard requires
 supported local Codex sessions, Python 3.10+, and hook trust; see the
 [installation guide](plugins/develop/INSTALL.md).
 

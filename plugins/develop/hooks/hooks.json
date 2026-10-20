@@ -1,5 +1,5 @@
 {
-  "description": "Block oversized tool text and guide focused searches, bounded reads, and targeted edits.",
+  "description": "Guide bounded reads; preserve oversized received results before replacement when explicitly authorized.",
   "hooks": {
     "PreToolUse": [
       {

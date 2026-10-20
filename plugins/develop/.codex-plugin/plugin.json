@@ -1,6 +1,6 @@
 {
   "name": "develop",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Deliver repository changes, upgrade dependencies, audit Codex compatibility, review work, clean up, and improve workflows.",
   "author": {
     "name": "justinthelaw",
@@ -23,7 +23,7 @@
     "composerIcon": "./assets/logo.png",
     "brandColor": "#C99554",
     "shortDescription": "Build, review, and improve",
-    "longDescription": "Eight skills for repository changes, dependency upgrades, thread-scoped cleanup, independent review, and workflow improvement. Explicit-only deep-clean inspects user-expanded machine scope; upgrade-codex audits Codex compatibility. A native Codex context guard blocks oversized tool text and guides focused reads. No external workflow plugin required.",
+    "longDescription": "Eight skills for repository changes, dependency upgrades, thread-scoped cleanup, independent review, and workflow improvement. Explicit-only deep-clean inspects user-expanded machine scope; upgrade-codex audits Codex compatibility. A native Codex context guard denies known oversized whole-file reads and offers opt-in verified result preservation; otherwise oversized results warn and pass through. No external workflow plugin required.",
     "developerName": "justinthelaw",
     "category": "Developer Tools",
     "capabilities": [

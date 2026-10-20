@@ -1,33 +1,16 @@
 #!/usr/bin/env python3
-"""Bound model-visible text at native Codex tool lifecycle boundaries.
+"""Preserve-first native Codex context guard (see docs/context-guard.md).
 
-Accounting selects tool_input for PreToolUse and tool_response for PostToolUse.
-Strings cost decoded UTF-8 bytes plus two quote bytes; keys count too. Objects
-and arrays cost compact JSON delimiters, commas and colons; numbers retain their
-original JSON token length, and booleans/null cost their literal lengths. JSON
-transport escaping and whitespace do not count again. Equality passes. This is
-a text-size heuristic, not token counting or a cumulative context budget.
-
-Only base64 values in recognized typed binary image/audio/video blocks are
-excluded. Their keys, quotes, MIME/data-URL headers and all other metadata still
-count. SVG, textual/unknown MIME, ordinary text and untyped data URLs count fully.
-The independent 16 MiB raw-event ceiling bounds parsing; stdin is drained with
-64 KiB reads even after that ceiling is exceeded. Invalid, duplicate-key, overly
-nested (over 256 levels) or otherwise uninspectable values produce bounded,
-content-free blocking feedback for the configured event. JSON parsing memory is proportional to this
-raw bound; it is not a 16 MiB total-process memory guarantee.
-
-Preflight uses stat only for literal whole-file cat and recognized read tools.
-It neither evaluates shell nor reads file contents. Complex commands and ranged
-reads depend on the actual PostToolUse result. PostToolUse blocking withholds the
-result (also rejecting nested code-mode promises), but cannot undo side effects.
-The handler uses only the standard library, no network, logs or filesystem writes.
-Launch with -B to suppress Python import-cache writes, as the shipped hooks do.
+Known whole-file reads receive bounded preflight guidance. Oversized received
+responses are replaced only after opt-in atomic verified preservation. Unknown
+policy and inspection/storage failures warn and leave normal results intact.
+The 16 MiB raw-event ceiling bounds parsing, not total process memory.
 """
 import argparse
 import json
 import os
 import re
+import runpy
 import shlex
 import stat
 import sys
@@ -92,7 +75,8 @@ def read_event():
             retained.clear()
     if size > RAW_EVENT_LIMIT:
         raise InvalidEvent("raw event exceeds the 16 MiB inspection limit")
-    return json.loads(retained.decode("utf-8"), object_pairs_hook=unique_object,
+    raw = retained.decode("utf-8")
+    return raw, json.loads(raw, object_pairs_hook=unique_object,
                       parse_int=NumberToken, parse_float=NumberToken,
                       parse_constant=reject_constant)
 
@@ -228,13 +212,9 @@ def oversized_whole_read(event, limit):
     return False
 
 
-def block(event, reason):
-    feedback = reason + " " + GUIDANCE
-    if event == "PreToolUse":
-        output = {"hookSpecificOutput": {"hookEventName": event,
-                  "permissionDecision": "deny", "permissionDecisionReason": feedback}}
-    else:
-        output = {"decision": "block", "reason": feedback}
+def deny_read(reason):
+    output = {"hookSpecificOutput": {"hookEventName": "PreToolUse",
+              "permissionDecision": "deny", "permissionDecisionReason": reason + " " + GUIDANCE}}
     print(json.dumps(output, ensure_ascii=True, separators=(",", ":")))
 
 
@@ -254,26 +234,27 @@ def main():
     parser.add_argument("--max-bytes", type=positive_limit, default=20000)
     arguments = parser.parse_args()
     try:
-        event = read_event()
+        raw, event = read_event()
         field = "tool_input" if arguments.event == "PreToolUse" else "tool_response"
         if (not isinstance(event, dict) or event.get("hook_event_name") != arguments.event
                 or type(event.get("tool_name")) is not str or not event["tool_name"]
                 or field not in event
                 or ("cwd" in event and type(event["cwd"]) is not str)):
             raise InvalidEvent("invalid event envelope")
-        if text_size(event[field], arguments.max_bytes) > arguments.max_bytes:
-            subject = "Tool input" if arguments.event == "PreToolUse" else "Tool result"
-            block(arguments.event, f"{subject} exceeds the {arguments.max_bytes}-byte context text limit.")
-        elif arguments.event == "PreToolUse" and oversized_whole_read(event, arguments.max_bytes):
-            block(arguments.event, f"Whole-file read exceeds the {arguments.max_bytes}-byte context text limit.")
-    except InvalidEvent as error:
-        # Only our fixed messages may be surfaced; parser/path errors can echo content.
-        reason = ("Raw event exceeds the 16 MiB inspection limit."
-                  if str(error) == "raw event exceeds the 16 MiB inspection limit"
-                  else "Context guard could not inspect the event; the operation is blocked.")
-        block(arguments.event, reason)
-    except (ValueError, TypeError, RecursionError, OSError, OverflowError):
-        block(arguments.event, "Context guard could not inspect the event; the operation is blocked.")
+        text_size(event, sys.maxsize)  # Validate depth/Unicode without denying large edits.
+        if arguments.event == "PreToolUse":
+            if oversized_whole_read(event, arguments.max_bytes):
+                deny_read(f"Whole-file read exceeds the {arguments.max_bytes}-byte context text limit.")
+        elif text_size(event[field], arguments.max_bytes) > arguments.max_bytes:
+            helper = runpy.run_path(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                                "response_store.py"))
+            receipt = helper["preserve"](raw, event.get("session_id"))
+            print(json.dumps({"continue": False, "stopReason": receipt}, ensure_ascii=True))
+    except (ValueError, TypeError, RecursionError, OSError, OverflowError, RuntimeError, ImportError):
+        # No parser, path, payload, or exception text is promoted to instructions.
+        print(json.dumps({"systemMessage": "Context guard: inspection or preservation unavailable; "
+                          "normal result passthrough. Use bounded reads; capture non-repeatable "
+                          "output at the producer. Never blindly retry side effects."}))
     return 0
 
 

@@ -25,7 +25,7 @@ Choose the mode that matches the request; change modes only within its authorize
 
 Missing implementation access does not prevent safe read-only inspection. If publication validation exposes a code defect, use the implementation workflow for an authorized repair instead of expanding delivery scope.
 
-When the bundled [Codex context guard](../../docs/context-guard.md) blocks oversized tool text, refine the paths, terms or symbols, then read bounded relevant sections or paginate results. Preserve the task and source content; do not remove useful comments, shave whitespace or fragment files to evade the limit. A blocked result does not undo an executed tool's side effects. Hook support and trust are host-owned; the eight skills remain usable on their supported hosts.
+When the bundled [Codex context guard](../../docs/context-guard.md) flags oversized reads or returns a recovery receipt, refine the paths, terms or symbols, then read bounded relevant sections or paginate results. Preserve the task and source content; do not remove useful comments, shave whitespace or fragment files to evade the limit. Recover bounded content from a verified receipt when available; never blindly retry side effects. Preservation is opt-in and failures pass through. Hook support and trust are host-owned; the eight skills remain usable on their supported hosts.
 
 ## Compose around the outcome
 

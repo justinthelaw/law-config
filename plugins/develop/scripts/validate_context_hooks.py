@@ -13,7 +13,8 @@ BOOTSTRAP = ("import os,runpy;runpy.run_path(os.path.join(os.environ['PLUGIN_ROO
              "'hooks','context_guard.py'),run_name='__main__')")
 # A closed, reviewed Python 3.10 stdlib import set establishes this handler's
 # self-contained import closure. Adding a module requires updating this check.
-HANDLER_IMPORTS = {"__future__", "argparse", "json", "os", "re", "shlex", "stat", "sys"}
+HANDLER_IMPORTS = {"__future__", "argparse", "json", "os", "re", "shlex", "stat", "sys", "runpy",
+                   "hashlib", "pathlib", "time", "uuid", "fcntl"}
 
 
 def packaged_text(root, relative, limit):
@@ -94,7 +95,8 @@ def validate_handler(text, filename):
 def validate_context_hooks(root):
     errors = []
     for relative, limit in (("hooks/hooks.json", MAX_CONFIG_BYTES),
-                            ("hooks/context_guard.py", MAX_HANDLER_BYTES)):
+                            ("hooks/context_guard.py", MAX_HANDLER_BYTES),
+                            ("hooks/response_store.py", MAX_HANDLER_BYTES)):
         try:
             text = packaged_text(root, relative, limit)
             if relative.endswith(".json"):
