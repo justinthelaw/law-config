@@ -2,14 +2,14 @@
 
 Eight portable skills for development, review and maintenance. [Install in Codex](INSTALL.md), then invoke `$develop:develop` with your outcome, or call a skill directly.
 
-The shared Codex context guard requires reviewed, trusted hooks with supported local orchestration and execution. Both hooks use a default budget of **20,000 counted bytes per tool input or result** (UTF-8 text plus JSON structure, not characters or tokens).
+The shared Codex context guard requires reviewed, trusted hooks and supported local orchestration and execution. Its default threshold is **20,000 counted bytes** (UTF-8 text plus JSON structure, not tokens).
 
-| Hook | Registration and implementation | Trigger and behavior |
+| Hook | Source | Behavior |
 | --- | --- | --- |
-| `PreToolUse` | [Registration](hooks/hooks.json) · [Python handler](hooks/context_guard.py) | Before a supported tool runs, denies oversized arguments and recognizable oversized whole-file reads. |
-| `PostToolUse` | [Registration](hooks/hooks.json) · [Python handler](hooks/context_guard.py) | After a supported tool runs, withholds oversized results and replaces them with guidance to narrow searches or reads. **It cannot undo executed side effects.** |
+| `PreToolUse` | [Registration](hooks/hooks.json) · [Handler](hooks/context_guard.py) | Denies recognizable oversized whole-file reads; allows large edits and never rewrites commands. |
+| `PostToolUse` | [Registration](hooks/hooks.json) · [Handler](hooks/context_guard.py) | With explicit session authorization, saves and verifies an oversized received response before returning a path/size/hash receipt. Otherwise warns and passes through. **Executed side effects remain.** |
 
-The guard does not save blocked content or provide an artifact path. Narrow a read against an existing source or artifact when available; transient output may not be recoverable. Do not repeat side-effecting calls just to recover output. See [exact accounting, coverage, failure behavior and activation](docs/context-guard.md).
+Preservation is opt-in, POSIX-only and best-effort, with private storage, fixed quotas and explicit retention. No sandbox autodetection or upstream-truncation recovery is claimed. Never blindly repeat side-effecting calls. See [setup, recovery and native/code-mode limitations](docs/context-guard.md).
 
 The separate [staged-file size checker](skills/iterate/references/staged-file-size.md) runs only when explicitly requested or required by the repository. It checks Git-index files; it does not install a Git hook or activate the context guard.
 

@@ -175,7 +175,7 @@ class PackageValidation(unittest.TestCase):
         self.assertIn('.codex-plugin/plugin.json', result.stderr)
 
     def test_context_hook_sources_are_required(self):
-        for relative in ('hooks/hooks.json', 'hooks/context_guard.py'):
+        for relative in ('hooks/hooks.json', 'hooks/context_guard.py', 'hooks/response_store.py'):
             with self.subTest(path=relative):
                 path = self.package / relative
                 backup = path.with_suffix('.saved')
@@ -188,7 +188,7 @@ class PackageValidation(unittest.TestCase):
                     backup.rename(path)
 
     def test_context_hook_sources_must_be_regular_files(self):
-        for relative in ('hooks/hooks.json', 'hooks/context_guard.py'):
+        for relative in ('hooks/hooks.json', 'hooks/context_guard.py', 'hooks/response_store.py'):
             with self.subTest(path=relative):
                 path = self.package / relative
                 backup = path.with_suffix('.saved')
@@ -301,7 +301,7 @@ class PackageValidation(unittest.TestCase):
         validator = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(validator)
         path_open = Path.open
-        for relative in ('hooks/hooks.json', 'hooks/context_guard.py', 'hooks'):
+        for relative in ('hooks/hooks.json', 'hooks/context_guard.py', 'hooks/response_store.py', 'hooks'):
             for external in (False, True):
                 with self.subTest(path=relative, external=external):
                     path = self.package / relative

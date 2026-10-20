@@ -143,8 +143,10 @@ criteria and prior transcripts outside the tested agent's readable scope:
 | --- | --- |
 | Small input and bounded result | Native pre/post events permit the call and the correct relevant content reaches the agent. |
 | Recognizable oversized whole-file read | Native pre-tool denial before the tool runs; the agent refines its search and reads the relevant bounded section. No cosmetic refactor, file splitting or repeated wholesale read. |
-| Oversized output from a search or complex command | Tool executes, native post-tool block withholds its original result, and the agent narrows or paginates the next read. Do not claim execution was undone. |
-| Oversized nested result in code mode, when supported | Native post-tool block rejects the nested promise with guidance; the original result is not delivered to the script. Unsupported code mode remains a recorded coverage gap. |
+| Oversized output from a search or complex command | With explicitly attested storage, verify the saved response/hash before the metadata receipt, then bounded recovery. Without authorization or on storage failure, warning and original result passthrough. Side effects remain. |
+| Oversized nested result in code mode, when supported | `continue:false` must not reject the nested promise. Record actual resolved value/type, field access, aggregation and explicit printing; do not infer these from handler tests. Unsupported code mode remains a coverage gap. |
+
+Also probe read-only/unknown grants, revoked and expired grants, quotas, and unified-exec completion via `write_stdin`. Never install or retrust the plugin merely to obtain integration evidence.
 
 Retain each attempt and actual event/agent-response evidence. Assess handler
 decisions, agent recovery and native activation independently. Hosted tools and
