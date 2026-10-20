@@ -65,8 +65,9 @@ def authorized_root(session_id):
             or {part.casefold() for part in Path(root).parts} & {'.codex', '.agents', '.git', '.aws'}):
         raise ValueError("unsafe root")
     path = Path(root)
+    home = Path.home().resolve()
     plugin = Path(__file__).resolve().parents[1]
-    if (path == Path.home() or Path.home() in path.parents or path == Path('/')
+    if (path == home or home in path.parents or path == Path('/')
             or path == plugin or plugin in path.parents):
         raise ValueError("protected root")
     fd = os.open('/', os.O_RDONLY | os.O_DIRECTORY)

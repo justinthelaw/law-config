@@ -30,7 +30,7 @@ class ContextGuard(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="develop-context-guard-")
         self.addCleanup(self.temp.cleanup)
-        self.directory = Path(self.temp.name)
+        self.directory = Path(self.temp.name).resolve()
 
     def event(self, payload, event="PreToolUse", tool="test_tool", **fields):
         return {
@@ -356,7 +356,7 @@ class TextAccounting(unittest.TestCase):
     def setUpClass(cls):
         cls.guard = runpy.run_path(str(HANDLER))
 
-    def payload(self, value, *args):
+    def payload(self, value):
         return json.loads(json.dumps(value), parse_int=self.guard["NumberToken"],
                           parse_float=self.guard["NumberToken"])
 
@@ -382,9 +382,9 @@ class TextAccounting(unittest.TestCase):
         for kind, mime in (("image", "image/png"), ("audio", "audio/wav"), ("video", "video/mp4")):
             with self.subTest(kind=kind):
                 block = {"type": kind, "data": "AAAA" * 10000, "mimeType": mime, "caption": "short"}
-                self.small(self.payload({"content": [block]}, "PostToolUse"))
+                self.small(self.payload({"content": [block]}))
                 block["caption"] = "c" * 21000
-                self.large(self.payload({"content": [block]}, "PostToolUse"))
+                self.large(self.payload({"content": [block]}))
 
     def test_recognized_native_data_urls_and_audio_format_payloads(self):
         for block in ({"type": "input_image", "image_url": "data:image/png;base64," + "AAAA" * 10000},

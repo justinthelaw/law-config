@@ -25,7 +25,7 @@ class ResponseStore(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory(prefix="develop-response-store-")
         self.addCleanup(temporary.cleanup)
-        self.root = Path(temporary.name)
+        self.root = Path(temporary.name).resolve()
         self.root.chmod(0o700)
         environment = mock.patch.dict(os.environ, {
             "DEVELOP_GUARD_ROOT": str(self.root), "DEVELOP_GUARD_SESSION": "session",
@@ -368,6 +368,19 @@ print(store["preserve"](sys.stdin.readline(), "session"), flush=True)
                 with self.assertRaisesRegex(ValueError, "protected root"):
                     self.preserve()
         self.assertEqual(list(self.root.iterdir()), [])
+
+    def test_resolved_home_subtree_is_protected_when_home_is_a_symlink(self):
+        home = self.root / "real-home"
+        home.mkdir(mode=0o700)
+        destination = home / "responses"
+        destination.mkdir(mode=0o700)
+        alias = self.root / "home-alias"
+        alias.symlink_to(home, target_is_directory=True)
+        with mock.patch.object(store.Path, "home", return_value=alias), \
+             mock.patch.dict(os.environ, {"DEVELOP_GUARD_ROOT": str(destination)}):
+            with self.assertRaisesRegex(ValueError, "protected root"):
+                self.preserve()
+        self.assertEqual(list(destination.iterdir()), [])
 
     def test_mode_0500_root_rejected_before_any_write_even_as_root(self):
         self.root.chmod(0o500)
