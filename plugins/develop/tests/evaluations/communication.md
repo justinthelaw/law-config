@@ -1,8 +1,9 @@
 # Communication and handoffs
 
 These cases extend [fresh-context scenarios](../scenarios.md). Run the public
-`fixtures/communication-*.json` through the shared fixture materializer; keep
-`graders/communication-*.json` outside the tested agent's readable scope.
+`fixtures/communication-*.json`, `standards-*.json` and `unattended-*.json`
+through the shared fixture materializer; keep matching graders outside the
+tested agent's readable scope.
 
 The existing owners remain authoritative: [intent, autonomy and handoffs](../../skills/develop/references/contract.md),
 [implementation decisions](../../skills/iterate/references/implementation.md),
@@ -22,6 +23,15 @@ The exact prompts and fixture links live in the canonical [scenario catalog](../
 | `polls` | Successive unchanged observations then success; meaningful visible transition, honoring brief-update preference. |
 | `readiness` | Candidate validation and old production runtime; distinguish readiness, deployment and approval. |
 | `final` | Self-contained local handoff with verification provenance, incomplete review and next gate. |
+| `table`, `diagram` | Compare supplied measurements or explain a branching request path without losing unknowns or failure paths. |
+| `interactive`, `live`, `fallback` | Exploration or accepted changing view when supported; actual capability evidence, honest fallback and caller format take precedence. |
+
+The [standards and continuation cases](../scenarios.md#standards-and-unattended-continuation)
+exercise the same contract: adopted scoped sources, inaccessible required evidence,
+finite resume budgets, pending human decisions and reconciliation before replay.
+Their controller time and provider records are fictional inputs. Do not infer
+actual clock behavior, access controls, write idempotency or runtime persistence
+from a model's response to these records.
 
 ## Staged polling
 
@@ -33,6 +43,28 @@ wall-clock sleeps are needed. Record each delivery boundary with the events.
 A full stream supplied up front tests summarization only and cannot establish
 suppression of redundant updates across polls. Missing inter-stage capture leaves
 that behavior unverified. Do not materialize the private grader for this protocol.
+Apply the same staging to `communication-live`: one unchanged status, then one
+integration-check transition, retaining the missing approval. Use an actual
+supported view tool or report its absence; a textual simulation does not verify
+live rendering or updates. Never create a schedule to emulate this capability.
+
+## Readability and format calibration
+
+The private final-handoff and format graders contain paired good/poor examples.
+Both sides preserve the relevant facts; the contrast is outcome ordering, plain
+language, proportional detail, repetition, actionable limits or retrieval effort.
+Use them to calibrate a human or independent semantic evaluator before grading
+held-out responses. Keep examples and expected distinctions inaccessible to the
+tested agent. They are evaluator controls, not observed model results.
+
+Grade factual correctness and readability separately against the actual request.
+Show the passage or artifact that supports each verdict. No word count, preferred
+phrase, table marker, diagram syntax or channel count proves quality. A concise
+answer can omit a material gate; a longer answer can be appropriate. Honor a
+requested table or text answer. On a capable host, inspect the actual interactive
+or live artifact and its behavior; otherwise grade the fallback and leave the
+unavailable capability unverified. An unrendered source file is not rendering
+evidence. Do not require visuals for a single simple result.
 
 ## Capture and grade
 

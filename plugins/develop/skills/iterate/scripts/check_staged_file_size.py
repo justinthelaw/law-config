@@ -17,6 +17,15 @@ import sys
 import threading
 
 
+sys.dont_write_bytecode = True
+
+_SCRIPT_DIRECTORY = str(Path(__file__).resolve().parent)
+if _SCRIPT_DIRECTORY not in sys.path:
+    sys.path.insert(0, _SCRIPT_DIRECTORY)
+
+from git_context import repository_context
+
+
 MAX_BYTES = 20_000  # 5,000 estimated tokens at four bytes per token.
 PREFIX_BYTES = 8_192
 PROFILE_BYTES = 65_536
@@ -42,50 +51,32 @@ GENERATED_HEADER = re.compile(
 )
 
 
-def git(*arguments, input_data=None, environment=None):
+def git(*arguments, input_data=None, environment=None, cwd=None):
     """Keep inspection read-only and ignore replacement objects for size checks."""
     env = dict(os.environ if environment is None else environment,
                GIT_OPTIONAL_LOCKS="0", GIT_NO_REPLACE_OBJECTS="1", GIT_NO_LAZY_FETCH="1")
     result = subprocess.run(
         ["git", *arguments], input=input_data, stdout=subprocess.PIPE,
-        stderr=subprocess.DEVNULL, env=env, timeout=30, check=True,
+        stderr=subprocess.DEVNULL, env=env, cwd=cwd, timeout=30, check=True,
     )
     return result.stdout
 
 
 def repository_root(directory):
     """Reject foreign selectors for --repo while retaining its temporary index."""
-    if directory is not None:
-        os.chdir(directory)
-    selectors = {"GIT_WORK_TREE": "--show-toplevel", "GIT_DIR": "--absolute-git-dir",
-                 "GIT_COMMON_DIR": "--git-common-dir"}
-    selected_environment = dict(os.environ)
-    if directory is not None:
-        for name in (*selectors, "GIT_INDEX_FILE"):
-            selected_environment.pop(name, None)
+    location = (directory or Path.cwd()).resolve()
 
     def git_path(option, environment):
-        return Path(os.fsdecode(git("rev-parse", option, environment=environment)
-                                .removesuffix(b"\n"))).resolve()
+        return (location / os.fsdecode(git("rev-parse", option, environment=environment,
+                                         cwd=location).removesuffix(b"\n"))).resolve()
 
-    selected = {name: git_path(option, selected_environment)
-                for name, option in selectors.items()}
-    if directory is not None:
-        for name, option in selectors.items():
-            if git_path(option, os.environ) != selected[name]:
-                raise ValueError("inherited Git selectors conflict with --repo")
-    index = None
-    if "GIT_INDEX_FILE" in os.environ:
-        index = Path(os.environ["GIT_INDEX_FILE"]).resolve()
-        if directory is not None and not index.is_relative_to(selected["GIT_DIR"]):
-            raise ValueError("explicit --repo requires an index inside its Git directory")
+    root, environment = repository_context(
+        location, os.environ, git_path, explicit=directory is not None,
+        constrain_index=directory is not None,
+    )
     # Preserve relative hook paths across the subsequent chdir to the root.
-    for name, value in selected.items():
-        if name in os.environ:
-            os.environ[name] = str(value)
-    if index is not None:
-        os.environ["GIT_INDEX_FILE"] = str(index)
-    return selected["GIT_WORK_TREE"]
+    os.environ.update(environment)
+    return root
 
 
 def positive_integer(value):

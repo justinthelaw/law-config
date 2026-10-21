@@ -6,7 +6,7 @@ import json
 import time
 from datetime import datetime, timezone
 from functools import partial
-from typing import Any, Callable, Sequence
+from typing import Any, Callable, Generator, Sequence
 
 from pipeline_failure_reporting import FailureReportingMixin
 from pipeline_checks import CheckCoverage, CheckPolicy, discover_policy, inspect_coverage, verify_published_head
@@ -34,6 +34,126 @@ from pipeline_support import (
 )
 
 
+DEFAULT_TIMEOUT = 30 * 60
+
+
+def monitor_deadline(
+    timeout: float = DEFAULT_TIMEOUT,
+    deadline: Deadline | str | None = None,
+    *,
+    clock: Callable[[], float] = time.monotonic,
+    wall_clock: Callable[[], float] = time.time,
+) -> Deadline | None:
+    """Restore an absolute budget once; enforce elapsed time monotonically thereafter."""
+    validate_timings(timeout=timeout)
+    if isinstance(deadline, Deadline):
+        return deadline
+    now, wall_now = clock(), wall_clock()
+    if deadline is not None:
+        try:
+            absolute = datetime.fromisoformat(deadline.replace("Z", "+00:00"))
+            if absolute.utcoffset() is None:
+                raise ValueError("timezone required")
+            wall_expires = absolute.timestamp()
+        except (ValueError, TypeError, OverflowError) as exc:
+            raise WatchError("deadline must be an ISO 8601 timestamp with a timezone") from exc
+        return Deadline(now + (wall_expires - wall_now), clock, wall_expires)
+    return Deadline(now + timeout, clock, wall_now + timeout) if timeout else None
+
+
+def budget_event(deadline: Deadline | None) -> dict[str, Any]:
+    absolute = None
+    if deadline is not None:
+        wall_expires = deadline.wall_expires_at
+        if wall_expires is None:
+            wall_expires = time.time() + deadline.expires_at - deadline.clock()
+        absolute = datetime.fromtimestamp(wall_expires, timezone.utc).isoformat()
+    return {"event": "budget", "deadline": absolute, "indefinite": deadline is None}
+
+
+def watch_roots(
+    watchers: Sequence[Watcher], *, blocked: dict[str, str] | None = None,
+    once: bool = False, emit: Callable[[dict[str, Any]], None],
+    clock: Callable[[], float], sleep: Callable[[float], None], deadline: Deadline | None,
+) -> int:
+    """Step independent root groups fairly, sharing only the global budget."""
+    outcomes = {root: 2 for root in (blocked or {})}
+    jobs = []
+    for watcher in watchers:
+        root = str(watcher.targets[0].root)
+        watcher.emit = lambda event, root=root: emit({
+            **event, "event": {"summary": "root-summary", "blocked": "root-blocked"}.get(event["event"], event["event"]),
+            "root": root,
+        })
+        jobs.append((root, watcher._watch(once=once), clock()))
+
+    def counts() -> dict[str, int]:
+        totals: dict[str, int] = {}
+        for watcher in watchers:
+            for key, value in watcher.counts().items():
+                totals[key] = totals.get(key, 0) + value
+        for status, code in (("passed", 0), ("failed", 1), ("blocked", 2), ("pending", 3)):
+            totals[f"roots_{status}"] = sum(value == code for value in outcomes.values())
+        totals["roots_pending"] += len(jobs)
+        return totals
+
+    final_snapshot = False
+    try:
+        while jobs:
+            if deadline is not None:
+                deadline.remaining()
+            ready = min(due for _, _, due in jobs)
+            if ready > clock():
+                delay = ready - clock()
+                sleep(min(delay, deadline.remaining()) if deadline is not None else delay)
+                continue
+            for job in list(jobs):
+                root, steps, due = job
+                if due > clock():
+                    continue
+                if deadline is not None:
+                    deadline.remaining()
+                try:
+                    delay = next(steps)
+                except StopIteration as done:
+                    outcomes[root] = done.value
+                    jobs.remove(job)
+                    if final_snapshot and done.value == 3:
+                        emit({"event": "root-reopened", "root": root, "reason": "new pending exact-commit work"})
+                except WatchTimeout:
+                    raise
+                except WatchError as error:
+                    outcomes[root] = 2
+                    jobs.remove(job)
+                    emit({"event": "root-blocked", "root": root, "reason": str(error)})
+                else:
+                    jobs[jobs.index(job)] = (root, steps, clock() + delay)
+            if not jobs:
+                if final_snapshot:
+                    selected = [watcher for watcher in watchers
+                                if outcomes[str(watcher.targets[0].root)] == 3] if not once else []
+                    final_snapshot = False
+                elif len(watchers) > 1 and outcomes and all(value == 0 for value in outcomes.values()):
+                    # A root may have completed long before another root. Refresh its
+                    # exact-head CI/reviews and identity before any aggregate pass.
+                    selected = list(watchers)
+                    final_snapshot = True
+                else:
+                    selected = []
+                for watcher in selected:
+                    root = str(watcher.targets[0].root)
+                    outcomes.pop(root)
+                    jobs.append((root, watcher._watch(once=final_snapshot), clock()))
+        if deadline is not None:
+            deadline.remaining()
+    except WatchTimeout:
+        emit({"event": "blocked", "reason": "monitor timeout", **counts()})
+        return 2
+    result = next((code for code in (2, 1, 3) if code in outcomes.values()), 0) if outcomes else 2
+    emit({"event": "summary", "result": {0: "passed", 1: "failed", 2: "blocked", 3: "pending"}[result], **counts()})
+    return result
+
+
 class Watcher(FailureReportingMixin, RunStateMixin):
     def __init__(
         self,
@@ -49,8 +169,9 @@ class Watcher(FailureReportingMixin, RunStateMixin):
         rediscover: float = 90,
         discovery_grace: float = 120,
         settle: float = 120,
-        timeout: float = 0,
-        deadline: Deadline | None = None,
+        timeout: float = DEFAULT_TIMEOUT,
+        deadline: Deadline | str | None = None,
+        wall_clock: Callable[[], float] = time.time,
         max_log_lines: int = 40,
         max_log_chars: int = 4000,
         max_failed_jobs: int = 2,
@@ -60,7 +181,7 @@ class Watcher(FailureReportingMixin, RunStateMixin):
         validate_timings(interval=interval, max_interval=max_interval, heartbeat=heartbeat,
                          rediscover=rediscover, discovery_grace=discovery_grace, settle=settle, timeout=timeout)
         self.started = clock()
-        self.deadline = deadline or (Deadline(self.started + timeout, clock) if timeout else None)
+        self.deadline = monitor_deadline(timeout, deadline, clock=clock, wall_clock=wall_clock)
         if runner is None:
             runner = partial(run_command, deadline=self.deadline, sleep=sleep)
         self.targets = list(targets)
@@ -89,6 +210,13 @@ class Watcher(FailureReportingMixin, RunStateMixin):
         self.check_coverage: dict[str, CheckCoverage] = {}
         self.last_heartbeat = self.started
         self.last_discovery = self.started
+        self.child_options = dict(
+            runner=self.runner, clock=clock, sleep=sleep, timeout=0, deadline=self.deadline,
+            interval=interval, max_interval=max_interval, heartbeat=heartbeat,
+            rediscover=rediscover, discovery_grace=discovery_grace, settle=settle,
+            max_log_lines=max_log_lines, max_log_chars=max_log_chars,
+            max_failed_jobs=max_failed_jobs, max_runs=max_runs, monitor_reviews=monitor_reviews,
+        )
 
     @staticmethod
     def print_event(event: dict[str, Any]) -> None:
@@ -356,8 +484,33 @@ class Watcher(FailureReportingMixin, RunStateMixin):
         return [target.label for target in self.targets if target.key not in successful]
 
     def watch(self, *, once: bool = False) -> int:
+        self.emit(budget_event(self.deadline))
+        if not self.targets:
+            self.emit({"event": "blocked", "reason": "no monitoring targets"})
+            return 2
+        groups: dict[str, list[Target]] = {}
+        for target in self.targets:
+            groups.setdefault(str(target.root), []).append(target)
+        if len(groups) > 1:
+            self.root_watchers = [Watcher(targets, **self.child_options) for targets in groups.values()]
+            result = watch_roots(
+                self.root_watchers, once=once, emit=self.emit,
+                clock=self.clock, sleep=self.sleep, deadline=self.deadline,
+            )
+            # Preserve the library's observed-state access; scheduling never shares these maps.
+            for watcher in self.root_watchers:
+                for name in ("runs", "check_policies", "check_coverage", "pull_requests", "review_states"):
+                    getattr(self, name).update(getattr(watcher, name))
+            return result
         try:
-            return self._watch(once=once)
+            steps = self._watch(once=once)
+            while True:
+                try:
+                    delay = next(steps)
+                except StopIteration as done:
+                    self.check_deadline()
+                    return done.value
+                self.sleep(delay)
         except WatchTimeout:
             self.emit({"event": "blocked", "reason": "monitor timeout", **self.counts()})
             return 2
@@ -366,10 +519,10 @@ class Watcher(FailureReportingMixin, RunStateMixin):
         if self.deadline is not None:
             self.deadline.remaining()
 
-    def _watch(self, *, once: bool = False) -> int:
+    def _watch(self, *, once: bool = False) -> Generator[float, None, int]:
         self.check_deadline()
         for host in sorted({github_location(target.repository)[0] for target in self.targets}):
-            self.runner(["gh", "auth", "status", "--hostname", host])
+            self.runner(["gh", "auth", "status", "--hostname", host], cwd=self.targets[0].root)
         self.discover_runs(initial=True)
         terminal_since: float | None = None
         while True:
@@ -456,7 +609,7 @@ class Watcher(FailureReportingMixin, RunStateMixin):
                 return 3
             self.check_deadline()
             self.heartbeat_if_due(now)
-            self.sleep(self.next_interval(now, changed=changed, terminal_since=terminal_since))
+            yield self.next_interval(now, changed=changed, terminal_since=terminal_since)
             now = self.clock()
             if missing or now - self.last_discovery >= self.rediscover:
                 if self.discover_runs():

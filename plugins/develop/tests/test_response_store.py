@@ -141,6 +141,93 @@ class ResponseStore(unittest.TestCase):
         finally:
             os.close(fd)
 
+    def test_raced_lock_create_reopens_only_existing_private_lock(self):
+        original_open = os.open
+        lock_flags = []
+
+        def raced_open(path, flags, *args, **kwargs):
+            if path == ".lock":
+                lock_flags.append(flags)
+                if len(lock_flags) == 1:
+                    os.close(original_open(path, flags, *args, **kwargs))
+                    raise FileNotFoundError("concurrent creator published the lock")
+            return original_open(path, flags, *args, **kwargs)
+
+        with mock.patch.object(store.os, "open", side_effect=raced_open):
+            receipt = self.preserve()
+        self.assertIn("verified readable now", receipt)
+        safe_flags = os.O_RDWR | os.O_NOFOLLOW | os.O_NONBLOCK
+        self.assertEqual(lock_flags, [safe_flags | os.O_CREAT, safe_flags])
+        self.assertEqual(next(self.root.glob("response-*.json")).read_bytes(), self.payload)
+
+    def test_raced_lock_create_still_missing_fails_without_recreation(self):
+        original_open = os.open
+        lock_flags = []
+
+        def missing_open(path, flags, *args, **kwargs):
+            if path == ".lock":
+                lock_flags.append(flags)
+                if len(lock_flags) == 1:
+                    raise FileNotFoundError("no lock was published")
+            return original_open(path, flags, *args, **kwargs)
+
+        with mock.patch.object(store.os, "open", side_effect=missing_open):
+            with self.assertRaises(FileNotFoundError):
+                self.preserve()
+        self.assertEqual(len(lock_flags), 2)
+        self.assertFalse(lock_flags[-1] & os.O_CREAT)
+        self.assertEqual(list(self.root.iterdir()), [])
+
+    def test_raced_lock_create_reopen_obeys_original_deadline(self):
+        original_open = os.open
+        lock_attempts = []
+
+        def missing_open(path, flags, *args, **kwargs):
+            if path == ".lock":
+                lock_attempts.append(flags)
+                raise FileNotFoundError("concurrent creation")
+            return original_open(path, flags, *args, **kwargs)
+
+        with mock.patch.object(store.os, "open", side_effect=missing_open), \
+                mock.patch.object(store.time, "monotonic", side_effect=[0, store.BUDGET_SECONDS]):
+            with self.assertRaisesRegex(RuntimeError, "storage deadline"):
+                self.preserve()
+        self.assertEqual(len(lock_attempts), 1)
+        self.assertEqual(list(self.root.iterdir()), [])
+
+    def test_raced_lock_create_rejects_unsafe_existing_locks(self):
+        original_open = os.open
+        lock = self.root / ".lock"
+        target = self.root / "unsafe-target"
+        target.write_bytes(b"private data")
+        target.chmod(0o600)
+        for kind in ("symlink", "hardlink", "permissions"):
+            with self.subTest(kind=kind):
+                if kind == "symlink":
+                    lock.symlink_to(target)
+                elif kind == "hardlink":
+                    os.link(target, lock)
+                else:
+                    lock.write_bytes(b"nonprivate lock")
+                    lock.chmod(0o644)
+                lock_flags = []
+
+                def raced_open(path, flags, *args, **kwargs):
+                    if path == ".lock":
+                        lock_flags.append(flags)
+                        if flags & os.O_CREAT:
+                            raise FileNotFoundError("raced lock creation")
+                    return original_open(path, flags, *args, **kwargs)
+
+                with mock.patch.object(store.os, "open", side_effect=raced_open):
+                    with self.assertRaises((OSError, ValueError)):
+                        self.preserve()
+                self.assertEqual(len(lock_flags), 2)
+                self.assertFalse(lock_flags[-1] & os.O_CREAT)
+                self.assertFalse(list(self.root.glob("response-*")))
+                self.assertEqual(target.read_bytes(), b"private data")
+                lock.unlink()
+
     def test_verification_failure_never_returns_receipt(self):
         with mock.patch.object(store.os, "read", return_value=b""):
             with self.assertRaises(ValueError):

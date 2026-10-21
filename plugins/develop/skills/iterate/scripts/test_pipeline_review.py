@@ -74,7 +74,7 @@ class ReviewSelectionTests(unittest.TestCase):
     def snapshot_cli(self, runner, *arguments):
         events = []
 
-        def run(argv, cwd=None, optional=False):
+        def run(argv, cwd=None, optional=False, **kwargs):
             if argv == ["git", "rev-parse", "--show-toplevel"]:
                 return str(runner.current.path)
             if argv == ["git", "submodule", "status", "--recursive"]:
@@ -82,7 +82,7 @@ class ReviewSelectionTests(unittest.TestCase):
             return runner(argv, cwd, optional)
 
         with patch.object(watch_pipelines, "run_command", run), patch.object(
-            watch_pipelines, "Watcher", partial(Watcher, runner=run, emit=events.append)
+            Watcher, "print_event", events.append
         ):
             result = watch_pipelines.main(["--repo", str(runner.current.path), "--once", *arguments])
         return result, events
@@ -112,19 +112,22 @@ class ReviewSelectionTests(unittest.TestCase):
                 self.assertTrue(any(event["event"] == "review" and event["status"] == "passed" for event in events))
 
     def test_selected_codex_review_blocks_without_evidence_or_request(self):
-        with self.assertRaisesRegex(WatchError, "No current-head Codex review evidence"):
-            self.snapshot_cli(ReviewRunner(), "--review-provider", "codex")
+        result, events = self.snapshot_cli(ReviewRunner(), "--review-provider", "codex")
+        self.assertEqual(result, 2)
+        self.assertTrue(any("No current-head Codex review evidence" in event.get("reason", "") for event in events))
 
     def test_selected_codex_review_blocks_with_only_old_sha_evidence(self):
         runner = ReviewRunner(target(head="b" * 40), reviews=[review(target())])
-        with self.assertRaisesRegex(WatchError, "No current-head Codex review evidence"):
-            self.snapshot_cli(runner, "--review-provider", "codex")
+        result, events = self.snapshot_cli(runner, "--review-provider", "codex")
+        self.assertEqual(result, 2)
+        self.assertTrue(any("No current-head Codex review evidence" in event.get("reason", "") for event in events))
 
     def test_selected_codex_review_blocks_without_an_open_pull_request(self):
         runner = ReviewRunner()
         runner.pr = None
-        with self.assertRaisesRegex(WatchError, "requires an open pull request"):
-            self.snapshot_cli(runner, "--review-provider", "codex")
+        result, events = self.snapshot_cli(runner, "--review-provider", "codex")
+        self.assertEqual(result, 2)
+        self.assertTrue(any("requires an open pull request" in event.get("reason", "") for event in events))
 
     def test_default_cli_can_complete_ci_without_a_pull_request(self):
         runner = ReviewRunner()

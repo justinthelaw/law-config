@@ -431,6 +431,19 @@ class PackageValidation(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("pipeline_review", result.stdout + result.stderr)
 
+    def test_missing_shared_delivery_dependency_fails(self):
+        for name in ("command_capture", "git_context"):
+            with self.subTest(helper=name):
+                path = self.package / "skills/iterate/scripts" / f"{name}.py"
+                content = path.read_bytes()
+                path.unlink()
+                try:
+                    result = self.validate()
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn(name, result.stdout + result.stderr)
+                finally:
+                    path.write_bytes(content)
+
     def test_invalid_delivery_dependency_fails(self):
         (self.package / "skills/iterate/scripts/pipeline_review.py").write_text(
             "def broken(:\n", encoding="utf-8",

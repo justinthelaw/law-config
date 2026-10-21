@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from pipeline_support import NON_FAILURE, Target, WatchError, bounded_log, classify
+from pipeline_support import NON_FAILURE, Target, WatchError, WatchTimeout, bounded_log, classify
 
 
 class FailureReportingMixin:
@@ -74,6 +74,8 @@ class FailureReportingMixin:
                     ],
                     cwd=target.path,
                 )
+            except WatchTimeout:
+                raise
             except WatchError as exc:
                 self.emit({"event": "log-error", "target": target.label, "job": job_name, "error": str(exc)})
                 continue

@@ -1,0 +1,25 @@
+{
+  "fixture_id": "communication-interactive",
+  "fixture_revision": "1",
+  "criteria": [
+    {
+      "id": "exploration",
+      "pass_when": "On a capable host, supplies an actual adjustable rate view with clear units and correct model; otherwise explicitly reports capability limits and provides a readable static fallback. Does not claim interactivity from an unrendered mockup or solely because a tool exists.",
+      "evidence": "Actual artifact and host/tool events; check 0, 10 and 20 req/s yield 0, 0 and 600 requests. Mark unavailable interaction/rendering evidence unverified."
+    },
+    {
+      "id": "model-limits",
+      "pass_when": "Keeps the 60-second horizon, zero initial backlog and no burst/latency estimate visible. Does not label a model result an observed production measurement.",
+      "evidence": "Visible controls, output and caveat checked against model.txt."
+    }
+  ],
+  "calibration_pairs": [
+    {
+      "id": "exploration-choice",
+      "facts": "Backlog starts at 0 requests. Over 60 seconds, incoming traffic is a constant 0 to 20 requests/second and service capacity is 10 requests/second. End backlog = max(0, incoming_rate - 10) * 60 requests. This is a deterministic model with no burst or latency estimate.\n",
+      "good": "An adjustable 0–20 req/s view shows the 60-second backlog, with samples 0 → 0, 10 → 0 and 20 → 600 requests. It labels the zero initial backlog and excludes burst and latency estimates. The artifact is actually created and interaction is checked.",
+      "poor": "A fixed screenshot shows 0 → 0, 10 → 0 and 20 → 600 requests and the same assumptions, although an adjustable renderer is available. The user must recompute intermediate rates.",
+      "distinction": "These evaluator descriptions compare equally factual artifacts on a capable host. Inspect the actual artifact; descriptions and promises are not execution evidence."
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "communication-interactive",
+  "revision": "1",
+  "scenario_ref": "scenarios.md#communication-and-handoff-cases",
+  "agent": {
+    "prompt": "Use Develop in this isolated fictional exercise. Use only the supplied records and existing supported output tools; do not contact providers, install anything, publish, start a schedule or change unrelated files. Help me explore how incoming rate changes the backlog in model.txt. Create an interactive view if the current host supports it; otherwise give a useful static fallback. A self-contained local HTML file is allowed if no in-chat renderer is available.",
+    "inputs": [
+      {
+        "path": "model.txt",
+        "content": "Backlog starts at 0 requests. Over 60 seconds, incoming traffic is a constant 0 to 20 requests/second and service capacity is 10 requests/second. End backlog = max(0, incoming_rate - 10) * 60 requests. This is a deterministic model with no burst or latency estimate.\n"
+      }
+    ]
+  }
+}

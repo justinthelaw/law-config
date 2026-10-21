@@ -2,6 +2,8 @@
 
 Eight portable skills for development, review and maintenance. [Install in Codex](INSTALL.md), then invoke `$develop:develop` with your outcome, or call a skill directly.
 
+Supply your development standards in the prompt, an attached `AGENTS.md` or a named connector source. Develop applies them within the selected scope and existing authority, using a shared [standards, presentation and unattended-continuation contract](skills/develop/references/contract.md). Reports use concise prose, tables or supported visuals according to the task; unattended work retains its budget and pending human decisions across handoffs.
+
 The shared Codex context guard requires reviewed, trusted hooks and supported local orchestration and execution. Its default threshold is **20,000 counted bytes** (UTF-8 text plus JSON structure, not tokens).
 
 | Hook | Source | Behavior |

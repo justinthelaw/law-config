@@ -54,9 +54,6 @@ Complete the final adversarial checkpoint. For **Debug**, use the [incident diag
 
 For repository delivery, reread the current head, required checks, reviews and threads. Claim readiness only when applicable gates pass; reconcile GitHub ready/draft status with the requested delivery state rather than treating it as acceptance. Never merge without authorization. Stop task-owned watchers. For requested cleanup or an identified authorized resource need, call [Clean](../clean/SKILL.md) within the existing scope and coordinator, then integrate its measurements and removed/protected/blocked dispositions into the shared handoff. Preserve useful evidence, source and unrelated/shared resources. Continue unaffected targets; report anything retained or blocked instead of manufacturing a clean-worktree result.
 
-For that delivery report, use the caller's format, otherwise:
+Use the shared [presentation policy](../develop/references/contract.md#presentation). Lead with the outcome, relevant verification and next action; a single-repository change usually needs a short explanation. Use a table when comparing targets or findings.
 
-| Repository | Change | Result and evidence |
-| --- | --- | --- |
-
-Use the shared handoff fields: changed scope and actual PR links; exact verified revision/destination and signing status; local checks, CI and requested provider reviews; skips/not-run and residual limitations; documentation and cleanup outcomes; remaining user action. Include branch/stack updates, authorized history replacement or issue tracking when applicable. Report no-ops/blockers; use `—` for unpublished work. Readiness, publication and deployment remain distinct.
+Keep the full shared handoff: changed scope and actual PR links; exact verified revision/destination and signing status; local checks, CI and requested provider reviews; skips/not-run and residual limitations; documentation and cleanup outcomes; remaining user action. Surface material facts and limits, linking detailed evidence rather than repeating the ledger. Include branch/stack updates, authorized history replacement or issue tracking when applicable. Report no-ops/blockers and distinguish readiness, publication and deployment.

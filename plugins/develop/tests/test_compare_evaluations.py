@@ -1,5 +1,6 @@
 import copy
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -154,6 +155,24 @@ class ComparisonTests(unittest.TestCase):
                                        str(before), str(after)], text=True, capture_output=True)
                 self.assertEqual(proc.returncode, expected, proc.stderr)
                 self.assertIn("status", json.loads(proc.stdout))
+
+    def test_cli_safe_path_from_unrelated_cwd_uses_shipped_sibling(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "evaluation.py").write_text("raise AssertionError('CWD imported')\n")
+            source = root / "source.json"
+            source.write_text(json.dumps(self.before))
+            environment = {**os.environ, "PYTHONSAFEPATH": "1", "PYTHONPATH": str(root)}
+            for arguments in (("--help",), (str(source), str(source))):
+                with self.subTest(arguments=arguments):
+                    proc = subprocess.run(
+                        [sys.executable, "-B", str(SCRIPTS / "compare_evaluations.py"), *arguments],
+                        cwd=root, env=environment, text=True, capture_output=True, timeout=20)
+                    self.assertEqual(proc.returncode, 0, proc.stderr)
+                    if arguments == ("--help",):
+                        self.assertIn("usage:", proc.stdout)
+                    else:
+                        self.assertEqual(json.loads(proc.stdout)["status"], "complete")
 
 
 if __name__ == "__main__":

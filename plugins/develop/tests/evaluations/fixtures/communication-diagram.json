@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "id": "communication-diagram",
+  "revision": "1",
+  "scenario_ref": "scenarios.md#communication-and-handoff-cases",
+  "agent": {
+    "prompt": "Use Develop in this isolated fictional exercise. Use only the supplied records and existing supported output tools; do not contact providers, install anything, publish, start a schedule or change unrelated files. Explain this request path and where database failure affects the user, using flow.txt.",
+    "inputs": [
+      {
+        "path": "flow.txt",
+        "content": "The browser sends a request to the API. The API checks the cache. A hit returns through the API to the browser. A miss reads the database, fills the cache, then returns through the API to the browser. A database error on a miss returns an error through the API; no successful cache fill occurs.\n"
+      }
+    ]
+  }
+}

@@ -443,7 +443,7 @@ class PortableCLITests(unittest.TestCase):
             for name in (
                 "repository_inventory.py", "watch_pipelines.py", "pipeline_support.py",
                 "pipeline_monitor.py", "pipeline_run_state.py", "pipeline_failure_reporting.py",
-                "pipeline_checks.py", "pipeline_review.py",
+                "pipeline_checks.py", "pipeline_review.py", "command_capture.py", "git_context.py",
             ):
                 shutil.copyfile(SCRIPT_DIRECTORY / name, copied / name)
             (unrelated / "pipeline_support.py").write_text("raise RuntimeError('cwd module imported')\n")

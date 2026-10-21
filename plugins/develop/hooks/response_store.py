@@ -96,8 +96,14 @@ def preserve(raw, session_id):
     temporary = None
     try:
         import fcntl  # POSIX only; other platforms have already returned passthrough.
-        lock = os.open('.lock', os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW | os.O_NONBLOCK,
-                       0o600, dir_fd=directory)
+        lock_flags = os.O_RDWR | os.O_NOFOLLOW | os.O_NONBLOCK
+        try:
+            lock = os.open('.lock', lock_flags | os.O_CREAT, 0o600, dir_fd=directory)
+        except FileNotFoundError:
+            # Concurrent relative creation can report ENOENT after another
+            # writer creates the lock. Reopen only that existing file, once.
+            check_time(deadline)
+            lock = os.open('.lock', lock_flags, dir_fd=directory)
         private(os.fstat(lock))
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         payload = response_bytes(raw)

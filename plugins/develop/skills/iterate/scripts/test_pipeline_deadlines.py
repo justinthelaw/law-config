@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import subprocess
+from datetime import datetime, timezone
 import sys
 import unittest
 from pathlib import Path
@@ -11,6 +12,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import watch_pipelines as watcher
+from pipeline_monitor import DEFAULT_TIMEOUT, monitor_deadline
 from pipeline_test_support import FakeClock, FakeRunner, run_payload, target
 
 
@@ -35,7 +37,7 @@ class DeadlineTests(unittest.TestCase):
             return subprocess.CompletedProcess(argv, 0, "/fixture\n", "")
 
         with patch("pipeline_support.time.monotonic", clock.now), patch(
-            "pipeline_support.subprocess.run", side_effect=command
+            "pipeline_support.capture_command", side_effect=command
         ), patch.object(watcher, "discover_targets", return_value=[]) as targets, patch.object(watcher, "Watcher"):
             with self.assertRaisesRegex(watcher.WatchError, "timeout"):
                 watcher.main(["--timeout", "1", "--repo", "/fixture", "--once"])
@@ -80,7 +82,7 @@ class DeadlineTests(unittest.TestCase):
 
         events = []
         with patch("pipeline_support.time.monotonic", clock.now), patch(
-            "pipeline_support.subprocess.run", side_effect=command
+            "pipeline_support.capture_command", side_effect=command
         ), patch.object(watcher.Watcher, "print_event", events.append):
             self.assertEqual(watcher.main(["--timeout", "1", "--repo", str(selected.path), "--once"]), 2)
         self.assertEqual(budgets, [1, 0.875, 0.75, 0.625, 0.5, 0.375, 0.25, 0.125])
@@ -116,7 +118,7 @@ class DeadlineTests(unittest.TestCase):
         events = []
         monitor = watcher.Watcher([target()], emit=events.append, clock=clock.now,
                                   sleep=clock.sleep, timeout=1)
-        with patch("pipeline_support.subprocess.run", side_effect=command):
+        with patch("pipeline_support.capture_command", side_effect=command):
             try:
                 result = monitor.watch(once=True)
             except watcher.WatchError as error:
@@ -137,7 +139,7 @@ class DeadlineTests(unittest.TestCase):
         events = []
         monitor = watcher.Watcher([target()], emit=events.append, clock=clock.now,
                                   sleep=clock.sleep, timeout=1)
-        with patch("pipeline_support.subprocess.run", side_effect=command):
+        with patch("pipeline_support.capture_command", side_effect=command):
             try:
                 result = monitor.watch(once=True)
             except watcher.WatchError as error:
@@ -159,9 +161,80 @@ class DeadlineTests(unittest.TestCase):
 
         monitor = watcher.Watcher([selected], emit=lambda event: None, clock=clock.now,
                                   sleep=clock.sleep, timeout=1)
-        with patch("pipeline_support.subprocess.run", side_effect=command):
+        with patch("pipeline_support.capture_command", side_effect=command):
             self.assertEqual(monitor.watch(once=True), 2)
         self.assertEqual(budgets, [1, 0.75, 0.5, 0.25])
+
+
+class ResumableBudgetTests(unittest.TestCase):
+    def test_library_and_cli_default_to_thirty_minutes(self):
+        clock = FakeClock()
+        monitor = watcher.Watcher([target()], clock=clock.now, wall_clock=lambda: 1000)
+        self.assertEqual(DEFAULT_TIMEOUT, 1800)
+        self.assertEqual(watcher.parser().parse_args([]).timeout, 1800)
+        self.assertEqual(monitor.deadline.remaining(), 1800)
+        self.assertEqual(monitor.deadline.wall_expires_at, 2800)
+
+    def test_indefinite_requires_explicit_zero(self):
+        monitor = watcher.Watcher([target()], timeout=0)
+        self.assertIsNone(monitor.deadline)
+        self.assertEqual(watcher.parser().parse_args(["--timeout", "0"]).timeout, 0)
+        events = []
+        selected = target()
+        monitor = watcher.Watcher([selected], timeout=0, runner=FakeRunner([[run_payload(selected)]]), emit=events.append)
+        self.assertEqual(monitor.watch(once=True), 0)
+        self.assertEqual(events[0], {"event": "budget", "deadline": None, "indefinite": True})
+
+    def test_absolute_deadline_requires_timezone(self):
+        for value in ("not-a-date", "2026-10-21", "2026-10-21T12:00:00"):
+            with self.subTest(value=value), patch.object(watcher, "discover_roots") as discover:
+                with self.assertRaisesRegex(watcher.WatchError, "ISO 8601.*timezone"):
+                    watcher.main(["--deadline", value])
+                discover.assert_not_called()
+
+    def test_resume_keeps_original_deadline_and_remaining_budget(self):
+        clock = FakeClock()
+        first = monitor_deadline(30, clock=clock.now, wall_clock=lambda: 1000)
+        from pipeline_monitor import budget_event
+        event = budget_event(first)
+        clock.sleep(12)
+        resumed = monitor_deadline(deadline=event["deadline"], clock=clock.now, wall_clock=lambda: 1012)
+        self.assertEqual(resumed.remaining(), 18)
+        self.assertEqual(resumed.wall_expires_at, first.wall_expires_at)
+        self.assertEqual(budget_event(resumed), event)
+
+    def test_absolute_deadline_overrides_relative_timeout_including_zero(self):
+        clock = FakeClock()
+        absolute = datetime.fromtimestamp(1030, timezone.utc).isoformat()
+        for timeout in (0, 1, 1800):
+            with self.subTest(timeout=timeout):
+                deadline = monitor_deadline(timeout, absolute, clock=clock.now, wall_clock=lambda: 1000)
+                self.assertEqual(deadline.remaining(), 30)
+
+    def test_expired_cli_resume_emits_original_budget_without_provider_reads(self):
+        events = []
+        absolute = "2000-01-01T00:00:00+00:00"
+        with patch.object(watcher, "run_command") as command, patch.object(watcher.Watcher, "print_event", events.append):
+            with self.assertRaisesRegex(watcher.WatchTimeout, "monitor timeout"):
+                watcher.main(["--deadline", absolute])
+        command.assert_not_called()
+        self.assertEqual(events, [{"event": "budget", "deadline": absolute, "indefinite": False}])
+
+    def test_expired_library_resume_returns_timeout_before_provider_reads(self):
+        events = []
+        with patch.object(watcher, "run_command") as command:
+            monitor = watcher.Watcher([target()], deadline="2000-01-01T00:00:00Z", runner=command, emit=events.append)
+            self.assertEqual(monitor.watch(once=True), 2)
+        command.assert_not_called()
+        self.assertEqual(events[-1]["reason"], "monitor timeout")
+
+    def test_absolute_budget_uses_monotonic_clock_after_resume(self):
+        clock = FakeClock()
+        wall = [1000]
+        deadline = monitor_deadline(deadline="1970-01-01T00:17:10Z", clock=clock.now, wall_clock=lambda: wall[0])
+        wall[0] = 1
+        clock.sleep(20)
+        self.assertEqual(deadline.remaining(), 10)
 
 
 if __name__ == "__main__":

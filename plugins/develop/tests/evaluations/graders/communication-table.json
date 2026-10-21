@@ -1,0 +1,25 @@
+{
+  "fixture_id": "communication-table",
+  "fixture_revision": "1",
+  "criteria": [
+    {
+      "id": "comparison",
+      "pass_when": "Uses a compact comparison table or an equally scannable caller-compatible comparison, with consistent units, all supplied metrics and explicit unmeasured p95 for B. Does not rank B as lower latency or infer its p95.",
+      "evidence": "Visible output checked against every supplied value and unknown; a table-shaped string alone is insufficient."
+    },
+    {
+      "id": "decision",
+      "pass_when": "Explains that B doubles capacity for 6 more cost units per day, while its tail latency needs measurement before a latency-sensitive choice. Retains sample provenance without a narrated workflow.",
+      "evidence": "Semantic comparison of final explanation, missing evidence and useful next action."
+    }
+  ],
+  "calibration_pairs": [
+    {
+      "id": "comparison-layout",
+      "facts": "Option A: 5 requests per second, 20 ms median, 80 ms p95, cost 10 units per day. Option B: 10 requests per second, 30 ms median, p95 unmeasured, cost 16 units per day. These are supplied sample measurements, not fresh tests.\n",
+      "good": "| Option | Capacity | Median | p95 | Daily cost |\n| --- | --- | --- | --- | --- |\n| A | 5 req/s | 20 ms | 80 ms | 10 units |\n| B | 10 req/s | 30 ms | Unmeasured | 16 units |\n\nB doubles capacity for 6 more units/day. Measure its p95 before choosing it for a latency-sensitive workload. These are supplied samples.",
+      "poor": "The supplied samples show A has capacity 5 requests per second and cost 10 units per day. B has median 30 ms and cost 16 units per day. A p95 is 80 ms. B capacity is 10 requests per second. A median is 20 ms. B p95 is unmeasured. B doubles capacity for 6 more units per day and needs p95 measured for a latency-sensitive choice.",
+      "distinction": "Both are factual; the poor version scatters comparable fields and makes the user reconstruct the comparison. Judge retrieval effort, not table syntax alone."
+    }
+  ]
+}

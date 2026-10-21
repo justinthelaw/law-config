@@ -13,6 +13,9 @@ from pathlib import Path
 from typing import Any, Callable, Iterable, Sequence
 from urllib.parse import urlparse
 
+from command_capture import capture_command
+from git_context import SELECTORS, repository_context
+
 
 ACTIVE = frozenset({"queued", "in_progress", "pending", "requested", "waiting"})
 NON_FAILURE = frozenset({"success", "neutral", "skipped"})
@@ -99,6 +102,7 @@ class WatchTimeout(WatchError):
 class Deadline:
     expires_at: float
     clock: Callable[[], float]
+    wall_expires_at: float | None = None
 
     def remaining(self) -> float:
         remaining = self.expires_at - self.clock()
@@ -270,18 +274,20 @@ def run_command(
     # Empty disables both hook-based fsmonitor on older Git and the daemon on
     # newer Git. Older versions interpret "false" as a hook pathname.
     command = ["git", "-c", "core.fsmonitor=", *argv[1:]] if argv[0] == "git" else list(argv)
-    for attempt in range(3):
+    environment = {**os.environ, "GIT_OPTIONAL_LOCKS": "0"}
+    log_output = list(argv[:3]) == ["gh", "run", "view"] and any(
+        option in argv for option in ("--log", "--log-failed")
+    )
+
+    def invoke(arguments, env, *, tail=False):
         remaining = deadline.remaining() if deadline is not None else 60
         try:
-            result = subprocess.run(
-                command,
+            result = capture_command(
+                arguments,
                 cwd=str(cwd) if cwd else None,
-                stdin=subprocess.DEVNULL,
-                capture_output=True,
-                text=True,
-                check=False,
-                env={**os.environ, "GIT_OPTIONAL_LOCKS": "0"},
+                env=env,
                 timeout=min(60, remaining),
+                tail=tail,
             )
         except FileNotFoundError as exc:
             raise WatchError(f"Required executable is unavailable: {argv[0]}") from exc
@@ -289,11 +295,41 @@ def run_command(
             if deadline is not None and remaining <= 60:
                 raise WatchTimeout("monitor timeout") from exc
             raise WatchError(f"Read-only command timed out: {' '.join(argv[:3])}") from exc
+        except OSError as exc:
+            raise WatchError(f"Cannot capture read-only command: {' '.join(argv[:3])}") from exc
         if deadline is not None:
             deadline.remaining()
+        if getattr(result, "stderr_overflow", False) or (
+            getattr(result, "stdout_overflow", False) and not tail
+        ):
+            raise WatchError(f"Read-only command output exceeds the capture limit: {' '.join(argv[:3])}")
+        return result
+
+    if argv[0] == "git" and any(name in environment for name in (*SELECTORS, "GIT_INDEX_FILE")):
+        location = (cwd or Path.cwd()).resolve()
+
+        def query_path(option, env):
+            result = invoke(["git", "-c", "core.fsmonitor=", "rev-parse", option], env)
+            if result.returncode != 0 or not result.stdout.rstrip("\r\n"):
+                raise ValueError("inherited Git selectors conflict with or cannot verify the selected repository")
+            return (location / result.stdout.rstrip("\r\n")).resolve()
+
+        try:
+            _, environment = repository_context(location, environment, query_path, constrain_index=True)
+        except ValueError as exc:
+            raise WatchError(str(exc)) from exc
+
+    for attempt in range(3):
+        result = invoke(command, environment, tail=log_output)
+        output = result.stdout.rstrip("\r\n")
+        if getattr(result, "stdout_overflow", False):
+            # A retained partial first line can start inside a credential,
+            # beyond the prefix needed by redaction. Keep complete lines.
+            output = output.partition("\n")[2]
+            output = "[omitted earlier command output: capture limit exceeded]\n" + output
         if result.returncode == 0:
-            return result.stdout.rstrip("\r\n")
-        detail = redact((result.stderr or result.stdout or "unknown error").strip())
+            return redact(output) if log_output else output
+        detail = redact((result.stderr or output or "unknown error").strip())
         if optional:
             return None
         if argv[0] == "gh" and TRANSIENT.search(detail) and attempt < 2:
@@ -338,15 +374,30 @@ def discover_roots(
     runner: Runner,
     *,
     include_siblings: bool = False,
+    on_error: Callable[[Path, WatchError], None] | None = None,
 ) -> list[Path]:
+    def inspect(path: Path, *, optional: bool = False) -> Path | None:
+        try:
+            result = git_root(path, runner, optional=optional)
+            if result is None and not optional:
+                raise WatchError(f"No Git repository found at {path}")
+            return result
+        except WatchTimeout:
+            raise
+        except WatchError as exc:
+            if on_error is None:
+                raise
+            on_error(path, exc)
+            return None
+
     workspaces: list[Path] = []
     if explicit:
-        candidates = [git_root(path.resolve(), runner) for path in explicit]
+        candidates = [inspect(path.resolve()) for path in explicit]
         if include_siblings:
             workspaces = list(dict.fromkeys(path.parent for path in candidates if path))
     else:
         location = cwd.resolve()
-        current = git_root(location, runner, optional=True)
+        current = inspect(location, optional=True)
         candidates = [current] if current else []
         if include_siblings:
             workspaces = [current.parent if current else location]
@@ -361,13 +412,17 @@ def discover_roots(
                     key=lambda candidate: (candidate.name.casefold(), candidate.name),
                 )
             except OSError as exc:
-                raise WatchError(f"Cannot inspect repository workspace: {workspace}") from exc
+                error = WatchError(f"Cannot inspect repository workspace: {workspace}")
+                if on_error is None:
+                    raise error from exc
+                on_error(workspace, error)
+                continue
             for directory in directories:
-                candidate = git_root(directory, runner, optional=True)
+                candidate = inspect(directory, optional=True)
                 if candidate and candidate == directory.resolve():
                     candidates.append(candidate)
     roots = list(dict.fromkeys(path for path in candidates if path))
-    if not roots:
+    if not roots and on_error is None:
         raise WatchError("No Git repository found; use --repo /path/to/repository")
     return roots
 
@@ -445,21 +500,21 @@ def ordered_push_targets(targets: Iterable[Target]) -> list[Target]:
 
 
 def bounded_log(text: str, max_lines: int, max_chars: int = 10000) -> str:
+    if max_lines < 1 or max_chars < 1:
+        return ""
     lines = redact(text).splitlines()
-    if len(lines) > max_lines and max_lines > 2:
-        visible_count = max_lines - 1
-        visible = [
-            f"[omitted {len(lines) - visible_count} earlier lines]",
-            *lines[-visible_count:],
-        ]
-    else:
-        visible = lines[-max_lines:]
-    output = "\n".join(visible)
-    if len(output) > max_chars:
-        marker = "[earlier output omitted]\n"
-        available = max_chars - len(marker)
-        output = marker + output[-available:] if available > 0 else output[-max_chars:]
-    return output
+    output = "\n".join(lines[-max_lines:])
+    if len(lines) <= max_lines and len(output) <= max_chars:
+        return output
+    marker = "[omitted earlier output]"
+    if max_chars <= len(marker):
+        return "[omitted]" if max_chars >= len("[omitted]") else "…"
+    # Tiny line budgets keep the marker inline so useful tail lines survive.
+    separate_line = max_lines > 2
+    separator = "\n" if separate_line else " "
+    tail = "\n".join(lines[-(max_lines - int(separate_line)):])
+    available = max_chars - len(marker) - len(separator)
+    return marker + separator + (tail[-available:] if available else "")
 
 
 def classify(run: dict[str, Any]) -> str:

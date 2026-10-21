@@ -7,6 +7,9 @@ import math
 from pathlib import Path
 import sys
 
+# This shipped sibling is trusted independently of the caller's working directory.
+# Keep Python safe-path enabled; do not make arbitrary CWD modules importable.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 from evaluation import load_json, validate_result
 
 
