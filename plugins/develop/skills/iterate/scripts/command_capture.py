@@ -71,10 +71,13 @@ def capture_command(
             raise subprocess.TimeoutExpired(command, timeout)
         if errors:
             raise OSError("Unable to capture complete command output") from errors[0]
+        # Match subprocess text-mode newlines after enforcing the raw byte cap.
+        stdout, stderr = (
+            buffer.decode("utf-8", errors="replace").replace("\r\n", "\n").replace("\r", "\n")
+            for buffer in buffers
+        )
         return CapturedCommand(
-            command, process.returncode,
-            buffers[0].decode("utf-8", errors="replace"),
-            buffers[1].decode("utf-8", errors="replace"),
+            command, process.returncode, stdout, stderr,
             stdout_overflow=overflow[0], stderr_overflow=overflow[1],
         )
     finally:

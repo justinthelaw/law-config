@@ -170,6 +170,23 @@ class CaptureTests(unittest.TestCase):
         with self.assertRaises(subprocess.CalledProcessError):
             result.check_returncode()
 
+    def test_binary_crlf_and_bare_cr_normalize_on_both_streams(self):
+        payload = b"one\r\ntwo\rthree\nfour\r\r\n"
+        script = (f"import sys; sys.stdout.buffer.write({payload!r}); "
+                  f"sys.stderr.buffer.write({payload!r})")
+        result = self.capture(script, max_bytes=len(payload))
+        self.assertEqual((result.stdout, result.stderr),
+                         ("one\ntwo\nthree\nfour\n\n", "one\ntwo\nthree\nfour\n\n"))
+        self.assertFalse(result.stdout_overflow or result.stderr_overflow)
+
+    def test_newline_normalization_does_not_expand_the_byte_budget(self):
+        payload = b"\r\n" * 8
+        script = (f"import sys; sys.stdout.buffer.write({payload!r}); "
+                  f"sys.stderr.buffer.write({payload!r})")
+        result = self.capture(script, max_bytes=12)
+        self.assertEqual((result.stdout, result.stderr), ("\n" * 6, "\n" * 6))
+        self.assertTrue(result.stdout_overflow and result.stderr_overflow)
+
     def test_timeout_terminates_the_child_and_returns_promptly(self):
         processes = []
         actual_popen = subprocess.Popen
