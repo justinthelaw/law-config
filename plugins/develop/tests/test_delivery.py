@@ -2,10 +2,11 @@
 import hashlib
 import json
 from pathlib import Path
-import subprocess
 import sys
 import tempfile
 import unittest
+
+from fixture_python import run_fixture_python
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "tests/evaluations"
@@ -27,8 +28,7 @@ class DeliveryFixtures(unittest.TestCase):
         return target
 
     def run_python(self, target, *arguments):
-        return subprocess.run([sys.executable, "-B", *arguments], cwd=target,
-                              capture_output=True, text=True, check=False)
+        return run_fixture_python(target, *arguments)
 
     def run_oracle(self, target, cases=None):
         # This is an explicitly executed offline fixture check, not a host grader.
@@ -237,9 +237,7 @@ class RoutingFixtures(unittest.TestCase):
 
     @staticmethod
     def run_python(target, *arguments):
-        return subprocess.run([sys.executable, "-B", *arguments], cwd=target,
-                              capture_output=True, text=True, check=False,
-                              timeout=20)
+        return run_fixture_python(target, *arguments)
 
     def test_all_routing_inputs_materialize_exactly_without_private_criteria(self):
         for name in self.NAMES:

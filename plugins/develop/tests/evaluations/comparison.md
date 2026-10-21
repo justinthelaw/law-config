@@ -26,6 +26,16 @@ reported separately from application metrics; unknown costs remain null. Cost
 deltas require identical plans and complete measurements. Different host/model
 conditions are rejected rather than attributed to the candidate instructions.
 
+For review cost, predeclare the same reader task on each side: locate the outcome,
+supporting evidence, unresolved gate and next action. Record actual review time,
+clarification turns, material corrections and mistaken readiness decisions in a
+separate private review ledger linked to attempt IDs. Include reviewer/context
+identity and timing method; counterbalance presentation order where practical.
+Keep this human review cost separate from agent cost and application performance.
+Missing measurements remain unknown. Report quality and cost together, including
+failed and incomplete attempts; fewer words or messages alone are not savings.
+The comparator does not measure these fields or infer a causal benefit.
+
 Finite attempt costs must also produce finite totals and deltas. Arithmetic
 overflow is invalid input (exit 2), never JSON `Infinity` or `NaN`; integer token
 totals remain exact.

@@ -3,11 +3,11 @@ import importlib.util
 from itertools import product
 import json
 from pathlib import Path
-import subprocess
-import sys
 import tempfile
 import types
 import unittest
+
+from fixture_python import run_fixture_python
 
 ROOT = Path(__file__).resolve().parent / "evaluations"
 
@@ -1258,8 +1258,8 @@ class ArchitectureProbe(unittest.TestCase):
             for item in self.ownership["agent"]["inputs"]:
                 (root / item["path"]).write_text(item["content"], encoding="utf-8")
             (root / "app.py").write_text(source, encoding="utf-8")
-            return subprocess.run([sys.executable, "-m", "unittest", "-v", "test_public"],
-                                  cwd=root, capture_output=True, text=True, timeout=10)
+            return run_fixture_python(root, "-m", "unittest", "-v", "test_public",
+                                      timeout=10)
 
     def test_public_contract_rejects_unimplemented_start(self):
         source = next(item["content"] for item in self.ownership["agent"]["inputs"]

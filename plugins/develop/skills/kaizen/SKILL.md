@@ -36,6 +36,6 @@ For each recommendation, identify evidence, owner, proposed change, expected eff
 
 ## Close or implement
 
-Review findings and recommendation evidence through the packaged [adversarial-loop](../adversarial-loop/SKILL.md), using sanitized evidence and its bounded standalone protocol. Report coverage, omissions, independent episode counts and unresolved uncertainty alongside the recommendations. A no-change result is valid.
+Review findings and recommendation evidence through the packaged [adversarial-loop](../adversarial-loop/SKILL.md), using sanitized evidence and its bounded standalone protocol. Use the shared [presentation policy](../develop/references/contract.md#presentation); report coverage, omissions, independent episode counts and unresolved uncertainty alongside the recommendations. A no-change result is valid.
 
 Analysis does not authorize edits, installs, schedules or enabling hooks. Hand specifically authorized improvements to [iterate](../iterate/SKILL.md); preserve scope, test the proposed change in isolation, and compare outcomes before broader adoption. A review verdict never grants action authority.

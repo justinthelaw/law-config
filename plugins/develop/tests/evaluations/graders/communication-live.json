@@ -1,0 +1,35 @@
+{
+  "fixture_id": "communication-live",
+  "fixture_revision": "1",
+  "criteria": [
+    {
+      "id": "accepted-live",
+      "pass_when": "Uses a supported live view only within the accepted scope, retaining revision, passed unit, pending integration and missing approval. If unsupported, gives accurate text and records the capability gap without installing or scheduling.",
+      "evidence": "Actual view creation/update events and visible state, or demonstrated capability gap; a claimed view without an artifact fails."
+    },
+    {
+      "id": "transitions",
+      "pass_when": "After staged observations, updates the existing view for meaningful changes without redundant unchanged narration or a second watcher. Integration success does not imply approval or deployment.",
+      "evidence": "Capture at each staged boundary; unavailable live capability leaves actual live updates unverified."
+    }
+  ],
+  "subsequent_observations": [
+    {
+      "status": "unit passed; integration pending; no release approval",
+      "revision": "aaaa"
+    },
+    {
+      "status": "unit passed; integration passed; no release approval",
+      "revision": "aaaa"
+    }
+  ],
+  "calibration_pairs": [
+    {
+      "id": "live-choice",
+      "facts": "Revision aaaa: unit passed; integration pending; no release approval. Later observations will arrive only as supplied controller turns. No future status is known.\n",
+      "good": "One accepted live view shows revision aaaa, unit passed, integration pending and approval missing, then updates integration to passed after the supplied transition. It remains clear that approval is missing.",
+      "poor": "The same accurate statuses are sent as repeated standalone messages, including each unchanged observation, although the accepted live view is available.",
+      "distinction": "Judge the actual transition trace and accepted format, not the presence of the word live. If the host lacks the capability, grade the honest fallback separately."
+    }
+  ]
+}

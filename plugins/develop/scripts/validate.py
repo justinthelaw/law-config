@@ -312,7 +312,8 @@ def validate(root, marketplace_root=None):
             names = [alias.name for alias in node.names] if isinstance(node, ast.Import) else (
                 [node.module] if isinstance(node, ast.ImportFrom) and node.module else []
             )
-            pending.extend(name for name in names if name.startswith("pipeline_") or name == "watch_pipelines")
+            pending.extend(name for name in names if name.startswith("pipeline_")
+                           or name in {"watch_pipelines", "command_capture", "git_context"})
 
     for path in [root / "INSTALL.md", *sorted((root / "skills").rglob("*.md"))]:
         if not path.is_file():

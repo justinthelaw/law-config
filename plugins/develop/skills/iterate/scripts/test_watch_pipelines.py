@@ -239,7 +239,7 @@ class SafetyTests(unittest.TestCase):
         failure = subprocess.CompletedProcess(["gh"], 1, "", "HTTP 503 temporarily unavailable")
         success = subprocess.CompletedProcess(["gh"], 0, "[]", "")
         delays: list[float] = []
-        with patch.object(watcher.subprocess, "run", side_effect=[failure, success]) as invoked:
+        with patch("pipeline_support.capture_command", side_effect=[failure, success]) as invoked:
             self.assertEqual(
                 watcher.run_command(["gh", "run", "list"], sleep=delays.append),
                 "[]",
@@ -250,7 +250,7 @@ class SafetyTests(unittest.TestCase):
     def test_submodule_status_leading_marker_is_preserved(self) -> None:
         status = f" {'a' * 40} ui (heads/main)\n"
         success = subprocess.CompletedProcess(["git"], 0, status, "")
-        with patch.object(watcher.subprocess, "run", return_value=success):
+        with patch("pipeline_support.capture_command", return_value=success):
             output = watcher.run_command(["git", "submodule", "status", "--recursive"])
         self.assertEqual(output, status.rstrip("\n"))
 
@@ -280,7 +280,8 @@ class MonitoringTests(unittest.TestCase):
         monitor = watcher.Watcher([selected], runner=runner, emit=events.append)
         self.assertEqual(monitor.watch(once=True), 0)
         self.assertEqual(len(monitor.runs), 1)
-        self.assertEqual(events[0]["workflows"], 1)
+        discovery = next(event for event in events if "workflows" in event)
+        self.assertEqual(discovery["workflows"], 1)
 
     def test_duplicate_run_states_emit_once(self) -> None:
         selected = target()

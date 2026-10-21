@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 import watch_pipelines as watcher
-from pipeline_test_support import FakeClock, FakeRunner, run_payload, target, default_ci_response
+from pipeline_test_support import FakeClock, FakeRunner, run_payload, target, default_ci_response, local_metadata_response
 
 
 class CompletionTests(unittest.TestCase):
@@ -132,6 +132,9 @@ class CompletionTests(unittest.TestCase):
         skipped_run = run_payload(skipped, conclusion="neutral")
 
         def runner(argv: list[str], cwd: Path | None = None, optional: bool = False) -> str:
+            local = local_metadata_response(argv, passing if cwd == passing.path else skipped)
+            if local is not None:
+                return local
             if argv[:3] == ["gh", "auth", "status"]:
                 return ""
             if argv[:3] == ["gh", "run", "list"]:
@@ -142,7 +145,10 @@ class CompletionTests(unittest.TestCase):
         events: list[dict[str, object]] = []
         monitor = watcher.Watcher([passing, skipped], runner=runner, emit=events.append)
         self.assertEqual(monitor.watch(once=True), 2)
-        self.assertEqual(events[-1]["targets"], [skipped.label])
+        self.assertTrue(any(event.get("targets") == [skipped.label] for event in events))
+        self.assertEqual(events[-1]["result"], "blocked")
+        self.assertEqual(events[-1]["roots_passed"], 1)
+        self.assertEqual(events[-1]["roots_blocked"], 1)
 
     def test_optional_skipped_workflow_with_success_can_pass(self) -> None:
         selected = target()

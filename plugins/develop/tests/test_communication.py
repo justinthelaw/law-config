@@ -1,5 +1,7 @@
 """Public-input isolation and synthetic channel accounting, not model grading."""
 import copy
+from datetime import datetime
+import json
 from pathlib import Path
 import sys
 import tempfile
@@ -14,8 +16,9 @@ import compare_evaluations
 
 class CommunicationFixtures(unittest.TestCase):
     def test_public_materialization_and_separate_grader(self):
-        fixtures = sorted((DATA / "fixtures").glob("communication-*.json"))
-        self.assertEqual(len(fixtures), 7)
+        fixtures = sorted(path for prefix in ("communication-", "standards-", "unattended-")
+                          for path in (DATA / "fixtures").glob(prefix + "*.json"))
+        self.assertTrue(fixtures)
         with tempfile.TemporaryDirectory() as temporary:
             for path in fixtures:
                 with self.subTest(fixture=path.name):
@@ -33,6 +36,15 @@ class CommunicationFixtures(unittest.TestCase):
                     self.assertEqual(actual, expected)
                     for item in fixture["agent"]["inputs"]:
                         self.assertEqual((target / item["path"]).read_text(), item["content"])
+                    public = json.dumps(fixture)
+                    for criterion in grader["criteria"]:
+                        self.assertNotIn(criterion["pass_when"], public)
+                        self.assertNotIn(criterion["evidence"], public)
+                    for pair in grader.get("calibration_pairs", []):
+                        self.assertNotEqual(pair["good"], pair["poor"])
+                        self.assertTrue(pair["distinction"])
+                        for field in ("good", "poor", "distinction"):
+                            self.assertNotIn(pair[field], public)
 
 
     def test_poll_inputs_do_not_reveal_future_observations(self):
@@ -50,6 +62,44 @@ class CommunicationFixtures(unittest.TestCase):
             self.assertEqual([item["poll"] for item in initial["snapshots"] + stages],
                              [1, 2, 3, 4])
             self.assertNotIn("subsequent_observations", initial)
+
+    def inputs(self, name):
+        fixture = evaluation.load_json(DATA / "fixtures" / (name + ".json"))
+        return {row["path"]: row["content"] for row in fixture["agent"]["inputs"]}
+
+    def test_format_controls_share_model_and_keep_live_future_private(self):
+        interactive = self.inputs("communication-interactive")
+        fallback = self.inputs("communication-fallback")
+        self.assertEqual(interactive["model.txt"], fallback["model.txt"])
+        fixture = evaluation.load_json(DATA / "fixtures/communication-live.json")
+        grader = evaluation.load_json(DATA / "graders/communication-live.json")
+        stages = grader["subsequent_observations"]
+        self.assertEqual([row["revision"] for row in stages], ["aaaa", "aaaa"])
+        self.assertNotEqual(stages[0]["status"], stages[1]["status"])
+        self.assertNotIn(stages[1]["status"], json.dumps(fixture))
+
+    def test_resume_records_keep_expiry_pending_decision_and_matching_readback(self):
+        expired = self.inputs("unattended-budget")
+        handoff = json.loads(expired["handoff.json"])
+        self.assertLess(datetime.fromisoformat(handoff["deadline_utc"].replace("Z", "+00:00")),
+                        datetime.fromisoformat(expired["controller-time.txt"].strip().replace("Z", "+00:00")))
+        self.assertEqual(handoff["remaining_attempts"], 1)
+        pending = json.loads(self.inputs("unattended-pending")["handoff.json"])
+        self.assertIsNone(pending["pending_decision"]["answer"])
+        self.assertEqual(pending["pending_decision"]["revision"], pending["head"])
+        unknown = self.inputs("unattended-unknown-write")
+        handoff, readback = [json.loads(unknown[name]) for name in
+                             ("handoff.json", "provider-readback.json")]
+        self.assertEqual(handoff["external_action"]["state"], "attempted_unknown")
+        self.assertEqual(handoff["target"], readback["repository"])
+        self.assertEqual(handoff["head"], readback["head"])
+        self.assertEqual(handoff["external_action"]["request_id"], readback["request_id"])
+        self.assertEqual((readback["checks"], readback["review"]), ("pending", "pending"))
+        mismatch = self.inputs("unattended-unknown-write-mismatch")
+        self.assertEqual(mismatch["handoff.json"], unknown["handoff.json"])
+        wrong = json.loads(mismatch["provider-readback.json"])
+        self.assertNotEqual(handoff["head"], wrong["head"])
+        self.assertNotEqual(handoff["external_action"]["request_id"], wrong["request_id"])
 
 
 class CommunicationAccounting(unittest.TestCase):

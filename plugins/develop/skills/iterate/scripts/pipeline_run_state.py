@@ -30,6 +30,12 @@ class RunStateMixin:
         return not previous or restarted
 
     def counts(self) -> dict[str, int]:
+        if hasattr(self, "root_watchers"):
+            totals: dict[str, int] = {}
+            for watcher in self.root_watchers:
+                for key, value in watcher.counts().items():
+                    totals[key] = totals.get(key, 0) + value
+            return totals
         counts = {"active": 0, "passed": 0, "failed": 0, "skipped": 0}
         for _, run in self.runs.values():
             counts[classify(run)] += 1

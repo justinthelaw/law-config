@@ -26,7 +26,7 @@ Audit through static inspection and documented read-only checks. Do not run hook
 
 An audit-only invocation is standalone: complete the sweep and report its evidence and gaps without the shared intent/evidence review gates. If the user explicitly requests an independent review, use [adversarial-loop](../adversarial-loop/SKILL.md); unavailable reviewers leave that requested review unverified but do not prevent reporting the audit findings. Requested implementation follows the shared gates below.
 
-Report the target identities and coverage first, then findings with location, consuming surface, evidence, impact, proposed change and validation. Classify each as `Required`, `Deprecated`, `Optional` or `Unverified`. Identify an actual failure before calling a change required; a similarly named replacement does not prove equivalent behavior.
+Use the shared [presentation policy](../develop/references/contract.md#presentation). Report the target identities and coverage first, then findings with location, consuming surface, evidence, impact, proposed change and validation. Classify each as `Required`, `Deprecated`, `Optional` or `Unverified`. Identify an actual failure before calling a change required; a similarly named replacement does not prove equivalent behavior.
 
 For requested changes, read the [shared contract](../develop/references/contract.md), make a concrete scoped plan and use [iterate](../iterate/SKILL.md). Continue within existing authority; a phase change needs no new approval. Preserve intentional pins, disabled choices, policy and unrelated work. Change maintained source, regenerate derived metadata and validate affected consumers. Client installation, publication and deployment remain separate scopes.
 
