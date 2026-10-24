@@ -45,7 +45,6 @@ jobs:
           node-version: "24"
 
       # Exact security patch; next-12 is 12.2.1 while latest remains 12.2.0.
-      # See docs/dependency-upgrades/2026-10-18.md for bundle verification.
       - name: Update npm
         run: npm install --global npm@12.2.1
 
