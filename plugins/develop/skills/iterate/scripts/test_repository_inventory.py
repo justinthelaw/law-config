@@ -184,20 +184,16 @@ class SnapshotTests(unittest.TestCase):
 
     def test_patch_path_stays_after_option_boundary_for_both_diff_categories(self) -> None:
         runner = SnapshotRunner(headers() + ordinary("--output=not-an-option", "MM"), diff="+change")
+        paths = ["--output=not-an-option", "with\nnewline"]
         with patch.object(inventory, "worktree_identity", return_value=((), None)):
-            result = snapshot(runner, patch=True, paths=["--output=not-an-option", "with\nnewline"])
+            result = snapshot(runner, patch=True, paths=paths)
         self.assertEqual(result["patch"], {"staged": "+change", "unstaged": "+change\n+change"})
         patch_calls = [call for call in runner.calls if call[1] == "diff" and "--numstat" not in call]
-        self.assertEqual(len(patch_calls), 3)
-        self.assertTrue(any("--cached" in call for call in patch_calls))
-        self.assertTrue(any("--cached" not in call for call in patch_calls))
-        for call in patch_calls:
-            expected_paths = ["--output=not-an-option", "with\nnewline"] if "--cached" in call else [
-                "--output=not-an-option" if call == patch_calls[1] else "with\nnewline"
-            ]
+        self.assertEqual(["--cached" in call for call in patch_calls], [True, False, False])
+        for call, expected in zip(patch_calls, [paths, [paths[0]], [paths[1]]]):
             self.assertEqual(call[call.index("--") + 1:], [
-                *(f":(literal){path}" for path in expected_paths),
-                *(f":(exclude,glob){path}/**" for path in expected_paths),
+                *(f":(literal){path}" for path in expected),
+                *(f":(top,exclude,glob){path}/**" for path in expected),
             ])
             self.assertIn("--no-ext-diff", call)
             self.assertIn("--no-textconv", call)
@@ -528,7 +524,7 @@ class LocalGitTests(unittest.TestCase):
         link.rename(self.workspace / "saved-link")
         link.symlink_to(outside / "new-target.txt")
         result = self.read_snapshot(patch=True, paths=[link.name])
-        self.assertIn("+" + str(outside / "new-target.txt"), result["patch"]["unstaged"])
+        self.assertIn("+" + (outside / "new-target.txt").as_posix(), result["patch"]["unstaged"])
         self.assertNotIn("PRIVATE-TARGET-CONTENTS", str(result))
         self.assertNotIn("patch_withheld", result)
 
@@ -644,14 +640,24 @@ class LocalGitTests(unittest.TestCase):
         separator = " " if os.name == "nt" else "\n"
         original = f"old name{separator}original.txt"
         renamed_path = f"new name{separator}renamed.txt"
+        extra = "other.txt" if os.name == "nt" else r"other\file.txt"
+        (self.repo / extra).touch()
         (self.repo / "tracked.txt").rename(self.repo / original)
+        # A separate deletion patch exceeds the capture limit for this unchanged blob.
+        (self.repo / original).write_bytes(b"x" * (1024 * 1024) + b"\n")
         self.git("add", "--all")
         self.git("commit", "-m", "Unusual original path")
         (self.repo / original).rename(self.repo / renamed_path)
+        (self.repo / extra).write_text("selected-sibling\n")
         self.git("add", "--all")
-        result = self.read_snapshot()
-        self.assertEqual(result["changes"], [{"path": renamed_path, "status": "R ", "from": original}])
-        self.assertEqual(result["counts"], {"staged": 1})
+        result = self.read_snapshot(patch=True, paths=[original, renamed_path, extra])
+        self.assertEqual(result["changes"], [
+            {"path": renamed_path, "status": "R ", "from": original},
+            {"path": extra, "status": "M "},
+        ])
+        self.assertEqual(result["counts"], {"staged": 2})
+        self.assertIn("rename from ", result["patch"]["staged"])
+        self.assertIn("+selected-sibling", result["patch"]["staged"])
 
     def test_actual_staged_and_unstaged_change_to_same_path(self) -> None:
         path = self.repo / "tracked.txt"
@@ -849,6 +855,13 @@ class LocalGitTests(unittest.TestCase):
         self.assertNotIn("unstaged", result.get("patch", {}))
         broad = self.read_snapshot(patch=True)
         self.assertIn("private-child", str(broad["patch"]))
+        # A nested cwd exposes Git's relative-prefix normalization on every host.
+        # On Windows that same step converts glob escapes into directory separators.
+        names = self.git(
+            "diff", "--cached", "--name-only", "--", f":(top,literal){selected.name}",
+            inventory.exclude_descendants(selected.name, [selected.name]), cwd=selected,
+        )
+        self.assertEqual(names, selected.name)
 
     def test_exact_patch_excludes_descendants_after_directory_to_file_transition(self) -> None:
         selected = self.repo / "report[1].txt"
@@ -893,7 +906,9 @@ class LocalGitTests(unittest.TestCase):
         pairs = [("nested[1]", "nested1/keep.txt")]
         if os.name != "nt":
             pairs += [("nested*?", "nested-other/keep.txt"),
-                      ("nested\\[?*]", "nested-other-two/keep.txt")]
+                      ("nested\\[?*]", "nested-other-two/keep.txt"),
+                      ("pattern[1]", r"pattern\[1\]/**"),
+                      ("other[1]", r"other\[1\]/**/**/**/keep.txt")]
         head = self.git("rev-parse", "HEAD")
         selected_target = Target(self.repo, self.repo, "fixture/project", "main", "main", head, "origin")
         for phase in ("staged", "unstaged"):
@@ -901,7 +916,7 @@ class LocalGitTests(unittest.TestCase):
                 with self.subTest(phase=phase, path=selected):
                     self.git("read-tree", "HEAD")
                     sibling_file = self.repo / sibling
-                    sibling_file.parent.mkdir(exist_ok=True)
+                    sibling_file.parent.mkdir(parents=True, exist_ok=True)
                     sibling_file.write_text("sibling-staged\n")
                     self.git("add", "--", f":(literal){sibling}")
                     sibling_file.write_text("sibling-staged\nsibling-unstaged\n")
@@ -914,11 +929,13 @@ class LocalGitTests(unittest.TestCase):
                         if is_patch and ("--cached" in argv) == (phase == "staged") and not flipped:
                             self.git("update-index", "--force-remove", "--", selected)
                             directory = self.repo / selected
-                            directory.mkdir(exist_ok=True)
-                            private = directory / "private.txt"
-                            private.write_text("PRIVATE-STAGED-CHILD\n")
-                            self.git("add", "--", f":(literal){selected}/private.txt")
-                            private.write_text("PRIVATE-STAGED-CHILD\nPRIVATE-UNSTAGED-CHILD\n")
+                            (directory / "deep").mkdir(parents=True, exist_ok=True)
+                            children = [directory / "private.txt", directory / "deep" / "private.txt"]
+                            for child in children:
+                                child.write_text("PRIVATE-STAGED-CHILD\n")
+                            self.git("add", "--", f":(literal){selected}")
+                            for child in children:
+                                child.write_text("PRIVATE-STAGED-CHILD\nPRIVATE-UNSTAGED-CHILD\n")
                             flipped = True
                         return run_command(argv, **kwargs)
 

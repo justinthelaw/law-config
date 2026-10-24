@@ -150,10 +150,16 @@ def validate_patch_paths(paths: Sequence[str]) -> None:
         raise WatchError("Patch file paths overlap; select each parent or descendant separately")
 
 
-def exclude_descendants(path: str) -> str:
+def exclude_descendants(path: str, selected_paths: Sequence[str]) -> str:
     """Exclude child paths without excluding a file or gitlink at this name."""
     escaped = "".join("\\" + char if char in "\\*?[]" else char for char in path)
-    return f":(exclude,glob){escaped}/**"
+    pattern = escaped + "/**"
+    # Git also tries the glob text literally. Each extra /** matches the same
+    # descendants but moves that literal prefix past any selected filename.
+    while any(other == pattern or other.startswith(pattern + "/") for other in selected_paths):
+        pattern += "/**"
+    # A root-relative glob keeps Git for Windows from treating its escapes as separators.
+    return f":(top,exclude,glob){pattern}"
 
 
 def worktree_identity(root: Path, path: str) -> tuple[tuple[Any, ...], str | None]:
@@ -300,7 +306,7 @@ def repository_snapshot(
                 arguments.extend([
                     "--no-ext-diff", "--no-textconv", "--no-color", "--unified=2", "--",
                     *(f":(literal){path}" for path in selected_paths),
-                    *(exclude_descendants(path) for path in selected_paths),
+                    *(exclude_descendants(path, selected_paths) for path in selected_paths),
                 ])
                 output = runner(arguments, cwd=target.path) or ""
                 if identity is not None:
