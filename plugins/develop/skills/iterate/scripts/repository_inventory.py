@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import stat
 import sys
 from pathlib import Path
 from typing import Any, Sequence
@@ -138,6 +140,79 @@ def bounded_patch(text: str, max_lines: int, max_chars: int) -> str:
     return output
 
 
+def validate_patch_paths(paths: Sequence[str]) -> None:
+    for path in paths:
+        if (not path or "\0" in path or Path(path).drive
+                or any(part in {"", ".", ".."} for part in path.split("/"))
+                or Path(path).as_posix() != path):
+            raise WatchError("A patch file path must be a canonical repository-relative filename")
+    if any(other.startswith(path + "/") for path in paths for other in paths):
+        raise WatchError("Patch file paths overlap; select each parent or descendant separately")
+
+
+def exclude_descendants(path: str) -> str:
+    """Exclude child paths without excluding a file or gitlink at this name."""
+    escaped = "".join("\\" + char if char in "\\*?[]" else char for char in path)
+    return f":(exclude,glob){escaped}/**"
+
+
+def worktree_identity(root: Path, path: str) -> tuple[tuple[Any, ...], str | None]:
+    """Verify native entry spelling without following symlinks or guessing case rules."""
+    def fingerprint(info, *, leaf=False):
+        symlink = stat.S_ISLNK(info.st_mode)
+        reparse = getattr(info, "st_file_attributes", 0) & getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
+        if (symlink or reparse) and not (leaf and symlink):
+            raise ValueError("symlink or reparse path")
+        if not info.st_ino or not (stat.S_ISREG(info.st_mode) or stat.S_ISDIR(info.st_mode) or leaf and symlink):
+            raise ValueError("unavailable filesystem identity")
+        return (info.st_dev, info.st_ino, info.st_mode, info.st_size, info.st_mtime_ns, info.st_ctime_ns)
+
+    secure = (os.open in os.supports_dir_fd and os.stat in os.supports_dir_fd
+              and os.scandir in os.supports_fd and hasattr(os, "O_NOFOLLOW"))
+    flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0) | getattr(os, "O_NOFOLLOW", 0)
+    identities = []
+    current, descriptor = root, None
+    try:
+        if secure:
+            descriptor = os.open(root, flags)
+        parts = path.split("/")
+        for position, component in enumerate(parts):
+            parent = os.fstat(descriptor) if descriptor is not None else current.lstat()
+            identities.append((str(current), fingerprint(parent)))
+            if not stat.S_ISDIR(parent.st_mode):
+                raise ValueError("unavailable parent directory identity")
+            with os.scandir(descriptor if descriptor is not None else current) as entries:
+                exact = any(os.fsencode(entry.name) == os.fsencode(component) for entry in entries)
+            candidate = current / component
+            try:
+                info = (os.stat(component, dir_fd=descriptor, follow_symlinks=False)
+                        if descriptor is not None else candidate.lstat())
+            except FileNotFoundError:
+                identities.append((path, "missing"))
+                break
+            if not exact:
+                raise ValueError("ambiguous filesystem spelling")
+            identities.append((str(candidate), fingerprint(info, leaf=position == len(parts) - 1)))
+            if position < len(parts) - 1 and descriptor is not None:
+                next_descriptor = os.open(component, flags, dir_fd=descriptor)
+                try:
+                    if fingerprint(os.fstat(next_descriptor)) != fingerprint(info):
+                        raise ValueError("changed filesystem identity")
+                except BaseException:
+                    os.close(next_descriptor)
+                    raise
+                os.close(descriptor)
+                descriptor = next_descriptor
+            current = candidate
+    except (OSError, ValueError) as exc:
+        detail = str(exc) if isinstance(exc, ValueError) else "unavailable filesystem identity"
+        return (), f"Unstaged patch withheld for {path!r}: {detail}"
+    finally:
+        if descriptor is not None:
+            os.close(descriptor)
+    return tuple(identities), None
+
+
 def repository_snapshot(
     target: Target,
     roots: Sequence[Target],
@@ -149,6 +224,7 @@ def repository_snapshot(
     max_patch_lines: int,
     max_patch_chars: int,
 ) -> dict[str, Any]:
+    validate_patch_paths(paths)
     output = runner(
         ["git", "status", "--porcelain=v2", "--branch", "-z", "--untracked-files=all"],
         cwd=target.path,
@@ -158,6 +234,21 @@ def repository_snapshot(
         raise WatchError(f"Repository HEAD changed during inventory: {target.path}")
     if headers.get("head") and headers["head"] != target.branch:
         raise WatchError(f"Repository branch changed during inventory: {target.path}")
+    changed_paths = {str(item[key]) for item in changes for key in ("path", "from") if key in item}
+    gitlink_paths = {
+        str(item[key]) for item in changes if "submodule" in item
+        for key in ("path", "from") if key in item
+    }
+    for path in paths:
+        selected = target.path / path
+        has_descendants = any(changed.startswith(path + "/") for changed in changed_paths)
+        if path in gitlink_paths and has_descendants:
+            raise WatchError(f"Patch gitlink has an ambiguous directory transition: {path!r}")
+        if path not in changed_paths and (
+            has_descendants
+            or (selected.is_dir() and not selected.is_symlink())
+        ):
+            raise WatchError(f"Patch path is a directory, not an exact changed file or gitlink: {path!r}")
     relative = target.path.relative_to(target.root)
     relative_path = relative.as_posix() if relative.parts else "."
     ancestors = [
@@ -192,13 +283,34 @@ def repository_snapshot(
         staged = category == "staged"
         snapshot.setdefault("diff", {})[category] = diff_summary(target, runner, staged=staged)
         if patch:
-            arguments = ["git", "diff"]
-            if staged:
-                arguments.append("--cached")
-            arguments.extend(["--no-ext-diff", "--no-textconv", "--no-color", "--unified=2", "--", *paths])
-            excerpt = bounded_patch(
-                runner(arguments, cwd=target.path) or "", max_patch_lines, max_patch_chars
-            )
+            excerpt, reasons = "", []
+            groups = [paths] if staged or not paths else [[path] for path in paths]
+            for selected_paths in groups:
+                identity = None
+                if selected_paths and not staged:
+                    identity, reason = worktree_identity(target.path, selected_paths[0])
+                    if reason:
+                        reasons.append(reason)
+                        continue
+                arguments = ["git", "diff"]
+                if staged:
+                    arguments.append("--cached")
+                if selected_paths:
+                    arguments.append("--submodule=short")
+                arguments.extend([
+                    "--no-ext-diff", "--no-textconv", "--no-color", "--unified=2", "--",
+                    *(f":(literal){path}" for path in selected_paths),
+                    *(exclude_descendants(path) for path in selected_paths),
+                ])
+                output = runner(arguments, cwd=target.path) or ""
+                if identity is not None:
+                    after, reason = worktree_identity(target.path, selected_paths[0])
+                    if reason or identity != after:
+                        reasons.append(reason or f"Unstaged patch withheld for {selected_paths[0]!r}: working-tree identity changed during capture")
+                        continue
+                excerpt = bounded_patch("\n".join(part for part in (excerpt, output) if part), max_patch_lines, max_patch_chars)
+            if reasons:
+                snapshot.setdefault("patch_withheld", {})[category] = "; ".join(reasons)
             if excerpt:
                 snapshot.setdefault("patch", {})[category] = excerpt
     return snapshot
@@ -212,7 +324,11 @@ def parser() -> argparse.ArgumentParser:
     argument_parser.add_argument("--github-host", action="append", default=[], help="Explicitly verified GitHub Enterprise hostname (repeatable)")
     argument_parser.add_argument("--max-paths", type=int, default=30)
     argument_parser.add_argument("--patch", action="store_true")
-    argument_parser.add_argument("--path", action="append", default=[])
+    argument_parser.add_argument(
+        "--path", action="append", default=[],
+        help="Exact file relative to each explicit --repo checkout, or the current checkout; "
+             "implicit submodules and siblings retain metadata only (repeatable)",
+    )
     argument_parser.add_argument("--max-patch-lines", type=int, default=40)
     argument_parser.add_argument("--max-patch-chars", type=int, default=4000)
     return argument_parser
@@ -224,9 +340,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         raise WatchError("Inventory limits must be positive")
     if options.path and not options.patch:
         raise WatchError("A patch path requires --patch")
+    validate_patch_paths(options.path)
     roots = discover_roots(
-        options.cwd, options.repo, run_command, include_siblings=options.include_siblings
+        options.cwd, options.repo, run_command,
+        include_siblings=options.include_siblings and not options.path,
     )
+    patch_roots = set(roots)
+    if options.path and options.include_siblings:
+        roots = discover_roots(options.cwd, options.repo, run_command, include_siblings=True)
     discovered = discover_targets(roots, run_command, deduplicate=False, github_hosts=options.github_host)
     for root in roots:
         targets = [target for target in discovered if target.root == root]
@@ -236,8 +357,8 @@ def main(argv: Sequence[str] | None = None) -> int:
                 targets,
                 run_command,
                 max_paths=options.max_paths,
-                patch=options.patch,
-                paths=options.path,
+                patch=options.patch and (not options.path or target.path == root and root in patch_roots),
+                paths=options.path if target.path == root and root in patch_roots else [],
                 max_patch_lines=options.max_patch_lines,
                 max_patch_chars=options.max_patch_chars,
             )

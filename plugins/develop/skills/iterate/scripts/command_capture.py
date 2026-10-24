@@ -26,7 +26,7 @@ class CapturedCommand(subprocess.CompletedProcess):
 def capture_command(
     command: Sequence[str], *, cwd: str | None = None,
     env: Mapping[str, str] | None = None, timeout: float = 60,
-    max_bytes: int = OUTPUT_BYTES, tail: bool = False,
+    max_bytes: int = OUTPUT_BYTES, tail: bool = False, lossless_stdout: bool = False,
 ) -> CapturedCommand:
     """Drain both pipes without retaining more than max_bytes from either.
 
@@ -34,6 +34,9 @@ def capture_command(
     Reader threads support Windows pipes as well as POSIX. Raw, fixed-size reads
     avoid an unbounded readline/communicate buffer and let cleanup close a pipe
     even when a descendant has inherited its writing end.
+    NUL-delimited Git records opt into lossless stdout: surrogate escapes retain
+    non-UTF-8 path bytes and CR/LF stay unchanged. Human diagnostics still use
+    replacement decoding and universal newlines.
     """
     if max_bytes < 1 or not math.isfinite(timeout) or timeout <= 0:
         raise ValueError("capture requires a positive byte limit and finite timeout")
@@ -71,11 +74,14 @@ def capture_command(
             raise subprocess.TimeoutExpired(command, timeout)
         if errors:
             raise OSError("Unable to capture complete command output") from errors[0]
-        # Match subprocess text-mode newlines after enforcing the raw byte cap.
+        # Match subprocess text-mode newlines after enforcing the raw byte cap,
+        # except for machine records whose filename bytes must remain distinct.
         stdout, stderr = (
             buffer.decode("utf-8", errors="replace").replace("\r\n", "\n").replace("\r", "\n")
             for buffer in buffers
         )
+        if lossless_stdout:
+            stdout = buffers[0].decode("utf-8", errors="surrogateescape")
         return CapturedCommand(
             command, process.returncode, stdout, stderr,
             stdout_overflow=overflow[0], stderr_overflow=overflow[1],

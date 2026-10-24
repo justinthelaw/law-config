@@ -16,7 +16,7 @@
 - `configs/gpg/*`: baseline GPG config snippets for signing setup.
 - `scripts/sanitize-shell-hist`: utility to sanitize shell history files safely.
 - `docs/setup-linux.md` and `docs/setup-macos.md`: environment-specific bootstrap docs.
-- `plugins/develop/`: Develop package; follow [plugin instructions](plugins/develop/AGENTS.md).
+- `plugins/`: distributable packages, including the Develop plugin.
 - `plugins/develop/hooks/`: Codex context guard; see its [runtime requirements and behavior](plugins/develop/docs/context-guard.md).
 - `.agents/plugins/marketplace.json`: repository-root catalog; follow [.agents/AGENTS.md](.agents/AGENTS.md).
 - `.github/workflows/plugins.test.yml`: package and helper checks on Linux, Windows, and macOS.
@@ -31,6 +31,7 @@
 
 ## Important Development Notes
 
+- Before planning or editing, read this guide and each child `AGENTS.md` on the path to the affected files. For a Develop skill, continue through [plugins](plugins/AGENTS.md), [Develop](plugins/develop/AGENTS.md) and [skills](plugins/develop/skills/AGENTS.md) in order. Add a child guide only for rules specific to that directory.
 - `main` is the single canonical branch.
 - Keep OS-specific behavior in `docs/setup-linux.md`, `docs/setup-macos.md`, `configs/zsh/linux.zsh`, and `configs/zsh/macos.zsh`.
 - `configs/.gitconfig` must be personalized before use (`<INSERT ...>` fields for identity, key, token).

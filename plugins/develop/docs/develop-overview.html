@@ -117,12 +117,12 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 <main class="sheet">
 <section id="workflow" aria-labelledby="workflow-title">
   <div class="section-heading"><span class="section-number">01</span><h1 id="workflow-title">Develop · One connected workflow</h1></div>
-  <p class="intro">Start with your outcome. Follow only the branches it needs.</p>
+  <p class="intro">In chat, type "$develop:develop Why did this CI job fail?"</p>
   <div class="workflow-map" role="group" aria-labelledby="workflow-title" aria-describedby="workflow-description">
-    <p id="workflow-description" class="sr-only">Start with Develop or invoke an owner directly. Develop routes the requested outcome to Upgrade, Kaizen, Iterate, Clean or Adversarial loop. Upgrade Codex is available only by explicit invocation. Upgrade, Kaizen and Upgrade Codex may return findings; they hand changes to Iterate only when implementation is authorized. Iterate performs the requested work and can loop through validation, authorized delivery, monitoring and authorized repair. Clean expands to Deep clean only for explicitly widened scope. Adversarial loop reviews applicable checkpoints and returns findings to the owner within a bounded review budget. An audit-only Upgrade Codex review is opt-in. Iterate may use compatible installed Superpowers guidance for planning, debugging and testing, then resumes with its existing scope and gates.</p>
+    <p id="workflow-description" class="sr-only">Develop sends the CI question to Iterate. Iterate examines the failed job log and tells the user what caused the failure or what evidence is missing. Users can also invoke a skill directly. Develop routes other outcomes to Upgrade, Kaizen, Clean or Adversarial loop. Upgrade Codex is available only by explicit invocation. Upgrade, Kaizen and Upgrade Codex may return findings; they hand changes to Iterate only when implementation is authorized. Iterate performs the requested work and can loop through validation, authorized delivery, monitoring and authorized repair. Clean expands to Deep clean only for explicitly widened scope. Adversarial loop reviews applicable checkpoints and returns findings to the owner within a bounded review budget. An audit-only Upgrade Codex review is opt-in. Iterate may use compatible installed Superpowers guidance for planning, debugging and testing, then resumes with its existing scope and gates.</p>
     <svg class="connectors" aria-hidden="true"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#e8c8a6"/></marker><marker id="feedback-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#bc9471"/></marker></defs><g id="edge-layer"></g></svg>
     <div class="flow-node router" id="node-develop" data-skill="develop"><h3>Develop</h3></div>
-    <p class="route-caption">Route by outcome · or invoke an owner directly</p>
+    <p class="route-caption">Route by outcome · follow <a href="#node-iterate">Iterate</a> for this question</p>
     <div class="branches">
       <div class="assessment-lane">
         <div class="flow-node" id="node-upgrade" data-skill="upgrade"><h3>Upgrade</h3></div>
@@ -136,7 +136,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
       <div class="implementation-lane">
         <div class="flow-node delivery" id="node-iterate" data-skill="iterate">
           <h3>Iterate</h3>
-          <div class="delivery-steps"><span>Prepare → change</span><span>Verify → deliver*</span><span class="loop-back">Monitor ↶ repair*</span></div>
+          <div class="delivery-steps"><span>Read the failed job log.</span><span class="loop-back">Explain the cause in chat</span><span>or name the missing evidence.</span></div>
         </div>
         <div class="flow-node external" id="node-superpowers" data-external="superpowers">
           <a class="external-title" href="https://github.com/openai/plugins/tree/main/plugins/superpowers" title="Official Superpowers Codex source"><img src="assets/superpowers-logo.png" width="48" height="48" alt="Official Superpowers logo"><span>Superpowers ↗</span></a>
@@ -153,7 +153,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
     </div>
     <p class="handoff" id="handoff-label">Return findings · implement only when authorized</p>
     <div class="flow-node reviews" id="node-adversarial-loop" data-skill="adversarial-loop"><h3>Adversarial loop</h3><p>Review at applicable checkpoints.<br>Return findings; recheck within the budget.</p></div>
-    <p class="review-return">* Delivery and repairs require authorization. Reviews return to the owner.</p>
+    <p class="review-return">Delivery and repairs require authorization. Reviews return to the owner.</p>
   </div>
   <p class="context-guard"><a href="context-guard.md">Shared Codex context guard</a> · trusted local orchestration + execution<br>Bound reads · opt-in save → verify → receipt; otherwise passthrough.</p>
 </section>

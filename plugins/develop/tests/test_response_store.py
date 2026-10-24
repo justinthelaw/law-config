@@ -16,6 +16,7 @@ from unittest import mock
 
 SPEC = importlib.util.spec_from_file_location(
     "develop_response_store", Path(__file__).resolve().parents[1] / "hooks/response_store.py")
+REAL_HOME = Path.home().resolve()
 store = importlib.util.module_from_spec(SPEC)
 exec(compile(Path(SPEC.origin).read_bytes(), SPEC.origin, "exec"), store.__dict__)
 
@@ -25,8 +26,16 @@ class ResponseStore(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory(prefix="develop-response-store-")
         self.addCleanup(temporary.cleanup)
-        self.root = Path(temporary.name).resolve()
-        self.root.chmod(0o700)
+        self.fixture = Path(temporary.name).resolve()
+        self.fixture.chmod(0o700)
+        self.root = self.fixture / "responses"
+        self.root.mkdir(mode=0o700)
+        # Fictional grants exercise real descriptors even when TMPDIR is in home.
+        self.home = self.fixture / "fictional-home"
+        self.home.mkdir(mode=0o700)
+        self.home_override = mock.patch.object(store.Path, "home", return_value=self.home)
+        self.home_override.start()
+        self.addCleanup(self.home_override.stop)
         environment = mock.patch.dict(os.environ, {
             "DEVELOP_GUARD_ROOT": str(self.root), "DEVELOP_GUARD_SESSION": "session",
             "DEVELOP_GUARD_EXPIRES": str(int(time.time()) + 3600),
@@ -327,7 +336,8 @@ except BlockingIOError:
         for index in range(6):
             worker = subprocess.Popen([sys.executable, "-I", "-B", "-c", script, SPEC.origin],
                                       stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                      stderr=subprocess.PIPE, text=True)
+                                      stderr=subprocess.PIPE, text=True,
+                                      env=dict(os.environ, HOME=str(self.home)))
             workers.append(worker)
             self.addCleanup(self.stop_worker, worker)
         expected = []
@@ -378,7 +388,8 @@ print(store["preserve"](sys.stdin.readline(), "session"), flush=True)
 '''
         worker = subprocess.Popen([sys.executable, "-I", "-B", "-c", script, SPEC.origin],
                                   stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                  stderr=subprocess.PIPE, text=True)
+                                  stderr=subprocess.PIPE, text=True,
+                                  env=dict(os.environ, HOME=str(self.home)))
         try:
             worker.stdin.write(self.raw + "\n")
             worker.stdin.flush()
@@ -468,6 +479,90 @@ print(store["preserve"](sys.stdin.readline(), "session"), flush=True)
             with self.assertRaisesRegex(ValueError, "protected root"):
                 self.preserve()
         self.assertEqual(list(destination.iterdir()), [])
+
+    def assert_denied_without_write(self, destination):
+        before = set(destination.iterdir())
+        original_open = os.open
+        def read_only_open(path, flags, *args, **kwargs):
+            self.assertFalse(flags & (os.O_CREAT | os.O_WRONLY | os.O_RDWR),
+                             "attempted a write in a protected directory")
+            return original_open(path, flags, *args, **kwargs)
+        with mock.patch.dict(os.environ, {"DEVELOP_GUARD_ROOT": str(destination)}), \
+             mock.patch.object(store.os, "open", side_effect=read_only_open):
+            with self.assertRaisesRegex(ValueError, "protected root"):
+                self.preserve()
+        self.assertEqual(set(destination.iterdir()), before)
+
+    def test_double_slash_home_alias_is_denied_before_write(self):
+        destination = self.home / "responses"
+        destination.mkdir(mode=0o700)
+        for spelling in (str(destination), "/" + str(destination)):
+            with self.subTest(spelling=spelling):
+                self.assert_denied_without_write(Path(spelling))
+
+    def test_protected_package_identity_is_denied_before_write(self):
+        package = self.fixture / "Package"
+        (package / "hooks").mkdir(parents=True)
+        destination = package / "Responses"
+        destination.mkdir(mode=0o700)
+        with mock.patch.object(store, "__file__", str(package / "hooks/response_store.py")):
+            for target in (package, destination):
+                for spelling in (str(target), "/" + str(target), str(target).swapcase()):
+                    alias = Path(spelling)
+                    if alias.exists() and alias.samefile(target):
+                        with self.subTest(spelling=spelling):
+                            self.assert_denied_without_write(alias)
+
+    def test_case_spelling_obeys_directory_identity(self):
+        home = self.fixture / "Home"
+        home.mkdir(mode=0o700)
+        alias = self.fixture / "home"
+        with mock.patch.object(store.Path, "home", return_value=home):
+            if alias.exists() and alias.samefile(home):
+                self.assert_denied_without_write(alias)
+                destination = alias / "responses"
+                destination.mkdir(mode=0o700)
+                self.assert_denied_without_write(destination)
+            else:
+                # Distinct names on a case-sensitive volume are eligible.
+                alias.mkdir(mode=0o700)
+                with mock.patch.dict(os.environ, {"DEVELOP_GUARD_ROOT": str(alias)}):
+                    receipt = self.preserve()
+                self.assertIn("verified readable now", receipt)
+                self.assertEqual(next(alias.glob("response-*.json")).read_bytes(), self.payload)
+                self.assertEqual(list(home.iterdir()), [])
+
+    def test_loaded_package_canonical_and_aliases_are_denied_before_write(self):
+        package = Path(SPEC.origin).resolve().parents[1]
+        for spelling in (str(package), "/" + str(package), str(package).swapcase()):
+            alias = Path(spelling)
+            if alias.exists() and alias.samefile(package):
+                with self.subTest(spelling=spelling):
+                    self.assert_denied_without_write(alias)
+
+    def test_real_home_canonical_and_aliases_are_denied_before_write(self):
+        # Never select an ambient credential directory: only this test-owned root.
+        if REAL_HOME != self.root and REAL_HOME not in self.root.parents:
+            self.skipTest("task scratch is outside real home; synthetic home controls cover this host")
+        self.home_override.stop()
+        for spelling in (str(self.root), "/" + str(self.root), str(self.root).swapcase()):
+            alias = Path(spelling)
+            if alias.exists() and alias.samefile(self.root):
+                with self.subTest(spelling=spelling):
+                    self.assert_denied_without_write(alias)
+
+    def test_genuine_eligible_hosted_root_preserves_without_home_override(self):
+        plugin = Path(SPEC.origin).resolve().parents[1]
+        if any(boundary == self.root or boundary in self.root.parents
+               for boundary in (REAL_HOME, plugin)):
+            reason = "genuine root is protected on this host; hosted scratch outside home/package required"
+            if os.environ.get("DEVELOP_TEST_REQUIRE_ELIGIBLE_ROOT") == "1":
+                self.fail(reason)
+            self.skipTest(reason)
+        self.home_override.stop()
+        receipt = self.preserve()
+        self.assertIn("verified readable now", receipt)
+        self.assertEqual(next(self.root.glob("response-*.json")).read_bytes(), self.payload)
 
     def test_mode_0500_root_rejected_before_any_write_even_as_root(self):
         self.root.chmod(0o500)

@@ -9,7 +9,7 @@ Route the user's intent into verified work.
 
 ## Start
 
-Resolve the user's outcome, then route below. Repository workflows read [the shared contract](references/contract.md); standalone session analysis and independent review use their own scope rules. Preserve one invocation and its original/steering messages across handoffs. A bare `develop` permits context discovery; ask for the missing outcome only if it remains unclear.
+Resolve the user's outcome, then route below. Repository workflows read [the shared contract](references/contract.md); standalone session analysis and independent review use their own scope rules. Preserve one invocation and its original/steering messages across handoffs. A bare `develop` permits context discovery. Use the [input policy](references/contract.md#unattended-continuation) if the outcome remains unclear.
 
 ## Route
 

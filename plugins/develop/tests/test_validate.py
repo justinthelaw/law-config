@@ -35,8 +35,9 @@ def png_image(raw=None, color=6):
 
 class PackageValidation(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory(prefix="develop-validation-", dir=ROOT.parent)
-        self.assertEqual(Path(self.temp.name).resolve().parent, ROOT.parent.resolve())
+        temp_root = Path(tempfile.gettempdir()).resolve()
+        self.assertFalse(temp_root.is_relative_to(ROOT), "Set TMPDIR or TEMP outside the package being copied")
+        self.temp = tempfile.TemporaryDirectory(prefix="develop-validation-", dir=temp_root)
         self.addCleanup(self.temp.cleanup)
         self.repository = Path(self.temp.name) / "repository"
         self.package = self.repository / "plugins/develop"

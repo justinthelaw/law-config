@@ -1,6 +1,6 @@
 {
   "name": "develop",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Deliver repository changes, upgrade dependencies, audit Codex compatibility, review work, clean up, and improve workflows.",
   "author": {
     "name": "justinthelaw",

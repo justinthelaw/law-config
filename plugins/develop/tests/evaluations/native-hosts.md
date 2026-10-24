@@ -2,7 +2,7 @@
 
 These opt-in trials extend [fresh-context scenarios](../scenarios.md). Offline
 fixture validation never launches Codex or proves activation. Keep every native
-attempt, including failures, outside the repository using the evaluation result
+attempt, including failures, in the selected private task folder using the evaluation result
 contract. Do not install clients/plugins, create credentials or change persistent
 configuration to obtain a pass.
 
@@ -135,6 +135,8 @@ Do not install, enable, trust, bypass trust or change configuration merely to
 obtain a pass. If the selected definitions require review or the host is
 unsupported, record discovery separately and leave execution blocked/unverified.
 Cloud orchestration does not run plugin command hooks, even with local tools.
+
+Run fresh read-only probes on the exact candidate where it can already load with authorization. Repeat on each intended host after installation. Record the live revision or artifact hashes, selected client/configuration and actual user-visible result for each attempt. A listing alone establishes discovery. Windows passes oversized output through and currently has no private response store.
 
 Run fresh read-only probes against disposable, fictional input. Keep grader
 criteria and prior transcripts outside the tested agent's readable scope:

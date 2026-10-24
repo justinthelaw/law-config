@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import os
 import shlex
 import shutil
@@ -183,14 +184,21 @@ class SnapshotTests(unittest.TestCase):
 
     def test_patch_path_stays_after_option_boundary_for_both_diff_categories(self) -> None:
         runner = SnapshotRunner(headers() + ordinary("--output=not-an-option", "MM"), diff="+change")
-        result = snapshot(runner, patch=True, paths=["--output=not-an-option", "with\nnewline"])
-        self.assertEqual(result["patch"], {"staged": "+change", "unstaged": "+change"})
+        with patch.object(inventory, "worktree_identity", return_value=((), None)):
+            result = snapshot(runner, patch=True, paths=["--output=not-an-option", "with\nnewline"])
+        self.assertEqual(result["patch"], {"staged": "+change", "unstaged": "+change\n+change"})
         patch_calls = [call for call in runner.calls if call[1] == "diff" and "--numstat" not in call]
-        self.assertEqual(len(patch_calls), 2)
+        self.assertEqual(len(patch_calls), 3)
         self.assertTrue(any("--cached" in call for call in patch_calls))
         self.assertTrue(any("--cached" not in call for call in patch_calls))
         for call in patch_calls:
-            self.assertEqual(call[call.index("--") + 1:], ["--output=not-an-option", "with\nnewline"])
+            expected_paths = ["--output=not-an-option", "with\nnewline"] if "--cached" in call else [
+                "--output=not-an-option" if call == patch_calls[1] else "with\nnewline"
+            ]
+            self.assertEqual(call[call.index("--") + 1:], [
+                *(f":(literal){path}" for path in expected_paths),
+                *(f":(exclude,glob){path}/**" for path in expected_paths),
+            ])
             self.assertIn("--no-ext-diff", call)
             self.assertIn("--no-textconv", call)
 
@@ -216,6 +224,20 @@ class SnapshotTests(unittest.TestCase):
         with patch.object(inventory, "discover_roots") as discover:
             with self.assertRaisesRegex(WatchError, "requires --patch"):
                 inventory.main(["--path", "selected file"])
+            discover.assert_not_called()
+
+    def test_broad_or_noncanonical_patch_selectors_fail_before_discovery(self) -> None:
+        for selected in ("", ".", "..", "./tracked.txt", "one/../tracked.txt", "/tracked.txt",
+                         "one/", "one//two"):
+            with self.subTest(path=selected), patch.object(inventory, "discover_roots") as discover:
+                with self.assertRaisesRegex(WatchError, "file path"):
+                    inventory.main(["--patch", "--path", selected])
+                discover.assert_not_called()
+
+    def test_overlapping_explicit_paths_fail_before_discovery(self) -> None:
+        with patch.object(inventory, "discover_roots") as discover:
+            with self.assertRaisesRegex(WatchError, "overlap"):
+                inventory.main(["--patch", "--path", "one", "--path", "one/another"])
             discover.assert_not_called()
 
 
@@ -292,6 +314,287 @@ class LocalGitTests(unittest.TestCase):
         self.assertEqual((self.repo / ".git" / "index").read_bytes(), index_before)
         return result
 
+    def configure_tracking(self, root: Path, name: str) -> None:
+        if self.git("remote", cwd=root):
+            self.git("remote", "remove", "origin", cwd=root)
+        self.git("remote", "add", "origin", f"https://github.com/fixture/{name}.git", cwd=root)
+        self.git("config", "branch.main.remote", "origin", cwd=root)
+        self.git("config", "branch.main.merge", "refs/heads/main", cwd=root)
+        self.git("update-ref", "refs/remotes/origin/main", "HEAD", cwd=root)
+
+    def nested_inventory_fixture(self) -> Path:
+        self.env["GIT_CEILING_DIRECTORIES"] = str(self.workspace.parent)
+        source = self.workspace / "fixtures" / "source"
+        source.mkdir(parents=True)
+        self.git("init", "--initial-branch=main", cwd=source)
+        (source / "tracked.txt").write_text("child baseline\n")
+        self.git("add", "--all", cwd=source)
+        self.git("commit", "-m", "Child fixture baseline", cwd=source)
+        self.git("-c", "protocol.file.allow=always", "submodule", "add", "--", str(source), "nested")
+        self.git("commit", "-am", "Nested fixture")
+        child = self.repo / "nested"
+        self.configure_tracking(self.repo, "parent")
+        self.configure_tracking(child, "child")
+        for root, marker in ((self.repo, "parent"), (child, "child")):
+            (root / "tracked.txt").write_text(f"{marker} baseline\n{marker}-private-staged\n")
+            self.git("add", "--", "tracked.txt", cwd=root)
+            (root / "tracked.txt").write_text(f"{marker} baseline\n{marker}-private-staged\n{marker}-private-unstaged\n")
+        return child
+
+    def inventory_cli(self, *arguments: str) -> tuple[subprocess.CompletedProcess, list[dict]]:
+        cli = subprocess.run(
+            [sys.executable, "-I", str(SCRIPT_DIRECTORY / "repository_inventory.py"), *arguments],
+            cwd=self.workspace, env=self.env, capture_output=True, timeout=20,
+        )
+        return cli, [json.loads(line) for line in cli.stdout.splitlines()]
+
+    def index_files(self, files: dict[str, str]) -> None:
+        entries = []
+        for name, content in files.items():
+            blob = subprocess.run(
+                ["git", "hash-object", "-w", "--stdin"], input=content.encode(),
+                cwd=self.repo, env=self.env, capture_output=True, check=True, timeout=15,
+            ).stdout.strip()
+            entries.append(b"100644 " + blob + b"\t" + name.encode("utf-8") + b"\0")
+        subprocess.run(
+            ["git", "update-index", "-z", "--index-info"], input=b"".join(entries),
+            cwd=self.repo, env=self.env, capture_output=True, check=True, timeout=15,
+        )
+
+    def test_unstaged_names_require_exact_materialized_spelling(self) -> None:
+        self.configure_tracking(self.repo, "physical-names")
+        pairs = [("caf\u00e9.txt", "cafe\u0301.txt"), ("CASE.txt", "case.txt"),
+                 ("DIR/file.txt", "dir/file.txt"), ("caf\u00e9/file.txt", "cafe\u0301/file.txt")]
+        for number, pair in enumerate(pairs):
+            for actual_number in (0, 1):
+                prefix = f"physical-{number}-{actual_number}/"
+                names = [prefix + name for name in pair]
+                actual, other = names[actual_number], names[1 - actual_number]
+                materialized = self.repo / actual
+                materialized.parent.mkdir(parents=True)
+                materialized.write_text("WORKTREE-OWNER\n")
+                self.index_files({name: f"INDEX-{index}\n" for index, name in enumerate(names)})
+                other_file = self.repo / other
+                aliases = other_file.exists() and other_file.samefile(materialized)
+                for selected in names:
+                    with self.subTest(actual=actual, selected=selected, aliases=aliases):
+                        result = self.read_snapshot(patch=True, paths=[selected])
+                        self.assertIn(f"+INDEX-{names.index(selected)}", result["patch"]["staged"])
+                        if selected == actual:
+                            self.assertIn("+WORKTREE-OWNER", result["patch"]["unstaged"])
+                            self.assertNotIn("patch_withheld", result)
+                        elif aliases:
+                            self.assertNotIn("unstaged", result["patch"])
+                            self.assertIn("spelling", result["patch_withheld"]["unstaged"])
+                        else:
+                            self.assertIn(f"-INDEX-{names.index(selected)}", result["patch"]["unstaged"])
+                            self.assertNotIn("WORKTREE-OWNER", result["patch"]["unstaged"])
+                        if number == 0 and actual_number == 0:
+                            cli, events = self.inventory_cli("--repo", str(self.repo), "--patch", "--path", selected)
+                            self.assertEqual(cli.returncode, 0, cli.stderr)
+                            native = events[0]["repositories"][0]
+                            self.assertEqual(native.get("patch_withheld"), result.get("patch_withheld"))
+                            self.assertEqual(native["patch"], result["patch"])
+                if not aliases:
+                    other_file.parent.mkdir(parents=True, exist_ok=True)
+                    other_file.write_text("WORKTREE-INDEPENDENT\n")
+                    self.assertFalse(other_file.samefile(materialized))
+                    for selected, expected, forbidden in (
+                        (actual, "WORKTREE-OWNER", "WORKTREE-INDEPENDENT"),
+                        (other, "WORKTREE-INDEPENDENT", "WORKTREE-OWNER"),
+                    ):
+                        with self.subTest(independent=selected):
+                            result = self.read_snapshot(patch=True, paths=[selected])
+                            self.assertIn("+" + expected, result["patch"]["unstaged"])
+                            self.assertNotIn(forbidden, result["patch"]["unstaged"])
+                            self.assertNotIn("patch_withheld", result)
+
+    def test_unstaged_alias_does_not_depend_on_cached_index_membership(self) -> None:
+        head = self.git("rev-parse", "HEAD")
+        selected_target = Target(self.repo, self.repo, "fixture/project", "main", "main", head, "origin")
+        for action in ("add", "remove"):
+            selected, other = f"membership-{action}/case.txt", f"membership-{action}/CASE.txt"
+            materialized = self.repo / other
+            materialized.parent.mkdir()
+            materialized.write_text("PRIVATE-SIBLING\n")
+            self.index_files({selected: "INDEX-REQUESTED\n", **({other: "INDEX-OTHER\n"} if action == "remove" else {})})
+            aliases = (self.repo / selected).exists() and (self.repo / selected).samefile(materialized)
+            changed = False
+
+            def interposed(argv, **kwargs):
+                nonlocal changed
+                output = run_command(argv, **kwargs)
+                if argv[1] == "status" and not changed:
+                    if action == "add":
+                        self.index_files({other: "INDEX-OTHER\n"})
+                    else:
+                        self.git("update-index", "--force-remove", "--", other)
+                    changed = True
+                return output
+
+            result = inventory.repository_snapshot(
+                selected_target, [selected_target], interposed,
+                max_paths=100, patch=True, paths=[selected], max_patch_lines=100, max_patch_chars=10000,
+            )
+            with self.subTest(action=action, aliases=aliases):
+                self.assertTrue(changed)
+                self.assertIn("+INDEX-REQUESTED", result["patch"]["staged"])
+                self.assertNotIn("PRIVATE-SIBLING", str(result.get("patch", {})))
+                if aliases:
+                    self.assertIn("spelling", result["patch_withheld"]["unstaged"])
+
+    def test_unstaged_symlink_ancestor_is_withheld_without_reading_target(self) -> None:
+        outside = self.workspace / "outside"
+        outside.mkdir()
+        (outside / "private.txt").write_text("PRIVATE-SYMLINK-TARGET\n")
+        link = self.repo / "linked"
+        try:
+            link.symlink_to(outside, target_is_directory=True)
+        except OSError:
+            self.skipTest("Directory symlinks are unavailable on this host")
+        self.index_files({"linked/private.txt": "INDEX-REQUESTED\n"})
+        result = self.read_snapshot(patch=True, paths=["linked/private.txt"])
+        self.assertIn("+INDEX-REQUESTED", result["patch"]["staged"])
+        self.assertNotIn("unstaged", result["patch"])
+        self.assertIn("symlink", result["patch_withheld"]["unstaged"])
+        self.assertNotIn("PRIVATE-SYMLINK-TARGET", str(result))
+
+    def test_restored_worktree_name_after_capture_does_not_certify_a_raced_patch(self) -> None:
+        selected = self.repo / "selected.txt"
+        other = self.repo / "SELECTED.txt"
+        selected.write_text("INDEX-REQUESTED\n")
+        self.git("add", "--", selected.name)
+        selected.write_text("OWN-WORKTREE\n")
+        sibling = self.repo / "safe.txt"
+        sibling.write_text("SAFE-STAGED\n")
+        self.git("add", "--", sibling.name)
+        sibling.write_text("SAFE-STAGED\nSAFE-WORKTREE\n")
+        head = self.git("rev-parse", "HEAD")
+        selected_target = Target(self.repo, self.repo, "fixture/project", "main", "main", head, "origin")
+        raced = False
+
+        def interposed(argv, **kwargs):
+            nonlocal raced
+            if argv[1] == "diff" and "--numstat" not in argv and "--cached" not in argv and not raced:
+                saved = self.workspace / "saved-requested"
+                selected.rename(saved)
+                other.write_text("PRIVATE-RACED-SIBLING\n")
+                try:
+                    output = run_command(argv, **kwargs)
+                finally:
+                    other.rename(self.workspace / "saved-sibling")
+                    saved.rename(selected)
+                raced = True
+                return output
+            return run_command(argv, **kwargs)
+
+        result = inventory.repository_snapshot(
+            selected_target, [selected_target], interposed,
+            max_paths=100, patch=True, paths=[selected.name, sibling.name], max_patch_lines=100, max_patch_chars=10000,
+        )
+        self.assertTrue(raced)
+        self.assertIn("+INDEX-REQUESTED", result["patch"]["staged"])
+        self.assertIn("+SAFE-WORKTREE", result["patch"]["unstaged"])
+        self.assertNotIn("+OWN-WORKTREE", result["patch"]["unstaged"])
+        self.assertIn("identity changed", result["patch_withheld"]["unstaged"])
+        self.assertNotIn("PRIVATE-RACED-SIBLING", str(result))
+
+    def test_ambiguous_unstaged_path_keeps_safe_sibling_summary_and_excerpt_bounds(self) -> None:
+        (self.repo / "CASE.txt").write_text("PRIVATE-OTHER-SPELLING\n")
+        (self.repo / "safe.txt").write_text("INDEX-SAFE\nWORKTREE-SAFE\n")
+        self.index_files({"case.txt": "INDEX-REQUESTED\n", "safe.txt": "INDEX-SAFE\n"})
+        result = self.read_snapshot(patch=True, paths=["case.txt", "safe.txt"])
+        self.assertIn("+INDEX-REQUESTED", result["patch"]["staged"])
+        self.assertIn("+WORKTREE-SAFE", result["patch"]["unstaged"])
+        self.assertNotIn("PRIVATE-OTHER-SPELLING", str(result))
+        self.assertIn("unstaged", result["diff"])
+        self.assertGreater(result["counts"]["unstaged"], 0)
+        bounded = self.read_snapshot(patch=True, paths=["case.txt", "safe.txt"], max_patch_lines=2, max_patch_chars=80)
+        for text in bounded["patch"].values():
+            self.assertLessEqual(len(text), 80)
+            self.assertLessEqual(len(text.splitlines()), 2)
+
+    def test_exact_symlink_leaf_reports_only_link_text(self) -> None:
+        outside = self.workspace / "outside-links"
+        outside.mkdir()
+        target = outside / "target.txt"
+        target.write_text("PRIVATE-TARGET-CONTENTS\n")
+        link = self.repo / "link.txt"
+        try:
+            link.symlink_to(target)
+        except OSError:
+            self.skipTest("File symlinks are unavailable on this host")
+        self.git("add", "--", link.name)
+        link.rename(self.workspace / "saved-link")
+        link.symlink_to(outside / "new-target.txt")
+        result = self.read_snapshot(patch=True, paths=[link.name])
+        self.assertIn("+" + str(outside / "new-target.txt"), result["patch"]["unstaged"])
+        self.assertNotIn("PRIVATE-TARGET-CONTENTS", str(result))
+        self.assertNotIn("patch_withheld", result)
+
+    def test_cli_filtered_patches_do_not_expand_to_implicit_children(self) -> None:
+        child = self.nested_inventory_fixture()
+        for arguments in (("--repo", str(self.repo)), ("--cwd", str(self.repo))):
+            with self.subTest(arguments=arguments):
+                cli, events = self.inventory_cli(*arguments, "--patch", "--path", "tracked.txt")
+                self.assertEqual(cli.returncode, 0, cli.stderr)
+                snapshots = {item["path"]: item for item in events[0]["repositories"]}
+                self.assertIn("parent-private-staged", str(snapshots["."]["patch"]))
+                self.assertIn("parent-private-unstaged", str(snapshots["."]["patch"]))
+                self.assertEqual(snapshots["nested"]["counts"], {"staged": 1, "unstaged": 1})
+                self.assertNotIn("patch", snapshots["nested"])
+                self.assertNotIn(b"child-private", cli.stdout)
+        cli, events = self.inventory_cli("--repo", str(self.repo), "--patch")
+        self.assertEqual(cli.returncode, 0, cli.stderr)
+        self.assertIn(b"child-private", cli.stdout)
+
+    def test_cli_filters_each_explicit_root_and_current_nested_checkout(self) -> None:
+        child = self.nested_inventory_fixture()
+        (child / "subdirectory").mkdir()
+        for arguments in (
+            ("--repo", str(self.repo), "--repo", str(child)),
+            ("--cwd", str(child)),
+            ("--repo", str(child / "subdirectory")),
+        ):
+            with self.subTest(arguments=arguments):
+                cli, events = self.inventory_cli(*arguments, "--patch", "--path", "tracked.txt")
+                self.assertEqual(cli.returncode, 0, cli.stderr)
+                child_events = [event for event in events if Path(event["root"]) == child]
+                self.assertEqual(len(child_events), 1)
+                self.assertIn("child-private-staged", str(child_events[0]["repositories"][0]["patch"]))
+                for event in events:
+                    for item in event["repositories"]:
+                        if item["path"] != ".":
+                            self.assertNotIn("patch", item)
+
+    def test_cli_sibling_discovery_adds_metadata_without_implicit_patches(self) -> None:
+        self.nested_inventory_fixture()
+        sibling = self.workspace / "sibling"
+        sibling.mkdir()
+        self.git("init", "--initial-branch=main", cwd=sibling)
+        (sibling / "tracked.txt").write_text("sibling baseline\n")
+        self.git("add", "--all", cwd=sibling)
+        self.git("commit", "-m", "Sibling fixture", cwd=sibling)
+        self.configure_tracking(sibling, "sibling")
+        (sibling / "tracked.txt").write_text("sibling-private\n")
+        cli, events = self.inventory_cli("--repo", str(self.repo), "--include-siblings", "--patch", "--path", "tracked.txt")
+        with self.subTest(mode="implicit sibling"):
+            self.assertEqual(cli.returncode, 0, cli.stderr)
+            sibling_event = next(event for event in events if Path(event["root"]) == sibling)
+            self.assertIn("counts", sibling_event["repositories"][0])
+            self.assertNotIn("patch", sibling_event["repositories"][0])
+            self.assertNotIn(b"sibling-private", cli.stdout)
+        cli, events = self.inventory_cli("--repo", str(self.repo), "--repo", str(sibling),
+                                         "--include-siblings", "--patch", "--path", "tracked.txt")
+        with self.subTest(mode="explicit sibling"):
+            self.assertEqual(cli.returncode, 0, cli.stderr)
+            sibling_event = next(event for event in events if Path(event["root"]) == sibling)
+            self.assertIn("sibling-private", str(sibling_event["repositories"][0]["patch"]))
+        cli, events = self.inventory_cli("--include-siblings", "--patch", "--path", "tracked.txt")
+        self.assertEqual(cli.returncode, 2)
+        self.assertEqual([event["event"] for event in events], ["blocked"])
+        self.assertNotIn(b"private", cli.stdout)
+
     def test_slash_named_remote_is_not_confused_with_its_prefix_remote(self) -> None:
         self.git("remote", "add", "team", "https://github.com/wrong/project.git")
         # Modern `remote add` rejects overlapping names, but existing/handwritten
@@ -362,6 +665,314 @@ class LocalGitTests(unittest.TestCase):
         self.assertIn("+staged", result["patch"]["staged"])
         self.assertIn("+unstaged", result["patch"]["unstaged"])
 
+    @unittest.skipIf(os.name == "nt", "Windows forbids CR/LF in filenames")
+    def test_actual_status_and_json_preserve_byte_distinct_paths(self) -> None:
+        names = [b"line\rname.txt", b"line\nname.txt", b"line\r\nname.txt"]
+        for name in names:
+            (self.repo / os.fsdecode(name)).write_text("baseline\n")
+        untracked = self.read_snapshot()
+        self.assertEqual({os.fsencode(item["path"]) for item in untracked["changes"]}, set(names))
+        self.assertEqual(untracked["counts"], {"untracked": 3})
+        self.git("add", "--all")
+        self.git("commit", "-m", "Byte distinct paths")
+        for name in names:
+            path = self.repo / os.fsdecode(name)
+            path.write_text("baseline\nstaged\n")
+        self.git("add", "--all")
+        for name in names:
+            (self.repo / os.fsdecode(name)).write_text("baseline\nstaged\nunstaged\n")
+        result = self.read_snapshot()
+        # JSON must remain printable UTF-8 while callers can recover exact POSIX bytes.
+        result = json.loads(json.dumps(result, ensure_ascii=True).encode("utf-8"))
+        self.assertEqual({os.fsencode(item["path"]) for item in result["changes"]}, set(names))
+        self.assertEqual(result["counts"], {"staged": 3, "unstaged": 3})
+        self.assertEqual(result["diff"], {
+            category: {"files": 3, "added": 3} for category in ("staged", "unstaged")
+        })
+
+    @unittest.skipIf(os.name == "nt", "Windows forbids CR/LF in filenames")
+    def test_actual_rename_retains_crlf_source_and_cr_destination(self) -> None:
+        original = "old-\r\n.txt"
+        destination = "new-\r.txt"
+        (self.repo / "tracked.txt").rename(self.repo / original)
+        self.git("add", "--all")
+        self.git("commit", "-m", "Byte path source")
+        (self.repo / original).rename(self.repo / destination)
+        self.git("add", "--all")
+        result = self.read_snapshot()
+        self.assertEqual(result["changes"], [{"path": destination, "status": "R ", "from": original}])
+
+    @unittest.skipIf(os.name == "nt", "Windows filenames must use valid Unicode")
+    def test_actual_git_index_and_json_preserve_undecodable_path_bytes(self) -> None:
+        # Store byte paths in the actual index even on filesystems (such as APFS)
+        # that cannot materialize them. Git still reports their exact staged names.
+        blob = subprocess.run(
+            ["git", "hash-object", "-w", "--stdin"], input=b"fixture\n",
+            cwd=self.repo, env=self.env, capture_output=True, check=True, timeout=15,
+        ).stdout.strip()
+        names = [b"invalid-\xff.txt", b"invalid-\xfe.txt", "invalid-\ufffd.txt".encode()]
+        index = b"".join(b"100644 " + blob + b"\t" + name + b"\0" for name in names)
+        subprocess.run(
+            ["git", "update-index", "-z", "--index-info"], input=index,
+            cwd=self.repo, env=self.env, capture_output=True, check=True, timeout=15,
+        )
+        result = self.read_snapshot()
+        serialized = json.dumps(result, ensure_ascii=True).encode("utf-8")
+        self.assertEqual({os.fsencode(item["path"]) for item in json.loads(serialized)["changes"]}, set(names))
+        self.assertEqual(result["counts"], {"staged": 3, "unstaged": 3})
+        self.git("remote", "add", "origin", "https://github.com/fixture/project.git")
+        self.git("config", "branch.main.remote", "origin")
+        self.git("config", "branch.main.merge", "refs/heads/main")
+        self.git("update-ref", "refs/remotes/origin/main", "HEAD")
+        index_before = (self.repo / ".git/index").read_bytes()
+        cli = subprocess.run(
+            [sys.executable, "-I", str(SCRIPT_DIRECTORY / "repository_inventory.py"),
+             "--repo", str(self.repo)],
+            cwd=self.workspace, env=self.env, capture_output=True, check=True, timeout=15,
+        )
+        self.assertEqual(cli.stderr, b"")
+        changes = json.loads(cli.stdout.decode("utf-8"))["repositories"][0]["changes"]
+        self.assertEqual({os.fsencode(item["path"]) for item in changes}, set(names))
+        selected = next(item["path"] for item in changes if os.fsencode(item["path"]) == b"invalid-\xff.txt")
+        cli_patch = subprocess.run(
+            [sys.executable, "-I", str(SCRIPT_DIRECTORY / "repository_inventory.py"),
+             "--repo", str(self.repo), "--patch", "--path", selected],
+            cwd=self.workspace, env=self.env, capture_output=True, check=True, timeout=15,
+        )
+        excerpt = json.loads(cli_patch.stdout)["repositories"][0]["patch"]["staged"]
+        self.assertEqual(excerpt.count("diff --git "), 1)
+        self.assertIn("+fixture", excerpt)
+        self.assertEqual((self.repo / ".git/index").read_bytes(), index_before)
+
+    def test_cli_preserves_distinct_unicode_index_paths_with_precomposition_enabled(self) -> None:
+        self.git("config", "core.precomposeunicode", "true")
+        entries = []
+        cases = [("caf\u00e9.txt", "NFC-content", "NFD-content"),
+                 ("cafe\u0301.txt", "NFD-content", "NFC-content")]
+        for name, content, _ in cases:
+            blob = subprocess.run(
+                ["git", "hash-object", "-w", "--stdin"], input=(content + "\n").encode(),
+                cwd=self.repo, env=self.env, capture_output=True, check=True, timeout=15,
+            ).stdout.strip()
+            entries.append(b"100644 " + blob + b"\t" + name.encode("utf-8") + b"\0")
+        subprocess.run(
+            ["git", "update-index", "-z", "--index-info"], input=b"".join(entries),
+            cwd=self.repo, env=self.env, capture_output=True, check=True, timeout=15,
+        )
+        self.configure_tracking(self.repo, "unicode")
+        config_before = (self.repo / ".git/config").read_bytes()
+        index_before = (self.repo / ".git/index").read_bytes()
+        for selected, expected, forbidden in cases:
+            cli, events = self.inventory_cli("--repo", str(self.repo), "--patch", "--path", selected)
+            with self.subTest(path=selected):
+                self.assertEqual(cli.returncode, 0, cli.stderr)
+                patches = events[0]["repositories"][0].get("patch", {})
+                for category, sign in (("staged", "+"), ("unstaged", "-")):
+                    with self.subTest(category=category):
+                        self.assertIn(sign + expected, patches.get(category, ""))
+                        self.assertNotIn(forbidden, patches.get(category, ""))
+        self.assertEqual((self.repo / ".git/config").read_bytes(), config_before)
+        self.assertEqual((self.repo / ".git/index").read_bytes(), index_before)
+
+    def test_actual_selected_patch_does_not_match_pathspec_competitors(self) -> None:
+        pairs = [("bracket[1].txt", "bracket1.txt")]
+        if os.name != "nt":
+            pairs.extend([("star*.txt", "star-other.txt"), (":(glob)*.txt", "magic-other.txt")])
+        for selected, competitor in pairs:
+            for name in (selected, competitor):
+                (self.repo / name).write_text("baseline\n")
+        self.git("add", "--all")
+        self.git("commit", "-m", "Pathspec competitors")
+        for number, pair in enumerate(pairs):
+            for role, name in zip(("selected", "competitor"), pair):
+                (self.repo / name).write_text(f"baseline\n{role}-{number}-staged\n")
+        self.git("add", "--all")
+        for number, pair in enumerate(pairs):
+            for role, name in zip(("selected", "competitor"), pair):
+                (self.repo / name).write_text(f"baseline\n{role}-{number}-staged\n{role}-{number}-unstaged\n")
+        for number, (selected, _) in enumerate(pairs):
+            with self.subTest(path=selected):
+                result = self.read_snapshot(patch=True, paths=[selected])
+                for category in ("staged", "unstaged"):
+                    excerpt = result.get("patch", {}).get(category, "")
+                    self.assertIn(f"+selected-{number}-{category}", excerpt)
+                    self.assertNotIn("+competitor-", excerpt)
+
+    def test_actual_patch_paths_ignore_inherited_pathspec_flags(self) -> None:
+        selected = "selected[1].txt"
+        competitor = "selected1.txt"
+        files = [("selected", selected), ("competitor", competitor)]
+        (self.repo / selected).write_text("baseline\n")
+        # A second case variant can coexist on case-sensitive filesystems.
+        if not (self.repo / "Selected[1].txt").exists():
+            files.append(("competitor-case", "Selected[1].txt"))
+        for _, name in files:
+            (self.repo / name).write_text("baseline\n")
+        self.git("add", "--all")
+        self.git("commit", "-m", "Inherited pathspec fixture")
+        for role, name in files:
+            (self.repo / name).write_text(f"baseline\n{role}-staged\n")
+        self.git("add", "--all")
+        for role, name in files:
+            (self.repo / name).write_text(f"baseline\n{role}-staged\n{role}-unstaged\n")
+        for flag in ("GIT_LITERAL_PATHSPECS", "GIT_ICASE_PATHSPECS",
+                     "GIT_GLOB_PATHSPECS", "GIT_NOGLOB_PATHSPECS"):
+            for requested in (selected, "missing.txt", "SELECTED[1].txt"):
+                with self.subTest(flag=flag, requested=requested), patch.dict(os.environ, {flag: "1"}):
+                    environment_before = dict(os.environ)
+                    result = self.read_snapshot(patch=True, paths=[requested])
+                    self.assertEqual(os.environ, environment_before)
+                    for category in ("staged", "unstaged"):
+                        with self.subTest(category=category):
+                            excerpt = result.get("patch", {}).get(category, "")
+                            if requested == selected:
+                                self.assertIn(f"+selected-{category}", excerpt)
+                                self.assertEqual(excerpt.count("diff --git "), 1)
+                                self.assertNotIn("+competitor-", excerpt)
+                            else:
+                                self.assertEqual(excerpt, "")
+
+    def test_exact_patch_excludes_descendants_after_file_to_directory_transition(self) -> None:
+        selected = self.repo / "report[1].txt"
+        selected.write_text("requested-file\n")
+        self.git("add", "--all")
+        self.git("commit", "-m", "File before directory transition")
+        selected.rename(self.repo / "saved-original")
+        selected.mkdir()
+        child = selected / "another"
+        child.write_text("private-child-staged\n")
+        self.git("add", "--", selected.name)
+        child.write_text("private-child-staged\nprivate-child-unstaged\n")
+        result = self.read_snapshot(patch=True, paths=[selected.name])
+        self.assertIn("-requested-file", result.get("patch", {}).get("staged", ""))
+        self.assertNotIn("private-child", str(result.get("patch", {})))
+        self.assertNotIn("unstaged", result.get("patch", {}))
+        broad = self.read_snapshot(patch=True)
+        self.assertIn("private-child", str(broad["patch"]))
+
+    def test_exact_patch_excludes_descendants_after_directory_to_file_transition(self) -> None:
+        selected = self.repo / "report[1].txt"
+        selected.mkdir()
+        (selected / "another").write_text("private-child-deleted\n")
+        self.git("add", "--all")
+        self.git("commit", "-m", "Directory before file transition")
+        selected.rename(self.repo / "saved-directory")
+        selected.write_text("requested-file-staged\n")
+        self.git("add", "--all")
+        selected.write_text("requested-file-staged\nrequested-file-unstaged\n")
+        result = self.read_snapshot(patch=True, paths=[selected.name])
+        for category in ("staged", "unstaged"):
+            with self.subTest(category=category):
+                excerpt = result.get("patch", {}).get(category, "")
+                self.assertIn(f"+requested-file-{category}", excerpt)
+                self.assertNotIn("private-child", excerpt)
+                self.assertEqual(excerpt.count("diff --git "), 1)
+
+    def test_directory_only_patch_selector_fails_closed(self) -> None:
+        directory = self.repo / "directory"
+        directory.mkdir()
+        (directory / "child").write_text("private-child\n")
+        self.git("add", "--all")
+        (directory / "child").write_text("private-child\nprivate-unstaged\n")
+        with self.assertRaisesRegex(WatchError, "directory"):
+            self.read_snapshot(patch=True, paths=[directory.name])
+
+    def test_gitlink_with_directory_transition_fails_closed(self) -> None:
+        directory = self.repo / "directory"
+        directory.mkdir()
+        (directory / "child").write_text("private-child-deleted\n")
+        self.git("add", "--all")
+        self.git("commit", "-m", "Directory before gitlink transition")
+        head = self.git("rev-parse", "HEAD")
+        self.git("update-index", "--force-remove", "--", "directory/child")
+        self.git("update-index", "--add", "--cacheinfo", f"160000,{head},directory")
+        with self.assertRaisesRegex(WatchError, "ambiguous directory transition"):
+            self.read_snapshot(patch=True, paths=[directory.name])
+
+    def test_gitlink_to_directory_index_race_never_exposes_children_or_hides_sibling(self) -> None:
+        pairs = [("nested[1]", "nested1/keep.txt")]
+        if os.name != "nt":
+            pairs += [("nested*?", "nested-other/keep.txt"),
+                      ("nested\\[?*]", "nested-other-two/keep.txt")]
+        head = self.git("rev-parse", "HEAD")
+        selected_target = Target(self.repo, self.repo, "fixture/project", "main", "main", head, "origin")
+        for phase in ("staged", "unstaged"):
+            for selected, sibling in pairs:
+                with self.subTest(phase=phase, path=selected):
+                    self.git("read-tree", "HEAD")
+                    sibling_file = self.repo / sibling
+                    sibling_file.parent.mkdir(exist_ok=True)
+                    sibling_file.write_text("sibling-staged\n")
+                    self.git("add", "--", f":(literal){sibling}")
+                    sibling_file.write_text("sibling-staged\nsibling-unstaged\n")
+                    self.git("update-index", "--add", "--cacheinfo", f"160000,{head},{selected}")
+                    flipped = False
+
+                    def interposed(argv, **kwargs):
+                        nonlocal flipped
+                        is_patch = argv[1] == "diff" and "--numstat" not in argv
+                        if is_patch and ("--cached" in argv) == (phase == "staged") and not flipped:
+                            self.git("update-index", "--force-remove", "--", selected)
+                            directory = self.repo / selected
+                            directory.mkdir(exist_ok=True)
+                            private = directory / "private.txt"
+                            private.write_text("PRIVATE-STAGED-CHILD\n")
+                            self.git("add", "--", f":(literal){selected}/private.txt")
+                            private.write_text("PRIVATE-STAGED-CHILD\nPRIVATE-UNSTAGED-CHILD\n")
+                            flipped = True
+                        return run_command(argv, **kwargs)
+
+                    result = inventory.repository_snapshot(
+                        selected_target, [selected_target], interposed,
+                        max_paths=100, patch=True, paths=[selected, sibling],
+                        max_patch_lines=100, max_patch_chars=10000,
+                    )
+                    self.assertTrue(flipped)
+                    self.assertNotIn("PRIVATE-", str(result.get("patch", {})))
+                    for category in ("staged", "unstaged"):
+                        self.assertIn(f"+sibling-{category}", result["patch"][category])
+                    if phase == "unstaged":
+                        self.assertIn("+Subproject commit", result["patch"]["staged"])
+
+    def test_file_to_gitlink_index_race_preserves_exact_pin_patch(self) -> None:
+        selected = "file[1].txt"
+        (self.repo / selected).write_text("selected file\n")
+        self.git("add", "--all")
+        head = self.git("rev-parse", "HEAD")
+        selected_target = Target(self.repo, self.repo, "fixture/project", "main", "main", head, "origin")
+
+        def interposed(argv, **kwargs):
+            if argv[1] == "diff" and "--numstat" not in argv:
+                self.git("update-index", "--add", "--cacheinfo", f"160000,{head},{selected}")
+            return run_command(argv, **kwargs)
+
+        result = inventory.repository_snapshot(
+            selected_target, [selected_target], interposed,
+            max_paths=100, patch=True, paths=[selected], max_patch_lines=100, max_patch_chars=10000,
+        )
+        self.assertIn("+Subproject commit", result.get("patch", {}).get("staged", ""))
+
+    def test_cli_rejects_broad_and_traversing_paths_without_disclosing_patches(self) -> None:
+        self.git("remote", "add", "origin", "https://github.com/fixture/project.git")
+        self.git("config", "branch.main.remote", "origin")
+        self.git("config", "branch.main.merge", "refs/heads/main")
+        self.git("update-ref", "refs/remotes/origin/main", "HEAD")
+        (self.repo / "tracked.txt").write_text("private-sibling-staged\n")
+        self.git("add", "--all")
+        (self.repo / "tracked.txt").write_text("private-sibling-staged\nprivate-sibling-unstaged\n")
+        for selected in ("", ".", "../repository/tracked.txt", "one/../tracked.txt"):
+            with self.subTest(path=selected):
+                cli = subprocess.run(
+                    [sys.executable, "-I", str(SCRIPT_DIRECTORY / "repository_inventory.py"),
+                     "--repo", str(self.repo), "--patch", "--path", selected],
+                    cwd=self.workspace, env=self.env, capture_output=True, timeout=15,
+                )
+                self.assertEqual(cli.returncode, 2)
+                event = json.loads(cli.stdout)
+                self.assertEqual(event["event"], "blocked")
+                self.assertIn("file path", event["reason"])
+                self.assertNotIn(b"private-sibling", cli.stdout + cli.stderr)
+
     def test_actual_merge_conflict_is_marked(self) -> None:
         self.git("checkout", "-b", "other")
         (self.repo / "tracked.txt").write_text("other\n")
@@ -417,12 +1028,24 @@ class LocalGitTests(unittest.TestCase):
         self.git("commit", "-m", "Child fixture baseline", cwd=source)
         self.git("-c", "protocol.file.allow=always", "submodule", "add", "--", str(source), "component with spaces")
         self.git("commit", "-am", "Fixture submodule")
+        self.git("config", "diff.submodule", "diff")
         child = self.repo / "component with spaces"
+        self.configure_tracking(self.repo, "parent")
+        self.configure_tracking(child, "child")
         (child / "child.txt").write_text("child dirty\n")
         (child / "new child.txt").write_text("untracked child\n")
-        dirty = self.read_snapshot()
+        dirty = self.read_snapshot(patch=True, paths=[child.name])
         self.assertEqual(dirty["changes"], [{"path": child.name, "status": " M", "submodule": "S.MU"}])
         self.assertEqual(dirty["counts"], {"unstaged": 1})
+        with self.subTest(mode="unstaged"):
+            self.assertIn("-dirty", dirty["patch"]["unstaged"])
+            self.assertNotIn("child dirty", str(dirty["patch"]))
+            cli, events = self.inventory_cli("--repo", str(self.repo), "--patch", "--path", child.name)
+            self.assertEqual(cli.returncode, 0, cli.stderr)
+            self.assertNotIn(b"child dirty", cli.stdout)
+            root = next(item for item in events[0]["repositories"] if item["path"] == ".")
+            self.assertIn("-dirty", root["patch"]["unstaged"])
+        self.assertIn("child dirty", str(self.read_snapshot(patch=True)["patch"]))
         self.git("add", "--all", cwd=child)
         self.git("commit", "-m", "New child revision", cwd=child)
         self.git("add", "--", child.name)
@@ -430,6 +1053,15 @@ class LocalGitTests(unittest.TestCase):
         self.assertEqual(staged["changes"], [{"path": child.name, "status": "M ", "submodule": "S..."}])
         self.assertEqual(staged["counts"], {"staged": 1})
         self.assertEqual(staged["diff"]["staged"], {"files": 1, "added": 1, "removed": 1})
+        selected = self.read_snapshot(patch=True, paths=[child.name])
+        with self.subTest(mode="staged"):
+            self.assertIn("+Subproject commit", selected["patch"]["staged"])
+            self.assertNotIn("child dirty", str(selected["patch"]))
+            cli, events = self.inventory_cli("--repo", str(self.repo), "--patch", "--path", child.name)
+            self.assertEqual(cli.returncode, 0, cli.stderr)
+            self.assertNotIn(b"child dirty", cli.stdout)
+            root = next(item for item in events[0]["repositories"] if item["path"] == ".")
+            self.assertIn("+Subproject commit", root["patch"]["staged"])
 
 
 class PortableCLITests(unittest.TestCase):

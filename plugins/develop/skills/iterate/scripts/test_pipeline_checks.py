@@ -16,7 +16,7 @@ from pipeline_test_support import FakeClock, default_ci_response, local_metadata
 
 
 def check(current, name="build", *, app_id=42, conclusion="success", status="completed", identifier=1):
-    return {"id": identifier, "name": name, "head_sha": current.head, "app": {"id": app_id},
+    return {"id": identifier, "name": name, "head_sha": current.head, "app": {"id": app_id, "slug": "external-ci"},
             "status": status, "conclusion": conclusion, "html_url": "https://github.com/example/check"}
 
 
@@ -48,6 +48,15 @@ class CoverageRunner:
             if isinstance(response, Exception):
                 raise response
             return json.dumps(response)
+        if "/pulls/" in endpoint and self.pr:
+            return json.dumps({
+                "number": self.pr["number"], "state": "open", "merged": False,
+                "head": {"sha": self.current.head, "ref": self.current.upstream_branch,
+                         "repo": {"full_name": "/".join(self.current.repository.split("/")[-2:])}},
+                "base": {"sha": self.current.head, "ref": self.pr["baseRefName"],
+                         "repo": {"full_name": "/".join(self.current.repository.split("/")[-2:])}},
+                "merge_commit_sha": None, "mergeable": False,
+            })
         if "/rules/branches/" in endpoint:
             return json.dumps(self.rules)
         if "/branches/" in endpoint:
@@ -208,7 +217,7 @@ class PaginationTests(unittest.TestCase):
         current = target()
         runner = CoverageRunner(current)
         prefix = f"repos/owner/project/commits/{current.head}/check-runs?filter=latest&per_page=100&page="
-        runner.overrides[prefix + "1"] = {"total_count": 101, "check_runs": [check(current, f"job-{i}", identifier=i) for i in range(100)]}
+        runner.overrides[prefix + "1"] = {"total_count": 101, "check_runs": [check(current, f"job-{i}", identifier=i + 1) for i in range(100)]}
         runner.overrides[prefix + "2"] = {"total_count": 101, "check_runs": [check(current, "last", identifier=101)]}
         coverage = inspect_coverage(current, runner, CheckPolicy(("main",), (RequiredCheck("last"),)))
         self.assertEqual(coverage.observed, 101)
@@ -227,7 +236,7 @@ class PaginationTests(unittest.TestCase):
             with self.subTest(race=race):
                 runner = CoverageRunner(current)
                 prefix = f"repos/owner/project/commits/{current.head}/check-runs?filter=latest&per_page=100&page="
-                runner.overrides[prefix + "1"] = {"total_count": 101, "check_runs": [check(current, identifier=i) for i in range(100)]}
+                runner.overrides[prefix + "1"] = {"total_count": 101, "check_runs": [check(current, identifier=i + 1) for i in range(100)]}
                 runner.overrides[prefix + "2"] = {"total_count": 102 if race else 101, "check_runs": [check(current, identifier=1)]}
                 with self.assertRaisesRegex(WatchError, "changed during pagination|Duplicate"):
                     inspect_coverage(current, runner, CheckPolicy((), ()))

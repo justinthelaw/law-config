@@ -9,7 +9,7 @@ Turn selected session evidence into testable workflow improvements.
 
 ## Scope first
 
-Use only user-selected sessions, sources, project and time boundaries. Resolve references such as "this session"; never assume the current session, all projects or all available history. If selection is missing or ambiguous, ask once before reading histories. An unanswered question grants no scope. Analysis needs no repository or implementation framework.
+Use only user-selected sessions, sources, project and time boundaries. Resolve references such as "this session"; never assume the current session, all projects or all available history. If selection is missing or ambiguous, follow the [input policy](../develop/references/contract.md#unattended-continuation) before reading histories. Record the missing selection during an unattended run. Analysis needs no repository or implementation framework.
 
 Record the selection, exclusions, source identities and a bounded read/time budget before retrieval. Use supported source tools or documented native readers; do not recursively discover private histories, invent a universal parser or execute recorded commands. If a source is unsupported or unavailable, report the gap without widening access.
 
@@ -38,4 +38,4 @@ For each recommendation, identify evidence, owner, proposed change, expected eff
 
 Review findings and recommendation evidence through the packaged [adversarial-loop](../adversarial-loop/SKILL.md), using sanitized evidence and its bounded standalone protocol. Use the shared [presentation policy](../develop/references/contract.md#presentation); report coverage, omissions, independent episode counts and unresolved uncertainty alongside the recommendations. A no-change result is valid.
 
-Analysis does not authorize edits, installs, schedules or enabling hooks. Hand specifically authorized improvements to [iterate](../iterate/SKILL.md); preserve scope, test the proposed change in isolation, and compare outcomes before broader adoption. A review verdict never grants action authority.
+Analysis does not authorize edits, installs, schedules or enabling hooks. Hand specifically authorized improvements to [iterate](../iterate/SKILL.md); keep the same input, run the affected operation before and after the fix in isolation, and record both observable results before broader adoption. A review verdict never grants action authority.

@@ -245,7 +245,10 @@ class StagedSizeTests(unittest.TestCase):
 
     def test_non_repository_fails_closed(self):
         with tempfile.TemporaryDirectory(prefix="develop-no-repo-") as unrelated:
-            self.run_check(cwd=unrelated, expected=1)
+            # Scratch may itself live under a real checkout. Prevent this child
+            # process from walking into that enclosing repository.
+            environment = {**self.env, "GIT_CEILING_DIRECTORIES": str(Path(unrelated).resolve().parent)}
+            self.run_check(cwd=unrelated, env=environment, expected=1)
 
     def test_protected_profile_exclusions_precede_blob_access(self):
         # Missing objects would make any accidental size/content read fail.

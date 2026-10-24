@@ -75,6 +75,7 @@ REVIEW_QUERY = """query CodexPullRequestReview($owner: String!, $name: String!, 
 }"""
 GITHUB_PART = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]*$")
 GITHUB_HOST = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.-]*$")
+FULL_SHA = r"(?:[0-9a-f]{40}|[0-9a-f]{64})"
 REACTION_ENDPOINT = re.compile(
     r"^repos/[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*/"
     r"issues/(?:comments/)?[1-9][0-9]*/reactions\?per_page=100$"
@@ -83,7 +84,9 @@ CHECK_ENDPOINT = re.compile(
     r"^repos/[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*/(?:"
     r"branches/[A-Za-z0-9_.%~-]+(?:/protection/required_status_checks)?|"
     r"rules/branches/[A-Za-z0-9_.%~-]+\?per_page=100&page=[1-5]|"
-    r"commits/[0-9a-f]{40,64}/(?:"
+    rf"pulls/[1-9][0-9]*|git/commits/{FULL_SHA}|"
+    r"actions/runs\?check_suite_id=[1-9][0-9]*&per_page=2|"
+    rf"commits/{FULL_SHA}/(?:"
     r"check-suites\?per_page=1&page=1|"
     r"check-runs\?filter=latest&per_page=100&page=[1-5]|"
     r"status\?per_page=100&page=[1-5]))$"
@@ -194,6 +197,7 @@ def ensure_read_only(argv: Sequence[str]) -> None:
             allowed = {
                 "--cached", "--numstat", "-z", "--no-renames", "--no-ext-diff",
                 "--no-color", "--unified=2", "--no-textconv",
+                "--submodule=short",
             }
             if any(argument not in allowed for argument in argv[2:boundary]):
                 raise WatchError("Refusing an unapproved Git diff option")
@@ -275,9 +279,20 @@ def run_command(
     # newer Git. Older versions interpret "false" as a hook pathname.
     command = ["git", "-c", "core.fsmonitor=", *argv[1:]] if argv[0] == "git" else list(argv)
     environment = {**os.environ, "GIT_OPTIONAL_LOCKS": "0"}
+    if list(argv[:2]) == ["git", "diff"]:
+        # macOS can normalize argv into another index filename. Keep the exact
+        # spelling for this child without changing repository configuration.
+        command[3:3] = ["-c", "core.precomposeunicode=false"]
+        # Inventory supplies explicit literal pathspecs. Inherited defaults can
+        # disable that magic or add case folding, so normalize only this child.
+        for name in ("GIT_LITERAL_PATHSPECS", "GIT_ICASE_PATHSPECS",
+                     "GIT_GLOB_PATHSPECS", "GIT_NOGLOB_PATHSPECS"):
+            environment.pop(name, None)
     log_output = list(argv[:3]) == ["gh", "run", "view"] and any(
         option in argv for option in ("--log", "--log-failed")
     )
+    options = argv[2:argv.index("--")] if "--" in argv else argv[2:]
+    nul_output = argv[0] == "git" and "-z" in options
 
     def invoke(arguments, env, *, tail=False):
         remaining = deadline.remaining() if deadline is not None else 60
@@ -288,6 +303,7 @@ def run_command(
                 env=env,
                 timeout=min(60, remaining),
                 tail=tail,
+                lossless_stdout=nul_output,
             )
         except FileNotFoundError as exc:
             raise WatchError(f"Required executable is unavailable: {argv[0]}") from exc
@@ -321,7 +337,7 @@ def run_command(
 
     for attempt in range(3):
         result = invoke(command, environment, tail=log_output)
-        output = result.stdout.rstrip("\r\n")
+        output = result.stdout if nul_output else result.stdout.rstrip("\r\n")
         if getattr(result, "stdout_overflow", False):
             # A retained partial first line can start inside a credential,
             # beyond the prefix needed by redaction. Keep complete lines.
@@ -430,7 +446,7 @@ def discover_roots(
 def parse_submodules(output: str, root: Path) -> list[Path]:
     paths: list[Path] = []
     for line in output.splitlines():
-        match = re.match(r"^([ +\-U])([0-9a-f]{40}|[0-9a-f]{64})\s+(.+?)(?:\s+\([^)]*\))?$", line)
+        match = re.match(rf"^([ +\-U])({FULL_SHA})\s+(.+?)(?:\s+\([^)]*\))?$", line)
         if not match:
             raise WatchError(f"Cannot parse submodule status: {line[:160]}")
         state, _, relative = match.groups()
@@ -473,7 +489,7 @@ def build_target(path: Path, root: Path, runner: Runner, *, github_hosts: Sequen
     remote_url = runner(["git", "remote", "get-url", remote], cwd=path)
     if not head or not remote_url:
         raise WatchError(f"Missing Git metadata for {path}")
-    if not re.fullmatch(r"[0-9a-f]{40}|[0-9a-f]{64}", head):
+    if not re.fullmatch(FULL_SHA, head):
         raise WatchError(f"Invalid full commit SHA: {path}")
     return Target(path, root, github_repository(remote_url, github_hosts=github_hosts), branch, upstream_branch, head, remote)
 

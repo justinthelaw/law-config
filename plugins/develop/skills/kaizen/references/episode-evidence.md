@@ -23,7 +23,7 @@ pointers.
 ## Bound retrieval and claims
 
 Apply the budget across all selected sources, including malformed, duplicate and
-rejected reads. Stop once sufficient complete evidence supports the findings.
+rejected reads. For a sampled request, stop when sufficient complete evidence supports the findings. For "every session," follow all accessible pages in each selected source. Count distinct sessions separately from deduplicated episodes. Record unfinished pages, inaccessible sources and a private resume point when a limit is reached.
 Retain minimal private working evidence; reviewers receive sanitized causal
 summaries and permitted source locators.
 
