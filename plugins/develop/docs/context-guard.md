@@ -41,9 +41,8 @@ Revoke these variables before policy changes or when a subagent's permission
 scope cannot be guaranteed. Do not grant this broadly in persistent shell config.
 No directory is chosen or created automatically: home, `/tmp`, workspace roots
 and plugin data are not assumed authorized. Protected `.codex`, `.agents`, `.git`
-and `.aws` paths, the home tree and this plugin's tree are rejected.
-Other plugin installations, synced folders and repository content must be excluded
-by the operator. Never commit recovery files. Windows currently warns/passes through:
+and `.aws` paths, the home tree and this plugin's tree are rejected. Directory identity also rejects alternate spellings of the home and package roots.
+Before attesting, the operator must also rule out separately mounted views of protected descendants, other plugin installations, synced folders and repository content. Never commit recovery files. Windows currently warns/passes through:
 POSIX modes do not establish Windows ACL privacy.
 
 The response-only artifact preserves the **original JSON value bytes received in

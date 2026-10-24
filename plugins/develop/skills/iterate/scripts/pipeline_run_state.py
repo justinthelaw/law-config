@@ -6,6 +6,13 @@ from pipeline_support import Target, WatchError, classify
 
 class RunStateMixin:
     @staticmethod
+    def run_id(run: dict[str, Any]) -> int:
+        identifier = run.get("databaseId")
+        if type(identifier) is not int or identifier < 1:
+            raise WatchError("Workflow run identity is missing or invalid")
+        return identifier
+
+    @staticmethod
     def run_attempt(run: dict[str, Any]) -> int:
         attempt = run.get("attempt")
         if type(attempt) is not int or attempt < 1:
@@ -13,7 +20,10 @@ class RunStateMixin:
         return attempt
 
     def remember_run(self, target: Target, run: dict[str, Any]) -> bool:
-        key = (target.key, int(run["databaseId"]))
+        if (not isinstance(run.get("status"), str)
+            or run.get("conclusion") is not None and not isinstance(run["conclusion"], str)):
+            raise WatchError("Workflow status or conclusion is invalid")
+        key = (target.key, self.run_id(run))
         previous = self.runs.get(key, (target, {}))[1]
         attempt = self.run_attempt(run)
         if previous and attempt < self.run_attempt(previous):

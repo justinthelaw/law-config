@@ -4,4 +4,4 @@ interface:
   icon_large: "./assets/icon.png"
   display_name: "Develop: Upgrade"
   short_description: "Review and upgrade dependencies and runtimes"
-  default_prompt: "Use $upgrade to assess dependency and runtime risks and plan upgrades for my selected repository."
+  default_prompt: "Use $upgrade to assess dependency and runtime risks and check supported runtimes and the selected repository's package manager."

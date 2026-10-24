@@ -3,7 +3,7 @@
 ## Package and workflow contracts
 
 - Keep eight portable skills and the concrete native Codex context guard: `PreToolUse` and `PostToolUse` in `hooks/hooks.json`, handled by `hooks/context_guard.py`. Bundled, explicitly invoked offline/read-only helpers remain separate. Do not add machine-specific paths, tokens, other executable hooks, an MCP server or a service dependency without a concrete need. Preserve existing runtime pins and Git/security hooks.
-- Keep shared defaults and handoffs in `skills/develop/references/contract.md`, with domain detail in owning references. Standalone `kaizen`, `adversarial-loop` and audit-only `upgrade-codex` use their entrypoint's completion policy without repository discovery or coding dependencies.
+- For changes under `skills/`, follow the [skill authoring rules](skills/AGENTS.md). Keep shared defaults and handoffs in `skills/develop/references/contract.md`, with domain detail in owning references. Standalone `kaizen`, `adversarial-loop` and audit-only `upgrade-codex` use their entrypoint's completion policy without repository discovery or coding dependencies.
 - Preserve selected repository/session scope, dependency assessment before upgrades, explicit post-plan bypass, fresh non-forked reviews and original model/effort matching. Bundled implementation guidance works without an external framework. Host metadata and optional adapters must not become generic prerequisites. Keep eight entry points; `upgrade` owns dependency upgrades and explicit-only `upgrade-codex` owns Codex compatibility sweeps. Never route generic upgrades or Kaizen requests to `upgrade-codex`.
 - Commit signing is nonblocking: prefer an existing noninteractive signer and fall back unsigned, preserving the thread's explicit preference and actual repository/server restrictions. Do not import donor signing gates, change persistent Git configuration or set up keys to satisfy this workflow.
 - Change user-facing behavior only within the request; never use internal review as authorization to bypass host controls. Keep conversation packets and task-specific findings outside tracked files.
@@ -38,9 +38,9 @@ Other hosts use their documented loading and account/workspace distribution flow
 
 ## Artwork and overview rendering
 
-Follow [artwork ownership](assets/AGENTS.md) and [skill icon rules](skills/AGENTS.md). Preserve approved logo/icon pixels; new skill icons must match the existing Roux palette, proportions and crisp pixel edges, with transparent backgrounds and a clear task prop. Declare both `icon_small` and `icon_large` in each skill's `agents/openai.yaml`; inspect the set together at 48 px and smaller.
+Follow [artwork ownership](assets/AGENTS.md). Preserve approved logo/icon pixels; new skill icons must match the existing Roux palette, proportions and crisp pixel edges, with transparent backgrounds and a clear task prop. Declare both `icon_small` and `icon_large` in each skill's `agents/openai.yaml`; inspect the set together at 48 px and smaller.
 
-Keep the README's linked PNG and [HTML source](docs/develop-overview.html) to one workflow and one skill directory. Show each skill's logo and description once; show the shared context guard as one small annotation, never a ninth skill or separate section. Keep detailed policy in the owning skill. The former [explorer](docs/develop-route-explorer.html) redirects to this overview. From this plugin directory, use an already installed Playwright package and sandbox-capable browser:
+Keep the README's linked PNG and [HTML source](docs/develop-overview.html) to one workflow and one skill directory. Trace the example from the user's chat request through the owning skill to the answer or missing evidence. Show each skill's logo and description once; show the shared context guard as one small annotation, never a ninth skill or separate section. Keep detailed policy in the owning skill. The former [explorer](docs/develop-route-explorer.html) redirects to this overview. From this plugin directory, use an already installed Playwright package and sandbox-capable browser:
 
 ```sh
 node docs/render-guide.mjs
@@ -48,7 +48,7 @@ node docs/render-guide.mjs
 
 Chromium is the default. Set `BROWSER_ENGINE=firefox` for an existing Firefox; `BROWSER_EXECUTABLE` may select an existing executable for that engine. Do not install dependencies or disable sandboxing merely to run this optional documentation helper; it is not a plugin runtime requirement.
 
-The renderer captures the 1000-pixel-wide overview at 2× scale, checks the actual PNG at an 860-pixel README display width, and checks the responsive HTML at desktop, mobile and short viewports, skill links and the legacy explorer redirect without network dependencies. Inspect the screenshots, not just the pass flag. Each run retains screenshots and `browser-qa.json`, including failures/partial results, in a unique system-temporary `develop-browser-qa-*` directory outside the package. Printed evidence paths are absolute; passing runs update `docs/develop-overview.png`, and retries retain earlier evidence. Copy evidence elsewhere if it must survive temporary-file cleanup.
+The renderer captures the 1000-pixel-wide overview at 2× scale, checks the actual PNG at an 860-pixel README display width, and checks the responsive HTML at desktop, mobile and short viewports, skill links and the legacy explorer redirect without network dependencies. Inspect the screenshots. Point `TMPDIR`, `TEMP` and `TMP` at the task's private temporary directory before running the renderer. Each run retains screenshots and `browser-qa.json`, including partial results, in a new `develop-browser-qa-*` folder there. The renderer prints absolute evidence paths and updates `docs/develop-overview.png` after its checks pass.
 
 ## Source and installation changes
 

@@ -15,6 +15,6 @@ Preservation is opt-in, POSIX-only and best-effort, with private storage, fixed 
 
 The separate [staged-file size checker](skills/iterate/references/staged-file-size.md) runs only when explicitly requested or required by the repository. It checks Git-index files; it does not install a Git hook or activate the context guard.
 
-[![Develop: one workflow with conditional branches, a review loop and a shared context guard, followed by the eight skills and their logos.](docs/develop-overview.png)](docs/develop-overview.png)
+[![A user asks in chat why a CI job failed. Develop routes the question to Iterate, which reads the failed job log and replies with the cause or the missing evidence. The map also shows the other skills and the shared context guard.](docs/develop-overview.png)](docs/develop-overview.png)
 
-[Full-size image](docs/develop-overview.png) · [HTML source](docs/develop-overview.html) · [Superpowers Codex source](https://github.com/openai/plugins/tree/main/plugins/superpowers) · [Maintainer instructions](AGENTS.md) · [Apache-2.0](LICENSE)
+[Full-size image](docs/develop-overview.png) · [Responsive HTML source](docs/develop-overview.html) · [Superpowers Codex source](https://github.com/openai/plugins/tree/main/plugins/superpowers) · [Maintainer instructions](AGENTS.md) · [Apache-2.0](LICENSE)

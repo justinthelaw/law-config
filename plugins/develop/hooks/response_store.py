@@ -65,16 +65,25 @@ def authorized_root(session_id):
             or {part.casefold() for part in Path(root).parts} & {'.codex', '.agents', '.git', '.aws'}):
         raise ValueError("unsafe root")
     path = Path(root)
+    resolved = path.resolve()
     home = Path.home().resolve()
     plugin = Path(__file__).resolve().parents[1]
-    if (path == home or home in path.parents or path == Path('/')
-            or path == plugin or plugin in path.parents):
+    protected = (home, plugin)
+    if (resolved == Path('/') or any(
+            boundary == candidate or boundary in candidate.parents
+            for boundary in protected for candidate in (path, resolved))):
         raise ValueError("protected root")
+    # Spelling is insufficient on case-insensitive volumes or filesystem aliases.
+    # Compare each held directory to the protected boundaries before any write.
+    identities = {(info.st_dev, info.st_ino) for info in
+                  (boundary.stat() for boundary in protected)}
     fd = os.open('/', os.O_RDONLY | os.O_DIRECTORY)
     administrator = os.fstat(fd).st_uid  # Root ownership may be UID-mapped by the host.
     try:
         for part in path.parts[1:]:
             parent = os.fstat(fd)
+            if (parent.st_dev, parent.st_ino) in identities:
+                raise ValueError("protected root")
             if (parent.st_uid not in (administrator, os.getuid())
                     or (parent.st_mode & 0o022
                         and not (parent.st_uid == administrator and parent.st_mode & stat.S_ISVTX))):
@@ -82,7 +91,10 @@ def authorized_root(session_id):
             next_fd = os.open(part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=fd)
             os.close(fd)
             fd = next_fd
-        private(os.fstat(fd), directory=True)
+        info = os.fstat(fd)
+        if (info.st_dev, info.st_ino) in identities:
+            raise ValueError("protected root")
+        private(info, directory=True)
         return root, fd
     except BaseException:
         os.close(fd)

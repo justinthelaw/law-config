@@ -5,11 +5,16 @@ from __future__ import annotations
 import json
 import time
 from datetime import datetime, timezone
+from dataclasses import replace
 from functools import partial
 from typing import Any, Callable, Generator, Sequence
 
 from pipeline_failure_reporting import FailureReportingMixin
-from pipeline_checks import CheckCoverage, CheckPolicy, discover_policy, inspect_coverage, verify_published_head
+from pipeline_checks import (
+    CheckCoverage, CheckPolicy, CheckRevision, WorkflowSource, discover_policy, inspect_coverage,
+    inspect_revision, verify_base_head, verify_merge_parents, verify_published_head,
+    combine_coverage, coverage_for_policy, coverage_disappeared,
+)
 from pipeline_run_state import RunStateMixin
 from pipeline_review import (
     PullRequest,
@@ -35,6 +40,7 @@ from pipeline_support import (
 
 
 DEFAULT_TIMEOUT = 30 * 60
+MAX_CHECK_SNAPSHOTS = 100
 
 
 def monitor_deadline(
@@ -208,6 +214,10 @@ class Watcher(FailureReportingMixin, RunStateMixin):
         self.review_activation: dict[str, datetime] = {}
         self.check_policies: dict[str, CheckPolicy] = {}
         self.check_coverage: dict[str, CheckCoverage] = {}
+        self.check_revisions: dict[str, CheckRevision] = {}
+        self.verified_merges: dict[str, CheckRevision] = {}
+        self.check_snapshots: dict[tuple[str, str, CheckRevision | None, str], CheckCoverage] = {}
+        self.workflow_sources: dict[tuple[str, int], WorkflowSource] = {}
         self.last_heartbeat = self.started
         self.last_discovery = self.started
         self.child_options = dict(
@@ -254,10 +264,17 @@ class Watcher(FailureReportingMixin, RunStateMixin):
         changed = False
         for target in self.targets:
             matching = self.list_runs(target)
+            identities = [self.run_id(run) for run in matching]
+            if len(set(identities)) != len(identities):
+                raise WatchError(f"Duplicate workflow run identities: {target.label}")
+            if any(key[0] == target.key and key[1] not in identities for key in self.runs):
+                # Retain the observation history, but do not certify a deleted or
+                # newly invisible run from a previous successful snapshot.
+                raise WatchError(f"Previously observed workflow disappeared; CI is unverified: {target.label}")
             self.first_seen.setdefault(target.key, now)
             fresh = 0
             for run in matching:
-                key = (target.key, int(run["databaseId"]))
+                key = (target.key, self.run_id(run))
                 previous = self.runs.get(key, (target, {}))[1]
                 self.run_attempt(run)
                 if (previous and self.run_attempt(run) == self.run_attempt(previous)
@@ -310,6 +327,8 @@ class Watcher(FailureReportingMixin, RunStateMixin):
             details = json.loads(raw or "{}")
         except json.JSONDecodeError as exc:
             raise WatchError(f"Invalid workflow details for {target.label}") from exc
+        if not isinstance(details, dict):
+            raise WatchError(f"Invalid workflow details for {target.label}")
         head = details.get("headSha")
         branch = details.get("headBranch")
         if head != target.head or branch != target.upstream_branch:
@@ -407,15 +426,69 @@ class Watcher(FailureReportingMixin, RunStateMixin):
                 })
         return changed
 
+    def remember_coverage(self, target: Target, scope: str, revision: CheckRevision | None, coverage: CheckCoverage) -> None:
+        key = (target.key, scope, revision, coverage.sha)
+        previous = self.check_snapshots.get(key)
+        if previous is None and not coverage.results:
+            return
+        if previous is not None:
+            if coverage_disappeared(previous, coverage):
+                raise WatchError(f"Previously observed {scope} checks or statuses disappeared; CI is unverified: {target.label}")
+        elif sum(item[0] == target.key for item in self.check_snapshots) >= MAX_CHECK_SNAPSHOTS:
+            raise WatchError(f"Check history exceeds bounded revision coverage: {target.label}")
+        self.check_snapshots[key] = coverage
+
     def poll_checks(self) -> bool:
         changed = False
         for target in self.targets:
-            coverage = inspect_coverage(target, self.runner, self.check_policies[target.key])
+            policy = self.check_policies[target.key]
+            publication_policy = policy.for_branch(target.upstream_branch)
+            coverage = None
+            revision = None
+            pull_request = self.pull_requests.get(target.key)
+            pr_required = policy.for_branch(pull_request.base_branch).required if pull_request else ()
+            if pull_request is not None:
+                revision = inspect_revision(target, self.runner, pull_request)
+                changed |= revision != self.check_revisions.get(target.key)
+                self.check_revisions[target.key] = revision
+                if revision.merge_sha is not None:
+                    if revision != self.verified_merges.get(target.key):
+                        verify_merge_parents(target, self.runner, revision)
+                        self.verified_merges[target.key] = revision
+                    merge_coverage = inspect_coverage(
+                        replace(target, head=revision.merge_sha), self.runner, policy.for_branch(pull_request.base_branch),
+                        pr_required=pr_required, source_head=target.head, workflow_sources=self.workflow_sources,
+                    )
+                    self.remember_coverage(target, "merge", revision, merge_coverage)
+                    # GitHub evaluates the test merge when it has checks/statuses.
+                    # Only confirmed empty coverage permits the head fallback.
+                    if merge_coverage.observed:
+                        coverage = merge_coverage
+            merge_selected = coverage is not None
+            head = None
+            if not merge_selected:
+                head = inspect_coverage(target, self.runner, policy, pr_required=pr_required, workflow_sources=self.workflow_sources)
+                coverage = head
+                # Keep each logical observation once: publication-required contexts
+                # have a durable head history shared by both evaluation modes.
+                publication_names = {item.context for item in publication_policy.required}
+                other = tuple(item for item in head.results if item.context not in publication_names)
+                self.remember_coverage(target, "head", None, coverage_for_policy(head.sha, other, CheckPolicy((), ())))
+            elif publication_policy.required:
+                head = inspect_coverage(target, self.runner, publication_policy, workflow_sources=self.workflow_sources)
+            if head is not None and publication_policy.required:
+                publication = coverage_for_policy(head.sha, head.results, publication_policy, required_only=True)
+                self.remember_coverage(target, "publication", None, publication)
+                if merge_selected:
+                    # Optional head copies do not override GitHub's merge checks.
+                    coverage = combine_coverage(coverage, publication)
             if coverage != self.check_coverage.get(target.key):
                 changed = True
                 self.emit({
                     "event": "check-coverage", "target": target.label, "target_id": target.key,
-                    "sha": target.head, "policy_branches": self.check_policies[target.key].branches,
+                    "sha": coverage.sha, "head_sha": target.head, "policy_branches": policy.branches,
+                    "policy_revisions": {branch: target.head if branch == target.upstream_branch else coverage.sha
+                                         for branch in policy.branches},
                     "required": coverage.required, "observed": coverage.observed,
                     "passed": coverage.passed, "active": coverage.active, "failed": coverage.failed,
                     "missing": coverage.missing, "findings": coverage.findings[:5],
@@ -499,7 +572,7 @@ class Watcher(FailureReportingMixin, RunStateMixin):
             )
             # Preserve the library's observed-state access; scheduling never shares these maps.
             for watcher in self.root_watchers:
-                for name in ("runs", "check_policies", "check_coverage", "pull_requests", "review_states"):
+                for name in ("runs", "check_policies", "check_coverage", "check_revisions", "pull_requests", "review_states"):
                     getattr(self, name).update(getattr(watcher, name))
             return result
         try:
@@ -621,6 +694,11 @@ class Watcher(FailureReportingMixin, RunStateMixin):
             verify_published_head(target, self.runner)
             if discover_pull_request(target, self.runner) != self.pull_requests.get(target.key):
                 raise WatchError(f"Pull-request identity changed before completion: {target.label}")
+            pull_request = self.pull_requests.get(target.key)
+            if pull_request is not None and inspect_revision(target, self.runner, pull_request) != self.check_revisions.get(target.key):
+                raise WatchError(f"Pull-request base or test merge changed before completion: {target.label}")
+            if pull_request is not None:
+                verify_base_head(target, self.runner, pull_request, self.check_revisions[target.key])
         for target in self.targets:
             # Reuse discovery's bounded local reads after the network readback.
             # Only the already-verified target host may remain an enterprise host.

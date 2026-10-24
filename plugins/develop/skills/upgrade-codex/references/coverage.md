@@ -38,7 +38,7 @@ For a finding, retain the smallest source locator that establishes the requireme
 - `Optional`: a supported improvement in clarity, maintenance or capability.
 - `Unverified`: insufficient evidence, inaccessible state or unknown version applicability.
 
-Validate changes in layers: parse/schema checks, local reference/package checks, then documented consumer checks appropriate to the authorized effects. Use temporary fixtures or isolated configuration for checks that would otherwise alter live state. Confirm the intended values are effective and required restrictions remain enforced. Report static validation separately from live loading, installation and publication. Roll back only task-owned changes if validation fails, preserving unrelated work and recoverable originals.
+Validate changes in layers: parse/schema checks, local reference/package checks, then documented consumer checks appropriate to the authorized effects. Use temporary fixtures or isolated configuration for checks that would otherwise alter live state. After an authorized Iterate repair, repeat the affected user operation with the selected client and effective configuration on fictional inputs. Check the observable result and restrictions. A capture change, for example, needs both a small result and an oversized one with the expected recovery or passthrough. If trust, access or execution is unavailable, report the operation as unverified and identify the missing prerequisite. Report static validation separately from live loading, installation and publication. Roll back only task-owned changes if validation fails, preserving unrelated work and recoverable originals.
 
 Official starting points (resolve their current destinations and select versioned evidence where needed):
 

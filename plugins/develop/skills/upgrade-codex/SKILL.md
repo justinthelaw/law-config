@@ -9,7 +9,7 @@ Check the whole selected Codex setup against the versions that consume it. Repor
 
 ## Scope and target
 
-This skill is explicit-only. A bare invocation starts a read-only audit. Preserve the user's selected roots, clients, target version and action authority. Resolve an unambiguous checkout from context; ask once if the intended scope or client is unclear. A project selection does not authorize scanning every home, repository or installed plugin.
+This skill is explicit-only. A bare invocation starts a read-only audit. Preserve the user's selected roots, clients, target version and action authority. Resolve an unambiguous checkout from context. If the client or scope remains unclear, follow the [input policy](../develop/references/contract.md#unattended-continuation) before inspecting it. Record the missing selection during an unattended run. A project selection does not authorize scanning every home, repository or installed plugin.
 
 Record the selected roots, exclusions, clients, installed versions, target versions and requested mode. Default to the installed version; preserve a supplied target exactly. Resolve an explicitly requested latest release from official sources. Identify the actual executable or bundled runtime, release channel and platform; a package version, shell alias or Desktop build alone does not establish the executing Codex version. Keep CLI, Desktop, IDE, daemon and cloud identities separate. Unknown versions remain unverified.
 

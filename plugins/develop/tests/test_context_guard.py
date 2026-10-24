@@ -113,7 +113,11 @@ class ContextGuard(unittest.TestCase):
     def test_enabled_post_preserves_only_response_and_emits_stop_receipt(self):
         root = self.directory / "responses"
         root.mkdir(mode=0o700)
-        env = dict(os.environ, DEVELOP_GUARD_ROOT=str(root), DEVELOP_GUARD_SESSION="session",
+        # Only this fictional hook child uses an isolated home, never its host.
+        home = self.directory / "fictional-home"
+        home.mkdir(mode=0o700)
+        env = dict(os.environ, HOME=str(home),
+                   DEVELOP_GUARD_ROOT=str(root), DEVELOP_GUARD_SESSION="session",
                    DEVELOP_GUARD_EXPIRES=str(int(time.time()) + 3600),
                    DEVELOP_GUARD_AUTHORIZATION="all-session-invocations-read-write-private-unsynced")
         # Synthetic hook envelopes test tool-name-independent handling only.

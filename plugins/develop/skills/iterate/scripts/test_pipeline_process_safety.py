@@ -179,6 +179,22 @@ class CaptureTests(unittest.TestCase):
                          ("one\ntwo\nthree\nfour\n\n", "one\ntwo\nthree\nfour\n\n"))
         self.assertFalse(result.stdout_overflow or result.stderr_overflow)
 
+    def test_lossless_stdout_preserves_filename_bytes_without_changing_stderr(self):
+        payload = b"one\r\ntwo\r\xff\0"
+        script = (f"import sys; sys.stdout.buffer.write({payload!r}); "
+                  f"sys.stderr.buffer.write({payload!r})")
+        result = self.capture(script, lossless_stdout=True, max_bytes=len(payload))
+        self.assertEqual(result.stdout.encode("utf-8", "surrogateescape"), payload)
+        self.assertEqual(result.stderr, "one\ntwo\n\ufffd\0")
+        self.assertFalse(result.stdout_overflow or result.stderr_overflow)
+        bounded = self.capture(script, lossless_stdout=True, max_bytes=7)
+        self.assertEqual(bounded.stdout.encode("utf-8", "surrogateescape"), payload[:7])
+        self.assertTrue(bounded.stdout_overflow and bounded.stderr_overflow)
+
+    def test_default_stdout_replaces_invalid_bytes_for_human_logs(self):
+        result = self.capture("import sys; sys.stdout.buffer.write(b'line\\r\\n\\xff')")
+        self.assertEqual(result.stdout, "line\n\ufffd")
+
     def test_newline_normalization_does_not_expand_the_byte_budget(self):
         payload = b"\r\n" * 8
         script = (f"import sys; sys.stdout.buffer.write({payload!r}); "

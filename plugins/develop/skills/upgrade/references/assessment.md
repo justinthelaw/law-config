@@ -16,6 +16,8 @@ Verify releases, support dates, migration guides and security/deprecation notice
 
 Preserve explicit targets and deliberate prerelease or long-term-support channels. Without a selected channel, prefer supported stable releases or an appropriate supported long-term-support line. Do not silently downgrade a deliberate prerelease to stable. Mark unavailable targets or unverifiable compatibility as `Blocked/unverified` rather than substituting another target.
 
+Use the repository's package manager for authorized changes. Check the supported runtime before removing a dependency. For example, [Python's TOML reader](https://docs.python.org/3/library/tomllib.html) requires 3.11 or newer. Keep a compatible reader if 3.10 remains supported. Exercise changed framework syntax with representative inputs.
+
 Group compatible dependency families and identify required intermediate migrations. Evaluate affected call sites, peers, runtime floors and platform/CI coverage. Avoid overriding transitive leaves without proving constraints remain compatible. A supporting dependency is a candidate, not an automatic bump.
 
 For each material risk, record evidence, applicability, smallest sufficient change and acceptance check. Distinguish required compatibility work, optional improvement and unresolved hypothesis. Inventory, a matching pin or a passing narrow check does not establish full compatibility; retain justified unchanged decisions and coverage gaps.

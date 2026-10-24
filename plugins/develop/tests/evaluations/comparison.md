@@ -47,6 +47,15 @@ independent review. A single task measures that task only; retain unmeasured str
 and cross-task comparisons as unfinished. Preserve the existing review gates
 until comparable observations support a separately authorized policy change.
 
+For a wording-only pilot, have Iterate edit the help text and freeze the result.
+Include a spelling error, a false behavior claim and a correct example. Have the
+editor review the edit, then give the same wording, rendered help and operation
+checks to fresh intent and technical reviewers under the matched conditions above.
+Keep their findings separate until both report. Record misses, false alarms,
+repairs and repeat reviews for each revision. Record blind maintainer acceptance
+only when a maintainer actually assesses the work without knowing the method.
+The shared contract still requires independent review.
+
 Finite attempt costs must also produce finite totals and deltas. Arithmetic
 overflow is invalid input (exit 2), never JSON `Infinity` or `NaN`; integer token
 totals remain exact.
