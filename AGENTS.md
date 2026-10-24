@@ -19,7 +19,7 @@
 - `plugins/develop/`: Develop package; follow [plugin instructions](plugins/develop/AGENTS.md).
 - `plugins/develop/hooks/`: Codex context guard; see its [runtime requirements and behavior](plugins/develop/docs/context-guard.md).
 - `.agents/plugins/marketplace.json`: repository-root catalog; follow [.agents/AGENTS.md](.agents/AGENTS.md).
-- `.github/workflows/plugins.test.yml`: package and helper checks on Linux and Windows.
+- `.github/workflows/plugins.test.yml`: package and helper checks on Linux, Windows, and macOS.
 - `README.md`: high-level setup and config selection model.
 
 ## Scripts
