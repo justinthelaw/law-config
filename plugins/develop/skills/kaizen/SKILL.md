@@ -32,10 +32,10 @@ Choose the smallest appropriate owner after inspecting its current instructions:
 
 Prefer removal or consolidation when instructions conflict or repeat. Recommend a new entry point only for a distinct reusable need. Verify candidate capabilities and availability through the supported installed catalog or current authoritative upstream source; distinguish installed, available and proposed. Do not invent a plugin or present an unverified candidate as available.
 
-For each recommendation, identify evidence, owner, proposed change, expected effect and verification scenario. Separate observed defects, hypotheses and preferences; omit speculative or low-value additions.
+For each recommendation, identify evidence, owner, proposed change, expected maintenance effect, verification scenario and evidence/condition for revisiting it. Separate observed defects, hypotheses and preferences; omit speculative or low-value additions.
 
 ## Close or implement
 
-Review findings and recommendation evidence through the packaged [adversarial-loop](../adversarial-loop/SKILL.md), using sanitized evidence and its bounded standalone protocol. Use the shared [presentation policy](../develop/references/contract.md#presentation); report coverage, omissions, independent episode counts and unresolved uncertainty alongside the recommendations. A no-change result is valid.
+Ordinary findings need no compulsory extra review. Apply the shared [review criteria](../develop/references/contract.md#review-gates) when review is requested or consequential risk requires it, using sanitized evidence and the bounded protocol. Use the shared [presentation policy](../develop/references/contract.md#presentation); report coverage, omissions, independent episode counts and unresolved uncertainty alongside the recommendations. A no-change result is valid.
 
 Analysis does not authorize edits, installs, schedules or enabling hooks. Hand specifically authorized improvements to [iterate](../iterate/SKILL.md); keep the same input, run the affected operation before and after the fix in isolation, and record both observable results before broader adoption. A review verdict never grants action authority.

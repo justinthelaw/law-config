@@ -19,7 +19,7 @@ const base=path.dirname(fileURLToPath(import.meta.url));
 const qa=await fs.mkdtemp(path.join(tmpdir(),'develop-browser-qa-'));
 const evidencePath=name=>path.resolve(qa,name);
 const sha256=data=>createHash('sha256').update(data).digest('hex');
-const sourceFiles=['develop-overview.html','develop-route-explorer.html','render-guide.mjs','assets/superpowers-logo.png','assets/engineering-design-concept.png','assets/interface-design-concept.png'];
+const sourceFiles=['develop-overview.html','develop-route-explorer.html','render-guide.mjs','assets/superpowers-logo.png','../skills/engineering-design/assets/icon.png','../skills/interface-design/assets/icon.png'];
 const sourceHashes=Object.fromEntries(await Promise.all(sourceFiles.map(async name=>[name,sha256(await fs.readFile(path.join(base,name)))])));
 const launch={headless:true};
 if(engine==='chromium')launch.chromiumSandbox=true;
@@ -42,7 +42,7 @@ try{
  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  await page.locator('.sheet').screenshot({path:path.join(qa,'develop-overview.png')});
  report.screenshots.push(evidencePath('develop-overview.png'));
- const expectedSkills=['develop','iterate','upgrade','adversarial-loop','clean','deep-clean','kaizen','upgrade-codex'];
+ const expectedSkills=['engineering-design','interface-design','develop','iterate','upgrade','adversarial-loop','clean','deep-clean','kaizen','upgrade-codex'];
  const overviewChecks=await page.evaluate(()=>{
   const sheet=document.querySelector('.sheet'),boundary=sheet.getBoundingClientRect();
   const cards=[...document.querySelectorAll('.skill-card')];
@@ -51,16 +51,16 @@ try{
   return{width:boundary.width,height:boundary.height,sections,skills:cards.filter(el=>el.dataset.skill).map(el=>el.dataset.skill),minBodyFont:Math.min(...bodyFonts),logos:cards.map(el=>{const img=el.querySelector('img');return{src:img?.getAttribute('src'),loaded:img?.complete&&img.naturalWidth>0,width:img?.getBoundingClientRect().width};})};
  });
  report.checks.push({test:'one workflow and one skill directory',pass:overviewChecks.sections.length===2&&overviewChecks.sections.includes('workflow')&&overviewChecks.sections.includes('skills'),results:overviewChecks});
- report.checks.push({test:'eight unique skill descriptions and existing logos',pass:JSON.stringify([...overviewChecks.skills].sort())===JSON.stringify([...expectedSkills].sort())&&overviewChecks.logos.every(logo=>logo.loaded&&logo.width>=48)&&new Set(overviewChecks.logos.map(logo=>logo.src)).size===10&&await page.locator('.sheet img').count()===11});
+ report.checks.push({test:'ten unique skill descriptions and existing logos',pass:JSON.stringify([...overviewChecks.skills].sort())===JSON.stringify([...expectedSkills].sort())&&overviewChecks.logos.every(logo=>logo.loaded&&logo.width>=48)&&new Set(overviewChecks.logos.map(logo=>logo.src)).size===10&&await page.locator('.sheet img').count()===11});
  report.checks.push({test:'compact overview with legible README typography',pass:overviewChecks.width===1000&&overviewChecks.height<=2200&&overviewChecks.minBodyFont>=20,readmeWidth:860,minBodyDisplayPx:overviewChecks.minBodyFont*860/overviewChecks.width});
  const additions=await page.evaluate(()=>{
   const ids=['engineering-design','interface-design'];
-  return {order:[...document.querySelectorAll('.skill-card')].map(el=>el.dataset.skill||el.dataset.design),detached:document.querySelectorAll('.design-proposals').length,items:ids.map(id=>{
-   const node=document.getElementById('node-'+id),card=document.querySelector('.skill-grid [data-design="'+id+'"]'),edge=document.querySelector('[data-design-link="'+id+'"]');
+  return {order:[...document.querySelectorAll('.skill-card')].map(el=>el.dataset.skill),detached:document.querySelectorAll('.design-proposals').length,items:ids.map(id=>{
+   const node=document.getElementById('node-'+id),card=document.querySelector('.skill-grid [data-skill="'+id+'"]'),edge=document.querySelector('[data-design-link="'+id+'"]');
    return {id,node:!!node?.closest('.branches'),mandatory:node?.textContent.includes('Planning gate · must fire'),links:card?.querySelectorAll('a').length,twoWay:!!edge?.hasAttribute('marker-start')&&!!edge?.hasAttribute('marker-end'),d:edge?.getAttribute('d')};
   })};
  });
- report.checks.push({test:'design nodes connected to Iterate and cards integrated after Iterate',pass:additions.detached===0&&additions.order.length===10&&additions.order.slice(1,4).join(',')==='iterate,engineering-design,interface-design'&&additions.items.every(c=>c.node&&c.mandatory&&c.links===0&&c.twoWay),results:additions});
+ report.checks.push({test:'design nodes connected to Iterate and cards integrated after Iterate',pass:additions.detached===0&&additions.order.length===10&&additions.order.slice(1,4).join(',')==='iterate,engineering-design,interface-design'&&additions.items.every(c=>c.node&&c.mandatory&&c.links===1&&c.twoWay),results:additions});
  const exchanges=await page.locator('[data-exchange]').allTextContents();
  report.checks.push({test:'four two-way exchanges have explicit directional handoff notes',pass:await page.locator('.edge[marker-start]').count()===4&&exchanges.length===4&&exchanges.filter(t=>t.includes('↓ Request plan')&&t.includes('↑ Return plan')).length===2&&exchanges.some(t=>t.includes('↓ Use guidance')&&t.includes('↑ Resume work'))&&exchanges.some(t=>t.includes('← Request review')&&t.includes('→ Return findings'))});
  const decision=await page.locator('.planning-decision').textContent();

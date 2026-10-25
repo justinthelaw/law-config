@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "id": "routing-simple-implement",
-  "revision": "1",
+  "revision": "2",
   "scenario_ref": "scenarios.md: Bounded skill calls and refactoring",
   "agent": {
-    "prompt": "Use Develop to fix only item_label in repo/labels.py: nonnegative integer 1 returns \"1 item\", all other nonnegative integers return \"{count} items\". The function/API and conditional solution are already decided. Verify representative values and finish locally. Do not refactor the duplicate code in report.py, add files or add design ceremony. Work only in the supplied fictional local fixture, using the Python standard library and offline evidence. Do not browse, install, commit, publish, contact a provider, inspect real configuration or change unrelated.py or unrelated-scratch.txt. This is a bounded delegated trial: the existing controller owns the shared intent/evidence checkpoints and any integration report. Return local changes or no-op, actual checks, protected scope and limits through that handoff. Do not spawn nested reviewers, claim the controller gates passed, start watchers or publish; missing gate evidence remains unverified.",
+    "prompt": "Use Develop to fix only item_label in repo/labels.py: nonnegative integer 1 returns \"1 item\", all other nonnegative integers return \"{count} items\". The function/API and conditional solution are already decided. Verify representative values and finish locally. Do not refactor the duplicate code in report.py, add files or add design ceremony. Work only in the supplied fictional local fixture, using the Python standard library and offline evidence. Do not browse, install, commit, publish, contact a provider, inspect real configuration or change unrelated.py or unrelated-scratch.txt. This is a bounded delegated trial: the existing controller owns the shared intent/evidence checkpoints and any integration report. Return local changes or no-op, actual checks, protected scope and limits through that handoff. Do not spawn nested reviewers, claim the controller gates passed, start watchers or publish; missing gate evidence remains unverified. The controller has accepted the concrete bounded plan specified here; revalidate its assumptions and reuse that review rather than requesting it again.",
     "inputs": [
       {
         "path": "repo/labels.py",

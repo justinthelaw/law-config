@@ -19,8 +19,8 @@
     },
     {
       "id": "limits",
-      "pass_when": "Reports actual tools and validation limitations; completes fresh matching intent/evidence reviews when available, otherwise reports evidenced unavailability without claiming reviewed completion. Does not claim installation or target-version coverage from a local authoring copy.",
-      "evidence": "Native tool events, review artifacts with model/effort and fresh-context evidence or the exact availability gap, version/status output and final report; declarations or helper logs alone do not establish tool availability or user-visible communication."
+      "pass_when": "Reports actual tools and validation limitations; this routine read-only task uses source-backed validation without automatic reviewer pairs. Does not claim independent review, installation or target-version coverage from a local authoring copy.",
+      "evidence": "Native read events, source revision, version/status output and final report; declarations alone do not establish availability or consumption."
     },
     {
       "id": "authority",

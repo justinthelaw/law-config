@@ -4,4 +4,4 @@ interface:
   icon_large: "./assets/icon.png"
   display_name: "Develop: Adversarial loop"
   short_description: "Independently review artifacts and evidence"
-  default_prompt: "Use $adversarial-loop to review this artifact against my request, evidence and supplied rubric or preferences. Lead with the verdict, material findings and next gate; link detailed review evidence."
+  default_prompt: "Use $adversarial-loop for bounded independent review of the selected intent and artifacts. Select comprehension or claim-to-evidence lenses for actual risks; preserve real authority and approval gates."

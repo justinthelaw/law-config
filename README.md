@@ -12,7 +12,7 @@ Start with [Linux setup](docs/setup-linux.md) or [macOS setup](docs/setup-macos.
 ## Plugins
 
 The `law-config` Git marketplace distributes [Develop](plugins/develop/README.md):
-eight skills for development, upgrades, reviews, cleanup, and workflow improvement.
+ten skills for engineering/interface planning, development, upgrades, review, cleanup, and workflow improvement.
 Its [Codex context guard](plugins/develop/docs/context-guard.md) guides bounded
 reads and optionally preserves oversized received results before replacement. The guard requires
 supported local Codex sessions, Python 3.10+, and hook trust; see the

@@ -32,4 +32,4 @@ new chat. Install and verify each intended environment separately. The hook
 requires local orchestration and execution; cloud orchestration does not run it,
 even with local tools. Publication alone does not activate it.
 
-See the [README](README.md) for the eight-skill visual guide.
+See the [README](README.md) for the ten-skill visual guide.

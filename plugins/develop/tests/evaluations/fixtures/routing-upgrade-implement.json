@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "id": "routing-upgrade-implement",
-  "revision": "1",
+  "revision": "2",
   "scenario_ref": "scenarios.md: Bounded skill calls and refactoring",
   "agent": {
-    "prompt": "Use Develop to assess and implement the local fixture-calc v1 to v2 upgrade for repo. Preserve invoice(cents) results, adapt only invoice.py to the target API, run the supplied suite and finish with a local change/evidence report. Assessment and local implementation are both authorized; no further approval is needed for routine choices. Work only in the supplied fictional local fixture, using the Python standard library and offline evidence. Do not browse, install, commit, publish, contact a provider, inspect real configuration or change unrelated.py or unrelated-scratch.txt. This is a bounded delegated trial: the existing controller owns the shared intent/evidence checkpoints and any integration report. Return local changes or no-op, actual checks, protected scope and limits through that handoff. Do not spawn nested reviewers, claim the controller gates passed, start watchers or publish; missing gate evidence remains unverified.",
+    "prompt": "Use Develop to assess and implement the local fixture-calc v1 to v2 upgrade for repo. Preserve invoice(cents) results, adapt only invoice.py to the target API, run the supplied suite and finish with a local change/evidence report. Assessment and local implementation are both authorized; no further approval is needed for routine choices. Work only in the supplied fictional local fixture, using the Python standard library and offline evidence. Do not browse, install, commit, publish, contact a provider, inspect real configuration or change unrelated.py or unrelated-scratch.txt. This is a bounded delegated trial: the existing controller owns the shared intent/evidence checkpoints and any integration report. Return local changes or no-op, actual checks, protected scope and limits through that handoff. Do not spawn nested reviewers, claim the controller gates passed, start watchers or publish; missing gate evidence remains unverified. The controller has accepted the concrete bounded plan specified here; revalidate its assumptions and reuse that review rather than requesting it again.",
     "inputs": [
       {
         "path": "repo/DEPENDENCY.md",
