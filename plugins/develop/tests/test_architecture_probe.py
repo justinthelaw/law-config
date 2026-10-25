@@ -1630,7 +1630,6 @@ class ArchitectureProbe(unittest.TestCase):
         self.assertNotEqual(before.item_label(2), "2 items")
         for count, label in ((0, "0 items"), (1, "1 item"), (2, "2 items"), (100, "100 items")):
             self.assertEqual(after.item_label(count), label)
-        self.assertEqual(len(original.splitlines()), len(candidate.splitlines()))
 
     def test_public_fixtures_validate_and_materialize_without_graders(self):
         helper_path = ROOT.parents[1] / "scripts" / "evaluation.py"

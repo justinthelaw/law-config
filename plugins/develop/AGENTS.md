@@ -22,7 +22,7 @@ python -m unittest discover -s skills/deep-clean/tests -p 'test_*.py'
 
 Run `git diff --check` and the [contribution checks](../../docs/CONTRIBUTING.md#validation) from the repository root. Commit the source metadata and generated manifest together. For detached installed payloads, omit `--marketplace-root`; run fixture-writing package tests on a disposable copy outside the installed cache.
 
-Before publication, exercise relevant [fresh-context scenarios](tests/scenarios.md), packaged references/helpers from an unrelated working directory, and actual icon legibility. Inspect actual artifacts; structure checks, text matching and simulated decisions do not prove agent behavior, installation, live publication or deployment. Commit only scoped changes, update the plugin version when releasing, and verify the same Git revision on each installed surface.
+For Develop changes, follow [behavioral testing](AGENTS.test.md): observe fresh ephemeral agents on affected scenarios before relying on unit-test results. Before publication, also check affected packaged references/helpers from an unrelated working directory and changed artwork at actual display sizes. Inspect actual artifacts; structure checks, text matching and simulated decisions do not prove agent behavior, installation, live publication or deployment. Commit only scoped changes, update the plugin version when releasing, and verify the same Git revision on each installed surface.
 
 ## Host metadata and activation
 
