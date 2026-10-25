@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="One Develop workflow, eight existing skills, and two proposed design references.">
+<meta name="description" content="One Develop workflow and skill directory: eight existing skills and two planned design additions.">
 <title>Develop · One connected workflow</title>
 <style>
 :root {
@@ -73,23 +73,19 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 .skill-card h3 { font-size: 23px; font-weight: 600; letter-spacing: -.4px; line-height: 1.25; margin-bottom: 5px; }
 .skill-card h3 a { text-decoration-color: #997352; text-decoration-thickness: 1px; }
 .skill-card p { font-size: 20px; line-height: 1.35; color: var(--muted); }
-.design-proposals { margin-top: 22px; padding: 14px 16px; border: 1px dashed var(--line); border-radius: 10px; background: #2b2420; }
-.design-proposals > h3 { font-size: 23px; font-weight: 600; color: var(--accent); }
-.design-proposals > p { color: var(--muted); font-size: 20px; margin: 4px 0 12px; }
-.design-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.design-concept { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 12px; align-items: center; }
-.design-concept img { width: 64px; height: 64px; object-fit: contain; image-rendering: pixelated; }
-.design-concept h4 { margin: 0 0 3px; font-size: 22px; font-weight: 600; }
-.design-concept p { color: var(--muted); font-size: 20px; }
+.design-node { margin-top: 24px; border-style: dashed; }
+.design-node p { margin-top: 5px; color: var(--accent); }
+.skill-card .status { color: var(--accent); margin-top: 5px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 @media (max-width: 900px) {
   .sheet { padding-inline: 24px; }
   .workflow-map { padding-inline: 22px; }
   .branches { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); gap: 34px; }
   .flow-node h3 { font-size: 22px; }
+  .external-title { flex-wrap: wrap; }
   .skill-card { padding: 14px; gap: 12px; }
 }
-@media (max-width: 620px) {
+@media (max-width: 760px) {
   body { font-size: 18px; }
   .sheet { padding: 24px 16px; }
   h1 { font-size: 30px; }
@@ -112,8 +108,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
   .reviews h3 { white-space: normal; margin-bottom: 8px; }
   .reviews p { text-align: center; }
   #skills { margin-top: 26px; }
-  .skill-grid, .design-grid { grid-template-columns: 1fr; }
-  .design-proposals > p, .design-concept p { font-size: 18px; }
+  .skill-grid { grid-template-columns: 1fr; }
   .skill-card { grid-template-columns: 56px minmax(0, 1fr); padding: 14px 12px; }
   .skill-card img { width: 56px; height: 56px; }
   .skill-card h3 { font-size: 22px; }
@@ -128,7 +123,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
   <div class="section-heading"><span class="section-number">01</span><h1 id="workflow-title">Develop · One connected workflow</h1></div>
   <p class="intro">In chat, type "$develop:develop Why did this CI job fail?"</p>
   <div class="workflow-map" role="group" aria-labelledby="workflow-title" aria-describedby="workflow-description">
-    <p id="workflow-description" class="sr-only">Develop sends the CI question to Iterate. Iterate examines the failed job log and tells the user what caused the failure or what evidence is missing. Users can also invoke a skill directly. Develop routes other outcomes to Upgrade, Kaizen, Clean or Adversarial loop. Upgrade Codex is available only by explicit invocation. Upgrade, Kaizen and Upgrade Codex may return findings; they hand changes to Iterate only when implementation is authorized. Iterate performs the requested work and can loop through validation, authorized delivery, monitoring and authorized repair. Clean expands to Deep clean only for explicitly widened scope. Adversarial loop reviews applicable checkpoints and returns findings to the owner within a bounded review budget. An audit-only Upgrade Codex review is opt-in. Iterate may use compatible installed Superpowers guidance for planning, debugging and testing, then resumes with its existing scope and gates. Engineering Design and Interface Design are proposed references for Iterate, not available skills or active routes.</p>
+    <p id="workflow-description" class="sr-only">Develop sends the CI question to Iterate. Iterate examines the failed job log and tells the user what caused the failure or what evidence is missing. Users can also invoke a skill directly. Develop routes other outcomes to Upgrade, Kaizen, Clean or Adversarial loop. Upgrade Codex is available only by explicit invocation. Upgrade, Kaizen and Upgrade Codex may return findings; they hand changes to Iterate only when implementation is authorized. Iterate performs the requested work and can loop through validation, authorized delivery, monitoring and authorized repair. Clean expands to Deep clean only for explicitly widened scope. Adversarial loop reviews applicable checkpoints and returns findings to the owner within a bounded review budget. An audit-only Upgrade Codex review is opt-in. Iterate may use compatible installed Superpowers guidance for planning, debugging and testing, then resumes with its existing scope and gates. Engineering Design and Interface Design appear in the workflow and skill directory as planned design additions. Dashed two-way links show proposed design guidance and handoff with Iterate; neither design addition has a runnable entrypoint yet.</p>
     <svg class="connectors" aria-hidden="true"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#e8c8a6"/></marker><marker id="feedback-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#bc9471"/></marker></defs><g id="edge-layer"></g></svg>
     <div class="flow-node router" id="node-develop" data-skill="develop"><h3>Develop</h3></div>
     <p class="route-caption">Route by outcome · follow <a href="#node-iterate">Iterate</a> for this question</p>
@@ -141,6 +136,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
           <div class="flow-node explicit" id="node-upgrade-codex" data-skill="upgrade-codex"><h3>Upgrade Codex</h3></div>
           <p class="audit-note">Audit review is opt-in</p>
         </div>
+        <div class="flow-node design-node" id="node-engineering-design" data-planned="engineering-design"><h3>Engineering Design</h3><p>Planned guidance ↔ Iterate</p></div>
       </div>
       <div class="implementation-lane">
         <div class="flow-node delivery" id="node-iterate" data-skill="iterate">
@@ -158,16 +154,9 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
           <p class="branch-label">Explicit wider scope</p>
           <div class="flow-node explicit" id="node-deep-clean" data-skill="deep-clean"><h3>Deep clean</h3></div>
         </div>
+        <div class="flow-node design-node" id="node-interface-design" data-planned="interface-design"><h3>Interface Design</h3><p>Planned guidance ↔ Iterate</p></div>
       </div>
     </div>
-    <aside class="design-proposals" aria-labelledby="design-proposals-title">
-      <h3 id="design-proposals-title">Proposed · Design references for Iterate</h3>
-      <p>References first, within <a href="#node-iterate">Iterate</a> · concepts only; not available skills.</p>
-      <div class="design-grid">
-        <article class="design-concept" data-proposal="engineering-design"><img src="assets/engineering-design-concept.png" width="64" height="64" alt="Roux holding an architecture blueprint and drafting triangle"><div><h4>Engineering Design</h4><p>Architecture · boundaries · tradeoffs</p></div></article>
-        <article class="design-concept" data-proposal="interface-design"><img src="assets/interface-design-concept.png" width="64" height="64" alt="Roux holding an interface layout with a pointer"><div><h4>Interface Design</h4><p>Layout · interaction · accessibility</p></div></article>
-      </div>
-    </aside>
     <p class="handoff" id="handoff-label">Return findings · implement only when authorized</p>
     <div class="flow-node reviews" id="node-adversarial-loop" data-skill="adversarial-loop"><h3>Adversarial loop</h3><p>Review at applicable checkpoints.<br>Return findings; recheck within the budget.</p></div>
     <p class="review-return">Delivery and repairs require authorization. Reviews return to the owner.</p>
@@ -175,10 +164,12 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
   <p class="context-guard"><a href="context-guard.md">Shared Codex context guard</a> · trusted local orchestration + execution<br>Bound reads · opt-in save → verify → receipt; otherwise passthrough.</p>
 </section>
 <section id="skills" aria-labelledby="skills-title">
-  <div class="section-heading"><span class="section-number">02</span><h2 id="skills-title">Eight skills, each with one job</h2></div>
+  <div class="section-heading"><span class="section-number">02</span><h2 id="skills-title">Eight skills + two design additions</h2></div>
   <div class="skill-grid">
     <article class="skill-card" data-skill="develop"><img src="../skills/develop/assets/icon.png" width="64" height="64" alt="Develop Roux logo"><div><h3><a href="../skills/develop/SKILL.md">Develop</a></h3><p>Route the outcome and coordinate the right skills.</p></div></article>
     <article class="skill-card" data-skill="iterate"><img src="../skills/iterate/assets/icon.png" width="64" height="64" alt="Iterate Roux logo"><div><h3><a href="../skills/iterate/SKILL.md">Iterate</a></h3><p>Build, refactor, review, debug and deliver changes.</p></div></article>
+    <article class="skill-card" data-planned="engineering-design"><img src="assets/engineering-design-concept.png" width="64" height="64" alt="Engineering Design Roux with blueprint and drafting triangle"><div><h3>Engineering Design</h3><p>Architecture, boundaries and tradeoffs for Iterate.</p><p class="status">Planned · no entrypoint yet</p></div></article>
+    <article class="skill-card" data-planned="interface-design"><img src="assets/interface-design-concept.png" width="64" height="64" alt="Interface Design Roux with layout and pointer"><div><h3>Interface Design</h3><p>Layout, interaction and accessibility for Iterate.</p><p class="status">Planned · no entrypoint yet</p></div></article>
     <article class="skill-card" data-skill="upgrade"><img src="../skills/upgrade/assets/icon.png" width="64" height="64" alt="Upgrade Roux logo"><div><h3><a href="../skills/upgrade/SKILL.md">Upgrade</a></h3><p>Assess dependencies and plan runtime migrations.</p></div></article>
     <article class="skill-card" data-skill="kaizen"><img src="../skills/kaizen/assets/icon.png" width="64" height="64" alt="Kaizen Roux logo"><div><h3><a href="../skills/kaizen/SKILL.md">Kaizen</a></h3><p>Learn from selected sessions and recommend improvements.</p></div></article>
     <article class="skill-card" data-skill="clean"><img src="../skills/clean/assets/icon.png" width="64" height="64" alt="Clean Roux logo"><div><h3><a href="../skills/clean/SKILL.md">Clean</a></h3><p>Clean verified disposable resources from this thread.</p></div></article>
@@ -202,9 +193,10 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
       const b = document.getElementById('node-' + id).getBoundingClientRect();
       return { left: b.left - bounds.left, right: b.right - bounds.left, top: b.top - bounds.top, bottom: b.bottom - bounds.top, x: b.left - bounds.left + b.width / 2, y: b.top - bounds.top + b.height / 2 };
     };
-    const edge = (d, kind = '', both = false) => {
+    const edge = (d, kind = '', both = false, design = '') => {
       const path = document.createElementNS(ns, 'path');
       path.setAttribute('d', d);
+      if (design) path.setAttribute('data-design-link', design);
       path.setAttribute('class', `edge ${kind}`);
       const marker = kind === 'feedback' ? 'feedback-arrow' : 'arrow';
       path.setAttribute('marker-end', `url(#${marker})`);
@@ -213,7 +205,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
     };
     const D = box('develop'), I = box('iterate'), C = box('clean'), X = box('deep-clean'), R = box('adversarial-loop'), S = box('superpowers');
     edge(`M ${I.x} ${I.bottom + 3} V ${S.top - 3}`, 'conditional', true);
-    const mobile = matchMedia('(max-width: 620px)').matches;
+    const mobile = matchMedia('(max-width: 760px)').matches;
     if (mobile) {
       const routeX = 10, handoffX = bounds.width - 9;
       for (const id of ['upgrade', 'kaizen', 'iterate', 'clean']) {
@@ -223,6 +215,12 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
       for (const id of ['upgrade', 'kaizen', 'upgrade-codex']) {
         const B = box(id);
         edge(`M ${B.right} ${B.y} H ${handoffX} V ${I.y} H ${I.right + 3}`, 'conditional');
+      }
+      for (const id of ['engineering-design', 'interface-design']) {
+        const B = box(id);
+        const designX = bounds.width - (id === 'engineering-design' ? 17 : 1);
+        const attachY = I.bottom - (id === 'engineering-design' ? 36 : 18);
+        edge(`M ${B.right + 3} ${B.y} H ${designX} V ${attachY} H ${I.right + 3}`, 'conditional', true, id);
       }
       edge(`M ${C.x} ${C.bottom} V ${X.top - 3}`, 'conditional');
       edge(`M ${D.left} ${D.y} H 1 V ${R.y} H ${R.left - 3}`, 'feedback', true);
@@ -239,6 +237,9 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
         const B = box(id);
         edge(`M ${B.right} ${B.y} H ${busX} V ${I.y} H ${I.left - 3}`, 'conditional');
       }
+      const E = box('engineering-design'), U = box('interface-design');
+      edge(`M ${E.right + 3} ${E.y} H ${I.left - 10} V ${I.bottom - 18} H ${I.left - 3}`, 'conditional', true, 'engineering-design');
+      edge(`M ${U.left - 3} ${U.y} H ${I.right + 16} V ${I.bottom - 18} H ${I.right + 3}`, 'conditional', true, 'interface-design');
       edge(`M ${C.x} ${C.bottom} V ${X.top - 3}`, 'conditional');
       edge(`M ${D.left} ${D.y} H 0 V ${R.y} H ${R.left - 3}`, 'feedback', true);
     }

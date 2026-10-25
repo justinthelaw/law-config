@@ -48,13 +48,19 @@ try{
   const cards=[...document.querySelectorAll('.skill-card')];
   const sections=[...sheet.querySelectorAll(':scope > section')].map(el=>el.id);
   const bodyFonts=[...sheet.querySelectorAll('.skill-card p,.flow-node p,.context-guard')].map(el=>parseFloat(getComputedStyle(el).fontSize));
-  return{width:boundary.width,height:boundary.height,sections,skills:cards.map(el=>el.dataset.skill),minBodyFont:Math.min(...bodyFonts),logos:cards.map(el=>{const img=el.querySelector('img');return{src:img?.getAttribute('src'),loaded:img?.complete&&img.naturalWidth>0,width:img?.getBoundingClientRect().width};})};
+  return{width:boundary.width,height:boundary.height,sections,skills:cards.filter(el=>el.dataset.skill).map(el=>el.dataset.skill),minBodyFont:Math.min(...bodyFonts),logos:cards.map(el=>{const img=el.querySelector('img');return{src:img?.getAttribute('src'),loaded:img?.complete&&img.naturalWidth>0,width:img?.getBoundingClientRect().width};})};
  });
  report.checks.push({test:'one workflow and one skill directory',pass:overviewChecks.sections.length===2&&overviewChecks.sections.includes('workflow')&&overviewChecks.sections.includes('skills'),results:overviewChecks});
- report.checks.push({test:'eight unique skill descriptions and existing logos',pass:JSON.stringify([...overviewChecks.skills].sort())===JSON.stringify([...expectedSkills].sort())&&overviewChecks.logos.every(logo=>logo.loaded&&logo.width>=48)&&new Set(overviewChecks.logos.map(logo=>logo.src)).size===8&&await page.locator('.sheet img').count()===11});
+ report.checks.push({test:'eight unique skill descriptions and existing logos',pass:JSON.stringify([...overviewChecks.skills].sort())===JSON.stringify([...expectedSkills].sort())&&overviewChecks.logos.every(logo=>logo.loaded&&logo.width>=48)&&new Set(overviewChecks.logos.map(logo=>logo.src)).size===10&&await page.locator('.sheet img').count()===11});
  report.checks.push({test:'compact overview with legible README typography',pass:overviewChecks.width===1000&&overviewChecks.height<=1800&&overviewChecks.minBodyFont>=20,readmeWidth:860,minBodyDisplayPx:overviewChecks.minBodyFont*860/overviewChecks.width});
- const proposals=await page.locator('.design-proposals').evaluate(el=>({count:document.querySelectorAll('.design-proposals').length,title:el.querySelector('h3').textContent,text:el.textContent,owner:el.querySelector('a').getAttribute('href'),concepts:[...el.querySelectorAll('[data-proposal]')].map(card=>({id:card.dataset.proposal,loaded:card.querySelector('img').complete&&card.querySelector('img').naturalWidth>0,width:card.querySelector('img').getBoundingClientRect().width})),operationalSkills:el.querySelectorAll('[data-skill]').length}));
- report.checks.push({test:'two proposed references within Iterate, separate from operational skills',pass:proposals.count===1&&proposals.title.startsWith('Proposed')&&proposals.text.includes('not available skills')&&proposals.owner==='#node-iterate'&&proposals.operationalSkills===0&&JSON.stringify(proposals.concepts.map(c=>c.id))===JSON.stringify(['engineering-design','interface-design'])&&proposals.concepts.every(c=>c.loaded&&c.width>=48),results:proposals});
+ const additions=await page.evaluate(()=>{
+  const ids=['engineering-design','interface-design'];
+  return {order:[...document.querySelectorAll('.skill-card')].map(el=>el.dataset.skill||el.dataset.planned),detached:document.querySelectorAll('.design-proposals').length,items:ids.map(id=>{
+   const node=document.getElementById('node-'+id),card=document.querySelector('.skill-grid [data-planned="'+id+'"]'),edge=document.querySelector('[data-design-link="'+id+'"]');
+   return {id,node:!!node?.closest('.branches'),planned:node?.textContent.includes('Planned guidance'),status:card?.textContent.includes('Planned · no entrypoint yet'),links:card?.querySelectorAll('a').length,twoWay:!!edge?.hasAttribute('marker-start')&&!!edge?.hasAttribute('marker-end'),d:edge?.getAttribute('d')};
+  })};
+ });
+ report.checks.push({test:'design nodes connected to Iterate and cards integrated after Iterate',pass:additions.detached===0&&additions.order.length===10&&additions.order.slice(1,4).join(',')==='iterate,engineering-design,interface-design'&&additions.items.every(c=>c.node&&c.planned&&c.status&&c.links===0&&c.twoWay),results:additions});
  const guard=await page.locator('.context-guard').evaluate(el=>({count:document.querySelectorAll('.context-guard').length,href:el.querySelector('a').href,height:el.getBoundingClientRect().height}));
  const guardTarget=fileURLToPath(guard.href);
  report.checks.push({test:'one compact shared context guard annotation',pass:guard.count===1&&guard.height<=70&&guardTarget===path.join(base,'context-guard.md')&&(await fs.readFile(guardTarget,'utf8')).includes('PreToolUse'),results:guard});
@@ -90,7 +96,7 @@ try{
  }
  report.checks.push({test:'actual PNG at README display width',pass:imageCheck.complete&&imageCheck.naturalWidth===report.generatedImage.width&&imageCheck.naturalHeight===report.generatedImage.height&&imageCheck.displayWidth===860&&imageCheck.dpr===1,results:imageCheck});
  await readme.close();
- for(const viewport of [{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844},{name:'short',width:924,height:560}]){
+ for(const viewport of [{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844},{name:'narrow-620',width:620,height:844},{name:'narrow-621',width:621,height:844},{name:'mobile-breakpoint',width:760,height:844},{name:'desktop-breakpoint',width:761,height:844},{name:'short',width:924,height:560}]){
   await page.setViewportSize({width:viewport.width,height:viewport.height});
   await page.goto(pathToFileURL(path.join(base,'develop-overview.html')).href);
   await page.evaluate(()=>document.fonts.ready);
@@ -98,7 +104,7 @@ try{
   // Allow layout-driven connectors to settle across two animation frames.
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   const layout=await page.evaluate(()=>{
-   const elements=[...document.querySelectorAll('.flow-node,.skill-card,.context-guard,.design-proposals,.design-concept')];
+   const elements=[...document.querySelectorAll('.flow-node,.skill-card,.context-guard')];
    const failures=[];
    for(const el of elements){
     const bounds=el.getBoundingClientRect(),walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
@@ -110,14 +116,14 @@ try{
    }
    return{horizontalOverflow:document.documentElement.scrollWidth>innerWidth,failures,nodeCount:document.querySelectorAll('.flow-node').length,visibleLogos:[...document.querySelectorAll('.skill-card img')].filter(img=>img.complete&&img.naturalWidth>0).length};
   });
-  report.checks.push({test:`${viewport.name}: visible content fits`,pass:!layout.horizontalOverflow&&layout.failures.length===0&&layout.visibleLogos===8&&layout.nodeCount>0,results:layout});
+  report.checks.push({test:`${viewport.name}: visible content fits`,pass:!layout.horizontalOverflow&&layout.failures.length===0&&layout.visibleLogos===10&&layout.nodeCount>0,results:layout});
   const screenshot=`overview-${viewport.name}.png`;
   await page.screenshot({path:path.join(qa,screenshot),fullPage:true});
   report.screenshots.push(evidencePath(screenshot));
  }
  await page.goto(pathToFileURL(path.join(base,'develop-route-explorer.html')).href);
  await page.waitForURL(pathToFileURL(path.join(base,'develop-overview.html')).href);
- report.checks.push({test:'legacy explorer resolves to single overview',pass:await page.locator('#workflow').count()===1&&await page.locator('.skill-card').count()===8,url:page.url()});
+ report.checks.push({test:'legacy explorer resolves to single overview',pass:await page.locator('#workflow').count()===1&&await page.locator('.skill-card').count()===10,url:page.url()});
  report.pass=report.errors.length===0&&report.networkRequests.length===0&&report.checks.every(c=>c.pass!==false);
  const finalHashes=Object.fromEntries(await Promise.all(sourceFiles.map(async name=>[name,sha256(await fs.readFile(path.join(base,name)))])));
  report.checks.push({test:'source provenance unchanged during rendering',pass:JSON.stringify(sourceHashes)===JSON.stringify(finalHashes)});
