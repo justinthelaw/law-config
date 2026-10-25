@@ -17,6 +17,8 @@ The separate [staged-file size checker](skills/iterate/references/staged-file-si
 
 [![A user asks in chat why a CI job failed. Develop routes the question to Iterate, which reads the failed job log and replies with the cause or the missing evidence. The map also shows the other skills, the shared context guard, and Engineering Design and Interface Design linked to Iterate and included in the skill list.](docs/develop-overview.png)](docs/develop-overview.png)
 
-The diagram and skill list include eight available skills plus Engineering Design and Interface Design as planned additions. Their dashed links show design guidance and handoff with Iterate; runnable entrypoints are not implemented yet.
+The diagram includes eight available skills and two planned additions with no runnable entrypoints yet. The proposed Engineering Design gate must fire for engineering work; Interface Design must fire for interface work. Applicable planning runs with or without human input, defaulting to asking for human input and review.
+
+An explicit user waiver may bypass planning or review within that user's authority. Explicit delegation to Adversarial loop allows unattended planning review with assumptions and unresolved decisions recorded. User absence alone never skips planning/review, and unanswered approval is not permission. Required human, legal and security approvals remain binding; delegation does not expand execution scope. This diagram documents intended behavior only; existing runtime policies are unchanged.
 
 [Full-size image](docs/develop-overview.png) · [Responsive HTML source](docs/develop-overview.html) · [Superpowers Codex source](https://github.com/openai/plugins/tree/main/plugins/superpowers) · [Maintainer instructions](AGENTS.md) · [Apache-2.0](LICENSE)

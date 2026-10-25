@@ -52,15 +52,17 @@ try{
  });
  report.checks.push({test:'one workflow and one skill directory',pass:overviewChecks.sections.length===2&&overviewChecks.sections.includes('workflow')&&overviewChecks.sections.includes('skills'),results:overviewChecks});
  report.checks.push({test:'eight unique skill descriptions and existing logos',pass:JSON.stringify([...overviewChecks.skills].sort())===JSON.stringify([...expectedSkills].sort())&&overviewChecks.logos.every(logo=>logo.loaded&&logo.width>=48)&&new Set(overviewChecks.logos.map(logo=>logo.src)).size===10&&await page.locator('.sheet img').count()===11});
- report.checks.push({test:'compact overview with legible README typography',pass:overviewChecks.width===1000&&overviewChecks.height<=1800&&overviewChecks.minBodyFont>=20,readmeWidth:860,minBodyDisplayPx:overviewChecks.minBodyFont*860/overviewChecks.width});
+ report.checks.push({test:'compact overview with legible README typography',pass:overviewChecks.width===1000&&overviewChecks.height<=2200&&overviewChecks.minBodyFont>=20,readmeWidth:860,minBodyDisplayPx:overviewChecks.minBodyFont*860/overviewChecks.width});
  const additions=await page.evaluate(()=>{
   const ids=['engineering-design','interface-design'];
   return {order:[...document.querySelectorAll('.skill-card')].map(el=>el.dataset.skill||el.dataset.planned),detached:document.querySelectorAll('.design-proposals').length,items:ids.map(id=>{
    const node=document.getElementById('node-'+id),card=document.querySelector('.skill-grid [data-planned="'+id+'"]'),edge=document.querySelector('[data-design-link="'+id+'"]');
-   return {id,node:!!node?.closest('.branches'),planned:node?.textContent.includes('Planned guidance'),status:card?.textContent.includes('Planned · no entrypoint yet'),links:card?.querySelectorAll('a').length,twoWay:!!edge?.hasAttribute('marker-start')&&!!edge?.hasAttribute('marker-end'),d:edge?.getAttribute('d')};
+   return {id,node:!!node?.closest('.branches'),planned:node?.textContent.includes('Planned gate · must fire'),status:card?.textContent.includes('Planned · no entrypoint yet'),links:card?.querySelectorAll('a').length,twoWay:!!edge?.hasAttribute('marker-start')&&!!edge?.hasAttribute('marker-end'),d:edge?.getAttribute('d')};
   })};
  });
  report.checks.push({test:'design nodes connected to Iterate and cards integrated after Iterate',pass:additions.detached===0&&additions.order.length===10&&additions.order.slice(1,4).join(',')==='iterate,engineering-design,interface-design'&&additions.items.every(c=>c.node&&c.planned&&c.status&&c.links===0&&c.twoWay),results:additions});
+ const planning=await page.locator('.planning-policy').textContent();
+ report.checks.push({test:'proposed mandatory planning, human default and explicit unattended boundaries',pass:['entrypoints not implemented','with or without human input','ask for human input and review','Explicit delegation','Adversarial loop','assumptions and unresolved decisions','Explicit user waiver','within that user','Unanswered approval is not permission','human, legal and security approvals','scope stays unchanged'].every(text=>planning.includes(text))});
  const guard=await page.locator('.context-guard').evaluate(el=>({count:document.querySelectorAll('.context-guard').length,href:el.querySelector('a').href,height:el.getBoundingClientRect().height}));
  const guardTarget=fileURLToPath(guard.href);
  report.checks.push({test:'one compact shared context guard annotation',pass:guard.count===1&&guard.height<=70&&guardTarget===path.join(base,'context-guard.md')&&(await fs.readFile(guardTarget,'utf8')).includes('PreToolUse'),results:guard});
@@ -96,7 +98,7 @@ try{
  }
  report.checks.push({test:'actual PNG at README display width',pass:imageCheck.complete&&imageCheck.naturalWidth===report.generatedImage.width&&imageCheck.naturalHeight===report.generatedImage.height&&imageCheck.displayWidth===860&&imageCheck.dpr===1,results:imageCheck});
  await readme.close();
- for(const viewport of [{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844},{name:'narrow-620',width:620,height:844},{name:'narrow-621',width:621,height:844},{name:'mobile-breakpoint',width:760,height:844},{name:'desktop-breakpoint',width:761,height:844},{name:'short',width:924,height:560}]){
+ for(const viewport of [{name:'desktop',width:1440,height:1000},{name:'mobile',width:390,height:844},{name:'narrow-620',width:620,height:844},{name:'narrow-621',width:621,height:844},{name:'tablet-760',width:760,height:844},{name:'tablet-860',width:860,height:844},{name:'mobile-breakpoint',width:920,height:844},{name:'desktop-breakpoint',width:921,height:844},{name:'short',width:924,height:560}]){
   await page.setViewportSize({width:viewport.width,height:viewport.height});
   await page.goto(pathToFileURL(path.join(base,'develop-overview.html')).href);
   await page.evaluate(()=>document.fonts.ready);
@@ -104,7 +106,7 @@ try{
   // Allow layout-driven connectors to settle across two animation frames.
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   const layout=await page.evaluate(()=>{
-   const elements=[...document.querySelectorAll('.flow-node,.skill-card,.context-guard')];
+   const elements=[...document.querySelectorAll('.flow-node,.skill-card,.context-guard,.planning-policy')];
    const failures=[];
    for(const el of elements){
     const bounds=el.getBoundingClientRect(),walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
@@ -114,9 +116,25 @@ try{
      for(const r of range.getClientRects())if(r.left<bounds.left-1||r.right>bounds.right+1||r.top<bounds.top-1||r.bottom>bounds.bottom+1)failures.push({target:el.id||el.className,text:node.textContent.trim()});
     }
    }
-   return{horizontalOverflow:document.documentElement.scrollWidth>innerWidth,failures,nodeCount:document.querySelectorAll('.flow-node').length,visibleLogos:[...document.querySelectorAll('.skill-card img')].filter(img=>img.complete&&img.naturalWidth>0).length};
+   const boxes=[...document.querySelectorAll('.flow-node,.planning-policy')].map(el=>({id:el.id||el.className,rect:el.getBoundingClientRect()}));
+   const distance=(p,r)=>Math.hypot(Math.max(r.left-p.x,0,p.x-r.right),Math.max(r.top-p.y,0,p.y-r.bottom));
+   const clearance=[];
+   for(const path of document.querySelectorAll('.edge')){
+    const length=path.getTotalLength(),matrix=path.getScreenCTM();
+    const at=t=>path.getPointAtLength(t).matrixTransform(matrix);
+    for(const t of [0,length]){
+     // The marker tip extends one CSS pixel beyond its endpoint; allow two for rasterization.
+     const tipClearance=Math.min(...boxes.map(b=>distance(at(t),b.rect)))-2;
+     if(tipClearance<5.5)clearance.push({kind:'arrow tip',path:path.getAttribute('d'),clearance:tipClearance});
+    }
+    for(let t=0;t<=length;t+=3){
+     const point=at(t);
+     for(const box of boxes)if(distance(point,box.rect)<5.5)clearance.push({kind:'path too close',target:box.id,path:path.getAttribute('d')});
+    }
+   }
+   return{horizontalOverflow:document.documentElement.scrollWidth>innerWidth,failures,clearance,nodeCount:document.querySelectorAll('.flow-node').length,visibleLogos:[...document.querySelectorAll('.skill-card img')].filter(img=>img.complete&&img.naturalWidth>0).length};
   });
-  report.checks.push({test:`${viewport.name}: visible content fits`,pass:!layout.horizontalOverflow&&layout.failures.length===0&&layout.visibleLogos===10&&layout.nodeCount>0,results:layout});
+  report.checks.push({test:`${viewport.name}: visible content fits`,pass:!layout.horizontalOverflow&&layout.failures.length===0&&layout.clearance.length===0&&layout.visibleLogos===10&&layout.nodeCount>0,results:layout});
   const screenshot=`overview-${viewport.name}.png`;
   await page.screenshot({path:path.join(qa,screenshot),fullPage:true});
   report.screenshots.push(evidencePath(screenshot));

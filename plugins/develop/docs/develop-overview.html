@@ -30,7 +30,7 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
 h1 { font-size: 36px; line-height: 1.15; letter-spacing: -1.1px; font-weight: 650; }
 h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 .intro { color: var(--muted); margin: 0 0 22px 40px; }
-.workflow-map { position: relative; isolation: isolate; padding: 0 24px; }
+.workflow-map { position: relative; isolation: isolate; padding: 0 40px; }
 .connectors { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: -1; }
 .edge { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .edge.conditional { stroke-dasharray: 5 6; }
@@ -40,7 +40,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 .flow-node p { font-size: 20px; color: var(--muted); }
 .router { width: 224px; margin: 0 auto; background: var(--accent); color: #2d211a; border-color: var(--accent); }
 .route-caption { margin: 10px auto 0; width: fit-content; padding: 0 9px; color: var(--accent); background: var(--paper); text-align: center; position: relative; }
-.branches { display: grid; grid-template-columns: 238px minmax(0, 1fr) 238px; gap: 48px; align-items: start; margin-top: 36px; }
+.branches { display: grid; grid-template-columns: 214px minmax(0, 1fr) 214px; gap: 72px; align-items: start; margin-top: 36px; }
 .assessment-lane { display: grid; gap: 14px; }
 .explicit-entry { margin-top: 10px; }
 .branch-label { position: relative; width: fit-content; padding: 0 5px; margin: 0 auto 9px; background: var(--paper); font-size: 20px; line-height: 1.3; color: var(--accent); text-align: center; }
@@ -49,7 +49,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 .delivery { border-color: #d8ac7d; background: #493425; padding: 13px 10px 16px; }
 .delivery h3 { margin-bottom: 10px; }
 .implementation-lane { min-width: 0; }
-.external { margin-top: 28px; border-style: dashed; background: #2b2420; }
+.external { margin-top: 56px; border-style: dashed; background: #2b2420; }
 .external-title { display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 22px; font-weight: 600; text-decoration-color: #997352; }
 .external img { display: block; width: 48px; height: 48px; border-radius: 6px; background: #fff; }
 .external p { margin-top: 5px; }
@@ -58,6 +58,9 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 .delivery-steps span { display: block; }
 .delivery-steps .loop-back { padding-top: 8px; border-top: 1px solid #84624b; }
 .cleanup-lane .explicit-entry { margin-top: 65px; }
+.planning-policy { margin-top: 26px; padding: 16px 0; border-block: 1px solid var(--line); color: var(--muted); font-size: 20px; }
+.planning-policy strong { color: var(--accent); }
+.planning-policy p + p { margin-top: 8px; }
 .handoff { width: fit-content; max-width: 65%; margin: 23px auto 0 0; padding: 0 9px; position: relative; background: var(--paper); color: var(--accent); text-align: center; font-size: 20px; }
 .reviews { margin: 25px auto 0; width: 100%; padding: 12px 18px; display: flex; justify-content: center; align-items: center; gap: 22px; }
 .reviews h3 { white-space: nowrap; }
@@ -77,15 +80,15 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 .design-node p { margin-top: 5px; color: var(--accent); }
 .skill-card .status { color: var(--accent); margin-top: 5px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
   .sheet { padding-inline: 24px; }
-  .workflow-map { padding-inline: 22px; }
-  .branches { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); gap: 34px; }
+  .workflow-map { padding-inline: 40px; }
+  .branches { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); gap: 72px; }
   .flow-node h3 { font-size: 22px; }
   .external-title { flex-wrap: wrap; }
   .skill-card { padding: 14px; gap: 12px; }
 }
-@media (max-width: 760px) {
+@media (max-width: 920px) {
   body { font-size: 18px; }
   .sheet { padding: 24px 16px; }
   h1 { font-size: 30px; }
@@ -93,12 +96,12 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
   .section-heading { gap: 12px; }
   .section-number { font-size: 18px; }
   .intro { margin: 0 0 22px; font-size: 18px; }
-  .workflow-map { padding: 0 26px; }
+  .workflow-map { padding: 0 52px 0 52px; padding-right: 80px; }
   .router { width: 100%; }
   .route-caption { font-size: 18px; margin-top: 12px; }
   .branches { grid-template-columns: 1fr; gap: 55px; margin-top: 28px; }
   .flow-node h3 { font-size: 22px; }
-  .flow-node p, .branch-label, .audit-note, .delivery-steps, .handoff, .review-return, .context-guard { font-size: 18px; }
+  .flow-node p, .branch-label, .audit-note, .delivery-steps, .handoff, .review-return, .context-guard, .planning-policy { font-size: 18px; }
   .assessment-lane { gap: 16px; }
   .explicit-entry { margin-top: 16px; }
   .cleanup-lane .explicit-entry { margin-top: 46px; }
@@ -123,7 +126,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
   <div class="section-heading"><span class="section-number">01</span><h1 id="workflow-title">Develop · One connected workflow</h1></div>
   <p class="intro">In chat, type "$develop:develop Why did this CI job fail?"</p>
   <div class="workflow-map" role="group" aria-labelledby="workflow-title" aria-describedby="workflow-description">
-    <p id="workflow-description" class="sr-only">Develop sends the CI question to Iterate. Iterate examines the failed job log and tells the user what caused the failure or what evidence is missing. Users can also invoke a skill directly. Develop routes other outcomes to Upgrade, Kaizen, Clean or Adversarial loop. Upgrade Codex is available only by explicit invocation. Upgrade, Kaizen and Upgrade Codex may return findings; they hand changes to Iterate only when implementation is authorized. Iterate performs the requested work and can loop through validation, authorized delivery, monitoring and authorized repair. Clean expands to Deep clean only for explicitly widened scope. Adversarial loop reviews applicable checkpoints and returns findings to the owner within a bounded review budget. An audit-only Upgrade Codex review is opt-in. Iterate may use compatible installed Superpowers guidance for planning, debugging and testing, then resumes with its existing scope and gates. Engineering Design and Interface Design appear in the workflow and skill directory as planned design additions. Dashed two-way links show proposed design guidance and handoff with Iterate; neither design addition has a runnable entrypoint yet.</p>
+    <p id="workflow-description" class="sr-only">Develop sends the CI question to Iterate. Iterate examines the failed job log and tells the user what caused the failure or what evidence is missing. Users can also invoke a skill directly. Develop routes other outcomes to Upgrade, Kaizen, Clean or Adversarial loop. Upgrade Codex is available only by explicit invocation. Upgrade, Kaizen and Upgrade Codex may return findings; they hand changes to Iterate only when implementation is authorized. Iterate performs the requested work and can loop through validation, authorized delivery, monitoring and authorized repair. Clean expands to Deep clean only for explicitly widened scope. Adversarial loop reviews applicable checkpoints and returns findings to the owner within a bounded review budget. An audit-only Upgrade Codex review is opt-in. Iterate may use compatible installed Superpowers guidance for planning, debugging and testing, then resumes with its existing scope and gates. Engineering Design and Interface Design appear in the workflow and skill directory as planned design additions. Neither design addition has a runnable entrypoint yet. In the proposed behavior, Engineering Design must fire for engineering work and Interface Design must fire for interface work, with or without human input. Default to requesting human input and review. Only explicit user waiver within their authority bypasses planning or review. Explicit delegation to Adversarial loop permits unattended planning review with assumptions and unresolved decisions recorded. Unanswered approval is not permission; required human, legal and security approvals and execution scope remain binding.</p>
     <svg class="connectors" aria-hidden="true"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#e8c8a6"/></marker><marker id="feedback-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#bc9471"/></marker></defs><g id="edge-layer"></g></svg>
     <div class="flow-node router" id="node-develop" data-skill="develop"><h3>Develop</h3></div>
     <p class="route-caption">Route by outcome · follow <a href="#node-iterate">Iterate</a> for this question</p>
@@ -136,7 +139,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
           <div class="flow-node explicit" id="node-upgrade-codex" data-skill="upgrade-codex"><h3>Upgrade Codex</h3></div>
           <p class="audit-note">Audit review is opt-in</p>
         </div>
-        <div class="flow-node design-node" id="node-engineering-design" data-planned="engineering-design"><h3>Engineering Design</h3><p>Planned guidance ↔ Iterate</p></div>
+        <div class="flow-node design-node" id="node-engineering-design" data-planned="engineering-design"><h3>Engineering Design</h3><p>Planned gate · must fire for engineering work</p></div>
       </div>
       <div class="implementation-lane">
         <div class="flow-node delivery" id="node-iterate" data-skill="iterate">
@@ -154,10 +157,15 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
           <p class="branch-label">Explicit wider scope</p>
           <div class="flow-node explicit" id="node-deep-clean" data-skill="deep-clean"><h3>Deep clean</h3></div>
         </div>
-        <div class="flow-node design-node" id="node-interface-design" data-planned="interface-design"><h3>Interface Design</h3><p>Planned guidance ↔ Iterate</p></div>
+        <div class="flow-node design-node" id="node-interface-design" data-planned="interface-design"><h3>Interface Design</h3><p>Planned gate · must fire for interface work</p></div>
       </div>
     </div>
     <p class="handoff" id="handoff-label">Return findings · implement only when authorized</p>
+    <div class="planning-policy" aria-label="Proposed planning contract">
+      <p><strong>Proposed planning contract · entrypoints not implemented.</strong><br>Applicable planning must fire with or without human input.</p>
+      <p><strong>Default:</strong> ask for human input and review.<br><strong>Explicit delegation:</strong> Adversarial loop reviews unattended; record assumptions and unresolved decisions.<br><strong>Explicit user waiver:</strong> bypass planning/review only within that user's authority.</p>
+      <p>Unanswered approval is not permission. Required human, legal and security approvals still apply; execution scope stays unchanged.</p>
+    </div>
     <div class="flow-node reviews" id="node-adversarial-loop" data-skill="adversarial-loop"><h3>Adversarial loop</h3><p>Review at applicable checkpoints.<br>Return findings; recheck within the budget.</p></div>
     <p class="review-return">Delivery and repairs require authorization. Reviews return to the owner.</p>
   </div>
@@ -168,8 +176,8 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
   <div class="skill-grid">
     <article class="skill-card" data-skill="develop"><img src="../skills/develop/assets/icon.png" width="64" height="64" alt="Develop Roux logo"><div><h3><a href="../skills/develop/SKILL.md">Develop</a></h3><p>Route the outcome and coordinate the right skills.</p></div></article>
     <article class="skill-card" data-skill="iterate"><img src="../skills/iterate/assets/icon.png" width="64" height="64" alt="Iterate Roux logo"><div><h3><a href="../skills/iterate/SKILL.md">Iterate</a></h3><p>Build, refactor, review, debug and deliver changes.</p></div></article>
-    <article class="skill-card" data-planned="engineering-design"><img src="assets/engineering-design-concept.png" width="64" height="64" alt="Engineering Design Roux with blueprint and drafting triangle"><div><h3>Engineering Design</h3><p>Architecture, boundaries and tradeoffs for Iterate.</p><p class="status">Planned · no entrypoint yet</p></div></article>
-    <article class="skill-card" data-planned="interface-design"><img src="assets/interface-design-concept.png" width="64" height="64" alt="Interface Design Roux with layout and pointer"><div><h3>Interface Design</h3><p>Layout, interaction and accessibility for Iterate.</p><p class="status">Planned · no entrypoint yet</p></div></article>
+    <article class="skill-card" data-planned="engineering-design"><img src="assets/engineering-design-concept.png" width="64" height="64" alt="Engineering Design Roux with blueprint and drafting triangle"><div><h3>Engineering Design</h3><p>Mandatory engineering planning: architecture, boundaries and tradeoffs.</p><p class="status">Planned · no entrypoint yet</p></div></article>
+    <article class="skill-card" data-planned="interface-design"><img src="assets/interface-design-concept.png" width="64" height="64" alt="Interface Design Roux with layout and pointer"><div><h3>Interface Design</h3><p>Mandatory for interface work: layout, interaction and accessibility planning.</p><p class="status">Planned · no entrypoint yet</p></div></article>
     <article class="skill-card" data-skill="upgrade"><img src="../skills/upgrade/assets/icon.png" width="64" height="64" alt="Upgrade Roux logo"><div><h3><a href="../skills/upgrade/SKILL.md">Upgrade</a></h3><p>Assess dependencies and plan runtime migrations.</p></div></article>
     <article class="skill-card" data-skill="kaizen"><img src="../skills/kaizen/assets/icon.png" width="64" height="64" alt="Kaizen Roux logo"><div><h3><a href="../skills/kaizen/SKILL.md">Kaizen</a></h3><p>Learn from selected sessions and recommend improvements.</p></div></article>
     <article class="skill-card" data-skill="clean"><img src="../skills/clean/assets/icon.png" width="64" height="64" alt="Clean Roux logo"><div><h3><a href="../skills/clean/SKILL.md">Clean</a></h3><p>Clean verified disposable resources from this thread.</p></div></article>
@@ -204,44 +212,44 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
       layer.append(path);
     };
     const D = box('develop'), I = box('iterate'), C = box('clean'), X = box('deep-clean'), R = box('adversarial-loop'), S = box('superpowers');
-    edge(`M ${I.x} ${I.bottom + 3} V ${S.top - 3}`, 'conditional', true);
-    const mobile = matchMedia('(max-width: 760px)').matches;
+    edge(`M ${I.x} ${I.bottom + 8} V ${S.top - 8}`, 'conditional', true);
+    const mobile = matchMedia('(max-width: 920px)').matches;
     if (mobile) {
-      const routeX = 10, handoffX = bounds.width - 9;
+      const routeX = 24, handoffX = bounds.width - 32;
       for (const id of ['upgrade', 'kaizen', 'iterate', 'clean']) {
         const B = box(id);
-        edge(`M ${D.left} ${D.y} H ${routeX} V ${B.y} H ${B.left - 3}`);
+        edge(`M ${D.left - 8} ${D.y} H ${routeX} V ${B.y} H ${B.left - 8}`);
       }
       for (const id of ['upgrade', 'kaizen', 'upgrade-codex']) {
         const B = box(id);
-        edge(`M ${B.right} ${B.y} H ${handoffX} V ${I.y} H ${I.right + 3}`, 'conditional');
+        edge(`M ${B.right + 8} ${B.y} H ${handoffX} V ${I.y} H ${I.right + 8}`, 'conditional');
       }
       for (const id of ['engineering-design', 'interface-design']) {
         const B = box(id);
-        const designX = bounds.width - (id === 'engineering-design' ? 17 : 1);
-        const attachY = I.bottom - (id === 'engineering-design' ? 36 : 18);
-        edge(`M ${B.right + 3} ${B.y} H ${designX} V ${attachY} H ${I.right + 3}`, 'conditional', true, id);
+        const designX = bounds.width - (id === 'engineering-design' ? 56 : 8);
+        const attachY = I.bottom - (id === 'engineering-design' ? 64 : 28);
+        edge(`M ${B.right + 8} ${B.y} H ${designX} V ${attachY} H ${I.right + 8}`, 'conditional', true, id);
       }
-      edge(`M ${C.x} ${C.bottom} V ${X.top - 3}`, 'conditional');
-      edge(`M ${D.left} ${D.y} H 1 V ${R.y} H ${R.left - 3}`, 'feedback', true);
+      edge(`M ${C.x} ${C.bottom + 8} V ${X.top - 8}`, 'conditional');
+      edge(`M ${D.left - 8} ${D.y} H 1 V ${R.y} H ${R.left - 8}`, 'feedback', true);
     } else {
-      const fanY = D.bottom + 26, routeX = 11;
+      const fanY = D.bottom + 26, routeX = 16;
       for (const id of ['upgrade', 'kaizen']) {
         const B = box(id);
-        edge(`M ${D.x} ${D.bottom} V ${fanY} H ${routeX} V ${B.y} H ${B.left - 3}`);
+        edge(`M ${D.x} ${D.bottom + 8} V ${fanY} H ${routeX} V ${B.y} H ${B.left - 8}`);
       }
-      edge(`M ${D.x} ${D.bottom} V ${I.top - 3}`);
-      edge(`M ${D.x} ${D.bottom} V ${fanY} H ${C.x} V ${C.top - 3}`);
-      const busX = I.left - 22;
+      edge(`M ${D.x} ${D.bottom + 8} V ${I.top - 8}`);
+      edge(`M ${D.x} ${D.bottom + 8} V ${fanY} H ${C.x} V ${C.top - 8}`);
+      const busX = I.left - 48;
       for (const id of ['upgrade', 'kaizen', 'upgrade-codex']) {
         const B = box(id);
-        edge(`M ${B.right} ${B.y} H ${busX} V ${I.y} H ${I.left - 3}`, 'conditional');
+        edge(`M ${B.right + 8} ${B.y} H ${busX} V ${I.y} H ${I.left - 8}`, 'conditional');
       }
       const E = box('engineering-design'), U = box('interface-design');
-      edge(`M ${E.right + 3} ${E.y} H ${I.left - 10} V ${I.bottom - 18} H ${I.left - 3}`, 'conditional', true, 'engineering-design');
-      edge(`M ${U.left - 3} ${U.y} H ${I.right + 16} V ${I.bottom - 18} H ${I.right + 3}`, 'conditional', true, 'interface-design');
-      edge(`M ${C.x} ${C.bottom} V ${X.top - 3}`, 'conditional');
-      edge(`M ${D.left} ${D.y} H 0 V ${R.y} H ${R.left - 3}`, 'feedback', true);
+      edge(`M ${E.right + 8} ${E.y} H ${I.left - 24} V ${I.bottom - 28} H ${I.left - 8}`, 'conditional', true, 'engineering-design');
+      edge(`M ${U.left - 8} ${U.y} H ${I.right + 36} V ${I.bottom - 28} H ${I.right + 8}`, 'conditional', true, 'interface-design');
+      edge(`M ${C.x} ${C.bottom + 8} V ${X.top - 8}`, 'conditional');
+      edge(`M ${D.left - 8} ${D.y} H 0 V ${R.y} H ${R.left - 8}`, 'feedback', true);
     }
   }
   window.addEventListener('resize', draw);
