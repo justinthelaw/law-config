@@ -61,8 +61,9 @@ try{
   })};
  });
  report.checks.push({test:'design nodes connected to Iterate and cards integrated after Iterate',pass:additions.detached===0&&additions.order.length===10&&additions.order.slice(1,4).join(',')==='iterate,engineering-design,interface-design'&&additions.items.every(c=>c.node&&c.mandatory&&c.links===0&&c.twoWay),results:additions});
- const planning=await page.locator('.planning-policy').textContent();
- report.checks.push({test:'mandatory planning, human default and explicit unattended boundaries',pass:['with or without human input','ask for input and review','Explicitly delegate unattended review','Adversarial loop','assumptions and unresolved decisions','explicitly waive planning/review','within your authority','Unanswered approval is not permission','human, legal and security approvals','scope stays unchanged'].every(text=>planning.includes(text))});
+ const decision=await page.locator('.planning-decision').textContent();
+ const routes=await page.locator('.review-routes').textContent();
+ report.checks.push({test:'compact planning decision with three explicit review routes',pass:decision.includes('Required for applicable work')&&await page.locator('[data-design-link$="-review"]').count()===2&&['Default','Human input + review','Await response','Explicit delegation','Adversarial loop','Record assumptions + open decisions','Explicit user waiver','Within existing authority'].every(text=>routes.includes(text))&&await page.locator('.review-route').count()===3&&await page.locator('.planning-policy').count()===0&&(await page.locator('.review-return').textContent()).includes('silence is not approval')});
  const guard=await page.locator('.context-guard').evaluate(el=>({count:document.querySelectorAll('.context-guard').length,href:el.querySelector('a').href,height:el.getBoundingClientRect().height}));
  const guardTarget=fileURLToPath(guard.href);
  report.checks.push({test:'one compact shared context guard annotation',pass:guard.count===1&&guard.height<=70&&guardTarget===path.join(base,'context-guard.md')&&(await fs.readFile(guardTarget,'utf8')).includes('PreToolUse'),results:guard});
@@ -106,7 +107,7 @@ try{
   // Allow layout-driven connectors to settle across two animation frames.
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   const layout=await page.evaluate(()=>{
-   const elements=[...document.querySelectorAll('.flow-node,.skill-card,.context-guard,.planning-policy')];
+   const elements=[...document.querySelectorAll('.flow-node,.skill-card,.context-guard,.review-label')];
    const failures=[];
    for(const el of elements){
     const bounds=el.getBoundingClientRect(),walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
@@ -116,7 +117,7 @@ try{
      for(const r of range.getClientRects())if(r.left<bounds.left-1||r.right>bounds.right+1||r.top<bounds.top-1||r.bottom>bounds.bottom+1)failures.push({target:el.id||el.className,text:node.textContent.trim()});
     }
    }
-   const boxes=[...document.querySelectorAll('.flow-node,.planning-policy')].map(el=>({id:el.id||el.className,rect:el.getBoundingClientRect()}));
+   const boxes=[...document.querySelectorAll('.flow-node')].map(el=>({id:el.id||el.className,rect:el.getBoundingClientRect()}));
    const distance=(p,r)=>Math.hypot(Math.max(r.left-p.x,0,p.x-r.right),Math.max(r.top-p.y,0,p.y-r.bottom));
    const clearance=[];
    for(const path of document.querySelectorAll('.edge')){

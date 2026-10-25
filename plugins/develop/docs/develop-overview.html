@@ -58,14 +58,18 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 .delivery-steps span { display: block; }
 .delivery-steps .loop-back { padding-top: 8px; border-top: 1px solid #84624b; }
 .cleanup-lane .explicit-entry { margin-top: 65px; }
-.planning-policy { margin-top: 26px; padding: 16px 0; border-block: 1px solid var(--line); color: var(--muted); font-size: 20px; }
-.planning-policy strong { color: var(--accent); }
-.planning-policy p + p { margin-top: 8px; }
+.planning-decision { max-width: 340px; margin: 24px auto 0; border-color: var(--accent); border-radius: 24px; }
+.review-routes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px; margin-top: 48px; }
+.review-route { min-width: 0; }
+.review-label { position: relative; width: fit-content; margin: 0 auto 20px; padding: 0 6px; background: var(--paper); color: var(--accent); text-align: center; }
+.review-routes .flow-node { height: calc(100% - 48px); }
+.review-routes .flow-node h3 { font-size: 22px; }
+.review-routes .flow-node p { margin-top: 6px; }
 .handoff { width: fit-content; max-width: 65%; margin: 23px auto 0 0; padding: 0 9px; position: relative; background: var(--paper); color: var(--accent); text-align: center; font-size: 20px; }
 .reviews { margin: 25px auto 0; width: 100%; padding: 12px 18px; display: flex; justify-content: center; align-items: center; gap: 22px; }
 .reviews h3 { white-space: nowrap; }
 .reviews p { text-align: left; max-width: 480px; }
-.review-return { font-size: 20px; color: var(--muted); text-align: center; margin-top: 11px; }
+.review-return { font-size: 20px; color: var(--muted); text-align: center; margin-top: 48px; }
 .context-guard { margin-top: 12px; padding-top: 8px; border-top: 1px solid #73533e; font-size: 20px; color: var(--muted); text-align: center; }
 .context-guard a { color: var(--accent); }
 #skills { margin-top: 26px; padding-top: 23px; border-top: 1px solid #73533e; }
@@ -101,12 +105,14 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
   .route-caption { font-size: 18px; margin-top: 12px; }
   .branches { grid-template-columns: 1fr; gap: 55px; margin-top: 28px; }
   .flow-node h3 { font-size: 22px; }
-  .flow-node p, .branch-label, .audit-note, .delivery-steps, .handoff, .review-return, .context-guard, .planning-policy { font-size: 18px; }
+  .flow-node p, .branch-label, .audit-note, .delivery-steps, .handoff, .review-return, .context-guard, .review-label { font-size: 18px; }
   .assessment-lane { gap: 16px; }
   .explicit-entry { margin-top: 16px; }
   .cleanup-lane .explicit-entry { margin-top: 46px; }
   .delivery { padding: 16px; }
   .handoff { max-width: none; margin: 20px 0 0; }
+  .review-routes { grid-template-columns: 1fr; gap: 36px; margin-top: 40px; }
+  .review-routes .flow-node { height: auto; }
   .reviews { margin-top: 32px; display: block; padding: 16px 12px; }
   .reviews h3 { white-space: normal; margin-bottom: 8px; }
   .reviews p { text-align: center; }
@@ -161,12 +167,13 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
       </div>
     </div>
     <p class="handoff" id="handoff-label">Return findings · implement only when authorized</p>
-    <div class="planning-policy" aria-label="Planning and review">
-      <p>Applicable planning runs with or without human input. <strong>Default: ask for input and review.</strong> Explicitly delegate unattended review to Adversarial loop, recording assumptions and unresolved decisions; or explicitly waive planning/review within your authority.</p>
-      <p>Unanswered approval is not permission. Required human, legal and security approvals remain binding; execution scope stays unchanged.</p>
+    <div class="flow-node planning-decision" id="node-planning-review"><h3>Planning review?</h3><p>Required for applicable work</p></div>
+    <div class="review-routes">
+      <div class="review-route"><p class="review-label">Default</p><div class="flow-node" id="node-human-review"><h3>Human input + review</h3><p>Await response</p></div></div>
+      <div class="review-route"><p class="review-label">Explicit delegation</p><div class="flow-node" id="node-adversarial-loop" data-skill="adversarial-loop"><h3>Adversarial loop</h3><p>Unattended review<br>Record assumptions + open decisions</p></div></div>
+      <div class="review-route"><p class="review-label">Explicit user waiver</p><div class="flow-node" id="node-waiver"><h3>Continue</h3><p>Within existing authority</p></div></div>
     </div>
-    <div class="flow-node reviews" id="node-adversarial-loop" data-skill="adversarial-loop"><h3>Adversarial loop</h3><p>Review at applicable checkpoints.<br>Return findings; recheck within the budget.</p></div>
-    <p class="review-return">Delivery and repairs require authorization. Reviews return to the owner.</p>
+    <p class="review-return">Required approvals still apply · silence is not approval</p>
   </div>
   <p class="context-guard"><a href="context-guard.md">Shared Codex context guard</a> · trusted local orchestration + execution<br>Bound reads · opt-in save → verify → receipt; otherwise passthrough.</p>
 </section>
@@ -213,6 +220,19 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
     const D = box('develop'), I = box('iterate'), C = box('clean'), X = box('deep-clean'), R = box('adversarial-loop'), S = box('superpowers');
     edge(`M ${I.x} ${I.bottom + 8} V ${S.top - 8}`, 'conditional', true);
     const mobile = matchMedia('(max-width: 920px)').matches;
+    const P = box('planning-review');
+    for (const id of ['engineering-design', 'interface-design']) {
+      const B = box(id);
+      if (mobile) edge(`M ${B.right + 8} ${B.y} H ${bounds.width - (id === 'engineering-design' ? 56 : 8)} V ${P.y} H ${P.right + 8}`, 'conditional', false, id + '-review');
+      else edge(`M ${B.x} ${B.bottom + 8} V ${P.y} H ${id === 'engineering-design' ? P.left - 8 : P.right + 8}`, 'conditional', false, id + '-review');
+    }
+
+    for (const id of ['human-review', 'adversarial-loop', 'waiver']) {
+      const B = box(id);
+      if (mobile) edge(`M ${P.left - 8} ${P.y} H ${box('human-review').left - 24} V ${B.top - 40} H ${B.x} V ${B.top - 8}`, 'conditional');
+      else edge(`M ${P.x} ${P.bottom + 8} V ${P.bottom + 24} H ${B.x} V ${B.top - 8}`, 'conditional');
+    }
+
     if (mobile) {
       const routeX = 24, handoffX = bounds.width - 32;
       for (const id of ['upgrade', 'kaizen', 'iterate', 'clean']) {
@@ -248,7 +268,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
       edge(`M ${E.right + 8} ${E.y} H ${I.left - 24} V ${I.bottom - 28} H ${I.left - 8}`, 'conditional', true, 'engineering-design');
       edge(`M ${U.left - 8} ${U.y} H ${I.right + 36} V ${I.bottom - 28} H ${I.right + 8}`, 'conditional', true, 'interface-design');
       edge(`M ${C.x} ${C.bottom + 8} V ${X.top - 8}`, 'conditional');
-      edge(`M ${D.left - 8} ${D.y} H 0 V ${R.y} H ${R.left - 8}`, 'feedback', true);
+      edge(`M ${D.left - 8} ${D.y} H 0 V ${R.bottom + 24} H ${R.x} V ${R.bottom + 8}`, 'feedback', true);
     }
   }
   window.addEventListener('resize', draw);
