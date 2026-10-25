@@ -30,7 +30,7 @@ a:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
 h1 { font-size: 36px; line-height: 1.15; letter-spacing: -1.1px; font-weight: 650; }
 h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 .intro { color: var(--muted); margin: 0 0 22px 40px; }
-.workflow-map { position: relative; isolation: isolate; padding: 0 40px; }
+.workflow-map { position: relative; isolation: isolate; padding: 0 80px; }
 .connectors { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: -1; }
 .edge { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .edge.conditional { stroke-dasharray: 5 6; }
@@ -49,7 +49,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 .delivery { border-color: #d8ac7d; background: #493425; padding: 13px 10px 16px; }
 .delivery h3 { margin-bottom: 10px; }
 .implementation-lane { min-width: 0; }
-.external { margin-top: 56px; border-style: dashed; background: #2b2420; }
+.external { margin-top: 16px; border-style: dashed; background: #2b2420; }
 .external-title { display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 22px; font-weight: 600; text-decoration-color: #997352; }
 .external img { display: block; width: 48px; height: 48px; border-radius: 6px; background: #fff; }
 .external p { margin-top: 5px; }
@@ -80,13 +80,16 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 .skill-card h3 { font-size: 23px; font-weight: 600; letter-spacing: -.4px; line-height: 1.25; margin-bottom: 5px; }
 .skill-card h3 a { text-decoration-color: #997352; text-decoration-thickness: 1px; }
 .skill-card p { font-size: 20px; line-height: 1.35; color: var(--muted); }
-.design-node { margin-top: 24px; border-style: dashed; }
+.design-node { margin-top: 16px; border-style: dashed; }
+.exchange-note { position: relative; z-index: 1; width: fit-content; max-width: 100%; margin: 24px auto 0; padding: 0 5px; background: var(--paper); color: var(--accent); font-size: 20px; line-height: 1.4; text-align: center; }
+.exchange-note span { display: block; white-space: nowrap; }
+.feedback-note { position: absolute; width: 250px; max-width: none; margin: 0; transform: rotate(-90deg); transform-origin: center; }
 .design-node p { margin-top: 5px; color: var(--accent); }
 .skill-card .status { color: var(--accent); margin-top: 5px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 @media (max-width: 1100px) {
   .sheet { padding-inline: 24px; }
-  .workflow-map { padding-inline: 40px; }
+  .workflow-map { padding-inline: 80px; }
   .branches { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); gap: 72px; }
   .flow-node h3 { font-size: 22px; }
   .external-title { flex-wrap: wrap; }
@@ -100,12 +103,12 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
   .section-heading { gap: 12px; }
   .section-number { font-size: 18px; }
   .intro { margin: 0 0 22px; font-size: 18px; }
-  .workflow-map { padding: 0 52px 0 52px; padding-right: 80px; }
+  .workflow-map { padding: 0 80px 0 84px; }
   .router { width: 100%; }
   .route-caption { font-size: 18px; margin-top: 12px; }
   .branches { grid-template-columns: 1fr; gap: 55px; margin-top: 28px; }
   .flow-node h3 { font-size: 22px; }
-  .flow-node p, .branch-label, .audit-note, .delivery-steps, .handoff, .review-return, .context-guard, .review-label { font-size: 18px; }
+  .flow-node p, .branch-label, .audit-note, .delivery-steps, .handoff, .review-return, .context-guard, .review-label, .exchange-note { font-size: 18px; }
   .assessment-lane { gap: 16px; }
   .explicit-entry { margin-top: 16px; }
   .cleanup-lane .explicit-entry { margin-top: 46px; }
@@ -133,6 +136,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
   <p class="intro">In chat, type "$develop:develop Why did this CI job fail?"</p>
   <div class="workflow-map" role="group" aria-labelledby="workflow-title" aria-describedby="workflow-description">
     <p id="workflow-description" class="sr-only">Develop sends the CI question to Iterate. Iterate examines the failed job log and tells the user what caused the failure or what evidence is missing. Users can also invoke a skill directly. Develop routes other outcomes to Upgrade, Kaizen, Clean or Adversarial loop. Upgrade Codex is available only by explicit invocation. Upgrade, Kaizen and Upgrade Codex may return findings; they hand changes to Iterate only when implementation is authorized. Iterate performs the requested work and can loop through validation, authorized delivery, monitoring and authorized repair. Clean expands to Deep clean only for explicitly widened scope. Adversarial loop reviews applicable checkpoints and returns findings to the owner within a bounded review budget. An audit-only Upgrade Codex review is opt-in. Iterate may use compatible installed Superpowers guidance for planning, debugging and testing, then resumes with its existing scope and gates. Engineering Design must fire for engineering work and Interface Design must fire for interface work, with or without human input. Default to requesting human input and review. Only explicit user waiver within their authority bypasses planning or review. Explicit delegation to Adversarial loop permits unattended planning review with assumptions and unresolved decisions recorded. Unanswered approval is not permission; required human, legal and security approvals and execution scope remain binding.</p>
+    <div class="exchange-note feedback-note" id="note-review" data-exchange="review"><span>← Request review</span><span>→ Return findings</span></div>
     <svg class="connectors" aria-hidden="true"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#e8c8a6"/></marker><marker id="feedback-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#bc9471"/></marker></defs><g id="edge-layer"></g></svg>
     <div class="flow-node router" id="node-develop" data-skill="develop"><h3>Develop</h3></div>
     <p class="route-caption">Route by outcome · follow <a href="#node-iterate">Iterate</a> for this question</p>
@@ -145,6 +149,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
           <div class="flow-node explicit" id="node-upgrade-codex" data-skill="upgrade-codex"><h3>Upgrade Codex</h3></div>
           <p class="audit-note">Audit review is opt-in</p>
         </div>
+        <div class="exchange-note" id="note-engineering-design" data-exchange="engineering-design"><span>↓ Request plan</span><span>↑ Return plan</span></div>
         <div class="flow-node design-node" id="node-engineering-design" data-design="engineering-design"><h3>Engineering Design</h3><p>Planning gate · must fire for engineering work</p></div>
       </div>
       <div class="implementation-lane">
@@ -152,6 +157,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
           <h3>Iterate</h3>
           <div class="delivery-steps"><span>Read the failed job log.</span><span class="loop-back">Explain the cause in chat</span><span>or name the missing evidence.</span></div>
         </div>
+        <div class="exchange-note" id="note-guidance" data-exchange="guidance"><span>↓ Use guidance</span><span>↑ Resume work</span></div>
         <div class="flow-node external" id="node-superpowers" data-external="superpowers">
           <a class="external-title" href="https://github.com/openai/plugins/tree/main/plugins/superpowers" title="Official Superpowers Codex source"><img src="assets/superpowers-logo.png" width="48" height="48" alt="Official Superpowers logo"><span>Superpowers ↗</span></a>
           <p>Optional when installed</p><p>Plan · debug · test</p>
@@ -163,6 +169,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
           <p class="branch-label">Explicit wider scope</p>
           <div class="flow-node explicit" id="node-deep-clean" data-skill="deep-clean"><h3>Deep clean</h3></div>
         </div>
+        <div class="exchange-note" id="note-interface-design" data-exchange="interface-design"><span>↓ Request plan</span><span>↑ Return plan</span></div>
         <div class="flow-node design-node" id="node-interface-design" data-design="interface-design"><h3>Interface Design</h3><p>Planning gate · must fire for interface work</p></div>
       </div>
     </div>
@@ -214,11 +221,18 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
       path.setAttribute('class', `edge ${kind}`);
       const marker = kind === 'feedback' ? 'feedback-arrow' : 'arrow';
       path.setAttribute('marker-end', `url(#${marker})`);
-      if (both) path.setAttribute('marker-start', `url(#${marker})`);
+      if (both) {
+        path.setAttribute('marker-start', `url(#${marker})`);
+        path.setAttribute('data-exchange-path', kind === 'feedback' ? 'review' : design || 'guidance');
+      }
       layer.append(path);
     };
     const D = box('develop'), I = box('iterate'), C = box('clean'), X = box('deep-clean'), R = box('adversarial-loop'), S = box('superpowers');
     edge(`M ${I.x} ${I.bottom + 8} V ${S.top - 8}`, 'conditional', true);
+    const reviewNote = document.getElementById('note-review');
+    reviewNote.style.left = (12 - 125) + 'px';
+    reviewNote.style.top = ((D.y + R.y) / 2 - reviewNote.offsetHeight / 2) + 'px';
+    const noteTop = id => document.getElementById('note-' + id).getBoundingClientRect().top - bounds.top;
     const mobile = matchMedia('(max-width: 920px)').matches;
     const P = box('planning-review');
     for (const id of ['engineering-design', 'interface-design']) {
@@ -234,7 +248,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
     }
 
     if (mobile) {
-      const routeX = 24, handoffX = bounds.width - 32;
+      const routeX = 56, handoffX = bounds.width - 32;
       for (const id of ['upgrade', 'kaizen', 'iterate', 'clean']) {
         const B = box(id);
         edge(`M ${D.left - 8} ${D.y} H ${routeX} V ${B.y} H ${B.left - 8}`);
@@ -247,12 +261,12 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
         const B = box(id);
         const designX = bounds.width - (id === 'engineering-design' ? 56 : 8);
         const attachY = I.bottom - (id === 'engineering-design' ? 64 : 28);
-        edge(`M ${B.right + 8} ${B.y} H ${designX} V ${attachY} H ${I.right + 8}`, 'conditional', true, id);
+        edge(`M ${B.x} ${B.top - 8} V ${noteTop(id) - 12} H ${designX} V ${attachY} H ${I.right + 8}`, 'conditional', true, id);
       }
       edge(`M ${C.x} ${C.bottom + 8} V ${X.top - 8}`, 'conditional');
-      edge(`M ${D.left - 8} ${D.y} H 1 V ${R.y} H ${R.left - 8}`, 'feedback', true);
+      edge(`M ${D.left - 8} ${D.y} H 12 V ${R.y} H ${R.left - 8}`, 'feedback', true);
     } else {
-      const fanY = D.bottom + 26, routeX = 16;
+      const fanY = D.bottom + 26, routeX = 56;
       for (const id of ['upgrade', 'kaizen']) {
         const B = box(id);
         edge(`M ${D.x} ${D.bottom + 8} V ${fanY} H ${routeX} V ${B.y} H ${B.left - 8}`);
@@ -265,10 +279,10 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
         edge(`M ${B.right + 8} ${B.y} H ${busX} V ${I.y} H ${I.left - 8}`, 'conditional');
       }
       const E = box('engineering-design'), U = box('interface-design');
-      edge(`M ${E.right + 8} ${E.y} H ${I.left - 24} V ${I.bottom - 28} H ${I.left - 8}`, 'conditional', true, 'engineering-design');
-      edge(`M ${U.left - 8} ${U.y} H ${I.right + 36} V ${I.bottom - 28} H ${I.right + 8}`, 'conditional', true, 'interface-design');
+      edge(`M ${E.x} ${E.top - 8} V ${noteTop('engineering-design') - 12} H ${I.left - 24} V ${I.bottom - 28} H ${I.left - 8}`, 'conditional', true, 'engineering-design');
+      edge(`M ${U.x} ${U.top - 8} V ${noteTop('interface-design') - 12} H ${I.right + 36} V ${I.bottom - 28} H ${I.right + 8}`, 'conditional', true, 'interface-design');
       edge(`M ${C.x} ${C.bottom + 8} V ${X.top - 8}`, 'conditional');
-      edge(`M ${D.left - 8} ${D.y} H 0 V ${R.bottom + 24} H ${R.x} V ${R.bottom + 8}`, 'feedback', true);
+      edge(`M ${D.left - 8} ${D.y} H 12 V ${R.bottom + 24} H ${R.x} V ${R.bottom + 8}`, 'feedback', true);
     }
   }
   window.addEventListener('resize', draw);

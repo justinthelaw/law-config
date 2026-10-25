@@ -61,6 +61,8 @@ try{
   })};
  });
  report.checks.push({test:'design nodes connected to Iterate and cards integrated after Iterate',pass:additions.detached===0&&additions.order.length===10&&additions.order.slice(1,4).join(',')==='iterate,engineering-design,interface-design'&&additions.items.every(c=>c.node&&c.mandatory&&c.links===0&&c.twoWay),results:additions});
+ const exchanges=await page.locator('[data-exchange]').allTextContents();
+ report.checks.push({test:'four two-way exchanges have explicit directional handoff notes',pass:await page.locator('.edge[marker-start]').count()===4&&exchanges.length===4&&exchanges.filter(t=>t.includes('↓ Request plan')&&t.includes('↑ Return plan')).length===2&&exchanges.some(t=>t.includes('↓ Use guidance')&&t.includes('↑ Resume work'))&&exchanges.some(t=>t.includes('← Request review')&&t.includes('→ Return findings'))});
  const decision=await page.locator('.planning-decision').textContent();
  const routes=await page.locator('.review-routes').textContent();
  report.checks.push({test:'compact planning decision with three explicit review routes',pass:decision.includes('Required for applicable work')&&await page.locator('[data-design-link$="-review"]').count()===2&&['Default','Human input + review','Await response','Explicit delegation','Adversarial loop','Record assumptions + open decisions','Explicit user waiver','Within existing authority'].every(text=>routes.includes(text))&&await page.locator('.review-route').count()===3&&await page.locator('.planning-policy').count()===0&&(await page.locator('.review-return').textContent()).includes('silence is not approval')});
@@ -107,7 +109,7 @@ try{
   // Allow layout-driven connectors to settle across two animation frames.
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   const layout=await page.evaluate(()=>{
-   const elements=[...document.querySelectorAll('.flow-node,.skill-card,.context-guard,.review-label')];
+   const elements=[...document.querySelectorAll('.flow-node,.skill-card,.context-guard,.review-label,.exchange-note')];
    const failures=[];
    for(const el of elements){
     const bounds=el.getBoundingClientRect(),walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
@@ -120,6 +122,21 @@ try{
    const boxes=[...document.querySelectorAll('.flow-node')].map(el=>({id:el.id||el.className,rect:el.getBoundingClientRect()}));
    const distance=(p,r)=>Math.hypot(Math.max(r.left-p.x,0,p.x-r.right),Math.max(r.top-p.y,0,p.y-r.bottom));
    const clearance=[];
+   for(const note of document.querySelectorAll('[data-exchange]')){
+    const bounds=note.getBoundingClientRect();
+    const path=document.querySelector('[data-exchange-path="'+note.dataset.exchange+'"]');
+    let adjacent=false;
+    if(path){
+     const matrix=path.getScreenCTM();
+     for(let t=0;t<=path.getTotalLength();t+=3){
+      const p=path.getPointAtLength(t).matrixTransform(matrix);
+      if(p.x>=bounds.left&&p.x<=bounds.right&&p.y>=bounds.top&&p.y<=bounds.bottom)adjacent=true;
+     }
+    }
+    if(!adjacent)failures.push({target:note.id,text:'Directional note is detached from its exchange path'});
+    for(const box of boxes)if(bounds.left<box.rect.right&&bounds.right>box.rect.left&&bounds.top<box.rect.bottom&&bounds.bottom>box.rect.top)failures.push({target:note.id,text:'Directional note overlaps '+box.id});
+   }
+
    for(const path of document.querySelectorAll('.edge')){
     const length=path.getTotalLength(),matrix=path.getScreenCTM();
     const at=t=>path.getPointAtLength(t).matrixTransform(matrix);
