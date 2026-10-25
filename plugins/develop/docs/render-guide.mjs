@@ -19,7 +19,7 @@ const base=path.dirname(fileURLToPath(import.meta.url));
 const qa=await fs.mkdtemp(path.join(tmpdir(),'develop-browser-qa-'));
 const evidencePath=name=>path.resolve(qa,name);
 const sha256=data=>createHash('sha256').update(data).digest('hex');
-const sourceFiles=['develop-overview.html','develop-route-explorer.html','render-guide.mjs','assets/superpowers-logo.png'];
+const sourceFiles=['develop-overview.html','develop-route-explorer.html','render-guide.mjs','assets/superpowers-logo.png','assets/engineering-design-concept.png','assets/interface-design-concept.png'];
 const sourceHashes=Object.fromEntries(await Promise.all(sourceFiles.map(async name=>[name,sha256(await fs.readFile(path.join(base,name)))])));
 const launch={headless:true};
 if(engine==='chromium')launch.chromiumSandbox=true;
@@ -38,7 +38,7 @@ try{
  await page.route('**/*',route=>{const url=route.request().url();if(url.startsWith('file:')||url.startsWith('data:'))return route.continue();report.networkRequests.push(url);return route.abort();});
  await page.goto(pathToFileURL(path.join(base,'develop-overview.html')).href);
  await page.evaluate(()=>document.fonts.ready);
- await page.locator('.skill-card img').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
+ await page.locator('.sheet img').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  await page.locator('.sheet').screenshot({path:path.join(qa,'develop-overview.png')});
  report.screenshots.push(evidencePath('develop-overview.png'));
@@ -51,8 +51,10 @@ try{
   return{width:boundary.width,height:boundary.height,sections,skills:cards.map(el=>el.dataset.skill),minBodyFont:Math.min(...bodyFonts),logos:cards.map(el=>{const img=el.querySelector('img');return{src:img?.getAttribute('src'),loaded:img?.complete&&img.naturalWidth>0,width:img?.getBoundingClientRect().width};})};
  });
  report.checks.push({test:'one workflow and one skill directory',pass:overviewChecks.sections.length===2&&overviewChecks.sections.includes('workflow')&&overviewChecks.sections.includes('skills'),results:overviewChecks});
- report.checks.push({test:'eight unique skill descriptions and existing logos',pass:JSON.stringify([...overviewChecks.skills].sort())===JSON.stringify([...expectedSkills].sort())&&overviewChecks.logos.every(logo=>logo.loaded&&logo.width>=48)&&new Set(overviewChecks.logos.map(logo=>logo.src)).size===8&&await page.locator('.sheet img').count()===9});
- report.checks.push({test:'compact overview with legible README typography',pass:overviewChecks.width===1000&&overviewChecks.height<=1550&&overviewChecks.minBodyFont>=20,readmeWidth:860,minBodyDisplayPx:overviewChecks.minBodyFont*860/overviewChecks.width});
+ report.checks.push({test:'eight unique skill descriptions and existing logos',pass:JSON.stringify([...overviewChecks.skills].sort())===JSON.stringify([...expectedSkills].sort())&&overviewChecks.logos.every(logo=>logo.loaded&&logo.width>=48)&&new Set(overviewChecks.logos.map(logo=>logo.src)).size===8&&await page.locator('.sheet img').count()===11});
+ report.checks.push({test:'compact overview with legible README typography',pass:overviewChecks.width===1000&&overviewChecks.height<=1800&&overviewChecks.minBodyFont>=20,readmeWidth:860,minBodyDisplayPx:overviewChecks.minBodyFont*860/overviewChecks.width});
+ const proposals=await page.locator('.design-proposals').evaluate(el=>({count:document.querySelectorAll('.design-proposals').length,title:el.querySelector('h3').textContent,text:el.textContent,owner:el.querySelector('a').getAttribute('href'),concepts:[...el.querySelectorAll('[data-proposal]')].map(card=>({id:card.dataset.proposal,loaded:card.querySelector('img').complete&&card.querySelector('img').naturalWidth>0,width:card.querySelector('img').getBoundingClientRect().width})),operationalSkills:el.querySelectorAll('[data-skill]').length}));
+ report.checks.push({test:'two proposed references within Iterate, separate from operational skills',pass:proposals.count===1&&proposals.title.startsWith('Proposed')&&proposals.text.includes('not available skills')&&proposals.owner==='#node-iterate'&&proposals.operationalSkills===0&&JSON.stringify(proposals.concepts.map(c=>c.id))===JSON.stringify(['engineering-design','interface-design'])&&proposals.concepts.every(c=>c.loaded&&c.width>=48),results:proposals});
  const guard=await page.locator('.context-guard').evaluate(el=>({count:document.querySelectorAll('.context-guard').length,href:el.querySelector('a').href,height:el.getBoundingClientRect().height}));
  const guardTarget=fileURLToPath(guard.href);
  report.checks.push({test:'one compact shared context guard annotation',pass:guard.count===1&&guard.height<=70&&guardTarget===path.join(base,'context-guard.md')&&(await fs.readFile(guardTarget,'utf8')).includes('PreToolUse'),results:guard});
@@ -92,11 +94,11 @@ try{
   await page.setViewportSize({width:viewport.width,height:viewport.height});
   await page.goto(pathToFileURL(path.join(base,'develop-overview.html')).href);
   await page.evaluate(()=>document.fonts.ready);
-  await page.locator('.skill-card img').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
+  await page.locator('.sheet img').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
   // Allow layout-driven connectors to settle across two animation frames.
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   const layout=await page.evaluate(()=>{
-   const elements=[...document.querySelectorAll('.flow-node,.skill-card,.context-guard')];
+   const elements=[...document.querySelectorAll('.flow-node,.skill-card,.context-guard,.design-proposals,.design-concept')];
    const failures=[];
    for(const el of elements){
     const bounds=el.getBoundingClientRect(),walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
