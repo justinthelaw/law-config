@@ -2,9 +2,9 @@
 
 ## Package and workflow contracts
 
-- Keep eight portable skills and the concrete native Codex context guard: `PreToolUse` and `PostToolUse` in `hooks/hooks.json`, handled by `hooks/context_guard.py`. Bundled, explicitly invoked offline/read-only helpers remain separate. Do not add machine-specific paths, tokens, other executable hooks, an MCP server or a service dependency without a concrete need. Preserve existing runtime pins and Git/security hooks.
+- Keep ten portable skills and the concrete native Codex context guard: `PreToolUse` and `PostToolUse` in `hooks/hooks.json`, handled by `hooks/context_guard.py`. Bundled, explicitly invoked offline/read-only helpers remain separate. Do not add machine-specific paths, tokens, other executable hooks, an MCP server or a service dependency without a concrete need. Preserve existing runtime pins and Git/security hooks.
 - For changes under `skills/`, follow the [skill authoring rules](skills/AGENTS.md). Keep shared defaults and handoffs in `skills/develop/references/contract.md`, with domain detail in owning references. Standalone `kaizen`, `adversarial-loop` and audit-only `upgrade-codex` use their entrypoint's completion policy without repository discovery or coding dependencies.
-- Preserve selected repository/session scope, dependency assessment before upgrades, explicit post-plan bypass, fresh non-forked reviews and original model/effort matching. Bundled implementation guidance works without an external framework. Host metadata and optional adapters must not become generic prerequisites. Keep eight entry points; `upgrade` owns dependency upgrades and explicit-only `upgrade-codex` owns Codex compatibility sweeps. Never route generic upgrades or Kaizen requests to `upgrade-codex`.
+- Preserve selected repository/session scope, dependency assessment before upgrades, explicit post-plan bypass, fresh non-forked reviews and original model/effort matching. Bundled implementation guidance works without an external framework. Host metadata and optional adapters must not become generic prerequisites. Keep ten entry points; `upgrade` owns dependency upgrades and explicit-only `upgrade-codex` owns Codex compatibility sweeps. Never route generic upgrades or Kaizen requests to `upgrade-codex`.
 - Commit signing is nonblocking: prefer an existing noninteractive signer and fall back unsigned, preserving the thread's explicit preference and actual repository/server restrictions. Do not import donor signing gates, change persistent Git configuration or set up keys to satisfy this workflow.
 - Change user-facing behavior only within the request; never use internal review as authorization to bypass host controls. Keep conversation packets and task-specific findings outside tracked files.
 
@@ -22,7 +22,7 @@ python -m unittest discover -s skills/deep-clean/tests -p 'test_*.py'
 
 Run `git diff --check` and the [contribution checks](../../docs/CONTRIBUTING.md#validation) from the repository root. Commit the source metadata and generated manifest together. For detached installed payloads, omit `--marketplace-root`; run fixture-writing package tests on a disposable copy outside the installed cache.
 
-Before publication, exercise relevant [fresh-context scenarios](tests/scenarios.md), packaged references/helpers from an unrelated working directory, and actual icon legibility. Inspect actual artifacts; structure checks, text matching and simulated decisions do not prove agent behavior, installation, live publication or deployment. Commit only scoped changes, update the plugin version when releasing, and verify the same Git revision on each installed surface.
+For Develop changes, follow [behavioral testing](AGENTS.test.md): observe fresh ephemeral agents on affected scenarios before relying on unit-test results. Before publication, also check affected packaged references/helpers from an unrelated working directory and changed artwork at actual display sizes. Inspect actual artifacts; structure checks, text matching and simulated decisions do not prove agent behavior, installation, live publication or deployment. Commit only scoped changes, update the plugin version when releasing, and verify the same Git revision on each installed surface.
 
 ## Host metadata and activation
 
@@ -40,7 +40,7 @@ Other hosts use their documented loading and account/workspace distribution flow
 
 Follow [artwork ownership](assets/AGENTS.md). Preserve approved logo/icon pixels; new skill icons must match the existing Roux palette, proportions and crisp pixel edges, with transparent backgrounds and a clear task prop. Declare both `icon_small` and `icon_large` in each skill's `agents/openai.yaml`; inspect the set together at 48 px and smaller.
 
-Keep the README's linked PNG and [HTML source](docs/develop-overview.html) to one workflow and one skill directory. Trace the example from the user's chat request through the owning skill to the answer or missing evidence. Show each skill's logo and description once; show the shared context guard as one small annotation, never a ninth skill or separate section. Keep detailed policy in the owning skill. The former [explorer](docs/develop-route-explorer.html) redirects to this overview. From this plugin directory, use an already installed Playwright package and sandbox-capable browser:
+Keep the README's linked PNG and [HTML source](docs/develop-overview.html) to one workflow and one skill directory. Trace the example from the user's chat request through the owning skill to the answer or missing evidence. Show each skill's logo and description once; show the shared context guard as one small annotation, never an extra skill or separate section. Keep detailed policy in the owning skill. The former [explorer](docs/develop-route-explorer.html) redirects to this overview. From this plugin directory, use an already installed Playwright package and sandbox-capable browser:
 
 ```sh
 node docs/render-guide.mjs

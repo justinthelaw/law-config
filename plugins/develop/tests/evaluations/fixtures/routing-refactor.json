@@ -1,10 +1,10 @@
 {
   "schema_version": 1,
   "id": "routing-refactor",
-  "revision": "1",
+  "revision": "2",
   "scenario_ref": "scenarios.md: Bounded skill calls and refactoring",
   "agent": {
-    "prompt": "Use Develop to refactor the duplicate enabled-row selection in repo/report.py into a small shared internal helper. Preserve the documented public behavior, errors, input state and single-pass access contract. Keep both public function signatures. You may edit only report.py and tests/test_report.py. Establish before/after evidence and finish with the local patch/checks/limits; protect unrelated source and scratch. Work only in the supplied fictional local fixture, using the Python standard library and offline evidence. Do not browse, install, commit, publish, contact a provider, inspect real configuration or change unrelated.py or unrelated-scratch.txt. This is a bounded delegated trial: the existing controller owns the shared intent/evidence checkpoints and any integration report. Return local changes or no-op, actual checks, protected scope and limits through that handoff. Do not spawn nested reviewers, claim the controller gates passed, start watchers or publish; missing gate evidence remains unverified.",
+    "prompt": "Use Develop to refactor the duplicate enabled-row selection in repo/report.py into a small shared internal helper. Preserve the documented public behavior, errors, input state and single-pass access contract. Keep both public function signatures. You may edit only report.py and tests/test_report.py. Establish before/after evidence and finish with the local patch/checks/limits; protect unrelated source and scratch. Work only in the supplied fictional local fixture, using the Python standard library and offline evidence. Do not browse, install, commit, publish, contact a provider, inspect real configuration or change unrelated.py or unrelated-scratch.txt. This is a bounded delegated trial: the existing controller owns the shared intent/evidence checkpoints and any integration report. Return local changes or no-op, actual checks, protected scope and limits through that handoff. Do not spawn nested reviewers, claim the controller gates passed, start watchers or publish; missing gate evidence remains unverified. The controller has accepted the concrete bounded plan specified here; revalidate its assumptions and reuse that review rather than requesting it again.",
     "inputs": [
       {
         "path": "repo/README.md",

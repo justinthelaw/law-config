@@ -57,7 +57,7 @@ Derive these variables from the verified target, not example names. Never use pl
 
 ## Requested deployment or operations handoff
 
-Readiness and publication do not establish deployment. When deployment or an operational handoff is requested, use the selected owner's existing mechanism and [runtime contracts](../../upgrade/references/runtime-contracts.md); identify the candidate and target environment, required authority, acceptance evidence, rollback/recovery owner and remaining human gates. Carry unknown identities or unavailable checks explicitly. Only execute operational changes already authorized for that target; do not invent a deployment framework or treat merge/push authority as production authority.
+Readiness and publication do not establish deployment. When deployment or an operational handoff is requested, use the selected owner's existing mechanism and [runtime contracts](../../develop/references/runtime-contracts.md); identify the candidate and target environment, required authority, acceptance evidence, rollback/recovery owner and remaining human gates. Carry unknown identities or unavailable checks explicitly. Only execute operational changes already authorized for that target; do not invent a deployment framework or treat merge/push authority as production authority.
 
 ## Completion
 

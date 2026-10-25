@@ -14,7 +14,7 @@ documentation meaning and applicable performance contracts. Establish a baseline
 with existing tests and add characterization only for relevant unprotected
 behavior. For lifecycle-sensitive work, reuse the applicable ordering,
 cancellation, retry and cleanup checks in the existing
-[runtime contract guidance](../../upgrade/references/runtime-contracts.md#inspect-consumed-contracts);
+[runtime contract guidance](../../develop/references/runtime-contracts.md#inspect-consumed-contracts);
 this does not start a dependency upgrade.
 
 Use [focused source reading](documentation.md#focused-source-reading) to locate

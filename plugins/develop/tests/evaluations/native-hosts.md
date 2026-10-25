@@ -39,7 +39,7 @@ configuration to obtain a pass.
 
 | Fixture | Purpose | Required observations |
 | --- | --- | --- |
-| [native-codex-positive.json](fixtures/native-codex-positive.json) | Explicit `$develop` invocation on a read-only repository task | Resolved skill path; full body and shared-reference loading evidence; both nonce responses; tool events; computed total; completed matching reviews or evidenced unavailability |
+| [native-codex-positive.json](fixtures/native-codex-positive.json) | Explicit `$develop` invocation on a read-only repository task | Resolved skill path; full body and shared-reference loading evidence; both nonce responses; tool events; computed total; proportionate validation without automatic reviewer pairs |
 | [native-codex-negative.json](fixtures/native-codex-negative.json) | Unrelated arithmetic with the same available skills | Correct answer; no Develop workflow, model consumption of body/references, nonce response or unnecessary delegation; discovery metadata scans are allowed |
 
 The positive fixture targets an unnamespaced local authoring copy. For an
@@ -128,7 +128,7 @@ and the scenarios' simulated denials do not establish native activation.
 Use an already authorized installation with local orchestration and execution.
 Record the exact package/handler hashes, native hook source and `/hooks` status,
 Python version, effective commands and limits, and actual pre/post hook events.
-Confirm native discovery exposes both hooks and all eight skills. The package
+Confirm native discovery exposes both hooks and all ten skills. The package
 must select `.codex-plugin/plugin.json`; root `plugin.json` takes precedence and
 silently suppresses bundled hooks. Keep source metadata in `plugin-source.json`.
 Do not install, enable, trust, bypass trust or change configuration merely to

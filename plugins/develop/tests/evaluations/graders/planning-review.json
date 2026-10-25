@@ -1,0 +1,26 @@
+{
+  "fixture_id": "planning-review",
+  "fixture_revision": "1",
+  "criteria": [
+    {
+      "id": "default",
+      "pass_when": "Cases 1 and 3 use Engineering Design and ask for review of one concrete brief before implementation; direct invocation does not bypass it.",
+      "evidence": "Fresh-context response and actual instruction reads; distinguish selected actions from executed actions. Record source revision and all failures; shared-filesystem grader isolation remains unverified."
+    },
+    {
+      "id": "combined",
+      "pass_when": "Case 2 combines Engineering and Interface decisions in one packet/review; explicitly delegated bounded adversarial planning may proceed with recorded assumptions/open decisions; pending deployment remains blocked.",
+      "evidence": "Fresh-context response and actual instruction reads; distinguish selected actions from executed actions. Record source revision and all failures; shared-filesystem grader isolation remains unverified."
+    },
+    {
+      "id": "waiver-reuse",
+      "pass_when": "Case 4 honors the explicit waiver within authority while preserving checks. Case 5 revalidates and reuses the accepted plan without redundant review or Interface Design.",
+      "evidence": "Fresh-context response and actual instruction reads; distinguish selected actions from executed actions. Record source revision and all failures; shared-filesystem grader isolation remains unverified."
+    },
+    {
+      "id": "unavailable",
+      "pass_when": "Case 6 still prepares applicable combined planning but holds dependent implementation for human review; absence is not a waiver or delegation.",
+      "evidence": "Fresh-context response and actual instruction reads; distinguish selected actions from executed actions. Record source revision and all failures; shared-filesystem grader isolation remains unverified."
+    }
+  ]
+}

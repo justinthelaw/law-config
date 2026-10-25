@@ -1,6 +1,6 @@
 # Develop
 
-Eight portable skills for development, review and maintenance. [Install in Codex](INSTALL.md), then invoke `$develop:develop` with your outcome, or call a skill directly.
+Ten skills for development, planning, review and maintenance. [Install in Codex](INSTALL.md), then invoke `$develop:develop` with your outcome, or call a skill directly.
 
 Supply your development standards in the prompt, an attached `AGENTS.md` or a named connector source. Develop applies them within the selected scope and existing authority, using a shared [standards, presentation and unattended-continuation contract](skills/develop/references/contract.md). Reports use concise prose, tables or supported visuals according to the task; unattended work retains its budget and pending human decisions across handoffs.
 
@@ -15,6 +15,8 @@ Preservation is opt-in, POSIX-only and best-effort, with private storage, fixed 
 
 The separate [staged-file size checker](skills/iterate/references/staged-file-size.md) runs only when explicitly requested or required by the repository. It checks Git-index files; it does not install a Git hook or activate the context guard.
 
-[![A user asks in chat why a CI job failed. Develop routes the question to Iterate, which reads the failed job log and replies with the cause or the missing evidence. The map also shows the other skills and the shared context guard.](docs/develop-overview.png)](docs/develop-overview.png)
+[![A user asks in chat why a CI job failed. Develop routes the question to Iterate, which reads the failed job log and replies with the cause or the missing evidence. The map also shows the other skills, the shared context guard, and Engineering Design and Interface Design linked to Iterate and included in the skill list.](docs/develop-overview.png)](docs/develop-overview.png)
+
+[Engineering Design](skills/engineering-design/SKILL.md) plans engineering work; [Interface Design](skills/interface-design/SKILL.md) plans interface work. Applicable planning runs with or without human input, asking for input and review by default. Explicitly delegate unattended review to Adversarial loop with recorded assumptions and unresolved decisions, or explicitly waive planning/review within your authority. Unanswered approval is not permission; required human, legal and security approvals and execution scope remain binding.
 
 [Full-size image](docs/develop-overview.png) · [Responsive HTML source](docs/develop-overview.html) · [Superpowers Codex source](https://github.com/openai/plugins/tree/main/plugins/superpowers) · [Maintainer instructions](AGENTS.md) · [Apache-2.0](LICENSE)

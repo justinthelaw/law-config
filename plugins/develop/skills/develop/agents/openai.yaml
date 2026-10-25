@@ -4,4 +4,4 @@ interface:
   icon_large: "./assets/icon.png"
   display_name: "Develop"
   short_description: "Route development, incidents and workflow tasks"
-  default_prompt: "Use $develop for my selected repository, incident or workflow outcome, applying my supplied standards and routing work through its existing owners. Use eligible task storage. Ask only for decisions that change the work, and hold them during unattended runs."
+  default_prompt: "Use $develop to route my outcome through one execution owner, applicable engineering/interface planning and proportionate review. Preserve scope and real approval requirements."

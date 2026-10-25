@@ -1,6 +1,6 @@
 # Runtime identities and contracts
 
-Use this when an upgrade changes a developer tool, embedded runtime, build artifact or deployed integration.
+Use this when planning or verifying a changed developer tool, embedded runtime, build artifact or deployed integration.
 
 ## Prove each identity separately
 

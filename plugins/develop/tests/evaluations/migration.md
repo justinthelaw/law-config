@@ -1,7 +1,7 @@
 # Mixed-version migration and recovery
 
 Extends the preserved N connection scenario in [consumer acceptance](../scenarios.md#upgrade-and-consumer-acceptance).
-The existing [runtime contract owner](../../skills/upgrade/references/runtime-contracts.md)
+The existing [runtime contract owner](../../skills/develop/references/runtime-contracts.md)
 already covers consumed semantics, interrupted runs and evidence layers; no new
 deployment policy is needed. Apply these cases when the selected system has
 overlapping protocol versions or persistent data conversion. The stateless

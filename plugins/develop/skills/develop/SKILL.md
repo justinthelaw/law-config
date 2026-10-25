@@ -26,6 +26,8 @@ Resolve the user's outcome, then route below. Repository workflows read [the sha
 
 [deep-clean](../deep-clean/SKILL.md) is explicit-only. Route to it only when the user names it or explicitly expands cleanup/inspection beyond thread activities; pass the selected root and authority. Ordinary cleanup defaults to this thread and requires no repository discovery.
 
+Apply the shared [planning path](references/contract.md#applicable-planning) through the selected owner; engineering and interface planning share one brief and review. Direct design requests use [Engineering Design](../engineering-design/SKILL.md) or [Interface Design](../interface-design/SKILL.md) and return decisions to that owner.
+
 For mixed requests, select the initial owner from the requested outcome, then use the smallest ordered combination and one coordinator. Iterate owns the CI/requested-review → diagnosis → authorized repair → validation → authorized publication loop; domain references do not route recursively back here. Reuse relevant review checkpoints across nested skills. A handoff from analysis to implementation preserves its target and existing authorization; it never expands to other repositories or histories.
 
 [upgrade-codex](../upgrade-codex/SKILL.md) is available only when the user explicitly invokes it. Do not select it from general development, maintenance or dependency-upgrade requests.

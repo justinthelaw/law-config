@@ -1,6 +1,6 @@
 {
   "fixture_id": "routing-refactor",
-  "fixture_revision": "1",
+  "fixture_revision": "2",
   "criteria": [
     {
       "id": "refactor-owner",
