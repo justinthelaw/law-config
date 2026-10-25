@@ -55,14 +55,14 @@ try{
  report.checks.push({test:'compact overview with legible README typography',pass:overviewChecks.width===1000&&overviewChecks.height<=2200&&overviewChecks.minBodyFont>=20,readmeWidth:860,minBodyDisplayPx:overviewChecks.minBodyFont*860/overviewChecks.width});
  const additions=await page.evaluate(()=>{
   const ids=['engineering-design','interface-design'];
-  return {order:[...document.querySelectorAll('.skill-card')].map(el=>el.dataset.skill||el.dataset.planned),detached:document.querySelectorAll('.design-proposals').length,items:ids.map(id=>{
-   const node=document.getElementById('node-'+id),card=document.querySelector('.skill-grid [data-planned="'+id+'"]'),edge=document.querySelector('[data-design-link="'+id+'"]');
-   return {id,node:!!node?.closest('.branches'),planned:node?.textContent.includes('Planned gate · must fire'),status:card?.textContent.includes('Planned · no entrypoint yet'),links:card?.querySelectorAll('a').length,twoWay:!!edge?.hasAttribute('marker-start')&&!!edge?.hasAttribute('marker-end'),d:edge?.getAttribute('d')};
+  return {order:[...document.querySelectorAll('.skill-card')].map(el=>el.dataset.skill||el.dataset.design),detached:document.querySelectorAll('.design-proposals').length,items:ids.map(id=>{
+   const node=document.getElementById('node-'+id),card=document.querySelector('.skill-grid [data-design="'+id+'"]'),edge=document.querySelector('[data-design-link="'+id+'"]');
+   return {id,node:!!node?.closest('.branches'),mandatory:node?.textContent.includes('Planning gate · must fire'),links:card?.querySelectorAll('a').length,twoWay:!!edge?.hasAttribute('marker-start')&&!!edge?.hasAttribute('marker-end'),d:edge?.getAttribute('d')};
   })};
  });
- report.checks.push({test:'design nodes connected to Iterate and cards integrated after Iterate',pass:additions.detached===0&&additions.order.length===10&&additions.order.slice(1,4).join(',')==='iterate,engineering-design,interface-design'&&additions.items.every(c=>c.node&&c.planned&&c.status&&c.links===0&&c.twoWay),results:additions});
+ report.checks.push({test:'design nodes connected to Iterate and cards integrated after Iterate',pass:additions.detached===0&&additions.order.length===10&&additions.order.slice(1,4).join(',')==='iterate,engineering-design,interface-design'&&additions.items.every(c=>c.node&&c.mandatory&&c.links===0&&c.twoWay),results:additions});
  const planning=await page.locator('.planning-policy').textContent();
- report.checks.push({test:'proposed mandatory planning, human default and explicit unattended boundaries',pass:['entrypoints not implemented','with or without human input','ask for human input and review','Explicit delegation','Adversarial loop','assumptions and unresolved decisions','Explicit user waiver','within that user','Unanswered approval is not permission','human, legal and security approvals','scope stays unchanged'].every(text=>planning.includes(text))});
+ report.checks.push({test:'mandatory planning, human default and explicit unattended boundaries',pass:['with or without human input','ask for input and review','Explicitly delegate unattended review','Adversarial loop','assumptions and unresolved decisions','explicitly waive planning/review','within your authority','Unanswered approval is not permission','human, legal and security approvals','scope stays unchanged'].every(text=>planning.includes(text))});
  const guard=await page.locator('.context-guard').evaluate(el=>({count:document.querySelectorAll('.context-guard').length,href:el.querySelector('a').href,height:el.getBoundingClientRect().height}));
  const guardTarget=fileURLToPath(guard.href);
  report.checks.push({test:'one compact shared context guard annotation',pass:guard.count===1&&guard.height<=70&&guardTarget===path.join(base,'context-guard.md')&&(await fs.readFile(guardTarget,'utf8')).includes('PreToolUse'),results:guard});
