@@ -207,6 +207,7 @@ class ProductionReviewTests(unittest.TestCase):
             ("shorter prefix", {"body": receipt("a" * 7)["body"]}),
             ("quoted receipt", {"body": "Example:\n" + valid["body"]}),
             ("other verdict", {"body": valid["body"].replace("Didn't find any", "Found two")}),
+            ("missing help block", {"body": valid["body"].split("\n\n<details>")[0]}),
             ("finding on verdict line", {"body": valid["body"].replace("More of your lovely PRs please.", "[P1] Fix authentication.")}),
             ("finding between details", {"body": valid["body"] + "\n\nFix authentication.\n<details>More.</details>"}),
             ("finding inside details", {"body": valid["body"].replace("</details>", "Fix authentication.</details>")}),
@@ -254,6 +255,20 @@ class ProductionReviewTests(unittest.TestCase):
                 runner = ReviewRunner(current, comments=[request(hour=4), receipt(current.head[:10], hour=5)],
                                       reviews=[review(current, hour=hour, state="CHANGES_REQUESTED")])
                 self.assertEqual(self.snapshot(runner)[0], 3)
+
+    def test_receipt_after_resolved_comments_respects_standing_formal_decisions(self):
+        current = target()
+        feedback = review(current, hour=3, state="COMMENTED", body="Fix the leak.")
+        changes = review(current, hour=2, state="CHANGES_REQUESTED")
+        approval = review(current, hour=3)
+        for reviews, expected in (
+            ([feedback], 0), ([changes, feedback], 3), ([changes, feedback, approval], 0),
+            ([review(current, hour=5, state="COMMENTED", body="Still leaks.")], 1),
+        ):
+            with self.subTest(reviews=reviews):
+                runner = ReviewRunner(current, comments=[request(hour=4), receipt(current.head, hour=6)],
+                                      reviews=reviews, threads=[{"isResolved": True}])
+                self.assertEqual(self.snapshot(runner)[0], expected)
 
     def test_timestamp_correlated_thumb_does_not_pass(self):
         runner = ReviewRunner(reactions=[reaction("eyes"), reaction("+1", hour=3, identifier=2)])

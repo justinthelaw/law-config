@@ -130,8 +130,8 @@ def has_current_receipt(
             or comment.get("lastEditedAt", "") is not None
         ):
             continue
-        verdict, details, help_text = str(comment.get("body", "")).strip().partition("\n\n<details>")
-        if details and " ".join(help_text.split()) != RECEIPT_HELP:
+        verdict, _, help_text = str(comment.get("body", "")).strip().partition("\n\n<details>")
+        if " ".join(help_text.split()) != RECEIPT_HELP:
             continue
         match = NO_FINDINGS_RECEIPT.fullmatch(verdict)
         if not match or match["note"] not in RECEIPT_NOTES or match["oid"] not in {target.head, short_oid}:
@@ -406,13 +406,12 @@ def inspect_pull_request(
             raise WatchError(f"GitHub returned an unsupported Codex review state: {target.label}")
         current_reviews.append(review)
     # A timestamp tie cannot prove that approval superseded an adverse review.
-    latest_review = max(
-        current_reviews,
+    current_reviews.sort(
         key=lambda review: (
             timestamp(review.get("submittedAt"), "submitted Codex review"),
             review_requires_changes(review),
         ),
-        default=None,
+        reverse=True,
     )
     trigger_candidates = [created for created, _ in eyes]
     if latest_request is not None:
@@ -426,7 +425,8 @@ def inspect_pull_request(
         return ReviewState(
             pull_request, "failed", "finding", latest_trigger, True, findings, latest_request
         )
-    if latest_review is not None:
+    if current_reviews:
+        latest_review = current_reviews[0]
         submitted = timestamp(latest_review.get("submittedAt"), "submitted Codex review")
         # Equal provider timestamps cannot establish ordering within a second.
         if latest_trigger is None or submitted > latest_trigger:
@@ -445,9 +445,9 @@ def inspect_pull_request(
                     latest_request,
                 )
             return ReviewState(pull_request, "passed", "submitted", latest_trigger, True, request=latest_request)
-    if (latest_review is None or not review_requires_changes(latest_review)) and has_current_receipt(
-        comments, target, latest_trigger, runner
-    ):
+    # A COMMENTED review cannot dismiss a standing request for changes.
+    decision = next((review["state"] for review in current_reviews if review["state"] != "COMMENTED"), None)
+    if decision != "CHANGES_REQUESTED" and has_current_receipt(comments, target, latest_trigger, runner):
         return ReviewState(pull_request, "passed", "receipt", latest_trigger, True, request=latest_request)
     if latest_trigger is None:
         if not approvals:
