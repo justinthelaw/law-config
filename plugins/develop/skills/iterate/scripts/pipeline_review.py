@@ -118,8 +118,12 @@ def review_requires_changes(review: dict[str, Any]) -> bool:
     )
 
 
+def review_time(review: dict[str, Any]) -> datetime:
+    return timestamp(review.get("submittedAt"), "submitted Codex review")
+
+
 def has_current_receipt(
-    comments: list[dict[str, Any]], target: Target, latest_trigger: datetime | None, runner: Runner
+    comments: list[dict[str, Any]], target: Target, after: datetime | None, runner: Runner
 ) -> bool:
     short_oid = target.head[:10]
     found_short = False
@@ -137,7 +141,7 @@ def has_current_receipt(
         if not match or match["note"] not in RECEIPT_NOTES or match["oid"] not in {target.head, short_oid}:
             continue
         created = timestamp(comment.get("createdAt"), "Codex review receipt")
-        if latest_trigger is not None and created <= latest_trigger:
+        if after is not None and created <= after:
             continue
         if match["oid"] == target.head:
             return True
@@ -390,65 +394,67 @@ def inspect_pull_request(
             raise WatchError("GitHub returned an invalid Codex reaction identifier")
         (eyes if content == "eyes" else approvals).append((created, reaction_id))
 
-    current_reviews = []
+    submitted_reviews = []
     for review in reviews:
-        if (
-            not is_codex_actor(review.get("author"))
-            or not isinstance(review.get("commit"), dict)
-            or review["commit"].get("oid") != target.head
-            or not review.get("submittedAt")
-        ):
+        if not is_codex_actor(review.get("author")):
             continue
         state = review.get("state")
         if state in {"PENDING", "DISMISSED"}:
             continue
         if state not in {"APPROVED", "CHANGES_REQUESTED", "COMMENTED"}:
             raise WatchError(f"GitHub returned an unsupported Codex review state: {target.label}")
-        current_reviews.append(review)
+        submitted_reviews.append(review)
     # A timestamp tie cannot prove that approval superseded an adverse review.
-    current_reviews.sort(
-        key=lambda review: (
-            timestamp(review.get("submittedAt"), "submitted Codex review"),
-            review_requires_changes(review),
-        ),
-        reverse=True,
-    )
+    submitted_reviews.sort(key=lambda review: (review_time(review), review_requires_changes(review)), reverse=True)
+    # Formal decisions apply across pushes. Positive evidence must still name this head.
+    decision = next((review for review in submitted_reviews if review["state"] != "COMMENTED"), {})
+    standing_change = decision if decision.get("state") == "CHANGES_REQUESTED" else None
+    last_change = next((review for review in submitted_reviews if review["state"] == "CHANGES_REQUESTED"), None)
+    change_time = review_time(last_change) if last_change else None
+    head_reviews = [
+        review for review in submitted_reviews
+        if isinstance(review.get("commit"), dict) and review["commit"].get("oid") == target.head
+    ]
+    head_verdict = next((review for review in head_reviews if review["state"] != "CHANGES_REQUESTED"), None)
+    head_change_time = next((review_time(review) for review in head_reviews if review["state"] == "CHANGES_REQUESTED"), None)
     trigger_candidates = [created for created, _ in eyes]
     if latest_request is not None:
         trigger_candidates.append(latest_request.created_at)
     if required_since is not None:
         trigger_candidates.append(required_since)
     latest_trigger = max(trigger_candidates, default=None)
+    positive_floor = max((when for when in (latest_trigger, change_time) if when is not None), default=None)
     latest_eye = max(eyes, default=None)
 
     if findings:
         return ReviewState(
             pull_request, "failed", "finding", latest_trigger, True, findings, latest_request
         )
-    if current_reviews:
-        latest_review = current_reviews[0]
-        submitted = timestamp(latest_review.get("submittedAt"), "submitted Codex review")
-        # Equal provider timestamps cannot establish ordering within a second.
-        if latest_trigger is None or submitted > latest_trigger:
-            review_body = str(latest_review.get("body", "")).strip()
-            if review_requires_changes(latest_review):
-                return ReviewState(
-                    pull_request,
-                    "failed",
-                    "changes-requested",
-                    latest_trigger,
-                    True,
-                    ({
-                        "excerpt": bounded_log(review_body, max_lines, max_chars),
-                        "url": latest_review.get("url"),
-                    },),
-                    latest_request,
-                )
-            return ReviewState(pull_request, "passed", "submitted", latest_trigger, True, request=latest_request)
-    # A COMMENTED review cannot dismiss a standing request for changes.
-    decision = next((review["state"] for review in current_reviews if review["state"] != "COMMENTED"), None)
-    if decision != "CHANGES_REQUESTED" and has_current_receipt(comments, target, latest_trigger, runner):
-        return ReviewState(pull_request, "passed", "receipt", latest_trigger, True, request=latest_request)
+    completion = None
+    adverse = standing_change
+    if head_verdict is not None:
+        submitted = review_time(head_verdict)
+        actionable = review_requires_changes(head_verdict)
+        # Changes invalidate earlier positives, but cannot clear separate actionable feedback.
+        floor = latest_trigger if actionable else positive_floor
+        if floor is None or submitted >= floor:
+            if submitted != floor:
+                completion = "submitted"
+            if actionable and adverse is None:
+                adverse = head_verdict
+    if (standing_change is not None and head_change_time is not None and head_change_time == change_time
+            and (latest_trigger is None or head_change_time > latest_trigger)):
+        completion = "submitted"
+    if completion is None and has_current_receipt(comments, target, positive_floor, runner):
+        completion = "receipt"
+    if completion is not None:
+        if adverse is not None:
+            return ReviewState(
+                pull_request, "failed", "changes-requested", latest_trigger, True,
+                ({"excerpt": bounded_log(str(adverse.get("body", "")).strip(), max_lines, max_chars),
+                  "url": adverse.get("url")},), latest_request,
+            )
+        return ReviewState(pull_request, "passed", completion, latest_trigger, True, request=latest_request)
     if latest_trigger is None:
         if not approvals:
             return None
