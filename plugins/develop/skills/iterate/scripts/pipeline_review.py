@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any
 
-from pipeline_support import REVIEW_QUERY, Runner, Target, WatchError, bounded_log
+from pipeline_support import FULL_SHA, RECEIPT_SHA_HEADER, REVIEW_QUERY, Runner, Target, WatchError, bounded_log
 
 
 CODEX_ACTOR = "chatgpt-codex-connector"
@@ -17,6 +17,27 @@ REVIEW_REQUEST = re.compile(r"^\s*@codex\s+review\b", re.IGNORECASE)
 NEUTRAL_REVIEW = re.compile(
     r"codex reviewed this pull request and didn['\u2019]t find any major issues\.",
     re.IGNORECASE,
+)
+NO_FINDINGS_RECEIPT = re.compile(
+    r"<!-- codex-review-receipt:v1 -->\n\n"
+    r"Codex Review: Didn['\u2019]t find any major issues\.(?: (?P<note>[^\n]+))?\n\n"
+    rf"\*\*Reviewed commit:\*\* `(?P<oid>[0-9a-f]{{10}}|{FULL_SHA})`"
+)
+# These are the v1 bot's observed sign-offs. Unknown prose could contain a finding.
+RECEIPT_NOTES = {
+    None, ":+1:", ":rocket:", ":tada:", "Already looking forward to the next diff.",
+    "Another round soon, please!", "Bravo.", "Breezy!", "Can't wait for the next one!",
+    "Chef's kiss.", "Delightful!", "Hooray!", "Keep it up!", "Keep them coming!",
+    "More of your lovely PRs please.", "Nice work!", "Swish!", "What shall we delve into next?",
+    "You're on a roll.",
+}
+RECEIPT_HELP = (
+    "<summary>ℹ️ About Codex in GitHub</summary> <br/> "
+    "[Your team has set up Codex to review pull requests in this repo]"
+    "(https://chatgpt.com/codex/cloud/settings/general). Reviews are triggered when you "
+    '- Open a pull request for review - Mark a draft as ready - Comment "@codex review". '
+    "If Codex has suggestions, it will comment; otherwise it will react with 👍. "
+    'Codex can also answer questions or update the PR. Try commenting "@codex address that feedback". </details>'
 )
 PULL_REQUEST_FIELDS = (
     "number,url,headRefOid,headRefName,headRepositoryOwner,isCrossRepository,baseRefName"
@@ -95,6 +116,65 @@ def review_requires_changes(review: dict[str, Any]) -> bool:
         and bool(body)
         and not NEUTRAL_REVIEW.fullmatch(body)
     )
+
+
+def review_time(review: dict[str, Any]) -> datetime:
+    return timestamp(review.get("submittedAt"), "submitted Codex review")
+
+
+def outstanding_feedback(reviews: list[dict[str, Any]], head: str, since: datetime) -> dict[str, Any] | None:
+    seen = set()
+    for review in reviews:
+        if review_time(review) < since:
+            break
+        if review["state"] == "CHANGES_REQUESTED":
+            continue
+        commit = review.get("commit")
+        oid = commit.get("oid") if isinstance(commit, dict) else None
+        if isinstance(oid, str):
+            if oid in seen:
+                continue
+            seen.add(oid)
+        if review_requires_changes(review):
+            return review
+        if oid == head:
+            break  # A newer verdict on this head supersedes feedback on earlier revisions.
+    return None
+
+
+def has_current_receipt(
+    comments: list[dict[str, Any]], target: Target, after: datetime | None, runner: Runner
+) -> bool:
+    short_oid = target.head[:10]
+    found_short = False
+    for comment in comments:
+        if (
+            not is_codex_actor(comment.get("author"))
+            or comment.get("includesCreatedEdit") is not False
+            or comment.get("lastEditedAt", "") is not None
+        ):
+            continue
+        verdict, _, help_text = str(comment.get("body", "")).strip().partition("\n\n<details>")
+        if " ".join(help_text.split()) != RECEIPT_HELP:
+            continue
+        match = NO_FINDINGS_RECEIPT.fullmatch(verdict)
+        if not match or match["note"] not in RECEIPT_NOTES or match["oid"] not in {target.head, short_oid}:
+            continue
+        created = timestamp(comment.get("createdAt"), "Codex review receipt")
+        if after is not None and created <= after:
+            continue
+        if match["oid"] == target.head:
+            return True
+        found_short = True
+    if not found_short:
+        return False
+    host, owner, name = github_location(target.repository)
+    resolved = runner(
+        ["gh", "api", f"repos/{owner}/{name}/commits/{short_oid}", "--method", "GET",
+         "-H", RECEIPT_SHA_HEADER, "--hostname", host],
+        cwd=target.path,
+    )
+    return (resolved or "").strip() == target.head
 
 
 def discover_pull_request(target: Target, runner: Runner) -> PullRequest | None:
@@ -334,61 +414,68 @@ def inspect_pull_request(
             raise WatchError("GitHub returned an invalid Codex reaction identifier")
         (eyes if content == "eyes" else approvals).append((created, reaction_id))
 
-    current_reviews = []
+    submitted_reviews = []
     for review in reviews:
-        if (
-            not is_codex_actor(review.get("author"))
-            or not isinstance(review.get("commit"), dict)
-            or review["commit"].get("oid") != target.head
-            or not review.get("submittedAt")
-        ):
+        if not is_codex_actor(review.get("author")):
             continue
         state = review.get("state")
         if state in {"PENDING", "DISMISSED"}:
             continue
         if state not in {"APPROVED", "CHANGES_REQUESTED", "COMMENTED"}:
             raise WatchError(f"GitHub returned an unsupported Codex review state: {target.label}")
-        current_reviews.append(review)
+        submitted_reviews.append(review)
     # A timestamp tie cannot prove that approval superseded an adverse review.
-    latest_review = max(
-        current_reviews,
-        key=lambda review: (
-            timestamp(review.get("submittedAt"), "submitted Codex review"),
-            review_requires_changes(review),
-        ),
-        default=None,
-    )
+    submitted_reviews.sort(key=lambda review: (review_time(review), review_requires_changes(review)), reverse=True)
+    # Formal decisions apply across pushes. Positive evidence must still name this head.
+    decision = next((review for review in submitted_reviews if review["state"] != "COMMENTED"), {})
+    standing_change = decision if decision.get("state") == "CHANGES_REQUESTED" else None
+    last_change = next((review for review in submitted_reviews if review["state"] == "CHANGES_REQUESTED"), None)
+    change_time = review_time(last_change) if last_change else None
+    head_reviews = [
+        review for review in submitted_reviews
+        if isinstance(review.get("commit"), dict) and review["commit"].get("oid") == target.head
+    ]
+    head_verdict = next((review for review in head_reviews if review["state"] != "CHANGES_REQUESTED"), None)
+    head_change_time = next((review_time(review) for review in head_reviews if review["state"] == "CHANGES_REQUESTED"), None)
     trigger_candidates = [created for created, _ in eyes]
     if latest_request is not None:
         trigger_candidates.append(latest_request.created_at)
     if required_since is not None:
         trigger_candidates.append(required_since)
     latest_trigger = max(trigger_candidates, default=None)
+    positive_floor = max((when for when in (latest_trigger, change_time) if when is not None), default=None)
     latest_eye = max(eyes, default=None)
 
     if findings:
         return ReviewState(
             pull_request, "failed", "finding", latest_trigger, True, findings, latest_request
         )
-    if latest_review is not None:
-        submitted = timestamp(latest_review.get("submittedAt"), "submitted Codex review")
-        # Equal provider timestamps cannot establish ordering within a second.
-        if latest_trigger is None or submitted > latest_trigger:
-            review_body = str(latest_review.get("body", "")).strip()
-            if review_requires_changes(latest_review):
-                return ReviewState(
-                    pull_request,
-                    "failed",
-                    "changes-requested",
-                    latest_trigger,
-                    True,
-                    ({
-                        "excerpt": bounded_log(review_body, max_lines, max_chars),
-                        "url": latest_review.get("url"),
-                    },),
-                    latest_request,
-                )
-            return ReviewState(pull_request, "passed", "submitted", latest_trigger, True, request=latest_request)
+    completion = None
+    adverse = standing_change
+    if head_verdict is not None:
+        submitted = review_time(head_verdict)
+        actionable = review_requires_changes(head_verdict)
+        # Changes invalidate earlier positives, but cannot clear separate actionable feedback.
+        floor = latest_trigger if actionable else positive_floor
+        if floor is None or submitted >= floor:
+            if submitted != floor:
+                completion = "submitted"
+            if actionable and adverse is None:
+                adverse = head_verdict
+    if (standing_change is not None and head_change_time is not None and head_change_time == change_time
+            and (latest_trigger is None or head_change_time > latest_trigger)):
+        completion = "submitted"
+    if completion is None and has_current_receipt(comments, target, positive_floor, runner):
+        completion = "receipt"
+    if completion is not None:
+        adverse = adverse or outstanding_feedback(submitted_reviews, target.head, latest_trigger or review_floor)
+        if adverse is not None:
+            return ReviewState(
+                pull_request, "failed", "changes-requested", latest_trigger, True,
+                ({"excerpt": bounded_log(str(adverse.get("body", "")).strip(), max_lines, max_chars),
+                  "url": adverse.get("url")},), latest_request,
+            )
+        return ReviewState(pull_request, "passed", completion, latest_trigger, True, request=latest_request)
     if latest_trigger is None:
         if not approvals:
             return None

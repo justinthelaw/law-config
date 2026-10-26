@@ -40,6 +40,25 @@ def request(*, hour=2, association="OWNER", body="@codex review", identifier=77)
             "createdAt": f"2026-01-01T0{hour}:00:00Z", "bodyText": body}
 
 
+def receipt(oid, hour=3):
+    return {
+        "author": BOT, "createdAt": f"2026-01-01T0{hour}:00:00Z",
+        "includesCreatedEdit": False, "lastEditedAt": None,
+        "body": (
+            "<!-- codex-review-receipt:v1 -->\n\n"
+            "Codex Review: Didn't find any major issues. More of your lovely PRs please.\n\n"
+            f"**Reviewed commit:** `{oid}`\n\n"
+            "<details> <summary>ℹ️ About Codex in GitHub</summary>\n<br/>\n\n"
+            "[Your team has set up Codex to review pull requests in this repo]"
+            "(https://chatgpt.com/codex/cloud/settings/general). Reviews are triggered when you\n"
+            '- Open a pull request for review\n- Mark a draft as ready\n- Comment "@codex review".\n\n'
+            "If Codex has suggestions, it will comment; otherwise it will react with 👍.\n\n"
+            'Codex can also answer questions or update the PR. Try commenting "@codex address that feedback".\n'
+            "</details>"
+        ),
+    }
+
+
 class ReviewRunner(CoverageRunner):
     def __init__(self, current=None, *, reactions=(), request_reactions=None, reviews=(), comments=(), threads=()):
         super().__init__(current or target())
@@ -48,6 +67,7 @@ class ReviewRunner(CoverageRunner):
                    "isCrossRepository": False, "baseRefName": "main"}
         self.reactions = list(reactions)
         self.request_reactions = request_reactions or {}
+        self.resolved_receipt_sha = self.current.head
         self.selected = {
             "number": 7, "state": "OPEN", "url": self.pr["url"], "headRefName": self.current.branch,
             "headRefOid": self.current.head, "baseRefName": "main", "isCrossRepository": False,
@@ -62,6 +82,9 @@ class ReviewRunner(CoverageRunner):
         if argv[:3] == ["gh", "api", "graphql"]:
             self.calls.append(argv)
             return json.dumps({"data": {"repository": {"pullRequest": self.selected}}, "errors": self.graph_errors})
+        if argv[:3] == ["gh", "api", f"repos/{self.current.repository}/commits/{self.current.head[:10]}"]:
+            self.calls.append(argv)
+            return self.resolved_receipt_sha
         if argv[:2] == ["gh", "api"] and "/reactions?" in argv[2]:
             self.calls.append(argv)
             if "/issues/comments/" in argv[2]:
@@ -143,6 +166,222 @@ class ProductionReviewTests(unittest.TestCase):
         monitor = Watcher([runner.current], runner=runner, emit=events.append, monitor_reviews=True)
         status = monitor.watch(once=True)
         return status, monitor, events
+
+    def test_comment_receipt_completes_the_requested_review_without_reactions(self):
+        current = target(head="a5f445178faeceaf9b496a9fae1fb930813de4a6")
+        for oid, apostrophe in ((current.head[:10], "'"), (current.head, "\u2019")):
+            with self.subTest(oid=oid):
+                evidence = receipt(oid)
+                evidence["body"] = evidence["body"].replace("Didn't", "Didn" + apostrophe + "t")
+                runner = ReviewRunner(current, comments=[request(), evidence])
+                status, monitor, _ = self.snapshot(runner)
+                self.assertEqual(status, 0)
+                self.assertEqual(monitor.review_states[current.key].source, "receipt")
+
+    def test_watch_finishes_when_receipt_replaces_the_eyes_reaction(self):
+        current = target()
+        runner = ReviewRunner(current, comments=[request()], request_reactions={77: [reaction("eyes", hour=3)]})
+        clock = FakeClock()
+        events = []
+
+        def finish_review(seconds):
+            clock.sleep(seconds)
+            runner.request_reactions.clear()
+            runner.selected["comments"] = connection([request(), receipt(current.head[:10], hour=4)])
+
+        monitor = Watcher([current], runner=runner, emit=events.append, monitor_reviews=True,
+                          clock=clock.now, sleep=finish_review, interval=5, discovery_grace=10, settle=0)
+        self.assertEqual(monitor.watch(), 0)
+        self.assertEqual([e["source"] for e in events if e["event"] == "review"], ["eyes", "receipt"])
+
+    def test_untrusted_stale_and_unrecognized_receipts_do_not_pass(self):
+        valid = receipt(target().head[:10])
+        for name, overrides in (
+            ("spoofed actor", {"author": {**BOT, "__typename": "User"}}),
+            ("other bot", {"author": {**BOT, "login": "another-bot"}}),
+            ("edited", {"lastEditedAt": "2026-01-01T04:00:00Z"}),
+            ("edited creation", {"includesCreatedEdit": True}),
+            ("predates request", {"createdAt": "2026-01-01T01:00:00Z"}),
+            ("timestamp tie", {"createdAt": "2026-01-01T02:00:00Z"}),
+            ("old revision", {"body": receipt("b" * 10)["body"]}),
+            ("shorter prefix", {"body": receipt("a" * 7)["body"]}),
+            ("quoted receipt", {"body": "Example:\n" + valid["body"]}),
+            ("other verdict", {"body": valid["body"].replace("Didn't find any", "Found two")}),
+            ("missing help block", {"body": valid["body"].split("\n\n<details>")[0]}),
+            ("finding on verdict line", {"body": valid["body"].replace("More of your lovely PRs please.", "[P1] Fix authentication.")}),
+            ("finding between details", {"body": valid["body"] + "\n\nFix authentication.\n<details>More.</details>"}),
+            ("finding inside details", {"body": valid["body"].replace("</details>", "Fix authentication.</details>")}),
+            ("finding before commit", {"body": valid["body"].replace("**Reviewed", "Fix the leak.\n\n**Reviewed")}),
+            ("finding after receipt", {"body": valid["body"] + "\n\nFix the leak."}),
+        ):
+            with self.subTest(name=name):
+                runner = ReviewRunner(comments=[request(), {**valid, **overrides}])
+                self.assertEqual(self.snapshot(runner)[0], 3)
+        for missing in ("lastEditedAt", "includesCreatedEdit"):
+            with self.subTest(missing=missing):
+                runner = ReviewRunner(comments=[request(), {k: v for k, v in valid.items() if k != missing}])
+                self.assertEqual(self.snapshot(runner)[0], 3)
+
+    def test_short_receipt_needs_exact_provider_resolution(self):
+        runner = ReviewRunner(comments=[request(), receipt(target().head[:10])])
+        runner.resolved_receipt_sha = target().head[:10] + "b" * 30
+        self.assertEqual(self.snapshot(runner)[0], 3)
+
+    def test_receipt_lookup_allows_only_the_scoped_sha_read(self):
+        endpoint = "repos/owner/project/commits/a5f445178f"
+        command = ["gh", "api", endpoint, "--method", "GET", "-H", "Accept: application/vnd.github.sha",
+                   "--hostname", "git.example.com"]
+        ensure_read_only(command)
+        for index, invalid in ((2, endpoint + "/comments"), (2, endpoint[:-1]), (4, "POST"),
+                               (6, "Authorization: injected"), (8, "git.example.com/path")):
+            with self.subTest(index=index, invalid=invalid):
+                modified = command.copy()
+                modified[index] = invalid
+                with self.assertRaises(WatchError):
+                    ensure_read_only(modified)
+
+    def test_receipt_cannot_clear_unresolved_threads_or_an_adverse_review(self):
+        current = target()
+        thread = {"id": "t", "isResolved": False, "comments": connection([{"author": BOT, "bodyText": "Fix leak"}])}
+        for adverse in ({"threads": [thread]}, {"reviews": [review(current, state="CHANGES_REQUESTED")]}):
+            with self.subTest(adverse=adverse):
+                runner = ReviewRunner(current, comments=[request(), receipt(current.head[:10], hour=4)], **adverse)
+                self.assertEqual(self.snapshot(runner)[0], 1)
+
+    def test_receipt_cannot_supersede_a_standing_adverse_review_on_rerequest(self):
+        current = target()
+        for hour in (3, 4):
+            with self.subTest(hour=hour):
+                runner = ReviewRunner(current, comments=[request(hour=4), receipt(current.head[:10], hour=5)],
+                                      reviews=[review(current, hour=hour, state="CHANGES_REQUESTED")])
+                self.assertEqual(self.snapshot(runner)[0], 1)
+
+    def test_receipt_after_resolved_comments_respects_standing_formal_decisions(self):
+        current = target()
+        feedback = review(current, hour=3, state="COMMENTED", body="Fix the leak.")
+        changes = review(current, hour=2, state="CHANGES_REQUESTED")
+        approval = review(current, hour=3)
+        for reviews, expected in (
+            ([feedback], 0), ([changes, feedback], 1), ([changes, feedback, approval], 0),
+            ([review(current, hour=5, state="COMMENTED", body="Still leaks.")], 1),
+        ):
+            with self.subTest(reviews=reviews):
+                runner = ReviewRunner(current, comments=[request(hour=4), receipt(current.head, hour=6)],
+                                      reviews=reviews, threads=[{"isResolved": True}])
+                self.assertEqual(self.snapshot(runner)[0], expected)
+
+    def test_change_request_survives_a_push_until_dismissed_or_superseded(self):
+        old, current = target(), target(head="b" * 40)
+        changes = review(old, hour=2, state="CHANGES_REQUESTED")
+        changes["url"] = "https://github.com/owner/project/pull/7#prior-review"
+        neutral = review(current, hour=5, state="COMMENTED", body="")
+        for reviews, expected in (
+            ([changes], 1), ([changes, neutral], 1),
+            ([{**changes, "state": "DISMISSED"}], 0),
+            ([changes, review(old, hour=3)], 0), ([changes, review(current, hour=5)], 0),
+            ([changes, review(old, hour=2)], 1), ([review(old, hour=2), changes], 1),
+        ):
+            with self.subTest(reviews=reviews):
+                runner = ReviewRunner(current, comments=[request(hour=4), receipt(current.head, hour=6)],
+                                      reviews=reviews)
+                code, monitor, _ = self.snapshot(runner)
+                self.assertEqual(code, expected)
+                if expected == 1:
+                    self.assertEqual(monitor.review_states[current.key].findings[0]["url"], changes["url"])
+        waiting = ReviewRunner(current, comments=[request(hour=4)], reviews=[changes])
+        self.assertEqual(self.snapshot(waiting)[0], 3)
+
+    def test_superseded_current_change_request_still_needs_current_completion(self):
+        old, current = target(), target(head="b" * 40)
+        reviews = [review(current, hour=3), review(current, hour=4, state="CHANGES_REQUESTED"), review(old, hour=5)]
+        for extra, expected, source in (([], 3, "request"), ([receipt(current.head, hour=6)], 0, "receipt")):
+            with self.subTest(source=source):
+                runner = ReviewRunner(current, comments=[request(hour=2), *extra], reviews=reviews)
+                code, monitor, _ = self.snapshot(runner)
+                self.assertEqual(code, expected)
+                self.assertEqual(monitor.review_states[current.key].source, source)
+
+    def test_approval_cannot_hide_feedback_tied_with_a_superseded_change_request(self):
+        old, current = target(), target(head="b" * 40)
+        changes = review(current, hour=3, state="CHANGES_REQUESTED")
+        feedback = review(current, hour=3, state="COMMENTED", body="Fix unsafe command.")
+        for tied in ([changes, feedback], [feedback, changes]):
+            with self.subTest(tied=tied):
+                runner = ReviewRunner(current, comments=[request(), receipt(current.head, hour=6)],
+                                      reviews=[*tied, review(old, hour=5)])
+                self.assertEqual(self.snapshot(runner)[0], 1)
+
+    def test_receipt_only_clears_feedback_strictly_before_the_latest_trigger(self):
+        current = target()
+        received = receipt(current.head, hour=6)
+        for trigger, reactions in ((request(hour=4), {}), (request(), {77: [reaction("eyes", hour=4)]})):
+            for hour, extra, expected in ((3, [received], 0), (4, [received], 1), (4, [], 3), (5, [received], 1)):
+                with self.subTest(trigger=trigger, hour=hour, receipt=bool(extra)):
+                    feedback = review(current, hour=hour, state="COMMENTED", body="Fix the leak.")
+                    runner = ReviewRunner(current, comments=[trigger, *extra], reviews=[feedback],
+                                          request_reactions=reactions, threads=[{"isResolved": True}])
+                    code, monitor, _ = self.snapshot(runner)
+                    self.assertEqual(code, expected)
+                    if expected == 1:
+                        self.assertEqual(monitor.review_states[current.key].findings[0]["excerpt"], "Fix the leak.")
+
+    def test_superseded_change_cannot_hide_separate_current_head_feedback(self):
+        old, current = target(), target(head="b" * 40)
+        feedback = review(current, hour=3, state="COMMENTED", body="Fix the leak.")
+        changes = review(current, hour=5, state="CHANGES_REQUESTED")
+        for clearance, expected in (([], 1), ([review(current, hour=4)], 0)):
+            history = [feedback, *clearance, changes, review(old, hour=6)]
+            for reviews in (history, history[::-1]):
+                with self.subTest(clearance=clearance, reviews=reviews):
+                    runner = ReviewRunner(current, comments=[request(), receipt(current.head, hour=7)], reviews=reviews)
+                    code, monitor, _ = self.snapshot(runner)
+                    self.assertEqual(code, expected)
+                    if expected == 1:
+                        self.assertEqual(monitor.review_states[current.key].findings[0]["excerpt"], "Fix the leak.")
+
+    def test_positive_evidence_must_postdate_a_superseded_change_request(self):
+        old, current = target(), target(head="b" * 40)
+        for change_head in (old, current):
+            history = [review(change_head, hour=4, state="CHANGES_REQUESTED"), review(old, hour=5)]
+            for hour, expected in ((3, 3), (4, 3), (6, 0)):
+                for notes, reviews in (([receipt(current.head, hour=hour)], history),
+                                       ([], [*history, review(current, hour=hour)])):
+                    with self.subTest(change_head=change_head.head, hour=hour, receipt=bool(notes)):
+                        runner = ReviewRunner(current, comments=[request(), *notes], reviews=reviews)
+                        self.assertEqual(self.snapshot(runner)[0], expected)
+
+    def test_another_revision_cannot_revive_a_superseded_current_submission(self):
+        old, current = target(), target(head="b" * 40)
+        history = [review(current, hour=3, state="CHANGES_REQUESTED"), review(old, hour=4),
+                   review(old, hour=5, state="CHANGES_REQUESTED", body="Still blocked.")]
+        for extra, expected in (([], 3), ([receipt(current.head, hour=6)], 1)):
+            with self.subTest(receipt=bool(extra)):
+                runner = ReviewRunner(current, comments=[request(), *extra], reviews=history)
+                code, monitor, _ = self.snapshot(runner)
+                self.assertEqual(code, expected)
+                if expected == 1:
+                    self.assertEqual(monitor.review_states[current.key].findings[0]["excerpt"], "Still blocked.")
+
+    def test_inflight_prior_revision_feedback_can_veto_current_completion(self):
+        old, other, current = target(), target(head="c" * 40), target(head="b" * 40)
+        automatic = [receipt(current.head, hour=7)]
+        request_only = [request(hour=4)]
+        manual = request_only + automatic
+        for comments, hour, clearance, expected in (
+            (manual, 3, [], 0), (manual, 4, [], 1), (manual, 5, [], 1),
+            (manual, 5, [review(old, hour=6)], 0), (manual, 5, [review(other, hour=6)], 1),
+            (manual, 5, [review(current, hour=6)], 0), (manual, 5, [review(current, hour=5)], 1),
+            (automatic, 0, [], 0), (automatic, 1, [], 1), (automatic, 2, [], 1), (request_only, 5, [], 3),
+        ):
+            with self.subTest(comments=comments, hour=hour, clearance=clearance):
+                feedback = review(old, hour=hour, state="COMMENTED", body="Fix the concurrent finding.")
+                runner = ReviewRunner(current, comments=comments, reviews=[feedback, *clearance], threads=[{"isResolved": True}])
+                runner.runs[0]["createdAt"] = "2026-01-01T01:00:00Z"
+                runner.selected["commits"]["nodes"][0]["commit"]["committedDate"] = "2026-01-01T06:00:00Z"
+                code, monitor, _ = self.snapshot(runner)
+                self.assertEqual(code, expected)
+                if expected == 1:
+                    self.assertEqual(monitor.review_states[current.key].findings[0]["excerpt"], feedback["body"])
 
     def test_timestamp_correlated_thumb_does_not_pass(self):
         runner = ReviewRunner(reactions=[reaction("eyes"), reaction("+1", hour=3, identifier=2)])
