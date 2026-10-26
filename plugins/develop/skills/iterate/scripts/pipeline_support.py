@@ -50,7 +50,7 @@ REVIEW_QUERY = """query CodexPullRequestReview($owner: String!, $name: String!, 
       }
       comments(last: 50) {
         pageInfo { hasPreviousPage }
-        nodes { databaseId author { login __typename } authorAssociation createdAt bodyText url }
+        nodes { databaseId author { login __typename } authorAssociation createdAt bodyText body includesCreatedEdit lastEditedAt url }
       }
       reviews(last: 50) {
         pageInfo { hasPreviousPage }
@@ -76,6 +76,10 @@ REVIEW_QUERY = """query CodexPullRequestReview($owner: String!, $name: String!, 
 GITHUB_PART = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_.-]*$")
 GITHUB_HOST = re.compile(r"^[A-Za-z0-9][A-Za-z0-9.-]*$")
 FULL_SHA = r"(?:[0-9a-f]{40}|[0-9a-f]{64})"
+RECEIPT_SHA_HEADER = "Accept: application/vnd.github.sha"
+RECEIPT_COMMIT_ENDPOINT = re.compile(
+    r"^repos/[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*/commits/[0-9a-f]{10}$"
+)
 REACTION_ENDPOINT = re.compile(
     r"^repos/[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*/"
     r"issues/(?:comments/)?[1-9][0-9]*/reactions\?per_page=100$"
@@ -248,10 +252,16 @@ def ensure_read_only(argv: Sequence[str]) -> None:
             raise WatchError("Refusing a non-approved GraphQL operation")
         if len(argv) >= 3 and argv[1] == "api":
             command = list(argv)
-            if len(command) == 7 and command[-2] == "--hostname":
+            if len(command) in {7, 9} and command[-2] == "--hostname":
                 if not GITHUB_HOST.fullmatch(command[-1]):
                     raise WatchError("Refusing an unapproved GitHub API hostname")
                 command = command[:-2]
+            if (
+                len(command) == 7
+                and RECEIPT_COMMIT_ENDPOINT.fullmatch(command[2])
+                and command[3:] == ["--method", "GET", "-H", RECEIPT_SHA_HEADER]
+            ):
+                return
             if (
                 len(command) == 5
                 and (REACTION_ENDPOINT.fullmatch(command[2]) or CHECK_ENDPOINT.fullmatch(command[2]))

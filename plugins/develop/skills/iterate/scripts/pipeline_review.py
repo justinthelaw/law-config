@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any
 
-from pipeline_support import REVIEW_QUERY, Runner, Target, WatchError, bounded_log
+from pipeline_support import FULL_SHA, RECEIPT_SHA_HEADER, REVIEW_QUERY, Runner, Target, WatchError, bounded_log
 
 
 CODEX_ACTOR = "chatgpt-codex-connector"
@@ -17,6 +17,27 @@ REVIEW_REQUEST = re.compile(r"^\s*@codex\s+review\b", re.IGNORECASE)
 NEUTRAL_REVIEW = re.compile(
     r"codex reviewed this pull request and didn['\u2019]t find any major issues\.",
     re.IGNORECASE,
+)
+NO_FINDINGS_RECEIPT = re.compile(
+    r"<!-- codex-review-receipt:v1 -->\n\n"
+    r"Codex Review: Didn['\u2019]t find any major issues\.(?: (?P<note>[^\n]+))?\n\n"
+    rf"\*\*Reviewed commit:\*\* `(?P<oid>[0-9a-f]{{10}}|{FULL_SHA})`"
+)
+# These are the v1 bot's observed sign-offs. Unknown prose could contain a finding.
+RECEIPT_NOTES = {
+    None, ":+1:", ":rocket:", ":tada:", "Already looking forward to the next diff.",
+    "Another round soon, please!", "Bravo.", "Breezy!", "Can't wait for the next one!",
+    "Chef's kiss.", "Delightful!", "Hooray!", "Keep it up!", "Keep them coming!",
+    "More of your lovely PRs please.", "Nice work!", "Swish!", "What shall we delve into next?",
+    "You're on a roll.",
+}
+RECEIPT_HELP = (
+    "<summary>ℹ️ About Codex in GitHub</summary> <br/> "
+    "[Your team has set up Codex to review pull requests in this repo]"
+    "(https://chatgpt.com/codex/cloud/settings/general). Reviews are triggered when you "
+    '- Open a pull request for review - Mark a draft as ready - Comment "@codex review". '
+    "If Codex has suggestions, it will comment; otherwise it will react with 👍. "
+    'Codex can also answer questions or update the PR. Try commenting "@codex address that feedback". </details>'
 )
 PULL_REQUEST_FIELDS = (
     "number,url,headRefOid,headRefName,headRepositoryOwner,isCrossRepository,baseRefName"
@@ -95,6 +116,41 @@ def review_requires_changes(review: dict[str, Any]) -> bool:
         and bool(body)
         and not NEUTRAL_REVIEW.fullmatch(body)
     )
+
+
+def has_current_receipt(
+    comments: list[dict[str, Any]], target: Target, latest_trigger: datetime | None, runner: Runner
+) -> bool:
+    short_oid = target.head[:10]
+    found_short = False
+    for comment in comments:
+        if (
+            not is_codex_actor(comment.get("author"))
+            or comment.get("includesCreatedEdit") is not False
+            or comment.get("lastEditedAt", "") is not None
+        ):
+            continue
+        verdict, details, help_text = str(comment.get("body", "")).strip().partition("\n\n<details>")
+        if details and " ".join(help_text.split()) != RECEIPT_HELP:
+            continue
+        match = NO_FINDINGS_RECEIPT.fullmatch(verdict)
+        if not match or match["note"] not in RECEIPT_NOTES or match["oid"] not in {target.head, short_oid}:
+            continue
+        created = timestamp(comment.get("createdAt"), "Codex review receipt")
+        if latest_trigger is not None and created <= latest_trigger:
+            continue
+        if match["oid"] == target.head:
+            return True
+        found_short = True
+    if not found_short:
+        return False
+    host, owner, name = github_location(target.repository)
+    resolved = runner(
+        ["gh", "api", f"repos/{owner}/{name}/commits/{short_oid}", "--method", "GET",
+         "-H", RECEIPT_SHA_HEADER, "--hostname", host],
+        cwd=target.path,
+    )
+    return (resolved or "").strip() == target.head
 
 
 def discover_pull_request(target: Target, runner: Runner) -> PullRequest | None:
@@ -389,6 +445,10 @@ def inspect_pull_request(
                     latest_request,
                 )
             return ReviewState(pull_request, "passed", "submitted", latest_trigger, True, request=latest_request)
+    if (latest_review is None or not review_requires_changes(latest_review)) and has_current_receipt(
+        comments, target, latest_trigger, runner
+    ):
+        return ReviewState(pull_request, "passed", "receipt", latest_trigger, True, request=latest_request)
     if latest_trigger is None:
         if not approvals:
             return None
