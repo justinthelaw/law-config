@@ -8,6 +8,10 @@
 - Commit signing is nonblocking: prefer an existing noninteractive signer and fall back unsigned, preserving the thread's explicit preference and actual repository/server restrictions. Do not import donor signing gates, change persistent Git configuration or set up keys to satisfy this workflow.
 - Change user-facing behavior only within the request; never use internal review as authorization to bypass host controls. Keep conversation packets and task-specific findings outside tracked files.
 
+## Review guidelines
+
+When a passing test could miss the behavior it claims to cover, check whether it catches a plausible defect and still passes after a harmless refactor. Tie findings to the observed results and identify any untested case. The [test-quality controls](tests/evaluations/quality.md) give a bounded example.
+
 ## Verify and release
 
 With Python 3.10 or newer, from this plugin directory:

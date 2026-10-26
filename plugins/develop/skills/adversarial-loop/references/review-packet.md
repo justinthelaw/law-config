@@ -10,15 +10,15 @@ Invocation / checkpoint / round / remaining review budget:
 Intent / review-contract revision:
 Original user request (verbatim, secrets redacted):
 Steering messages (ordered, verbatim, secrets redacted):
-Resolved acceptance criteria / lane scope / exclusions and non-goals:
+Resolved acceptance criteria (including observable checks for supplied review criteria) / lane scope / exclusions and non-goals:
 Applicable instructions and authorized action boundaries:
 Implementation plan / affected files / invariants / acceptance tests (supplied or not provided):
-User preferences / review rubric (optional; supplied or not provided):
+Applicable AGENTS.md review guidance, source and affected paths (when present):
 Criterion precedence / material conflicts (if any):
 Artifact baseline / current revision (document version, file/image hashes, or SHA plus dirty diff hashes):
 Target artifacts (paths, source links, supplied diffs):
 Evidence authority (named sources that establish each relevant claim or criterion):
-Verification evidence (source citations and dates, rendered views and sizes, style rubric, or tests/CI):
+Verification evidence (source citations and dates, rendered views and sizes, style examples, or tests/CI):
 Allowed tools and sources / access, time or exploration bounds:
 Exact allowed file paths and resolved roots for sensitive local evidence:
 Stop condition (coverage complete, stated bound reached, or missing required evidence):
@@ -45,9 +45,7 @@ Output contract:
 - Additional specialist recommendation with a specific uncovered risk, or none.
 ```
 
-Translate a supplied rubric into observable criteria and connect findings to the relevant criterion. Keep verified defects, uncertainty and nonblocking preferences distinct. Apply the entrypoint's precedence and default criteria; absence of optional preferences or a rubric creates no extra gate.
-
-For implementation reviews, supply the relevant diff plus contracts and tests. For plan reviews, supply the candidate plan, constraints and acceptance criteria. For information reviews, supply exact claims, named authoritative evidence and known uncertainty. Keep the coordinator's conclusions and other reviewers' findings out of independent packets. A focused rebuttal may quote the disputed finding and raw evidence, but record it as a rebuttal rather than treating it as an independent initial review.
+For implementation reviews, supply the diff, relevant contracts and tests. Include authorized sources for affected consumers outside the diff. For plan reviews, supply the candidate plan, constraints and acceptance criteria. For information reviews, supply exact claims, named authoritative evidence and known uncertainty. Keep the coordinator's conclusions and other reviewers' findings out of independent packets. A focused rebuttal may quote the disputed finding and raw evidence, but record it as a rebuttal rather than treating it as an independent initial review.
 
 For sensitive local reviews, give reviewers an exact file allowlist instead of a directory scan with exclusion globs. Validate discovered names and resolved paths against the authorized roots before reading any content. Reject unexpected paths and links that resolve outside those roots; protected files must never enter a read command. Pass each approved path as a literal argument, including spaces and hidden components. If discovery is needed, inspect its path-only output first, then read only the approved files. A quoted exclusion pattern is not a substitute for this boundary.
 
