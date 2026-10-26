@@ -122,6 +122,26 @@ def review_time(review: dict[str, Any]) -> datetime:
     return timestamp(review.get("submittedAt"), "submitted Codex review")
 
 
+def outstanding_feedback(reviews: list[dict[str, Any]], head: str, since: datetime) -> dict[str, Any] | None:
+    seen = set()
+    for review in reviews:
+        if review_time(review) < since:
+            break
+        if review["state"] == "CHANGES_REQUESTED":
+            continue
+        commit = review.get("commit")
+        oid = commit.get("oid") if isinstance(commit, dict) else None
+        if isinstance(oid, str):
+            if oid in seen:
+                continue
+            seen.add(oid)
+        if review_requires_changes(review):
+            return review
+        if oid == head:
+            break  # A newer verdict on this head supersedes feedback on earlier revisions.
+    return None
+
+
 def has_current_receipt(
     comments: list[dict[str, Any]], target: Target, after: datetime | None, runner: Runner
 ) -> bool:
@@ -448,6 +468,7 @@ def inspect_pull_request(
     if completion is None and has_current_receipt(comments, target, positive_floor, runner):
         completion = "receipt"
     if completion is not None:
+        adverse = adverse or outstanding_feedback(submitted_reviews, target.head, latest_trigger or review_floor)
         if adverse is not None:
             return ReviewState(
                 pull_request, "failed", "changes-requested", latest_trigger, True,

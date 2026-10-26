@@ -362,6 +362,27 @@ class ProductionReviewTests(unittest.TestCase):
                 if expected == 1:
                     self.assertEqual(monitor.review_states[current.key].findings[0]["excerpt"], "Still blocked.")
 
+    def test_inflight_prior_revision_feedback_can_veto_current_completion(self):
+        old, other, current = target(), target(head="c" * 40), target(head="b" * 40)
+        automatic = [receipt(current.head, hour=7)]
+        request_only = [request(hour=4)]
+        manual = request_only + automatic
+        for comments, hour, clearance, expected in (
+            (manual, 3, [], 0), (manual, 4, [], 1), (manual, 5, [], 1),
+            (manual, 5, [review(old, hour=6)], 0), (manual, 5, [review(other, hour=6)], 1),
+            (manual, 5, [review(current, hour=6)], 0), (manual, 5, [review(current, hour=5)], 1),
+            (automatic, 0, [], 0), (automatic, 1, [], 1), (automatic, 2, [], 1), (request_only, 5, [], 3),
+        ):
+            with self.subTest(comments=comments, hour=hour, clearance=clearance):
+                feedback = review(old, hour=hour, state="COMMENTED", body="Fix the concurrent finding.")
+                runner = ReviewRunner(current, comments=comments, reviews=[feedback, *clearance], threads=[{"isResolved": True}])
+                runner.runs[0]["createdAt"] = "2026-01-01T01:00:00Z"
+                runner.selected["commits"]["nodes"][0]["commit"]["committedDate"] = "2026-01-01T06:00:00Z"
+                code, monitor, _ = self.snapshot(runner)
+                self.assertEqual(code, expected)
+                if expected == 1:
+                    self.assertEqual(monitor.review_states[current.key].findings[0]["excerpt"], feedback["body"])
+
     def test_timestamp_correlated_thumb_does_not_pass(self):
         runner = ReviewRunner(reactions=[reaction("eyes"), reaction("+1", hour=3, identifier=2)])
         result, monitor, _ = self.snapshot(runner)
