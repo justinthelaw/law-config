@@ -45,7 +45,7 @@ Output contract:
 - Additional specialist recommendation with a specific uncovered risk, or none.
 ```
 
-For implementation reviews, supply the relevant diff plus contracts and tests. For plan reviews, supply the candidate plan, constraints and acceptance criteria. For information reviews, supply exact claims, named authoritative evidence and known uncertainty. Keep the coordinator's conclusions and other reviewers' findings out of independent packets. A focused rebuttal may quote the disputed finding and raw evidence, but record it as a rebuttal rather than treating it as an independent initial review.
+For implementation reviews, supply the diff, relevant contracts and tests. Include authorized sources for affected consumers outside the diff. For plan reviews, supply the candidate plan, constraints and acceptance criteria. For information reviews, supply exact claims, named authoritative evidence and known uncertainty. Keep the coordinator's conclusions and other reviewers' findings out of independent packets. A focused rebuttal may quote the disputed finding and raw evidence, but record it as a rebuttal rather than treating it as an independent initial review.
 
 For sensitive local reviews, give reviewers an exact file allowlist instead of a directory scan with exclusion globs. Validate discovered names and resolved paths against the authorized roots before reading any content. Reject unexpected paths and links that resolve outside those roots; protected files must never enter a read command. Pass each approved path as a literal argument, including spaces and hidden components. If discovery is needed, inspect its path-only output first, then read only the approved files. A quoted exclusion pattern is not a substitute for this boundary.
 

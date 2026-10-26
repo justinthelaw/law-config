@@ -48,6 +48,8 @@ Inspect actual visuals at intended sizes, factual claims against current primary
 
 Select these lenses for an actual risk or explicit request, not as extra mandatory rounds. For blind comprehension, first give the artifact reviewer only the artifact, access/safety boundaries and a neutral comprehension question. After its independent account, supply intent and claims for comparison in that same bounded round. Do not call a review blind when the first packet already contained the desired explanation. Claim-to-evidence review checks the actual cited source, test result or rendered artifact; a checklist or passing unrelated test is insufficient.
 
+For repository changes, trace affected behavior into callers, docs, examples and tests, including unchanged files within the authorized scope. Flag stale guidance or missing coverage with evidence, and identify material gaps you could not inspect.
+
 For code or architecture, assess intended behavior against supplied plans, files, invariants and tests. Cover architectural fit and ownership, API/integration contracts, correctness, regressions, security/privacy, performance and observability where relevant. Distinguish introduced defects from verified pre-existing conditions. Findings must be actionable on the current revision; reject speculation, stylistic preferences and unnecessary redesign.
 
 ## Report

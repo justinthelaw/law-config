@@ -4,4 +4,4 @@ interface:
   icon_large: "./assets/icon.png"
   display_name: "Develop: Iterate"
   short_description: "Implement, refactor, diagnose and deliver scoped work"
-  default_prompt: "Use $iterate for my selected implementation, refactor, diagnosis or delivery. Apply the shared planning/review path, reuse current accepted decisions, test affected contracts and preserve scope, budgets and pending approvals."
+  default_prompt: "Use $iterate for my selected implementation, refactor, diagnosis or delivery. Apply the shared planning/review path, reuse accepted decisions, verify affected callers, docs and tests, and preserve scope, budgets and pending approvals."
