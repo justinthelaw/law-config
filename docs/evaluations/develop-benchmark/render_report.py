@@ -579,81 +579,152 @@ def compiler_finding(observations):
     return finding + "Neither arm reached a runtime suite."
 
 
-def dashboard(c, cases, pairs, groups, compiler):
-    historic_selected = {case["label"] for case in cases}
-    selected = [pair for name, pair in pairs if name in historic_selected]
-    flow = Section(c, "Scorecard   /   26–27 October", "What changed with Develop?",
-                   f"Only {len(selected)} of {len(cases)} selected tasks completed both repository-workflow arms. "
-                   f"Both arms passed those tasks. The {sum(map(len, groups.values()))} new pairs used source packets in a separate experiment. "
-                   "Percentages compare Develop with its matched control.")
-    link(c, LEFT + 236, 742, "Source  /  historical ledger", ISSUE + "#evidence-f", 9.5)
-    summary_rows = []
-    for name, n, values in [("Historical · selected", len(selected), combined(selected)),
-                            ("Historical · all pairs", len(pairs), combined([p for _, p in pairs]))]:
-        summary_rows.append((name, f"{n}/{n} each", difference(values, "seconds"), difference(values, "total_context")))
-    for cohort, runs in groups.items():
-        totals = combined([case["arms"] for case in runs])
-        control, develop = (passed(runs, arm) for arm in ("control", "develop"))
-        outcomes = f"{control} each" if control == develop else f"C {control} · D {develop}"
-        summary_rows.append((COHORTS[cohort], outcomes,
-                             difference(totals, "seconds"), difference(totals, "total_context")))
-    flow.table(("TASK SET", "TASKS PASSED¹", "ELAPSED TIME", "CONTEXT TOKENS"),
-               (154, 121, 124, 125), summary_rows)
-    flow.body("¹ The two historical selected pairs are included in the five-pair total. "
-              "C = control, D = Develop. Billed dollars are unavailable.",
-              9.3, MUTED, gap=8)
-    flow.subhead("Historical tasks")
-    flow.table(("PROJECT / SLATE", "QUALITY · BOTH", "ELAPSED TIME", "CONTEXT TOKENS"),
-               (154, 121, 124, 125), [
-                   (f"{name} · {'selected' if name in historic_selected else 'supplemental'}",
-                    f"Pass · {EVIDENCE[name][0]}", difference(pair, "seconds"), difference(pair, "total_context"))
-                   for name, pair in pairs])
-    flow.subhead("What to test next")
-    historical = combined(selected)
-    flow.body("Test shorter review inputs at fixed review depth. On the two selected historical tasks, "
-              f"Develop used {difference(historical, 'total_context')} context and was "
-              f"{difference(historical, 'seconds')}. Keep the change only if blind review and "
-              "acceptance evidence hold up.", 10.5)
-    if compiler:
-        flow.body("Try one compiler report before the final response. Both runner-space patches applied, "
-                  "but an unused import stopped both builds. Test whether equal access to diagnostics "
-                  "improves the number of patches that reach runtime checks.", 10.5)
-    else:
-        flow.body("In the new trials, models proposed exact edits from a source packet. Compare artifact "
-                  "application, behavior, time and tokens separately for tasks using recovered or replacement "
-                  "fixtures. The next page shows each new task and its test scope.", 10.5)
+def dashboard(c, cases, pairs, groups):
+    runs = [case for group in groups.values() for case in group]
+    selected = {case["label"] for case in cases}
+    n_selected = sum(name in selected for name, _ in pairs)
+    arms = ("control", "develop")
+    won = {arm: sum(case["arms"][arm]["implementation_pass"] is True
+                    and case["arms"][other]["implementation_pass"] is not True for case in runs)
+           for arm, other in (arms, arms[::-1])}
+    flow = Section(c, "Implementation quality   /   27 October", "Did Develop finish more tasks?",
+                   "The same model (gpt-6.1-sol) produced a patch with and without Develop. An implementation "
+                   "earned a pass only when it met the task's frozen grading criteria.")
+    heading(c, flow.y, f"Develop completed {won['develop']} tasks that Control missed")
+    flow.y += 26
+    outcomes = [r["arms"]["control"]["implementation_pass"] for r in runs]
+    flow.body(f"Control alone passed {won['control']} tasks. Of its {len(runs)} grades, {outcomes.count(True)} "
+              f"passed, {outcomes.count(False)} failed and {outcomes.count(None)} remained unresolved. "
+              "Each task ran once per arm.", 11)
+    flow.subhead("Overall implementation grade for each task")
+    labels = {True: ("Pass", PALE, TEAL), False: ("Fail", "#F7E8E1", RUST),
+              None: ("Unresolved", LIGHT, MUTED)}
+    cell_width = 75
+    offset = LEFT + 72
+    for i, case in enumerate(runs):
+        x = offset + cell_width * i
+        text(c, x + 4, flow.y, case["name"], 9.6, INK, "Helvetica-Bold")
+        for j, arm in enumerate(arms):
+            y = flow.y + 17 + 22 * j
+            if i == 0:
+                text(c, LEFT, y + 4, arm.title(), 10, INK, "Helvetica-Bold")
+            label, fill, color = labels[case["arms"][arm]["implementation_pass"]]
+            box(c, x, y, cell_width - 3, 20, fill)
+            text(c, x + 4, y + 4, label, 9.8, color)
+    flow.y += 69
+    flow.body("fmt fixed part of its requirement. Runner-space failed to compile. The site patches "
+              "matched gold on the primary checks, but their submitted tests timed out.", 10.2, gap=5)
+    flow.subhead("Completion, elapsed time and tokens by fixture group")
+    rows = []
+    for cohort, group in groups.items():
+        count = len(group)
+        passes = {arm: sum(r["arms"][arm]["implementation_pass"] is True for r in group) for arm in arms}
+        change_pp = 100 * (passes["develop"] - passes["control"]) / count
+        total = combined([case["arms"] for case in group])
+        rows.append((COHORTS[cohort], f"{passes['control']}/{count} ({passes['control']/count:.0%})",
+                     f"{passes['develop']}/{count} ({passes['develop']/count:.0%})", f"{change_pp:g} pp",
+                     difference(total, "seconds"), difference(total, "total_context")))
+    flow.table(("NEW TASKS", "CONTROL PASSED", "DEVELOP PASSED", "CHANGE", "DEVELOP TIME", "DEVELOP TOKENS"),
+               (111, 76, 76, 59, 103, 99), rows)
+    flow.body("pp = percentage points. Time and total tokens compare Develop with Control. "
+              "Tokens include cached input. Billed dollars were unavailable.", 9.5, MUTED, gap=6)
+    flow.subhead("What the reviewers could distinguish")
+    votes = {lane: {v: sum(r["blind"][lane] == v for r in runs) for v in ("control", "develop", "tie")}
+             for lane in ("correctness", "maintainability")}
+    flow.body(f"Correctness tied on {votes['correctness']['tie']}/{len(runs)} tasks. Maintainability tied "
+              f"on {votes['maintainability']['tie']}/{len(runs)}. The site reviewer preferred Control's "
+              "tests for navigation, cleanup and keyboard ownership. The submitted site tests timed out "
+              "for both arms.", 10.6)
+    flow.subhead("Earlier full-workflow evidence")
+    flow.body(f"Both arms passed all {len(pairs)} completed historical pairs. Only {n_selected}/{len(cases)} "
+              "selected cases completed that workflow. Reviewers modestly preferred Develop's Flask and "
+              "Hugo tests. The six new pairs measured edits made without repository tools or test feedback.", 10.2)
     flow.finish()
 
 
-def new_tasks(c, cases, groups, inputs):
-    published = {case["case"] for case in cases}
-    flow = Section(c, "Instruction-assisted   /   27 October", "How did the new tasks compare?",
-                   "Each new task had one control and one Develop arm. Quality is the observed case-specific "
-                   "result. Elapsed time and context show Develop's change from its paired control.")
-    scope = {
-        "recovered-fixture": "These tasks reused archived behavior checks. Workers received source excerpts, "
-                             "and a separate evaluator applied and tested their final edits.",
-        "replacement-fixture": "These tasks used newly written hidden behavior checks, sealed before the "
-                               "arms ran. Their measurements have their own denominator.",
-    }
-    for cohort, runs in groups.items():
-        flow.subhead(f"{COHORTS[cohort]}  /  {paired_tasks(runs)}")
-        flow.body(scope[cohort], 10, MUTED, gap=5)
-        rows = []
-        for case in runs:
-            slate = "selected" if inputs[case["id"]]["case"] in published else "supplemental"
-            scores = ["No patch" if quality_label(case["arms"][a]) == "No patch"
-                      else printable(case["arms"][a]["quality"]) for a in ("control", "develop")]
-            rows.append((f"{case['name']} · {slate}", case["stratum"], " · ".join(scores),
-                         difference(case["arms"], "seconds"), difference(case["arms"], "total_context")))
-        flow.table(("PROJECT / SLATE", "STRATUM", "CONTROL / DEVELOP", "ELAPSED TIME", "CONTEXT TOKENS"),
-                   (112, 76, 134, 101, 101), rows)
-    runs = [case for group in groups.values() for case in group]
-    if any(not arm["artifact_applicable"] for case in runs for arm in case["arms"].values()):
-        flow.body("No patch means the edits could not be tested. Those attempts still contributed time and usage.", 9.8, MUTED)
-    site = next((case for case in runs if case["id"] == "site"), None)
-    if site and any(arm["implementation_pass"] is None for arm in site["arms"].values()):
-        flow.body("Personal site  /  " + site["suite_note"], 9.8, MUTED)
+# Reader-facing interpretations of the frozen, case-specific observations.
+PROGRESS = {
+    "fmt": ("Null-pointer formatting", "Both fixed direct formatting and conversion to a string, recovering "
+            "2 of the 8 checks the base missed. The remaining six paths still crashed, including surrounding "
+            "text, bounded output and size calculation."),
+    "svelte": ("Visibility of speculative state", "Both fixed the same fork-visibility regression in two "
+               "rendering modes. All eight independent checks already passed on base. Only the two "
+               "gold-derived checks distinguished the fix."),
+    "law": ("SQLite lock retries", "Both recovered all five missing scenarios, including the default wait, "
+            "retry limits and recovery when a writer released its lock. Neither submitted README test "
+            "program was executed."),
+    "site": ("Reconnect arcade controls", "Both restored navigation in Chromium, Firefox and Mobile Chrome. "
+             "Both reproduced gold's failures in WebKit and Mobile Safari. Their submitted tests timed out "
+             "at 420 seconds, leaving both overall grades unresolved."),
+    "tokio": ("Mutable access to a stored value", "Base lacked the method, so the runtime checks could not "
+              "start. Both added exclusive mutable access, passed all four new runtime checks and 26 "
+              "existing tests, and correctly rejected a shared borrow."),
+    "runner": ("Safe filesystem removal", "Base passed 4 of 11 removal checks and gold passed all 11. Both "
+               "patches failed to compile. Whether either preserved a replacement target or detected "
+               "incomplete removal remained untested."),
+}
+
+PATCH_QUALITY = {
+    "fmt": "Both routed null through the same pointer writer. Develop tested null C strings and mutable "
+           "strings. Control tested raw-pointer output and more string conversions. Both patches still "
+           "crashed on the same six paths.",
+    "svelte": "Develop tested whether an unrelated update could expose pending state to the same "
+              "observer. Control checked ordinary and eager reads together and verified that an unrelated "
+              "flush sent no notification. Both submitted suites passed.",
+    "law": "Control covered contention at commit and kept post-commit optimization errors separate. "
+           "Develop tested a wider set of lock diagnostics and synchronized lock release more precisely. "
+           "These are differences in the submitted code.",
+    "site": "Control added tests for child-initiated navigation, unmounting an inaccessible frame and restored "
+            "keyboard ownership. Develop separated host and frame subscriptions and guarded stale focus "
+            "callbacks. Control won the maintenance judgment on source inspection.",
+    "tokio": "Both implemented the same accessor and documented its safety. Control tested repeated "
+             "mutation. Develop tested extracting from an empty cell. Both submitted suites passed.",
+    "runner": "Control used operation-local dependencies. Develop used shared mutable test hooks. The "
+              "blind reviewers tied. Later compiler logs identified four additional type errors in "
+              "Develop's tests, on top of the unused import that blocked both builds.",
+}
+
+
+def new_tasks(c, groups):
+    flow = Section(c, "Task completion   /   27 October", "How far did each patch get?",
+                   "Read across from the starting code (base) to the two patches and the merged human "
+                   "fix (gold). Scores use each task's own tests. A build failure leaves behavior unknown.",
+                   "Source  /  candidate test observations", RESULTS.replace("results.json", "observations.json"))
+    link(c, LEFT + 236, 742, "Source  /  base and gold checks", RESULTS.replace("results.json", "qualifications.json"))
+    for cohort, group in groups.items():
+        flow.subhead(COHORTS[cohort])
+        score_rows = []
+        for case in group:
+            base, gold = case["base_reference"], case["gold_reference"]
+            scores = [case["arms"][arm]["quality"] for arm in ("control", "develop")]
+            if case["id"] == "svelte":
+                base, gold = (ref.split("; ")[1] for ref in (base, gold))
+            if case["id"] == "tokio":
+                gold = gold.split(",")[0]
+            values = [v.replace(" gold-derived", " derived").replace("Missing API at compile", "API missing")
+                      for v in (base, *scores, gold)]
+            score_rows.append((case["name"], *values))
+        flow.table(("TASK", "BASE", "CONTROL", "DEVELOP", "GOLD"), (113, 95, 106, 106, 104), score_rows)
+        for case in group:
+            title, progress = PROGRESS[case["id"]]
+            flow.body(f"{case['name']}  /  {title}", 10.3, TEAL, gap=1, font="Helvetica-Bold")
+            flow.body(progress, 9.8, gap=5)
+    flow.finish()
+
+
+def patch_quality(c, groups):
+    flow = Section(c, "Code and tests   /   27 October", "Where did patch quality differ?",
+                   "The graders saw anonymous submissions. A stronger regression test could earn a "
+                   "preference even when both patches delivered the same measured behavior.",
+                   "Source  /  blind judgments and arm identities", RESULTS.replace("results.json", "blind-judgments.json"))
+    link(c, LEFT + 260, 742, "Source  /  submitted patches",
+         RESULTS.replace("/blob/", "/tree/").replace("/results.json", "/candidates"))
+    for cohort, group in groups.items():
+        flow.subhead(COHORTS[cohort])
+        detail = [(case["name"], PATCH_QUALITY[case["id"]], difference(case["arms"], "seconds"),
+                   difference(case["arms"], "total_context")) for case in group]
+        flow.table(("TASK", "IMPLEMENTATION AND TEST QUALITY", "DEVELOP TIME", "DEVELOP TOKENS"),
+                   (76, 285, 81, 82), detail)
     flow.finish()
 
 
@@ -971,8 +1042,9 @@ def main(result_path=None, output_path=None):
     c.setAuthor("law-config")
     c.setSubject("Quality, elapsed time and usage across historical, recovered-fixture and replacement-fixture trials")
     compiler = compiler_finding(observations) if any(r["id"] == "runner" for r in replication["cases"]) else None
-    dashboard(c, cases, pairs, groups, compiler)
-    new_tasks(c, cases, groups, inputs)
+    dashboard(c, cases, pairs, groups)
+    new_tasks(c, groups)
+    patch_quality(c, groups)
     next_experiments(c, groups, phases, compiler)
     for cohort, runs in groups.items():
         packet_resources(c, cohort, runs)

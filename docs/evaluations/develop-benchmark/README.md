@@ -2,24 +2,35 @@
 
 [Read the illustrated report](report.pdf) · [Frozen case manifest](cases.csv) · [Historical ledger](ledger.csv) · [New scored trials](replication/README.md)
 
-Does Develop 0.9.0 help Codex implement a bounded change more correctly, and what does it cost? In five completed historical pairs, both arms passed the task-specific acceptance checks. None demonstrated a production-behavior advantage for Develop. Across those five pairs, Develop used 9.6% more release-to-final time and 51.2% more total context tokens, including cache. Only Requests and Cobra count toward the final eight-case slate. [Results and assessments](https://github.com/justinthelaw/law-config/issues/71#evidence-g:~:text=final%20selected%20sources)
-
-Roux chose the historical setup and interpreted those results. The independently reassessed continuation used a separately versioned, tool-free model protocol with offline tests. Each new trial measures patch generation from a frozen source packet. The original full-workflow slate remains at two of eight completed pairs. [Scored continuation](replication/README.md) · [Original continuation handoff](https://github.com/justinthelaw/law-config/issues/71#issuecomment-6434762307)
+**Develop completed zero tasks that Control missed.** Given the same starting code, task and model, `gpt-6.1-sol`, both arms passed Svelte, law-config and Tokio. Both failed fmt and runner-space. Personal site remained unresolved for both. Of the four tasks with recovered tests, each arm passed 2/4 (50%). With replacement tests, each passed 1/2 (50%). The observed change in verified completion was **0 percentage points in each group**. Each task ran once per arm. [Frozen grades and usage](replication/results.json)
 
 ## Scored source-packet trials
 
-Each row compares one Control and one Develop submission. Quality shows the held-out score when tests ran, or the stage where a submission stopped. Time and context show the change for Develop from Control. A negative time means Develop finished sooner.
+**How much of the implementation worked?** Base is the code before the change. Gold is the merged human PR. Each row uses that task's own acceptance evidence. A failed build leaves runtime behavior unmeasured.
 
-| Task | Fixture | Ownership | Control / Develop quality | Elapsed time | Total context |
-| --- | --- | --- | --- | ---: | ---: |
-| fmt | Recovered | External | 7/13 / 7/13 | -2.2% | +24.7% |
-| Svelte | Recovered | External | 2/2 gold-derived / 2/2 gold-derived | +35.9% | +23.0% |
-| law-config | Recovered | User-owned | 7/7 / 7/7 | -17.0% | +21.5% |
-| Personal site | Recovered | User-owned | 3/5 browsers / 3/5 browsers | +12.4% | +25.2% |
-| Tokio | Replacement | External | 4/4 runtime / 4/4 runtime | -2.2% | +24.6% |
-| Runner-space | Replacement | User-owned | Build failed / Build failed | +5.2% | +26.8% |
+| Task | Starting code | Control | Develop | Gold | What the model delivered |
+| --- | --- | --- | --- | --- | --- |
+| **Recovered fixtures** | | | | | |
+| fmt · External | 5/13 | 7/13 | 7/13 | 13/13 | **Partial, failed overall.** Both fixed direct null formatting and conversion to a string. Both recovered 2 of the 8 missing checks. The other six paths still crashed, including surrounding text, bounded output and size calculation. |
+| Svelte · External | 0/2 | 2/2 | 2/2 | 2/2 | **Passed.** Both kept speculative fork state out of reactive observations. The two distinguishing tests exercise one gold-derived regression in two rendering modes. The eight independent checks already passed on base. |
+| law-config · User-owned | 2/7 | 7/7 | 7/7 | 7/7 | **Passed.** Both recovered all five missing SQLite contention scenarios, including default behavior, bounded retry exhaustion and recovery after lock release. |
+| Personal site · User-owned | 0/5 browsers | 3/5 | 3/5 | 3/5 | **Unresolved.** Both restored controls in Chromium, Firefox and Mobile Chrome. Across 15 primary outcomes, each matched gold's 13 passes and two cross-origin failures. Both submitted-test stages timed out at 420 seconds. |
+| **Replacement fixtures** | | | | | |
+| Tokio · External | API missing | 4/4 | 4/4 | 4/4 | **Passed.** Both added exclusive mutable access to the stored value, passed four new runtime checks and all 26 existing tests, and rejected a shared borrow. Base could not compile the new API probe. |
+| Runner-space · User-owned | 4/11 | Build failed | Build failed | 11/11 | **Failed before runtime.** Both patches failed compilation. Whether they protected a replaced target or detected incomplete removal remains unknown. |
 
-Both personal-site submissions matched gold on 13/15 passes and the two failed primary assertions. Their submitted-test stages timed out, so their overall grades are unresolved. The runner-space builds failed before the behavioral tests ran. The two distinguishing Svelte tests were derived from gold, and the eight independently specified tests already passed on base. Billed dollars are unknown. The per-call ledger separates uncached input, cached input and output. [New results](replication/results.json) · [Blind judgments](replication/blind-judgments.json) · [Usage by call](replication/phase-usage.csv)
+The arms reached the same measured behavior on the five tasks that ran behavioral checks. Runner-space yielded no runtime comparison. These counts describe what the benchmark verified. They do not measure the fraction of a repository's total functionality implemented. [Requirements and gold PRs](cases.csv) · [Base and gold calibration](replication/qualifications.json) · [Check-by-check observations](replication/observations.json)
+
+**Where did quality differ?** Blind correctness tied on all six tasks. Blind maintainability tied on five. On the personal site, the reviewer preferred Control's tests for child-initiated navigation, cleanup of an inaccessible frame and restored keyboard ownership. Develop separated host and frame subscriptions and guarded focus callbacks against stale documents. The preference came from reading the patches. On runner-space, both primary builds failed on an unused import. Logs checked after blind review showed four additional type errors in Develop's test code. [Blind judgments](replication/blind-judgments.json) · [Submitted patches](replication/candidates/) · [Compiler observations](replication/observations.json)
+
+**What did it cost to reach those outcomes?** Develop finished sooner on three tasks and used more total tokens on all six. Time covers implementation and reviews. Total tokens include cached input. Billed dollars were unavailable.
+
+| New fixture group | Control passed | Develop passed | Develop elapsed time | Develop total tokens |
+| --- | ---: | ---: | ---: | ---: |
+| Recovered · 4 tasks | 2/4 | 2/4 | 3.8% slower | 23.5% more |
+| Replacement · 2 tasks | 1/2 | 1/2 | 2.9% slower | 25.7% more |
+
+The earlier experiment let agents use repository tools. Both arms passed all five completed historical pairs. Only Requests and Cobra counted toward the frozen eight-case slate. Reviewers modestly preferred Develop's Flask and Hugo regression tests. No historical pair demonstrated better production behavior with Develop. Across the five pairs, Develop took 9.6% more time and used 51.2% more total context. Roux chose that setup and interpreted the historical results. [Historical assessments](https://github.com/justinthelaw/law-config/issues/71#evidence-g:~:text=final%20selected%20sources) · [New trial method and per-call usage](replication/README.md)
 
 ## Cases and gold references
 
