@@ -1,0 +1,22 @@
+{
+  "id": "tokio-set-once-req-v1-20261027",
+  "frozen_utc": "2026-10-27T07:33:14.586620+00:00",
+  "requirement_sha256": "4c56ad33f663eecf1a4001246eb2fa81f2a97dc4bd8cb76bc0eca07c0d944f7e",
+  "historical_lock_sha256": "3d7cba5399414f5b5c61fd20314070908f422e699e9dc9981332c71e1ecdf2c1",
+  "test_sha256": {
+    "set_once_mut_v1.rs": "5676957f636779d862fe91203a32edb4734b25322f8d1f3294dce7e64e58c741",
+    "shared_owner_v1.rs": "5c6066306ba30e1d25746731ec7588cd8ea4b2c6aeaf880d98b7b599903259ab"
+  },
+  "designed_from": [
+    "frozen public requirement",
+    "existing base SetOnce public API signatures"
+  ],
+  "before_reference_calibration": true,
+  "gold_source_or_diff_inspected_by_fixture_author": false,
+  "known_historical_evaluator_results": "Original base missing get_mut, gold passed 3 evaluator cases; exact original tests absent.",
+  "native": "26 base native cases in sync_once_cell and sync_set_once, freeze named base IDs and run identical tests for gold/neutral/candidates. Separately inspect gold native count as applicable.",
+  "behavioral": "4 independent runtime tests. Base expected missing-method E0599 only, so execution absent. Gold must pass all four.",
+  "exclusive_borrow": "Dedicated check target. Base expected E0599. Gold requires E0596 on the specified shared.get_mut call and no other compiler errors.",
+  "release": "evaluator-only preparation; no model trial",
+  "evidence_boundary": "Original lock/probe unavailable in scoped sources. Fresh Cargo closure and independent probes are a separately identified cohort."
+}

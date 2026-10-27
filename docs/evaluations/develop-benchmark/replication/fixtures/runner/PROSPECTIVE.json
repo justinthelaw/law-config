@@ -1,0 +1,17 @@
+{
+  "files": {
+    "behavior.mjs": "3b53d2f92beacf26ecfddc70f033a6ce3f539cc7c21a7dc81f1fb31e9d206818",
+    "contract.json": "f24f895f17407b7292c199f7c0ac723df745145030d1c70c0fad3df947dde0eb",
+    "outputs.mjs": "7be1aeb016a4ab458b6a31069459ef1954e3b508b4d10ccc44f023edf35f4cc9",
+    "public-keys.json": "c783d4610f4e8903e59e5bac78e3fce4a06e6fe23e32e617a343a9a5db0b9db5",
+    "reporter.mjs": "fae52c2a84a0ef67d8a2820e8e4d404f679796d4c040f2c996c6acdf232d7437",
+    "smoke.mjs": "9d9d06e7630b24e1650e5bfdcc61e49b2c1d11f06bf948efb5cf5b22eb6404d0"
+  },
+  "fixture_tree_sha256": "020776399211e2f0a6d87383c011578a206d2c908e0cc8d5fbeaa483df9edd3c",
+  "historical_driver_sha256": "4ebd8892cd213dc58c62247b36c9aa3282f6d2d2810d1f210a16f8b4b6eec002",
+  "legacy_behavior_status": "unrecovered: evaluator modules absent in both official source trees and transferred evaluator-only bundle; historical worker copies unexamined",
+  "notes": "Fresh provisional fixture hash before base or gold comparison.",
+  "prior_exposure": "reference archive identity, aggregate 3/9 and 9/9, six shared failures; no raw gold implementation or scored submissions inspected during prospective replacement design",
+  "requirement_sha256": "8bd403b3428f92b1ca4f48870775ee588deb98c3cf22ee5deeabb367ac9f4d0d",
+  "version": "runner-space-50-prospective-v2"
+}

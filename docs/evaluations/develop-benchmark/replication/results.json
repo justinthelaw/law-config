@@ -1,0 +1,457 @@
+{
+  "protocol": "source-packet-v1",
+  "currency_amount": null,
+  "native_status": "Zero new full-workflow scored pairs. The pinned Linux client had no supported device sign-in. The signed-in alternate passed 224 executor checks but its native process launcher was denied a nested namespace in all four role profiles.",
+  "cases": [
+    {
+      "id": "fmt",
+      "name": "fmt",
+      "stratum": "External",
+      "cohort": "recovered-fixture",
+      "base_reference": "5/13",
+      "gold_reference": "13/13",
+      "arms": {
+        "control": {
+          "seconds": 90.331,
+          "uncached_input": 234054,
+          "cached_input": 19456,
+          "output": 4695,
+          "total_context": 258205,
+          "reasoning_output": 1204,
+          "quality": "7/13",
+          "quality_detail": "13 held-out checks. pass for format-test; failed_or_incomplete for compile-test.",
+          "implementation_pass": false,
+          "artifact_applicable": true,
+          "application_reason": "applicable",
+          "changed_files": [
+            "include/fmt/format.h",
+            "test/compile-test.cc",
+            "test/format-test.cc"
+          ],
+          "diff_sha256": "642eddf6a13a2844093609e653d36d97f2a83c788e99f97d522d4bdfc57f2cfe",
+          "after_file_sha256": {
+            "include/fmt/format.h": "f22823ae94d8bf4af8f10ec3c943707cd9651a7fd04774cedad4ec751595b0d4",
+            "test/compile-test.cc": "d118cf6fe40ec8ec09d4011f55c509ad8f9c100ab7cdd205b9f18329045cf92c",
+            "test/format-test.cc": "7cff67d79b93e035e93c275ced0c6c83ee7a6eedb02dedf787f1e9a78cc78977"
+          },
+          "submitted_json_sha256": "43ee74f5c8184d75a24dae923aff823539b5b6fe846cb465608dd8494483ae83",
+          "grade_sha256": "dcf55f10c29c00405865df45c257e8c21bf5257efb8eb0caec5d6c9cd70f0d5a",
+          "artifact_file": "candidates/fmt-control.json"
+        },
+        "develop": {
+          "seconds": 88.327,
+          "uncached_input": 299984,
+          "cached_input": 16256,
+          "output": 5706,
+          "total_context": 321946,
+          "reasoning_output": 1298,
+          "quality": "7/13",
+          "quality_detail": "13 held-out checks. pass for format-test; failed_or_incomplete for compile-test.",
+          "implementation_pass": false,
+          "artifact_applicable": true,
+          "application_reason": "applicable",
+          "changed_files": [
+            "include/fmt/format.h",
+            "test/compile-test.cc",
+            "test/format-test.cc"
+          ],
+          "diff_sha256": "01ef934f1007dc2801d75119c970a20c57b401349a9bc2ef1dc3b5b7b6dc38fd",
+          "after_file_sha256": {
+            "include/fmt/format.h": "3dba25500348690ce7a417a4dea7333c58eadf01f07d7c700fdf952bf5c09577",
+            "test/compile-test.cc": "55975d5ce02bec8b4d91da8efda3d65873026f2f8644d0c448ab47235ec35774",
+            "test/format-test.cc": "75007dcfef09a8f86f0fc2f8d5a7987ab666b9e9671e0e9053390ed724437cae"
+          },
+          "submitted_json_sha256": "6aadb5d2e04555c955f7c4970a3994975351ecae79b20d3ba9047358c88abf1a",
+          "grade_sha256": "9ff1b2d63cf309389c419cc943ccf7f59f5687bb70aa98e0daa0c492262d7edc",
+          "artifact_file": "candidates/fmt-develop.json"
+        }
+      },
+      "blind": {
+        "correctness": "tie",
+        "maintainability": "tie"
+      },
+      "interpretation": "Both gained two checks over base. Composite formatting, all three bounded-output cases, format_to and formatted_size still failed in both.",
+      "suite_note": "Both native builds succeeded. After blind grading, the CTest logs confirmed that compile-test segfaulted on both patches and format-test passed. The six failing held-out processes exited 139."
+    },
+    {
+      "id": "svelte",
+      "name": "Svelte",
+      "stratum": "External",
+      "cohort": "recovered-fixture",
+      "base_reference": "8/8 independent; 0/2 gold-derived",
+      "gold_reference": "8/8 independent; 2/2 gold-derived",
+      "arms": {
+        "control": {
+          "seconds": 140.258,
+          "uncached_input": 226035,
+          "cached_input": 37760,
+          "output": 6444,
+          "total_context": 270239,
+          "reasoning_output": 1907,
+          "quality": "2/2 gold-derived",
+          "quality_detail": "8/8 independent, 2/2 gold-derived, 5/5 native.",
+          "implementation_pass": true,
+          "artifact_applicable": true,
+          "application_reason": "applicable",
+          "changed_files": [
+            "packages/svelte/src/internal/client/reactivity/sources.js",
+            "packages/svelte/tests/runtime-runes/samples/async-fork-discard-revalidation/_config.js",
+            "packages/svelte/tests/runtime-runes/samples/async-fork-discard-revalidation/main.svelte"
+          ],
+          "diff_sha256": "4ae1ceb691ad73f590db200271e9ec2b33a96c606d523d00f57489bd6750a1f0",
+          "after_file_sha256": {
+            "packages/svelte/src/internal/client/reactivity/sources.js": "6239bcae90611bf74245978e24b4fe22b5c224a6eb41aeb75fa2bac7568863e5",
+            "packages/svelte/tests/runtime-runes/samples/async-fork-discard-revalidation/_config.js": "9f8390dfa212f9ef354a5ebfb18ca92438c1e2859ee795575dcf127612f72293",
+            "packages/svelte/tests/runtime-runes/samples/async-fork-discard-revalidation/main.svelte": "65dbb27b9ecec0e1c223696e74895ecf09a070eac0779ba7d3497656d7b833cd"
+          },
+          "submitted_json_sha256": "a8324d0b9b0aa1ca89615954d5940d75f9fdf6977543c003d69f0d101631f369",
+          "grade_sha256": "9065cfab62b0611fdbee85f374e88e5541fb45ffb0d3afe5224ea62bd5ce69e1",
+          "artifact_file": "candidates/svelte-control.json"
+        },
+        "develop": {
+          "seconds": 190.661,
+          "uncached_input": 309815,
+          "cached_input": 15104,
+          "output": 7600,
+          "total_context": 332519,
+          "reasoning_output": 2770,
+          "quality": "2/2 gold-derived",
+          "quality_detail": "8/8 independent, 2/2 gold-derived, 5/5 native.",
+          "implementation_pass": true,
+          "artifact_applicable": true,
+          "application_reason": "applicable",
+          "changed_files": [
+            "packages/svelte/src/internal/client/reactivity/sources.js",
+            "packages/svelte/tests/runtime-runes/samples/async-fork-discard-revalidation/_config.js",
+            "packages/svelte/tests/runtime-runes/samples/async-fork-discard-revalidation/main.svelte"
+          ],
+          "diff_sha256": "b053902122cdbb95dfd023cdde6a1ddfceaae19379f5dedac490bd3983dc1074",
+          "after_file_sha256": {
+            "packages/svelte/src/internal/client/reactivity/sources.js": "4c1188cb0831cca55a882fe6d3538cf2ff66ee1ccbb28f7e2d54ec6a258aea83",
+            "packages/svelte/tests/runtime-runes/samples/async-fork-discard-revalidation/_config.js": "855288404d44c2adcd0f0fd2e6e999ea921392ede25cb6a193bddc399218bc53",
+            "packages/svelte/tests/runtime-runes/samples/async-fork-discard-revalidation/main.svelte": "3fed65b347f1d6c82972f7a0cdc4e2b81b23cf54a2caeacad6c6b5f41a598750"
+          },
+          "submitted_json_sha256": "739fb4c9c8ad69e77c573c4e696f3866b10d663ee0fcdd4ce7f4e1bfe1a11866",
+          "grade_sha256": "82555c2311709862e18a89911309613ad34ec01041d4c8c0a81e26a536465957",
+          "artifact_file": "candidates/svelte-develop.json"
+        }
+      },
+      "blind": {
+        "correctness": "tie",
+        "maintainability": "tie"
+      },
+      "interpretation": "Both patches isolate speculative state and pass all observed checks. Each fixes the two reference-derived regressions. Neither blind grader found a material quality difference.",
+      "suite_note": "The scorer ran 8 independent, 2 gold-derived and 5 fixed native assertions. Both builds and both separately run authored regression suites passed."
+    },
+    {
+      "id": "law",
+      "name": "law-config",
+      "stratum": "User-owned",
+      "cohort": "recovered-fixture",
+      "base_reference": "2/7",
+      "gold_reference": "7/7",
+      "arms": {
+        "control": {
+          "seconds": 258.387,
+          "uncached_input": 226435,
+          "cached_input": 45312,
+          "output": 14503,
+          "total_context": 286250,
+          "reasoning_output": 3836,
+          "quality": "7/7",
+          "quality_detail": "Held-out synthetic SQLite scenarios. Syntax checks are reported separately.",
+          "implementation_pass": true,
+          "artifact_applicable": true,
+          "application_reason": "applicable",
+          "changed_files": [
+            "README.md",
+            "scripts/clean-codex"
+          ],
+          "diff_sha256": "fcc5537b46a7ef73f0e22ef32a79b87d8aae9107b248ac0bedba7c78174067d7",
+          "after_file_sha256": {
+            "README.md": "d127e1a89a976885ed2dcfb9a991fc118f248298d0d17af665d88e7e08150826",
+            "scripts/clean-codex": "4d0dcd3ce65a3df02afb9ecc11fa9834c990b940c23884f915507406c2b357b8"
+          },
+          "submitted_json_sha256": "e7627e47a11796fa950b7ea66907f0ba0da59a820ab337a51c6a94590d4fec2a",
+          "grade_sha256": "489dcd9f80b3a4ad77d8f9b3df983c763096551f3e38e4d035b3dfc04580b65f",
+          "artifact_file": "candidates/law-control.json"
+        },
+        "develop": {
+          "seconds": 214.422,
+          "uncached_input": 280660,
+          "cached_input": 52864,
+          "output": 14328,
+          "total_context": 347852,
+          "reasoning_output": 3286,
+          "quality": "7/7",
+          "quality_detail": "Held-out synthetic SQLite scenarios. Syntax checks are reported separately.",
+          "implementation_pass": true,
+          "artifact_applicable": true,
+          "application_reason": "applicable",
+          "changed_files": [
+            "README.md",
+            "scripts/clean-codex"
+          ],
+          "diff_sha256": "803fb437c2ab9e045566d0202b1d964ef4ae627c8150db3dac897c1f34dfb4b2",
+          "after_file_sha256": {
+            "README.md": "d9078f8ab7d2bfb36c27fb03316101449d97c5f22a3fec9b69190728c7113262",
+            "scripts/clean-codex": "554244428ad79f46430038054a169f1212f320138e866c8b65171427751cb086"
+          },
+          "submitted_json_sha256": "6b5c701049995e1f611a335fa4f7fbed09c56b1c38bbcf92efe2ef35579b4f79",
+          "grade_sha256": "4a505b4c35a4dd258c7b0f4435d7d451835e71ccc6004cc7de4fe322af20b7a7",
+          "interface_adjudication": {
+            "initial_status": "interface_unresolved; no behavioral execution",
+            "held_grade_sha256": "7b5e0c5cd3566710dd86bac8a1fd427a825ac76a0d5bae98518f73b49b4707a6",
+            "documented_mapping_sha256": "af756110fbce9e870abd8fb07819cdb48310f11630d905865517562e85153087",
+            "final_status": "graded",
+            "mapping": {
+              "artifact_sha256": "6b5c701049995e1f611a335fa4f7fbed09c56b1c38bbcf92efe2ef35579b4f79",
+              "timeout": {
+                "transport": "env",
+                "name": "CLEAN_CODEX_SQLITE_BUSY_TIMEOUT_MS",
+                "unit": "milliseconds"
+              },
+              "retries": {
+                "transport": "env",
+                "name": "CLEAN_CODEX_SQLITE_RETRIES",
+                "semantics": "additional_attempts"
+              },
+              "evidence": {
+                "timeout": [
+                  {
+                    "path": "README.md",
+                    "quote": "Orphan-pruning writes retain a 15000 ms busy timeout per attempt. Configure it\nwith `CLEAN_CODEX_SQLITE_BUSY_TIMEOUT_MS` (decimal 0\u20132147483647), and configure\nadditional lock retries with `CLEAN_CODEX_SQLITE_RETRIES` (decimal 0\u2013100,\ndefault 3). Zero retries means one attempt. Empty or invalid values are rejected."
+                  },
+                  {
+                    "path": "scripts/clean-codex",
+                    "quote": "  CLEAN_CODEX_SQLITE_BUSY_TIMEOUT_MS\n                        SQLite busy wait per pruning write attempt, in ms.\n                        Decimal integer, 0-2147483647. Default: 15000"
+                  }
+                ],
+                "retries": [
+                  {
+                    "path": "README.md",
+                    "quote": "Orphan-pruning writes retain a 15000 ms busy timeout per attempt. Configure it\nwith `CLEAN_CODEX_SQLITE_BUSY_TIMEOUT_MS` (decimal 0\u20132147483647), and configure\nadditional lock retries with `CLEAN_CODEX_SQLITE_RETRIES` (decimal 0\u2013100,\ndefault 3). Zero retries means one attempt. Empty or invalid values are rejected."
+                  },
+                  {
+                    "path": "scripts/clean-codex",
+                    "quote": "  CLEAN_CODEX_SQLITE_RETRIES\n                        Additional attempts after SQLite BUSY/LOCKED failures.\n                        Decimal integer, 0-100. Default: 3; 0 disables retries."
+                  }
+                ]
+              }
+            }
+          },
+          "artifact_file": "candidates/law-develop.json"
+        }
+      },
+      "blind": {
+        "correctness": "tie",
+        "maintainability": "tie"
+      },
+      "interpretation": "Both patches passed seven synthetic SQLite cases and both syntax checks. The blind reviewers found complementary diagnostic and regression coverage, with no overall preference.",
+      "suite_note": "Both submitted large regression programs inside the README. The grader ran its own frozen scenarios. It did not execute the two README programs. One documented interface needed a citation-backed manual mapping before its first behavior run."
+    },
+    {
+      "id": "site",
+      "name": "Personal site",
+      "stratum": "User-owned",
+      "cohort": "recovered-fixture",
+      "base_reference": "0/5 browsers",
+      "gold_reference": "3/5 browsers",
+      "arms": {
+        "control": {
+          "seconds": 166.085,
+          "uncached_input": 199160,
+          "cached_input": 45312,
+          "output": 11749,
+          "total_context": 256221,
+          "reasoning_output": 1903,
+          "quality": "3/5 browsers",
+          "quality_detail": "3/5 browser projects, 13/15 strict browser and native checks. Formal comparison with gold unresolved. Overall implementation score unverified.",
+          "implementation_pass": null,
+          "artifact_applicable": true,
+          "application_reason": "applicable",
+          "changed_files": [
+            "src/components/arcade/useGameControls.ts",
+            "tests/game-controls.spec.ts"
+          ],
+          "diff_sha256": "da8447e3db48fbcbbba676ec5139c1b3cc347848ae9d5559ead20337db5714f2",
+          "after_file_sha256": {
+            "src/components/arcade/useGameControls.ts": "8eb38672e9713e80963d37a3b95d21f38c48a125f0605e0e314580daa3b068ef",
+            "tests/game-controls.spec.ts": "c4e82d335e136d5ece821ce60dc7bc65eabd838d9658863c3e142fce8a8fe981"
+          },
+          "submitted_json_sha256": "e083f55fcd2b1ebc39a01546252eb3e3b87c239dfc4062a994d75493f3b2b20e",
+          "grade_sha256": "47c87369d05a4993faeeb9e20e150165a17612b9791c38cb2e9ad6b50c291cb9",
+          "artifact_file": "candidates/site-control.json"
+        },
+        "develop": {
+          "seconds": 186.637,
+          "uncached_input": 254902,
+          "cached_input": 52864,
+          "output": 12951,
+          "total_context": 320717,
+          "reasoning_output": 1721,
+          "quality": "3/5 browsers",
+          "quality_detail": "3/5 browser projects, 13/15 strict browser and native checks. Formal comparison with gold unresolved. Overall implementation score unverified.",
+          "implementation_pass": null,
+          "artifact_applicable": true,
+          "application_reason": "applicable",
+          "changed_files": [
+            "src/components/arcade/useGameControls.ts",
+            "tests/game-controls.spec.ts"
+          ],
+          "diff_sha256": "af2afeaa9bca57f71615133766e78aeddba27a197c688aec6dd5542b6917ee99",
+          "after_file_sha256": {
+            "src/components/arcade/useGameControls.ts": "08741170b72b1bdd3bcd423accd0c17e4559194a68cef681bb85486cc0465c3c",
+            "tests/game-controls.spec.ts": "b5f0739fe8802d3228e073393916b05b37e4099507e6d2c8c99c2c54aeaeb9e2"
+          },
+          "submitted_json_sha256": "d23019d51521fd95b804c124abd1b1d956a191c751dabacb5e503562b3424139",
+          "grade_sha256": "6cf6226f82268d94e28aa331668f57a255addb76dcd654a51a7c28fed30c71ce",
+          "artifact_file": "candidates/site-develop.json"
+        }
+      },
+      "blind": {
+        "correctness": "tie",
+        "maintainability": "control"
+      },
+      "interpretation": "Both patches built and passed all ten native controls and three of five held-out browsers. WebKit and Mobile Safari reproduced the gold cross-origin failures. Control added more targeted tests of child-initiated navigation, cleanup and restored input ownership.",
+      "suite_note": "Both matched gold on all 15 primary outcomes in a post-blind signature comparison. The submitted tests hit the 420-second limit, leaving overall grades and formal gold comparators unresolved. Correctness tied. The maintainability reviewer preferred Control."
+    },
+    {
+      "id": "tokio",
+      "name": "Tokio",
+      "stratum": "External",
+      "cohort": "replacement-fixture",
+      "base_reference": "Missing API at compile",
+      "gold_reference": "4/4 runtime, exclusive borrow verified",
+      "arms": {
+        "control": {
+          "seconds": 95.11,
+          "uncached_input": 203826,
+          "cached_input": 45312,
+          "output": 3963,
+          "total_context": 253101,
+          "reasoning_output": 581,
+          "quality": "4/4 runtime",
+          "quality_detail": "Baseline pass, behavior pass, exclusive borrow verified.",
+          "implementation_pass": true,
+          "artifact_applicable": true,
+          "application_reason": "applicable",
+          "changed_files": [
+            "tokio/src/sync/set_once.rs",
+            "tokio/tests/sync_set_once.rs"
+          ],
+          "diff_sha256": "b9ca972358a1b7e9c80543dec6fc2d478b4b55f7a1af621f3d698f973e64fa48",
+          "after_file_sha256": {
+            "tokio/src/sync/set_once.rs": "1d1a63afbde673def419924e4d0db7cbbcf068f4bf5b0e336e93a0d0a456103d",
+            "tokio/tests/sync_set_once.rs": "9028ffebabbf8b3167e678068534686cc80ab43caad8c77c4477deaaad81efaa"
+          },
+          "submitted_json_sha256": "929509a70e3f356433f0d4024862a5b49ffa052361489bd5956378875a50fb53",
+          "grade_sha256": "601a2e11d24ef671bd2358143cd280f5095353af447903a07feeb547d009f9fc",
+          "artifact_file": "candidates/tokio-control.json"
+        },
+        "develop": {
+          "seconds": 92.971,
+          "uncached_input": 265662,
+          "cached_input": 45312,
+          "output": 4486,
+          "total_context": 315460,
+          "reasoning_output": 649,
+          "quality": "4/4 runtime",
+          "quality_detail": "Baseline pass, behavior pass, exclusive borrow verified.",
+          "implementation_pass": true,
+          "artifact_applicable": true,
+          "application_reason": "applicable",
+          "changed_files": [
+            "tokio/src/sync/set_once.rs",
+            "tokio/tests/sync_set_once.rs"
+          ],
+          "diff_sha256": "d4d7312937a4e0f29e9a11105fc8cde6e726214e338684762b282c4c111357e4",
+          "after_file_sha256": {
+            "tokio/src/sync/set_once.rs": "7b5f824d6789e145058ab313a47eea16dcb9a229fcd146479797b30cc39d4e41",
+            "tokio/tests/sync_set_once.rs": "e22d3d7bffe6a046627ff8e533a53e32bf288ceaab4aef06674190266e10f0d5"
+          },
+          "submitted_json_sha256": "394f73d08537961e6cf8b1a4af03a3bf2c65e5189789508e0c0817be2b500a52",
+          "grade_sha256": "9a1fceaa862576f8c15675934efd169d8c5c0922841a7753d6c8a264cabd56d7",
+          "artifact_file": "candidates/tokio-develop.json"
+        }
+      },
+      "blind": {
+        "correctness": "tie",
+        "maintainability": "tie"
+      },
+      "interpretation": "Both added the same exclusive accessor. Both preserved the stored value and its mutations across initialization, access and ownership transfer. Both blind reviewers recorded a tie.",
+      "suite_note": "Both passed all four replacement runtime checks and all 26 protected native tests. Both rejected the shared-owner compile probe with E0596 as expected, and both submitted regression suites exited successfully."
+    },
+    {
+      "id": "runner",
+      "name": "Runner-space",
+      "stratum": "User-owned",
+      "cohort": "replacement-fixture",
+      "base_reference": "4/11",
+      "gold_reference": "11/11",
+      "arms": {
+        "control": {
+          "seconds": 219.299,
+          "uncached_input": 199854,
+          "cached_input": 45312,
+          "output": 12871,
+          "total_context": 258037,
+          "reasoning_output": 3061,
+          "quality": "Build failed",
+          "quality_detail": "TypeScript compilation exited 2. No behavior, output or native tests executed.",
+          "implementation_pass": false,
+          "artifact_applicable": true,
+          "application_reason": "applicable",
+          "changed_files": [
+            "src/operations.ts",
+            "src/platforms/windows.ts",
+            "test/adapters.test.ts",
+            "test/safety.test.ts"
+          ],
+          "diff_sha256": "c1f9b52a69613c9d7a9058ac7d003c13e1a8b78a464b2c143a0a3ff881f50cbe",
+          "after_file_sha256": {
+            "src/operations.ts": "c1f2fb29c66c183741ed9ac70c51b529171d5ff2cc7da62ea01718816a0a18c6",
+            "src/platforms/windows.ts": "f64e8f0297ea6cfe6308c18d0a5aa8ca8659c00a039c9072038e45c97f6df657",
+            "test/adapters.test.ts": "4401d8edae0edc0055a4edf2add9f421479d8a09dedfaa9a8ec0bcbc385cd0dc",
+            "test/safety.test.ts": "512d338764290d60ba88466ef44e9bcee41983424b7072bbdfd7560585719403"
+          },
+          "submitted_json_sha256": "f02ad999e324843152671bde1bf9a648035980cf4be2bd577bfa671239fef7ae",
+          "grade_sha256": "3c33a559479bbd108b3c6351a7214c99f3ed28f444285bd109db52ae1a683273",
+          "artifact_file": "candidates/runner-control.json"
+        },
+        "develop": {
+          "seconds": 230.712,
+          "uncached_input": 257699,
+          "cached_input": 52864,
+          "output": 16509,
+          "total_context": 327072,
+          "reasoning_output": 4198,
+          "quality": "Build failed",
+          "quality_detail": "TypeScript compilation exited 2. No behavior, output or native tests executed.",
+          "implementation_pass": false,
+          "artifact_applicable": true,
+          "application_reason": "applicable",
+          "changed_files": [
+            "src/operations.ts",
+            "test/safety.test.ts"
+          ],
+          "diff_sha256": "da7c1469cc1394f4f59112d11cba80326378da46a98b55ad91a84510eb982892",
+          "after_file_sha256": {
+            "src/operations.ts": "62c34fa8a1307e01d16358d2c0875fa837b39b5ee710e433ff4da84e87860a0d",
+            "test/safety.test.ts": "1b35ba703f119c669394b073950618fa5544e0e9006e590e89e779423aad91be"
+          },
+          "submitted_json_sha256": "1e152ca6177efd039858b96339f95c0e2932b7dfcebf9b3ee8a05a248a5e31f4",
+          "grade_sha256": "3eb6c05b4e0ec794a2797a98c80e98bac4f089d21a78c3a2ac7338d15a458f91",
+          "artifact_file": "candidates/runner-develop.json"
+        }
+      },
+      "blind": {
+        "correctness": "tie",
+        "maintainability": "tie"
+      },
+      "interpretation": "Both patches applied and both failed the TypeScript build on an unused inspectTarget import. The replacement behavior, output and native suites never ran. Neither blind reviewer preferred a patch.",
+      "suite_note": "After blind review, compiler logs confirmed one shared production error. Develop also introduced four implicit-any errors in its test code. Neither authored suite reached execution."
+    }
+  ],
+  "holds": []
+}

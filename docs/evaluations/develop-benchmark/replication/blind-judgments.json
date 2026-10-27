@@ -1,0 +1,302 @@
+[
+  {
+    "case": "fmt",
+    "lane": "correctness",
+    "preference": "tie",
+    "anonymous_key": {
+      "A": "control",
+      "B": "develop"
+    },
+    "anonymous_preference": "tie",
+    "input_sha256": "ee1913915008baee07a2abdcbfe86917f9c5db349a12378ab2b646c095114698",
+    "evidence_sha256": "57045295e7a037d11365137b4b921b15fc80c04f2d2ae4d3e4c810875fe37f68",
+    "observations": {
+      "behavior": "Both pass bare compiled nullptr formatting, to_string, runtime equivalence, and string/pointer preservation. Both fail surrounding literals, format_to, all three format_to_n cases, and formatted_size.",
+      "test_coverage": "Both add targeted assertions for the required paths, including truncation and zero-capacity output. B additionally covers nullptr lvalues, mutable strings, and null C-string rejection; A additionally checks raw-pointer format_to and broader to_string compatibility. These coverage differences do not overcome the identical observed failures.",
+      "maintenance": "Both add the same small write overload; B's inline qualifier provides no demonstrated behavioral advantage. B separates regression tests by concern; A uses fewer, larger tests. No material maintenance winner.",
+      "basis": "Tie: identical observed behavior, with 7 of 13 checks passing for each. Neither fulfills the complete requirement.",
+      "limits": "Offline evidence only. compile-test is reported as failed_or_incomplete, which does not establish a completed failing suite; format-test passed. Task renaming was unavailable."
+    },
+    "answer_sha256": "d76e55b2c25e19540e607f89d4e960a3478c0af44e4a4fc2ddce6a72b806940f",
+    "elapsed_seconds": 14.273,
+    "uncached_input": 11293,
+    "cached_input": 0,
+    "output": 297,
+    "total_context": 11590
+  },
+  {
+    "case": "fmt",
+    "lane": "maintainability",
+    "preference": "tie",
+    "anonymous_key": {
+      "A": "control",
+      "B": "develop"
+    },
+    "anonymous_preference": "tie",
+    "input_sha256": "36867ef0d459c0dd2a1bee22e703701e4baaf25050dac668fb7e63301b51e66a",
+    "evidence_sha256": "57045295e7a037d11365137b4b921b15fc80c04f2d2ae4d3e4c810875fe37f68",
+    "observations": {
+      "behavior": "Both fix bare compiled nullptr formatting and to_string while preserving tested strings and pointers. Both fail surrounding literals, format_to, all three format_to_n cases, and formatted_size.",
+      "test_coverage": "Both add meaningful truncation, zero-capacity, output-position, and sentinel boundaries. B additionally distinguishes nullptr from an actual null C string and tests mutable strings and nullptr lvalues. A additionally tests raw-pointer format_to and broader to_string preservation. These are complementary strengths, not evidence that either implementation succeeds.",
+      "maintenance": "The implementations differ only by inline on a template, with no demonstrated behavioral advantage. B separates tests by concern; A uses fewer assertions and covers additional to_string compatibility cases.",
+      "basis": "Both submissions have identical observed results: 7 of 13 behaviors pass, and neither satisfies the full requirement. No material overall advantage is established.",
+      "limits": "The compile-test suites are reported as failed_or_incomplete, not conclusively executed failures; format-test passes for both. Individual behavioral failures are separately recorded. Task renaming is unavailable."
+    },
+    "answer_sha256": "71f0a3eb7ef0259c8ba207e86c9e102643ed9e3aa17c5ab34e66a8d7dfa9d295",
+    "elapsed_seconds": 14.804,
+    "uncached_input": 3745,
+    "cached_input": 7552,
+    "output": 322,
+    "total_context": 11619
+  },
+  {
+    "case": "svelte",
+    "lane": "correctness",
+    "preference": "tie",
+    "anonymous_key": {
+      "A": "control",
+      "B": "develop"
+    },
+    "anonymous_preference": "tie",
+    "input_sha256": "c3ed31667f7beea29ba4c9526f2b681e870bd7cbde5ddc6b2c7c98d8eaef0e14",
+    "evidence_sha256": "3fad8784d4311cd8cb75a5705720136902fd77f554029a5de05e004be9eef790",
+    "observations": {
+      "behavior": "Both suppress eager-observer invalidation during speculative writes. Evidence supports unchanged pending observations, no publication on discard, publication after commit, and preserved ordinary updates. A uses Batch.ensure().is_fork; B reads current_batch?.is_fork. The supplied evidence establishes no observable difference between these approaches.",
+      "test_coverage": "Each passes 1 authored, 2 gold-derived, 8 independent, and 5 native cases, plus syntax checks and build. Both authored tests cover pending/discard/commit visibility, ordinary updates, and conditional dependencies. B additionally changes directly inspected state inside the fork and checks shared-observer unrelated updates before and after discard. A separately checks that an unrelated flush produces no observer notification and displays ordinary alongside eager reads. These are complementary coverage strengths, not demonstrated behavioral differences.",
+      "maintenance": "Both production changes are small. A reuses Batch but calls ensure; B avoids that call while adding an aliased import midway through the module. Both enlarge an existing asynchronous regression fixture rather than isolating observer tests. These differences do not establish a material maintenance winner.",
+      "basis": "Tie: both implementations apply and pass identical supplied behavioral suites. No material behavioral advantage is demonstrated.",
+      "limits": "Conclusions are limited to the frozen diffs and offline results; broader regression freedom is not established. No listed suite was unexecuted. Task renaming was unavailable."
+    },
+    "answer_sha256": "89bf6c07e6dfb5746230abe7a1b085657ed0cf0e1395ecc99b110e15416a2825",
+    "elapsed_seconds": 23.75,
+    "uncached_input": 12915,
+    "cached_input": 0,
+    "output": 379,
+    "total_context": 13294
+  },
+  {
+    "case": "svelte",
+    "lane": "maintainability",
+    "preference": "tie",
+    "anonymous_key": {
+      "A": "control",
+      "B": "develop"
+    },
+    "anonymous_preference": "tie",
+    "input_sha256": "8505ca9d07da61f1cab6e545eed51b687f2ccb3b393566a9ff5cf714f2542f44",
+    "evidence_sha256": "3fad8784d4311cd8cb75a5705720136902fd77f554029a5de05e004be9eef790",
+    "observations": {
+      "behavior": "Both pass all supplied authored, gold-derived, independent, and native cases, including pending, discarded, and committed fork visibility. No behavioral advantage is demonstrated.",
+      "test_coverage": "Both meaningfully test conditional dependency preservation across discard and switching after commit. B additionally mutates the directly observed source inside the fork and forces the same inspector to rerun through unrelated committed updates\u2014a stronger visibility boundary. A separately checks ordinary and eager output plus an unrelated flush without observer notifications.",
+      "maintenance": "A uses the existing Batch API and avoids another import. B reads the current batch directly but adds an aliased import mid-file. Both narrowly guard eager observers and expand an existing mixed-purpose fixture.",
+      "basis": "Tie: identical passing behavioral evidence; test and maintenance differences do not establish a clear overall winner.",
+      "limits": "All listed suites completed; none were reported unexecuted. Broader correctness is unproven. Task renaming was unavailable."
+    },
+    "answer_sha256": "55a9cf4c13d9baceba993bbbe44f08fe0a77bf820dfe85b7703d0851abd1849f",
+    "elapsed_seconds": 14.643,
+    "uncached_input": 12919,
+    "cached_input": 0,
+    "output": 293,
+    "total_context": 13212
+  },
+  {
+    "case": "law",
+    "lane": "correctness",
+    "preference": "tie",
+    "anonymous_key": {
+      "A": "control",
+      "B": "develop"
+    },
+    "anonymous_preference": "tie",
+    "input_sha256": "43719ef3788ebe7b8f3c64040dc36a7ca160077b3a07c40d5a65f777224b59a6",
+    "evidence_sha256": "d9c4ad5e527f505998781b19ea70dc28d4e355dc245e3d368029dcbe051703b4",
+    "observations": {
+      "behavior": "Both preserve the default 15000-ms wait, configure finite retries, and pass recovery, exhaustion, and non-lock-error checks. A separates post-commit optimization to avoid replaying committed cleanup. B supports extended and named lock diagnostics, but accepting code-less diagnostics risks retrying non-lock errors with identical wording. A instead rejects ambiguous diagnostics, limiting contention recovery on those CLIs.",
+      "test_coverage": "Both add synthetic contention, retry-bound, configuration, retention, and rollback checks. A additionally targets blocked COMMIT, apply-plan failure propagation, and optimization isolation; B provides broader diagnostic classification cases and deterministic release synchronization. These are source-level coverage differences, not verified execution results.",
+      "maintenance": "A has simpler classification and clearer post-commit failure reporting. B adds more diagnostic parsing and replays cleanup after optimization failure. Both embed substantial regression harnesses in README documentation.",
+      "basis": "Tie: both submissions pass the same seven offline behavioral checks and supplied syntax checks. Neither has demonstrated overall behavioral superiority.",
+      "limits": "Offline checks do not resolve these diagnostic compatibility and post-commit differences. A explicitly says its added harness was not executed; execution of B's added suite is not established. Neither is a demonstrated suite failure. Task renaming was unavailable."
+    },
+    "answer_sha256": "c0c2cfa41072ca9cf51d460873bc3c6e17684cb34fef0048f128eee7761602de",
+    "elapsed_seconds": 14.514,
+    "uncached_input": 11371,
+    "cached_input": 7552,
+    "output": 417,
+    "total_context": 19340
+  },
+  {
+    "case": "law",
+    "lane": "maintainability",
+    "preference": "tie",
+    "anonymous_key": {
+      "A": "control",
+      "B": "develop"
+    },
+    "anonymous_preference": "tie",
+    "input_sha256": "2307ca3e85a0cd3d56f918910df796730c8f80f4978d3e58d0cacdb9622f76fd",
+    "evidence_sha256": "d9c4ad5e527f505998781b19ea70dc28d4e355dc245e3d368029dcbe051703b4",
+    "observations": {
+      "behavior": "Both preserve the default 15000-ms wait and demonstrate bounded retries, recovery, exhaustion failure, and immediate non-lock failure. A separates post-commit optimization from transaction retries; B can replay committed idempotent writes after optimization failure. A requires numeric primary lock codes; B also recognizes extended codes and code-less diagnostics.",
+      "test_coverage": "Both add meaningful synthetic contention, exhaustion, retention, configuration, and rollback checks. A additionally targets COMMIT-time contention, exact lock-worded trigger errors, and post-commit optimization separation. B provides deterministic release gating and extensive diagnostic-classification boundaries. A's recovery synchronization is less deterministic; B lacks explicit COMMIT-contention and optimization-boundary tests.",
+      "maintenance": "A has simpler validation and classification and avoids replaying committed cleanup. B adds classifier complexity but offers broader diagnostic compatibility and clearer unittest organization. Both embed substantial regression programs in README rather than dedicated test files.",
+      "basis": "Tie: both applicable implementations passed the same seven offline behavioral checks and syntax checks. The supplied evidence does not establish an overall winner.",
+      "limits": "The added README suites have no supplied execution results; this is not evidence of behavioral failure. Code-less diagnostics leave B unable to distinguish genuine contention from an identically worded non-lock error. A instead declines such retries. Thread renaming was unavailable."
+    },
+    "answer_sha256": "2b3d75cef5616879d5a5e6c5059cb6eab0293e49509eb719893526ebcc9baf96",
+    "elapsed_seconds": 15.357,
+    "uncached_input": 11375,
+    "cached_input": 7552,
+    "output": 479,
+    "total_context": 19406
+  },
+  {
+    "case": "site",
+    "lane": "correctness",
+    "preference": "tie",
+    "anonymous_key": {
+      "A": "develop",
+      "B": "control"
+    },
+    "anonymous_preference": "tie",
+    "input_sha256": "8aa197b180aacf6b7844f2f20982ceccd6dad0ceb74cddb69601da8325ca771d",
+    "evidence_sha256": "29a483126151ac3172bdb6620e054ff5782773956b765dde55d221d108c7a0f1",
+    "observations": {
+      "behavior": "Both preserve admission checks, guard cleanup failures, roll back partial subscriptions, reconnect through host-owned load listeners, and reference-count host touch subscriptions. Both retain exports and key-delivery logic. Each passed 13 primary checks; both failed the same two cross-origin assertions on WebKit/Mobile Safari, also reported as reference failures\u2014not demonstrated candidate-specific regressions.",
+      "test_coverage": "Both add targeted cross-origin reconnection, synchronous diagonal cancellation, and host/iframe touch-reopening tests. B additionally exercises child-initiated navigation without src mutation, inaccessible-frame unmount cleanup, and returned-document typing/focus ownership. A tests diagonal cancellation after reload and repeated touch after explicitly hiding controls. These are source-level coverage differences, not verified passing results.",
+      "maintenance": "A separates host subscriptions into their own effect and consistently guards focus callbacks against stale documents, but repeats listener-registration bookkeeping. B centralizes registration and captures removal methods before navigation, reducing repetition, while keeping host and frame orchestration in one effect. Neither establishes a decisive maintenance advantage.",
+      "basis": "Tie: observed behavior and build results are identical. Source-level and regression-test differences do not establish a material correctness advantage.",
+      "limits": "Deadline-limited evaluation leaves overall implementation success unresolved. Authored-test execution and broader regression results were not supplied; these are unverified, not failed. Full preservation of typing, ownership, diagonal cancellation, and reopening behavior is therefore not established. Task renaming was unavailable under the no-tools constraint."
+    },
+    "answer_sha256": "fb12e570093a9f4882d51f4b03863c78c74bb25dbe99c5ee855ec4e45b914bf4",
+    "elapsed_seconds": 11.67,
+    "uncached_input": 11069,
+    "cached_input": 7552,
+    "output": 401,
+    "total_context": 19022
+  },
+  {
+    "case": "site",
+    "lane": "maintainability",
+    "preference": "control",
+    "anonymous_key": {
+      "A": "develop",
+      "B": "control"
+    },
+    "anonymous_preference": "B",
+    "input_sha256": "23e1b4b5a259461a1db89dd78adb2913b2e1453cc9156333fa0c4291785c6990",
+    "evidence_sha256": "29a483126151ac3172bdb6620e054ff5782773956b765dde55d221d108c7a0f1",
+    "observations": {
+      "behavior": "Tied: both recorded 13 passes and the same two cross-origin assertion failures also reported on the reference. Both add guarded cleanup, reconnection and touch-subscription fixes; no behavioral advantage is demonstrated.",
+      "test_coverage": "B meaningfully tests child-initiated navigation without src-observer assistance, inaccessible-frame unmount cleanup, and restored typing/focus ownership. Both cover diagonal cancellation and host/iframe touch after reopening. A additionally tests diagonal cancellation after reload and repeated touch respecting hidden controls.",
+      "maintenance": "B centralizes listener registration and rollback, capturing removal methods before navigation. A offers clearer host/frame effect separation and stronger current-document focus guards, but repeats registration bookkeeping.",
+      "basis": "Prefer B for materially more targeted regression tests, not superior observed behavior.",
+      "limits": "Deadline-limited evaluation leaves overall correctness unresolved. No authored-test execution results were supplied; that is not a test failure. Thread renaming is unavailable."
+    },
+    "answer_sha256": "51750bab18f0a49813cdcd6db6fe0ea821f054179c557bb068d3003747425b26",
+    "elapsed_seconds": 21.358,
+    "uncached_input": 11073,
+    "cached_input": 7552,
+    "output": 386,
+    "total_context": 19011
+  },
+  {
+    "case": "tokio",
+    "lane": "correctness",
+    "preference": "tie",
+    "anonymous_key": {
+      "A": "control",
+      "B": "develop"
+    },
+    "anonymous_preference": "tie",
+    "input_sha256": "671d64554b2cc06438c9dee9bb2a4d1de1675f93d32e75b8b0ee89e765db453f",
+    "evidence_sha256": "3ef7cfd2e6b3aec49c4803025591545541abb508c7ad714d84f6c5f2f20f147d",
+    "observations": {
+      "behavior": "Both require &mut self, return None when empty, and expose persistent mutations when initialized without changing initialization or ownership logic. Neither changes AsyncFd. The shared-borrow compilation rejection is expected, not a behavioral failure.",
+      "test_coverage": "Both authored suites exited successfully and cover mutation visibility, initialization, rejected replacement, ownership transfer, and single destruction. A explicitly tests repeated mutation; B separately tests empty extraction and preinitialized extraction. Their destruction tests use complementary initialization paths. Neither difference establishes a material regression-risk advantage.",
+      "maintenance": "Both add a small, documented accessor with comparable maintenance burden. Comment wording and test placement differences are nonbehavioral.",
+      "basis": "Tie: both provide identical accessor logic and pass the supplied behavioral and baseline checks. No material correctness advantage is evidenced.",
+      "limits": "Conclusions are limited to the supplied diffs and offline evidence; no independent execution occurred. Task renaming was unavailable."
+    },
+    "answer_sha256": "70d394b69dd37063f2954fffb0522935ff18fac9e0e93b4ecb6e9bb5c9029ae8",
+    "elapsed_seconds": 17.821,
+    "uncached_input": 11473,
+    "cached_input": 0,
+    "output": 251,
+    "total_context": 11724
+  },
+  {
+    "case": "tokio",
+    "lane": "maintainability",
+    "preference": "tie",
+    "anonymous_key": {
+      "A": "control",
+      "B": "develop"
+    },
+    "anonymous_preference": "tie",
+    "input_sha256": "7719ac117d185c9f3b63cb0f42629b5642d2b749f2cc8f7202710c8d7aa812b7",
+    "evidence_sha256": "3ef7cfd2e6b3aec49c4803025591545541abb508c7ad714d84f6c5f2f20f147d",
+    "observations": {
+      "behavior": "Both provide exclusive, non-consuming mutable access, return None when empty, and preserve mutation visibility, initialization, ownership and destruction. Baseline and behavioral checks pass. Shared-reference compilation fails as intended, confirming exclusivity. Neither changes AsyncFd.",
+      "test_coverage": "Both supplemental suites exited successfully and cover meaningful boundaries: empty access, mutation visibility through get/wait/into_inner, rejected reinitialization, and exactly-once destruction or ownership transfer. A additionally exercises repeated mutable access; B explicitly checks empty into_inner. Their constructor/drop-path combinations differ but establish no material overall advantage.",
+      "maintenance": "Both add the same small accessor with an explicit safety rationale and updated invariant comments. Documentation and test organization differences do not materially change maintenance burden.",
+      "basis": "The implementations are functionally identical, and the supplied scoring evidence shows no material correctness or maintenance advantage.",
+      "limits": "Assessment is limited to the supplied diffs and offline evidence; no independent execution occurred. Task renaming was unavailable."
+    },
+    "answer_sha256": "eef6574e0d99e8d8b1c96e25e2c3738d3426e9e1458380c1d080aca2d6f43c12",
+    "elapsed_seconds": 15.222,
+    "uncached_input": 11477,
+    "cached_input": 0,
+    "output": 293,
+    "total_context": 11770
+  },
+  {
+    "case": "runner",
+    "lane": "correctness",
+    "preference": "tie",
+    "anonymous_key": {
+      "A": "develop",
+      "B": "control"
+    },
+    "anonymous_preference": "tie",
+    "input_sha256": "b4e3507fd0dcb028feb52c7333d7d2366c4c8423dfb22bd3d8a0bfef13a8f668",
+    "evidence_sha256": "5a4a6e40e44a15c4d78de98c281a591976c8dbd3145964ed691087d1b25a9c6b",
+    "observations": {
+      "behavior": "Both implementations check identity before native removal and privileged retry, verify removal outcomes, and retain ordered best-effort processing. A additionally preserves identity across separate validation/removal helper calls; B leaves that gap open. B additionally rejects a managed Windows root replaced by its uninstaller; A adds no corresponding adapter guard. These are material, opposing coverage differences.",
+      "test_coverage": "Both add disposable-fixture tests for replacement, false-success removal, retry outcomes, and ordered continuation with mocked privilege. A specifically tests separate helpers, link-to-directory replacement, and observation failures; B specifically tests post-uninstaller root replacement and rejected privilege. Neither authored suite compiled, so these are intended regressions, not verified coverage.",
+      "maintenance": "A introduces mutable global I/O hooks and context-scoped snapshot caching. B uses operation-local dependency injection but expands public options and modifies a Windows adapter. Neither has a demonstrated overall maintenance advantage.",
+      "basis": "Tie: neither submission demonstrates complete fulfillment. Both builds exited 2 with authored-test compilation failures; no candidate suites executed. This is not evidence of a runtime behavioral failure.",
+      "limits": "Compilation diagnostics and executed candidate behavior are unavailable. Shared protected-home EACCES failures do not distinguish the submissions. Thread renaming was unavailable."
+    },
+    "answer_sha256": "fde0ffaee9fa46c286cbb44ed6d2b87679c6285e55e23dbbaf5c3144e12e3f41",
+    "elapsed_seconds": 12.152,
+    "uncached_input": 11801,
+    "cached_input": 7552,
+    "output": 418,
+    "total_context": 19771
+  },
+  {
+    "case": "runner",
+    "lane": "maintainability",
+    "preference": "tie",
+    "anonymous_key": {
+      "A": "develop",
+      "B": "control"
+    },
+    "anonymous_preference": "tie",
+    "input_sha256": "e0631bce94b5c11e5a424adff46ec72d174a81ccb8d0776b5765b54adefa2307",
+    "evidence_sha256": "5a4a6e40e44a15c4d78de98c281a591976c8dbd3145964ed691087d1b25a9c6b",
+    "observations": {
+      "behavior": "Both implementations check identity before removal and privileged retry and verify successful removal. A additionally retains identity across separate validation/removal helpers; B adds a Windows post-uninstaller root-identity check. These address different boundaries, so neither clearly dominates.",
+      "test_coverage": "Both add meaningful disposable-fixture tests for replacement preservation, no-op removal, retry outcomes, and ordered best-effort processing. A uniquely tests separate-helper identity retention and link-to-directory replacement; B tests the Windows uninstaller boundary. Neither added suite compiled successfully.",
+      "maintenance": "B\u2019s per-operation dependency injection offers better isolation than A\u2019s mutable global hooks and context-scoped cache, but expands the options API. A\u2019s observation-count-based tests are more coupled to implementation details.",
+      "basis": "Both builds exited 2 with authored-test compile failures; no suites executed. Neither has demonstrated behavioral superiority.",
+      "limits": "Compile failures prevent runtime confirmation; unexecuted suites are not behavioral failures. Shared protected-home EACCES evidence does not distinguish submissions. Task renaming was unavailable."
+    },
+    "answer_sha256": "1deebf185e5bc78dbc341421139796bad316cdca93c4ff9f069f92679f03ba0d",
+    "elapsed_seconds": 20.27,
+    "uncached_input": 19357,
+    "cached_input": 0,
+    "output": 383,
+    "total_context": 19740
+  }
+]

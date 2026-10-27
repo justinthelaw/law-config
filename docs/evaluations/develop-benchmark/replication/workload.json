@@ -1,0 +1,78 @@
+{
+  "scope": "Published arm phases and independent blind assessments have separate measured denominators. Below is the known synthetic model-qualification workload. Coordination, human time and machine setup are outside these token totals.",
+  "qualification_calls": [
+    {
+      "qualifier": "Ephemeral app-server text smoke",
+      "disposition": "Completed response with usage, exact literal did not match. This did not qualify a scored arm.",
+      "elapsed_seconds": null,
+      "usage": {
+        "uncached_input": 9627,
+        "cached_input": 0,
+        "output": 9,
+        "reasoning_output": 0,
+        "total_context": 9636
+      },
+      "receipt_sha256": "fdf937b8223feb41aec63eee1529dfef68d47df3c0ff6456bc160f409394bda2"
+    },
+    {
+      "qualifier": "Tool-free CLI, first schema attempt",
+      "disposition": "Usage observed. The frontend diagnostic prevented qualification.",
+      "elapsed_seconds": 30.161,
+      "usage": {
+        "uncached_input": 7738,
+        "cached_input": 0,
+        "output": 111,
+        "reasoning_output": 89,
+        "total_context": 7849
+      },
+      "receipt_sha256": "c6fd3fa9888ec5b6d5742dbddf33ab0806d2e2fcee88a428b250ce1611c5fda5"
+    },
+    {
+      "qualifier": "Tool-free CLI, repaired qualification",
+      "disposition": "Structured response, no observed tool items. Qualified the source-packet route.",
+      "elapsed_seconds": 7.664,
+      "usage": {
+        "uncached_input": 7738,
+        "cached_input": 0,
+        "output": 90,
+        "reasoning_output": 68,
+        "total_context": 7828
+      },
+      "receipt_sha256": "7c7b7f5fd852049978681caddf482e081616f3d65c0526693f3876c05a875a11"
+    },
+    {
+      "qualifier": "Full native tool-effect smoke",
+      "disposition": "Provider completed, no remote process or expected effect.",
+      "elapsed_seconds": 9.076,
+      "usage": {
+        "uncached_input": 10807,
+        "cached_input": 10368,
+        "output": 119,
+        "reasoning_output": 43,
+        "total_context": 21294
+      },
+      "receipt_sha256": "2f0b1f19130b1a8d238dae418e05269fef7ed51c32915f1451a6a543d1c6ff27"
+    },
+    {
+      "qualifier": "Full native code-host smoke",
+      "disposition": "Stopped at its 100-second deadline. No verified process effect or usage receipt.",
+      "elapsed_seconds": null,
+      "usage": null,
+      "receipt_sha256": "748bb414e07bc84d89c64401efa15f2bbd96609d90b0a7d272878014bad458d2"
+    }
+  ],
+  "known_synthetic_context_lower_bound": 46607,
+  "qualification_calls_with_unknown_usage": 1,
+  "new_scored_pairs": 6,
+  "measured_arm_phases": 84,
+  "measured_blind_assessments": 12,
+  "blind_assessment_context_tokens": 189499,
+  "unscored_workflow_gates": {
+    "pinned_full_workflow": "Provider sign-in unavailable, zero scored arms.",
+    "signed_in_full_workflow": "224 OS role boundary checks passed. Native managed process launch denied in each of the four tested role profiles. No scored arms.",
+    "tool_free_route": "CLI 0.165.0-alpha.1+internal, arm64. Exact binary fingerprint checked after release, not a preregistered provider model revision.",
+    "tool_free_client_binary_sha256_observed": "4fcc0ef8a2c14cbe511bb5a0fbbecc13cf20f6a76a54bb75026db32aaee3da5b",
+    "per_phase_client_sha256": "7f72830b3d340a90a243b75a143f7a2011cf7f9535386901717ba989916803a2"
+  },
+  "cash_amount": null
+}
