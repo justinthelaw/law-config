@@ -1,0 +1,1394 @@
+{
+  "format": "law-config.partial-result-portable-supplement/v1",
+  "scope": "Postscore preregistered model-free external witness on exposed frozen sources. Original scores and gates are immutable.",
+  "measurement": {
+    "format": "law-config.partial-result-supplemental-witness/v1",
+    "case": "go-git",
+    "pilot": "partial-result-go-git-01",
+    "scope": "Postscore preregistered model-free external witness on exposed frozen sources. Original scores and gates are immutable.",
+    "raw_result": {
+      "path": "tmp/pr-quality-panel/pilots/partial-result-go-git-01/result-89db59e03ad2.json",
+      "sha256": "8b3a3bd4d46c1111f0e8b56666885286d3c4f439a1b726bd2d95197054ca7959",
+      "canonical_json_sha256": "89db59e03ad23eeac3b826a33b73f85d297fbe30d0504f1f2adc93a440b84774"
+    },
+    "registration": {
+      "path": "pilots/partial-result-go-git-01/registration.json",
+      "sha256": "5253c0a80019608e0063bd16f46bea03673cfaa4880b5726b77980d172445805"
+    },
+    "plans": {
+      "prior": {
+        "path": "runs/partial-result-go-git-01-prior/plan.json",
+        "sha256": "24dbe445c8481133491381e214283a7cf4a965a3639d1af789f2bc0ab518b1b7"
+      },
+      "candidate": {
+        "path": "runs/partial-result-go-git-01-candidate/plan.json",
+        "sha256": "6b874a06ffbdfcf7e2142e1936da2ed9daff3bb7584ec68df989ffc1d3c17e78"
+      }
+    },
+    "frozen_descriptor_sha256": "cd96970fcfcb8ef50ba895ab995ab6f945af4c4752b69b44425213ca5e74ce06",
+    "route_calibration_sha256": "7f6d9b59ad3f260b6e38bf17602bb24b8217d993d41aec7f69ed839813d44f51",
+    "witness_sha256": "8dd4197a314957fd02aac18903601e5ae5cafd8250a05812cab369d23c6b220a",
+    "toolchain_image": "golang@sha256:88750ccdd0f2a77fcc00a14b1a48d6409bd8ddb5d7c2dd6ec0b4a2e916daf9d9",
+    "toolchain_image_id": "sha256:88750ccdd0f2a77fcc00a14b1a48d6409bd8ddb5d7c2dd6ec0b4a2e916daf9d9",
+    "producer_vm_image": "sha256:b0eddd7cf3f3a45640730d621d22870d9d02cf1acf56176f5357888eb9915a53",
+    "dependencies": {
+      "recipe_digest": "6afea4e52a8f2e2ce53825cb388207cc2eff5554b49f959ba5c1f0bc71791ef9",
+      "ready_sha256": "00e10f455521a508b5d124030c0801337654c5d1d00f8e22f5ce1dd23281660e"
+    },
+    "source_evaluator_digest": "aeb30a53e8554e5800f9e22f562231e6d5b84aa2f209d4593ffd9df79a0a4489",
+    "cpus": [
+      4,
+      5
+    ],
+    "network": "none",
+    "mounts": {
+      "source": "read-only /work",
+      "dependencies": "read-only /deps",
+      "witness": "external read-only /evidence",
+      "scratch": "separate per-role /scratch and /cache"
+    },
+    "roles": {
+      "base": {
+        "commit": "e59664470f3644a3114c6760086892dbcd0d7ac9",
+        "patch_sha256": null,
+        "source_manifest_sha256": "a8c40109fa0f60f8915caa74bb5bb94aa419d94752e3fa4281c39ee6ec248d72",
+        "source_manifest_entries": 756,
+        "matches_frozen_grade_tree": true,
+        "purpose": "requested exact source role",
+        "exit": 0,
+        "wall_seconds": 22.640140056610107,
+        "stdout_sha256": "694f6d41d09897fbb37c12451e84200905447bab1a58d8622912c96b6ed1d5d9",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_manifest_after": "a8c40109fa0f60f8915caa74bb5bb94aa419d94752e3fa4281c39ee6ec248d72",
+        "source_unchanged": true,
+        "external_witness_only": true,
+        "import_identity": "/work/plumbing/object github.com/go-git/go-git/v6",
+        "import_identity_exit": 0,
+        "import_identity_log_sha256": "00585c9862da85a2864990738e817c77290dd5df5e26f001c1a9417a4ee205d7",
+        "observation": {
+          "state": "contract-preserved",
+          "overlap_sentinel_preserved": true,
+          "row_checks": {
+            "sentinel-empty": true,
+            "sentinel-valid": true,
+            "sentinel-zeros-1000": true,
+            "sentinel-invalid": true,
+            "sentinel-zeros-9000": true,
+            "terminated-invalid": true,
+            "normal-valid": true
+          },
+          "rows": {
+            "sentinel-empty": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-valid": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-zeros-1000": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-zeros-9000": {
+              "sentinel": false,
+              "malformed": false,
+              "error": "bufio: buffer full",
+              "entries": 0
+            },
+            "sentinel-invalid": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "terminated-invalid": {
+              "sentinel": false,
+              "malformed": true,
+              "error": "malformed tree: malformed mode",
+              "entries": 0
+            },
+            "normal-valid": {
+              "sentinel": false,
+              "malformed": false,
+              "error": "<nil>",
+              "entries": 1
+            }
+          },
+          "allowed_9000_zero_buffer_limit_change": true
+        }
+      },
+      "merge": {
+        "commit": "41c3e4d6c870cafea5c4343623d2e3a8ffa31d05",
+        "patch_sha256": null,
+        "source_manifest_sha256": "e36350b4a68a8fa16d59463cc9d01b5d9eab52812025a013f9ea421f7e05d518",
+        "source_manifest_entries": 756,
+        "matches_frozen_grade_tree": true,
+        "purpose": "requested exact source role",
+        "exit": 0,
+        "wall_seconds": 20.804004192352295,
+        "stdout_sha256": "dd81d32ed965c4ca28044ba60e91dc323165f1c858ad003d7c2b42855b553945",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_manifest_after": "e36350b4a68a8fa16d59463cc9d01b5d9eab52812025a013f9ea421f7e05d518",
+        "source_unchanged": true,
+        "external_witness_only": true,
+        "import_identity": "/work/plumbing/object github.com/go-git/go-git/v6",
+        "import_identity_exit": 0,
+        "import_identity_log_sha256": "00585c9862da85a2864990738e817c77290dd5df5e26f001c1a9417a4ee205d7",
+        "observation": {
+          "state": "contract-preserved",
+          "overlap_sentinel_preserved": true,
+          "row_checks": {
+            "sentinel-empty": true,
+            "sentinel-valid": true,
+            "sentinel-zeros-1000": true,
+            "sentinel-invalid": true,
+            "sentinel-zeros-9000": true,
+            "terminated-invalid": true,
+            "normal-valid": true
+          },
+          "rows": {
+            "sentinel-empty": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-valid": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-zeros-1000": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-zeros-9000": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-invalid": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "terminated-invalid": {
+              "sentinel": false,
+              "malformed": true,
+              "error": "malformed tree: malformed mode",
+              "entries": 0
+            },
+            "normal-valid": {
+              "sentinel": false,
+              "malformed": false,
+              "error": "<nil>",
+              "entries": 1
+            }
+          },
+          "allowed_9000_zero_buffer_limit_change": true
+        }
+      },
+      "stock": {
+        "commit": "e59664470f3644a3114c6760086892dbcd0d7ac9",
+        "patch_sha256": "b934728a336b409a6dde8f0e924e1fae42ede879140856541cab6f3dc9a0e127",
+        "source_manifest_sha256": "7f3f5568b3982997ac8926f31ddc97b7b50397641e554850e9d792272c719a23",
+        "source_manifest_entries": 756,
+        "matches_frozen_grade_tree": true,
+        "purpose": "requested exact source role",
+        "exit": 0,
+        "wall_seconds": 20.219573974609375,
+        "stdout_sha256": "a8f4e129fe613956d2da0283aec1e3e56662fe80ffb6887541f714dee297fb74",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_manifest_after": "7f3f5568b3982997ac8926f31ddc97b7b50397641e554850e9d792272c719a23",
+        "source_unchanged": true,
+        "external_witness_only": true,
+        "import_identity": "/work/plumbing/object github.com/go-git/go-git/v6",
+        "import_identity_exit": 0,
+        "import_identity_log_sha256": "00585c9862da85a2864990738e817c77290dd5df5e26f001c1a9417a4ee205d7",
+        "observation": {
+          "state": "behavioral-red",
+          "overlap_sentinel_preserved": false,
+          "row_checks": {
+            "sentinel-empty": true,
+            "sentinel-valid": true,
+            "sentinel-zeros-1000": true,
+            "sentinel-invalid": false,
+            "sentinel-zeros-9000": true,
+            "terminated-invalid": true,
+            "normal-valid": true
+          },
+          "rows": {
+            "sentinel-empty": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-valid": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-zeros-1000": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-zeros-9000": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-invalid": {
+              "sentinel": false,
+              "malformed": true,
+              "error": "malformed tree: malformed mode",
+              "entries": 0
+            },
+            "terminated-invalid": {
+              "sentinel": false,
+              "malformed": true,
+              "error": "malformed tree: malformed mode",
+              "entries": 0
+            },
+            "normal-valid": {
+              "sentinel": false,
+              "malformed": false,
+              "error": "<nil>",
+              "entries": 1
+            }
+          },
+          "allowed_9000_zero_buffer_limit_change": true
+        }
+      },
+      "prior_develop": {
+        "commit": "e59664470f3644a3114c6760086892dbcd0d7ac9",
+        "patch_sha256": "371e1fc570a91315ee5706f1bfdef0cb71bece787440caa5a55b129208e0c56e",
+        "source_manifest_sha256": "f210ed4e3f6d93b4c7cca2c9dcdd898522dc6fed4334f5f1c88e2d3d93b1caf8",
+        "source_manifest_entries": 756,
+        "matches_frozen_grade_tree": true,
+        "purpose": "requested exact source role",
+        "exit": 0,
+        "wall_seconds": 20.307535648345947,
+        "stdout_sha256": "dd81d32ed965c4ca28044ba60e91dc323165f1c858ad003d7c2b42855b553945",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_manifest_after": "f210ed4e3f6d93b4c7cca2c9dcdd898522dc6fed4334f5f1c88e2d3d93b1caf8",
+        "source_unchanged": true,
+        "external_witness_only": true,
+        "import_identity": "/work/plumbing/object github.com/go-git/go-git/v6",
+        "import_identity_exit": 0,
+        "import_identity_log_sha256": "00585c9862da85a2864990738e817c77290dd5df5e26f001c1a9417a4ee205d7",
+        "observation": {
+          "state": "contract-preserved",
+          "overlap_sentinel_preserved": true,
+          "row_checks": {
+            "sentinel-empty": true,
+            "sentinel-valid": true,
+            "sentinel-zeros-1000": true,
+            "sentinel-invalid": true,
+            "sentinel-zeros-9000": true,
+            "terminated-invalid": true,
+            "normal-valid": true
+          },
+          "rows": {
+            "sentinel-empty": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-valid": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-zeros-1000": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-zeros-9000": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-invalid": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "terminated-invalid": {
+              "sentinel": false,
+              "malformed": true,
+              "error": "malformed tree: malformed mode",
+              "entries": 0
+            },
+            "normal-valid": {
+              "sentinel": false,
+              "malformed": false,
+              "error": "<nil>",
+              "entries": 1
+            }
+          },
+          "allowed_9000_zero_buffer_limit_change": true
+        }
+      },
+      "revised_develop": {
+        "commit": "e59664470f3644a3114c6760086892dbcd0d7ac9",
+        "patch_sha256": "7a50d1f759055cd41d324ec809f88e5a41152a31b123c7b04647cab207dc9db9",
+        "source_manifest_sha256": "f9111028dab18d8bf804777c5436561921e13dd6ef395f2c765f6bc10e3934e2",
+        "source_manifest_entries": 756,
+        "matches_frozen_grade_tree": true,
+        "purpose": "requested exact source role",
+        "exit": 0,
+        "wall_seconds": 20.44178056716919,
+        "stdout_sha256": "dd81d32ed965c4ca28044ba60e91dc323165f1c858ad003d7c2b42855b553945",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_manifest_after": "f9111028dab18d8bf804777c5436561921e13dd6ef395f2c765f6bc10e3934e2",
+        "source_unchanged": true,
+        "external_witness_only": true,
+        "import_identity": "/work/plumbing/object github.com/go-git/go-git/v6",
+        "import_identity_exit": 0,
+        "import_identity_log_sha256": "00585c9862da85a2864990738e817c77290dd5df5e26f001c1a9417a4ee205d7",
+        "observation": {
+          "state": "contract-preserved",
+          "overlap_sentinel_preserved": true,
+          "row_checks": {
+            "sentinel-empty": true,
+            "sentinel-valid": true,
+            "sentinel-zeros-1000": true,
+            "sentinel-invalid": true,
+            "sentinel-zeros-9000": true,
+            "terminated-invalid": true,
+            "normal-valid": true
+          },
+          "rows": {
+            "sentinel-empty": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-valid": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-zeros-1000": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-zeros-9000": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-invalid": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "terminated-invalid": {
+              "sentinel": false,
+              "malformed": true,
+              "error": "malformed tree: malformed mode",
+              "entries": 0
+            },
+            "normal-valid": {
+              "sentinel": false,
+              "malformed": false,
+              "error": "<nil>",
+              "entries": 1
+            }
+          },
+          "allowed_9000_zero_buffer_limit_change": true
+        }
+      },
+      "negative_control": {
+        "commit": "e59664470f3644a3114c6760086892dbcd0d7ac9",
+        "patch_sha256": "f10dd945e9b6361db91cf7997d797b9aae6d6454a19432fa5905c867852f1ac8",
+        "source_manifest_sha256": "b09505f05e3fef4bfc0e39727bb057ac289e0ca61904e281ecc5007bff13f4aa",
+        "source_manifest_entries": 756,
+        "matches_frozen_grade_tree": false,
+        "purpose": "known historical behavioral-negative self-control",
+        "exit": 0,
+        "wall_seconds": 20.543269157409668,
+        "stdout_sha256": "a8f4e129fe613956d2da0283aec1e3e56662fe80ffb6887541f714dee297fb74",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_manifest_after": "b09505f05e3fef4bfc0e39727bb057ac289e0ca61904e281ecc5007bff13f4aa",
+        "source_unchanged": true,
+        "external_witness_only": true,
+        "import_identity": "/work/plumbing/object github.com/go-git/go-git/v6",
+        "import_identity_exit": 0,
+        "import_identity_log_sha256": "00585c9862da85a2864990738e817c77290dd5df5e26f001c1a9417a4ee205d7",
+        "observation": {
+          "state": "behavioral-red",
+          "overlap_sentinel_preserved": false,
+          "row_checks": {
+            "sentinel-empty": true,
+            "sentinel-valid": true,
+            "sentinel-zeros-1000": true,
+            "sentinel-invalid": false,
+            "sentinel-zeros-9000": true,
+            "terminated-invalid": true,
+            "normal-valid": true
+          },
+          "rows": {
+            "sentinel-empty": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-valid": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-zeros-1000": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-zeros-9000": {
+              "sentinel": true,
+              "malformed": false,
+              "error": "mode read failed",
+              "entries": 0
+            },
+            "sentinel-invalid": {
+              "sentinel": false,
+              "malformed": true,
+              "error": "malformed tree: malformed mode",
+              "entries": 0
+            },
+            "terminated-invalid": {
+              "sentinel": false,
+              "malformed": true,
+              "error": "malformed tree: malformed mode",
+              "entries": 0
+            },
+            "normal-valid": {
+              "sentinel": false,
+              "malformed": false,
+              "error": "<nil>",
+              "entries": 1
+            }
+          },
+          "allowed_9000_zero_buffer_limit_change": true
+        }
+      }
+    },
+    "registered_gate_receipts": {
+      "base": {
+        "sha256": "ed0e9dca7196e67da10447aaf8f0b833f2421b95b754293b613110eb3bc51b67",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "contract": 42,
+          "preserve": 0,
+          "independent": 42
+        }
+      },
+      "merge": {
+        "sha256": "fcf325f731b782f3c5826a0890f0a9cc7b30d6446c96a0c0aa6a70a5acf97e36",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "contract": 0,
+          "preserve": 0,
+          "independent": 0
+        }
+      },
+      "stock": {
+        "sha256": "850fb6aa64a6283b89397b28bbc1dec720b85dc68cfa4cf595c1c77bce764ba5",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "contract": 0,
+          "preserve": 0,
+          "independent": 0
+        }
+      },
+      "prior_develop": {
+        "sha256": "4c5e8fbd39a5d66095fd1aa1bed2fb1a954d6aa38116d95443e16db2f9d088b5",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "contract": 0,
+          "preserve": 0,
+          "independent": 0
+        }
+      },
+      "revised_develop": {
+        "sha256": "e8a99aa5b5c872214ab3223328db7be163b9ad17fe2a99f72828ab33d9843b4e",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "contract": 0,
+          "preserve": 0,
+          "independent": 0
+        }
+      }
+    },
+    "assay_wall_seconds": 132.58708906173706,
+    "total_wall_seconds": 140.883957862854,
+    "dependencies_after": "6afea4e52a8f2e2ce53825cb388207cc2eff5554b49f959ba5c1f0bc71791ef9",
+    "self_controls": {
+      "actual_positive_base": "contract-preserved",
+      "actual_negative_historical": "behavioral-red",
+      "known_negative_exit_zero": true,
+      "omitted_row": {
+        "state": "unsupported",
+        "reason": "missing/extra output or wrong ReadSlice instrumentation"
+      },
+      "nonzero_exit_good_rows": {
+        "state": "unsupported",
+        "reason": "nonzero process exit or stderr"
+      },
+      "stderr_good_rows": {
+        "state": "unsupported",
+        "reason": "nonzero process exit or stderr"
+      },
+      "empty_exit_zero": {
+        "state": "unsupported",
+        "reason": "missing/extra output or wrong ReadSlice instrumentation"
+      },
+      "bad_instrumentation": {
+        "state": "unsupported",
+        "reason": "missing/extra output or wrong ReadSlice instrumentation"
+      }
+    }
+  },
+  "registered_grade_logs_verified": {
+    "base": {
+      "build": {
+        "exit": 0,
+        "seconds": 21.00221211486496,
+        "command": "go build ./plumbing/filemode ./plumbing/object",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "native": {
+        "exit": 0,
+        "seconds": 45.00645953416824,
+        "command": "go test ./plumbing/filemode ./plumbing/object",
+        "log_sha256": "642900f1ffbf9303a73add58b9d2b02553c110edb967eac20a78f1cd2eda70bf"
+      },
+      "contract": {
+        "exit": 42,
+        "seconds": 20.482440506108105,
+        "command": "go build -o /tmp/probe /oracle/check.go && /tmp/probe",
+        "log_sha256": "f561f87fd84d367314956f2f678f484da9325e8cf5303d38ad46cb312ca14d52"
+      },
+      "preserve": {
+        "exit": 0,
+        "seconds": 20.336237211013213,
+        "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "independent": {
+        "exit": 42,
+        "seconds": 20.46136915893294,
+        "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+        "log_sha256": "77d96cb84fef080d65ab4fdce9862c87ba90112cb9ac9879a30374ddcd4436a0"
+      }
+    },
+    "merge": {
+      "build": {
+        "exit": 0,
+        "seconds": 19.810990315862,
+        "command": "go build ./plumbing/filemode ./plumbing/object",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "native": {
+        "exit": 0,
+        "seconds": 44.89434892102145,
+        "command": "go test ./plumbing/filemode ./plumbing/object",
+        "log_sha256": "86bf64d79de092a5a46c7dd3bc68e56055cbb1ee766c61444cb7fd284e3fcc99"
+      },
+      "contract": {
+        "exit": 0,
+        "seconds": 20.215795614058152,
+        "command": "go build -o /tmp/probe /oracle/check.go && /tmp/probe",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserve": {
+        "exit": 0,
+        "seconds": 20.441439444897696,
+        "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "independent": {
+        "exit": 0,
+        "seconds": 20.539423379814252,
+        "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "stock": {
+      "build": {
+        "exit": 0,
+        "seconds": 20.40952266100794,
+        "command": "go build ./plumbing/filemode ./plumbing/object",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "native": {
+        "exit": 0,
+        "seconds": 44.581976908957586,
+        "command": "go test ./plumbing/filemode ./plumbing/object",
+        "log_sha256": "9d1db33ea604615a7076bba6ae4fe68f21c2d62f71caae8545136fe0873abe2b"
+      },
+      "contract": {
+        "exit": 0,
+        "seconds": 20.468636700883508,
+        "command": "go build -o /tmp/probe /oracle/check.go && /tmp/probe",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserve": {
+        "exit": 0,
+        "seconds": 20.12537195207551,
+        "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "independent": {
+        "exit": 0,
+        "seconds": 20.024933677865192,
+        "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "prior_develop": {
+      "build": {
+        "exit": 0,
+        "seconds": 20.81754450011067,
+        "command": "go build ./plumbing/filemode ./plumbing/object",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "native": {
+        "exit": 0,
+        "seconds": 44.01304069813341,
+        "command": "go test ./plumbing/filemode ./plumbing/object",
+        "log_sha256": "19de34c3f0318f0ef0b6a895fc2fc7ee8d1bd8acd1fd3e64447bc5e2ebdb338f"
+      },
+      "contract": {
+        "exit": 0,
+        "seconds": 20.212727607926354,
+        "command": "go build -o /tmp/probe /oracle/check.go && /tmp/probe",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserve": {
+        "exit": 0,
+        "seconds": 20.058554660063237,
+        "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "independent": {
+        "exit": 0,
+        "seconds": 20.075083489064127,
+        "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "revised_develop": {
+      "build": {
+        "exit": 0,
+        "seconds": 19.907277898164466,
+        "command": "go build ./plumbing/filemode ./plumbing/object",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "native": {
+        "exit": 0,
+        "seconds": 44.14816582808271,
+        "command": "go test ./plumbing/filemode ./plumbing/object",
+        "log_sha256": "cd8ec0695147045f9ca6bdd72e180574e7bc742a8b126b74deb8a431634d7ef5"
+      },
+      "contract": {
+        "exit": 0,
+        "seconds": 20.897804006002843,
+        "command": "go build -o /tmp/probe /oracle/check.go && /tmp/probe",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "preserve": {
+        "exit": 0,
+        "seconds": 19.89142118114978,
+        "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "independent": {
+        "exit": 0,
+        "seconds": 20.41818403103389,
+        "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "inventories": {
+    "stock": {
+      "initial_inventory_sha256": "6f64658cedcf511085c2b6ed3d98bb1a2d2ae8a0d1f667c60fb3a49104811f2a",
+      "initial_plugins": [],
+      "initial_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "initial_apps": [],
+      "initial_mcp": [],
+      "final_config_file_sha256_observed": "f226a43ac26e4c07acce8eb4eba9f67a6ed26920e4125aca98b4104f5abfa67d",
+      "final_config_enabled_plugins_observed": [],
+      "final_native_attestation": {
+        "input": {
+          "path": "runs/partial-result-go-git-01-candidate/attempts/go-git/control/turn-input.json",
+          "sha256": "d6564c712631be526ebd1a6968ccedfe163d287131b48410d81bc663e4706733"
+        },
+        "inventory": {
+          "path": "runs/partial-result-go-git-01-candidate/attempts/go-git/control/inventory.json",
+          "sha256": "6f64658cedcf511085c2b6ed3d98bb1a2d2ae8a0d1f667c60fb3a49104811f2a"
+        },
+        "final_config_sha256": "f226a43ac26e4c07acce8eb4eba9f67a6ed26920e4125aca98b4104f5abfa67d",
+        "final_stock": {
+          "apps": [],
+          "mcp": [],
+          "config_layers": [
+            "project",
+            "user",
+            "enterpriseManaged",
+            "system"
+          ],
+          "profile_keys": [
+            "approval_policy",
+            "features",
+            "model",
+            "model_reasoning_effort",
+            "plugins",
+            "projects",
+            "sandbox_mode",
+            "web_search"
+          ],
+          "repository_instructions_sha256": {
+            "AGENTS.md": "57404f69a6bdf9ebc0a112ac04f1c64f717c0da39758af27d15cb33e726238b4"
+          },
+          "global_instructions": [],
+          "stock_skills": [
+            "imagegen",
+            "openai-docs",
+            "review-agent",
+            "skill-creator",
+            "skill-installer"
+          ]
+        }
+      },
+      "installed_final_files": {},
+      "limit": "Final config hash, native final stock context, input and inventory receipts verify."
+    },
+    "revised_develop": {
+      "initial_inventory_sha256": "fa8455f41024cac3fe9c21b595ddd98e6e6e111cc7f36a7dd5cdca928df7cc75",
+      "initial_plugins": [
+        "develop@law-config",
+        "superpowers@superpowers-local"
+      ],
+      "initial_skills": [
+        "develop:adversarial-loop",
+        "develop:clean",
+        "develop:deep-clean",
+        "develop:develop",
+        "develop:engineering-design",
+        "develop:interface-design",
+        "develop:iterate",
+        "develop:kaizen",
+        "develop:upgrade",
+        "develop:upgrade-codex",
+        "superpowers:brainstorming",
+        "superpowers:dispatching-parallel-agents",
+        "superpowers:executing-plans",
+        "superpowers:finishing-a-development-branch",
+        "superpowers:receiving-code-review",
+        "superpowers:requesting-code-review",
+        "superpowers:subagent-driven-development",
+        "superpowers:systematic-debugging",
+        "superpowers:test-driven-development",
+        "superpowers:using-git-worktrees",
+        "superpowers:using-superpowers",
+        "superpowers:verification-before-completion",
+        "superpowers:writing-plans",
+        "superpowers:writing-skills",
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "initial_apps": [],
+      "initial_mcp": [],
+      "final_config_file_sha256_observed": "68289290e48c3c27b396dae0bea6c3ca05a46c908c42f037d5dfaa85d7d3615a",
+      "final_config_enabled_plugins_observed": [
+        "develop@law-config",
+        "superpowers@superpowers-local"
+      ],
+      "final_native_attestation": {
+        "input": {
+          "path": "runs/partial-result-go-git-01-candidate/attempts/go-git/develop/turn-input.json",
+          "sha256": "f19ec0bf97b9b3a783af122d8459d018d8888798a8d11aed16fbab9bc4a9755a"
+        },
+        "inventory": {
+          "path": "runs/partial-result-go-git-01-candidate/attempts/go-git/develop/inventory.json",
+          "sha256": "fa8455f41024cac3fe9c21b595ddd98e6e6e111cc7f36a7dd5cdca928df7cc75"
+        },
+        "final_config_sha256": "68289290e48c3c27b396dae0bea6c3ca05a46c908c42f037d5dfaa85d7d3615a",
+        "final_stock": {
+          "apps": [],
+          "mcp": [],
+          "config_layers": [
+            "project",
+            "user",
+            "enterpriseManaged",
+            "system"
+          ],
+          "profile_keys": [
+            "approval_policy",
+            "features",
+            "hooks",
+            "marketplaces",
+            "model",
+            "model_reasoning_effort",
+            "plugins",
+            "projects",
+            "sandbox_mode",
+            "web_search"
+          ],
+          "repository_instructions_sha256": {
+            "AGENTS.md": "57404f69a6bdf9ebc0a112ac04f1c64f717c0da39758af27d15cb33e726238b4"
+          },
+          "global_instructions": [],
+          "stock_skills": [
+            "imagegen",
+            "openai-docs",
+            "review-agent",
+            "skill-creator",
+            "skill-installer"
+          ]
+        }
+      },
+      "installed_final_files": {
+        "develop_files": 106,
+        "develop_package_sha256": "5acc5df6c74850c8d355aa7506e6e91917fbae8f7a162fca0c6da877f88d77d9",
+        "companion_package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+      },
+      "limit": "Final config hash, native final stock context, input and inventory receipts verify."
+    },
+    "prior_develop": {
+      "initial_inventory_sha256": "8165598d10d1409546d5cb51121ee7a917076851f87fb85b8cd336f6e1afa142",
+      "initial_plugins": [
+        "develop@law-config",
+        "superpowers@superpowers-local"
+      ],
+      "initial_skills": [
+        "develop:adversarial-loop",
+        "develop:clean",
+        "develop:deep-clean",
+        "develop:develop",
+        "develop:engineering-design",
+        "develop:interface-design",
+        "develop:iterate",
+        "develop:kaizen",
+        "develop:upgrade",
+        "develop:upgrade-codex",
+        "superpowers:brainstorming",
+        "superpowers:dispatching-parallel-agents",
+        "superpowers:executing-plans",
+        "superpowers:finishing-a-development-branch",
+        "superpowers:receiving-code-review",
+        "superpowers:requesting-code-review",
+        "superpowers:subagent-driven-development",
+        "superpowers:systematic-debugging",
+        "superpowers:test-driven-development",
+        "superpowers:using-git-worktrees",
+        "superpowers:using-superpowers",
+        "superpowers:verification-before-completion",
+        "superpowers:writing-plans",
+        "superpowers:writing-skills",
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "initial_apps": [],
+      "initial_mcp": [],
+      "final_config_file_sha256_observed": "33abc80b1700a10b97755424231f31a2c3ba60ea539b3a6a249f7f99c5018011",
+      "final_config_enabled_plugins_observed": [
+        "develop@law-config",
+        "superpowers@superpowers-local"
+      ],
+      "final_native_attestation": null,
+      "installed_final_files": {
+        "develop_files": 106,
+        "develop_package_sha256": "239dccfc0fe4c090a777d8cf46216c99c57bc2bebc08eca013402215b65c7c28",
+        "companion_package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+      },
+      "limit": "Prior native final attestation is missing because of timeout; current profile-file observation does not fill that missing recorded attestation."
+    }
+  },
+  "required_review_observations": {
+    "stock": {
+      "native_result_sha256": "a293cac2c5afe5be0f5ba44a0fb5209d4153f163862c58f8ff11a868db2974fe",
+      "review_events_sha256": null,
+      "observed_independent_children": [],
+      "final_artifact_git_blob_binding": null,
+      "review_scope": "Stock has no required Develop review route.",
+      "prior_binding_limit": null
+    },
+    "revised_develop": {
+      "native_result_sha256": "a9f6801ab3bb2ccb1e2dc0842b883ebebe485fdf735085e0be559ceef487a1f8",
+      "review_events_sha256": "1893570d3443592a3c47fbc26aea9c14426b9d7778550938a1c651951c8466ef",
+      "observed_independent_children": [
+        {
+          "thread": "01a18bcc-5f56-7e00-a7d1-49153836c41d",
+          "path": "/root/intent_review",
+          "model": "gpt-6.1-sol",
+          "effort": "medium",
+          "completed_event": true,
+          "final_messages": [
+            "aligned \u2014 reviewed HEAD `dc41adbecd82409f073f21850178c1ef166ded48`.\n\nThe proposed design matches the task and preserves existing decoder behavior for nonregular types. Checked `FromBytes` parsing and wrapping tree parsing correctly implement the explicitly different overflow contracts.\n\nNo material design findings. Ensure tests cover EOF immediately after a full mode buffer and invalid syntax after multiple buffers. Document `Canonical`\u2019s fallback to `Submodule` for unsupported types, including `Empty`.\n\nReview limited to the proposed design and existing source; implementation diff and upstream source were unavailable for this checkpoint."
+          ],
+          "terminal_meter": true
+        },
+        {
+          "thread": "01a18bd2-29ab-7e42-a0a4-f97f9e33221a",
+          "path": "/root/artifact_review",
+          "model": "gpt-6.1-sol",
+          "effort": "medium",
+          "completed_event": true,
+          "final_messages": [
+            "Aligned; no material findings in the four-file diff at HEAD `dc41adbecd82409f073f21850178c1ef166ded48`.\n\nInspected blob transitions:\n\n- `filemode.go`: `4dd77ba` \u2192 `d6179b1`\n- `filemode_test.go`: `18cfd46` \u2192 `be39fcb`\n- `tree.go`: `77799ad` \u2192 `87ebfff`\n- `tree_test.go`: `4aa925e` \u2192 `8449ecb`\n\nThe implementation correctly separates checked public parsing from wrapping tree-mode parsing, uses the owner execute bit, preserves nonregular canonicalization, and handles fragmented mode fields and malformed encodings. Regression coverage addresses boundaries, overflow, wrapping, invalid bytes, following entries, and round trips.\n\nRead `AGENTS.md` and `AI_POLICY.md`. Review was static and read-only. Test execution remains unverified because filesystem RPC stalls prevented completion; I did not independently rerun Git parity checks."
+          ],
+          "terminal_meter": true
+        }
+      ],
+      "final_artifact_git_blob_binding": {
+        "plumbing/filemode/filemode.go": "d6179b158399dfe2c12d0e549f4968f64922f15f",
+        "plumbing/filemode/filemode_test.go": "be39fcbcc8c5f7f7247458886e8ce8aee6bce8ed",
+        "plumbing/object/tree.go": "87ebfff2a6b8cb2fb0d49292deca57b887bfad33",
+        "plumbing/object/tree_test.go": "8449ecbf2076bbb34c79b71df9a9e47f6f47f0dd"
+      },
+      "review_scope": "Recorded independent intent and static artifact reviews. Frozen execution gates are separate evidence.",
+      "prior_binding_limit": null
+    },
+    "prior_develop": {
+      "native_result_sha256": "cc3d15cf9122829cd2ee40f0f38f807628e587571fece4a855ea1f3f1de305aa",
+      "review_events_sha256": "f3029b28117617a87b006c5f6da927601c068934d9c708ba8a1dd76f854a8ebc",
+      "observed_independent_children": [
+        {
+          "thread": "01a18b9a-c081-7d72-8e49-30c58e66dcf4",
+          "path": "/root/intent_review",
+          "model": "gpt-6.1-sol",
+          "effort": "medium",
+          "completed_event": true,
+          "final_messages": [
+            "Aligned.\n\nIndependent Git 2.39.5 oracle confirms the intended semantics:\n\n- Group/other execute bits canonicalize to Regular; owner execute canonicalizes to Executable.\n- Zero padding and 6,006-byte modes parse successfully.\n- `40000100644` wraps to Regular.\n- Directory/symlink permissions normalize; unknown types and zero normalize to Submodule.\n\nThe proposed separation between checked `FromBytes` and wrapping tree parsing is necessary. Preserve malformed detection across chunks: EOF after consumed mode chunks must return `ErrMalformedTree`, even when the final slice is empty.\n\nNo design changes required. This review covers intent and approach; implementation and regression verification remain separate checkpoints."
+          ],
+          "terminal_meter": true
+        },
+        {
+          "thread": "01a18bb9-d142-7521-919e-089914a36e75",
+          "path": "/root/artifact_review",
+          "model": "gpt-6.1-sol",
+          "effort": "medium",
+          "completed_event": true,
+          "final_messages": [
+            "Verdict: aligned. No material findings.\n\nReviewed all four files against base `1aa5d274658a2c422bb8ae90447a81d6068ca2f4`, root policies, surrounding Decode paths, and callers. Parsing correctly separates public uint32 overflow rejection from tree-mode wrapping. Canonicalization, buffer continuation, malformed input, EOF handling, and existing public contracts appear correct. Regression tests cover the requested behavior and round trips. `git diff --check` passed.\n\nFinal build, two-package tests, and pristine-base regression replay remain pending coordinator evidence; this verdict does not certify those results. Reviewed hashes were supplied in commentary."
+          ],
+          "terminal_meter": true
+        }
+      ],
+      "final_artifact_git_blob_binding": null,
+      "review_scope": "Recorded independent intent and static artifact reviews. Frozen execution gates are separate evidence.",
+      "prior_binding_limit": "Prior reviewer final references commentary hashes absent from this extracted message receipt; exact final artifact review binding is unverified."
+    }
+  },
+  "judges": [
+    {
+      "rotation": 0,
+      "judgment_sha256": "58117dc28b3cbd812d9cd32c5b13547a5339b41d313c27084c3a108e26859d0b",
+      "native": {
+        "path": "runs/partial-result-go-git-01-candidate/judges/go-git/0/0/native.json",
+        "sha256": "c49087bd3707e9d1aeba700edd654d61818fb499a1d29258ee6ee289fdd6778b"
+      },
+      "mapping": {
+        "path": "runs/partial-result-go-git-01-candidate/judges/go-git/0/0/mapping.json",
+        "sha256": "fb66cc5d30b7a8386a7cdc5d425d291df400d5358bf4331ffece83e03574de81"
+      },
+      "packet": {
+        "path": "runs/partial-result-go-git-01-candidate/judges/go-git/0/0/packet.json",
+        "sha256": "0640c0017a7db130ae58b0e03306919a5dbda557535db05ab15cc1ab56f90ea6"
+      },
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "state": "completed",
+      "task_sha256": "7e248c56d32c5891caf60ff67fd571c348885a4d2cb79215060ae354f633edea",
+      "labels": {
+        "A": "develop",
+        "B": "upstream",
+        "C": "control"
+      },
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 839758,
+          "cachedInputTokens": 779392,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 3586,
+          "reasoningOutputTokens": 636,
+          "totalTokens": 843344
+        },
+        "threads": 1,
+        "usd_estimate": 0.23453120000000002
+      }
+    },
+    {
+      "rotation": 1,
+      "judgment_sha256": "ecfe47a82e6f707dbe8c0aa9b3beed6cf385f7f34e1422889ff2452407d9800c",
+      "native": {
+        "path": "runs/partial-result-go-git-01-candidate/judges/go-git/1/0/native.json",
+        "sha256": "6f49fc39f99c1e52c6db747a209752d4fc26160e0c246fe76935735c9d1dd611"
+      },
+      "mapping": {
+        "path": "runs/partial-result-go-git-01-candidate/judges/go-git/1/0/mapping.json",
+        "sha256": "473c990e001efb67a3ac9234ec3ebca8eaafb8bcb7441f79efeb40b848d823b8"
+      },
+      "packet": {
+        "path": "runs/partial-result-go-git-01-candidate/judges/go-git/1/0/packet.json",
+        "sha256": "94b8afff3785e6a2ae76bf36dfc55a4a4818dd50badf835db4e0d9a25090f696"
+      },
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "state": "completed",
+      "task_sha256": "0ad24fc6b5105d54f170aae41deb441e34d9affb52497e4d82897e5dff55147c",
+      "labels": {
+        "A": "upstream",
+        "B": "control",
+        "C": "develop"
+      },
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 507668,
+          "cachedInputTokens": 452864,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2652,
+          "reasoningOutputTokens": 292,
+          "totalTokens": 510320
+        },
+        "threads": 1,
+        "usd_estimate": 0.1814144
+      }
+    },
+    {
+      "rotation": 2,
+      "judgment_sha256": "8b8084f83490dbb56e975855ad3baca66dd294873c7aeb115d20edbc7251795f",
+      "native": {
+        "path": "runs/partial-result-go-git-01-candidate/judges/go-git/2/0/native.json",
+        "sha256": "577f556fbe73d47450e30df815ee7883be493c77a61eb799fd9b8f9cfd1de99e"
+      },
+      "mapping": {
+        "path": "runs/partial-result-go-git-01-candidate/judges/go-git/2/0/mapping.json",
+        "sha256": "202173ee68f1d4e1e2561590aa9a3f567b8321ae13439a2ee6e40ab64c1801d4"
+      },
+      "packet": {
+        "path": "runs/partial-result-go-git-01-candidate/judges/go-git/2/0/packet.json",
+        "sha256": "f21c1945ced3725b171bd223acb18154c1596523c57df12c432f5afb9a83ac08"
+      },
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "state": "completed",
+      "task_sha256": "5ddebb38f8f104cb36e98edb4c7912f77330803611d7c2fc9bf94d9884747b14",
+      "labels": {
+        "A": "control",
+        "B": "develop",
+        "C": "upstream"
+      },
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 797992,
+          "cachedInputTokens": 733440,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 3144,
+          "reasoningOutputTokens": 388,
+          "totalTokens": 801136
+        },
+        "threads": 1,
+        "usd_estimate": 0.233888
+      }
+    }
+  ],
+  "economics": {
+    "proposals": {
+      "stock": {
+        "state": "completed",
+        "coverage": "complete",
+        "usd_estimate": 0.6003871999999999,
+        "actual_invoiced_usd": null,
+        "all_root_and_descendant_threads": [
+          "01a18b8a-7d46-7e73-9912-6e57a6ae1f13"
+        ],
+        "thread_count": 1,
+        "tokens": {
+          "inputTokens": 2935535,
+          "cachedInputTokens": 2858112,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 15973,
+          "reasoningOutputTokens": 7829,
+          "totalTokens": 2951508
+        },
+        "proposal_wall_seconds": 811.8322337511927,
+        "active_wall_seconds": 781.2435921109281,
+        "setup_seconds": 28.579906467115507,
+        "grading_seconds": 126.55456717079505,
+        "end_to_end_seconds": 939.8996646190062,
+        "soft_pr_quality": 96.25,
+        "proposal_bytes": 741,
+        "proposal_sha256": "d08a18596ce0d221f52e31dbfd9fb620dc0069ce071b40cec4fd0317fd810711",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "model_qualifying": false
+      },
+      "revised_develop": {
+        "state": "completed",
+        "coverage": "complete",
+        "usd_estimate": 0.6307152,
+        "actual_invoiced_usd": null,
+        "all_root_and_descendant_threads": [
+          "01a18bca-96b3-79b0-ba38-a683e707c1a2",
+          "01a18bcc-5f56-7e00-a7d1-49153836c41d",
+          "01a18bd2-29ab-7e42-a0a4-f97f9e33221a"
+        ],
+        "thread_count": 3,
+        "tokens": {
+          "inputTokens": 2592396,
+          "cachedInputTokens": 2486272,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 16984,
+          "reasoningOutputTokens": 5854,
+          "totalTokens": 2609380
+        },
+        "proposal_wall_seconds": 781.9616444769781,
+        "active_wall_seconds": 741.1259389650077,
+        "setup_seconds": 38.8108200058341,
+        "grading_seconds": 126.17501241201535,
+        "end_to_end_seconds": 909.7532767818775,
+        "soft_pr_quality": 96.25,
+        "proposal_bytes": 894,
+        "proposal_sha256": "78139c104033687b7098e5b21d7bb991465895b4f2407a9b00c5481cf52bb10a",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "model_qualifying": false
+      },
+      "prior_develop": {
+        "state": "timeout",
+        "coverage": "lower bound",
+        "usd_estimate": 2.100658,
+        "actual_invoiced_usd": null,
+        "all_root_and_descendant_threads": [
+          "01a18b99-48b2-7190-a1c8-d5673f2ac02f",
+          "01a18b9a-c081-7d72-8e49-30c58e66dcf4",
+          "01a18bb9-d142-7521-919e-089914a36e75"
+        ],
+        "thread_count": 3,
+        "tokens": {
+          "inputTokens": 12008822,
+          "cachedInputTokens": 11779840,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 46471,
+          "reasoningOutputTokens": 25877,
+          "totalTokens": 12055293
+        },
+        "proposal_wall_seconds": 3100.4100480391644,
+        "active_wall_seconds": 3060.0006545470096,
+        "setup_seconds": 38.80267677293159,
+        "grading_seconds": 126.23278328799643,
+        "end_to_end_seconds": 3228.3238502310123,
+        "soft_pr_quality": null,
+        "proposal_bytes": 0,
+        "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "model_qualifying": false
+      }
+    },
+    "three_assessors_usd_estimate_separate": 0.6498336,
+    "all_observed_proposal_and_assessor_usd_lower_bound": 3.9815940000000003,
+    "model_free_diagnostic_provider_calls": 0,
+    "model_free_diagnostic_usd": null,
+    "model_free_diagnostic_wall_seconds": 140.883957862854,
+    "unknown_human_labor_usd": null,
+    "limits": "Prices are registered-rate token estimates; no actual billed amount or hardware cost is invented. Prior incomplete root meter is censored; its retained descendant spend remains included.",
+    "timing_interpretation": "Proposal spans are frozen controller measurements. Diagnostic elapsed time is reported solely as replay resource usage; it is never a semantic/quality or agent-efficiency comparison."
+  },
+  "rules": {
+    "registered_five_executable_gates": {
+      "result": "pass for stock, prior patch, revised and merge; base expected contract/independent42",
+      "evidence": {
+        "base": {
+          "sha256": "ed0e9dca7196e67da10447aaf8f0b833f2421b95b754293b613110eb3bc51b67",
+          "stages": {
+            "build": 0,
+            "native": 0,
+            "contract": 42,
+            "preserve": 0,
+            "independent": 42
+          }
+        },
+        "merge": {
+          "sha256": "fcf325f731b782f3c5826a0890f0a9cc7b30d6446c96a0c0aa6a70a5acf97e36",
+          "stages": {
+            "build": 0,
+            "native": 0,
+            "contract": 0,
+            "preserve": 0,
+            "independent": 0
+          }
+        },
+        "stock": {
+          "sha256": "850fb6aa64a6283b89397b28bbc1dec720b85dc68cfa4cf595c1c77bce764ba5",
+          "stages": {
+            "build": 0,
+            "native": 0,
+            "contract": 0,
+            "preserve": 0,
+            "independent": 0
+          }
+        },
+        "prior_develop": {
+          "sha256": "4c5e8fbd39a5d66095fd1aa1bed2fb1a954d6aa38116d95443e16db2f9d088b5",
+          "stages": {
+            "build": 0,
+            "native": 0,
+            "contract": 0,
+            "preserve": 0,
+            "independent": 0
+          }
+        },
+        "revised_develop": {
+          "sha256": "e8a99aa5b5c872214ab3223328db7be163b9ad17fe2a99f72828ab33d9843b4e",
+          "stages": {
+            "build": 0,
+            "native": 0,
+            "contract": 0,
+            "preserve": 0,
+            "independent": 0
+          }
+        }
+      }
+    },
+    "candidate_complete_ready_and_three_rotations": {
+      "pass": true
+    },
+    "blind_full_pr_win_at_registered_margin": {
+      "pass": false,
+      "score_delta": 0.0,
+      "required_median_margin": 5,
+      "verdict": "tie",
+      "votes": [
+        "tie",
+        "control",
+        "tie"
+      ]
+    },
+    "complete_proposal_cost_no_more_than_stock": {
+      "pass": false,
+      "revised_usd_estimate": 0.6307152,
+      "stock_usd_estimate": 0.6003871999999999,
+      "revised_minus_stock": 0.030328000000000133,
+      "percent_above_stock": 5.051406825461991
+    },
+    "strict_product_goal": {
+      "pass": false,
+      "owning_results_goal_win_matches_raw": true,
+      "reason": "Blinded full-PR tie and revised estimated complete proposal cost exceeds stock."
+    },
+    "supplemental_seven_rows": {
+      "base": "contract-preserved",
+      "merge": "contract-preserved",
+      "stock": "behavioral-red",
+      "prior_develop": "contract-preserved",
+      "revised_develop": "contract-preserved"
+    },
+    "revised_preserves_prior_observed_sentinel_contract": {
+      "pass": true,
+      "same_rows_as_prior": true
+    },
+    "distinct_observed_selection_mechanism_over_parent": {
+      "result": "not established",
+      "reason": "Revised and prior patches produce identical seven-row observations. Both preserve sentinel overlap; fresh stock loses it."
+    },
+    "strict_completed_parent_cost_wall_comparison": {
+      "result": "unestablished: parent censored",
+      "candidate_below_parent_observed_cost_lower_bound": true,
+      "candidate_below_parent_observed_wall_bound": true,
+      "parent_soft_pr_quality": null,
+      "parent_final_native_attestation": null,
+      "reason": "Observed prior timeout/lower-bound spend and elapsed time are not a completed matched parent result; no exact savings/promotion claim."
+    }
+  },
+  "missing_values": {
+    "prior_soft_pr_quality": null,
+    "prior_nonempty_completed_proposal": null,
+    "prior_final_native_attestation": null,
+    "prior_complete_final_cost": null,
+    "prior_exact_final_artifact_review_binding": null,
+    "actual_billed_proposal_usd": null,
+    "human_labor_usd": null
+  },
+  "adjudication_implications": [
+    "Stock has a reproducible supplementary sentinel-identity regression on invalid bytes plus a non-EOF read error; revised, prior, merge and base preserve it.",
+    "All frozen registered gates and original blind scores remain unchanged. Supplemental observation is not a retroactive score, new integrity veto or critical-severity finding.",
+    "Revised avoids the fresh stock regression but matches the prior patch; this exposed single case does not establish a separate treatment mechanism or promotion.",
+    "The allowed9000-zero buffer-limit change is separate from the failing sentinel-invalid row; normal-valid and terminated-invalid controls pass in allfive."
+  ],
+  "limits": [
+    "Seven-row witness is limited to selected source behavior; no universal I/O error-precedence requirement or production incidence is inferred.",
+    "Registered mode/overflow/roundtrip coverage is represented by exact frozen gate logs, not newly attributed to this seven-row witness.",
+    "Prior remains timeout/censored despite a captured patch that passes frozen executable gates and the supplemental witness.",
+    "All copied sources, dependencies, raw result and evaluator source digest remained unchanged; no paid calls, fresh tasks, plugin code or canonical evaluator edits."
+  ],
+  "source_bindings": {
+    "raw_result_sha256": "8b3a3bd4d46c1111f0e8b56666885286d3c4f439a1b726bd2d95197054ca7959",
+    "raw_result_canonical_json_sha256": "89db59e03ad23eeac3b826a33b73f85d297fbe30d0504f1f2adc93a440b84774",
+    "registration_sha256": "5253c0a80019608e0063bd16f46bea03673cfaa4880b5726b77980d172445805",
+    "witness_sha256": "8dd4197a314957fd02aac18903601e5ae5cafd8250a05812cab369d23c6b220a",
+    "bundled_files": {
+      "raw": "sealed-raw-result.json",
+      "registration": "registration.json",
+      "witness": "witness.go"
+    },
+    "future_public_result_dependency": null
+  }
+}

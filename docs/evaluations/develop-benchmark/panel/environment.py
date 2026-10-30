@@ -23,7 +23,11 @@ CACHE = STATE / "cache"
 PANEL = json.loads((HERE / "panel.json").read_bytes())
 COHORT = None
 cohort_name = os.environ.get("DEVELOP_EVAL_COHORT", PANEL["protocol"])
-if cohort_name != PANEL["protocol"]:
+if cohort_name == "pr-quality-runner-v3":
+    PANEL["protocol"] = cohort_name
+    runner = next(c for c in PANEL["cases"] if c["id"] == "runner-space")
+    runner.update(check="runner_lint_ledger_v3.mjs", loopback_hosts=True)
+elif cohort_name != PANEL["protocol"]:
     sys.path.insert(0, str(HERE.parent))
     from confirmation import cohort as COHORT
     if cohort_name != COHORT.NAME:

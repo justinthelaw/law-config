@@ -26,6 +26,15 @@ def set_treatment(env):
     C.controller.activate()
 
 
+def validate_evaluator_binding(spec, case):
+    if "evaluator_binding" not in spec:
+        return
+    actual = {"protocol": E.PANEL["protocol"], "source_sha256": E.version_digest(),
+              "case": case, "fixture_sha256": C.grading.fixture_hash(E.CASES[case])}
+    if spec["evaluator_binding"] != actual:
+        raise ValueError("hypothesis requires a different evaluator protocol, source or fixture")
+
+
 def source_for(lock):
     path = lock.resolve(strict=True)
     if path.name != "treatment.json" or path.parent.parent != B.HERE / "treatments":
@@ -57,8 +66,14 @@ def freeze(args, treatment, role):
 
 
 def registration(args, plans, receipts, cpus):
+    validate_evaluator_binding(getattr(args, "experiment", {}), args.case)
     candidate, prior = plans["candidate"], plans["prior"]
-    for field in ("seed", "references", "rubric_sha256", "cost_usd_per_million", "judge_rotations"):
+    binding = getattr(args, "experiment", {}).get("evaluator_binding")
+    if binding and any(plan["protocol"] != binding["protocol"]
+                       or plan["runtime"]["source_sha256"] != binding["source_sha256"]
+                       for plan in plans.values()):
+        raise ValueError("frozen pilot plans differ from the hypothesis evaluator")
+    for field in ("protocol", "seed", "references", "rubric_sha256", "cost_usd_per_million", "judge_rotations"):
         if candidate[field] != prior[field]:
             raise ValueError("unmatched pilot plans: " + field)
     for field in ("source_sha256", "cli", "bwrap"):
@@ -71,8 +86,10 @@ def registration(args, plans, receipts, cpus):
     order.insert(rng.randrange(3), ["prior", "develop"])
     spec = getattr(args, "experiment", {})
     return {"protocol": "develop-efficiency-pilot-v1", "name": args.name, "case": args.case, "plans": receipts,
+            "evaluator_protocol": candidate["protocol"],
             "operator_sha256": E.sha(Path(__file__)), "cpus": cpus, "order": order,
             "hypothesis": spec.get("id", "reuse-intent-review-on-stable-scope"),
+            **({"evaluator_binding": spec["evaluator_binding"]} if "evaluator_binding" in spec else {}),
             "tuning_policy_sha256": E.sha(B.BUNDLES / "tuning.json"),
             **({"hypothesis_sha256": args.hypothesis_sha256} if hasattr(args, "hypothesis_sha256") else {}),
             "falsifier": (spec["falsifier"] + " " if spec else "") + "Reject lost prior verified behavior or required review, failure of either strict prior cost or wall improvement, non-ready candidate, or full-PR loss to pure. Missing measures or unverifiable review leave the comparison unestablished.",
@@ -129,7 +146,7 @@ def check_input(name, key, arm):
 
 
 
-def run(args):
+def load_hypothesis(args):
     if args.case not in E.CASES or E.CASES[args.case]["split"] != "tuning":
         raise ValueError("select a preregistered tuning case")
     if getattr(args, "hypothesis", None):
@@ -148,6 +165,11 @@ def run(args):
         sys.path.insert(0, str(B.PANEL.parent))
         from confirmation.cohort import AUTHORITY
         C.PROMPT = C.PROMPT.replace("Design and unattended implementation are approved.", AUTHORITY)
+    validate_evaluator_binding(getattr(args, "experiment", {}), args.case)
+
+
+def run(args):
+    load_hypothesis(args)
     composite.validate_common_component(getattr(args, "experiment", {}), E.read(args.prior), E.read(args.candidate))
     B.valid_name(args.name + "-candidate")
     cpus = sorted(os.sched_getaffinity(0))[:2]
@@ -175,6 +197,7 @@ def run(args):
         row = C.read_attempt(name, args.case, arm)
         if row["state"] == "unreleased":
             print("Releasing", role, arm, flush=True)
+            validate_evaluator_binding(getattr(args, "experiment", {}), args.case)
             C.attempt(name, args.case, arm)
         row, attestation = check_input(name, args.case, arm)
         attestations[f"{role}/{arm}"] = attestation
@@ -189,6 +212,7 @@ def run(args):
 
     set_treatment(sources["candidate"])
     name = plans["candidate"]["name"]
+    validate_evaluator_binding(getattr(args, "experiment", {}), args.case)
     B.command(E.HERE / "judge.py", name, "--case", args.case, "--jobs", 3, allow_partial=True)
     case = results.case_row(name, E.CASES[args.case])
     set_treatment(sources["prior"])

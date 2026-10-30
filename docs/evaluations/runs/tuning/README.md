@@ -1,8 +1,10 @@
 # Develop tuning
 
-As of 2026-10-30, 15 pilots in the same format cover four repositories with different treatments. Among 11 ready, fully metered pairs, revised Develop won blind full-PR quality five times, tied twice and lost four times. It cost more than stock in all 11. Four comparisons remain incomplete, including one blocked proposal with a gradeable soft score. The count excludes the earlier Go and boundary diagnostics.
+As of 2026-10-30, 16 pilots in the same portable format cover five repositories with different treatments. Among 12 ready, fully metered pairs, revised Develop won blind full-PR quality five times, tied three times and lost four times. It cost more than stock in all 12. Four comparisons remain incomplete, including one blocked proposal with a gradeable soft score. Earlier non-pilot Go and boundary diagnostics remain outside this count.
 
 Choose a released pilot by name. Run `python3 -B docs/evaluations/benchmark.py status NAME` from the repository root for readiness, quality, proposal cost, tokens and time. Each `result.json` binds the proposals to their task, treatment, checks and three rotated judge assessments. [How to run and score a pilot](../../README.md)
+
+For all validated pilots, run `python3 -B docs/evaluations/tools/records.py tuning`. The JSON separates evaluation contexts and exclusions, with the strict joint target counted independently of the ready/ready table. Repeated tasks and changed treatments remain diagnostic.
 
 ## Practices under test
 
@@ -36,3 +38,5 @@ On the sealed pytest task, Develop’s seven-case subset caught stock’s tuple 
 On the matched configured-test pilot, all three judges tied revised Develop and stock at 81.25. Revised Develop cost $0.584, down from the parent’s $0.691 and above stock’s $0.483. Under the project configuration, all nine revised cases and all 12 stock cases passed. Duplicate IDs blocked all 14 parent cases. All three proposals lost tuple unpacking, internal-first imports and class annotation lookup. The revised reviewer finished before the passing configured output arrived. The merge scored 30, and its PR text claimed constructor and test changes absent from its patch. [Configured tests and public callers](configured-tests-pytest-01/configured-authored-tests-postscore.json) · [Review timing](configured-tests-pytest-01/process-audit.json) · [Merge adjudication](configured-tests-pytest-01/merged-pr-adjudication.json)
 
 On the exposed Go-git task, a post-score replay found that revised Develop masks a read error as malformed input when an invalid mode byte and an I/O error arrive together. Base, merge, prior Develop and stock preserve the error in that case; ordinary malformed and valid controls behave alike. This is an observed error-identity change, with production incidence unknown, and leaves scores unchanged. [Error precedence witness](intent-go-git-01/error-precedence-witness.json)
+
+On the partial-result Go-git pilot, revised Develop tied stock and the merge at 96.25, costing $0.631 versus stock’s $0.600. A separate witness found stock lost a read error that both Develop patches preserved. The prior proposal timed out; exact parent savings and a distinct treatment mechanism remain unestablished. [Results](partial-result-go-git-01/result.json) · [Witness](partial-result-go-git-01/partial-result-identity/supplement.json) · [Process audit](partial-result-go-git-01/process-audit.json)

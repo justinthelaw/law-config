@@ -41,6 +41,8 @@ def expected_mounts(folder, key, record):
               "/setup": (str(folder / "guest-setup"), False), "/skills": (str(folder / "profile/skills"), False),
               "/guest/opt/codex/codex": (str(cli), False),
               "/guest/opt/codex/codex-resources/bwrap": (str(cli.parent.parent / "codex-resources/bwrap"), False)}
+    if E.CASES[key].get("loopback_hosts"):
+        mounts["/guest/etc/hosts"] = (str(E.WORKFLOW / "vm/loopback.hosts"), False)
     if folder.name == "develop" and record.name == "result.json":
         installed, = (folder / "profile/plugins/cache/law-config/develop").iterdir()
         mounts["/plugin"] = (str(installed), False)

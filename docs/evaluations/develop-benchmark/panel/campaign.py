@@ -153,7 +153,8 @@ def freeze(name, seed=None, *, pilot=None):
         admit=latest_valid(E.CACHE/"calibration"/key,"admission.json",
              lambda r:r["passed"] and r["fingerprint"]==fp and r["workers"]==worker and r["deps_sha256"]==deps)
         cold_path=latest_valid(E.CACHE/"cold"/key,"receipt.json",lambda r:r["passed"] and r["base"]==c["base"]
-                          and r["worker_image"]==worker["worker"] and r["build"]==c["build"] and r["native"]==E.guest.native_tests(c))
+                          and r["worker_image"]==worker["worker"] and r["build"]==c["build"] and r["native"]==E.guest.native_tests(c)
+                          and r.get("fixture_sha256")== (fp if c.get("loopback_hosts") else None))
         plan["references"][key]={"admission":receipt(admit),"base_grade":receipt(admit.parent/"base/grade.json"),
              "gold_grade":receipt(admit.parent/"gold/grade.json"),"cold":receipt(cold_path),
              "deadline_seconds":cold.budget(E.read(cold_path)["seconds"]),"workers":worker,
@@ -172,7 +173,9 @@ def freeze(name, seed=None, *, pilot=None):
 def plan_for(name):
     path=run_dir(name)/"plan.json"
     plan=E.read(path)
-    if plan["protocol"] != E.PANEL["protocol"] or runtime()!=plan["runtime"] or plan["rubric_sha256"]!=E.sha(E.HERE/"rubric.md"):
+    if plan["protocol"] != E.PANEL["protocol"]:
+        raise ValueError(f"frozen protocol {plan['protocol']}; set DEVELOP_EVAL_COHORT={plan['protocol']} and resume {name}")
+    if runtime()!=plan["runtime"] or plan["rubric_sha256"]!=E.sha(E.HERE/"rubric.md"):
         raise ValueError("frozen runtime or rubric differs; version a new experiment")
     qualification = qualifier(plan["qualification"])
     if not composite.qualification_matches(qualification, plan["runtime"]["treatment"]):
@@ -184,6 +187,8 @@ def check_case(case, plan, deps=True):
     ref=plan["references"][case["id"]]
     adm=verify_receipt(ref["admission"])
     timing=verify_receipt(ref["cold"])
+    if timing.get("fixture_sha256") != (grading.fixture_hash(case) if case.get("loopback_hosts") else None):
+        raise ValueError("cold fixture changed: " + case["id"])
     if timing.get("log_sha256"):
         log=(E.STATE/ref["cold"]["path"]).parent/"worker.log"
         if E.sha(log)!=timing["log_sha256"]:

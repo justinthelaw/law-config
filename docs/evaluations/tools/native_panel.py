@@ -185,6 +185,8 @@ def admitted(case):
 def cold_passed(case):
     for path in sorted((E.CACHE / "cold" / case["id"]).glob("*/receipt.json"), reverse=True):
         row = B.read(path)
+        if row.get("fixture_sha256") != (C.grading.fixture_hash(case) if case.get("loopback_hosts") else None):
+            continue
         if not (row["passed"] and row["base"] == case["base"] and row["worker_image"] == E.guest.image_id(case)
                 and row["build"] == case["build"] and row["native"] == E.guest.native_tests(case)):
             continue

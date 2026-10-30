@@ -1,0 +1,88 @@
+{
+  "id": "owner-config-check",
+  "pilot": "owner-config-runner-space-01",
+  "previous": "239dccfc0fe4c090a777d8cf46216c99c57bc2bebc08eca013402215b65c7c28",
+  "candidate_package_sha256": "46e71b22bec6694338151494e4d96c8e0e723e0eb2a7f3bf7692c73ad5919479",
+  "common_companion": {
+    "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+    "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+  },
+  "composite_identities": {
+    "prior": "7ed91df07062b0a88cab8cd5b5e74ee8a7c7e258afa2a42645b60e793ea68791",
+    "candidate": "9bcccd70ccc2fa1ed506e3c0ac28f62e5b155a8e611a82af575770cdf7fec28a"
+  },
+  "targets": [
+    "plugins/develop/skills/iterate/references/local-changes.md"
+  ],
+  "change": {
+    "replace": "Prefer existing representations.",
+    "with": "Prefer existing representations. For structured configuration, extend an existing check of the affected entry when possible and allow unrelated layout to vary."
+  },
+  "evidence": [
+    {
+      "case": "runner-space",
+      "source": "docs/evaluations/runs/pr-quality-panel-v2/runner-space-owner-check.json",
+      "sha256": "2cbc60f2dd2c8877e08c5365dec0f478fb42dba6210641702e841a12910469f5",
+      "constructive_receipt_sha256": "6dc7f39b38a7520376de60cfeb8c0a9b5fc2a4c9a035018cae73ae66cd390468"
+    }
+  ],
+  "selection": "One exposed tuning case, original task prompt and base/merged revisions; matched prior Develop, candidate Develop and pure Codex. Hold model/effort, resources, dependencies, authority, pricing, review/readiness gates and blind rotations fixed. Both Develop arms use the identical pinned Superpowers component; stock has no plugins/apps/MCP or injected special instructions. No fresh-case or promotion claim.",
+  "mechanism": "Observe reuse or extension of a repository-discovered owner-focused check or its selectors to assert the affected configuration entry, retaining unique hook/runtime coverage while allowing unrelated layout. A consumed sentence, setup success, instruction echo, unchanged parent decision or a duplicate whole-file regex does not establish a distinct mechanism. No new parser, dependency, blanket matrix or mandatory duplicate check is requested.",
+  "prediction": "A narrower assertion may avoid valid-layout test failures and redundant verification. Historical constructive source is +9/-4 formatted lines; no participant work, price or wall saving was measured. Historical near-parity leaves no basis for projected savings.",
+  "release_prerequisites": {
+    "status": "staged-only; no paid release authorized here",
+    "protocol": "pr-quality-runner-v3",
+    "symmetric_evaluator": "Before registration, materialize/version the exact selected pr-quality-runner-v3 evaluator and bind its new source/fixture/protocol identity. Use identical hard stages and the same neutral ledger quality note for pure, prior and candidate, with base/merged controls. Preserve old protocols, records, grades and scores. Do not pool cross-protocol scores or reuse the old frozen stock soft-wrap failure as a new stock loss.",
+    "contract_calibration": "The selected hard contract checks exact active Python pin/runtime, exact Markdown hook revision/ID, unchanged protected action/package/lock/distribution files and at least one changed nonempty regular Markdown dependency ledger. Genuine wrong-pin and absent/empty-ledger controls must fail; requested and harmless reflow controls must pass. Log reflow, disjoint-substance and negation controls honestly: inaccurate, disjoint or incomplete ledger substance may pass this structural readiness gate. Freeze these observed outcomes before release. Blind quality judges substantive task compliance; there is no extra retrospective semantic readiness veto. Retain original build/native/preserve stages and distinct inherited topology assay. Materialize the exact evaluator base before claiming clean-checkout reproduction.",
+    "loopback_hosts": "Freeze and verify corrected loopback hosts visibility through the actual native worker/guest transport and its normal local command/test route, identically for all three producers. Here real-agent transport qualification means that actual corrected worker/guest path, not an extra paid provider turn. Bind worker/source identities and real-transport receipts; host-only or unrelated-container probes are insufficient. Normal operator provider qualification and audited catalogs occur later before release.",
+    "review": "A fresh independent reviewer must inspect exact final package, descriptor, evaluator and source bytes plus controls before release. Preserve all applicable independent intent and final tested-artifact reviews and original model/effort matching; material revisions require affected re-review. No diagnostic replaces a required check or review.",
+    "prospective_checker_sha256": "e59830631768a7b35fdc3f94cdb27aaefb91c7d152c8d541c0ea6a9f07b60239",
+    "blind_ledger_scope_note": "The mechanical contract gate verifies pins, preserved files and a changed nonempty regular Markdown ledger. Assess under the contract axis whether the ledger accurately records both changes and any actual deferrals.",
+    "blind_ledger_scope_note_application": "Freeze this exact neutral note before release and include it identically for all three anonymized labels in every normal blind rotation. Keep the original judge model, rubric, win rule and scoring procedure. Do not identify treatment or diagnostic outcomes in the note.",
+    "enforcement": "Before reusable operation, accept and integrate the independently reviewed complete prospective combined-v2 overlay, including the generic evaluator_binding guard and CLI-order repair. Reject mismatches before native/provider preflight, at registration and before proposal/judge release. Registration retains the binding; legacy hypotheses without metadata remain unchanged. Documentation alone is insufficient.",
+    "prospective_overlay_sha256": "4f310e59116b854e1339ea91ffdfdce5b2d8581ec6508fcfce3b8dbe15a61222",
+    "condition_scope": "The exact checker requires full active action-reference equality and rejects statically false owning job or setup-step conditions, including boolean false, string false and ${{ false }} after whitespace/case normalization. Arbitrary hosted dynamic expressions remain mechanically unverified and require patch review; no expression evaluator or whitelist is claimed."
+  },
+  "postscore_assay": {
+    "timing": "Preregister now; execute cheaply after all three proposals and blind scores seal, before the pilot decision. Assessor-only evidence; no hidden witnesses, selectors, mutation contents or oracle code reach producers. Preserve the original score packets and score values.",
+    "subjects": [
+      "pure",
+      "prior",
+      "candidate",
+      "base",
+      "merged"
+    ],
+    "routes": "For each exact source, pair direct execution of the discovered relevant test(s) with their normal configured repository discovery path. Accept any legitimate repository-discovered location, including alternatives to historical metadata.test.ts. Locate tests and scripts from that source, not a hard-coded filename; if ownership, relevance, execution or discovery cannot be verified, record unknown rather than pass or invented failure. Keep original legacy tests identifiable to separate inherited topology protection from newly authored discrimination.",
+    "cases": [
+      "requested valid configuration: pass",
+      "old active pin with no decoy: reject if the relevant requested-pin check exists; exact historical 18-test baseline acceptance is retained as diagnostic, not a failed production proposal",
+      "wrong active pin with correct inactive decoy: reject; report inherited topology rejection separately from owner-pin discrimination",
+      "correct active pin with harmless empty env mapping: pass",
+      "old Markdown hook pin: reject if relevant requested-hook coverage exists"
+    ],
+    "preservation": "Keep active action identity, runtime selectors, hook revision/ID/options/stages, pre-commit behavior, Node floor, action/package/lock/distribution behavior and all original required checks. Base lacks upgrades and may lack authored discrimination; report actual outcomes and expected source status rather than making a false base-positive assertion.",
+    "isolation": "Reconstruct owned copies from verified base plus sealed patch; bind full tree and executable/symlink identities before/after. Apply one controlled mutation at a time only to those copies and restore afterward. Compile via the source's configured toolchain/options and use existing pinned offline runtime/dependencies. No stale compiled tests, oracle imports or source-test overlay onto actual participant trees.",
+    "receipt": "Capture source/patch/full-tree, test and command identities, direct/discovery inclusion evidence, exact commands/cwd, dependency/image identities, start/end wall, exit, raw logs and hashes for every subject/route/control. Missing test, build/setup errors, absent outputs, discovery omissions, timeout and unknown semantics stay unknown. Distinguish assay cost from proposal and blind-assessor cost."
+  },
+  "acceptance": "Require candidate ready with every original gate/review preserved, strictly higher blind full-PR quality than terminal pure under the unchanged registered strict win rule, complete candidate proposal price <= complete pure, and strictly lower complete proposal price and checkout-to-proposal wall than matched prior. Require owner-bound discrimination and valid-layout acceptance in actual candidate tests on both applicable routes. Compare upstream human full PR separately under the same rotations; unknown human labor/cost stays empty. Record complete root plus transitive descendants, every allocation/retry/timeout/empty submission, usage and wall; report blind assessor, assay and setup cost separately and retain all original measures. Official readiness uses the preregistered structural gate; substantive ledger compliance is judged in the identical blind scope note. The separately reported post-blind ledger supplement must not find a materially inaccurate Develop ledger; ambiguous evidence leaves promotion unestablished and does not rewrite official scores.",
+  "falsifier": "Reject non-ready outcome, omitted unique contract/check/review, wrong-owner or old-pin/hook acceptance, harmless-layout rejection, absent configured discovery, no distinct observed owner-selection mechanism, blind stock tie/loss or insufficient registered margin, complete cost above stock, or lack of strict prior cost AND wall improvement. Incomplete source/meter/review/assay evidence is unestablished, never green. Historical near-parity and the +9/-4 constructive change support no savings projection. One exposed case cannot establish promotion or general transfer.",
+  "qualification_status": "Exact 106-file package captured and clean-restored; composite and metadata-only native preflight/inventories verified. Prospective evaluator binding matches canonical source. Case admission, provider qualification and participant/judge release remain unperformed.",
+  "ledger_assessor_supplement": {
+    "timing": "After all blind scores seal, report a separate manual evidence supplement for pure, prior Develop, candidate Develop and merged human PR. No extra judge model call or official score/readiness change.",
+    "subjects": [
+      "pure",
+      "prior",
+      "candidate",
+      "merged"
+    ],
+    "check": "From each exact sealed patch and ledger, check whether both requested action/hook pins are accurately recorded and whether any actual deferred upgrades are accurately documented. Infer deferrals only from repository/patch evidence; do not require a named dependency or stock wording.",
+    "receipt": "Bind patch/source/ledger and protocol hashes. Record exact evidence excerpts or locations, finding and confidence for both upgrade records and each evidenced deferral. Use true/false/null, with null for missing or ambiguous evidence; missing proof is never a pass. Capture assessor effort/cost separately; human labor remains unknown unless measured.",
+    "decision": "Keep this supplement separate from official readiness and blind scores. Any materially inaccurate ledger in an assessed Develop proposal rejects product promotion or pilot advancement even when its official structural readiness remains true. Unknown substantive evidence leaves promotion unestablished. Pure and merged receive the same separate assessment; no original score is rewritten."
+  },
+  "evaluator_binding": {
+    "protocol": "pr-quality-runner-v3",
+    "source_sha256": "0d6c18d4c59b10d4ef17ccb21e666671761718f4f996f1069ddc7bc14bc5b6ac",
+    "case": "runner-space",
+    "fixture_sha256": "502782e97e3bd55c8708331f6ed1617842baa5440a5c7f77af20e6be848092be"
+  }
+}

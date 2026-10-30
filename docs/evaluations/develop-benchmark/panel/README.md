@@ -67,6 +67,16 @@ Three blinded judges compare the candidate, pure Codex and the merge. A strict w
 
 After grading, run the candidate hypothesis’s `measure_with` command if present. Keep its JSON receipt under `tmp/pr-quality-panel/pilots/NAME/sensitivity/MEASURE/receipt.json`. Then run `python3 -B "$e/benchmark.py" report NAME` to export all four submissions, the three proposal costs and separate assessor costs. The same command verifies `runs/tuning/NAME/result.json` offline in a fresh checkout.
 
+## Prospective runner protocol
+
+Select `pr-quality-runner-v3` for a newly named historical runner pilot; repeat the exact command and locks to resume, and retain the same cohort for reports:
+
+```sh
+DEVELOP_EVAL_COHORT=pr-quality-runner-v3 python3 -B "$e/benchmark.py" pilot NAME --case runner-space --prior PRIOR/treatment.json --candidate CANDIDATE/treatment.json --hypothesis ID
+```
+
+This opt-in uses a read-only [loopback hosts fixture](../workflow/vm/loopback.hosts) in the same worker transport and a [structural checker](../workflow/checks/runner_lint_ledger_v3.mjs) for the exact configured pin, recognized static false guards, preserved files and a changed nonempty regular Markdown ledger. Other hosted conditions remain unverified and subject to patch review. The identical blind scope note asks all labels and rotations to assess ledger accuracy under the existing contract axis. The [catalog](../../catalog.json) identifies its full-panel archive; no new outcome is claimed. Default v2 source is preserved locally at `f9f34ce8f9ed2d19c2e68df49a6e1ad8644e78dc`. Reproducing an older full local run requires its exact old source and private frozen state; portable published records remain readable offline.
+
 ## Adjudicate and export
 
 Read `tmp/pr-quality-panel/runs/NAME/report/results.json`. For each flagged role, reproduce the exact behavior on the captured patch. Save the ruling under `adjudications/CASE.json` in that run.

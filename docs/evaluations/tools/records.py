@@ -384,6 +384,8 @@ def observation_receipts(items, *, pilot_registration=None):
 def read_pilot(path):
     record = read_json(path.read_bytes())
     reg, rows = record["registration"], record["submissions"]
+    if record.get("evaluator_protocol") != reg.get("evaluator_protocol"):
+        raise ValueError("published pilot evaluator protocol differs")
     components = record.get("treatment_components", {})
     if components:
         if set(components) != {"candidate", "prior"} or any(composite.identity(lock) != record["treatments"][role] for role,lock in components.items()):
@@ -558,9 +560,77 @@ def compare(previous, candidate, split, role):
             "excluded": excluded, "cases": changes, "aggregate": stats}
 
 
+def tuning_summary(pilots):
+    """Describe repeated exposed pilots within exact recorded evaluation contexts."""
+    groups = {}
+    for pilot in pilots:
+        context = {"evaluator_protocol": pilot["registration"].get("evaluator_protocol"),
+                   **{key: pilot.get(key) for key in ("runtime_sha256", "rubric_sha256", "model", "effort", "rates")}}
+        # An absent protocol stays unknown. Its exact runtime hash still prevents
+        # mixing different legacy evaluators or the explicitly selected v3.
+        if any(context[key] is None for key in context if key != "evaluator_protocol"):
+            context["unverified_context_run"] = pilot["name"]
+        key = json.dumps(context, sort_keys=True)
+        group = groups.setdefault(key, {"context": context, "runs": []})
+        arms = [pilot["submissions"][role] for role in ("develop", "control")]
+        exclusions = [f"{arm['role']}: {field}={value}" for arm in arms
+                      for field, value, expected in (("readiness", arm["readiness"], "ready"),
+                                                     ("state", arm["state"], "completed"),
+                                                     ("coverage", arm["effort"]["coverage"], "complete"))
+                      if value != expected]
+        signal = pilot_quality_signal(pilot)
+        group["runs"].append({"name": pilot["name"], "case": pilot["case"], "treatments": pilot["treatments"],
+                              "included_ready_complete": not exclusions, "exclusions": exclusions,
+                              "blind_full_pr": signal["blinded_full_pr"],
+                              "full_pr_points_100": {role: row["quality"]["proposal_points_100"]
+                                                     for role, row in pilot["submissions"].items()},
+                              "merged_readiness": pilot["submissions"]["upstream"]["readiness"],
+                              "develop_merged_readiness_first": pilot["comparisons"]["develop_upstream"],
+                              "strict_joint_win": signal["ready_blind_win_at_no_more_cost"],
+                              "effort": {arm["role"]: {key: arm["effort"].get(key) for key in
+                                         ("coverage", "estimated_usd", "checkout_to_proposal_seconds", "through_grading_seconds")}
+                                         | {"total_tokens": arm["effort"]["tokens"].get("totalTokens")} for arm in arms}})
+
+    def metric(rows, field):
+        values = [[row["effort"][role].get(field) for role in ("develop", "control")] for row in rows]
+        pairs = [pair for pair in values if all(type(v) in (int, float) and math.isfinite(v) for v in pair)]
+        totals = [sum(pair[i] for pair in pairs) for i in range(2)] if pairs else [None, None]
+        return {"pairs": len(pairs), "develop": totals[0], "control": totals[1]}
+
+    for group in groups.values():
+        rows = group["runs"]
+        ready = [row for row in rows if row["included_ready_complete"]]
+        scored = [row for row in ready if row["blind_full_pr"].get("score_delta") is not None]
+        joint = [row["strict_joint_win"] for row in rows if row["strict_joint_win"] is not None]
+        group["denominators"] = {"records": len(rows), "ready_complete_pairs": len(ready),
+                                 "excluded": len(rows)-len(ready), "cases": len({row["case"] for row in rows})}
+        group["quality"] = {"pairs": len(scored),
+                            "verdicts": {v: sum(row["blind_full_pr"]["verdict"] == v for row in scored)
+                                         for v in ("develop", "tie", "control", "unresolved")},
+                            "mean_paired_delta_100": statistics.mean(row["blind_full_pr"]["score_delta"] for row in scored) if scored else None}
+        group["strict_joint"] = {"pairs": len(joint), "wins": sum(joint) if joint else None}
+        group["ready_complete_totals"] = {"estimated_usd": metric(ready, "estimated_usd"),
+                                          "total_tokens": metric(ready, "total_tokens"),
+                                          "proposal_seconds": metric(ready, "checkout_to_proposal_seconds"),
+                                          "through_grading_seconds": metric(ready, "through_grading_seconds")}
+    return {"records": len(pilots),
+            "scope": "Repeated exposed tasks and different treatments are diagnostic; no cross-context metric totals.",
+            "quality_measure": "Mean paired median rotation delta (/100, Develop minus control), not displayed-score subtraction. Merged verdicts are readiness-first.",
+            "joint_measure": "Published ready_blind_win_at_no_more_cost helper across all records, independently of the ready/ready table.",
+            "measurement_scope": "Complete root+descendant estimates; wall totals sum proposal durations, not campaign elapsed. Each metric has a paired denominator.",
+            "protocol_note": "Unknown protocol stays null; runtime hash also partitions.",
+            "groups": list(groups.values())}
+
+
+def tuning(directory):
+    return tuning_summary([read_pilot(path) for path in sorted(directory.glob("*/result.json"))])
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="action", required=True)
+    rollup = sub.add_parser("tuning", help="describe all portable tuning pilots by recorded evaluation context")
+    rollup.add_argument("directory", type=Path, nargs="?", default=ROOT / "runs/tuning")
     check = sub.add_parser("validate")
     check.add_argument("manifest", type=Path, nargs="+")
     ceiling = sub.add_parser("headroom", help="show the largest possible quality lead against each recorded control")
@@ -571,7 +641,9 @@ if __name__ == "__main__":
     match.add_argument("--role", choices=ROLES[:2], default="develop")
     match.add_argument("--split", choices=("tuning", "confirmation", "all"), default="tuning")
     args = parser.parse_args()
-    if args.action == "validate":
+    if args.action == "tuning":
+        print(json.dumps(tuning(args.directory), indent=2))
+    elif args.action == "validate":
         for path in args.manifest:
             record, rows = read_bundle(path)
             print(f"{record['name']}: {len(record['cases'])} cases, {len(rows)} verified submissions")

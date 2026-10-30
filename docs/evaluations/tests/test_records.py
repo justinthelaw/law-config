@@ -136,6 +136,64 @@ class PortableRecords(unittest.TestCase):
         row["quality"]["assessments"].pop()
         self.assertIsNone(records.control_headroom(row)["maximum_median_lead"])
 
+    def tuning_fixture(self):
+        arms = copy.deepcopy({row["role"]: row for row in self.rows if row["case_id"] == "full"})
+        return {"name":"one", "case":"full", "registration":{}, "runtime_sha256":HASH,
+                "rubric_sha256":HASH, "model":"sample", "effort":"medium", "rates":self.run["runtime"]["rates_usd_per_million"],
+                "treatments":{"candidate":HASH,"prior":"b"*64}, "submissions":arms,
+                "comparisons":{a+"_"+b:records.proposal_verdict(arms[a],arms[b],3)
+                               for a,b in (("develop","control"),("develop","upstream"))}}
+
+    def test_tuning_contexts_do_not_pool_versions_or_unknowns(self):
+        first = self.tuning_fixture()
+        for field, value in (("runtime_sha256","other"),("rubric_sha256","other"),
+                             ("model","other"),("effort","high"),("rates",{})):
+            second = copy.deepcopy(first); second.update(name="two", **{field:value})
+            self.assertEqual(len(records.tuning_summary([first,second])["groups"]),2)
+        second = copy.deepcopy(first); second["name"]="two"
+        second["registration"]["evaluator_protocol"]="pr-quality-runner-v3"
+        self.assertEqual(len(records.tuning_summary([first,second])["groups"]),2)
+        del second["registration"]["evaluator_protocol"]
+        first["model"]=second["model"]=None
+        self.assertEqual(len(records.tuning_summary([first,second])["groups"]),2)
+
+    def test_tuning_reports_paired_quality_not_displayed_score_subtraction(self):
+        pilot = self.tuning_fixture()
+        group = records.tuning_summary([pilot])["groups"][0]
+        displayed = group["runs"][0]["full_pr_points_100"]
+        self.assertEqual(displayed["develop"]-displayed["control"],0)
+        self.assertEqual(group["quality"]["mean_paired_delta_100"],8.75)
+        self.assertIsNone(group["context"]["evaluator_protocol"])
+
+    def test_tuning_incomplete_and_missing_time_are_not_zero_or_win(self):
+        pilot = self.tuning_fixture()
+        pilot["submissions"]["develop"]["effort"]["coverage"]="lower bound"
+        group = records.tuning_summary([pilot])["groups"][0]
+        self.assertEqual(group["denominators"]["excluded"],1)
+        self.assertIsNone(group["strict_joint"]["wins"])
+        self.assertIsNone(group["quality"]["mean_paired_delta_100"])
+        for totals in group["ready_complete_totals"].values():
+            self.assertEqual(totals,{"pairs":0,"develop":None,"control":None})
+        pilot["submissions"]["develop"]["effort"]["coverage"]="complete"
+        pilot["submissions"]["control"]["effort"]["through_grading_seconds"]=None
+        totals = records.tuning_summary([pilot])["groups"][0]["ready_complete_totals"]
+        self.assertEqual(totals["through_grading_seconds"],{"pairs":0,"develop":None,"control":None})
+        self.assertEqual(totals["estimated_usd"]["pairs"],1)
+        self.assertEqual(records.tuning_summary([])["groups"],[])
+
+    def test_tuning_joint_counts_failed_stock_and_distinguishes_missing_candidate(self):
+        pilot = self.tuning_fixture()
+        pilot["submissions"]["control"]["readiness"]="failed"
+        group = records.tuning_summary([pilot])["groups"][0]
+        self.assertEqual(group["denominators"]["ready_complete_pairs"],0)
+        self.assertEqual(group["strict_joint"],{"pairs":1,"wins":1})
+        pilot["submissions"]["develop"]["readiness"]="failed"
+        self.assertEqual(records.tuning_summary([pilot])["groups"][0]["strict_joint"],{"pairs":1,"wins":0})
+        pilot["submissions"]["develop"]["proposal"]=None
+        group = records.tuning_summary([pilot])["groups"][0]
+        self.assertIsNone(group["runs"][0]["strict_joint_win"])
+        self.assertEqual(group["strict_joint"],{"pairs":0,"wins":None})
+
     def test_parity_and_offline_reader(self):
         m, rows = records.read_bundle(self.path/"run.json")
         a,b = rows["full","develop"],rows["full","control"]

@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import environment as E
-from grading import snapshot
+from grading import snapshot, fixture_hash
 
 
 def measure(case):
@@ -36,6 +36,8 @@ def measure(case):
     row = {"case": case["id"], "base": case["base"], "worker_image": E.guest.image_id(case),
            "build": case["build"], "native": E.guest.native_tests(case), "seconds": elapsed,
            "passed": passed, "returncode": rc, "source": "fresh", "log_sha256": E.sha(folder / "worker.log")}
+    if case.get("loopback_hosts"):
+        row["fixture_sha256"] = fixture_hash(case)
     E.save(folder / "receipt.json", row)
     print(case["id"], round(elapsed), "passed" if passed else "failed", flush=True)
     return passed
@@ -43,7 +45,7 @@ def measure(case):
 
 def import_previous(case):
     """Reuse a measured cold verification only when source, commands and worker image are identical."""
-    if not case.get("legacy"):
+    if not case.get("legacy") or case.get("loopback_hosts"):
         raise ValueError("old receipts only exist for the known cases")
     original = E.ROOT / "tmp/six-repo-workflow"
     plan = E.read(original / "experiment/plan.json")

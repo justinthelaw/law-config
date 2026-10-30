@@ -69,6 +69,8 @@ def args(case, run, work, cli, bwrap, installed, canary, *, verification=False, 
               "mkdir -p /home/worker/.codex", "chmod 700 /home/worker /home/worker/.codex",
               f"chown -R {os.getuid()}:{os.getgid()} /home/worker"]
     mounts = []
+    if case.get("loopback_hosts", False):
+        mounts += ["--mount", f"type=bind,src={HERE / 'vm/loopback.hosts'},dst=/guest/etc/hosts,readonly"]
     shares = [("root", "/guest", True), ("work", "/work", False),
               ("deps", "/deps", True), ("setup", "/setup", True)]
     assets = [("skills", run / "profile/skills")]

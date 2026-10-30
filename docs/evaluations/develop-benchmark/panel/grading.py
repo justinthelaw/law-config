@@ -132,6 +132,8 @@ def fixture_hash(case, phases=None):
     import hashlib, json
     paths = [E.HERE / "grading.py", E.HERE / "environment.py",
              E.WORKFLOW/"lab.py",E.WORKFLOW/"guest.py", *E.public_files(case)]
+    if case.get("loopback_hosts"):
+        paths += [E.WORKFLOW / "vm/loopback.hosts"]
     if phases is None:
         paths += [command(case)[0]]
         if case.get("legacy") and not E.COHORT:

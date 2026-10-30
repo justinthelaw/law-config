@@ -82,6 +82,10 @@ def packet(name,key,rotation,workspace,private):
     labels=mapping(plan["seed"],key,rotation)
     task={"request":c["prompt"],"verification_scope":{"build":c["build"],
           "worker_native":E.guest.native_tests(c),"independent_grader_native":c["native"]},"submissions":{}}
+    if c.get("check") == "runner_lint_ledger_v3.mjs":
+        task["verification_scope"]["contract"] = (
+            "The mechanical contract gate verifies pins, preserved files and a changed nonempty regular Markdown ledger. "
+            "Assess under the contract axis whether the ledger accurately records both changes and any actual deferrals.")
     display=[]
     for label,role in labels.items():
         patch,proposal,grade,observation=entries[role]

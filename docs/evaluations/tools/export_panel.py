@@ -158,8 +158,12 @@ def export_pilot(name, destination):
             or source["goal_win"] != R.goal_win(raw)):
         raise ValueError("pilot attribution or strict verdict differs")
     plan = plans["candidate"]
+    if reg.get("evaluator_protocol", plan["protocol"]) != plan["protocol"]:
+        raise ValueError("pilot evaluator protocol differs from its registration")
     ref = plan["references"][key]
-    if (plans["prior"]["references"][key] != ref or plan["protocol"] != E.PANEL["protocol"]
+    if plan["protocol"] != E.PANEL["protocol"]:
+        raise ValueError(f"frozen protocol {plan['protocol']}; set DEVELOP_EVAL_COHORT={plan['protocol']} and report {name}")
+    if (plans["prior"]["references"][key] != ref
             or (ref["base"], ref["gold"]) != (E.CASES[key]["base"], E.CASES[key]["gold"])):
         raise ValueError("pilot plans or selected repository task differ")
     rows = {role: submission(plan["name"], raw, role, reg["plans"]["candidate"]["sha256"], ref)
@@ -192,6 +196,7 @@ def export_pilot(name, destination):
                      "config_sha256": proof["final_config_sha256"]}
         profiles[role + "/" + arm] = proof
     record = {"format": "law-config.eval-pilot/v1", "name": name, "case": key, "repository": raw["repo"], "pr": raw["pr"],
+              **({"evaluator_protocol": reg["evaluator_protocol"]} if "evaluator_protocol" in reg else {}),
               "registration": reg, "registration_sha256": registration["sha256"], "result_sha256": E.sha(paths[0]),
               "treatments": {k: composite.identity(v["runtime"]["treatment"]) for k, v in plans.items()},
               **({"treatment_components": {k: v["runtime"]["treatment"] for k,v in plans.items()}} if any(v["runtime"]["treatment"].get("companion") for v in plans.values()) else {}),

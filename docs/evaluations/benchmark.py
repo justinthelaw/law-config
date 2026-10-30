@@ -70,7 +70,7 @@ def operator(name=None):
 
 
 def panel_results():
-    return sorted(p for root in (BUNDLES, BUNDLES.with_name("pr-quality-confirmation-v1"))
+    return sorted(p for root in (BUNDLES, BUNDLES.with_name("pr-quality-confirmation-v1"), BUNDLES.with_name("pr-quality-runner-v3"))
                   for p in root.glob("*/run.json"))
 
 
@@ -133,6 +133,7 @@ def pilot_status(name, root):
                     and all({a["rotation"] for a in row["quality"]["assessments"]} == {0, 1, 2}
                             for row in rows.values()))
         return {"name": name, "phase": "published", "case": record["case"], "goal_win": record["goal_win"],
+                **({"evaluator_protocol": record["evaluator_protocol"]} if "evaluator_protocol" in record else {}),
                 "outcomes": outcomes, "control_headroom": control_headroom(rows["control"]),
                 "quality_signal": pilot_quality_signal(record),
                 "proposal_states": {"candidate/control": rows["control"]["state"], "candidate/develop": rows["develop"]["state"],
@@ -156,6 +157,7 @@ def pilot_status(name, root):
     if any(root.glob("result-*.json")):
         phase = "sealed"
     return {"name": name, "phase": phase, "case": case, "proposal_states": states,
+            **({"evaluator_protocol": reg["evaluator_protocol"]} if "evaluator_protocol" in reg else {}),
             "assessments": sum((judges / str(i) / "judgment.json").is_file() for i in range(3))}
 
 
@@ -176,6 +178,14 @@ def status(name):
         except json.JSONDecodeError:
             pass  # The owner is writing its name after taking the resource lock.
     if not (root / "plan.json").is_file():
+        frozen = [read(path) for role in ("candidate", "prior")
+                  if (path := STATE / "runs" / f"{name}-{role}" / "plan.json").is_file()]
+        if frozen:
+            if any(p.get("pilot", {}).get("name") != name for p in frozen):
+                raise ValueError("pilot name conflicts with frozen experiment")
+            return {"name": name, "phase": "frozen-unregistered",
+                    "frozen_plans": [{"name": p["name"], "evaluator_protocol": p["protocol"],
+                                      "case": p["pilot"]["case"]} for p in frozen]}
         return {"name": name, "phase": "preparing" if owner.get("name") == name else "new"}
     running = (any(active(root / (k + ".lock")) for k in ("launcher", "recovery"))
                or (owner.get("name") == name and owner.get("pid") != os.getpid()))
@@ -342,6 +352,7 @@ def dispatch(args):
         with operator(args.name):
             require_reader()
             import efficiency_pilot
+            efficiency_pilot.load_hypothesis(args)
             from cpu_leases import lease
             cpus = sorted(os.sched_getaffinity(0))[:2]
             with lease(STATE, cpus):
