@@ -5,3 +5,5 @@ interface:
   display_name: "Develop: Upgrade"
   short_description: "Review and upgrade dependencies and runtimes"
   default_prompt: "Use $upgrade to assess my selected dependencies and implement authorized migrations through Iterate with one current plan/review. Preserve baseline/target/final evidence, rollback and justified deferrals."
+policy:
+  allow_implicit_invocation: false

@@ -30,15 +30,33 @@ if(engine==='firefox')for(const key of sandboxVariables){
 if(process.env.BROWSER_EXECUTABLE)launch.executablePath=process.env.BROWSER_EXECUTABLE;
 let browser;
 const report={browserName:engine,timestamp:new Date().toISOString(),pass:false,sourceHashes,networkRequests:[],errors:[],checks:[],screenshots:[]};
+// Serve the actual local files through interception. Chromium may reject a resumed
+// file request even when it can decode the same file without interception.
+async function localFilesOnly(route){
+ const url=new URL(route.request().url());
+ if(url.protocol==='data:')return route.continue();
+ if(url.protocol!=='file:'){report.networkRequests.push(url.href);return route.abort();}
+ try{
+  const file=await fs.realpath(fileURLToPath(url));
+  const allowed=[path.dirname(base),qa].some(root=>{
+   const rel=path.relative(root,file);
+   return rel!==''&&!rel.startsWith('..'+path.sep)&&rel!=='..'&&!path.isAbsolute(rel);
+  });
+  if(!allowed)return route.abort();
+  return await route.fulfill({path:file});
+ }catch{return route.abort();}
+}
 try{
  browser=await ({chromium,firefox}[engine]).launch(launch);
  report.browser=browser.version();
  const page=await browser.newPage({viewport:{width:1000,height:1800},deviceScaleFactor:2});
  page.on('pageerror',e=>report.errors.push(e.message));
- await page.route('**/*',route=>{const url=route.request().url();if(url.startsWith('file:')||url.startsWith('data:'))return route.continue();report.networkRequests.push(url);return route.abort();});
+ await page.route('**/*',localFilesOnly);
  await page.goto(pathToFileURL(path.join(base,'develop-overview.html')).href);
  await page.evaluate(()=>document.fonts.ready);
- await page.locator('.sheet img').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
+ await page.locator('.sheet img').evaluateAll(images=>Promise.all(images.map(async img=>{
+  try{await img.decode()}catch(error){throw new Error(`Cannot decode ${img.currentSrc}: ${error.message}`)}
+ })));
  await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
  await page.locator('.sheet').screenshot({path:path.join(qa,'develop-overview.png')});
  report.screenshots.push(evidencePath('develop-overview.png'));
@@ -61,6 +79,8 @@ try{
   })};
  });
  report.checks.push({test:'design nodes connected to Iterate and cards integrated after Iterate',pass:additions.detached===0&&additions.order.length===10&&additions.order.slice(1,4).join(',')==='iterate,engineering-design,interface-design'&&additions.items.every(c=>c.node&&c.mandatory&&c.links===1&&c.twoWay),results:additions});
+ const explicit=await page.locator('.flow-node.explicit').evaluateAll(nodes=>nodes.map(node=>node.dataset.skill).sort());
+ report.checks.push({test:'four named maintenance skills require explicit selection',pass:explicit.join(',')==='clean,deep-clean,upgrade,upgrade-codex',results:explicit});
  const exchanges=await page.locator('[data-exchange]').allTextContents();
  report.checks.push({test:'four two-way exchanges have explicit directional handoff notes',pass:await page.locator('.edge[marker-start]').count()===4&&exchanges.length===4&&exchanges.filter(t=>t.includes('↓ Request plan')&&t.includes('↑ Return plan')).length===2&&exchanges.some(t=>t.includes('↓ Use guidance')&&t.includes('↑ Resume work'))&&exchanges.some(t=>t.includes('← Request review')&&t.includes('→ Return findings'))});
  const decision=await page.locator('.planning-decision').textContent();
@@ -84,7 +104,7 @@ try{
  await fs.writeFile(readmeFile,`<!doctype html><meta charset="utf-8"><title>README image QA</title><style>body{margin:32px;background:#fff;font:16px system-ui}p{margin:0 0 16px}img{display:block;width:860px;height:auto}</style><p>README image · 860 CSS px · generated PNG</p><img src="${pathToFileURL(path.join(qa,'develop-overview.png')).href}" alt="Develop workflow and skill directory">`);
  const readme=await browser.newPage({viewport:{width:924,height:1000},deviceScaleFactor:1});
  readme.on('pageerror',e=>report.errors.push(e.message));
- await readme.route('**/*',route=>{const url=route.request().url();if(url.startsWith('file:')||url.startsWith('data:'))return route.continue();report.networkRequests.push(url);return route.abort();});
+ await readme.route('**/*',localFilesOnly);
  await readme.goto(pathToFileURL(readmeFile).href);
  await readme.locator('img').evaluate(img=>img.decode());
  const imageCheck=await readme.locator('img').evaluate(img=>({src:img.currentSrc,complete:img.complete,naturalWidth:img.naturalWidth,naturalHeight:img.naturalHeight,displayWidth:img.getBoundingClientRect().width,displayHeight:img.getBoundingClientRect().height,dpr:devicePixelRatio}));
@@ -105,7 +125,9 @@ try{
   await page.setViewportSize({width:viewport.width,height:viewport.height});
   await page.goto(pathToFileURL(path.join(base,'develop-overview.html')).href);
   await page.evaluate(()=>document.fonts.ready);
-  await page.locator('.sheet img').evaluateAll(images=>Promise.all(images.map(img=>img.decode())));
+  await page.locator('.sheet img').evaluateAll(images=>Promise.all(images.map(async img=>{
+  try{await img.decode()}catch(error){throw new Error(`Cannot decode ${img.currentSrc}: ${error.message}`)}
+ })));
   // Allow layout-driven connectors to settle across two animation frames.
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   const layout=await page.evaluate(()=>{

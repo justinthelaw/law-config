@@ -1,0 +1,27 @@
+{
+  "format": "law-config.treatment-recipe/v3",
+  "git_base": "0b81d80a0e2bec323711eb0c0718f38915992b12",
+  "scope": "plugins/develop",
+  "omit": [
+    "AGENTS.test.md",
+    "tests/evaluations",
+    "tests/scenarios.md",
+    "scripts/evaluation.py",
+    "scripts/compare_evaluations.py",
+    "tests/fixture_python.py",
+    "tests/test_fixture_python.py",
+    "tests/test_architecture_probe.py",
+    "tests/test_communication.py",
+    "tests/test_compare_evaluations.py",
+    "tests/test_delivery.py",
+    "tests/test_evaluation.py",
+    "tests/test_migration_recovery.py",
+    "tests/test_quality_controls.py"
+  ],
+  "patch": "package.patch",
+  "patch_sha256": "bef575ca877c541e079b828d610d560a0c4d98cc5d774cd707abeadfbd0e0ddf",
+  "package_sha256": "e23550bff4a75d97c1f569bce32f5ebfe4a2eb43b93c1bb6c656187c93ed8e67",
+  "files": 105,
+  "treatment_lock": "treatment.json",
+  "base_package_sha256": "a4465fb131805a9f7674f0d131c8f7a3abc0dfc73546ff4cf74df215a84f1c61"
+}

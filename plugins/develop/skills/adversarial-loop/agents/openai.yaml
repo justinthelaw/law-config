@@ -4,4 +4,4 @@ interface:
   icon_large: "./assets/icon.png"
   display_name: "Develop: Adversarial loop"
   short_description: "Independently review artifacts and evidence"
-  default_prompt: "Use $adversarial-loop for bounded independent review. Apply scoped AGENTS.md guidance alongside the usual evidence checks. For repository changes, check affected docs and tests. Preserve authority and approval gates."
+  default_prompt: "Use $adversarial-loop for bounded independent review. Apply scoped AGENTS.md guidance alongside the usual evidence checks. At evidence, reuse eligible intent and review the current artifact independently. Check affected docs and tests. Preserve authority and approval gates."

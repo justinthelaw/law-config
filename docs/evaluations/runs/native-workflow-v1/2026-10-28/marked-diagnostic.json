@@ -1,0 +1,40 @@
+{
+  "case": "marked",
+  "type": "post-review exploratory examples, excluded from primary scoring",
+  "reference_parser": "markdown-it-py 4.2.0, commonmark preset",
+  "spec": "https://spec.commonmark.org/0.31.2/#emphasis-and-strong-emphasis",
+  "rows": [
+    {
+      "input": "🙂*a**",
+      "reference_html": "🙂<em>a</em>*",
+      "base": "🙂<em>a</em>*",
+      "gold": "🙂<em>a</em>*",
+      "control": "🙂<em>a</em>*",
+      "develop": "🙂*a**"
+    },
+    {
+      "input": "_*!a**",
+      "reference_html": "_*!a**",
+      "base": "_<em>!a</em>*",
+      "gold": "_*!a**",
+      "control": "_*!a**",
+      "develop": "_<em>!a</em>*"
+    },
+    {
+      "input": "á_b_",
+      "reference_html": "á_b_",
+      "base": "á<em>b</em>",
+      "gold": "á<em>b</em>",
+      "control": "á_b_",
+      "develop": "á_b_"
+    },
+    {
+      "input": "***foo*bar",
+      "reference_html": "**<em>foo</em>bar",
+      "base": "***foo*bar",
+      "gold": "***foo*bar",
+      "control": "**<em>foo</em>bar",
+      "develop": "**<em>foo</em>bar"
+    }
+  ]
+}

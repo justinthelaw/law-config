@@ -36,6 +36,6 @@ For each recommendation, identify evidence, owner, proposed change, expected mai
 
 ## Close or implement
 
-Ordinary findings need no compulsory extra review. Apply the shared [review criteria](../develop/references/contract.md#review-gates) when review is requested or consequential risk requires it, using sanitized evidence and the bounded protocol. Use the shared [presentation policy](../develop/references/contract.md#presentation); report coverage, omissions, independent episode counts and unresolved uncertainty alongside the recommendations. A no-change result is valid.
+Ordinary findings need no compulsory extra review. Apply the shared [review criteria](../develop/references/planning-and-review.md#review-gates) when review is requested or consequential risk requires it, using sanitized evidence and the bounded protocol. Use the shared [presentation policy](../develop/references/contract.md#presentation); report coverage, omissions, independent episode counts and unresolved uncertainty alongside the recommendations. A no-change result is valid.
 
 Analysis does not authorize edits, installs, schedules or enabling hooks. Hand specifically authorized improvements to [iterate](../iterate/SKILL.md); keep the same input, run the affected operation before and after the fix in isolation, and record both observable results before broader adoption. A review verdict never grants action authority.

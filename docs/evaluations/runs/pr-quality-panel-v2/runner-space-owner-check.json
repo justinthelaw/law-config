@@ -1,0 +1,435 @@
+{
+  "format": "law-config.runner-space-owner-check/v1",
+  "scope": "One exposed historical runner-space case; model-free source/test diagnostics only. No historical score, production source, participant test, frozen gate or active runtime changed.",
+  "baseline": {
+    "manifest": "baseline-53a8bd549c93/run.json",
+    "manifest_sha256": "79d1eac46f473ecaf3d2620ddae08a903de6d9b3a9d93c64ee155364c2042160",
+    "submissions": "baseline-53a8bd549c93/submissions.jsonl",
+    "submissions_sha256": "a3b37b03a7ce07ebe6a72bd3aa33b96284b6708d15b6957eddc158452b25a136",
+    "plan_sha256": "53a8bd549c93423b9ac7b889702be24b7b8823baaaba439a965e7ba6685975ad",
+    "base": "a2f3ac8c38982d83e3d02e89342d856a7e026268",
+    "merged": "bbaad53e5c844645ef54d9309adf96be46ab159e",
+    "prompt": "Update the lint tooling to actions/setup-python v7.1.0 (upstream tag commit 6d4fd22b20465ccc0f7354476588e8df7c9ca0e0) and markdownlint-cli2 v0.24.0. Record both changes and any deferred upgrades in the repository's dependency ledger. Preserve supported runtime versions, action behavior and generated distribution.",
+    "prompt_sha256": "4f63deaae6a2865b4f39d24b846b4eef61715bce0cc2ef16302dc91659af0f93",
+    "sources": {
+      "control": {
+        "patch_sha256": "79ccad06f6fc7a76ff419187d73a2ebeb43d08f49820fd18868cd6536ef71d1f",
+        "git_tree": "6420df184049141e4b15619f97fd27960ab59dc6",
+        "source_manifest_sha256": "78e559a2042cab3457f30b65174c1841d98068cebceeeee0eef6cf4222bbf885",
+        "files": 71,
+        "metadata_test_sha256": "3ad2322513a377a4956e4dbe745bd004b9c735ecc24f5abda74063bf1b1515df"
+      },
+      "develop": {
+        "patch_sha256": "4a8c623caba043488133c5e4ce48dd8444225cee5b505105afebd7ce16ebc9a1",
+        "git_tree": "ca6ad4abe43496dc4df6ad5766c6d1477e128c5a",
+        "source_manifest_sha256": "cf7e9418aa155d95913ef757076b9108e1cb79bbe8b03e3ddf3b7b86a2e71cfd",
+        "files": 71,
+        "metadata_test_sha256": "62ae360ac26ef884054f869b2374e35cf25aef54798072622b2186ffe9126893"
+      }
+    },
+    "legacy_metadata_test_sha256": "a3541026029647a6d7d7371fc3dece77dca53bbede835b8991e447ef735eb384",
+    "package_json_sha256": "e3098122a7843658449b7d89a6515e8ea9e30367926fa42a70303f2a6039de24",
+    "AGENTS_sha256": "1afaae2092518e2f35f2c51840157d968707bc296c78d170b05801a292187d00"
+  },
+  "transformations": {
+    "basis": "Apply each independently to the exact requested Develop/control workflow. Legacy-tests uses exact immutable base metadata test on requested Develop configuration; constructive uses the diff below. Restore owned copies after each case.",
+    "workflow": ".github/workflows/lint.yml",
+    "original_sha256": "48e9674f77ac748beb62b5ca63b920ce0cad913caf458370fb52eb354173b6b8",
+    "neutral": {
+      "operation": "Replace exact before bytes once; no job, action, input, environment value or execution changes.",
+      "before": "uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0\n        with:",
+      "after": "uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0\n        env: {}\n        with:",
+      "workflow_sha256": "63223654ef92f3566bc1c62becd9fab43f7130b65d31da8596c518b391c02c03"
+    },
+    "old-active-no-decoy": {
+      "before": "uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0",
+      "after": "uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0",
+      "count": 1,
+      "workflow_sha256": "7f3e78d781a824d73d9dc126417ea2337dc07f97f5e72aa8fd08cd6c3ba76f61"
+    },
+    "wrong-inactive-decoy": {
+      "operation": "Apply old-active-no-decoy then append the exact disabled step below. Correct pin only occurs in the skipped extra step.",
+      "append": "\n      - name: Unrelated disabled Python pin\n        if: ${{ false }}\n        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0\n        with:\n          python-version: \"3.15\"\n",
+      "workflow_sha256": "75f9d30da218c3202bf7a0def80492301493ce9e98377da1b096f31acab82e15",
+      "distinct_protection": "The inherited topology test already rejects the extra step, and the original semantic gate rejects the wrong active pin. This is separate from no-decoy discrimination."
+    },
+    "old-markdownlint": {
+      "file": ".pre-commit-config.yaml",
+      "before": "rev: v0.24.0",
+      "after": "rev: v0.23.3",
+      "count": 1,
+      "original_sha256": "3cfdee2c9280db88e3989bc279a95c50384ebf599af2565df47623978520d2e8",
+      "mutated_sha256": "e353f312e9c45d39afd9105ae1b3e3a231ef06ca9cbfa214cf9e195a99fba413"
+    }
+  },
+  "constructive": {
+    "diff": "--- historical/test/metadata.test.ts\n+++ constructive/test/metadata.test.ts\n@@ -434,6 +434,15 @@\n     \"Run Pre-Commits\",\n   ]);\n \n+  const setupPython = namedStep(preCommit, \"Setup Python\");\n+  assert.deepEqual(actionReferences(setupPython), [\n+    \"actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0\",\n+  ]);\n+  assert.equal(\n+    directMapping(setupPython, \"with\", 8)[\"python-version\"],\n+    '\"3.15\"',\n+  );\n+\n   const invocations = [\n     ...localActionInvocations(exactImage, \"compatibility/exact-image-smoke\", 6),\n     ...localActionInvocations(generatedDist, \"compatibility/generated-dist\", 6),\n@@ -1153,10 +1162,6 @@\n     readFile(\".pre-commit-config.yaml\", \"utf8\"),\n     readFile(\"package.json\", \"utf8\"),\n   ]);\n-  assert.match(\n-    lint,\n-    /uses: actions\\/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7\\.1\\.0\\n        with:\\n          python-version: \"3\\.15\"/,\n-  );\n   assert.match(lint, /run: python -m pip install pre-commit==4\\.7\\.0/);\n   assert.match(lint, /run: pre-commit run --all-files --hook-stage pre-push/);\n   const markdownHook = hooks\n",
+    "diff_sha256": "095de3657342be99acad4d0511523220d7b73d14cfaba4ddd909e2d3c15792e3",
+    "test_sha256": "84828f6f72e805306aaf02e0e790982b23e9fccf79673ba40a5433e066bf14ae",
+    "formatted_lines": {
+      "added": 9,
+      "removed": 4
+    },
+    "intent": "Extend the existing preCommit/namedStep/actionReferences/directMapping check for exact active action and Python selector; remove only the whole-file pin/comment/with-adjacency regex. Retain all unique Markdown hook, pre-commit and Node assertions."
+  },
+  "route": {
+    "cwd": "repository root (/work)",
+    "image": "node@sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+    "node": "v22.23.4",
+    "npm": "10.9.9",
+    "dependencies_sha256": "1569eb231fe0417185952682f25b71ad512aae30961e17aa8e9eaf483d3bd6af",
+    "compile": [
+      "./node_modules/.bin/tsc",
+      "--project",
+      "tsconfig.json"
+    ],
+    "added": [
+      "node",
+      "--test",
+      "--test-reporter=tap",
+      "--test-name-pattern=^lint tooling",
+      "build/test/metadata.test.js"
+    ],
+    "metadata": [
+      "node",
+      "--test",
+      "--test-reporter=tap",
+      "build/test/metadata.test.js"
+    ],
+    "compile_exits": {
+      "control": 0,
+      "develop": 0,
+      "legacy-tests": 0,
+      "constructive": 0
+    },
+    "limits": "Existing configured compiler/options and selected normal metadata module only; full npm test, check-dist, pre-commit and hosted workflow execution are not established."
+  },
+  "results": {
+    "control": {
+      "original": {
+        "added": {
+          "exit": 0,
+          "tests_pass_fail": [
+            1,
+            1,
+            0
+          ],
+          "failed": [],
+          "log_sha256": "bf5f22386fb0985d8ab4d7f3d6fc3d85a3adb72d376d7d4be90287aedcae67fc"
+        },
+        "metadata": {
+          "exit": 0,
+          "tests_pass_fail": [
+            19,
+            19,
+            0
+          ],
+          "failed": [],
+          "log_sha256": "0816e4089b1ab01be14ca4533778a8f80d011c42e5901fec14c4d815445964b8"
+        }
+      },
+      "harmless-empty-env": {
+        "added": {
+          "exit": 0,
+          "tests_pass_fail": [
+            1,
+            1,
+            0
+          ],
+          "failed": [],
+          "log_sha256": "02484696f1dc101c33f4b3eb753891b1078f2270012f2c11863f6564d45a3739"
+        },
+        "metadata": {
+          "exit": 0,
+          "tests_pass_fail": [
+            19,
+            19,
+            0
+          ],
+          "failed": [],
+          "log_sha256": "2f9b1ae7122c80ffe4aef386bdf4b384a6aa90b7759c2f8c5e1417ac3858157c"
+        }
+      },
+      "wrong-inactive-decoy": {
+        "added": {
+          "exit": 1,
+          "tests_pass_fail": [
+            1,
+            0,
+            1
+          ],
+          "failed": [
+            "lint tooling updates preserve the existing runtime and hook contract"
+          ],
+          "log_sha256": "80a0c4ff2d5e864da08318800714b8528446fe25c440f6800e49077067f1232f"
+        },
+        "metadata": {
+          "exit": 1,
+          "tests_pass_fail": [
+            19,
+            17,
+            2
+          ],
+          "failed": [
+            "lint tooling updates preserve the existing runtime and hook contract",
+            "workflow structure enumerates every job, step, and local action invocation"
+          ],
+          "log_sha256": "3ab8a33eadddeae2e2e87b860e9f19241b9192c2e3825306879db7bba7665def"
+        }
+      }
+    },
+    "develop": {
+      "original": {
+        "added": {
+          "exit": 0,
+          "tests_pass_fail": [
+            1,
+            1,
+            0
+          ],
+          "failed": [],
+          "log_sha256": "c071e879cc1724c70c0c91ccffc3b87f3f979fea9a9d8cf135b4f4224ef81a23"
+        },
+        "metadata": {
+          "exit": 0,
+          "tests_pass_fail": [
+            19,
+            19,
+            0
+          ],
+          "failed": [],
+          "log_sha256": "b78196472521308f2c08fac533491fa2c6f54d48de773a8d234a08e77012a83d"
+        }
+      },
+      "harmless-empty-env": {
+        "added": {
+          "exit": 1,
+          "tests_pass_fail": [
+            1,
+            0,
+            1
+          ],
+          "failed": [
+            "lint tooling upgrades preserve runtime selectors and hook invocation"
+          ],
+          "log_sha256": "a8a41ff2d0165432e559352c2cba866e53a90c6483ed3b606feb6d327b888bf5"
+        },
+        "metadata": {
+          "exit": 1,
+          "tests_pass_fail": [
+            19,
+            18,
+            1
+          ],
+          "failed": [
+            "lint tooling upgrades preserve runtime selectors and hook invocation"
+          ],
+          "log_sha256": "733a11e3960f4cd20f64dd3edce80fc3968171f2abb4cb1e816bc3ce7e127a6d"
+        }
+      },
+      "wrong-inactive-decoy": {
+        "added": {
+          "exit": 0,
+          "tests_pass_fail": [
+            1,
+            1,
+            0
+          ],
+          "failed": [],
+          "log_sha256": "783db8c6568276df3924aca7e8d7e41f7f51fb7e2bf309980b9b7b263e9b1a1a"
+        },
+        "metadata": {
+          "exit": 1,
+          "tests_pass_fail": [
+            19,
+            18,
+            1
+          ],
+          "failed": [
+            "workflow structure enumerates every job, step, and local action invocation"
+          ],
+          "log_sha256": "83a34740d7a820ecf7f839d3056fee5da296742c921afaacda6f03ae52e49190"
+        }
+      }
+    },
+    "legacy-tests": {
+      "requested": {
+        "exit": 0,
+        "tests_pass_fail": [
+          18,
+          18,
+          0
+        ],
+        "failed": [],
+        "log_sha256": "491c2a7078f8d10939adaced8a7471e8fd8c2496892d2c25cd24b86510b74964"
+      },
+      "old-active-no-decoy": {
+        "exit": 0,
+        "tests_pass_fail": [
+          18,
+          18,
+          0
+        ],
+        "failed": [],
+        "log_sha256": "893b8d0f2d33f027dffb5d7820e82dee52bd2075cabf67a8532457df277a559b"
+      },
+      "wrong-inactive-decoy": {
+        "exit": 1,
+        "tests_pass_fail": [
+          18,
+          17,
+          1
+        ],
+        "failed": [
+          "workflow structure enumerates every job, step, and local action invocation"
+        ],
+        "log_sha256": "a598424f1b1c87f2d950f63794f3f86d51250c9166719939ad145f8eca761280"
+      },
+      "harmless-empty-env": {
+        "exit": 0,
+        "tests_pass_fail": [
+          18,
+          18,
+          0
+        ],
+        "failed": [],
+        "log_sha256": "67fd1bd2813c1d359ae483142b480f401f1afbd762507a18c7b280a6aba2ea60"
+      },
+      "old-markdownlint": {
+        "exit": 0,
+        "tests_pass_fail": [
+          18,
+          18,
+          0
+        ],
+        "failed": [],
+        "log_sha256": "c453faa275e0f40425942403c58cfe923dd2a17d549e8b31f41ab797b9e860d0"
+      }
+    },
+    "constructive": {
+      "requested": {
+        "exit": 0,
+        "tests_pass_fail": [
+          19,
+          19,
+          0
+        ],
+        "failed": [],
+        "log_sha256": "7519d5f4f82ea0253f945e4dc6b2437ccf25bc53b5187279336d2026e37eeed8"
+      },
+      "old-active-no-decoy": {
+        "exit": 1,
+        "tests_pass_fail": [
+          19,
+          18,
+          1
+        ],
+        "failed": [
+          "workflow structure enumerates every job, step, and local action invocation"
+        ],
+        "log_sha256": "e728a13176f31c147d3b05ff8b748a0ee61d12ffc8001de4dfb30afc0a1ff041"
+      },
+      "wrong-inactive-decoy": {
+        "exit": 1,
+        "tests_pass_fail": [
+          19,
+          18,
+          1
+        ],
+        "failed": [
+          "workflow structure enumerates every job, step, and local action invocation"
+        ],
+        "log_sha256": "594d24d35ceefad16eb276febf9d67f408cffcf6768f7a0eae5494d26973cb5a"
+      },
+      "harmless-empty-env": {
+        "exit": 0,
+        "tests_pass_fail": [
+          19,
+          19,
+          0
+        ],
+        "failed": [],
+        "log_sha256": "21ba1aac1dac3bf09fa8abdfee86d2387e07127f969687f20e0419f272296867"
+      },
+      "old-markdownlint": {
+        "exit": 1,
+        "tests_pass_fail": [
+          19,
+          18,
+          1
+        ],
+        "failed": [
+          "lint tooling upgrades preserve runtime selectors and hook invocation"
+        ],
+        "log_sha256": "a2efd566525b63f97a4a2fb89f4c76975fe5141f4a3063cbc5797c4a0f8e06a1"
+      }
+    }
+  },
+  "frozen_gates": {
+    "contract_sha256": "8fa8ee30128f0f79ab92e517c7122cde49c3a55a8e78cd108617267edeec72c3",
+    "preserve_sha256": "bc8c8a983908dea1c263723b9409236012bddf88a494204cdeefb1ecdedf5c55",
+    "historical_stages": {
+      "control": {
+        "build": 0,
+        "native": 0,
+        "contract": 42,
+        "preserve": 0
+      },
+      "develop": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0
+      }
+    },
+    "contract_order": [
+      "active Python pin/runtime",
+      "Markdown hook",
+      "ledger",
+      "preserved blobs"
+    ],
+    "contract_vectors": {
+      "control_requested_and_neutral": [
+        true,
+        true,
+        false,
+        true
+      ],
+      "control_decoy": [
+        false,
+        true,
+        false,
+        true
+      ],
+      "develop_requested_and_neutral": [
+        true,
+        true,
+        true,
+        true
+      ],
+      "develop_old_active_and_decoy": [
+        false,
+        true,
+        true,
+        true
+      ],
+      "develop_old_markdown": [
+        true,
+        false,
+        true,
+        true
+      ]
+    },
+    "preserve": "All six original/neutral/decoy probes passed. The retained stock ledger-wrap failure is unrelated to owner assertions; it cannot establish a prospective stock loss."
+  },
+  "verification": {
+    "raw_receipt_sha256": "acc58ac9b774a21ef83b3c87171b8513930e963d72d490ae231b025918a681c7",
+    "constructive_receipt_sha256": "6dc7f39b38a7520376de60cfeb8c0a9b5fc2a4c9a035018cae73ae66cd390468",
+    "raw_log_hashes_and_TAP_independently_verified": 43,
+    "base_plus_published_patch_tree_and_all_file_bytes_modes_verified": true,
+    "constructive_diff_reapplied_and_hash_verified": true,
+    "original_sources_unchanged": true,
+    "model_calls": 0
+  },
+  "interpretation": "Old 18-case metadata tests accept requested, old-active/no-decoy, neutral and old Markdown; they reject the extra-step decoy. Both shipped tests pass requested. Stock added test rejects the decoy and accepts neutral; Develop added test accepts the decoy and rejects neutral. The constructive test preserves both upgrade discriminators and neutral acceptance. Shipped no-decoy/old-Markdown outcomes were not measured. No defect escaped the original semantic gate. +9/-4 source lines is not a cost saving; participant price/wall and transfer remain unknown."
+}

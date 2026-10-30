@@ -1,0 +1,120 @@
+{
+  "format": "law-config.warning-consumer-supplement/v1",
+  "scope": "Exposed observable-werkzeug-01 only; supplemental offline observation; frozen scores, gates and earlier replay unchanged",
+  "source_sha256": "ef964bbe31faee6884025ac0cc64b969727934d7e37f44b60eac001bed59683a",
+  "earlier_replay_sha256": "b3557159d9bed6eecabd10e95c0150cff729165f71359514266032188b7d2542",
+  "base": "15fc22b699ecacd04824092453c0cd2a8c4a3a67",
+  "merge": "28360ef872ae984cc08209cb333db5649ce977bc",
+  "base_tree": "fdb9ca5de6cd16edd1364038641a4a1fe8f33cda",
+  "image": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+  "cpus": [2, 3],
+  "network": "none",
+  "work": "read-only",
+  "dependencies_sha256": "11c189efdeabd5237e759b12e421f359881c0368000d9e5eff91de830e620825",
+  "method": "Existing physical CPU lease; official prepared dependencies; source/selected-test hashes verified in each guest; unchanged public base tests overlaid read-only on each proposal for second run; pytest project warnings-as-errors retained, cache and bytecode off",
+  "inputs": [[["str", "x"], ["str", "y"]], [["bytes", [120]], ["bytes", [121]]], [["bytes", [120]], ["str", "y"]], [["str", "x"], ["bytes", [121]]]],
+  "operation": "Response(body).get_data(); close(); warnings recorded always, separately by exact class/message",
+  "test_order": ["tests/test_internal.py::test_wrapper_internals", "tests/test_test.py::test_path_info_script_name_unquoting"],
+  "base_test_sha256": {
+    "tests/test_internal.py": "6e9a55d6e86de73f25025d5b442d2bfa085676360ed91d6c008d11c447219991",
+    "tests/test_test.py": "7da9e79e0d4e553261a6557f930e5a4c08431eab728b100127965ed69e426d89"
+  },
+  "rows": {
+    "base": {
+      "patch_sha256": null,
+      "response_sha256": "5595d6c49b2b9998e8757e18125117f826ef5c14c1e1062721734440706b9025",
+      "selected_test_sha256": ["6e9a55d6e86de73f25025d5b442d2bfa085676360ed91d6c008d11c447219991", "7da9e79e0d4e553261a6557f930e5a4c08431eab728b100127965ed69e426d89"],
+      "partition": [{"bytes": [120, 121], "warnings": []}, {"bytes": [120, 121], "warnings": []}, {"bytes": [120, 121], "warnings": []}, {"bytes": [120, 121], "warnings": []}],
+      "selected": {
+        "exit": 0,
+        "outcomes": ["pass", "pass"]
+      },
+      "base-tests": {
+        "exit": 0,
+        "outcomes": ["pass", "pass"]
+      }
+    },
+    "merge": {
+      "patch_sha256": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76",
+      "response_sha256": "dc0a5540001d032c6f755e82a346ca902019eb5978be67a3d778c0e5dfe8eefe",
+      "selected_test_sha256": ["6e9a55d6e86de73f25025d5b442d2bfa085676360ed91d6c008d11c447219991", "7da9e79e0d4e553261a6557f930e5a4c08431eab728b100127965ed69e426d89"],
+      "partition": [{"bytes": [120, 121], "warnings": []}, {"bytes": [120, 121], "warnings": []}, {"bytes": [120, 121], "warnings": ["W1"]}, {"bytes": [120, 121], "warnings": ["W1"]}],
+      "selected": {
+        "exit": 0,
+        "outcomes": ["pass", "pass"]
+      },
+      "base-tests": {
+        "exit": 0,
+        "outcomes": ["pass", "pass"]
+      }
+    },
+    "candidate-develop": {
+      "patch_sha256": "e8c9d512d446a48a621eb4283913f91a16a050535bda7aa75fc28aaf7cdae4a1",
+      "response_sha256": "35d1e526b0d3664b3cbe25450c298be1577d844506e7f31e7f95e7d90c90b27f",
+      "selected_test_sha256": ["6e9a55d6e86de73f25025d5b442d2bfa085676360ed91d6c008d11c447219991", "7da9e79e0d4e553261a6557f930e5a4c08431eab728b100127965ed69e426d89"],
+      "partition": [{"bytes": [120, 121], "warnings": ["W2", "W2"]}, {"bytes": [120, 121], "warnings": []}, {"bytes": [120, 121], "warnings": ["W2"]}, {"bytes": [120, 121], "warnings": ["W2"]}],
+      "selected": {
+        "exit": 1,
+        "outcomes": ["warning-failure:W2", "warning-failure:W2"]
+      },
+      "base-tests": {
+        "exit": 1,
+        "outcomes": ["warning-failure:W2", "warning-failure:W2"]
+      }
+    },
+    "candidate-control": {
+      "patch_sha256": "531e2a62a23d4d8859b52b864c8664ac457266ed75b03d379a442b9e01b00b21",
+      "response_sha256": "4c31aa9abc13a4321250801f8ad280b5fd6166d35a2617338d181c2d3970d995",
+      "selected_test_sha256": ["ccf73aff0a0593e2c6c539ba232bb43bc3744e999cf98f84ecf441dd4298c351", "927e587e7655ae0bca369395ec2c083274738514e5c4b4d5efe8081da4aa3084"],
+      "partition": [{"bytes": [120, 121], "warnings": ["W3", "W3"]}, {"bytes": [120, 121], "warnings": []}, {"bytes": [120, 121], "warnings": ["W3"]}, {"bytes": [120, 121], "warnings": ["W3"]}],
+      "selected": {
+        "exit": 0,
+        "outcomes": ["pass", "pass"]
+      },
+      "base-tests": {
+        "exit": 1,
+        "outcomes": ["warning-failure:W3", "warning-failure:W3"]
+      }
+    },
+    "prior-develop": {
+      "patch_sha256": "7409a51870a0dd146998ce5ea0b1d03ab4c54a269fee41d429486ee014404e5e",
+      "response_sha256": "6cfa6090e002e864fb0f7c951eb99cbe16a7cf1a9d81c548f2bb790e26ee007a",
+      "selected_test_sha256": ["daac6030b70b6f57881fedbcb422f3846efb265d8de472e9fa7ffb74d777fabb", "7da9e79e0d4e553261a6557f930e5a4c08431eab728b100127965ed69e426d89"],
+      "partition": [{"bytes": [120, 121], "warnings": ["W3", "W3"]}, {"bytes": [120, 121], "warnings": []}, {"bytes": [120, 121], "warnings": ["W3"]}, {"bytes": [120, 121], "warnings": ["W3"]}],
+      "selected": {
+        "exit": 1,
+        "outcomes": ["pass", "warning-failure:W3"]
+      },
+      "base-tests": {
+        "exit": 1,
+        "outcomes": ["warning-failure:W3", "warning-failure:W3"]
+      }
+    }
+  },
+  "runtime": {
+    "python": "3.13.18",
+    "pytest": "8.4.2"
+  },
+  "warnings": {
+    "W1": {
+      "class": "builtins.DeprecationWarning",
+      "message": "The response iterable must contain only bytes or only strings, not both. Support for mixed types is deprecated and will be removed in Werkzeug 4.0."
+    },
+    "W2": {
+      "class": "builtins.DeprecationWarning",
+      "message": "Response iterable items must be bytes. Nonbytes items are deprecated and will be unsupported in Werkzeug 4.0. Encode strings before adding them to the iterable."
+    },
+    "W3": {
+      "class": "builtins.DeprecationWarning",
+      "message": "Response iterable items must be bytes. Non-bytes items are deprecated and will not be supported in Werkzeug 4.0."
+    }
+  },
+  "frozen_checks": {
+    "runtime_sha256": "aeb30a53e8554e5800f9e22f562231e6d5b84aa2f209d4593ffd9df79a0a4489",
+    "native": "tests/test_wrappers.py only",
+    "contract": "Mixed [bytes,str] and Response.stream share one capture requiring >=2 DeprecationWarning events; also Sequence/sized-stream/immediate-close checks; no exact warning attribution",
+    "preserve": "Homogeneous bytes body and calculated length; no homogeneous-str silence or reversed mixed order"
+  },
+  "finding": "Stock passes its adapted tests but emits the same widened homogeneous-str deprecation as prior; unchanged base consumers fail on stock, prior and revised. Merge retains homogeneous-str silence and warns for either mixed order. Equality of bytes is not equality of warning behavior.",
+  "limits": "Four small public inputs and two existing consumer tests only; no full suite/docs build, general selector, promotion or efficiency claim. Test adaptation can preserve assertions while changing the exercised input/warning contract. Setup/source identity errors are distinct from behavioral warnings."
+}

@@ -1,0 +1,1537 @@
+{
+  "format": "law-config.eval-pilot/v1",
+  "name": "rule-combinations-marked-01",
+  "case": "marked",
+  "repository": "markedjs/marked",
+  "pr": 4145,
+  "registration": {
+    "protocol": "develop-efficiency-pilot-v1",
+    "name": "rule-combinations-marked-01",
+    "case": "marked",
+    "plans": {
+      "prior": {
+        "path": "runs/rule-combinations-marked-01-prior/plan.json",
+        "sha256": "34d453be28d16a0a07eb31fe67cea1a383c0887cb9eafcd205ec18196e25bd48"
+      },
+      "candidate": {
+        "path": "runs/rule-combinations-marked-01-candidate/plan.json",
+        "sha256": "1c844d538afaeb9d0473699dcbabcca6f2cf56f34473f7aae628721f06618ccc"
+      }
+    },
+    "operator_sha256": "6d216d8806f69c86223a8c88a3d1d60a0facc462c3922825ee1999327b5dc73c",
+    "cpus": [
+      6,
+      7
+    ],
+    "order": [
+      [
+        "candidate",
+        "develop"
+      ],
+      [
+        "candidate",
+        "control"
+      ],
+      [
+        "prior",
+        "develop"
+      ]
+    ],
+    "hypothesis": "compare-interacting-rules",
+    "tuning_policy_sha256": "589902e5ac1b940405e6f65707f3890987e02e4cc0986132382143fb494cce11",
+    "hypothesis_sha256": "961c1def29aba7d1bfa2af847fa147ab45718eff808dfce77da922b443d9e175",
+    "falsifier": "Require a ready full-PR win at or below complete stock proposal cost, plus lower cost and checkout-to-proposal time than the matched prior. For Marked, require both reference parsers to agree on all 3,648 inputs, all 132 official emphasis examples to pass, fewer generated mismatches than prior and no more than stock. Inspect successful participant commands for a generated input comparison and a regression that exposes the defect. Reject skipped required review. For Black, require both registered fixtures, AST preservation and idempotence for the unary/trailer and conditional-tail inputs, normalized surrounding code, and preserved directive text. Keep ties, score ceilings, incomplete evidence and every attempt. A guard or tuning pass is insufficient for a panel-wide claim. Reject lost prior verified behavior or required review, failure of either strict prior cost or wall improvement, non-ready candidate, or full-PR loss to pure. Missing measures or unverifiable review leave the comparison unestablished.",
+    "quality": "Three blind candidate/pure/merge rotations. Prior Develop soft PR quality is unknown.",
+    "goal": "A ready Develop PR strictly wins the full rubric against a terminal pure proposal at complete cost <= pure.",
+    "attempts": "One proposal per registered slot. All allocations including technical failures remain in the ledger."
+  },
+  "registration_sha256": "fac6124975a2742e141c19c6f24f3d2e4aabea52049931bb31ee3cdfe8257b75",
+  "result_sha256": "7c2cb8bcdf2d66d7a18bb22a7f32320f7fd3febb4417b84540a60da167821bf0",
+  "treatments": {
+    "prior": "fb6b2eacbc6ae3a94fb237d6a54c4166ecbbb7d5678ae9b3273fdaf072c6b372",
+    "candidate": "81b11159e5ff7bfda6774474b9f6a9ccc4486d45caedcd726e480c668e0c4b8f"
+  },
+  "base": "3a11ad148397b7628256f5e5d76a454213480c63",
+  "merged": "5d8e2340d78c25c611e1d8215b302fd48f01a601",
+  "prompt": "Implement the following task in this checkout and add relevant tests. Use your natural local workflow and verification tools. I waive interactive review of the local implementation plan and authorize you to proceed unattended. Follow all applicable repository requirements and complete any required independent review of consequential design or public contracts. Work offline and leave the proposed changes in the checkout. In your final message, put a concise PR title on the first line, followed by a blank line and a PR body explaining the change, motivation, verification actually performed and any material gaps.\n\nBring emphasis parsing into line with CommonMark delimiter-run flanking and the multiple-of-three rule for runs of asterisks and underscores, including when a run can both open and close. Preserve ordinary emphasis, strong emphasis and intraword behavior. Add focused parser regression examples. Include Unicode delimiter context, including punctuation and combining marks.\n\nAvailable offline verification commands:\nnpm run build:esbuild && ./node_modules/.bin/tsc --noEmit\nnode --test --test-skip-pattern='^quadratic_' --test-reporter=spec test/run-spec-tests.js",
+  "prompt_sha256": "83267549e2ae585b36bcaadf745693a1ba5b6314b9b7357d6feb6b968e314d36",
+  "runtime_sha256": "a9cc8fbcb356eeb34cb4bc365a7b0ec9fbd871d00c13e1ebbb325c916ccbd01d",
+  "rubric_sha256": "0bdd8699f00ba1f5266927d7666bc2a117fa4873e113fdfa831da93cd2abbc08",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "rates": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "profiles": {
+    "candidate/develop": null,
+    "candidate/control": null,
+    "prior/develop": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "hooks",
+        "marketplaces",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {
+        "AGENTS.md": "5a43508733e7682902b3f930d3796984796655f9a426d27057a4570b5e14056e"
+      },
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [
+        "develop@law-config"
+      ],
+      "ephemeral": false,
+      "inventory_sha256": "95171764ef164271060666c35cf169a1acb667cb0c298daf562047e8b3df78fc",
+      "input_sha256": "a1963a1d19f8d9adeb1078fb0e593e1ea37657fd49cd503a0b1fde17693f042c",
+      "config_sha256": "82ad4c23911b1a16edeec4003661083c7de239173ef26144c86cad39c1fe11ef"
+    }
+  },
+  "comparisons": {
+    "develop_control": {
+      "verdict": "both failed",
+      "reason": "hard gates"
+    },
+    "develop_upstream": {
+      "verdict": "both failed",
+      "reason": "hard gates"
+    },
+    "control_upstream": {
+      "verdict": "both failed",
+      "reason": "hard gates"
+    }
+  },
+  "goal_win": false,
+  "submissions": {
+    "control": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "1c844d538afaeb9d0473699dcbabcca6f2cf56f34473f7aae628721f06618ccc",
+      "case_id": "marked",
+      "role": "control",
+      "state": "timeout",
+      "readiness": "failed",
+      "executable_pass": false,
+      "failure_kind": "timeout",
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "9dbec7f8cf527da95aecbda20fce977a0ba1e0c3d1a707278067f572f30d5954",
+          "command": "npm run build:esbuild && ./node_modules/.bin/tsc --noEmit",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "516c93acafec5b970d5ad74660e6264cbf88d1d394f9921b5d6ea9ce50990f4e",
+          "command": "npm run test:specs",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "0a73ce6241f3c3e7c84a02603cd58484c225d260f57beb2fdcf0044bc9598e59",
+          "command": "node /oracle/check.mjs",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "bfe70abfadfafeeabebe7936891ecbf54b842b786da2ab972677dd804ab5ec5a",
+          "command": "node /oracle/probe.mjs",
+          "reason": null
+        },
+        "independent": {
+          "exit": 42,
+          "log_sha256": "126fb2be68b8a819c77c695c6c66627354b47d7c37ae7578e08d00929c320e3c",
+          "command": "node /oracle/probe.mjs",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/src/Lexer.ts b/src/Lexer.ts\nindex 47ecefd..6c69fcc 100644\n--- a/src/Lexer.ts\n+++ b/src/Lexer.ts\n@@ -507,8 +507,11 @@ export class _Lexer<ParserOutput = string, RendererOutput = string> {\n       }\n       if (token = this.tokenizer.inlineText(cutSrc)) {\n         src = src.substring(token.raw.length);\n-        if (token.raw.slice(-1) !== '_') { // Track prevChar before string of ____ started\n-          prevChar = token.raw.slice(-1);\n+        if (token.raw.slice(-1) !== '_' && token.raw.slice(-1) !== '*') { // Track context before a delimiter run\n+          // Keep an astral code point intact for Unicode flanking checks.\n+          const lastIndex = token.raw.length - 1;\n+          const lastCode = token.raw.charCodeAt(lastIndex);\n+          prevChar = token.raw.slice(lastCode >= 0xDC00 && lastCode <= 0xDFFF ? -2 : -1);\n         }\n         keepPrevChar = true;\n         const lastToken = tokens.at(-1);\ndiff --git a/src/Tokenizer.ts b/src/Tokenizer.ts\nindex 2254714..bce30f9 100644\n--- a/src/Tokenizer.ts\n+++ b/src/Tokenizer.ts\n@@ -852,21 +852,39 @@ export class _Tokenizer<ParserOutput = string, RendererOutput = string> {\n     if (!match) return;\n     if (!match[1] && !match[2] && !match[3] && !match[4]) return;\n \n-    // _ can't be between two alphanumerics. \\p{L}\\p{N} includes non-english alphabet/numbers as well\n-    if (match[4] && prevChar.match(this.rules.other.unicodeAlphaNumeric)) return;\n+    const delimChar = src[0];\n+    // Text fallback may already have consumed part of an unmatched run.\n+    // Rule 9-10 uses the whole run, even when matching its remaining suffix.\n+    let consumedLength = 0;\n+    let openerIndex = maskedSrc.length - src.length - 1;\n+    while (openerIndex >= 0 && maskedSrc[openerIndex] === delimChar) {\n+      consumedLength++;\n+      openerIndex--;\n+    }\n+\n+    // The lexer preserves context across a literal delimiter run. A change\n+    // of delimiter starts a new run, with the previous delimiter as punctuation.\n+    const prevDelim = maskedSrc[openerIndex];\n+    if ((prevDelim === '*' || prevDelim === '_') && prevDelim !== delimChar) {\n+      prevChar = prevDelim;\n+    }\n+\n+    // Intraword underscores cannot open, including beside combining marks.\n+    if (match[4] && prevChar && !this.rules.other.unicodePunctuationOrSpace.test(prevChar)) return;\n \n     const nextChar = match[1] || match[3] || '';\n \n-    if (!nextChar || !prevChar || this.rules.inline.punctuation.exec(prevChar)) {\n+    if (!nextChar || !prevChar || this.rules.other.unicodePunctuationOrSpace.test(prevChar)) {\n       // unicode Regex counts emoji as 1 char; spread into array for proper count (used multiple times below)\n       const lLength = [...match[0]].length - 1;\n       let rDelim, rLength, delimTotal = lLength, midDelimTotal = 0;\n \n-      const delimChar = match[0][0];\n-      // A mid-run opener (for example the second star of an unmatched `**`) must\n-      // only pair with a delimiter that can only close, otherwise it steals the\n-      // opener of a later span (`**a*b*c` must be `**a<em>b</em>c`).\n-      const midRun = prevChar === delimChar;\n+      const openerLength = lLength + consumedLength;\n+      // A left-flanking asterisk run can also close when it is right-flanking.\n+      // Underscores can do both only between punctuation characters.\n+      const openerCanClose = !!prevChar\n+        && !this.rules.other.unicodeWhitespace.test(prevChar)\n+        && (!!nextChar || !this.rules.other.unicodePunctuationOrSpace.test(prevChar));\n       const endReg = delimChar === '*' ? this.rules.inline.emStrongRDelimAst : this.rules.inline.emStrongRDelimUnd;\n       endReg.lastIndex = 0;\n \n@@ -883,16 +901,14 @@ export class _Tokenizer<ParserOutput = string, RendererOutput = string> {\n         if (match[3] || match[4]) { // found another Left Delim\n           delimTotal += rLength;\n           continue;\n-        } else if (match[5] || match[6]) { // either Left or Right Delim\n-          if (lLength % 3 && !((lLength + rLength) % 3)) {\n-            midDelimTotal += rLength;\n-            continue; // CommonMark Emphasis Rules 9-10\n-          }\n-          if (midRun) {\n-            // A mid-run opener cannot close against an ambiguous delimiter that\n-            // can also open; that delimiter opens its own emphasis span instead.\n-            break;\n-          }\n+        }\n+\n+        // If either run can both open and close, a sum divisible by three\n+        // cannot match unless both run lengths are themselves divisible by three.\n+        if ((openerCanClose || match[5] || match[6])\n+          && (openerLength % 3 || rLength % 3) && (openerLength + rLength) % 3 === 0) {\n+          midDelimTotal += rLength;\n+          continue;\n         }\n \n         delimTotal -= rLength;\ndiff --git a/src/rules.ts b/src/rules.ts\nindex 2693902..f86c811 100644\n--- a/src/rules.ts\n+++ b/src/rules.ts\n@@ -79,6 +79,8 @@ export const other = {\n   endAngleBracket: />$/,\n   pedanticHrefTitle: /^([^'\"]*[^\\s])\\s+(['\"])(.*)\\2/,\n   unicodeAlphaNumeric: /[\\p{L}\\p{N}]/u,\n+  unicodePunctuationOrSpace: /[\\s\\p{P}\\p{S}]/u,\n+  unicodeWhitespace: /\\s/u,\n   numericCharacterReference: /&#(?:(\\d{1,7})|[Xx]([A-Fa-f0-9]{1,6}));/,\n   numericCharacterReferenceOrAmpersand: /&#(?:(\\d{1,7})|[Xx]([A-Fa-f0-9]{1,6}));|&(?!(#\\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\\w+);)/g,\n   escapeTest: /[&<>\"']/,\ndiff --git a/test/specs/new/em_delimiter_flanking.html b/test/specs/new/em_delimiter_flanking.html\nnew file mode 100644\nindex 0000000..e131e10\n--- /dev/null\n+++ b/test/specs/new/em_delimiter_flanking.html\n@@ -0,0 +1,52 @@\n+<p><em>ordinary</em> <strong>strong</strong> <em>ordinary</em> <strong>strong</strong></p>\n+<p>foo<em>bar</em>baz foo<strong>bar</strong>baz foo_bar_baz foo__bar__baz</p>\n+<p>a**b* c</p>\n+<p>a*b** c</p>\n+<p>a**b**** c</p>\n+<p>a****b** c</p>\n+<p>a<em><strong>b</strong></em> c</p>\n+<p>a***<em><strong>b</strong></em> c</p>\n+<p><em>a**b</em></p>\n+<p><strong>a*b</strong></p>\n+<p>**a<em>b</em>c</p>\n+<p>a<em>foo<strong>bar</strong>baz</em></p>\n+<p>a**foo<em>bar</em></p>\n+<p>(<em>a</em>_)</p>\n+<p>(_<em>a</em>)</p>\n+<p>(<em>a</em>___)</p>\n+<p>(__<strong>a</strong>)</p>\n+<p>(<em><strong>a</strong></em>)</p>\n+<p><em>a <em>b</em> c</em></p>\n+<p><em>a <em>b</em> c</em></p>\n+<p>a*\u201cb\u201d*c</p>\n+<p>a_\u201cb\u201d_c</p>\n+<p>\u201c<em>b</em>\u201d</p>\n+<p>\u201c<em>b</em>\u201d</p>\n+<p>\ud800\udd00<em>\u201cb\u201d</em></p>\n+<p>\ud800\udd00<em>\u201cb\u201d</em></p>\n+<p>\ud800\udd00<strong>\u201cb\u201d</strong></p>\n+<p>\ud800\udd00<strong>\u201cb\u201d</strong></p>\n+<p>\u0301_a_</p>\n+<p>\u0301__a__</p>\n+<p>a\u0301_b_c</p>\n+<p>\u0301<em>a</em></p>\n+<p>\u0301<strong>a</strong></p>\n+<p>_a_\u0301</p>\n+<p>__a__\u0301</p>\n+<p>a\u0301**b* c</p>\n+<p>a**b*\u0301</p>\n+<p>a\u00a0<em>b</em></p>\n+<p>a*\u00a0b*</p>\n+<p>(_!__)</p>\n+<p>(__!_)</p>\n+<p>(<em><strong>!</strong></em>)</p>\n+<p>(*!**)</p>\n+<p>(**!*)</p>\n+<p>(<em><strong>!</strong></em>)</p>\n+<p>\ud835\udc9c_a_</p>\n+<p>a_*<em>b</em></p>\n+<p>a*_<em>b</em></p>\n+<p>a_<em>b</em>*</p>\n+<p>a*<em>b</em>_</p>\n+<p>a_*<strong>b</strong></p>\n+<p>a*_<strong>b</strong></p>\ndiff --git a/test/specs/new/em_delimiter_flanking.md b/test/specs/new/em_delimiter_flanking.md\nnew file mode 100644\nindex 0000000..34e47bd\n--- /dev/null\n+++ b/test/specs/new/em_delimiter_flanking.md\n@@ -0,0 +1,107 @@\n+---\n+gfm: false\n+renderExact: true\n+---\n+*ordinary* **strong** _ordinary_ __strong__\n+\n+foo*bar*baz foo**bar**baz foo_bar_baz foo__bar__baz\n+\n+a**b* c\n+\n+a*b** c\n+\n+a**b**** c\n+\n+a****b** c\n+\n+a***b*** c\n+\n+a******b*** c\n+\n+*a**b*\n+\n+**a*b**\n+\n+**a*b*c\n+\n+a*foo**bar**baz*\n+\n+a**foo*bar*\n+\n+(_a__)\n+\n+(__a_)\n+\n+(_a____)\n+\n+(____a__)\n+\n+(___a___)\n+\n+*a *b* c*\n+\n+_a _b_ c_\n+\n+a*\u201cb\u201d*c\n+\n+a_\u201cb\u201d_c\n+\n+\u201c*b*\u201d\n+\n+\u201c_b_\u201d\n+\n+\ud800\udd00*\u201cb\u201d*\n+\n+\ud800\udd00_\u201cb\u201d_\n+\n+\ud800\udd00**\u201cb\u201d**\n+\n+\ud800\udd00__\u201cb\u201d__\n+\n+\u0301_a_\n+\n+\u0301__a__\n+\n+a\u0301_b_c\n+\n+\u0301*a*\n+\n+\u0301**a**\n+\n+_a_\u0301\n+\n+__a__\u0301\n+\n+a\u0301**b* c\n+\n+a**b*\u0301\n+\n+a\u00a0*b*\n+\n+a*\u00a0b*\n+\n+(_!__)\n+\n+(__!_)\n+\n+(___!___)\n+\n+(*!**)\n+\n+(**!*)\n+\n+(***!***)\n+\n+\ud835\udc9c_a_\n+\n+a_**b*\n+\n+a*__b_\n+\n+a_*b**\n+\n+a*_b__\n+\n+a_***b**\n+\n+a*___b__\ndiff --git a/test/specs/new/em_delimiter_flanking_gfm.html b/test/specs/new/em_delimiter_flanking_gfm.html\nnew file mode 100644\nindex 0000000..e131e10\n--- /dev/null\n+++ b/test/specs/new/em_delimiter_flanking_gfm.html\n@@ -0,0 +1,52 @@\n+<p><em>ordinary</em> <strong>strong</strong> <em>ordinary</em> <strong>strong</strong></p>\n+<p>foo<em>bar</em>baz foo<strong>bar</strong>baz foo_bar_baz foo__bar__baz</p>\n+<p>a**b* c</p>\n+<p>a*b** c</p>\n+<p>a**b**** c</p>\n+<p>a****b** c</p>\n+<p>a<em><strong>b</strong></em> c</p>\n+<p>a***<em><strong>b</strong></em> c</p>\n+<p><em>a**b</em></p>\n+<p><strong>a*b</strong></p>\n+<p>**a<em>b</em>c</p>\n+<p>a<em>foo<strong>bar</strong>baz</em></p>\n+<p>a**foo<em>bar</em></p>\n+<p>(<em>a</em>_)</p>\n+<p>(_<em>a</em>)</p>\n+<p>(<em>a</em>___)</p>\n+<p>(__<strong>a</strong>)</p>\n+<p>(<em><strong>a</strong></em>)</p>\n+<p><em>a <em>b</em> c</em></p>\n+<p><em>a <em>b</em> c</em></p>\n+<p>a*\u201cb\u201d*c</p>\n+<p>a_\u201cb\u201d_c</p>\n+<p>\u201c<em>b</em>\u201d</p>\n+<p>\u201c<em>b</em>\u201d</p>\n+<p>\ud800\udd00<em>\u201cb\u201d</em></p>\n+<p>\ud800\udd00<em>\u201cb\u201d</em></p>\n+<p>\ud800\udd00<strong>\u201cb\u201d</strong></p>\n+<p>\ud800\udd00<strong>\u201cb\u201d</strong></p>\n+<p>\u0301_a_</p>\n+<p>\u0301__a__</p>\n+<p>a\u0301_b_c</p>\n+<p>\u0301<em>a</em></p>\n+<p>\u0301<strong>a</strong></p>\n+<p>_a_\u0301</p>\n+<p>__a__\u0301</p>\n+<p>a\u0301**b* c</p>\n+<p>a**b*\u0301</p>\n+<p>a\u00a0<em>b</em></p>\n+<p>a*\u00a0b*</p>\n+<p>(_!__)</p>\n+<p>(__!_)</p>\n+<p>(<em><strong>!</strong></em>)</p>\n+<p>(*!**)</p>\n+<p>(**!*)</p>\n+<p>(<em><strong>!</strong></em>)</p>\n+<p>\ud835\udc9c_a_</p>\n+<p>a_*<em>b</em></p>\n+<p>a*_<em>b</em></p>\n+<p>a_<em>b</em>*</p>\n+<p>a*<em>b</em>_</p>\n+<p>a_*<strong>b</strong></p>\n+<p>a*_<strong>b</strong></p>\ndiff --git a/test/specs/new/em_delimiter_flanking_gfm.md b/test/specs/new/em_delimiter_flanking_gfm.md\nnew file mode 100644\nindex 0000000..2aad889\n--- /dev/null\n+++ b/test/specs/new/em_delimiter_flanking_gfm.md\n@@ -0,0 +1,107 @@\n+---\n+gfm: true\n+renderExact: true\n+---\n+*ordinary* **strong** _ordinary_ __strong__\n+\n+foo*bar*baz foo**bar**baz foo_bar_baz foo__bar__baz\n+\n+a**b* c\n+\n+a*b** c\n+\n+a**b**** c\n+\n+a****b** c\n+\n+a***b*** c\n+\n+a******b*** c\n+\n+*a**b*\n+\n+**a*b**\n+\n+**a*b*c\n+\n+a*foo**bar**baz*\n+\n+a**foo*bar*\n+\n+(_a__)\n+\n+(__a_)\n+\n+(_a____)\n+\n+(____a__)\n+\n+(___a___)\n+\n+*a *b* c*\n+\n+_a _b_ c_\n+\n+a*\u201cb\u201d*c\n+\n+a_\u201cb\u201d_c\n+\n+\u201c*b*\u201d\n+\n+\u201c_b_\u201d\n+\n+\ud800\udd00*\u201cb\u201d*\n+\n+\ud800\udd00_\u201cb\u201d_\n+\n+\ud800\udd00**\u201cb\u201d**\n+\n+\ud800\udd00__\u201cb\u201d__\n+\n+\u0301_a_\n+\n+\u0301__a__\n+\n+a\u0301_b_c\n+\n+\u0301*a*\n+\n+\u0301**a**\n+\n+_a_\u0301\n+\n+__a__\u0301\n+\n+a\u0301**b* c\n+\n+a**b*\u0301\n+\n+a\u00a0*b*\n+\n+a*\u00a0b*\n+\n+(_!__)\n+\n+(__!_)\n+\n+(___!___)\n+\n+(*!**)\n+\n+(**!*)\n+\n+(***!***)\n+\n+\ud835\udc9c_a_\n+\n+a_**b*\n+\n+a*__b_\n+\n+a_*b**\n+\n+a*_b__\n+\n+a_***b**\n+\n+a*___b__\n",
+      "patch_sha256": "20db5edba4065c75431613a8e7d04009b5256fcd6065618bf2f0297350a79e35",
+      "proposal": "",
+      "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "proposal_observation": "unavailable",
+      "bindings": {
+        "grade_patch_sha256": "20db5edba4065c75431613a8e7d04009b5256fcd6065618bf2f0297350a79e35",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "patch_sha256": "20db5edba4065c75431613a8e7d04009b5256fcd6065618bf2f0297350a79e35",
+            "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "judgment_sha256": "c5e21ef217059296493fad2050d96b97550038cde35dc86f35f193d0c31389cf",
+            "mapping_sha256": "e15598d2bb0788c8ff8a9cdf5ee51fef486633a6e9531c61c78956cb127488cf",
+            "assessor_sha256": "72336a9605495e39e941d2dbcc7bde2fa447be86f54b48c23b1da82f17f635fe",
+            "packet_sha256": "c0b2f3eaa42c3961a3924e2feec959837b2c9928e3b813647242405e8cbde4af",
+            "prompt_sha256": "d07e1b6698815f03a272631a4d0c8c37c7abfc4ef8ba6405d9b8ca79669eac74"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "patch_sha256": "20db5edba4065c75431613a8e7d04009b5256fcd6065618bf2f0297350a79e35",
+            "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "judgment_sha256": "96797940db5b009767fb775a8b90a2cb69823bead644ddb397d1c1531da1094e",
+            "mapping_sha256": "0d52759a33f72624e5e1abbeb3c8af321165a21703549fb73b63d0726748a5d8",
+            "assessor_sha256": "e4684dd8d1e98a5bfaa3e7a1ca93e5fa6a4dd6bb7e22347c2559ef0b69249a47",
+            "packet_sha256": "a83559070dbc9a644ff18d65dd7aff4ea8f95eaa6c06dcac90df2074509c9115",
+            "prompt_sha256": "e229dc9c47e43c35d8851815bedfec79986df31ca2ca1dfb3af8def6ab128056"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "patch_sha256": "20db5edba4065c75431613a8e7d04009b5256fcd6065618bf2f0297350a79e35",
+            "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "judgment_sha256": "4bb914a7323eee7a4a961838ecd258a6023f8a03bc827027fb6f441e5f23dc3d",
+            "mapping_sha256": "1e9acba951c146d24cb6d66c44e9119cbbe4ca8368f231861cb8f39d77910db5",
+            "assessor_sha256": "a12e6608938716db9c85dd7ea471d5d068021313b4141e5ce6db18a133d20043",
+            "packet_sha256": "ab64ac4780d82d8189f65eebe44bf04ecf3e97e6ac94ef96613881d9a6de2805",
+            "prompt_sha256": "c6a77ee1d4db5e55256fd03e3df91b91481667d854482cf229a3b81dd4eacb80"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 2,
+          "tests": 3,
+          "design": 3,
+          "proposal": null
+        },
+        "proposal_points_100": null,
+        "diff_points_85": 55.0,
+        "rotation_points_85": {
+          "0": 55.0,
+          "1": 63.75,
+          "2": 55.0
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "scores": {
+              "contract": 2,
+              "tests": 3,
+              "design": 3,
+              "proposal": null
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native, contract and preserve exits 0. Four independent probes match, including emoji context, _*!a**, a\u0301_b_ and ***foo*bar, addressing distinct defects left in the other patches. Independent exit 42 still shows __****(**__ rendering <strong>**<strong>(</strong></strong> instead of <strong>****(**</strong>, and __ __****_\u00f6**__ also nesting incorrectly. Mixed delimiter context therefore remains a material contract gap.",
+              "tests": "packet/C.patch adds exact-output fixtures test/specs/new/em_delimiter_flanking.{md,html} and em_delimiter_flanking_gfm.{md,html}, explicitly exercising both flavors. Coverage includes ordinary and strong emphasis, intraword behavior, both modulo exceptions, nested spans, changed delimiter runs, astral punctuation and letters, combining marks on either side, and nonbreaking space. The **a*b*c guard example remains covered. Neither independent mixed-nesting failure is included, preventing full coverage credit. Existing checks are unchanged.",
+              "design": "src/Lexer.ts preserves context across both delimiter kinds and retains complete astral code points; src/Tokenizer.ts recovers consumed run length and explicitly handles a change of delimiter. A single modulo condition implements the either-end ambiguity rule. Scope remains limited to parser source, two simple Unicode helpers and fixtures. The old midRun break is explicitly removed: its stated protection **a*b*c is retained as a regression example, frozen native/preserve pass, and ***foo*bar is repaired. Removal alone is not evidence of weakened safety. The remaining recursive inlineTokens(text) context loss and repeated backward scanning keep this short of a complete root-cause solution; no critical regression is demonstrated.",
+              "proposal": "packet/C.md is empty and packet/task.json marks proposal_observation unavailable. Historical proposal quality cannot be scored; this is not an observed omission."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "scores": {
+              "contract": 3,
+              "tests": 3,
+              "design": 3,
+              "proposal": null
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, selected native, contract and preserve exit 0. Frozen independent outputs match expectations for \ud83d\ude42*a**, _*!a**, a\u0301_b_, and ***foo*bar. Independent nevertheless exits 42: __****(**__ yields <strong>**<strong>(</strong></strong> rather than <strong>****(**</strong>, and __ __****_\u00f6**__ also misnests. These remaining context failures prevent full contract credit.",
+              "tests": "packet/B.patch adds test/specs/new/em_delimiter_flanking and em_delimiter_flanking_gfm Markdown/HTML pairs with explicit gfm false/true and renderExact true. Examples cover ordinary emphasis/strong, intraword underscores, modulo-three lengths, ambiguous runs, mixed delimiters, Unicode punctuation including astral punctuation, combining marks on either side, and whitespace. Frozen native exit 0 supports this suite slice. Independently failing nested underscore/asterisk contexts are absent. Existing checks are unchanged.",
+              "design": "src/Lexer.ts preserves context across both delimiter types and keeps astral code points intact. src/Tokenizer.ts combines consumed and remaining opener lengths and applies one modulo-three condition when either end is ambiguous; src/rules.ts adds simple Unicode classifiers without dependencies. The old midRun break is removed explicitly, but its documented **a*b*c behavior remains a fixture, with frozen native/preserve passes; frozen ***foo*bar also supports permitting valid ambiguous pairings. Removal alone does not establish a weakened protection. Recursive inlineTokens(text) still loses outer context, as the two frozen nesting failures demonstrate. Backward scanning on retries remains without measured performance evidence.",
+              "proposal": "packet/B.md is empty and packet/task.json marks proposal_observation unavailable. Historical or interrupted text is unavailable, so proposal is null rather than an observed omission scored zero."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "scores": {
+              "contract": 2,
+              "tests": 3,
+              "design": 3,
+              "proposal": null
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native, contract and preserve exits 0. Independent exit 42 nevertheless shows two material nesting failures: __****(**__ renders <strong>**<strong>(</strong></strong> instead of <strong>****(**</strong>, and __ __****_\u00f6**__ also misnests. The other four supplied independent examples match, including combining-mark intraword underscores and ***foo*bar. This is substantial but incomplete contract coverage.",
+              "tests": "packet/A.patch adds em_delimiter_flanking and em_delimiter_flanking_gfm .md/.html pairs with renderExact, covering ordinary/strong emphasis, intraword behavior, both-open-and-close runs, mixed delimiters, astral punctuation, combining marks and whitespace in both modes. It preserves all existing tests and explicitly includes **a*b*c, also covered by starting test/specs/new/em_strong_unclosed_orphan.md. The independently failing nested outer-underscore contexts are absent, so protection is not complete.",
+              "design": "packet/A.patch confines changes to Lexer.ts, Tokenizer.ts, rules.ts and parser fixtures. It preserves surrogate pairs, tracks whole opener length, and consolidates the multiple-of-three condition for either ambiguous endpoint. It removes the old midRun break protection in Tokenizer.emStrong; this is explicitly inspected: its **a*b*c case remains asserted in both added fixtures and selected native/preserve checks pass. No tests or validation machinery are deleted or weakened. Recursive inlineTokens(text) still loses surrounding delimiter context, as the two independent nesting mismatches demonstrate; backward scanning on retries also lacks frozen performance evidence.",
+              "proposal": "packet/A.md is empty and packet/task.json sets proposal_observation to unavailable. Historical proposal text cannot be assessed; this is unknown rather than an observed omission."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "lower bound",
+        "tokens": {
+          "inputTokens": 4144823,
+          "cachedInputTokens": 4002176,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 23811,
+          "reasoningOutputTokens": 11877,
+          "totalTokens": 4168634
+        },
+        "estimated_usd": 0.9236216,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 1230.489281238988,
+        "prompt_to_terminal_seconds": 1200.000690447865,
+        "through_grading_seconds": 1247.4696700689383,
+        "setup_seconds": 29.18916079797782,
+        "grading_seconds": 15.50077040400356,
+        "thread_count": 1,
+        "child_count": 0,
+        "root_tokens": {
+          "totalTokens": 4168634,
+          "inputTokens": 4144823,
+          "cachedInputTokens": 4002176,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 23811,
+          "reasoningOutputTokens": 11877
+        },
+        "descendant_tokens": null,
+        "observed_commands": 53,
+        "native_hook_receipts": 0
+      },
+      "receipt_sha256": {
+        "grade": "914480ee8558205091eb2a7f1297892294d59fe89fc9ef8db5ac8bbfddbbaaea",
+        "release": "e702d4b874eb560e7f5fbb3cd9192463830a9db666e799daa199e26fba14f245",
+        "native": "e4a66b61d02847ac8d8eb2dcf4abe7321b652df370535d1d49d1e1edcae79369",
+        "submission": "9d6380747182255045d066ccf3c0718d326556010649f25f1dbec68847fc64e8",
+        "result": "5207fcb031480246ac193ed367ac6d9e2392e809f41dc301f7adedb1a074092d",
+        "inventory": "f26dfcf5b97dc8525ebf58546f0e7f5a69c189421174bbfb01138dd21e8335d4"
+      }
+    },
+    "develop": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "1c844d538afaeb9d0473699dcbabcca6f2cf56f34473f7aae628721f06618ccc",
+      "case_id": "marked",
+      "role": "develop",
+      "state": "timeout",
+      "readiness": "failed",
+      "executable_pass": false,
+      "failure_kind": "timeout",
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "9dbec7f8cf527da95aecbda20fce977a0ba1e0c3d1a707278067f572f30d5954",
+          "command": "npm run build:esbuild && ./node_modules/.bin/tsc --noEmit",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "ee0ef826e81593f85549e2d798dd6d73efd73a994b19b2d280a1b1533a35cf4b",
+          "command": "npm run test:specs",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "0a73ce6241f3c3e7c84a02603cd58484c225d260f57beb2fdcf0044bc9598e59",
+          "command": "node /oracle/check.mjs",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "bfe70abfadfafeeabebe7936891ecbf54b842b786da2ab972677dd804ab5ec5a",
+          "command": "node /oracle/probe.mjs",
+          "reason": null
+        },
+        "independent": {
+          "exit": 42,
+          "log_sha256": "456899a85d143149afbcb2e2e27ec83159aaa98b40dfadc40b194ae268858ec6",
+          "command": "node /oracle/probe.mjs",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/src/Lexer.ts b/src/Lexer.ts\nindex 47ecefd..059f67a 100644\n--- a/src/Lexer.ts\n+++ b/src/Lexer.ts\n@@ -508,7 +508,9 @@ export class _Lexer<ParserOutput = string, RendererOutput = string> {\n       if (token = this.tokenizer.inlineText(cutSrc)) {\n         src = src.substring(token.raw.length);\n         if (token.raw.slice(-1) !== '_') { // Track prevChar before string of ____ started\n-          prevChar = token.raw.slice(-1);\n+          const last = token.raw.length - 1;\n+          const code = token.raw.charCodeAt(last);\n+          prevChar = token.raw.slice(code >= 0xDC00 && code <= 0xDFFF ? -2 : -1);\n         }\n         keepPrevChar = true;\n         const lastToken = tokens.at(-1);\ndiff --git a/src/Tokenizer.ts b/src/Tokenizer.ts\nindex 2254714..3abaadf 100644\n--- a/src/Tokenizer.ts\n+++ b/src/Tokenizer.ts\n@@ -852,8 +852,23 @@ export class _Tokenizer<ParserOutput = string, RendererOutput = string> {\n     if (!match) return;\n     if (!match[1] && !match[2] && !match[3] && !match[4]) return;\n \n-    // _ can't be between two alphanumerics. \\p{L}\\p{N} includes non-english alphabet/numbers as well\n-    if (match[4] && prevChar.match(this.rules.other.unicodeAlphaNumeric)) return;\n+    const delimChar = src[0];\n+    const midRun = prevChar === delimChar;\n+    let precedingLength = 0;\n+    const offset = maskedSrc.length - src.length;\n+    if (maskedSrc[offset - 1] === delimChar) {\n+      // Retried or partially consumed runs keep their original flanking context.\n+      let start = offset;\n+      while (start > 0 && maskedSrc[start - 1] === delimChar) start--;\n+      precedingLength = offset - start;\n+      prevChar = maskedSrc.slice(Math.max(0, start - 2), start);\n+      const code = prevChar.charCodeAt(prevChar.length - 1);\n+      prevChar = prevChar.slice(code >= 0xDC00 && code <= 0xDFFF ? -2 : -1);\n+    }\n+\n+    // An underscore opener preceded by non-punctuation (including combining marks)\n+    // would also be right-flanking, so it cannot open intraword emphasis.\n+    if (match[4] && prevChar && !this.rules.other.unicodePunctuationOrSpace.test(prevChar)) return;\n \n     const nextChar = match[1] || match[3] || '';\n \n@@ -862,11 +877,11 @@ export class _Tokenizer<ParserOutput = string, RendererOutput = string> {\n       const lLength = [...match[0]].length - 1;\n       let rDelim, rLength, delimTotal = lLength, midDelimTotal = 0;\n \n-      const delimChar = match[0][0];\n-      // A mid-run opener (for example the second star of an unmatched `**`) must\n-      // only pair with a delimiter that can only close, otherwise it steals the\n-      // opener of a later span (`**a*b*c` must be `**a<em>b</em>c`).\n-      const midRun = prevChar === delimChar;\n+      const openerLength = lLength + precedingLength;\n+      // Rule of three applies if either end can both open and close.\n+      const canClose = !!prevChar && this.rules.other.nonSpaceChar.test(prevChar)\n+        && (!!nextChar || !this.rules.other.unicodePunctuationOrSpace.test(prevChar)\n+          || (this.options.gfm && !this.options.pedantic && prevChar === '~'));\n       const endReg = delimChar === '*' ? this.rules.inline.emStrongRDelimAst : this.rules.inline.emStrongRDelimUnd;\n       endReg.lastIndex = 0;\n \n@@ -883,16 +898,22 @@ export class _Tokenizer<ParserOutput = string, RendererOutput = string> {\n         if (match[3] || match[4]) { // found another Left Delim\n           delimTotal += rLength;\n           continue;\n-        } else if (match[5] || match[6]) { // either Left or Right Delim\n-          if (lLength % 3 && !((lLength + rLength) % 3)) {\n+        }\n+\n+        if (match[5] || match[6]) { // either Left or Right Delim\n+          const ruleLength = delimChar === '_' ? openerLength : lLength;\n+          if (ruleLength % 3 && !((ruleLength + rLength) % 3)) {\n             midDelimTotal += rLength;\n-            continue; // CommonMark Emphasis Rules 9-10\n+            continue;\n           }\n           if (midRun) {\n-            // A mid-run opener cannot close against an ambiguous delimiter that\n-            // can also open; that delimiter opens its own emphasis span instead.\n+            // This ambiguous delimiter must remain available to open its own span.\n             break;\n           }\n+        } else if (canClose && (openerLength % 3 || rLength % 3)\n+          && !((openerLength + rLength) % 3)) {\n+          midDelimTotal += rLength;\n+          continue; // CommonMark Emphasis Rules 9-10\n         }\n \n         delimTotal -= rLength;\ndiff --git a/src/rules.ts b/src/rules.ts\nindex 2693902..f7a2c1d 100644\n--- a/src/rules.ts\n+++ b/src/rules.ts\n@@ -78,6 +78,7 @@ export const other = {\n   startAngleBracket: /^</,\n   endAngleBracket: />$/,\n   pedanticHrefTitle: /^([^'\"]*[^\\s])\\s+(['\"])(.*)\\2/,\n+  unicodePunctuationOrSpace: /[\\s\\p{P}\\p{S}]/u,\n   unicodeAlphaNumeric: /[\\p{L}\\p{N}]/u,\n   numericCharacterReference: /&#(?:(\\d{1,7})|[Xx]([A-Fa-f0-9]{1,6}));/,\n   numericCharacterReferenceOrAmpersand: /&#(?:(\\d{1,7})|[Xx]([A-Fa-f0-9]{1,6}));|&(?!(#\\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\\w+);)/g,\ndiff --git a/test/specs/new/em_delimiter_flanking.html b/test/specs/new/em_delimiter_flanking.html\nnew file mode 100644\nindex 0000000..3f6ee76\n--- /dev/null\n+++ b/test/specs/new/em_delimiter_flanking.html\n@@ -0,0 +1,30 @@\n+<p>a**b*</p>\n+<p>a*b**</p>\n+<p>a<em><strong>b</strong></em></p>\n+<p>a<em><strong>b</strong>c</em></p>\n+<p>!**!*</p>\n+<p>!*!**</p>\n+<p>!__!_</p>\n+<p>!__!_!</p>\n+<p>!_!__</p>\n+<p>!<em><strong>!</strong></em></p>\n+<p>!<em><strong>!</strong></em></p>\n+<p><em><strong>foo</strong> bar</em></p>\n+<p>**a<em>b</em>c</p>\n+<p><em>a</em> <strong>b</strong> <em>c</em> <strong>d</strong></p>\n+<p>a<em>b</em>c a_b_c a__b__c</p>\n+<p>a\u0301_b_ a\u0301__b__</p>\n+<p>\u0301_a_ \u0301__a__</p>\n+<p>\u3002<em>a</em> \u3002<strong>a</strong> \u3002<em>!</em></p>\n+<p>\ud800\udd00<em>a</em> \ud800\udd00<strong>a</strong> \ud800\udd00<em>!</em></p>\n+<p>\ud800\udd00<em>!a</em> \ud800\udd00<strong>!a</strong></p>\n+<p>\ud801\udc00_a_ \ud801\udc00__a__</p>\n+<p>a\ud834\udd65_b_ a\ud834\udd65__b__</p>\n+<p>\u03b1**\u03b2*</p>\n+<p>\u03b1*\u03b2**</p>\n+<p>\u0301**a*</p>\n+<p>\u0301*a**</p>\n+<p>**a<em>b</em></p>\n+<p>***<em>a**b</em></p>\n+<p><em>a</em>_!__!</p>\n+<p><strong>a</strong>_!__!</p>\ndiff --git a/test/specs/new/em_delimiter_flanking.md b/test/specs/new/em_delimiter_flanking.md\nnew file mode 100644\nindex 0000000..8ea36fd\n--- /dev/null\n+++ b/test/specs/new/em_delimiter_flanking.md\n@@ -0,0 +1,59 @@\n+a**b*\n+\n+a*b**\n+\n+a***b***\n+\n+a***b**c*\n+\n+!**!*\n+\n+!*!**\n+\n+!__!_\n+\n+!__!_!\n+\n+!_!__\n+\n+!***!***\n+\n+!___!___\n+\n+***foo** bar*\n+\n+**a*b*c\n+\n+*a* **b** _c_ __d__\n+\n+a*b*c a_b_c a__b__c\n+\n+a\u0301_b_ a\u0301__b__\n+\n+\u0301_a_ \u0301__a__\n+\n+\u3002_a_ \u3002__a__ \u3002_!_\n+\n+\ud800\udd00_a_ \ud800\udd00__a__ \ud800\udd00_!_\n+\n+\ud800\udd00*!a* \ud800\udd00**!a**\n+\n+\ud801\udc00_a_ \ud801\udc00__a__\n+\n+a\ud834\udd65_b_ a\ud834\udd65__b__\n+\n+\u03b1**\u03b2*\n+\n+\u03b1*\u03b2**\n+\n+\u0301**a*\n+\n+\u0301*a**\n+\n+**a*b*\n+\n+****a**b*\n+\n+_a__!__!\n+\n+__a___!__!\ndiff --git a/test/specs/new/em_delimiter_flanking_commonmark.html b/test/specs/new/em_delimiter_flanking_commonmark.html\nnew file mode 100644\nindex 0000000..3f6ee76\n--- /dev/null\n+++ b/test/specs/new/em_delimiter_flanking_commonmark.html\n@@ -0,0 +1,30 @@\n+<p>a**b*</p>\n+<p>a*b**</p>\n+<p>a<em><strong>b</strong></em></p>\n+<p>a<em><strong>b</strong>c</em></p>\n+<p>!**!*</p>\n+<p>!*!**</p>\n+<p>!__!_</p>\n+<p>!__!_!</p>\n+<p>!_!__</p>\n+<p>!<em><strong>!</strong></em></p>\n+<p>!<em><strong>!</strong></em></p>\n+<p><em><strong>foo</strong> bar</em></p>\n+<p>**a<em>b</em>c</p>\n+<p><em>a</em> <strong>b</strong> <em>c</em> <strong>d</strong></p>\n+<p>a<em>b</em>c a_b_c a__b__c</p>\n+<p>a\u0301_b_ a\u0301__b__</p>\n+<p>\u0301_a_ \u0301__a__</p>\n+<p>\u3002<em>a</em> \u3002<strong>a</strong> \u3002<em>!</em></p>\n+<p>\ud800\udd00<em>a</em> \ud800\udd00<strong>a</strong> \ud800\udd00<em>!</em></p>\n+<p>\ud800\udd00<em>!a</em> \ud800\udd00<strong>!a</strong></p>\n+<p>\ud801\udc00_a_ \ud801\udc00__a__</p>\n+<p>a\ud834\udd65_b_ a\ud834\udd65__b__</p>\n+<p>\u03b1**\u03b2*</p>\n+<p>\u03b1*\u03b2**</p>\n+<p>\u0301**a*</p>\n+<p>\u0301*a**</p>\n+<p>**a<em>b</em></p>\n+<p>***<em>a**b</em></p>\n+<p><em>a</em>_!__!</p>\n+<p><strong>a</strong>_!__!</p>\ndiff --git a/test/specs/new/em_delimiter_flanking_commonmark.md b/test/specs/new/em_delimiter_flanking_commonmark.md\nnew file mode 100644\nindex 0000000..286e4aa\n--- /dev/null\n+++ b/test/specs/new/em_delimiter_flanking_commonmark.md\n@@ -0,0 +1,62 @@\n+---\n+gfm: false\n+---\n+a**b*\n+\n+a*b**\n+\n+a***b***\n+\n+a***b**c*\n+\n+!**!*\n+\n+!*!**\n+\n+!__!_\n+\n+!__!_!\n+\n+!_!__\n+\n+!***!***\n+\n+!___!___\n+\n+***foo** bar*\n+\n+**a*b*c\n+\n+*a* **b** _c_ __d__\n+\n+a*b*c a_b_c a__b__c\n+\n+a\u0301_b_ a\u0301__b__\n+\n+\u0301_a_ \u0301__a__\n+\n+\u3002_a_ \u3002__a__ \u3002_!_\n+\n+\ud800\udd00_a_ \ud800\udd00__a__ \ud800\udd00_!_\n+\n+\ud800\udd00*!a* \ud800\udd00**!a**\n+\n+\ud801\udc00_a_ \ud801\udc00__a__\n+\n+a\ud834\udd65_b_ a\ud834\udd65__b__\n+\n+\u03b1**\u03b2*\n+\n+\u03b1*\u03b2**\n+\n+\u0301**a*\n+\n+\u0301*a**\n+\n+**a*b*\n+\n+****a**b*\n+\n+_a__!__!\n+\n+__a___!__!\n",
+      "patch_sha256": "607552b27df7cd463bd9f9257be37e51e72928eb0ce66abcdd3b6384fa8ec3f2",
+      "proposal": "",
+      "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "proposal_observation": "unavailable",
+      "bindings": {
+        "grade_patch_sha256": "607552b27df7cd463bd9f9257be37e51e72928eb0ce66abcdd3b6384fa8ec3f2",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "patch_sha256": "607552b27df7cd463bd9f9257be37e51e72928eb0ce66abcdd3b6384fa8ec3f2",
+            "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "judgment_sha256": "c5e21ef217059296493fad2050d96b97550038cde35dc86f35f193d0c31389cf",
+            "mapping_sha256": "e15598d2bb0788c8ff8a9cdf5ee51fef486633a6e9531c61c78956cb127488cf",
+            "assessor_sha256": "72336a9605495e39e941d2dbcc7bde2fa447be86f54b48c23b1da82f17f635fe",
+            "packet_sha256": "c0b2f3eaa42c3961a3924e2feec959837b2c9928e3b813647242405e8cbde4af",
+            "prompt_sha256": "d07e1b6698815f03a272631a4d0c8c37c7abfc4ef8ba6405d9b8ca79669eac74"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "patch_sha256": "607552b27df7cd463bd9f9257be37e51e72928eb0ce66abcdd3b6384fa8ec3f2",
+            "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "judgment_sha256": "96797940db5b009767fb775a8b90a2cb69823bead644ddb397d1c1531da1094e",
+            "mapping_sha256": "0d52759a33f72624e5e1abbeb3c8af321165a21703549fb73b63d0726748a5d8",
+            "assessor_sha256": "e4684dd8d1e98a5bfaa3e7a1ca93e5fa6a4dd6bb7e22347c2559ef0b69249a47",
+            "packet_sha256": "a83559070dbc9a644ff18d65dd7aff4ea8f95eaa6c06dcac90df2074509c9115",
+            "prompt_sha256": "e229dc9c47e43c35d8851815bedfec79986df31ca2ca1dfb3af8def6ab128056"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "patch_sha256": "607552b27df7cd463bd9f9257be37e51e72928eb0ce66abcdd3b6384fa8ec3f2",
+            "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "judgment_sha256": "4bb914a7323eee7a4a961838ecd258a6023f8a03bc827027fb6f441e5f23dc3d",
+            "mapping_sha256": "1e9acba951c146d24cb6d66c44e9119cbbe4ca8368f231861cb8f39d77910db5",
+            "assessor_sha256": "a12e6608938716db9c85dd7ea471d5d068021313b4141e5ce6db18a133d20043",
+            "packet_sha256": "ab64ac4780d82d8189f65eebe44bf04ecf3e97e6ac94ef96613881d9a6de2805",
+            "prompt_sha256": "c6a77ee1d4db5e55256fd03e3df91b91481667d854482cf229a3b81dd4eacb80"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 2,
+          "tests": 3,
+          "design": 2,
+          "proposal": null
+        },
+        "proposal_points_100": null,
+        "diff_points_85": 48.75,
+        "rotation_points_85": {
+          "0": 48.75,
+          "1": 48.75,
+          "2": 48.75
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "scores": {
+              "contract": 2,
+              "tests": 3,
+              "design": 2,
+              "proposal": null
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native, contract and preserve exits 0. Independent exit 42 nevertheless shows four mismatches: _*!a** incorrectly becomes _<em>!a</em>*, ***foo*bar stays literal rather than **<em>foo</em>bar, and both __****(**__ and __ __****_\u00f6**__ produce incorrect mixed nesting. The emoji and combining-mark probes match expectations. Thus main behavior works but delimiter interaction remains materially incomplete.",
+              "tests": "packet/A.patch adds test/specs/new/em_delimiter_flanking.{md,html} and a gfm:false counterpart. They cover ordinary em/strong, intraword underscores, ambiguous runs, multiples of three, BMP and astral punctuation, letters and combining marks. Existing tests and runner are unchanged. They omit the mixed-delimiter and partial-run paths exposed by the independent mismatches, so their passing native result does not establish full coverage.",
+              "design": "Changes stay in src/Lexer.ts, src/Tokenizer.ts and src/rules.ts plus parser fixtures, with no dependencies or generated edits. Code-point-aware prevChar and punctuation classification address real context issues. However emStrong retains the midRun break and uses lLength for ambiguous asterisk closers but openerLength for underscores and close-only matches; whole-run handling remains inconsistent. The preserved inline.punctuation opener gate still excludes * and _, explaining the mixed punctuation gap. The existing guard is retained, not bypassed; no validation or test protection is deleted.",
+              "proposal": "packet/A.md is empty and packet/task.json marks proposal_observation unavailable. Historical proposal quality cannot be scored; this is not an observed omission."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "scores": {
+              "contract": 2,
+              "tests": 3,
+              "design": 2,
+              "proposal": null
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, selected native, contract and preserve exit 0. Frozen outputs correctly preserve a\u0301_b_ and render \ud83d\ude42*a**. Independent exits 42: _*!a** becomes _<em>!a</em>* instead of remaining literal, ***foo*bar remains literal instead of **<em>foo</em>bar, and __****(**__ plus __ __****_\u00f6**__ misnest. Flanking and ambiguous-run behavior remain materially incomplete.",
+              "tests": "packet/C.patch adds test/specs/new/em_delimiter_flanking and em_delimiter_flanking_commonmark Markdown/HTML pairs for default GFM and explicit gfm false. Examples cover ordinary emphasis/strong, intraword behavior, modulo-three cases, Unicode punctuation, astral punctuation/letters, combining marks including an astral mark, and **a*b*c. Frozen native exit 0 supports the selected suite slice. Mixed-prefix _*!a**, ***foo*bar and the independently failing nested contexts are absent. No existing checks are deleted or weakened.",
+              "design": "src/Lexer.ts fixes astral previous-character extraction and src/Tokenizer.ts broadens the underscore guard using a simple Unicode classifier in src/rules.ts. The localized approach retains the punctuation gate excluding delimiters and the midRun break, consistent with frozen mixed-prefix and ambiguous-run failures. Ambiguous-closer modulo logic uses full openerLength for underscores but lLength for asterisks, leaving inconsistent run accounting. Recursive inlineTokens(text) still loses outer context in the frozen nesting failures. Inspection shows the guard is retained and validation infrastructure unchanged; no bypass or critical protection removal is established.",
+              "proposal": "packet/C.md is empty and packet/task.json marks proposal_observation unavailable. There is no observable proposal to score; null follows the unavailable-evidence rule."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "scores": {
+              "contract": 2,
+              "tests": 3,
+              "design": 2,
+              "proposal": null
+            },
+            "evidence": {
+              "contract": "packet/task.json records build/native/contract/preserve exits 0, but independent exit 42 has four behavioral mismatches. _*!a** incorrectly becomes _<em>!a</em>*; ***foo*bar incorrectly remains literal instead of **<em>foo</em>bar; both supplied outer-underscore nesting examples also fail. The emoji and combining-mark examples match. Main emphasis paths work, but mixed delimiter context and partial-run matching remain materially incomplete.",
+              "tests": "packet/B.patch adds em_delimiter_flanking and em_delimiter_flanking_commonmark fixture pairs. They cover both modes, ordinary emphasis/strong, intraword underscores, ambiguous runs, BMP/astral punctuation and letters, and BMP/astral combining marks. Existing tests remain intact and **a*b*c is explicitly retained. Coverage misses _*!a**, ***foo*bar and the two independently failing nested contexts; these are distinct material gaps despite the successful selected native check.",
+              "design": "packet/B.patch uses the existing tokenizer/lexer architecture with no dependencies or unrelated changes, and repairs surrogate-pair context. However, Tokenizer.emStrong splits the rule into asymmetric branches: ambiguous closers use the whole opener length only for underscores, while other closers use openerLength for both delimiters. It retains the midRun break, which blocks valid partial-run pairing (independent ***foo*bar mismatch). It also retains the old punctuation gate while adding a separate Unicode classifier, leaving mixed-delimiter handling inconsistent (independent _*!a** mismatch). No validation checks or existing fixtures are weakened or deleted.",
+              "proposal": "packet/B.md is empty and packet/task.json sets proposal_observation to unavailable. Historical proposal text cannot be assessed; no zero is assigned for unavailable evidence."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "lower bound",
+        "tokens": {
+          "inputTokens": 4798544,
+          "cachedInputTokens": 4570112,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 28942,
+          "reasoningOutputTokens": 11313,
+          "totalTokens": 4827486
+        },
+        "estimated_usd": 1.2032951999999997,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 1235.3651104718447,
+        "prompt_to_terminal_seconds": 1200.0006092160475,
+        "through_grading_seconds": 1252.7377245319076,
+        "setup_seconds": 34.10810074605979,
+        "grading_seconds": 15.78073990996927,
+        "thread_count": 5,
+        "child_count": 4,
+        "root_tokens": {
+          "totalTokens": 4077841,
+          "inputTokens": 4053295,
+          "cachedInputTokens": 3896320,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 24546,
+          "reasoningOutputTokens": 10360
+        },
+        "descendant_tokens": {
+          "inputTokens": 745249,
+          "cachedInputTokens": 673792,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 4396,
+          "reasoningOutputTokens": 953,
+          "totalTokens": 749645
+        },
+        "observed_commands": 70,
+        "native_hook_receipts": 172
+      },
+      "receipt_sha256": {
+        "grade": "c5dcd9ef4f7fb0e68784813383b460b76bb9029ad83e9cec9b1c8626bf1fb7b2",
+        "release": "09f1481e51be918557ffb3401d8ba6dcfd5dc8f47e1efd075006ef4fdd9de5cd",
+        "native": "91b2c599c2fc69dd259aca2268e52c2235bf4c5a9acded187b78f836527062b3",
+        "submission": "1b97b27db3b96ab1eb5090d63346e467bc180eae820f6d48c40dcdeced0dfd16",
+        "result": "6a932745946ce4210efc6da6ddf4f0d5e0997d00755402a6d23f1208f8d3764d",
+        "inventory": "51ed5952fd05efe90c1ca31b579b8b0289577f1ac41a230f316910e60aa5b725"
+      }
+    },
+    "upstream": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "1c844d538afaeb9d0473699dcbabcca6f2cf56f34473f7aae628721f06618ccc",
+      "case_id": "marked",
+      "role": "upstream",
+      "state": "merged",
+      "readiness": "failed",
+      "executable_pass": false,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "9dbec7f8cf527da95aecbda20fce977a0ba1e0c3d1a707278067f572f30d5954",
+          "command": "npm run build:esbuild && ./node_modules/.bin/tsc --noEmit",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "a902fb9fb79fd7bad4013e2a1ed362b70c718e72e5dd6250923f03252fc00803",
+          "command": "npm run test:specs",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "0a73ce6241f3c3e7c84a02603cd58484c225d260f57beb2fdcf0044bc9598e59",
+          "command": "node /oracle/check.mjs",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "bfe70abfadfafeeabebe7936891ecbf54b842b786da2ab972677dd804ab5ec5a",
+          "command": "node /oracle/probe.mjs",
+          "reason": null
+        },
+        "independent": {
+          "exit": 42,
+          "log_sha256": "788ddb667e4c40ffe043cb347f1566405e8af3d304eb0ba05478992a45d9c337",
+          "command": "node /oracle/probe.mjs",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/src/Tokenizer.ts b/src/Tokenizer.ts\nindex 2254714..7ab67f0 100644\n--- a/src/Tokenizer.ts\n+++ b/src/Tokenizer.ts\n@@ -852,21 +852,44 @@ export class _Tokenizer<ParserOutput = string, RendererOutput = string> {\n     if (!match) return;\n     if (!match[1] && !match[2] && !match[3] && !match[4]) return;\n \n+    const delimChar = match[0][0];\n+    // A mid-run opener (for example the second star of an unmatched `**`) must\n+    // only pair with a delimiter that can only close, otherwise it steals the\n+    // opener of a later span (`**a*b*c` must be `**a<em>b</em>c`).\n+    const midRun = prevChar === delimChar;\n+\n+    // The start of this delimiter run may already be behind src, either taken\n+    // as text after the whole run failed to match or used to close an earlier\n+    // span. Flanking and rules 9-10 are about the whole run, so find its start.\n+    // Pedantic follows markdown.pl, which has no such rules.\n+    const srcStart = maskedSrc.length - src.length;\n+    let runStart = srcStart;\n+    while (!this.options.pedantic && runStart > 0 && maskedSrc[runStart - 1] === delimChar) {\n+      runStart--;\n+    }\n+    const runPrevChar = [...maskedSrc.slice(Math.max(0, runStart - 2), runStart)].at(-1) ?? '';\n+    // The other delimiter character counts as punctuation here (`_**a*`)\n+    const runPrevPunct = runPrevChar === '*' || runPrevChar === '_' || !!this.rules.inline.punctuation.exec(runPrevChar);\n+    if (runStart < srcStart) {\n+      prevChar = runPrevChar;\n+    }\n+    const prevPunct = runStart < srcStart ? runPrevPunct : !!this.rules.inline.punctuation.exec(prevChar);\n+\n     // _ can't be between two alphanumerics. \\p{L}\\p{N} includes non-english alphabet/numbers as well\n     if (match[4] && prevChar.match(this.rules.other.unicodeAlphaNumeric)) return;\n \n     const nextChar = match[1] || match[3] || '';\n \n-    if (!nextChar || !prevChar || this.rules.inline.punctuation.exec(prevChar)) {\n+    if (!nextChar || !prevChar || prevPunct) {\n       // unicode Regex counts emoji as 1 char; spread into array for proper count (used multiple times below)\n       const lLength = [...match[0]].length - 1;\n       let rDelim, rLength, delimTotal = lLength, midDelimTotal = 0;\n \n-      const delimChar = match[0][0];\n-      // A mid-run opener (for example the second star of an unmatched `**`) must\n-      // only pair with a delimiter that can only close, otherwise it steals the\n-      // opener of a later span (`**a*b*c` must be `**a<em>b</em>c`).\n-      const midRun = prevChar === delimChar;\n+      // Rules 9-10 count the whole run, and also apply when the opener could\n+      // close as well (`a*b**`, where `*` is both left- and right-flanking).\n+      const runLength = srcStart - runStart + lLength;\n+      const openerCanClose = !this.options.pedantic && !!runPrevChar.trim()\n+        && (!!nextChar || (delimChar === '*' && !runPrevPunct));\n       const endReg = delimChar === '*' ? this.rules.inline.emStrongRDelimAst : this.rules.inline.emStrongRDelimUnd;\n       endReg.lastIndex = 0;\n \n@@ -883,16 +906,16 @@ export class _Tokenizer<ParserOutput = string, RendererOutput = string> {\n         if (match[3] || match[4]) { // found another Left Delim\n           delimTotal += rLength;\n           continue;\n-        } else if (match[5] || match[6]) { // either Left or Right Delim\n-          if (lLength % 3 && !((lLength + rLength) % 3)) {\n-            midDelimTotal += rLength;\n-            continue; // CommonMark Emphasis Rules 9-10\n-          }\n-          if (midRun) {\n+        } else if (match[5] || match[6] || openerCanClose) { // either Left or Right Delim\n+          if (midRun && (match[5] || match[6])) {\n             // A mid-run opener cannot close against an ambiguous delimiter that\n             // can also open; that delimiter opens its own emphasis span instead.\n             break;\n           }\n+          if (runLength % 3 && !((runLength + rLength) % 3)) {\n+            midDelimTotal += rLength;\n+            continue; // CommonMark Emphasis Rules 9-10\n+          }\n         }\n \n         delimTotal -= rLength;\ndiff --git a/test/specs/new/em_strong_delimiter_run.html b/test/specs/new/em_strong_delimiter_run.html\nnew file mode 100644\nindex 0000000..11d6037\n--- /dev/null\n+++ b/test/specs/new/em_strong_delimiter_run.html\n@@ -0,0 +1,7 @@\n+<p>**<em>.a</em></p>\n+<p>*<em>(a)</em></p>\n+<p>foo **<em>!bar</em></p>\n+<p>a*b**</p>\n+<p>x a*b** y</p>\n+<p>__(_*</p>\n+<p>a_<em>a_</em>*</p>\ndiff --git a/test/specs/new/em_strong_delimiter_run.md b/test/specs/new/em_strong_delimiter_run.md\nnew file mode 100644\nindex 0000000..e793eae\n--- /dev/null\n+++ b/test/specs/new/em_strong_delimiter_run.md\n@@ -0,0 +1,13 @@\n+***.a*\n+\n+**(a)*\n+\n+foo ***!bar*\n+\n+a*b**\n+\n+x a*b** y\n+\n+__(_*\n+\n+a_*a_**\n",
+      "patch_sha256": "3affc55aebbd9f2345b890cb9f6dc40a6fdb024bc4674e697ffaaf37d49dcd6a",
+      "proposal": "fix: apply emphasis flanking and rules 9-10 to the whole delimiter run\n\n**Marked version:** 18.1.1 (master at 6dd5b3c)\n\n**Markdown flavor:** CommonMark (GitHub Flavored Markdown output is the same for these inputs)\n\n## Description\n\nNo existing issue. Below is the issue in the template's format.\n\n## Expectation\n\nEmphasis should follow CommonMark 0.31.2 (6.2, rules 9 and 10). Flanking and the \"multiple of 3\" rule look at the whole delimiter run that holds the opener. The rule also applies when the opener can close as well as open, not only when the closer can open. Expected output is what commonmark.js 0.31.2 gives:\n\n| input | commonmark.js | marked 18.1.1 |\n|---|---|---|\n| `***.a*` | `**<em>.a</em>` | `***.a*` |\n| `**(a)*` | `*<em>(a)</em>` | `**(a)*` |\n| `foo ***!bar*` | `foo **<em>!bar</em>` | `foo ***!bar*` |\n| `a*b**` | `a*b**` | `a<em>b</em>*` |\n| `x a*b** y` | `x a*b** y` | `x a<em>b</em>* y` |\n| `__(_*` | `__(_*` | `_<em>(</em>*` |\n\n## Result\n\nThere are two causes, both in `emStrong`.\n\n1. When the whole run can't close, the lexer takes its first delimiter as text and tries the rest again. On that retry `prevChar` is the delimiter itself (`*`). The `punctuation` rule leaves out `*` and `_`, so if the run is followed by punctuation (`**(a)*`) the left-flanking check fails, and the shorter opener never gets tried. For `_` the retry keeps the right `prevChar`, but rules 9-10 then count only what is left of the run (`__(_*` gives 1 + 1 rather than 2 + 1).\n2. Rules 9-10 were only applied when the closer could open (`match[5]`/`match[6]`), never when the opener could close. In `a*b**` the `*` is both left- and right-flanking, so 1 + 2 is a multiple of 3 and it must not pair with `**`.\n\n## What was attempted\n\n`emStrong` now walks back through `maskedSrc` to the start of the current run. Masking keeps the length, and escaped delimiters are masked as `+`, so a run of delimiter characters there is the real run. The character before the run is used for the flanking check on a mid-run retry. The full run length is used for rules 9-10. That same character tells us whether the opener can also close; when it can, rules 9-10 apply to closers that can only close too. The other delimiter character (`_` before `**`) counts as punctuation for that check, as it does in CommonMark. Pedantic mode is not changed, since markdown.pl has none of these rules. The existing mid-run guard from #4008 (`**a*b*c`) is kept and now runs before the rule 9-10 check.\n\n## Contributor\n\n- [x] Test(s) exist to ensure functionality and minimize regression (if no tests added, list tests covering this PR); or,\n- [ ] no tests required for this PR.\n- [ ] If submitting new feature, it has been documented in the appropriate places.\n\nAdded `test/specs/new/em_strong_delimiter_run.{md,html}`. The expected HTML was generated with commonmark.js 0.31.2, and marked's output matches it with `gfm` on and off. It also includes `a_*a_**`, which already passed, to cover the `_`-before-`*` punctuation case.\n\nWhat was run:\n\n- `npm test` (build:reset, build:docs, test:specs, test:unit, test:umd, test:cjs, test:types, test:lint): passes. Specs: 1913 pass, 0 fail. Unit: 199 pass.\n- The new fixture fails without the `src/Tokenizer.ts` change and passes with it.\n- Differential check against commonmark.js 0.31.2 on 100k random strings built from `*`, `_`, letters, spaces, `.`, `(`, `)` and `\u00f6` (`gfm: false`): divergences go from 167 to 66 (103 fixed). Two inputs now diverge that matched before, `__****(**__` and `__ __****_\u00f6**__`. Both are `****(**` nested inside `__\u2026__`. That inner text is lexed again on its own, so it loses the outer context. Before, the inner text was wrong on its own (`****(**` stayed literal), and that happened to hide the problem. Similar runs with GFM on, and with block markup and reference links in the mix, showed fixes and no new divergences.\n- Pedantic output, before against after, on 50k random emphasis strings: identical.\n- Rough timing on README, docs, `test/specs/new`, `test/specs/original` and the CommonMark examples, 20 passes each: no difference beyond noise. Very long runs of a single delimiter (20,000 `*`) were already quadratic and are about 20% slower. A 20,000-`*` run followed by punctuation, which used to fail fast and now searches for a closer, went from about 0.76 s to 3.7 s. If that's not acceptable I can look for a way to keep the fast path. This also touches the same code as #4103, so one of the two will need a rebase.\n\nNot run: `npm run test:redos` (no regex was changed), browser tests, `npm run bench`.\n\nOut of scope: inputs like `***ab**b` (expected `*<strong>ab</strong>b`) still differ. They need the mid-run opener to pair with a closer that can also open, and the #4008 guard prevents that. Mixed `*`/`_` nesting cases also remain.\n\n## Committer\n\nIn most cases, this should be a different person than the contributor.\n\n- [ ] CI is green (no forced merge required).\n- [ ] Squash and Merge PR following [conventional commit guidelines](https://www.conventionalcommits.org/).\n",
+      "proposal_sha256": "b4107c321c4ec0f3e9564aa05d2b51fdc2a0deb1d2a7d28f41a78bcbb3ea1815",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "3affc55aebbd9f2345b890cb9f6dc40a6fdb024bc4674e697ffaaf37d49dcd6a",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "patch_sha256": "3affc55aebbd9f2345b890cb9f6dc40a6fdb024bc4674e697ffaaf37d49dcd6a",
+            "proposal_sha256": "b4107c321c4ec0f3e9564aa05d2b51fdc2a0deb1d2a7d28f41a78bcbb3ea1815",
+            "judgment_sha256": "c5e21ef217059296493fad2050d96b97550038cde35dc86f35f193d0c31389cf",
+            "mapping_sha256": "e15598d2bb0788c8ff8a9cdf5ee51fef486633a6e9531c61c78956cb127488cf",
+            "assessor_sha256": "72336a9605495e39e941d2dbcc7bde2fa447be86f54b48c23b1da82f17f635fe",
+            "packet_sha256": "c0b2f3eaa42c3961a3924e2feec959837b2c9928e3b813647242405e8cbde4af",
+            "prompt_sha256": "d07e1b6698815f03a272631a4d0c8c37c7abfc4ef8ba6405d9b8ca79669eac74"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "patch_sha256": "3affc55aebbd9f2345b890cb9f6dc40a6fdb024bc4674e697ffaaf37d49dcd6a",
+            "proposal_sha256": "b4107c321c4ec0f3e9564aa05d2b51fdc2a0deb1d2a7d28f41a78bcbb3ea1815",
+            "judgment_sha256": "96797940db5b009767fb775a8b90a2cb69823bead644ddb397d1c1531da1094e",
+            "mapping_sha256": "0d52759a33f72624e5e1abbeb3c8af321165a21703549fb73b63d0726748a5d8",
+            "assessor_sha256": "e4684dd8d1e98a5bfaa3e7a1ca93e5fa6a4dd6bb7e22347c2559ef0b69249a47",
+            "packet_sha256": "a83559070dbc9a644ff18d65dd7aff4ea8f95eaa6c06dcac90df2074509c9115",
+            "prompt_sha256": "e229dc9c47e43c35d8851815bedfec79986df31ca2ca1dfb3af8def6ab128056"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "patch_sha256": "3affc55aebbd9f2345b890cb9f6dc40a6fdb024bc4674e697ffaaf37d49dcd6a",
+            "proposal_sha256": "b4107c321c4ec0f3e9564aa05d2b51fdc2a0deb1d2a7d28f41a78bcbb3ea1815",
+            "judgment_sha256": "4bb914a7323eee7a4a961838ecd258a6023f8a03bc827027fb6f441e5f23dc3d",
+            "mapping_sha256": "1e9acba951c146d24cb6d66c44e9119cbbe4ca8368f231861cb8f39d77910db5",
+            "assessor_sha256": "a12e6608938716db9c85dd7ea471d5d068021313b4141e5ce6db18a133d20043",
+            "packet_sha256": "ab64ac4780d82d8189f65eebe44bf04ecf3e97e6ac94ef96613881d9a6de2805",
+            "prompt_sha256": "c6a77ee1d4db5e55256fd03e3df91b91481667d854482cf229a3b81dd4eacb80"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 2,
+          "tests": 2,
+          "design": 2,
+          "proposal": 3
+        },
+        "proposal_points_100": 53.75,
+        "diff_points_85": 42.5,
+        "rotation_points_85": {
+          "0": 42.5,
+          "1": 42.5,
+          "2": 42.5
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "scores": {
+              "contract": 2,
+              "tests": 2,
+              "design": 2,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native, contract and preserve exits 0, but independent exit 42 shows a\u0301_b_ incorrectly becoming a\u0301<em>b</em>, ***foo*bar remaining literal, and incorrect nesting for __****(**__ and __ __****_\u00f6**__. The emoji and _*!a** probes pass. The combining-mark failure directly misses the requested Unicode intraword behavior.",
+              "tests": "packet/B.patch adds seven examples in test/specs/new/em_strong_delimiter_run.{md,html}, including ***.a*, **(a)*, a*b**, __(_* and mixed delimiter punctuation. These target the main retry and opener-can-close defects. No Unicode punctuation or combining-mark regression examples are added, no explicit second flavor fixture is provided, and the independent failures have no protection. Existing checks remain intact and frozen native exits 0.",
+              "design": "packet/B.patch confines implementation changes to src/Tokenizer.ts and uses existing rules, avoiding dependencies and unrelated changes. Whole-run recovery and openerCanClose are plausible targeted repairs, but the existing unicodeAlphaNumeric exclusion leaves combining marks untreated and the retained midRun break prevents valid partial-run matches. A spread array and backward scan are added on every eligible emphasis attempt. Recursive inlineTokens(text) still loses surrounding context, consistent with both observed mixed-nesting failures. The old guard is moved before the modulo check rather than removed; no tests or validation are weakened.",
+              "proposal": "packet/B.md gives a precise title, before/after inputs, mechanism, fixture paths and explicit remaining ambiguous-run and mixed-nesting limitations; the latter agree with frozen failures. It also discloses potential long-run performance costs and checks not run. Frozen evidence supports only the selected build/native/contract/preserve passes, not its claimed npm test, random differential counts, pedantic comparison or timings; those claims earn no verification credit. It does not explain the requested combining-mark omission, and its broad verification account exceeds the available supporting evidence."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "scores": {
+              "contract": 2,
+              "tests": 2,
+              "design": 2,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, selected native, contract and preserve exit 0, but independent exit 42. Frozen output renders a\u0301_b_ as a\u0301<em>b</em>, violating the requested combining-mark intraword behavior, and leaves ***foo*bar literal instead of **<em>foo</em>bar. Both __****(**__ and __ __****_\u00f6**__ also misnest. Main paths pass, but material requested boundaries remain broken.",
+              "tests": "packet/A.patch adds seven focused examples in test/specs/new/em_strong_delimiter_run.{md,html}, covering punctuation after partial openers, a*b**, and mixed delimiters. Frozen native exit 0 supports the selected regression slice. Added coverage omits Unicode punctuation, combining marks, explicit CommonMark/GFM pairing, and the independently failing ambiguous/nested runs. No existing tests or runner protections are deleted or relaxed.",
+              "design": "src/Tokenizer.ts locally reconstructs the full opener run from maskedSrc and extends modulo-three handling to openers that can close. However, its retained unicodeAlphaNumeric guard misses combining marks, and the retained midRun break blocks valid ambiguous pairing, consistent with frozen ***foo*bar. Recursive inlineTokens(text) still loses outer context in the frozen nesting failures. The new backward scan and spread/slice allocation occur on opener attempts; their performance cost is not established by frozen evidence. The old midRun guard is retained and moved before the modulo check; no validation bypass is shown.",
+              "proposal": "packet/A.md supplies a precise title, concrete before/after examples, motivation, implementation explanation, and explicit ambiguous-run/nesting limitations. The frozen evidence corroborates the disclosed nesting mismatches and selected check passes. Claims of full npm test, random differential totals, pedantic comparisons and timings have no supporting execution records and receive no verification credit. The text does not address the requested combining-mark gap. Its specific risk disclosure is useful, but broader verification remains unsupported."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "scores": {
+              "contract": 2,
+              "tests": 2,
+              "design": 2,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/task.json records build/native/contract/preserve exits 0. Independent exit 42 shows a\u0301_b_ incorrectly becomes a\u0301<em>b</em>, directly missing the requested combining-mark intraword behavior. ***foo*bar remains literal rather than **<em>foo</em>bar, and both outer-underscore nesting examples fail. Emoji and _*!a** match. Thus the main flanking/rule-of-three repair works on the selected checks but important requested boundaries do not.",
+              "tests": "packet/C.patch adds seven em_strong_delimiter_run .md/.html examples for punctuation after partial runs, opener-can-close cases a*b**, underscore run accounting, and mixed punctuation a_*a_**. They meaningfully target the main defect and existing tests remain intact. There are no Unicode punctuation or combining-mark examples, no explicit second-mode fixture, and no fixtures for the independent partial-run or nesting failures. The Unicode omission is observed, not unknown.",
+              "design": "packet/C.patch is narrowly scoped to Tokenizer.emStrong and parser fixtures. It recovers the whole run and applies rules 9-10 when the opener can close, using existing token APIs. However it keeps the alphanumeric-only underscore protection, leaving combining marks unprotected, and keeps/reorders the midRun break that prevents valid ambiguous partial-run pairing. The runPrevChar spread/slice allocation on every matching opener and backward scan on retries add avoidable hot-path work without frozen timing evidence. No tests or validation mechanisms are removed; the existing midRun protection is retained rather than bypassed. The frozen nested failures show that surrounding context is still lost during recursive tokenization.",
+              "proposal": "packet/C.md supplies a precise fix title, concrete before/after inputs, root-cause explanation, fixture names, and candid limitations: ambiguous partial-run cases, nested-context divergences and possible performance cost. The two named nesting limitations agree with frozen independent failures. Its claims of full npm test, random differential runs, pedantic comparisons and timings have no supporting execution artifacts in this packet and receive no execution credit; only the selected build/native/contract/preserve successes are corroborated. The proposal also leaves the explicitly requested Unicode/combining-mark gap unexplained, preventing full communication credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": null,
+      "receipt_sha256": {
+        "grade": "04fcaed84510d847132e6c573d08c1d1fdaa94d2e30ed6a218817051c2286430"
+      }
+    }
+  },
+  "route_review": "Requires inspection of the recorded independent review events.",
+  "prior_develop": {
+    "state": "completed",
+    "effort": {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 4256316,
+        "cachedInputTokens": 4123264,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 23272,
+        "reasoningOutputTokens": 7886,
+        "totalTokens": 4279588
+      },
+      "estimated_usd": 0.9111504000000001,
+      "billed_usd": null,
+      "checkout_to_proposal_seconds": 1059.6820976170711,
+      "prompt_to_terminal_seconds": 1025.2146247129422,
+      "through_grading_seconds": 1077.384449291043,
+      "setup_seconds": 33.040762179065496,
+      "grading_seconds": 16.113798391073942,
+      "thread_count": 4,
+      "child_count": 3,
+      "root_tokens": {
+        "totalTokens": 3281901,
+        "inputTokens": 3263731,
+        "cachedInputTokens": 3189248,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 18170,
+        "reasoningOutputTokens": 7198
+      },
+      "descendant_tokens": {
+        "inputTokens": 992585,
+        "cachedInputTokens": 934016,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 5102,
+        "reasoningOutputTokens": 688,
+        "totalTokens": 997687
+      },
+      "observed_commands": 67,
+      "native_hook_receipts": 161
+    },
+    "stage_exits": {
+      "build": 0,
+      "native": 0,
+      "contract": 42,
+      "preserve": 0,
+      "independent": 42
+    },
+    "patch_sha256": "6bdaf74a195b557a8db2d1741b17b6056df33ca4b2c56b2802c6ebcbe85c5c6c",
+    "proposal_sha256": "d99b7d161682e68bf8b228f970a7aaee01253a384d491914a53a8be09080bfd2",
+    "full_pr_score": null,
+    "patch": "diff --git a/src/Lexer.ts b/src/Lexer.ts\nindex 47ecefd..2a80202 100644\n--- a/src/Lexer.ts\n+++ b/src/Lexer.ts\n@@ -508,7 +508,11 @@ export class _Lexer<ParserOutput = string, RendererOutput = string> {\n       if (token = this.tokenizer.inlineText(cutSrc)) {\n         src = src.substring(token.raw.length);\n         if (token.raw.slice(-1) !== '_') { // Track prevChar before string of ____ started\n-          prevChar = token.raw.slice(-1);\n+          // Preserve astral punctuation as a complete Unicode code point.\n+          const lastChar = token.raw.charCodeAt(token.raw.length - 1);\n+          prevChar = lastChar >= 0xDC00 && lastChar <= 0xDFFF\n+            ? token.raw.slice(-2)\n+            : token.raw.slice(-1);\n         }\n         keepPrevChar = true;\n         const lastToken = tokens.at(-1);\ndiff --git a/src/Tokenizer.ts b/src/Tokenizer.ts\nindex 2254714..f0747ae 100644\n--- a/src/Tokenizer.ts\n+++ b/src/Tokenizer.ts\n@@ -852,8 +852,9 @@ export class _Tokenizer<ParserOutput = string, RendererOutput = string> {\n     if (!match) return;\n     if (!match[1] && !match[2] && !match[3] && !match[4]) return;\n \n-    // _ can't be between two alphanumerics. \\p{L}\\p{N} includes non-english alphabet/numbers as well\n-    if (match[4] && prevChar.match(this.rules.other.unicodeAlphaNumeric)) return;\n+    // An underscore opener cannot also be right-flanking unless preceded by\n+    // punctuation. Combining marks, like letters, are neither punctuation nor space.\n+    if (match[4] && prevChar && !this.rules.other.unicodePunctuationOrSpace.test(prevChar)) return;\n \n     const nextChar = match[1] || match[3] || '';\n \n@@ -863,10 +864,18 @@ export class _Tokenizer<ParserOutput = string, RendererOutput = string> {\n       let rDelim, rLength, delimTotal = lLength, midDelimTotal = 0;\n \n       const delimChar = match[0][0];\n-      // A mid-run opener (for example the second star of an unmatched `**`) must\n-      // only pair with a delimiter that can only close, otherwise it steals the\n-      // opener of a later span (`**a*b*c` must be `**a<em>b</em>c`).\n-      const midRun = prevChar === delimChar;\n+      // Retrying inside an unmatched run must use the original run's flanking\n+      // and length for the multiple-of-three rule.\n+      const start = maskedSrc.length - src.length;\n+      let runStart = start;\n+      while (runStart > 0 && maskedSrc[runStart - 1] === delimChar) runStart--;\n+      const originalLength = lLength + start - runStart;\n+      const before = runStart < start ? maskedSrc.slice(Math.max(0, runStart - 2), runStart) : prevChar;\n+      const beforeChar = before.length === 2 && before.codePointAt(0)! > 0xFFFF ? before : before.slice(-1);\n+      const beforeIsPunctuation = this.rules.other.unicodePunctuation.test(beforeChar)\n+        && !(delimChar === '*' && this.options.gfm && !this.options.pedantic && beforeChar === '~');\n+      const lCanClose = beforeChar && !this.rules.other.unicodeWhitespace.test(beforeChar)\n+        && (!beforeIsPunctuation || !!nextChar);\n       const endReg = delimChar === '*' ? this.rules.inline.emStrongRDelimAst : this.rules.inline.emStrongRDelimUnd;\n       endReg.lastIndex = 0;\n \n@@ -883,16 +892,15 @@ export class _Tokenizer<ParserOutput = string, RendererOutput = string> {\n         if (match[3] || match[4]) { // found another Left Delim\n           delimTotal += rLength;\n           continue;\n-        } else if (match[5] || match[6]) { // either Left or Right Delim\n-          if (lLength % 3 && !((lLength + rLength) % 3)) {\n+        }\n+\n+        // If either run can both open and close, their sum cannot be a multiple\n+        // of three unless both run lengths are themselves multiples of three.\n+        if (lCanClose || match[5] || match[6]) {\n+          if ((originalLength % 3 || rLength % 3) && !((originalLength + rLength) % 3)) {\n             midDelimTotal += rLength;\n             continue; // CommonMark Emphasis Rules 9-10\n           }\n-          if (midRun) {\n-            // A mid-run opener cannot close against an ambiguous delimiter that\n-            // can also open; that delimiter opens its own emphasis span instead.\n-            break;\n-          }\n         }\n \n         delimTotal -= rLength;\ndiff --git a/src/rules.ts b/src/rules.ts\nindex 2693902..b0e141a 100644\n--- a/src/rules.ts\n+++ b/src/rules.ts\n@@ -79,6 +79,9 @@ export const other = {\n   endAngleBracket: />$/,\n   pedanticHrefTitle: /^([^'\"]*[^\\s])\\s+(['\"])(.*)\\2/,\n   unicodeAlphaNumeric: /[\\p{L}\\p{N}]/u,\n+  unicodePunctuation: /[\\p{P}\\p{S}]/u,\n+  unicodePunctuationOrSpace: /[\\s\\p{P}\\p{S}]/u,\n+  unicodeWhitespace: /\\s/u,\n   numericCharacterReference: /&#(?:(\\d{1,7})|[Xx]([A-Fa-f0-9]{1,6}));/,\n   numericCharacterReferenceOrAmpersand: /&#(?:(\\d{1,7})|[Xx]([A-Fa-f0-9]{1,6}));|&(?!(#\\d{1,7}|#[Xx][a-fA-F0-9]{1,6}|\\w+);)/g,\n   escapeTest: /[&<>\"']/,\ndiff --git a/test/specs/new/em_delimiter_flanking.html b/test/specs/new/em_delimiter_flanking.html\nnew file mode 100644\nindex 0000000..209233a\n--- /dev/null\n+++ b/test/specs/new/em_delimiter_flanking.html\n@@ -0,0 +1,31 @@\n+<p>a**b* c*</p>\n+<p>a*b** c**</p>\n+<p>a*<strong>b</strong></p>\n+<p>a<strong>b</strong>*</p>\n+<p>a<em><strong>b</strong></em>c</p>\n+<p>a***<em><strong>b</strong></em>c</p>\n+<p>a<em><strong>b</strong></em>***c</p>\n+<p><em>a**b</em></p>\n+<p>**a<em>b</em>c</p>\n+<p>**<em>a</em>b</p>\n+<p>*<strong>a</strong>b</p>\n+<p><em>foo</em> <strong>bar</strong> <em><strong>baz</strong></em></p>\n+<p>a<em>b</em>c a<strong>b</strong>c a_b_c a__b__c</p>\n+<p>\u00ab<em>foo</em>\u00bb</p>\n+<p>\u00ab<strong>foo</strong>\u00bb</p>\n+<p>\u00ab<em><em>a</em> b</em></p>\n+<p>\u00ab<em>a</em>_ b__</p>\n+<p>\u00ab__\u00aba_ b_</p>\n+<p>\u00ab_\u00aba__ b__</p>\n+<p>\u00ab<em><strong>\u00aba</strong></em>\u00bb</p>\n+<p>\u0301_a_</p>\n+<p>\u0301__a__</p>\n+<p>a_\u0301_</p>\n+<p>a__\u0301__</p>\n+<p>a<em>\u0301</em>b</p>\n+<p>\ud800\udd00<em>foo</em></p>\n+<p>\ud800\udd00<em>\u00abfoo\u00bb</em></p>\n+<p>\ud800\udd00<em>\u00abfoo\u00bb</em></p>\n+<p>\u0301*\u00abfoo\u00bb*</p>\n+<p>\u00ab<em>\u0301</em>\u00bb</p>\n+<p>a**b*\ud800\udd00c*</p>\ndiff --git a/test/specs/new/em_delimiter_flanking.md b/test/specs/new/em_delimiter_flanking.md\nnew file mode 100644\nindex 0000000..edf37e4\n--- /dev/null\n+++ b/test/specs/new/em_delimiter_flanking.md\n@@ -0,0 +1,65 @@\n+---\n+gfm: false\n+renderExact: true\n+---\n+a**b* c*\n+\n+a*b** c**\n+\n+a***b**\n+\n+a**b***\n+\n+a***b***c\n+\n+a******b***c\n+\n+a***b******c\n+\n+*a**b*\n+\n+**a*b*c\n+\n+***a*b\n+\n+***a**b\n+\n+*foo* **bar** ***baz***\n+\n+a*b*c a**b**c a_b_c a__b__c\n+\n+\u00ab_foo_\u00bb\n+\n+\u00ab__foo__\u00bb\n+\n+\u00ab__a_ b_\n+\n+\u00ab_a__ b__\n+\n+\u00ab__\u00aba_ b_\n+\n+\u00ab_\u00aba__ b__\n+\n+\u00ab___\u00aba___\u00bb\n+\n+\u0301_a_\n+\n+\u0301__a__\n+\n+a_\u0301_\n+\n+a__\u0301__\n+\n+a*\u0301*b\n+\n+\ud800\udd00_foo_\n+\n+\ud800\udd00*\u00abfoo\u00bb*\n+\n+\ud800\udd00_\u00abfoo\u00bb_\n+\n+\u0301*\u00abfoo\u00bb*\n+\n+\u00ab*\u0301*\u00bb\n+\n+a**b*\ud800\udd00c*\ndiff --git a/test/specs/new/em_delimiter_flanking_gfm.html b/test/specs/new/em_delimiter_flanking_gfm.html\nnew file mode 100644\nindex 0000000..5fc4388\n--- /dev/null\n+++ b/test/specs/new/em_delimiter_flanking_gfm.html\n@@ -0,0 +1,33 @@\n+<p>a**b* c*</p>\n+<p>a*b** c**</p>\n+<p>a*<strong>b</strong></p>\n+<p>a<strong>b</strong>*</p>\n+<p>a<em><strong>b</strong></em>c</p>\n+<p>a***<em><strong>b</strong></em>c</p>\n+<p>a<em><strong>b</strong></em>***c</p>\n+<p><em>a**b</em></p>\n+<p>**a<em>b</em>c</p>\n+<p>**<em>a</em>b</p>\n+<p>*<strong>a</strong>b</p>\n+<p><em>foo</em> <strong>bar</strong> <em><strong>baz</strong></em></p>\n+<p>a<em>b</em>c a<strong>b</strong>c a_b_c a__b__c</p>\n+<p>\u00ab<em>foo</em>\u00bb</p>\n+<p>\u00ab<strong>foo</strong>\u00bb</p>\n+<p>\u00ab<em><em>a</em> b</em></p>\n+<p>\u00ab<em>a</em>_ b__</p>\n+<p>\u00ab__\u00aba_ b_</p>\n+<p>\u00ab_\u00aba__ b__</p>\n+<p>\u00ab<em><strong>\u00aba</strong></em>\u00bb</p>\n+<p>\u0301_a_</p>\n+<p>\u0301__a__</p>\n+<p>a_\u0301_</p>\n+<p>a__\u0301__</p>\n+<p>a<em>\u0301</em>b</p>\n+<p>\ud800\udd00<em>foo</em></p>\n+<p>\ud800\udd00<em>\u00abfoo\u00bb</em></p>\n+<p>\ud800\udd00<em>\u00abfoo\u00bb</em></p>\n+<p>\u0301*\u00abfoo\u00bb*</p>\n+<p>\u00ab<em>\u0301</em>\u00bb</p>\n+<p>a**b*\ud800\udd00c*</p>\n+<p>~<em>a** b</em></p>\n+<p>~<strong>a* b</strong></p>\ndiff --git a/test/specs/new/em_delimiter_flanking_gfm.md b/test/specs/new/em_delimiter_flanking_gfm.md\nnew file mode 100644\nindex 0000000..1408fdd\n--- /dev/null\n+++ b/test/specs/new/em_delimiter_flanking_gfm.md\n@@ -0,0 +1,69 @@\n+---\n+gfm: true\n+renderExact: true\n+---\n+a**b* c*\n+\n+a*b** c**\n+\n+a***b**\n+\n+a**b***\n+\n+a***b***c\n+\n+a******b***c\n+\n+a***b******c\n+\n+*a**b*\n+\n+**a*b*c\n+\n+***a*b\n+\n+***a**b\n+\n+*foo* **bar** ***baz***\n+\n+a*b*c a**b**c a_b_c a__b__c\n+\n+\u00ab_foo_\u00bb\n+\n+\u00ab__foo__\u00bb\n+\n+\u00ab__a_ b_\n+\n+\u00ab_a__ b__\n+\n+\u00ab__\u00aba_ b_\n+\n+\u00ab_\u00aba__ b__\n+\n+\u00ab___\u00aba___\u00bb\n+\n+\u0301_a_\n+\n+\u0301__a__\n+\n+a_\u0301_\n+\n+a__\u0301__\n+\n+a*\u0301*b\n+\n+\ud800\udd00_foo_\n+\n+\ud800\udd00*\u00abfoo\u00bb*\n+\n+\ud800\udd00_\u00abfoo\u00bb_\n+\n+\u0301*\u00abfoo\u00bb*\n+\n+\u00ab*\u0301*\u00bb\n+\n+a**b*\ud800\udd00c*\n+\n+~*a** b*\n+\n+~**a* b**\n",
+    "proposal": "fix: correct CommonMark emphasis delimiter handling\n\nApply flanking and multiple-of-three rules to both opening and closing runs, preserving original run context during retries. Handle Unicode punctuation and combining marks correctly, with focused CommonMark and GFM regressions.\n\nVerification:\n\n- Build, TypeScript, ESLint and independent review passed.\n- All 1,881 spec tests passed.\n- Unit run: 206 passed; seven CLI assertions failed from injected runtime warnings. All 25 CLI tests then passed with warnings suppressed.\n\nQuadratic stress tests were excluded; benchmarks were not run. Changes remain in the checkout."
+  },
+  "assessor_costs": [
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 424988,
+        "cachedInputTokens": 356224,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2548,
+        "reasoningOutputTokens": 260,
+        "totalTokens": 427536
+      },
+      "threads": 1,
+      "usd_estimate": 0.19863039999999998
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 108788,
+        "cachedInputTokens": 79488,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 261,
+        "reasoningOutputTokens": 60,
+        "totalTokens": 109049
+      },
+      "threads": 1,
+      "usd_estimate": 0.0691588
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 375738,
+        "cachedInputTokens": 334592,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2473,
+        "reasoningOutputTokens": 210,
+        "totalTokens": 378211
+      },
+      "threads": 1,
+      "usd_estimate": 0.1404812
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 515672,
+        "cachedInputTokens": 461312,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 4156,
+        "reasoningOutputTokens": 249,
+        "totalTokens": 519828
+      },
+      "threads": 1,
+      "usd_estimate": 0.1964112
+    }
+  ],
+  "observations": [
+    {
+      "id": "base-preservation",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "receipt_sha256": "408bb05e300b92c414f0ff73539ea37021aeae2090f68ae7fb4738b42375291e",
+      "evidence": {
+        "case": "marked",
+        "registration_sha256": "fac6124975a2742e141c19c6f24f3d2e4aabea52049931bb31ee3cdfe8257b75",
+        "source_receipt_sha256": "9780906388d6d08e30bbc628742323faa68e3af3480292dd8d4d53f7ff02466b",
+        "scope": "Post-submission input-level comparison against the base on the registered 3,648-input corpus. The probe retains all mismatch witnesses. Counts reconcile to the original capped output. This diagnostic has no effect on the primary gates or scores.",
+        "roles": {
+          "base": {
+            "grade_sha256": "f24722fc2f4ae88a68845bcd5886033787965ab0cdf0eec99ffb8343b6923890",
+            "patch_sha256": null,
+            "fixed_from_base": 0,
+            "still_wrong": 123,
+            "introduced": []
+          },
+          "gold": {
+            "grade_sha256": "04fcaed84510d847132e6c573d08c1d1fdaa94d2e30ed6a218817051c2286430",
+            "patch_sha256": "3affc55aebbd9f2345b890cb9f6dc40a6fdb024bc4674e697ffaaf37d49dcd6a",
+            "fixed_from_base": 62,
+            "still_wrong": 61,
+            "introduced": []
+          },
+          "candidate/develop": {
+            "grade_sha256": "c5dcd9ef4f7fb0e68784813383b460b76bb9029ad83e9cec9b1c8626bf1fb7b2",
+            "patch_sha256": "607552b27df7cd463bd9f9257be37e51e72928eb0ce66abcdd3b6384fa8ec3f2",
+            "fixed_from_base": 60,
+            "still_wrong": 63,
+            "introduced": [
+              {
+                "input": "x a_*a** x",
+                "expected": "x a_<em>a</em>* x",
+                "actual": "x a_*a** x"
+              }
+            ]
+          },
+          "candidate/control": {
+            "grade_sha256": "914480ee8558205091eb2a7f1297892294d59fe89fc9ef8db5ac8bbfddbbaaea",
+            "patch_sha256": "20db5edba4065c75431613a8e7d04009b5256fcd6065618bf2f0297350a79e35",
+            "fixed_from_base": 117,
+            "still_wrong": 6,
+            "introduced": [
+              {
+                "input": "x **a*a* x",
+                "expected": "x **a<em>a</em> x",
+                "actual": "x *<em>a*a</em> x"
+              }
+            ]
+          },
+          "prior/develop": {
+            "grade_sha256": "ece3a8cb299d5e13b5c850e1e99e2726f113fd43a0193eeec507e3ee1b4e790a",
+            "patch_sha256": "6bdaf74a195b557a8db2d1741b17b6056df33ca4b2c56b2802c6ebcbe85c5c6c",
+            "fixed_from_base": 44,
+            "still_wrong": 79,
+            "introduced": [
+              {
+                "input": "x **a*a* x",
+                "expected": "x **a<em>a</em> x",
+                "actual": "x *<em>a*a</em> x"
+              },
+              {
+                "input": "x a_*a** x",
+                "expected": "x a_<em>a</em>* x",
+                "actual": "x a_*a** x"
+              }
+            ]
+          }
+        },
+        "probe_file": "corpus.cjs",
+        "probe_sha256": "22d2e1ebb5d298c0a1e33e594594481bb12ba47b34ab6abc5528051e5f5ebe49"
+      },
+      "probe": "const { readFileSync } = require(\"node:fs\");\nconst { createRequire } = require(\"node:module\");\nconst { pathToFileURL } = require(\"node:url\");\nconst load = createRequire(\"/work/package.json\");\nconst { Parser, HtmlRenderer } = load(\"commonmark\");\nconst markdownIt = load(\"markdown-it\")(\"commonmark\");\n\n(async () => {\n  const { marked } = await import(pathToFileURL(\"/work/lib/marked.esm.js\"));\n  const common = new Parser();\n  const html = new HtmlRenderer();\n  const specs = JSON.parse(readFileSync(\"/work/test/specs/commonmark/commonmark.0.31.2.json\"))\n    .filter(row => row.section === \"Emphasis and strong emphasis\");\n  const mismatchedSpec = specs.filter(row => marked.parse(row.markdown, { gfm: false }) !== row.html);\n  const observations = { official_examples: specs.length, official_mismatches: mismatchedSpec.map(row => row.example),\n    generated: 0, reference_disagreements: 0, differs_from_both: 0, shortest: [] };\n  let current = [\"\"];\n  for (let length = 1; length <= 6; length++) {\n    current = current.flatMap(prefix => [\"*\", \"_\", \"a\", \"!\"].map(c => prefix + c));\n    for (const form of current) {\n      if (!form.includes(\"a\") || (form.match(/[*_]/g) || []).length < 2) continue;\n      const input = \"x \" + form + \" x\";\n      const a = html.render(common.parse(input));\n      const b = markdownIt.renderInline(input);\n      observations.generated++;\n      if (a !== \"<p>\" + b + \"</p>\\n\") {\n        observations.reference_disagreements++;\n        continue;\n      }\n      const actual = marked.parseInline(input, { gfm: false });\n      if (actual !== b) {\n        observations.differs_from_both++;\n        observations.shortest.push({ input, expected: b, actual });\n      }\n    }\n  }\n  console.log(JSON.stringify(observations));\n})().catch(error => { console.error(error); process.exitCode = 1; });\n"
+    },
+    {
+      "id": "guide-footprint",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "receipt_sha256": "79b749e053bc3ba2aba8c57f658ac1c42e4772c581e036ac040b7d2e76ad7d30",
+      "evidence": {
+        "case": "marked",
+        "registration_sha256": "fac6124975a2742e141c19c6f24f3d2e4aabea52049931bb31ee3cdfe8257b75",
+        "scope": "Counts distinct files named in successful root commands. Full visibility means the entire trimmed guide appeared in one tool result, including a later PTY poll. File size is a description of the named sources, not prompt tokens. Omitted or truncated text and actual cognitive use remain unknown.",
+        "roles": {
+          "candidate/develop": {
+            "state": "timeout",
+            "native_sha256": "91b2c599c2fc69dd259aca2268e52c2235bf4c5a9acded187b78f836527062b3",
+            "usage_coverage": "lower bound",
+            "usd": 1.2032951999999997,
+            "root_commands": 50,
+            "children": 4,
+            "guides": {
+              "AGENTS.md": {
+                "successful_root_commands_naming_guide": 4,
+                "file_bytes": 1300,
+                "file_sha256": "3f3d4881a903b94d30a4ef2bce2d28f090e75579b182d59250805534d30ec8b3",
+                "whole_text_visible": false
+              },
+              "adversarial-loop/SKILL.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 9496,
+                "file_sha256": "6c8605f4b1741e286e5cbd97cfd1629682d92ae781138c678655f19d4c675097",
+                "whole_text_visible": true
+              },
+              "develop/references/planning-and-review.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 3989,
+                "file_sha256": "f8ab46ebc104550de234edba7cef1b08a4a2eb7e468c0553105cd111f4995f86",
+                "whole_text_visible": true
+              },
+              "engineering-design/SKILL.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 1782,
+                "file_sha256": "0b1d387d2367c88f8b7b065b6c18503bf140992ab8910cad263d26c93ff61f73",
+                "whole_text_visible": true
+              },
+              "iterate/references/local-changes.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 2092,
+                "file_sha256": "b41cf399a559226fe2776690952f36eb62986647b165111022a19d2c11bfe0e0",
+                "whole_text_visible": true
+              }
+            },
+            "distinct_named_guide_bytes": 18659
+          },
+          "candidate/control": {
+            "state": "timeout",
+            "native_sha256": "e4a66b61d02847ac8d8eb2dcf4abe7321b652df370535d1d49d1e1edcae79369",
+            "usage_coverage": "lower bound",
+            "usd": 0.9236216,
+            "root_commands": 53,
+            "children": 0,
+            "guides": {},
+            "distinct_named_guide_bytes": 0
+          },
+          "prior/develop": {
+            "state": "completed",
+            "native_sha256": "f07198bb40c38c568fcacdb363d5940abc13783ff41d181c1052195c75e1fe16",
+            "usage_coverage": "complete",
+            "usd": 0.9111504000000001,
+            "root_commands": 43,
+            "children": 3,
+            "guides": {
+              "AGENTS.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 1300,
+                "file_sha256": "3f3d4881a903b94d30a4ef2bce2d28f090e75579b182d59250805534d30ec8b3",
+                "whole_text_visible": false
+              },
+              "adversarial-loop/SKILL.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 9496,
+                "file_sha256": "6c8605f4b1741e286e5cbd97cfd1629682d92ae781138c678655f19d4c675097",
+                "whole_text_visible": true
+              },
+              "develop/references/planning-and-review.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 3989,
+                "file_sha256": "f8ab46ebc104550de234edba7cef1b08a4a2eb7e468c0553105cd111f4995f86",
+                "whole_text_visible": true
+              },
+              "engineering-design/SKILL.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 1782,
+                "file_sha256": "0b1d387d2367c88f8b7b065b6c18503bf140992ab8910cad263d26c93ff61f73",
+                "whole_text_visible": true
+              },
+              "iterate/references/local-changes.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 2067,
+                "file_sha256": "a8fad0dbd56899ea23c74278f42d34afac072f72584a1d5ab6583ebd7b66df52",
+                "whole_text_visible": true
+              }
+            },
+            "distinct_named_guide_bytes": 18634
+          }
+        }
+      }
+    },
+    {
+      "id": "participant-regression-replay",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "receipt_sha256": "7a605b43d94613150ff13415b891bb3caf05a17958b8f9589556493cd6e401ac",
+      "evidence": {
+        "case": "marked",
+        "registration_sha256": "fac6124975a2742e141c19c6f24f3d2e4aabea52049931bb31ee3cdfe8257b75",
+        "source_receipt_sha256": "9780906388d6d08e30bbc628742323faa68e3af3480292dd8d4d53f7ff02466b",
+        "probe_file": "review-replay.cjs",
+        "probe_sha256": "6386f2e7fc3f9c1cd3b4f2727ffb788d11d4ce5167ab367c286b8307c9c601df",
+        "scope": "Diagnostic after the candidate timeout. Replays two candidate fixture inputs and four examples from its second artifact reviewer. Groups split the registered 3,648 inputs by delimiter types. Pairs give inputs tested and outputs differing from both parsers. Primary scores are unchanged.",
+        "roles": {
+          "base": {
+            "grade_sha256": "f24722fc2f4ae88a68845bcd5886033787965ab0cdf0eec99ffb8343b6923890",
+            "patch_sha256": null,
+            "observations": {
+              "replay": [
+                {
+                  "input": "a**b*",
+                  "expected": "a**b*",
+                  "actual": "a*<em>b</em>"
+                },
+                {
+                  "input": "!__!_",
+                  "expected": "!__!_",
+                  "actual": "!_<em>!</em>"
+                },
+                {
+                  "input": "_a__!__!",
+                  "expected": "<em>a</em>_!__!",
+                  "actual": "<em>a</em>_!__!"
+                },
+                {
+                  "input": "!_a__!__!",
+                  "expected": "!<em>a</em>_!__!",
+                  "actual": "!<em>a</em>_!__!"
+                },
+                {
+                  "input": "__a___!__!",
+                  "expected": "<strong>a</strong>_!__!",
+                  "actual": "<strong>a</strong>_!__!"
+                },
+                {
+                  "input": "!__a___!__!",
+                  "expected": "!<strong>a</strong>_!__!",
+                  "actual": "!<strong>a</strong>_!__!"
+                }
+              ],
+              "groups": {
+                "asterisks": [
+                  546,
+                  22
+                ],
+                "underscores": [
+                  546,
+                  7
+                ],
+                "both": [
+                  2556,
+                  94
+                ]
+              }
+            },
+            "probe_sha256": "6386f2e7fc3f9c1cd3b4f2727ffb788d11d4ce5167ab367c286b8307c9c601df"
+          },
+          "gold": {
+            "grade_sha256": "04fcaed84510d847132e6c573d08c1d1fdaa94d2e30ed6a218817051c2286430",
+            "patch_sha256": "3affc55aebbd9f2345b890cb9f6dc40a6fdb024bc4674e697ffaaf37d49dcd6a",
+            "observations": {
+              "replay": [
+                {
+                  "input": "a**b*",
+                  "expected": "a**b*",
+                  "actual": "a**b*"
+                },
+                {
+                  "input": "!__!_",
+                  "expected": "!__!_",
+                  "actual": "!__!_"
+                },
+                {
+                  "input": "_a__!__!",
+                  "expected": "<em>a</em>_!__!",
+                  "actual": "<em>a</em>_!__!"
+                },
+                {
+                  "input": "!_a__!__!",
+                  "expected": "!<em>a</em>_!__!",
+                  "actual": "!<em>a</em>_!__!"
+                },
+                {
+                  "input": "__a___!__!",
+                  "expected": "<strong>a</strong>_!__!",
+                  "actual": "<strong>a</strong>_!__!"
+                },
+                {
+                  "input": "!__a___!__!",
+                  "expected": "!<strong>a</strong>_!__!",
+                  "actual": "!<strong>a</strong>_!__!"
+                }
+              ],
+              "groups": {
+                "asterisks": [
+                  546,
+                  1
+                ],
+                "underscores": [
+                  546,
+                  0
+                ],
+                "both": [
+                  2556,
+                  60
+                ]
+              }
+            },
+            "probe_sha256": "6386f2e7fc3f9c1cd3b4f2727ffb788d11d4ce5167ab367c286b8307c9c601df"
+          },
+          "candidate/develop": {
+            "grade_sha256": "c5dcd9ef4f7fb0e68784813383b460b76bb9029ad83e9cec9b1c8626bf1fb7b2",
+            "patch_sha256": "607552b27df7cd463bd9f9257be37e51e72928eb0ce66abcdd3b6384fa8ec3f2",
+            "observations": {
+              "replay": [
+                {
+                  "input": "a**b*",
+                  "expected": "a**b*",
+                  "actual": "a**b*"
+                },
+                {
+                  "input": "!__!_",
+                  "expected": "!__!_",
+                  "actual": "!__!_"
+                },
+                {
+                  "input": "_a__!__!",
+                  "expected": "<em>a</em>_!__!",
+                  "actual": "<em>a</em>_!__!"
+                },
+                {
+                  "input": "!_a__!__!",
+                  "expected": "!<em>a</em>_!__!",
+                  "actual": "!<em>a</em>_!__!"
+                },
+                {
+                  "input": "__a___!__!",
+                  "expected": "<strong>a</strong>_!__!",
+                  "actual": "<strong>a</strong>_!__!"
+                },
+                {
+                  "input": "!__a___!__!",
+                  "expected": "!<strong>a</strong>_!__!",
+                  "actual": "!<strong>a</strong>_!__!"
+                }
+              ],
+              "groups": {
+                "asterisks": [
+                  546,
+                  1
+                ],
+                "underscores": [
+                  546,
+                  0
+                ],
+                "both": [
+                  2556,
+                  63
+                ]
+              }
+            },
+            "probe_sha256": "6386f2e7fc3f9c1cd3b4f2727ffb788d11d4ce5167ab367c286b8307c9c601df"
+          },
+          "candidate/control": {
+            "grade_sha256": "914480ee8558205091eb2a7f1297892294d59fe89fc9ef8db5ac8bbfddbbaaea",
+            "patch_sha256": "20db5edba4065c75431613a8e7d04009b5256fcd6065618bf2f0297350a79e35",
+            "observations": {
+              "replay": [
+                {
+                  "input": "a**b*",
+                  "expected": "a**b*",
+                  "actual": "a**b*"
+                },
+                {
+                  "input": "!__!_",
+                  "expected": "!__!_",
+                  "actual": "!__!_"
+                },
+                {
+                  "input": "_a__!__!",
+                  "expected": "<em>a</em>_!__!",
+                  "actual": "<em>a</em><em>!</em>_!"
+                },
+                {
+                  "input": "!_a__!__!",
+                  "expected": "!<em>a</em>_!__!",
+                  "actual": "!<em>a</em><em>!</em>_!"
+                },
+                {
+                  "input": "__a___!__!",
+                  "expected": "<strong>a</strong>_!__!",
+                  "actual": "<strong>a</strong><em>!</em>_!"
+                },
+                {
+                  "input": "!__a___!__!",
+                  "expected": "!<strong>a</strong>_!__!",
+                  "actual": "!<strong>a</strong><em>!</em>_!"
+                }
+              ],
+              "groups": {
+                "asterisks": [
+                  546,
+                  2
+                ],
+                "underscores": [
+                  546,
+                  1
+                ],
+                "both": [
+                  2556,
+                  4
+                ]
+              }
+            },
+            "probe_sha256": "6386f2e7fc3f9c1cd3b4f2727ffb788d11d4ce5167ab367c286b8307c9c601df"
+          },
+          "prior/develop": {
+            "grade_sha256": "ece3a8cb299d5e13b5c850e1e99e2726f113fd43a0193eeec507e3ee1b4e790a",
+            "patch_sha256": "6bdaf74a195b557a8db2d1741b17b6056df33ca4b2c56b2802c6ebcbe85c5c6c",
+            "observations": {
+              "replay": [
+                {
+                  "input": "a**b*",
+                  "expected": "a**b*",
+                  "actual": "a**b*"
+                },
+                {
+                  "input": "!__!_",
+                  "expected": "!__!_",
+                  "actual": "!__!_"
+                },
+                {
+                  "input": "_a__!__!",
+                  "expected": "<em>a</em>_!__!",
+                  "actual": "<em>a</em><em>!</em>_!"
+                },
+                {
+                  "input": "!_a__!__!",
+                  "expected": "!<em>a</em>_!__!",
+                  "actual": "!<em>a</em><em>!</em>_!"
+                },
+                {
+                  "input": "__a___!__!",
+                  "expected": "<strong>a</strong>_!__!",
+                  "actual": "<strong>a</strong><em>!</em>_!"
+                },
+                {
+                  "input": "!__a___!__!",
+                  "expected": "!<strong>a</strong>_!__!",
+                  "actual": "!<strong>a</strong><em>!</em>_!"
+                }
+              ],
+              "groups": {
+                "asterisks": [
+                  546,
+                  7
+                ],
+                "underscores": [
+                  546,
+                  0
+                ],
+                "both": [
+                  2556,
+                  74
+                ]
+              }
+            },
+            "probe_sha256": "6386f2e7fc3f9c1cd3b4f2727ffb788d11d4ce5167ab367c286b8307c9c601df"
+          }
+        }
+      },
+      "probe": "const { createRequire } = require(\"node:module\");\nconst load = createRequire(\"/work/package.json\");\nconst { Parser, HtmlRenderer } = load(\"commonmark\");\nconst markdownIt = load(\"markdown-it\")(\"commonmark\");\n\n(async () => {\n  const { marked } = await import(\"/work/lib/marked.esm.js\");\n  const parser = new Parser();\n  const renderer = new HtmlRenderer();\n  const samples = [\"a**b*\", \"!__!_\", \"_a__!__!\", \"!_a__!__!\", \"__a___!__!\", \"!__a___!__!\"];\n  const replay = samples.map(input => {\n    const expected = markdownIt.renderInline(input);\n    if (renderer.render(parser.parse(input)) !== `<p>${expected}</p>\\n`) throw Error(input);\n    return { input, expected, actual: marked.parseInline(input, { gfm: false }) };\n  });\n  let forms = [\"\"];\n  const groups = { asterisks: [0, 0], underscores: [0, 0], both: [0, 0] };\n  for (let len = 1; len <= 6; len++) {\n    forms = forms.flatMap(s => [\"*\", \"_\", \"a\", \"!\"].map(c => s + c));\n    for (const form of forms) {\n      if (!form.includes(\"a\") || (form.match(/[*_]/g) || []).length < 2) continue;\n      const input = \"x \" + form + \" x\";\n      const expected = markdownIt.renderInline(input);\n      if (renderer.render(parser.parse(input)) !== `<p>${expected}</p>\\n`) throw Error(input);\n      const counts = form.includes(\"*\") ? form.includes(\"_\") ? groups.both : groups.asterisks : groups.underscores;\n      counts[0]++;\n      counts[1] += Number(marked.parseInline(input, { gfm: false }) !== expected);\n    }\n  }\n  console.log(JSON.stringify({ replay, groups }));\n})().catch(error => { console.error(error); process.exitCode = 1; });\n"
+    },
+    {
+      "id": "review-and-generated-comparison",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "receipt_sha256": "3ebb201f3068ff8ce2bbe5970e7eb93e375655669cb9920c65a0e5e6b45a281f",
+      "evidence": {
+        "case": "marked",
+        "registration_sha256": "fac6124975a2742e141c19c6f24f3d2e4aabea52049931bb31ee3cdfe8257b75",
+        "attempt_sha256": "6a932745946ce4210efc6da6ddf4f0d5e0997d00755402a6d23f1208f8d3764d",
+        "native_sha256": "91b2c599c2fc69dd259aca2268e52c2235bf4c5a9acded187b78f836527062b3",
+        "grade_sha256": "c5dcd9ef4f7fb0e68784813383b460b76bb9029ad83e9cec9b1c8626bf1fb7b2",
+        "patch_sha256": "607552b27df7cd463bd9f9257be37e51e72928eb0ce66abcdd3b6384fa8ec3f2",
+        "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "threads": {
+          "artifact_review_fixed": {
+            "thread_id": "01a18a39-ec9b-79f1-a7da-5d14d379c169",
+            "trace_sha256": "fda8a28744490939e709f3d00cd4ae30f1ab5b939955b9b6b0958639572a85a4",
+            "started": "2026-10-30T00:33:35.068Z",
+            "verdict": "Changes required on source5, HEAD `5276019457ef4588d49c8f73675bd678317367ad` plus dirty changes.\n\nOriginal run context is recovered after opener eligibility checks. Consequently, a remaining underscore from a partially consumed closing run can incorrectly open emphasis. Expanded differential evidence reports four introduced regressions:\n\n- `_a__!__!`\n- `!_a__!__!`\n- `__a___!__!`\n- `!__a___!__!`\n\nEach incorrectly adds `<em>!</em>` where the remaining underscores should stay literal. Apply original run context before eligibility checks and add regression fixtures.\n\nReviewed SHA-256:\n\n- Lexer: `abf6ec3e3b70a522a2e36e5ff99511c86b362af8c1ad93bcdac8dd3faf59eb8c`\n- Tokenizer: `66b6f4d112a8e9317e762dde4bb52491cd94f0a3e5798e59caf43dd9ad59e389`\n- rules: `e2c42008eafc2ded64cdd5edb0e3f318b4936cb646babf5825970da4d86ca0fb`\n\nFixtures otherwise cover both parsing modes, ordinary emphasis, intraword behavior, Unicode punctuation and combining marks. No additional API, dependency, or regex-backtracking issue identified. Final build/test evidence was unavailable during this checkpoint; source6 is outside this verdict.",
+            "verdict_sha256": "743d7fb59662344cc2b40da72934e8d81e253e85024c46885d7b5367da694734",
+            "verdict_time": "2026-10-30T00:35:00.967Z",
+            "fork_turns": "none",
+            "spawn_time": "2026-10-30T00:33:33.850Z",
+            "model": "gpt-6.1-sol",
+            "effort": "medium"
+          },
+          "intent_review": {
+            "thread_id": "01a18a2b-0a5c-7c52-b7a2-bf02bf6c8af2",
+            "trace_sha256": "781ee1e6696045fda603084a96bfa5b651c909419653849b27bdc4104b28c624",
+            "started": "2026-10-30T00:17:19.274Z",
+            "verdict": "Aligned with user intent at `5276019457ef4588d49c8f73675bd678317367ad`.\n\nConfirmed source risks:\n\n- Rule-of-three currently considers dual-purpose closers but misses dual-purpose openers paired with closer-only runs.\n- Underscore opening rejects letters/numbers, leaving combining marks incorrectly eligible.\n- `Lexer.prevChar` retains one UTF-16 code unit, misclassifying astral punctuation.\n- Changes must preserve GFM tilde classification, pedantic quote behavior, `midRun` handling, and delimiter accounting.\n\nThe proposed focused source changes and regression fixtures fit the task and repository priorities. Verification should include allowed multiples of three, ordinary/intraword emphasis, Unicode punctuation, combining marks, and short delimiter combinations.\n\nRead-only intent review; no implementation or runtime validation performed.",
+            "verdict_sha256": "f5a863c835483064f928ee67c2d67202c59e8a407170c1d99eda86d79b0f8e1e",
+            "verdict_time": "2026-10-30T00:17:52.210Z",
+            "fork_turns": "none",
+            "spawn_time": "2026-10-30T00:17:17.340Z",
+            "model": "gpt-6.1-sol",
+            "effort": "medium"
+          },
+          "root": {
+            "thread_id": "01a18a2a-111e-74a3-9f27-b7d0246e9421",
+            "trace_sha256": "199477ee59b71bc8bb48638e0f55017df998384cd9dbb0341d7b05e6dd33f3dc",
+            "started": "2026-10-30T00:16:20.558Z"
+          },
+          "updated_intent": {
+            "thread_id": "01a18a2f-04e1-7260-a458-841646655325",
+            "trace_sha256": "058fd88e9912899b6c762885aee460d7879ae9995ac9f7cd4b87f598bebb3fa1",
+            "started": "2026-10-30T00:21:40.496Z",
+            "verdict": "Aligned.\n\nReviewed HEAD `5276019457ef4588d49c8f73675bd678317367ad` plus dirty changes in `Lexer.ts`, `Tokenizer.ts`, and `rules.ts`, against AGENTS.md and relevant inline callers.\n\nThe implementation scope matches the updated brief: preserve regex scanning and tokens, correct Unicode flanking context, apply rule-of-three when either endpoint is dual-purpose, and retain original run context across star suffix retries. Existing GFM and pedantic rule selection remains intact.\n\nAdd a baseline timing/scaling comparison for long unmatched star runs. The backward scan is bounded by the original run per retry, but repeated retries cumulatively revisit it quadratically. Existing run-length counting already has similar repeated work; the unresolved concern is added cost, not a demonstrated new complexity class.\n\nLimits: read-only intent review; no test execution or completed-fixture review.",
+            "verdict_sha256": "9b2704cb057d485822033c6dd6600882288883cb6ce72b799b1bbdca2d343905",
+            "verdict_time": "2026-10-30T00:22:38.342Z",
+            "fork_turns": "none",
+            "spawn_time": "2026-10-30T00:21:37.920Z",
+            "model": "gpt-6.1-sol",
+            "effort": "medium"
+          },
+          "artifact_review": {
+            "thread_id": "01a18a32-8cd5-76d0-9ffd-4c165883a49c",
+            "trace_sha256": "ad3be590a751023705b3a4d972d348c3cfaa7170bf0f69402ecac4dcfa7783c3",
+            "started": "2026-10-30T00:25:31.680Z",
+            "verdict": "Aligned with current revision; no material introduced defect found.\n\nVerified code and focused fixtures cover rule-of-three rejection, dual-purpose delimiter runs, ordinary/intraword emphasis, Unicode punctuation, astral context, and combining marks.\n\nLimits:\n\n- Existing scanner divergences remain, including `**!a*` and `***a*a`.\n- Lone low surrogates can still misclassify context; observed output is pre-existing.\n- Preliminary timings do not isolate a new performance regression.\n- Final build, types, and suite results were unavailable during review.",
+            "verdict_sha256": "6e05a16994a7700e593555989d8817c2910153704403b12dac6c24b12ed67346",
+            "verdict_time": "2026-10-30T00:28:21.476Z",
+            "fork_turns": "none",
+            "spawn_time": "2026-10-30T00:25:29.464Z",
+            "model": "gpt-6.1-sol",
+            "effort": "medium"
+          }
+        },
+        "graded_source_sha256": {
+          "src/Lexer.ts": "abf6ec3e3b70a522a2e36e5ff99511c86b362af8c1ad93bcdac8dd3faf59eb8c",
+          "src/Tokenizer.ts": "21ac4f6c6b87cf12a56831e3b4792eca6da6057215a68adb8d3bebce70a069db",
+          "src/rules.ts": "e2c42008eafc2ded64cdd5edb0e3f318b4936cb646babf5825970da4d86ca0fb"
+        },
+        "graded_fixture_sha256": {
+          "em_delimiter_flanking_commonmark.html": "713c0531a9ec3426de469c563f62815462f59535407064718dda6bcc7f3850b8",
+          "em_delimiter_flanking.html": "713c0531a9ec3426de469c563f62815462f59535407064718dda6bcc7f3850b8",
+          "em_delimiter_flanking.md": "95849971d3cff6ac6a24211038281974523a8edf3b0bc189506db7ac0b1c3c2a",
+          "em_delimiter_flanking_commonmark.md": "b9fefb6861e147da1cab207ebb2ec1960f9f1b25f41221d2738b89cfe652eaf9"
+        },
+        "successful_command_receipts": {
+          "16": {
+            "thread": "01a18a2a-111e-74a3-9f27-b7d0246e9421",
+            "command_sha256": "2e6bcad3877a9670ce7bf967972370fad60dafc392caa25589c6f54afd9cec8e",
+            "exit": 0
+          },
+          "25": {
+            "thread": "01a18a2a-111e-74a3-9f27-b7d0246e9421",
+            "command_sha256": "1c1d335a4b1914d3b8cf636bf2b41b9f0aaf009c750d959e05fce4bdb1fc022a",
+            "exit": 0
+          },
+          "47": {
+            "thread": "01a18a2a-111e-74a3-9f27-b7d0246e9421",
+            "command_sha256": "e8dfa39f48d3dd6c2a5c3cb6e04887029f9d8ac0410973bf6ea2fc1bf631783c",
+            "exit": 0
+          },
+          "48": {
+            "thread": "01a18a32-8cd5-76d0-9ffd-4c165883a49c",
+            "command_sha256": "70cae960f45101d8d7c062af301beb184f7bdc50e46558025112bc3cba3cfe04",
+            "exit": 0
+          }
+        },
+        "differential_readbacks": [
+          {
+            "timestamp": "2026-10-30T00:22:18.547Z",
+            "output_sha256": "abeaadf5dd0939620c6739060520b4fa3849b819de64dc536ea4be7c9df16f6b",
+            "introduced_three_run_differences": 21
+          },
+          {
+            "timestamp": "2026-10-30T00:25:19.667Z",
+            "output_sha256": "ca58e66a26610042f8ed68b799480ac683ca0c482ba5bc60c842b81d928cd382",
+            "introduced_three_run_differences": 0
+          }
+        ],
+        "first_tokenizer_edit": "2026-10-30T00:19:00.726Z",
+        "last_tokenizer_edit": "2026-10-30T00:34:12.512Z",
+        "final_reviewed_tokenizer_sha256": "66b6f4d112a8e9317e762dde4bb52491cd94f0a3e5798e59caf43dd9ad59e389",
+        "independent_cases_matching": 2,
+        "independent_cases": 6,
+        "scope": "Sealed participant work and review history. The root compared generated lengths and contexts using one delimiter per generated form, then checked fixtures against the bundled parser. Fresh initial intent preceded the first edit. Updated intent aligned after scope edits had started. The first artifact verdict preceded a failing spec. The second required changes on source5 and explicitly excluded the material source6 repair. No later matching reviewer verdict was recorded. Original scores and timeout are unchanged."
+      }
+    },
+    {
+      "id": "short-delimiter-runs",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "receipt_sha256": "9780906388d6d08e30bbc628742323faa68e3af3480292dd8d4d53f7ff02466b",
+      "evidence": {
+        "case": "marked",
+        "registration_sha256": "fac6124975a2742e141c19c6f24f3d2e4aabea52049931bb31ee3cdfe8257b75",
+        "probe_sha256": "cd5e65a5b6d3d2abe4d1fa71c1bb6620816688f9af59b5738689960a39892c6c",
+        "source_sha256": "3d36d08687a9dd926a077d89e0c63f1b34c24a623820a73341b81894f92a57f0",
+        "measurement_sha256": "e5d2eb67d4f7a20b11af936d81d4a0aaf0b159425206b474ef5a32877fa08b9f",
+        "roles": {
+          "base": {
+            "grade_sha256": "f24722fc2f4ae88a68845bcd5886033787965ab0cdf0eec99ffb8343b6923890",
+            "patch_sha256": null,
+            "observations": {
+              "official_examples": 132,
+              "official_mismatches": [],
+              "generated": 3648,
+              "reference_disagreements": 0,
+              "differs_from_both": 123,
+              "shortest": [
+                {
+                  "input": "x **_a* x",
+                  "expected": "x *<em>_a</em> x",
+                  "actual": "x **_a* x"
+                },
+                {
+                  "input": "x **!a* x",
+                  "expected": "x *<em>!a</em> x",
+                  "actual": "x **!a* x"
+                },
+                {
+                  "input": "x *_*a_ x",
+                  "expected": "x *<em>*a</em> x",
+                  "actual": "x *_*a_ x"
+                }
+              ]
+            }
+          },
+          "gold": {
+            "grade_sha256": "04fcaed84510d847132e6c573d08c1d1fdaa94d2e30ed6a218817051c2286430",
+            "patch_sha256": "3affc55aebbd9f2345b890cb9f6dc40a6fdb024bc4674e697ffaaf37d49dcd6a",
+            "observations": {
+              "official_examples": 132,
+              "official_mismatches": [],
+              "generated": 3648,
+              "reference_disagreements": 0,
+              "differs_from_both": 61,
+              "shortest": [
+                {
+                  "input": "x *_*a_ x",
+                  "expected": "x *<em>*a</em> x",
+                  "actual": "x *_*a_ x"
+                },
+                {
+                  "input": "x *_!a_ x",
+                  "expected": "x *<em>!a</em> x",
+                  "actual": "x *_!a_ x"
+                },
+                {
+                  "input": "x a*_*_ x",
+                  "expected": "x a*<em>*</em> x",
+                  "actual": "x a*_*_ x"
+                }
+              ]
+            }
+          },
+          "candidate/develop": {
+            "grade_sha256": "c5dcd9ef4f7fb0e68784813383b460b76bb9029ad83e9cec9b1c8626bf1fb7b2",
+            "patch_sha256": "607552b27df7cd463bd9f9257be37e51e72928eb0ce66abcdd3b6384fa8ec3f2",
+            "observations": {
+              "official_examples": 132,
+              "official_mismatches": [],
+              "generated": 3648,
+              "reference_disagreements": 0,
+              "differs_from_both": 64,
+              "shortest": [
+                {
+                  "input": "x *_*a_ x",
+                  "expected": "x *<em>*a</em> x",
+                  "actual": "x *_*a_ x"
+                },
+                {
+                  "input": "x *_!a_ x",
+                  "expected": "x *<em>!a</em> x",
+                  "actual": "x *_!a_ x"
+                },
+                {
+                  "input": "x a*_*_ x",
+                  "expected": "x a*<em>*</em> x",
+                  "actual": "x a*_*_ x"
+                }
+              ]
+            }
+          },
+          "candidate/control": {
+            "grade_sha256": "914480ee8558205091eb2a7f1297892294d59fe89fc9ef8db5ac8bbfddbbaaea",
+            "patch_sha256": "20db5edba4065c75431613a8e7d04009b5256fcd6065618bf2f0297350a79e35",
+            "observations": {
+              "official_examples": 132,
+              "official_mismatches": [],
+              "generated": 3648,
+              "reference_disagreements": 0,
+              "differs_from_both": 7,
+              "shortest": [
+                {
+                  "input": "x **a*a* x",
+                  "expected": "x **a<em>a</em> x",
+                  "actual": "x *<em>a*a</em> x"
+                },
+                {
+                  "input": "x *_*a_* x",
+                  "expected": "x <em><em>*a</em></em> x",
+                  "actual": "x *<em>*a</em>* x"
+                },
+                {
+                  "input": "x *a**_* x",
+                  "expected": "x <em>a</em>*_* x",
+                  "actual": "x <em>a</em><em>_</em> x"
+                }
+              ]
+            }
+          },
+          "prior/develop": {
+            "grade_sha256": "ece3a8cb299d5e13b5c850e1e99e2726f113fd43a0193eeec507e3ee1b4e790a",
+            "patch_sha256": "6bdaf74a195b557a8db2d1741b17b6056df33ca4b2c56b2802c6ebcbe85c5c6c",
+            "observations": {
+              "official_examples": 132,
+              "official_mismatches": [],
+              "generated": 3648,
+              "reference_disagreements": 0,
+              "differs_from_both": 81,
+              "shortest": [
+                {
+                  "input": "x **_a* x",
+                  "expected": "x *<em>_a</em> x",
+                  "actual": "x **_a* x"
+                },
+                {
+                  "input": "x **!a* x",
+                  "expected": "x *<em>!a</em> x",
+                  "actual": "x **!a* x"
+                },
+                {
+                  "input": "x *_*a_ x",
+                  "expected": "x *<em>*a</em> x",
+                  "actual": "x *_*a_ x"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]
+}

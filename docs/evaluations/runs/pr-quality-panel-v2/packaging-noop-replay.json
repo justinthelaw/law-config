@@ -1,0 +1,320 @@
+{
+  "format": "law-config.packaging-noop-postscore/v1",
+  "case": "packaging",
+  "scope": "One exposed historical baseline case; assessor-only post-score supplement. Official scores, gates, patches, prices and denominators unchanged. No treatment or promotion.",
+  "conclusion": "Specifier equality ignores nested prerelease policy, but ordinary batch filtering observes it. Both proposals discard a supported changed-policy replacement. Constructor/merge honor that narrow filter change. Exact equivalent-set no-op and changed-filter behavior can coexist in a small owned-source construction. Normative equivalence remains ambiguous, so this is not a retroactive failure ruling.",
+  "source": {
+    "base_commit": "fc613377731e5211ab6e08e6fd6163f09ae67ce8",
+    "merged_commit": "ffced26d0a30557a0e181dbaca561a0432ddec53",
+    "plan_sha256": "53a8bd549c93423b9ac7b889702be24b7b8823baaaba439a965e7ba6685975ad",
+    "published_run_sha256": "79d1eac46f473ecaf3d2620ddae08a903de6d9b3a9d93c64ee155364c2042160",
+    "published_submissions_sha256": "a3b37b03a7ce07ebe6a72bd3aa33b96284b6708d15b6957eddc158452b25a136",
+    "patches": {
+      "base": null,
+      "merged": "5eb48d6d82ccc17b5493067cb7a88a2f79c3316e591a7e508dc31532ae312829",
+      "control": "e6d4467904908d0c404371017a926e7c6c7d4dc4dfbc573727b6175d4fc229cf",
+      "develop": "739e6601e71f4d95f84dcd9453a3f18b5bd29c64eaf69ffde05446a4f979706e"
+    },
+    "official_points_100": {
+      "control": 96.25,
+      "develop": 96.25,
+      "upstream": 50.0
+    },
+    "read_only_exact_source": true,
+    "published_bundle": "baseline-53a8bd549c93",
+    "task": "Support Python's __replace__ protocol on Specifier and SpecifierSet. Callers can override the operator/version of a single specifier, the specifiers in a set, or prerelease handling. Omitted fields retain their original values, and explicitly resetting prereleases to None restores automatic behavior. A no-op replacement returns the same object. Preserve the original on changes and reject invalid replacements. Document and test the API. Explicitly replacing a set with its equivalent specifiers is also a no-op.",
+    "task_sha256": "a0852daf9b4ca1b988539971395783231eeb632e33c84043debde93e40a92bbb",
+    "frozen_worker_prompt_sha256": "2a48edfb86762a04f022f418fc0cc01158357dc6be18f831332d6aa4043b2e9d"
+  },
+  "runtime": {
+    "image": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+    "python": "3.13.18",
+    "dependencies_sha256": "be7e85582d2cfa345bc9c8603800fa48b18c73cb17295513e2ccd4bcd995046a",
+    "network": "none",
+    "production_mounts": "read-only",
+    "identity": "Imports asserted /work/src; authentic source/tests/docs verified against pinned Git and published patches in bound original receipts. Owned constructive copy changes only the no-op comparison.",
+    "cpus": {
+      "original_receipts": [
+        0,
+        1
+      ],
+      "constructive_replay": [
+        0,
+        1
+      ]
+    },
+    "new_paid_model_calls": 0
+  },
+  "source_files": {
+    "base": {
+      "docs/specifiers.rst": "345f24267fc849c7e9491c00827af3040bc5d02c2a12b03f3018cd47668a12e0",
+      "src/packaging/specifiers.py": "148611eab1005d9e39cbc2158bb4f93c9c0683130a0079447526df7b5d5c9f05"
+    },
+    "merged": {
+      "docs/specifiers.rst": "65ede67410f39293e57e41ec2fcac56d58efb6c6f4e3f54f3bf26483bc459206",
+      "src/packaging/specifiers.py": "c7c95fa9ee74797e85d55020074b0a6e0e1ddafebea98102b0a97ebd4cc5f328"
+    },
+    "control": {
+      "docs/specifiers.rst": "b3f04c1783a7f42920c1a3a2c86fc8c520082b29a845b4ee3bcf0964ce5c7f8c",
+      "src/packaging/specifiers.py": "ed7c7249210ed22ae1d4f674a00a9bae631f7a6cf22856f8631d60c8226e4cf1"
+    },
+    "develop": {
+      "docs/specifiers.rst": "e4b98ee6d7a2d0ecb39ee2897d70d5335ed2cde932d20d3942899289b5f324c2",
+      "src/packaging/specifiers.py": "891c0c2e25c8fedd37a63a9957d7beeb3fad64ae3b9277be1c0ecbbc1eb1a9c5"
+    }
+  },
+  "filter_witness": {
+    "versions": [
+      "1.1a1",
+      "1.1"
+    ],
+    "rows": {
+      "false_to_true": {
+        "input_policies": {
+          "old": false,
+          "new": true,
+          "outer": null
+        },
+        "original_filter": [
+          "1.1"
+        ],
+        "constructor_base_and_all": [
+          "1.1a1",
+          "1.1"
+        ],
+        "stock_and_develop_filter": [
+          "1.1"
+        ],
+        "stock_and_develop_same": true,
+        "merge_filter": [
+          "1.1a1",
+          "1.1"
+        ],
+        "merge_same": false
+      },
+      "true_to_false": {
+        "input_policies": {
+          "old": true,
+          "new": false,
+          "outer": null
+        },
+        "original_filter": [
+          "1.1a1",
+          "1.1"
+        ],
+        "constructor_base_and_all": [
+          "1.1"
+        ],
+        "stock_and_develop_filter": [
+          "1.1a1",
+          "1.1"
+        ],
+        "stock_and_develop_same": true,
+        "merge_filter": [
+          "1.1"
+        ],
+        "merge_same": false
+      },
+      "same_false": {
+        "input_policies": {
+          "old": false,
+          "new": false,
+          "outer": null
+        },
+        "original_filter": [
+          "1.1"
+        ],
+        "constructor_base_and_all": [
+          "1.1"
+        ],
+        "stock_and_develop_filter": [
+          "1.1"
+        ],
+        "stock_and_develop_same": true,
+        "merge_filter": [
+          "1.1"
+        ],
+        "merge_same": false
+      },
+      "outer_false_neutral": {
+        "input_policies": {
+          "old": false,
+          "new": true,
+          "outer": false
+        },
+        "original_filter": [
+          "1.1"
+        ],
+        "constructor_base_and_all": [
+          "1.1"
+        ],
+        "stock_and_develop_filter": [
+          "1.1"
+        ],
+        "stock_and_develop_same": true,
+        "merge_filter": [
+          "1.1"
+        ],
+        "merge_same": false
+      }
+    },
+    "caller": "import copy,hashlib,json,pathlib,sys\nfrom packaging.specifiers import Specifier,SpecifierSet\nimport packaging.specifiers as implementation\nassert pathlib.Path(implementation.__file__).resolve()==pathlib.Path('/work/src/packaging/specifiers.py')\nversions=['1.1a1','1.1'];rows={}\nfor name,old_policy,new_policy,outer in [('false_to_true',False,True,None),('true_to_false',True,False,None),('same_false',False,False,None),('outer_false_neutral',False,True,False)]:\n old=Specifier('>=1',prereleases=old_policy);new=Specifier('>=1',prereleases=new_policy);original=SpecifierSet([old],prereleases=outer);fresh=SpecifierSet([new],prereleases=outer);before=list(original.filter(versions));d={'old_new_equal':old==new,'versions':versions,'original_filter':before,'fresh_constructor_filter':list(fresh.filter(versions)),'original_policy':original.prereleases,'fresh_constructor_policy':fresh.prereleases}\n if hasattr(original,'__replace__'):\n  result=copy.replace(original,specifiers=[new]);d.update({'replacement_filter':list(result.filter(versions)),'replacement_policy':result.prereleases,'same':result is original,'original_unchanged':before==list(original.filter(versions))})\n else:d['api']='absent'\n rows[name]=d\nprint(json.dumps({'python':sys.version.split()[0],'implementation':implementation.__file__,'files':{p:hashlib.sha256(pathlib.Path('/work',p).read_bytes()).hexdigest() for p in ['src/packaging/specifiers.py','docs/specifiers.rst']},'rows':rows},sort_keys=True))\n",
+    "probe_sha256": "1a296f4c2a9762d40f5685b2116edd71fa1c1c631dc1b4b0e89fe739782bb35c",
+    "interpretation": "Base lacks __replace__; its fresh constructors establish existing ordinary element-policy behavior. Single-version contains is neutral and cannot replace mixed-batch filter. Outer False masks this filter difference; it does not prove nested element policy equivalence.",
+    "normative_basis": "Base constructor accepts iterable Specifier objects as-is and autodetects outer policy. Task permits replacing supplied specifiers and requires equivalent-set no-op. Element equality intentionally ignores policy.",
+    "normative_limit": "Historical Develop explicitly documents ignoring individual prerelease-policy differences. The task does not define equivalence precisely; this is a constructor/replacement contract tension, not a preregistered integrity finding. Merge separately fails explicit-equivalent-set identity."
+  },
+  "constructive_control": {
+    "parent_patch_sha256": "739e6601e71f4d95f84dcd9453a3f18b5bd29c64eaf69ffde05446a4f979706e",
+    "original_source_sha256": "891c0c2e25c8fedd37a63a9957d7beeb3fad64ae3b9277be1c0ecbbc1eb1a9c5",
+    "owned_source_sha256": "cf3ca3dba8d26e949f5db5da509f8a99e0cf2c7de5c168a2c3284f1c4b66b57e",
+    "diff": "--- historical/src/packaging/specifiers.py\n+++ owned/src/packaging/specifiers.py\n@@ -910,7 +910,8 @@\n \n         result = type(self)(specifiers, prereleases=prereleases)\n         if (\n-            frozenset(result._specs) == frozenset(self._specs)\n+            frozenset((s, s._prereleases) for s in result._specs)\n+            == frozenset((s, s._prereleases) for s in self._specs)\n             and prereleases is self._prereleases\n         ):\n             return self\n",
+    "diff_sha256": "a1bf809f8005ae295418cc34bd83b25fa009bff3ae22b2da4198982c02d951a0",
+    "verification": "Independent byte comparison confirms exactly the single comparison replacement; regenerated diff/hash agrees. Pinned Docker probes on authentic and owned copy both exit 0; all row claims match saved outputs/receipts.",
+    "caller": "import copy,json,pathlib\nfrom packaging.specifiers import Specifier,SpecifierSet\nimport packaging.specifiers as impl\nassert pathlib.Path(impl.__file__).resolve()==pathlib.Path('/work/src/packaging/specifiers.py')\nrows={};versions=['1.1a1','1.1']\nfor name,old,new,outer in [('false_to_true',False,True,None),('true_to_false',True,False,None),('same_false',False,False,None),('outer_false',False,True,False)]:\n s=SpecifierSet([Specifier('>=1',prereleases=old)],prereleases=outer)\n target=Specifier('>=1',prereleases=new);fresh=SpecifierSet([target],prereleases=outer);r=copy.replace(s,specifiers=[target])\n rows[name]={'same':r is s,'same_type':type(r) is type(s),'original_filter':list(s.filter(versions)),'fresh_filter':list(fresh.filter(versions)),'replaced_filter':list(r.filter(versions)),'nested_original':[p.prereleases for p in s],'nested_replaced':[p.prereleases for p in r]}\nfor name,value,replacement in [('same_string','>=1','>=1'),('canonical_equal','>=1.0','>=1'),('order_duplicate','>=1,<2','<2,>=1,>=1')]:\n s=SpecifierSet(value);r=copy.replace(s,specifiers=replacement);rows[name]={'same':r is s,'same_type':type(r) is type(s),'filter':list(r.filter(versions))}\nprint(json.dumps({'rows':rows},sort_keys=True))\n",
+    "probe_sha256": "4cdd8784d699e2ca63828befd9e21326e87bf8f185957c9b2c1468e3a0468b45",
+    "rows": {
+      "canonical_equal": {
+        "filter": [
+          "1.1"
+        ],
+        "same": true,
+        "same_type": true
+      },
+      "false_to_true": {
+        "fresh_filter": [
+          "1.1a1",
+          "1.1"
+        ],
+        "nested_original": [
+          false
+        ],
+        "nested_replaced": [
+          true
+        ],
+        "original_filter": [
+          "1.1"
+        ],
+        "replaced_filter": [
+          "1.1a1",
+          "1.1"
+        ],
+        "same": false,
+        "same_type": true
+      },
+      "order_duplicate": {
+        "filter": [
+          "1.1"
+        ],
+        "same": true,
+        "same_type": true
+      },
+      "outer_false": {
+        "fresh_filter": [
+          "1.1"
+        ],
+        "nested_original": [
+          false
+        ],
+        "nested_replaced": [
+          true
+        ],
+        "original_filter": [
+          "1.1"
+        ],
+        "replaced_filter": [
+          "1.1"
+        ],
+        "same": false,
+        "same_type": true
+      },
+      "same_false": {
+        "fresh_filter": [
+          "1.1"
+        ],
+        "nested_original": [
+          false
+        ],
+        "nested_replaced": [
+          false
+        ],
+        "original_filter": [
+          "1.1"
+        ],
+        "replaced_filter": [
+          "1.1"
+        ],
+        "same": true,
+        "same_type": true
+      },
+      "same_string": {
+        "filter": [
+          "1.1"
+        ],
+        "same": true,
+        "same_type": true
+      },
+      "true_to_false": {
+        "fresh_filter": [
+          "1.1"
+        ],
+        "nested_original": [
+          true
+        ],
+        "nested_replaced": [
+          false
+        ],
+        "original_filter": [
+          "1.1a1",
+          "1.1"
+        ],
+        "replaced_filter": [
+          "1.1"
+        ],
+        "same": false,
+        "same_type": true
+      }
+    },
+    "limits": "Supported ordinary builtin cases only. Internal explicit tri-state policy is compared along with canonical constraint equality. This is feasibility evidence, not a staged/full implementation or a universal equivalence algorithm."
+  },
+  "other_observations": {
+    "omitted_noop": "Merge, stock and Develop retain identity/type for both builtin no-ops; constructor-generator yield count remains 1. Extra temporary construction alone is not demonstrated ordinary incorrectness.",
+    "subtypes": "All three retain compatible inherited subtype identity. Both proposals raise TypeError for constructors with an additional required token; merge does not. Public support for arbitrary incompatible constructor signatures is unestablished.",
+    "static": "Develop returns concrete type annotations; stock/merge use Self. No static checker ran; runtime inherited no-op identity is intact.",
+    "generalization": "Equality need not imply equivalent public operations. Scope any equivalence contract to semantic constraints/policies: deliberate canonical order/duplicate/trailing-zero no-ops preclude unrestricted representation equivalence. Conflicting duplicates, mutation and exotic subclass/equality behavior remain unproved."
+  },
+  "economics": {
+    "historical": {
+      "control": {
+        "estimated_usd": 0.241636,
+        "coverage": "complete",
+        "checkout_to_proposal_seconds": 327.0700316338334,
+        "billed_usd": null
+      },
+      "develop": {
+        "estimated_usd": 0.8666584,
+        "coverage": "lower bound",
+        "checkout_to_proposal_seconds": 764.8846142699476,
+        "billed_usd": null
+      }
+    },
+    "official_pr_points_100": {
+      "control": 96.25,
+      "develop": 96.25,
+      "upstream": 50.0
+    },
+    "headroom_vs_recorded_stock": 3.75,
+    "registered_win_margin": 5,
+    "scope": "Develop USD 0.8666584 is a lower bound, stock USD 0.241636 is complete; not a complete paired economic comparison. No allocation/latency/runtime-money or agent-cost saving measured. CPU diagnostic work is separate and unpriced. Historical 96.25 stock leaves only 3.75 points if repeated; no new screen qualified."
+  },
+  "evidence_receipts_sha256": {
+    "historical_ordinary_noop": "a5b5c8f7d3879088c1ebecbfdc3b47ff38b04d09fbda8c25bbc007208a6e4f88",
+    "historical_filter": "8310ee6728497b9f71920c2f3cbffcf35a1b1eb30cb30006e6100c4ed1610600",
+    "independent_constructive": "4ca31792a46f139273b676af76fb2dfe94a2c3f952f7d8a1ae14d45384f7bd2e"
+  },
+  "limits": [
+    "No full suite, static/type checker, performance study, human labor measurement, new model participant or holdout inspection.",
+    "No official scorer, canonical source, treatment, historical result or active result edited.",
+    "A no-op fast path alone cannot repair equality/policy aliasing after an explicit replacement."
+  ]
+}

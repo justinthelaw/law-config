@@ -9,7 +9,7 @@ Deliver repository work through scoped changes, verified publication and current
 
 ## Start
 
-Read [the shared contract](../develop/references/contract.md); reuse its intent, authorization, signing preference, target selection and applicable planning/review gates. Direct invocation must apply its design triggers before implementation. Reading this skill does not authorize publication or other external writes.
+For an ordinary local fix or implementation request, use [local changes](references/local-changes.md). Finish there if its scope and gates hold. The remaining modes use the applicable [shared contract](../develop/references/contract.md) sections for intent, authorization, target, design and review. Reading this skill does not authorize publication or other external writes.
 
 Choose the mode that matches the request; change modes only within its authorized scope:
 
@@ -50,9 +50,9 @@ An explicit request for one remaining consolidated PR permits closing fully inco
 
 ## Report
 
-Complete the applicable [review gates](../develop/references/contract.md#review-gates); routine read-only/no-op results need no automatic reviewer pair. For **Debug**, use the [incident diagnosis report](references/debugging.md): impact, cause/confidence, supporting and missing evidence, and the next gate. Preserve the selected service/environment/log-bundle scope; do not discover a repository merely to populate delivery fields.
+Complete the applicable [review gates](../develop/references/planning-and-review.md#review-gates); routine read-only/no-op results need no automatic reviewer pair. For **Debug**, use the [incident diagnosis report](references/debugging.md): impact, cause/confidence, supporting and missing evidence, and the next gate. Preserve the selected service/environment/log-bundle scope; do not discover a repository merely to populate delivery fields.
 
-For repository delivery, reread the current head, required checks, reviews and threads. Claim readiness only when applicable gates pass; reconcile GitHub ready/draft status with the requested delivery state rather than treating it as acceptance. Never merge without authorization. Stop task-owned watchers. For requested cleanup or an identified authorized resource need, call [Clean](../clean/SKILL.md) within the existing scope and coordinator, then integrate its measurements and removed/protected/blocked dispositions into the shared handoff. Preserve useful evidence, source and unrelated/shared resources. Continue unaffected targets; report anything retained or blocked instead of manufacturing a clean-worktree result.
+For repository delivery, reread the current head, required checks, reviews and threads. Claim readiness only when applicable gates pass; reconcile GitHub ready/draft status with the requested delivery state rather than treating it as acceptance. Never merge without authorization. Stop task-owned watchers. Use Clean only when the user names or selects it. Otherwise report resource constraints and continue work within the existing authority. Preserve useful evidence, source and unrelated/shared resources. Continue unaffected targets; report anything retained or blocked instead of manufacturing a clean-worktree result.
 
 Use the shared [presentation policy](../develop/references/contract.md#presentation). Lead with the outcome, relevant verification and next action; a single-repository change usually needs a short explanation. Use a table when comparing targets or findings.
 

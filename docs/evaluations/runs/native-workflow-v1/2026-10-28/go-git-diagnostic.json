@@ -1,0 +1,44 @@
+{
+  "case": "go-git",
+  "type": "post_review_exploratory",
+  "oracle": "git hash-object --literally plus git ls-tree",
+  "probe_sha256": "b1df7aacca8de69452d3130a784ca9b4ff150d71618d883f982ee89f73f27891",
+  "results": {
+    "reference": [
+      {
+        "decoded_mode": "0100644",
+        "git_mode": "100644",
+        "raw_mode": "100644"
+      },
+      {
+        "decoded_mode": "0100644",
+        "git_mode": "100644",
+        "raw_mode": "1000000100644"
+      }
+    ],
+    "control": [
+      {
+        "decoded_mode": "0100644",
+        "git_mode": "100644",
+        "raw_mode": "100644"
+      },
+      {
+        "decoder_error": "malformed tree: malformed mode",
+        "git_mode": "100644",
+        "raw_mode": "1000000100644"
+      }
+    ],
+    "develop": [
+      {
+        "decoded_mode": "0100644",
+        "git_mode": "100644",
+        "raw_mode": "100644"
+      },
+      {
+        "decoder_error": "malformed tree: malformed mode",
+        "git_mode": "100644",
+        "raw_mode": "1000000100644"
+      }
+    ]
+  }
+}

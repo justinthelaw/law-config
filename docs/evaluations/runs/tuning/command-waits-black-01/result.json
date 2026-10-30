@@ -1,0 +1,1287 @@
+{
+  "format": "law-config.eval-pilot/v1",
+  "name": "command-waits-black-01",
+  "case": "black",
+  "repository": "psf/black",
+  "pr": 5620,
+  "registration": {
+    "protocol": "develop-efficiency-pilot-v1",
+    "name": "command-waits-black-01",
+    "case": "black",
+    "plans": {
+      "prior": {
+        "path": "runs/command-waits-black-01-prior/plan.json",
+        "sha256": "8df5aa4b242d51d05c375de0374551b20f7618210b42de29be60c59472199420"
+      },
+      "candidate": {
+        "path": "runs/command-waits-black-01-candidate/plan.json",
+        "sha256": "462963381529bd7824cc813e9d0d7f2735d6ff6cee888cd0b61109676aeb3827"
+      }
+    },
+    "operator_sha256": "6d216d8806f69c86223a8c88a3d1d60a0facc462c3922825ee1999327b5dc73c",
+    "cpus": [
+      2,
+      3
+    ],
+    "order": [
+      [
+        "candidate",
+        "develop"
+      ],
+      [
+        "candidate",
+        "control"
+      ],
+      [
+        "prior",
+        "develop"
+      ]
+    ],
+    "hypothesis": "await-local-commands",
+    "tuning_policy_sha256": "589902e5ac1b940405e6f65707f3890987e02e4cc0986132382143fb494cce11",
+    "hypothesis_sha256": "ce6dd85b1ebcc767da02397c07a654d4dc4c20f13d8c5abfdd3dfd668040a9b3",
+    "falsifier": "Reject if the candidate loses any frozen Black gate, previously observed fixture or unary/trailer behavior, or skips required review or validation. Require fewer root readback-only responses and lower readback cost, complete proposal tokens, cost and wall time than the matched prior. For promotion, require a ready higher-quality proposal at or below fully metered stock cost. Count ties, ceiling and missing evidence separately. No confirmed performance claim from tuning. Reject lost prior verified behavior or required review, failure of either strict prior cost or wall improvement, non-ready candidate, or full-PR loss to pure. Missing measures or unverifiable review leave the comparison unestablished.",
+    "quality": "Three blind candidate/pure/merge rotations. Prior Develop soft PR quality is unknown.",
+    "goal": "A ready Develop PR strictly wins the full rubric against a terminal pure proposal at complete cost <= pure.",
+    "attempts": "One proposal per registered slot. All allocations including technical failures remain in the ledger."
+  },
+  "registration_sha256": "1d7dbb1eec4f5154635fa2721c5231b43a4f2e897808fa4781b7afa8a8a1844a",
+  "result_sha256": "58bace8e6f899854f6b330f2cbb3fce2dcbc59411bc0a2622ff964442e3f51aa",
+  "treatments": {
+    "prior": "d9d70aaca4ba2cf3d124f6eb5d47bc0495f0a5ff172002720dc968eb745bda52",
+    "candidate": "3b0bd70d20a63dbf66750151ef0730b26032ecf30e0f4bf3599256ab1398cbb5"
+  },
+  "base": "04afd895bf343e5dc41fc168ba3f8ac378a7ee5f",
+  "merged": "062d76a492d7337f3de951bd7ef1af1096a439ee",
+  "prompt": "Implement the following task in this checkout and add relevant tests. Use your natural local workflow and verification tools. I waive interactive review of the local implementation plan and authorize you to proceed unattended. Follow all applicable repository requirements and complete any required independent review of consequential design or public contracts. Work offline and leave the proposed changes in the checkout. In your final message, put a concise PR title on the first line, followed by a blank line and a PR body explaining the change, motivation, verification actually performed and any material gaps.\n\nFix Black's handling of a fmt: skip directive on an opening bracket nested in a longer with, async with, or yield expression. Preserve skipped text, format surrounding code normally, and preserve the AST and idempotence. Add focused formatter fixtures.\n\nAvailable offline verification commands:\nPYTHONPATH=src:/deps/lib python -m compileall -q src/black\nPYTHONPATH=.:src:/deps/lib python -m pytest -q -o addopts= tests/test_format.py -k fmtskip",
+  "prompt_sha256": "e699289f16756572885112a6aadaf33acff744a5f4000803d47ca4957807562b",
+  "runtime_sha256": "a9cc8fbcb356eeb34cb4bc365a7b0ec9fbd871d00c13e1ebbb325c916ccbd01d",
+  "rubric_sha256": "0bdd8699f00ba1f5266927d7666bc2a117fa4873e113fdfa831da93cd2abbc08",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "rates": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "profiles": {
+    "candidate/develop": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "hooks",
+        "marketplaces",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {},
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [
+        "develop@law-config"
+      ],
+      "ephemeral": false,
+      "inventory_sha256": "837855c845c2a2da95616a9b1ec42448eef0122b6a50ea3317101868febeaa28",
+      "input_sha256": "c944aa5f488d1932a5222a3897b7c4fbc2619defed096d1724ef1ecadf0312c1",
+      "config_sha256": "e7b564b949a2dc1341517ac460a1cb82820a667030b7515a78dd3d299df32c0c"
+    },
+    "candidate/control": null,
+    "prior/develop": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "project",
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "hooks",
+        "marketplaces",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {},
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [
+        "develop@law-config"
+      ],
+      "ephemeral": false,
+      "inventory_sha256": "7c78bfe398bff9f7d5116d014fb43e155aba5d5c511fce883e91c59570cfdd3f",
+      "input_sha256": "381a9d46cb1e9ab52924c6dffb034f388c52fa3730721ac503e8fd2739b711b6",
+      "config_sha256": "021f56e11c86cb8a5e2a372ae18e5e8adf706cb0028fd5e125ecbd889d1ef636"
+    }
+  },
+  "comparisons": {
+    "develop_control": {
+      "verdict": "develop",
+      "reason": "hard gates"
+    },
+    "develop_upstream": {
+      "verdict": "upstream",
+      "reason": "blinded rubric",
+      "score_delta": -5.0,
+      "votes": [
+        "upstream",
+        "develop",
+        "upstream"
+      ],
+      "order_sensitive": true
+    },
+    "control_upstream": {
+      "verdict": "upstream",
+      "reason": "hard gates"
+    }
+  },
+  "goal_win": false,
+  "submissions": {
+    "control": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "462963381529bd7824cc813e9d0d7f2735d6ff6cee888cd0b61109676aeb3827",
+      "case_id": "black",
+      "role": "control",
+      "state": "timeout",
+      "readiness": "failed",
+      "executable_pass": false,
+      "failure_kind": "timeout",
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=src:/deps/lib python -m compileall -q src/black",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "ba05738d81cf84a80864f0a96fce5781fae2f0f340a8bc1bad27f1234976af50",
+          "command": "PYTHONPATH=.:src:/deps/lib python -m pytest -q -o addopts= tests/test_format.py -k fmtskip",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/CHANGES.md b/CHANGES.md\nindex 5b6fa77..e6f53bf 100644\n--- a/CHANGES.md\n+++ b/CHANGES.md\n@@ -13,6 +13,9 @@\n \n <!-- Changes that affect Black's stable style -->\n \n+- Fix invalid code and AST changes when `# fmt: skip` appears on an opening bracket\n+  nested in a longer `with`, `async with`, or `yield` expression.\n+\n - Fix crash when `# fmt: skip` follows the closing bracket of a multi-line call or\n   subscript that isn't the last element of a collection or argument list (#5522)\n - Normalize hex codes in unicode escape sequences in f-strings (#5526)\ndiff --git a/src/black/comments.py b/src/black/comments.py\nindex 1ae8e6e..5b2f8fc 100644\n--- a/src/black/comments.py\n+++ b/src/black/comments.py\n@@ -919,13 +919,32 @@ def _generate_ignored_nodes_from_fmt_skip(\n             current_node = current_node.parent\n \n         ignored_nodes = [current_node]\n-        if current_node.prev_sibling is None and current_node.parent is not None:\n-            current_node = current_node.parent\n \n         # Track seen nodes to detect cycles that can occur after tree modifications\n         seen_nodes = {id(current_node)}\n \n-        while \"\\n\" not in current_node.prefix and current_node.prev_sibling is not None:\n+        while True:\n+            # Keep walking through leading expression containers even when they\n+            # have an unignored suffix (e.g. `as ctx` or `+ c, d`). Otherwise the\n+            # hidden prefix can be separated from `with` or `yield` by a newline.\n+            while current_node.prev_sibling is None and current_node.parent is not None:\n+                current_node = current_node.parent\n+                if current_node.type == syms.yield_expr:\n+                    # Keep the yield operand together. If only its prefix is\n+                    # hidden, formatting a remaining tuple suffix can turn it\n+                    # into a call when the yield is used in an assignment.\n+                    ignored_nodes = [current_node]\n+                # Every child of the node we are climbing out of is now ignored, so\n+                # take the node itself instead. Converting only its leaves would\n+                # leave the emptied node in the tree, and visitors that expect\n+                # children, like the one for PEP 695 type parameters, crash on it.\n+                # Children collapsed on an earlier climb are already nodes here, so\n+                # compare against children rather than leaves.\n+                if _children_lead_ignored_nodes(current_node, ignored_nodes):\n+                    ignored_nodes[: len(current_node.children)] = [current_node]\n+\n+            if \"\\n\" in current_node.prefix or current_node.prev_sibling is None:\n+                break\n             leaf_nodes = list(current_node.prev_sibling.leaves())\n             next_node = leaf_nodes[-1] if leaf_nodes else current_node\n \n@@ -979,33 +998,6 @@ def _generate_ignored_nodes_from_fmt_skip(\n \n             ignored_nodes.insert(0, current_node)\n \n-            if current_node.prev_sibling is None and current_node.parent is not None:\n-                current_node = current_node.parent\n-                # Every child of the node we are climbing out of is now ignored, so\n-                # take the node itself instead. Converting only its leaves would\n-                # leave the emptied node in the tree, and visitors that expect\n-                # children, like the one for PEP 695 type parameters, crash on it.\n-                # Children collapsed on an earlier climb are already nodes here, so\n-                # compare against children rather than leaves.\n-                if _children_lead_ignored_nodes(current_node, ignored_nodes):\n-                    ignored_nodes[: len(current_node.children)] = [current_node]\n-                    # The collapsed node can be the first child of a parent that\n-                    # is now fully ignored as well (`a + b` in `a + b if c else d`).\n-                    # Collapse that parent too and keep walking from it. Stopping\n-                    # one level short leaves the parent's children in the list next\n-                    # to a sibling from the enclosing node, and the standalone\n-                    # comment then lands inside the parent while that sibling is\n-                    # removed from around it, turning e.g. a tuple into a call.\n-                    while (\n-                        current_node.prev_sibling is None\n-                        and current_node.parent is not None\n-                        and _children_lead_ignored_nodes(\n-                            current_node.parent, ignored_nodes\n-                        )\n-                    ):\n-                        current_node = current_node.parent\n-                        ignored_nodes[: len(current_node.children)] = [current_node]\n-\n         # Special handling for compound statements with semicolon-separated bodies\n         if isinstance(parent, Node):\n             body_node = _find_compound_statement_context(parent)\ndiff --git a/tests/data/cases/fmtskip_opening_bracket_with.py b/tests/data/cases/fmtskip_opening_bracket_with.py\nnew file mode 100644\nindex 0000000..849750f\n--- /dev/null\n+++ b/tests/data/cases/fmtskip_opening_bracket_with.py\n@@ -0,0 +1,67 @@\n+before  =  1\n+\n+with a + (  # fmt: skip\n+    b\n+) as ctx:\n+    body  =  2\n+\n+with a + [  # fmt: skip\n+    1,  2] + c as ctx, other(  arg ):\n+    body  =  3\n+\n+with a + (  # fmt: skip\n+    b\n+) if condition else c:\n+    body  =  4\n+\n+async def f():\n+    async with a + (  # fmt: skip\n+        b\n+    ) as ctx:\n+        body  =  5\n+\n+    async with a + {  # fmt: skip\n+        'key':  1} as ctx, other(  arg ):\n+        body  =  6\n+\n+    after  =  7\n+\n+after  =  8\n+\n+# output\n+\n+before = 1\n+\n+with a + (  # fmt: skip\n+    b\n+) as ctx:\n+    body = 2\n+\n+with a + [  # fmt: skip\n+    1,  2] + c as ctx, other(\n+    arg\n+):\n+    body = 3\n+\n+with a + (  # fmt: skip\n+    b\n+) if condition else c:\n+    body = 4\n+\n+\n+async def f():\n+    async with a + (  # fmt: skip\n+        b\n+    ) as ctx:\n+        body = 5\n+\n+    async with a + {  # fmt: skip\n+        'key':  1} as ctx, other(\n+        arg\n+    ):\n+        body = 6\n+\n+    after = 7\n+\n+\n+after = 8\ndiff --git a/tests/data/cases/fmtskip_opening_bracket_yield.py b/tests/data/cases/fmtskip_opening_bracket_yield.py\nnew file mode 100644\nindex 0000000..971dd23\n--- /dev/null\n+++ b/tests/data/cases/fmtskip_opening_bracket_yield.py\n@@ -0,0 +1,43 @@\n+def f():\n+    before  =  1\n+    yield a + (  # fmt: skip\n+        b\n+    ) + c, d\n+    after  =  2\n+\n+\n+def g():\n+    before  =  3\n+    yield a + [  # fmt: skip\n+        1,  2] + c, d\n+    after  =  4\n+\n+\n+def h():\n+    result = yield a + (  # fmt: skip\n+        b\n+    ) + c, d\n+    after  =  5\n+\n+# output\n+\n+def f():\n+    before = 1\n+    yield a + (  # fmt: skip\n+        b\n+    ) + c, d\n+    after = 2\n+\n+\n+def g():\n+    before = 3\n+    yield a + [  # fmt: skip\n+        1,  2] + c, d\n+    after = 4\n+\n+\n+def h():\n+    result = yield a + (  # fmt: skip\n+        b\n+    ) + c, d\n+    after = 5\n",
+      "patch_sha256": "797244bea75ef531fc1eb53b2f712d14cb47f1352272784ffc44f4e4202e4bbd",
+      "proposal": "",
+      "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "proposal_observation": "unavailable",
+      "bindings": {
+        "grade_patch_sha256": "797244bea75ef531fc1eb53b2f712d14cb47f1352272784ffc44f4e4202e4bbd",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "patch_sha256": "797244bea75ef531fc1eb53b2f712d14cb47f1352272784ffc44f4e4202e4bbd",
+            "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "judgment_sha256": "562ebb842f72769b70de091e0edb020a91f9077797d72709aa0862e536d7c6fe",
+            "mapping_sha256": "439f27060a488eb80700e4c06a372d0cd3dd0b6bab06f64f062da70f9f9c2030",
+            "assessor_sha256": "56c76560ae593e976461db01ec416d3482f62a342762dd4d10a56e480c2ddb90",
+            "packet_sha256": "a622f0adb30c26a751085fe00999629d5c1924ed1c0b4d9325d8635837e3f867",
+            "prompt_sha256": "6b29adb43a00deb788addf564cbe0d4159de36553a88f28b4bb6114346902c46"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "patch_sha256": "797244bea75ef531fc1eb53b2f712d14cb47f1352272784ffc44f4e4202e4bbd",
+            "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "judgment_sha256": "ccda13d9f079417dac3d3e629cf1f72b3cb0c07e87a625744d558c3e06545761",
+            "mapping_sha256": "b8b47af0f7514430425bf5e57c69cb22268be5ade5a1b47294c34dc4e1981acf",
+            "assessor_sha256": "e4635165aee439f26cbc31bc607d8ecb13a52ca59909bc13b52ff7fc6cf1785b",
+            "packet_sha256": "edc6482a7623586e96a806cc472a6691497e4fb82fce317f91b53cd366817741",
+            "prompt_sha256": "127009a06a5ed0a8a9caa5f0746f54af358e6d5c5d463d4ec52805e47400015f"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "patch_sha256": "797244bea75ef531fc1eb53b2f712d14cb47f1352272784ffc44f4e4202e4bbd",
+            "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "judgment_sha256": "44652877680d8833582e13b190df6545bb64a966528dd42bff813bc93ba7bf06",
+            "mapping_sha256": "0c28789486cd5d0f5cbc394971eea9d433ff980304cf98ca3b02c4f6096a28d2",
+            "assessor_sha256": "72152ff6335993037c22cc80055e7b983fee9d8211d2ff3ac6a24a5c0ea1ccc0",
+            "packet_sha256": "6c46a81ae7172aabd0fb47f3bd27d143b8bb62035c9e546be4bc2670f2481913",
+            "prompt_sha256": "d237c3c176147c81e6bf0bfcc4c34ccb23010bfb30dd005e3b614874fe2bd996"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 2,
+          "tests": 3,
+          "design": 3,
+          "proposal": null
+        },
+        "proposal_points_100": null,
+        "diff_points_85": 55.0,
+        "rotation_points_85": {
+          "0": 48.75,
+          "1": 70.0,
+          "2": 48.75
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "scores": {
+              "contract": 2,
+              "tests": 3,
+              "design": 2,
+              "proposal": null
+            },
+            "evidence": {
+              "contract": "packet/task.json records build/native/contract/preserve exit 0. fmtskip_opening_bracket_with.py covers with, async with, aliases, conditional operands and multiple managers; fmtskip_opening_bracket_yield.py covers bare and assigned tuple yields. A.patch broadens ancestor traversal but leaves src/black/linegen.py:visit_factor unpacking exactly two children. For with -(  # fmt: skip\n    a\n).real and b:\n    pass, the operator can be captured while the power/trailer operand remains, leaving a one-child factor that this visitor cannot unpack. This is a source-derived uncovered boundary, not a frozen executed failure.",
+              "tests": "Adds two automatically discovered formatter fixtures with explicit expected output, irregular skipped spacing, and surrounding assignments/bodies that must normalize. tests/test_format.py:check_file and tests/util.py:assert_format exercise expected output, AST equivalence and stability, including alternate preview and line-length modes. Native fmtskip selection passed. Missing unary/trailer coverage and annotated or parenthesized assigned yields prevent full boundary credit.",
+              "design": "Changes are limited to comments.py, focused fixtures and CHANGES.md. The deleted nested collapse loop is replaced by repeated ancestor climbing with the same _children_lead_ignored_nodes identity guard; seen-node, standalone-comment, newline/indent/dedent and open-bracket protections remain. However, resetting ignored_nodes for every yield_expr captures its entire suffix even for bare yields, broader than the assigned-yield hazard described in the comment, and unary-factor visitor compatibility remains unhandled.",
+              "proposal": "packet/task.json marks has_proposal false and proposal_observation unavailable; packet/A.md is empty. Historical proposal evidence is unavailable, so this axis is null rather than zero."
+            },
+            "flags": [],
+            "confidence": "medium"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "scores": {
+              "contract": 3,
+              "tests": 3,
+              "design": 4,
+              "proposal": null
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native, contract, and preserve exits of 0. fmtskip_opening_bracket_with.py covers with/async with, conditional expressions, several bracket types, and a later context manager that still formats. fmtskip_opening_bracket_yield.py covers tuple-valued bare and assigned yields and surrounding assignments. Unary/trailer, yield-from, and annotated-yield boundaries are not affirmatively covered.",
+              "tests": "tests/data/cases/fmtskip_opening_bracket_with.py preserves irregular list/dict contents while requiring body and later context-manager formatting. fmtskip_opening_bracket_yield.py protects tuple suffixes and an assigned yield. Expected outputs use the existing AST/idempotence harness in tests/util.py, including preview and line-length=1 checks; native exit is 0. Unary operands and distinct annotated/parenthesized yield contexts remain coverage gaps. Existing protections are unchanged.",
+              "design": "src/black/comments.py moves repeated first-child ascent and complete-child collapsing into one traversal entry point. It preserves complete yield_expr nodes to avoid exposing a tuple suffix to later visitors. The removed nested collapse loop is replaced with _children_lead_ignored_nodes in the new loop; cycle detection, newline/indent/dedent and converted-comment stops, and whole-statement bracket handling remain. Scope is confined to the traversal, formatter fixtures, and changelog; no demonstrated protection bypass is present.",
+              "proposal": "packet/task.json marks proposal_observation as unavailable and has_proposal as false; packet/C.md supplies no proposal text. Communication is unobservable and is scored null, not as an observed omission."
+            },
+            "flags": [],
+            "confidence": "medium"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "scores": {
+              "contract": 2,
+              "tests": 2,
+              "design": 3,
+              "proposal": null
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native fmtskip, contract and preserve exits of 0. fmtskip_opening_bracket_with.py demonstrates with/async with, multiple managers, conditional expressions and three bracket kinds; the yield fixture includes bare and assigned tuple yields. However comments.py can remove a unary operator without its trailing operand, while unchanged linegen.py:visit_factor requires two children. The with -( opening-bracket fmt: skip case followed by ).real and b in C's fixture is a concrete missing boundary suggested by these source operations; it has no frozen execution result for B.",
+              "tests": "Two focused cases are discovered by tests/test_format.py and exercise expected text, neighboring formatting and the shared AST/stability checks in tests/util.py. Multiple-manager output explicitly formats other(arg) while preserving the skipped bracket. Coverage misses unary-factor/trailer behavior and yield-from/annotated assignment variants. No existing fixture, AST assertion or stability assertion is deleted or relaxed.",
+              "design": "The repeated climb in comments.py addresses the traversal root cause and preserves _children_lead_ignored_nodes as a condition for collapsing complete children. Thus deletion of the old nested collapse loop retains its protection through the new general loop; cycle and statement-boundary guards remain. Capturing a whole yield_expr prevents suffix fragmentation, though it is broader than just assigned yields. The small helper/fixture/changelog scope is appropriate, but visitor compatibility for partial factors remains incomplete.",
+              "proposal": "packet/B.md is empty and packet/task.json labels proposal_observation unavailable. Historical proposal text cannot be evaluated; null is appropriate rather than scoring an observed omission as zero."
+            },
+            "flags": [],
+            "confidence": "medium"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "lower bound",
+        "tokens": {
+          "inputTokens": 2766353,
+          "cachedInputTokens": 2703360,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 15638,
+          "reasoningOutputTokens": 7962,
+          "totalTokens": 2781991
+        },
+        "estimated_usd": 0.552702,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 1232.1979879511055,
+        "prompt_to_terminal_seconds": 1200.0008217392024,
+        "through_grading_seconds": 1241.1918073110282,
+        "setup_seconds": 30.625799130881205,
+        "grading_seconds": 7.453413886018097,
+        "thread_count": 1,
+        "child_count": 0,
+        "root_tokens": {
+          "totalTokens": 2781991,
+          "inputTokens": 2766353,
+          "cachedInputTokens": 2703360,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 15638,
+          "reasoningOutputTokens": 7962
+        },
+        "descendant_tokens": null,
+        "observed_commands": 29,
+        "native_hook_receipts": 0
+      },
+      "receipt_sha256": {
+        "grade": "5eaaed3124fb1be150d900e1cb29f5814f878af755b2a0687e0ebb8cd7c1a219",
+        "release": "91129dbcd658cb52ca7a8e4c3ba20da3e282d4ba4111a1278139f2e8c8b0b195",
+        "native": "cf600d21908ad8b06fa59a0008d6200b598ebe8e18c4398fadb627f1b46fd0ce",
+        "submission": "87452c2de8f40bd971a378b96b01bad4b581cecb857f53af578346f8ba63506f",
+        "result": "0235d723e09ab157d0952e3c4ba3411f31b6936cbcb3ff7cd0269f0a10bf66b2",
+        "inventory": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72"
+      }
+    },
+    "develop": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "462963381529bd7824cc813e9d0d7f2735d6ff6cee888cd0b61109676aeb3827",
+      "case_id": "black",
+      "role": "develop",
+      "state": "completed",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=src:/deps/lib python -m compileall -q src/black",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "5fc310060fe50705d0fc061e4a3155712f1414bac9c6664b78c5fd2d48a43399",
+          "command": "PYTHONPATH=.:src:/deps/lib python -m pytest -q -o addopts= tests/test_format.py -k fmtskip",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/CHANGES.md b/CHANGES.md\nindex 5b6fa77..8869216 100644\n--- a/CHANGES.md\n+++ b/CHANGES.md\n@@ -13,6 +13,8 @@\n \n <!-- Changes that affect Black's stable style -->\n \n+- Fix invalid code and changed meaning when `# fmt: skip` is on an opening bracket\n+  nested in a longer `with`, `async with`, or `yield` expression.\n - Fix crash when `# fmt: skip` follows the closing bracket of a multi-line call or\n   subscript that isn't the last element of a collection or argument list (#5522)\n - Normalize hex codes in unicode escape sequences in f-strings (#5526)\ndiff --git a/src/black/comments.py b/src/black/comments.py\nindex 1ae8e6e..eab748f 100644\n--- a/src/black/comments.py\n+++ b/src/black/comments.py\n@@ -919,13 +919,30 @@ def _generate_ignored_nodes_from_fmt_skip(\n             current_node = current_node.parent\n \n         ignored_nodes = [current_node]\n-        if current_node.prev_sibling is None and current_node.parent is not None:\n-            current_node = current_node.parent\n-\n         # Track seen nodes to detect cycles that can occur after tree modifications\n         seen_nodes = {id(current_node)}\n \n-        while \"\\n\" not in current_node.prefix and current_node.prev_sibling is not None:\n+        while True:\n+            # Moving the cursor out of a first child is safe even when later\n+            # children are not ignored. Only replace children with their parent\n+            # when all of them are captured, so visitors never see empty nodes.\n+            while current_node.prev_sibling is None and current_node.parent is not None:\n+                current_node = current_node.parent\n+                if (\n+                    current_node.type == syms.yield_expr\n+                    and current_node.parent is not None\n+                    and current_node.parent.type in (syms.expr_stmt, syms.annassign)\n+                ):\n+                    # Keep an assigned yield intact before capturing the assignment\n+                    # prefix. Leaving only its trailing tuple items would let the\n+                    # yield visitor wrap those fragments in invalid parentheses.\n+                    ignored_nodes = [current_node]\n+                elif _children_lead_ignored_nodes(current_node, ignored_nodes):\n+                    ignored_nodes[: len(current_node.children)] = [current_node]\n+\n+            if \"\\n\" in current_node.prefix or current_node.prev_sibling is None:\n+                break\n+\n             leaf_nodes = list(current_node.prev_sibling.leaves())\n             next_node = leaf_nodes[-1] if leaf_nodes else current_node\n \n@@ -979,33 +996,6 @@ def _generate_ignored_nodes_from_fmt_skip(\n \n             ignored_nodes.insert(0, current_node)\n \n-            if current_node.prev_sibling is None and current_node.parent is not None:\n-                current_node = current_node.parent\n-                # Every child of the node we are climbing out of is now ignored, so\n-                # take the node itself instead. Converting only its leaves would\n-                # leave the emptied node in the tree, and visitors that expect\n-                # children, like the one for PEP 695 type parameters, crash on it.\n-                # Children collapsed on an earlier climb are already nodes here, so\n-                # compare against children rather than leaves.\n-                if _children_lead_ignored_nodes(current_node, ignored_nodes):\n-                    ignored_nodes[: len(current_node.children)] = [current_node]\n-                    # The collapsed node can be the first child of a parent that\n-                    # is now fully ignored as well (`a + b` in `a + b if c else d`).\n-                    # Collapse that parent too and keep walking from it. Stopping\n-                    # one level short leaves the parent's children in the list next\n-                    # to a sibling from the enclosing node, and the standalone\n-                    # comment then lands inside the parent while that sibling is\n-                    # removed from around it, turning e.g. a tuple into a call.\n-                    while (\n-                        current_node.prev_sibling is None\n-                        and current_node.parent is not None\n-                        and _children_lead_ignored_nodes(\n-                            current_node.parent, ignored_nodes\n-                        )\n-                    ):\n-                        current_node = current_node.parent\n-                        ignored_nodes[: len(current_node.children)] = [current_node]\n-\n         # Special handling for compound statements with semicolon-separated bodies\n         if isinstance(parent, Node):\n             body_node = _find_compound_statement_context(parent)\ndiff --git a/tests/data/cases/fmtskip_nested_with.py b/tests/data/cases/fmtskip_nested_with.py\nnew file mode 100644\nindex 0000000..c2423b8\n--- /dev/null\n+++ b/tests/data/cases/fmtskip_nested_with.py\n@@ -0,0 +1,45 @@\n+# Nested operands must not detach the skipped text from the with header.\n+\n+before  =  0\n+with first + (  # fmt: skip\n+    second  +  third\n+) + fourth as value:\n+    body  =  1\n+\n+after  =  2\n+with first and (  # fmt: skip\n+    second  or  third\n+) or fourth as value:\n+    body  =  3\n+\n+\n+async def f():\n+    async with first + (  # fmt: skip\n+        second  +  third\n+    ) + fourth as value:\n+        body  =  4\n+    after  =  5\n+\n+# output\n+\n+# Nested operands must not detach the skipped text from the with header.\n+\n+before = 0\n+with first + (  # fmt: skip\n+    second  +  third\n+) + fourth as value:\n+    body = 1\n+\n+after = 2\n+with first and (  # fmt: skip\n+    second  or  third\n+) or fourth as value:\n+    body = 3\n+\n+\n+async def f():\n+    async with first + (  # fmt: skip\n+        second  +  third\n+    ) + fourth as value:\n+        body = 4\n+    after = 5\ndiff --git a/tests/data/cases/fmtskip_nested_yield.py b/tests/data/cases/fmtskip_nested_yield.py\nnew file mode 100644\nindex 0000000..51beb4a\n--- /dev/null\n+++ b/tests/data/cases/fmtskip_nested_yield.py\n@@ -0,0 +1,61 @@\n+# Keep yield attached to a value containing a skipped nested operand.\n+\n+\n+def f():\n+    before  =  0\n+    yield first and (  # fmt: skip\n+        second  or  third\n+    ) or fourth\n+    after  =  1\n+    yield from first and (  # fmt: skip\n+        second  or  third\n+    ) or fourth\n+    after  =  2\n+    value = yield first, (  # fmt: skip\n+        second  +  third\n+    ), fourth\n+    after  =  3\n+    value = yield first and (  # fmt: skip\n+        second  or  third\n+    ) or fourth\n+    after  =  4\n+    value = (yield first, (  # fmt: skip\n+        second  +  third\n+    ), fourth)\n+    after  =  5\n+    value: T = yield first, (  # fmt: skip\n+        second  +  third\n+    ), fourth\n+    after  =  6\n+\n+# output\n+\n+# Keep yield attached to a value containing a skipped nested operand.\n+\n+\n+def f():\n+    before = 0\n+    yield first and (  # fmt: skip\n+        second  or  third\n+    ) or fourth\n+    after = 1\n+    yield from first and (  # fmt: skip\n+        second  or  third\n+    ) or fourth\n+    after = 2\n+    value = yield first, (  # fmt: skip\n+        second  +  third\n+    ), fourth\n+    after = 3\n+    value = yield first and (  # fmt: skip\n+        second  or  third\n+    ) or fourth\n+    after = 4\n+    value = (yield first, (  # fmt: skip\n+        second  +  third\n+    ), fourth)\n+    after = 5\n+    value: T = yield first, (  # fmt: skip\n+        second  +  third\n+    ), fourth\n+    after = 6\n",
+      "patch_sha256": "31f4d701181d6d556d0e1f65a24ebd4bb09b2684f204decad7096212174472ae",
+      "proposal": "Fix fmt: skip in nested with and yield expressions\n\nPreserve skipped text in longer `with`, `async with`, and `yield` expressions while formatting surrounding code normally. Prevent invalid syntax and changed semantics, including assigned and annotated yields. Add focused fixtures and a changelog entry.\n\nVerified: 37 `fmtskip` tests passed, including AST and idempotence checks; compilation, self-formatting, and whitespace checks passed. [Independent review passed](/tmp/black-fmtskip-review.md).\n\nThe full test suite was not completed. Pre-commit and lint tooling were unavailable offline.",
+      "proposal_sha256": "72058c00b39ab1a70e3485d0bc9bd41105c81e84eab9bc0953f800755e8a8683",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "31f4d701181d6d556d0e1f65a24ebd4bb09b2684f204decad7096212174472ae",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "patch_sha256": "31f4d701181d6d556d0e1f65a24ebd4bb09b2684f204decad7096212174472ae",
+            "proposal_sha256": "72058c00b39ab1a70e3485d0bc9bd41105c81e84eab9bc0953f800755e8a8683",
+            "judgment_sha256": "562ebb842f72769b70de091e0edb020a91f9077797d72709aa0862e536d7c6fe",
+            "mapping_sha256": "439f27060a488eb80700e4c06a372d0cd3dd0b6bab06f64f062da70f9f9c2030",
+            "assessor_sha256": "56c76560ae593e976461db01ec416d3482f62a342762dd4d10a56e480c2ddb90",
+            "packet_sha256": "a622f0adb30c26a751085fe00999629d5c1924ed1c0b4d9325d8635837e3f867",
+            "prompt_sha256": "6b29adb43a00deb788addf564cbe0d4159de36553a88f28b4bb6114346902c46"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "patch_sha256": "31f4d701181d6d556d0e1f65a24ebd4bb09b2684f204decad7096212174472ae",
+            "proposal_sha256": "72058c00b39ab1a70e3485d0bc9bd41105c81e84eab9bc0953f800755e8a8683",
+            "judgment_sha256": "ccda13d9f079417dac3d3e629cf1f72b3cb0c07e87a625744d558c3e06545761",
+            "mapping_sha256": "b8b47af0f7514430425bf5e57c69cb22268be5ade5a1b47294c34dc4e1981acf",
+            "assessor_sha256": "e4635165aee439f26cbc31bc607d8ecb13a52ca59909bc13b52ff7fc6cf1785b",
+            "packet_sha256": "edc6482a7623586e96a806cc472a6691497e4fb82fce317f91b53cd366817741",
+            "prompt_sha256": "127009a06a5ed0a8a9caa5f0746f54af358e6d5c5d463d4ec52805e47400015f"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "patch_sha256": "31f4d701181d6d556d0e1f65a24ebd4bb09b2684f204decad7096212174472ae",
+            "proposal_sha256": "72058c00b39ab1a70e3485d0bc9bd41105c81e84eab9bc0953f800755e8a8683",
+            "judgment_sha256": "44652877680d8833582e13b190df6545bb64a966528dd42bff813bc93ba7bf06",
+            "mapping_sha256": "0c28789486cd5d0f5cbc394971eea9d433ff980304cf98ca3b02c4f6096a28d2",
+            "assessor_sha256": "72152ff6335993037c22cc80055e7b983fee9d8211d2ff3ac6a24a5c0ea1ccc0",
+            "packet_sha256": "6c46a81ae7172aabd0fb47f3bd27d143b8bb62035c9e546be4bc2670f2481913",
+            "prompt_sha256": "d237c3c176147c81e6bf0bfcc4c34ccb23010bfb30dd005e3b614874fe2bd996"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 2,
+          "tests": 3,
+          "design": 3,
+          "proposal": 3
+        },
+        "proposal_points_100": 66.25,
+        "diff_points_85": 55.0,
+        "rotation_points_85": {
+          "0": 55.0,
+          "1": 70.0,
+          "2": 48.75
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "scores": {
+              "contract": 2,
+              "tests": 3,
+              "design": 3,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/task.json records build/native/contract/preserve exit 0. fmtskip_nested_with.py covers arithmetic/boolean with headers, aliases and async with; fmtskip_nested_yield.py covers yield from, assigned tuples, parentheses and annotated assignments with normal surrounding formatting. However, C.patch leaves src/black/linegen.py:visit_factor requiring two children after broadening prefix capture. For with -(  # fmt: skip\n    a\n).real and b:\n    pass, capturing the operator while retaining the trailer-bearing operand leaves a one-child factor incompatible with that unpack. This source-derived boundary is not represented by a frozen executed failure.",
+              "tests": "Two focused expected-output fixtures preserve visibly irregular skipped contents while normalizing surrounding statements. They exercise important distinct yield forms, including annotated and parenthesized assignment, through tests/test_format.py and tests/util.py AST/stability checks. Frozen native fmtskip selection passed. Unary/trailer operands, bracket-type variety and additional context-manager suffix formatting lack focused coverage.",
+              "design": "The comments.py traversal fixes repeated first-child ascent and narrowly preserves complete yield_expr nodes for expr_stmt/annassign parents, avoiding the broader bare-yield capture in A. The deleted collapse loop is replaced with the same complete-child identity guard inside iterative ascent. Cycle detection, converted-comment boundary, newline/indent/dedent checks and enclosing-statement bracket handling remain; no validation is disabled. Diff scope is appropriate, but compatibility with the existing two-child factor visitor is incomplete.",
+              "proposal": "packet/C.md has a precise title, concise intended behavior, assigned/annotated-yield motivation and an explicit full-suite/tooling limitation. Frozen observations support compilation and the selected fmtskip test success; the harness supports AST/stability checks. The exact 37 count, self-formatting, whitespace and linked /tmp/black-fmtskip-review.md review are not supplied as frozen evidence and receive no additional credit. Verification is useful but not fully substantiated at the claimed granularity."
+            },
+            "flags": [],
+            "confidence": "medium"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "scores": {
+              "contract": 3,
+              "tests": 3,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native, contract, and preserve exits of 0. fmtskip_nested_with.py demonstrates with/async with preservation and surrounding formatting; fmtskip_nested_yield.py includes yield from, assigned tuple yields, parenthesized yields, and annotated assignments. Unary operands with trailers and non-parenthesis brackets lack affirmative boundary evidence here.",
+              "tests": "tests/data/cases/fmtskip_nested_with.py and fmtskip_nested_yield.py provide discriminating expected outputs with deliberately irregular skipped text and before/body/after spacing. The existing tests/test_format.py and tests/util.py harness supplies AST and stability checks, including preview and short line lengths. Native exit is 0. Coverage is strong for assignment contexts but omits unary/trailer and multiple-context-manager boundaries; no existing checks are weakened.",
+              "design": "src/black/comments.py consolidates ascent at the top of the traversal, allowing passage through incomplete expression containers while collapsing only fully captured children. Its assigned-yield exception explicitly preserves the complete yield before collecting the assignment prefix. The deleted bottom collapse loop is replaced by the same _children_lead_ignored_nodes protection at the top; cycle detection and stopping guards remain. The implementation is localized, with only fixtures and CHANGES.md alongside it.",
+              "proposal": "packet/B.md states the public behavior, assignment boundaries, focused tests, and incomplete full-suite/lint validation concisely. Frozen build/native success and the unchanged safety harness support compilation and formatter safety checks. The exact 37-test count, self-formatting, whitespace checks, and linked independent review are not available as execution evidence and receive no extra credit."
+            },
+            "flags": [],
+            "confidence": "medium"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "scores": {
+              "contract": 2,
+              "tests": 2,
+              "design": 3,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native fmtskip, contract and preserve exits of 0. fmtskip_nested_with.py and fmtskip_nested_yield.py cover with, async with, yield from, assigned and annotated yields, preserving spacing while formatting neighboring assignments. A material boundary remains: comments.py can hide the unary operator while leaving its operand/trailer in a factor, but the unchanged linegen.py:visit_factor still unpacks exactly two children. The with -( opening-bracket fmt: skip case followed by ).real and b, shown in C's fixture, exposes this static mismatch; no execution of that case for A is available.",
+              "tests": "Adds two automatically discovered cases under tests/data/cases, with explicit expected outputs and deliberately irregular surrounding assignments. tests/test_format.py:check_file uses tests/util.py:assert_format, which checks equivalence and stability when output changes. Includes distinctive yield assignment/annotation and boolean paths. Omits unary factors with trailing attributes, and square/curly brackets; in particular it does not protect the remaining visit_factor boundary. Existing tests and safety assertions are not weakened.",
+              "design": "comments.py changes the backward walk to climb leading containers repeatedly and retains conditional whole-child collapse via _children_lead_ignored_nodes. The deleted nested collapse loop is replaced by the general climb, rather than simply dropping empty-node protection; cycle detection and newline/indent/dedent boundaries remain. The assigned-yield capture addresses suffix fragmentation narrowly. Scope is limited to this helper, fixtures and CHANGES.md, but the resulting partial factor shape is not handled by the unchanged visitor.",
+              "proposal": "packet/A.md gives a precise title, describes preservation and assigned/annotated yields, and explicitly limits full-suite and tooling verification. The frozen build/native outcomes support the compilation and targeted-test statements in broad scope. No supplied evidence corroborates the exact 37 count, self-formatting, whitespace checks or linked /tmp independent review, so those claims receive no additional verification credit."
+            },
+            "flags": [],
+            "confidence": "medium"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 6024092,
+          "cachedInputTokens": 5757184,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 32549,
+          "reasoningOutputTokens": 9993,
+          "totalTokens": 6056641
+        },
+        "estimated_usd": 1.4350244,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 1129.8505244210828,
+        "prompt_to_terminal_seconds": 1093.244179056026,
+        "through_grading_seconds": 1138.6824479179922,
+        "setup_seconds": 35.16326567204669,
+        "grading_seconds": 7.2941654592286795,
+        "thread_count": 6,
+        "child_count": 5,
+        "root_tokens": {
+          "totalTokens": 4495745,
+          "inputTokens": 4473058,
+          "cachedInputTokens": 4324608,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 22687,
+          "reasoningOutputTokens": 8593
+        },
+        "descendant_tokens": {
+          "inputTokens": 1551034,
+          "cachedInputTokens": 1432576,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 9862,
+          "reasoningOutputTokens": 1400,
+          "totalTokens": 1560896
+        },
+        "observed_commands": 75,
+        "native_hook_receipts": 219
+      },
+      "receipt_sha256": {
+        "grade": "5579509f6b31d355b3c3a397050f7d361887071bf689f46d34687e0c4f9777d0",
+        "release": "441559ec0921b72c0ca45fa77ad8b5be5479c58962c78ee8c87fcdf78ad9d563",
+        "native": "92735145719e4b5b10fbd556b62e7f186b869a515e4f18220d8c2871b978667c",
+        "submission": "dd5649798c95b72bae99e4f2012c3445e70af8d3bd1f407e307281cd7adde5d7",
+        "result": "2eec5aa33f9fdf6d110a98f4c61608da8ded659116a0c1e2c268db9b4df5d81f",
+        "inventory": "837855c845c2a2da95616a9b1ec42448eef0122b6a50ea3317101868febeaa28"
+      }
+    },
+    "upstream": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "462963381529bd7824cc813e9d0d7f2735d6ff6cee888cd0b61109676aeb3827",
+      "case_id": "black",
+      "role": "upstream",
+      "state": "merged",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=src:/deps/lib python -m compileall -q src/black",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "de74c0aedbb40cb5a5a615bf678f80f245fee4ff70098137286f58a44226b948",
+          "command": "PYTHONPATH=.:src:/deps/lib python -m pytest -q -o addopts= tests/test_format.py -k fmtskip",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/CHANGES.md b/CHANGES.md\nindex 5b6fa77..4cf1736 100644\n--- a/CHANGES.md\n+++ b/CHANGES.md\n@@ -54,6 +54,8 @@\n - Fix crash on an assignment whose target is split over lines inside redundant\n   parentheses and doesn't fit on one line with the value, such as `(a.b(c)` ...\n   `.d[e]) = f` (#5606, #5621)\n+- Fix crash when `# fmt: skip` is on an opening bracket that starts an operand of a\n+  longer expression after `with` or `yield` (#5620)\n - Fix crash on a method chain with multiple `# type: ignore` comments when another\n   comment sits between them, which put a `# type: ignore` after the other comment on one\n   line, where it no longer applies (#5618)\ndiff --git a/src/black/comments.py b/src/black/comments.py\nindex 1ae8e6e..22187d7 100644\n--- a/src/black/comments.py\n+++ b/src/black/comments.py\n@@ -919,7 +919,7 @@ def _generate_ignored_nodes_from_fmt_skip(\n             current_node = current_node.parent\n \n         ignored_nodes = [current_node]\n-        if current_node.prev_sibling is None and current_node.parent is not None:\n+        while current_node.prev_sibling is None and current_node.parent is not None:\n             current_node = current_node.parent\n \n         # Track seen nodes to detect cycles that can occur after tree modifications\n@@ -979,7 +979,7 @@ def _generate_ignored_nodes_from_fmt_skip(\n \n             ignored_nodes.insert(0, current_node)\n \n-            if current_node.prev_sibling is None and current_node.parent is not None:\n+            while current_node.prev_sibling is None and current_node.parent is not None:\n                 current_node = current_node.parent\n                 # Every child of the node we are climbing out of is now ignored, so\n                 # take the node itself instead. Converting only its leaves would\n@@ -987,24 +987,17 @@ def _generate_ignored_nodes_from_fmt_skip(\n                 # children, like the one for PEP 695 type parameters, crash on it.\n                 # Children collapsed on an earlier climb are already nodes here, so\n                 # compare against children rather than leaves.\n+                # The collapsed node can be the first child of a parent that is now\n+                # fully ignored as well (`a + b` in `a + b if c else d`), so keep\n+                # climbing and collapse that parent too. Stopping one level short\n+                # leaves the parent's children in the list next to a sibling from\n+                # the enclosing node, and the standalone comment then lands inside\n+                # the parent while that sibling is removed from around it, turning\n+                # e.g. a tuple into a call. Climbing also has to go on past parents\n+                # that aren't fully ignored, or the walk stops before reaching the\n+                # start of the line (`with` in `with not (  # fmt: skip`).\n                 if _children_lead_ignored_nodes(current_node, ignored_nodes):\n                     ignored_nodes[: len(current_node.children)] = [current_node]\n-                    # The collapsed node can be the first child of a parent that\n-                    # is now fully ignored as well (`a + b` in `a + b if c else d`).\n-                    # Collapse that parent too and keep walking from it. Stopping\n-                    # one level short leaves the parent's children in the list next\n-                    # to a sibling from the enclosing node, and the standalone\n-                    # comment then lands inside the parent while that sibling is\n-                    # removed from around it, turning e.g. a tuple into a call.\n-                    while (\n-                        current_node.prev_sibling is None\n-                        and current_node.parent is not None\n-                        and _children_lead_ignored_nodes(\n-                            current_node.parent, ignored_nodes\n-                        )\n-                    ):\n-                        current_node = current_node.parent\n-                        ignored_nodes[: len(current_node.children)] = [current_node]\n \n         # Special handling for compound statements with semicolon-separated bodies\n         if isinstance(parent, Node):\ndiff --git a/src/black/linegen.py b/src/black/linegen.py\nindex ca3961e..456946e 100644\n--- a/src/black/linegen.py\n+++ b/src/black/linegen.py\n@@ -548,9 +548,13 @@ class LineGenerator(Visitor[Line]):\n \n         -2 ** 8 -> -(2 ** 8)\n         \"\"\"\n-        _operator, operand = node.children\n+        # The operator is gone when a `# fmt: skip` on the operand's opening bracket\n+        # hides it and the operand goes on after the closing bracket, as in\n+        # `x = -(  # fmt: skip` ... `).y`.\n+        operand = node.children[-1]\n         if (\n-            operand.type == syms.power\n+            len(node.children) == 2\n+            and operand.type == syms.power\n             and len(operand.children) == 3\n             and operand.children[1].type == token.DOUBLESTAR\n         ):\ndiff --git a/tests/data/cases/fmtskip_opening_bracket_operand.py b/tests/data/cases/fmtskip_opening_bracket_operand.py\nnew file mode 100644\nindex 0000000..f33db4f\n--- /dev/null\n+++ b/tests/data/cases/fmtskip_opening_bracket_operand.py\n@@ -0,0 +1,95 @@\n+# `# fmt: skip` on an opening bracket that starts an operand of a longer expression\n+# hides the whole line, including the code before the bracket.\n+\n+with (  # fmt: skip\n+    a\n+) == 1 and b:\n+    x  =  1\n+\n+with not (  # fmt: skip\n+    a\n+) or b as c:\n+    pass\n+\n+with -(  # fmt: skip\n+    a\n+).real and b:\n+    pass\n+\n+x = (  # fmt: skip\n+    a\n+) + 1 or b\n+\n+y = not [  # fmt: skip\n+    1, 2] and c\n+\n+assert (  # fmt: skip\n+    a\n+) * 2 + 1 == b\n+\n+\n+async def f():\n+    async with (  # fmt: skip\n+        a\n+    ) in b and c:\n+        pass\n+\n+\n+def g():\n+    yield (  # fmt: skip\n+        a\n+    ) == 1 and b\n+    yield not (  # fmt: skip\n+        a\n+    ) or b\n+    return -{  # fmt: skip\n+        \"a\": 1}.keys or b\n+\n+# output\n+\n+# `# fmt: skip` on an opening bracket that starts an operand of a longer expression\n+# hides the whole line, including the code before the bracket.\n+\n+with (  # fmt: skip\n+    a\n+) == 1 and b:\n+    x = 1\n+\n+with not (  # fmt: skip\n+    a\n+) or b as c:\n+    pass\n+\n+with -(  # fmt: skip\n+    a\n+).real and b:\n+    pass\n+\n+x = (  # fmt: skip\n+    a\n+) + 1 or b\n+\n+y = not [  # fmt: skip\n+    1, 2] and c\n+\n+assert (  # fmt: skip\n+    a\n+) * 2 + 1 == b\n+\n+\n+async def f():\n+    async with (  # fmt: skip\n+        a\n+    ) in b and c:\n+        pass\n+\n+\n+def g():\n+    yield (  # fmt: skip\n+        a\n+    ) == 1 and b\n+    yield not (  # fmt: skip\n+        a\n+    ) or b\n+    return -{  # fmt: skip\n+        \"a\": 1}.keys or b\n",
+      "patch_sha256": "ee9a6e9b1d712ad6be09bc4e98f56faee2d6f05d53aa389714b0e636308d1bb3",
+      "proposal": "Fix crash on `# fmt: skip` on a nested bracket after `with` or `yield`\n\n### Description\n\n`# fmt: skip` on an opening bracket crashes Black when the bracket starts an operand that's nested inside a longer expression after `with` or `yield`:\n\n```python\nwith (  # fmt: skip\n    a\n) == 1 and b:\n    pass\n```\n\nfails with \"INTERNAL ERROR: Black produced invalid code: cannot parse: 1:4\". The same happens with `) + 1 == 2:`, `with not (  # fmt: skip` ... `) or b:`, `async with`, and `with ... as c`. After `yield` the output still parses but means something else (`yield` ends up on its own line), so Black reports \"produced code that is not equivalent to the source\". 26.10.1 crashes on these too.\n\nTo find the code before the bracket on the same line, the walk in `_generate_ignored_nodes_from_fmt_skip` climbs to the parent when a node has no previous sibling, but only by one level. Here the bracket is the first leaf of a `comparison` inside an `and_test`, so the walk stops at the `comparison` and `with` is never added to the skipped line. The skipped code then becomes a standalone comment after `with`, which gets split onto its own line.\n\nBoth climbs (the one before the walk and the one inside it) now keep going up while the node is the first child of its parent. The inner loop that collapsed fully ignored parents is folded into the outer one, since it did the same climb with an extra condition.\n\nWith the whole line skipped, a unary operator before the bracket can be hidden while its operand goes on after the closing bracket (`with -(  # fmt: skip` ... `).y and b:`). That leaves a `factor` node with only the operand, so `visit_factor` now checks the number of children instead of unpacking two.\n\nIn other statements this didn't crash, but the line wasn't kept as is either. For example `x = (  # fmt: skip` ... `) == 1 and b` was turned into `x = (` followed by the bracket on its own line. Those lines are now left unchanged. Code that was already formatted by Black stays the same: I ran ~19k generated variants (`x =`, `return`, `yield`, `with`, `if`, `assert`, lambdas, unary operators, trailers, and/or/comparison/arithmetic operands) and the output of `main` for each one is unchanged with this branch, in stable, preview and unstable. None of them crash now.\n\n### Checklist - did you ...\n\n- [x] Implement any code style changes under the `--preview` style, following the stability policy?\n- [x] Add an entry in `CHANGES.md` if necessary?\n- [x] Add / update tests if necessary?\n- [x] Add new / update outdated documentation?\n",
+      "proposal_sha256": "a06384c83cc4f32f48f765d7438ab401dce82a27f889874f2667b2ca5a057985",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "ee9a6e9b1d712ad6be09bc4e98f56faee2d6f05d53aa389714b0e636308d1bb3",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "patch_sha256": "ee9a6e9b1d712ad6be09bc4e98f56faee2d6f05d53aa389714b0e636308d1bb3",
+            "proposal_sha256": "a06384c83cc4f32f48f765d7438ab401dce82a27f889874f2667b2ca5a057985",
+            "judgment_sha256": "562ebb842f72769b70de091e0edb020a91f9077797d72709aa0862e536d7c6fe",
+            "mapping_sha256": "439f27060a488eb80700e4c06a372d0cd3dd0b6bab06f64f062da70f9f9c2030",
+            "assessor_sha256": "56c76560ae593e976461db01ec416d3482f62a342762dd4d10a56e480c2ddb90",
+            "packet_sha256": "a622f0adb30c26a751085fe00999629d5c1924ed1c0b4d9325d8635837e3f867",
+            "prompt_sha256": "6b29adb43a00deb788addf564cbe0d4159de36553a88f28b4bb6114346902c46"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "patch_sha256": "ee9a6e9b1d712ad6be09bc4e98f56faee2d6f05d53aa389714b0e636308d1bb3",
+            "proposal_sha256": "a06384c83cc4f32f48f765d7438ab401dce82a27f889874f2667b2ca5a057985",
+            "judgment_sha256": "ccda13d9f079417dac3d3e629cf1f72b3cb0c07e87a625744d558c3e06545761",
+            "mapping_sha256": "b8b47af0f7514430425bf5e57c69cb22268be5ade5a1b47294c34dc4e1981acf",
+            "assessor_sha256": "e4635165aee439f26cbc31bc607d8ecb13a52ca59909bc13b52ff7fc6cf1785b",
+            "packet_sha256": "edc6482a7623586e96a806cc472a6691497e4fb82fce317f91b53cd366817741",
+            "prompt_sha256": "127009a06a5ed0a8a9caa5f0746f54af358e6d5c5d463d4ec52805e47400015f"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "patch_sha256": "ee9a6e9b1d712ad6be09bc4e98f56faee2d6f05d53aa389714b0e636308d1bb3",
+            "proposal_sha256": "a06384c83cc4f32f48f765d7438ab401dce82a27f889874f2667b2ca5a057985",
+            "judgment_sha256": "44652877680d8833582e13b190df6545bb64a966528dd42bff813bc93ba7bf06",
+            "mapping_sha256": "0c28789486cd5d0f5cbc394971eea9d433ff980304cf98ca3b02c4f6096a28d2",
+            "assessor_sha256": "72152ff6335993037c22cc80055e7b983fee9d8211d2ff3ac6a24a5c0ea1ccc0",
+            "packet_sha256": "6c46a81ae7172aabd0fb47f3bd27d143b8bb62035c9e546be4bc2670f2481913",
+            "prompt_sha256": "d237c3c176147c81e6bf0bfcc4c34ccb23010bfb30dd005e3b614874fe2bd996"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 3,
+          "tests": 3,
+          "design": 4,
+          "proposal": 2
+        },
+        "proposal_points_100": 77.5,
+        "diff_points_85": 70.0,
+        "rotation_points_85": {
+          "0": 63.75,
+          "1": 70.0,
+          "2": 70.0
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "scores": {
+              "contract": 3,
+              "tests": 2,
+              "design": 4,
+              "proposal": 2
+            },
+            "evidence": {
+              "contract": "packet/task.json records build/native/contract/preserve exit 0. fmtskip_opening_bracket_operand.py affirmatively covers comparison/boolean operands after with and yield, async with, aliases, unary/trailer expressions and surrounding body formatting. linegen.py:visit_factor explicitly accommodates a captured unary operator while retaining its power-parenthesizing behavior for two-child factors. Assigned and annotated tuple yields are not covered by this fixture or described frozen check cases; compatibility at that distinct boundary remains unestablished.",
+              "tests": "The new operand fixture distinguishes nested comparison/boolean and unary/trailer failures and adds assignment/assert/return consumers. Existing tests/test_format.py discovery and tests/util.py safety checks remain intact; frozen native fmtskip selection passed. It has only bare yields, omitting assigned, annotated and parenthesized tuple yields, the distinct visitor interaction explicitly exercised by C and partly by A. Thus main-defect protection is meaningful but misses a material path.",
+              "design": "comments.py makes both one-level climbs iterative and retains conditional complete-child collapsing, replacing the deleted restrictive nested loop without dropping its empty-node protection. Cycle, standalone-comment and statement-boundary checks remain. The small linegen.py adjustment handles the resulting one-child factor and retains power parentheses when an operator is actually present. No tests or validation gates are removed; changes fit the existing traversal and visitor APIs and stay focused.",
+              "proposal": "packet/B.md gives a precise title, reproducer, invalid-code versus AST-change distinction, traversal explanation and rationale for visit_factor. Its approximately 19,000 generated checks, version comparison and stable/preview/unstable compatibility claims have no corresponding frozen logs or results in this packet and receive no verification credit. The supplied evidence supports the selected build and fmtskip checks, but the proposal does not report that bounded verification scope or acknowledge the uncovered assigned-yield boundary."
+            },
+            "flags": [],
+            "confidence": "medium"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "scores": {
+              "contract": 3,
+              "tests": 3,
+              "design": 4,
+              "proposal": 2
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native, contract, and preserve exits of 0. fmtskip_opening_bracket_operand.py covers with, async with, bare yield, unary operators, trailers, comparisons, and normal body formatting. Assigned/annotated tuple yields are not covered by this patch; broader compatibility is not established by the frozen summaries.",
+              "tests": "tests/data/cases/fmtskip_opening_bracket_operand.py adds explicit input/output pairs and a changed body assignment. tests/test_format.py discovers these cases; tests/util.py checks AST equivalence and stability for changed output, including preview and line-length=1 variants. Assigned yields and multiple context managers are meaningful missing coverage. Existing tests and safety assertions are unchanged; native exit is 0.",
+              "design": "src/black/comments.py replaces single-level ascent with repeated first-child ascent, addressing the traversal root cause. The deleted nested collapse loop is subsumed by the new loop and retains _children_lead_ignored_nodes before collapsing. Cycle, newline, standalone-comment, and compound-statement protections remain. src/black/linegen.py explicitly handles a partially hidden unary factor while retaining the two-child condition for power parenthesization; the new unary/trailer fixture exercises this change.",
+              "proposal": "packet/A.md provides a precise example, mechanism, and explanation of both source changes. Its approximately 19,000-variant run, stable/preview/unstable compatibility claims, and version-specific reproduction have no supporting frozen results. It does not identify the limited verified suite or remaining limitations. Those claims receive no verification credit."
+            },
+            "flags": [],
+            "confidence": "medium"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "scores": {
+              "contract": 3,
+              "tests": 3,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native fmtskip, contract and preserve exits of 0. fmtskip_opening_bracket_operand.py covers with, async with, yield, boolean/comparison/arithmetic nesting, unary operators and trailers, with neighboring code formatted. linegen.py:visit_factor explicitly supports the one-child shape produced when skip hides a unary operator. Evidence is less complete for assigned/annotated tuple yields and multiple context managers: these are not in C's focused fixture and check exit summaries do not identify their cases. No failure for those omitted cases is claimed.",
+              "tests": "The new automatically discovered operand fixture gives discriminating source/expected pairs for nested leading operands, with-as, async with, bare yields and unary trailing attributes, plus assignment/assert/return consumers. Its changed body assignment activates the shared AST-equivalence and idempotence assertions in tests/util.py. Missing assigned tuple yields, yield from and multiple-manager cases keep coverage below the fullest anchor. Existing validation remains intact.",
+              "design": "comments.py replaces both single-level climbs with repeated climbs and folds the old fully-ignored-parent loop into the general traversal, retaining _children_lead_ignored_nodes before collapsing children. This explicitly preserves the empty-node and tuple-to-call protections discussed in the deleted block. linegen.py replaces exact unpacking with the last operand and gates power-parenthesizing on two children, accommodating hidden operators while retaining normal unary-power handling. The changes are localized to the traversal, affected visitor, focused fixture and changelog.",
+              "proposal": "packet/C.md precisely explains the invalid syntax versus changed-AST symptoms, the parent traversal cause and the necessary unary visitor adjustment, using concrete examples. The claimed approximately 19k generated variants and stable/preview/unstable compatibility are not backed by supplied execution records and receive no credit. It does not report the available targeted-suite/build results or clearly delimit verification, so it falls short of fully evidenced verification communication."
+            },
+            "flags": [],
+            "confidence": "medium"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": null,
+      "receipt_sha256": {
+        "grade": "6077b1cc3e7671064c3b024f63ee907f3eac2da7593479a885870e55787a4ead"
+      }
+    }
+  },
+  "route_review": "Requires inspection of the recorded independent review events.",
+  "prior_develop": {
+    "state": "completed",
+    "effort": {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 5072511,
+        "cachedInputTokens": 4870656,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 25686,
+        "reasoningOutputTokens": 6513,
+        "totalTokens": 5098197
+      },
+      "estimated_usd": 1.1476355999999999,
+      "billed_usd": null,
+      "checkout_to_proposal_seconds": 1030.5735103159677,
+      "prompt_to_terminal_seconds": 994.8137596549932,
+      "through_grading_seconds": 1039.7022056719288,
+      "setup_seconds": 34.28878908907063,
+      "grading_seconds": 7.535130176926032,
+      "thread_count": 4,
+      "child_count": 3,
+      "root_tokens": {
+        "totalTokens": 3796317,
+        "inputTokens": 3777918,
+        "cachedInputTokens": 3687680,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 18399,
+        "reasoningOutputTokens": 5459
+      },
+      "descendant_tokens": {
+        "inputTokens": 1294593,
+        "cachedInputTokens": 1182976,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 7287,
+        "reasoningOutputTokens": 1054,
+        "totalTokens": 1301880
+      },
+      "observed_commands": 60,
+      "native_hook_receipts": 150
+    },
+    "stage_exits": {
+      "build": 0,
+      "native": 0,
+      "contract": 0,
+      "preserve": 0
+    },
+    "patch_sha256": "ad366d98490caa4ac7b7f0fa5f7e5c316f98c3d21be6f7c530ce2767372157d4",
+    "proposal_sha256": "e5af037e23535016490163169dc91cb2d1f2c8e014b3ea03912202925d56204c",
+    "full_pr_score": null,
+    "patch": "diff --git a/CHANGES.md b/CHANGES.md\nindex 5b6fa77..e79eff9 100644\n--- a/CHANGES.md\n+++ b/CHANGES.md\n@@ -13,6 +13,10 @@\n \n <!-- Changes that affect Black's stable style -->\n \n+- Fix handling of `# fmt: skip` on an opening bracket nested in a longer `with`,\n+  `async with`, or `yield` expression, preserving skipped text while formatting\n+  surrounding code.\n+\n - Fix crash when `# fmt: skip` follows the closing bracket of a multi-line call or\n   subscript that isn't the last element of a collection or argument list (#5522)\n - Normalize hex codes in unicode escape sequences in f-strings (#5526)\ndiff --git a/src/black/comments.py b/src/black/comments.py\nindex 1ae8e6e..3fafe41 100644\n--- a/src/black/comments.py\n+++ b/src/black/comments.py\n@@ -919,8 +919,10 @@ def _generate_ignored_nodes_from_fmt_skip(\n             current_node = current_node.parent\n \n         ignored_nodes = [current_node]\n-        if current_node.prev_sibling is None and current_node.parent is not None:\n+        while current_node.prev_sibling is None and current_node.parent is not None:\n             current_node = current_node.parent\n+            if _children_lead_ignored_nodes(current_node, ignored_nodes):\n+                ignored_nodes[: len(current_node.children)] = [current_node]\n \n         # Track seen nodes to detect cycles that can occur after tree modifications\n         seen_nodes = {id(current_node)}\n@@ -967,44 +969,16 @@ def _generate_ignored_nodes_from_fmt_skip(\n             if current_node.type == token.DEDENT:\n                 break\n \n-            # Special case for with expressions\n-            # Without this, we can stuck inside the asexpr_test's children's children\n-            if (\n-                current_node.parent\n-                and current_node.parent.type == syms.asexpr_test\n-                and current_node.parent.parent\n-                and current_node.parent.parent.type == syms.with_stmt\n-            ):\n-                current_node = current_node.parent\n-\n             ignored_nodes.insert(0, current_node)\n \n-            if current_node.prev_sibling is None and current_node.parent is not None:\n+            # Climb through wrappers to find the preceding source, but only\n+            # replace children with their parent when all children are ignored.\n+            # A partial parent can still have preceding source outside it (the\n+            # `with` before an `asexpr_test`, or `yield from` before an operand).\n+            while current_node.prev_sibling is None and current_node.parent is not None:\n                 current_node = current_node.parent\n-                # Every child of the node we are climbing out of is now ignored, so\n-                # take the node itself instead. Converting only its leaves would\n-                # leave the emptied node in the tree, and visitors that expect\n-                # children, like the one for PEP 695 type parameters, crash on it.\n-                # Children collapsed on an earlier climb are already nodes here, so\n-                # compare against children rather than leaves.\n                 if _children_lead_ignored_nodes(current_node, ignored_nodes):\n                     ignored_nodes[: len(current_node.children)] = [current_node]\n-                    # The collapsed node can be the first child of a parent that\n-                    # is now fully ignored as well (`a + b` in `a + b if c else d`).\n-                    # Collapse that parent too and keep walking from it. Stopping\n-                    # one level short leaves the parent's children in the list next\n-                    # to a sibling from the enclosing node, and the standalone\n-                    # comment then lands inside the parent while that sibling is\n-                    # removed from around it, turning e.g. a tuple into a call.\n-                    while (\n-                        current_node.prev_sibling is None\n-                        and current_node.parent is not None\n-                        and _children_lead_ignored_nodes(\n-                            current_node.parent, ignored_nodes\n-                        )\n-                    ):\n-                        current_node = current_node.parent\n-                        ignored_nodes[: len(current_node.children)] = [current_node]\n \n         # Special handling for compound statements with semicolon-separated bodies\n         if isinstance(parent, Node):\n@@ -1040,7 +1014,28 @@ def _generate_ignored_nodes_from_fmt_skip(\n                 syms.suite,\n             ):\n                 statement = statement.parent\n-            ignored_nodes = [statement]\n+            if isinstance(statement, Node) and (\n+                statement.type == syms.with_stmt\n+                or (\n+                    statement.type == syms.async_stmt\n+                    and statement.children[1].type == syms.with_stmt\n+                )\n+            ):\n+                # Preserve a bracketed header without swallowing its suite.\n+                header = statement\n+                if statement.type == syms.async_stmt:\n+                    with_stmt = statement.children[1]\n+                    assert isinstance(with_stmt, Node)\n+                    header = with_stmt\n+                ignored_nodes = []\n+                if header is not statement:\n+                    ignored_nodes.append(statement.children[0])\n+                for child in header.children:\n+                    if child.type in (syms.suite, syms.simple_stmt):\n+                        break\n+                    ignored_nodes.append(child)\n+            else:\n+                ignored_nodes = [statement]\n \n         leaf_is_ignored = any(\n             ignored is leaf\ndiff --git a/tests/data/cases/fmtskip_opening_bracket_with.py b/tests/data/cases/fmtskip_opening_bracket_with.py\nnew file mode 100644\nindex 0000000..6e86f4b\n--- /dev/null\n+++ b/tests/data/cases/fmtskip_opening_bracket_with.py\n@@ -0,0 +1,91 @@\n+with prefix + (  # fmt: skip\n+    first,second\n+) as value:\n+    result  =  value\n+\n+after  =  1\n+\n+with manager((  # fmt: skip\n+    first,second\n+)) as value:\n+    result  =  value\n+\n+with first, prefix + [  # fmt: skip\n+    second,third\n+] as value:\n+    result  =  value\n+\n+with (  # fmt: skip\n+    first,second\n+) as value:\n+    result  =  value\n+\n+with manager((  # fmt: skip\n+    first,second\n+)) as value: result  =  value\n+\n+\n+async def f():\n+    async with prefix + (  # fmt: skip\n+        first,second\n+    ) as value:\n+        result  =  value\n+\n+    async with manager((  # fmt: skip\n+        first,second\n+    )) as value:\n+        result  =  value\n+\n+    after  =  1\n+\n+    async with manager((  # fmt: skip\n+        first,second\n+    )) as value: result  =  value\n+\n+# output\n+\n+with prefix + (  # fmt: skip\n+    first,second\n+) as value:\n+    result = value\n+\n+after = 1\n+\n+with manager((  # fmt: skip\n+    first,second\n+)) as value:\n+    result = value\n+\n+with first, prefix + [  # fmt: skip\n+    second,third\n+] as value:\n+    result = value\n+\n+with (  # fmt: skip\n+    first,second\n+) as value:\n+    result = value\n+\n+with manager((  # fmt: skip\n+    first,second\n+)) as value:\n+    result = value\n+\n+\n+async def f():\n+    async with prefix + (  # fmt: skip\n+        first,second\n+    ) as value:\n+        result = value\n+\n+    async with manager((  # fmt: skip\n+        first,second\n+    )) as value:\n+        result = value\n+\n+    after = 1\n+\n+    async with manager((  # fmt: skip\n+        first,second\n+    )) as value:\n+        result = value\ndiff --git a/tests/data/cases/fmtskip_opening_bracket_yield.py b/tests/data/cases/fmtskip_opening_bracket_yield.py\nnew file mode 100644\nindex 0000000..3e80603\n--- /dev/null\n+++ b/tests/data/cases/fmtskip_opening_bracket_yield.py\n@@ -0,0 +1,73 @@\n+def f():\n+    yield ((  # fmt: skip\n+        first,second\n+    )) + suffix\n+    after  =  1\n+\n+    yield from ((  # fmt: skip\n+        first,second\n+    )) + suffix\n+    after  =  2\n+\n+    yield prefix + (  # fmt: skip\n+        first,second\n+    )\n+    after  =  3\n+\n+    yield from prefix + (  # fmt: skip\n+        first,second\n+    )\n+    after  =  4\n+\n+    yield (  # fmt: skip\n+        first,second\n+    )\n+    after  =  5\n+\n+    yield prefix + (  # fmt: skip\n+        first,second\n+    ) if condition else fallback\n+    after  =  6\n+\n+    yield from prefix + (  # fmt: skip\n+        first,second\n+    ) if condition else fallback\n+    after  =  7\n+\n+# output\n+\n+def f():\n+    yield ((  # fmt: skip\n+        first,second\n+    )) + suffix\n+    after = 1\n+\n+    yield from ((  # fmt: skip\n+        first,second\n+    )) + suffix\n+    after = 2\n+\n+    yield prefix + (  # fmt: skip\n+        first,second\n+    )\n+    after = 3\n+\n+    yield from prefix + (  # fmt: skip\n+        first,second\n+    )\n+    after = 4\n+\n+    yield (  # fmt: skip\n+        first,second\n+    )\n+    after = 5\n+\n+    yield prefix + (  # fmt: skip\n+        first,second\n+    ) if condition else fallback\n+    after = 6\n+\n+    yield from prefix + (  # fmt: skip\n+        first,second\n+    ) if condition else fallback\n+    after = 7\n",
+    "proposal": "Fix fmt: skip in nested with and yield expressions\n\nCorrect skip-node traversal to preserve skipped text without producing invalid code or swallowing surrounding bodies. Add focused fixtures for `with`, `async with`, `yield`, and `yield from`, including conditional tails and one-line bodies.\n\nVerified offline: 37 focused tests passed, including AST equivalence and idempotence checks. Compilation, repository formatting, and diff checks passed. Independent review passed after repairing the one-line-body case.\n\nFull test suite and pre-commit were not run. Changes remain in the checkout."
+  },
+  "assessor_costs": [
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 447773,
+        "cachedInputTokens": 388480,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 3000,
+        "reasoningOutputTokens": 453,
+        "totalTokens": 450773
+      },
+      "threads": 1,
+      "usd_estimate": 0.187434
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 373023,
+        "cachedInputTokens": 342656,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 3030,
+        "reasoningOutputTokens": 458,
+        "totalTokens": 376053
+      },
+      "threads": 1,
+      "usd_estimate": 0.1252996
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 380815,
+        "cachedInputTokens": 348800,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2590,
+        "reasoningOutputTokens": 356,
+        "totalTokens": 383405
+      },
+      "threads": 1,
+      "usd_estimate": 0.12481
+    }
+  ],
+  "observations": [
+    {
+      "id": "final-formatter-fixtures",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "receipt_sha256": "75957bacf9ace9139939c18271b3e6aebe0bfa4e50c8df5e02882efde2579447",
+      "evidence": {
+        "case": "black",
+        "registration_sha256": "1d7dbb1eec4f5154635fa2721c5231b43a4f2e897808fa4781b7afa8a8a1844a",
+        "fixture_sha256": {
+          "fmtskip_nested_with.py": "056f1a7f94c4d0cad54477b1ac0399f6ed5fc8f4cf4c415e3bccd95b1f5fe517",
+          "fmtskip_nested_yield.py": "95767a80084d8c7b352156ece4aa8fe59caf641606f2e689691c49e9a92e9181"
+        },
+        "scope": "Supplementary replay of the two fixtures from the earlier sealed Black proposal across this matched trial. That proposal's own base, merge, patch and complete source bytes are bound to its portable result.",
+        "roles": {
+          "base": {
+            "grade": {
+              "path": "cache/calibration/black/1793302467438759410/base/grade.json",
+              "sha256": "9a70747b27e7cff71db74e33adc8890236fda573af8c49e1fedb7d8cf75fb1b6"
+            },
+            "fixtures": {
+              "fmtskip_nested_with.py": {
+                "exit": 1,
+                "seconds": 1.4689194618258625,
+                "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:src:/deps/lib python -c \"from tests.test_format import check_file; check_file('/oracle', 'fmtskip_nested_with.py')\"",
+                "log_sha256": "37531cd9dbd034b110b990400a18ffc6ecfa59e43aa03521b560313eb05a83be"
+              },
+              "fmtskip_nested_yield.py": {
+                "exit": 1,
+                "seconds": 1.368774384027347,
+                "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:src:/deps/lib python -c \"from tests.test_format import check_file; check_file('/oracle', 'fmtskip_nested_yield.py')\"",
+                "log_sha256": "07453dab903db6dc9f2350c393fec7652602efda15b2ff47bb35b9b74961ba98"
+              }
+            }
+          },
+          "gold": {
+            "grade": {
+              "path": "cache/calibration/black/1793302467438759410/gold/grade.json",
+              "sha256": "6077b1cc3e7671064c3b024f63ee907f3eac2da7593479a885870e55787a4ead"
+            },
+            "fixtures": {
+              "fmtskip_nested_with.py": {
+                "exit": 0,
+                "seconds": 1.4686764089856297,
+                "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:src:/deps/lib python -c \"from tests.test_format import check_file; check_file('/oracle', 'fmtskip_nested_with.py')\"",
+                "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "fmtskip_nested_yield.py": {
+                "exit": 0,
+                "seconds": 1.4723308091051877,
+                "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:src:/deps/lib python -c \"from tests.test_format import check_file; check_file('/oracle', 'fmtskip_nested_yield.py')\"",
+                "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            }
+          },
+          "candidate-develop": {
+            "grade": {
+              "path": "runs/command-waits-black-01-candidate/attempts/black/develop/grade/grade.json",
+              "sha256": "5579509f6b31d355b3c3a397050f7d361887071bf689f46d34687e0c4f9777d0"
+            },
+            "fixtures": {
+              "fmtskip_nested_with.py": {
+                "exit": 0,
+                "seconds": 1.4715461959131062,
+                "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:src:/deps/lib python -c \"from tests.test_format import check_file; check_file('/oracle', 'fmtskip_nested_with.py')\"",
+                "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "fmtskip_nested_yield.py": {
+                "exit": 0,
+                "seconds": 1.4719755297992378,
+                "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:src:/deps/lib python -c \"from tests.test_format import check_file; check_file('/oracle', 'fmtskip_nested_yield.py')\"",
+                "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            }
+          },
+          "candidate-control": {
+            "grade": {
+              "path": "runs/command-waits-black-01-candidate/attempts/black/control/grade/grade.json",
+              "sha256": "5eaaed3124fb1be150d900e1cb29f5814f878af755b2a0687e0ebb8cd7c1a219"
+            },
+            "fixtures": {
+              "fmtskip_nested_with.py": {
+                "exit": 0,
+                "seconds": 2.0742287831380963,
+                "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:src:/deps/lib python -c \"from tests.test_format import check_file; check_file('/oracle', 'fmtskip_nested_with.py')\"",
+                "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "fmtskip_nested_yield.py": {
+                "exit": 1,
+                "seconds": 1.5702146119438112,
+                "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:src:/deps/lib python -c \"from tests.test_format import check_file; check_file('/oracle', 'fmtskip_nested_yield.py')\"",
+                "log_sha256": "4382b6a17d84a3734880ac4bcfcf2b3ac6516d82276d6d3415091945da3d2821"
+              }
+            }
+          },
+          "prior-develop": {
+            "grade": {
+              "path": "runs/command-waits-black-01-prior/attempts/black/develop/grade/grade.json",
+              "sha256": "ea0ae0e0264edf6a9cbb1b23a6d72de679173ca87f6e24184638420e4ef80e75"
+            },
+            "fixtures": {
+              "fmtskip_nested_with.py": {
+                "exit": 0,
+                "seconds": 1.5250697368755937,
+                "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:src:/deps/lib python -c \"from tests.test_format import check_file; check_file('/oracle', 'fmtskip_nested_with.py')\"",
+                "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              },
+              "fmtskip_nested_yield.py": {
+                "exit": 0,
+                "seconds": 1.4690039169508964,
+                "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=.:src:/deps/lib python -c \"from tests.test_format import check_file; check_file('/oracle', 'fmtskip_nested_yield.py')\"",
+                "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            }
+          }
+        },
+        "fixture_source_run": "same-check-black-01",
+        "fixture_source_result_sha256": "44747b8361e9d516cd3666e5bd5408aeed81efcc6496c559d88ab40f47eae86a"
+      }
+    },
+    {
+      "id": "guide-footprint",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "receipt_sha256": "3be6b8e4d2ee7839adbab31baf6d4df9f7579628649c153f0646759997658503",
+      "evidence": {
+        "case": "black",
+        "registration_sha256": "1d7dbb1eec4f5154635fa2721c5231b43a4f2e897808fa4781b7afa8a8a1844a",
+        "scope": "Counts distinct files named in successful root commands. Full visibility means the entire trimmed guide appeared in one tool result, including a later PTY poll. File size is a description of the named sources, not prompt tokens. Omitted or truncated text and actual cognitive use remain unknown.",
+        "roles": {
+          "candidate/develop": {
+            "state": "completed",
+            "native_sha256": "92735145719e4b5b10fbd556b62e7f186b869a515e4f18220d8c2871b978667c",
+            "usage_coverage": "complete",
+            "usd": 1.4350244,
+            "root_commands": 43,
+            "children": 5,
+            "guides": {
+              "AGENTS.md": {
+                "successful_root_commands_naming_guide": 6,
+                "file_bytes": 1300,
+                "file_sha256": "3f3d4881a903b94d30a4ef2bce2d28f090e75579b182d59250805534d30ec8b3",
+                "whole_text_visible": false
+              },
+              "adversarial-loop/SKILL.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 9496,
+                "file_sha256": "6c8605f4b1741e286e5cbd97cfd1629682d92ae781138c678655f19d4c675097",
+                "whole_text_visible": true
+              },
+              "develop/references/planning-and-review.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 3989,
+                "file_sha256": "f8ab46ebc104550de234edba7cef1b08a4a2eb7e468c0553105cd111f4995f86",
+                "whole_text_visible": true
+              },
+              "engineering-design/SKILL.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 1782,
+                "file_sha256": "0b1d387d2367c88f8b7b065b6c18503bf140992ab8910cad263d26c93ff61f73",
+                "whole_text_visible": true
+              },
+              "iterate/SKILL.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 10318,
+                "file_sha256": "7a93edae1a71bd6f981f16540149ab47f16354575c803dc54428047021ebdb1f",
+                "whole_text_visible": true
+              },
+              "iterate/references/local-changes.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 2067,
+                "file_sha256": "a8fad0dbd56899ea23c74278f42d34afac072f72584a1d5ab6583ebd7b66df52",
+                "whole_text_visible": true
+              }
+            },
+            "distinct_named_guide_bytes": 28952
+          },
+          "candidate/control": {
+            "state": "timeout",
+            "native_sha256": "cf600d21908ad8b06fa59a0008d6200b598ebe8e18c4398fadb627f1b46fd0ce",
+            "usage_coverage": "lower bound",
+            "usd": 0.552702,
+            "root_commands": 29,
+            "children": 0,
+            "guides": {},
+            "distinct_named_guide_bytes": 0
+          },
+          "prior/develop": {
+            "state": "completed",
+            "native_sha256": "4d98f886a426f53497c382b830a8754e0e1555e7acf98394f325e5cba79e1f92",
+            "usage_coverage": "complete",
+            "usd": 1.1476355999999999,
+            "root_commands": 36,
+            "children": 3,
+            "guides": {
+              "AGENTS.md": {
+                "successful_root_commands_naming_guide": 5,
+                "file_bytes": 1300,
+                "file_sha256": "3f3d4881a903b94d30a4ef2bce2d28f090e75579b182d59250805534d30ec8b3",
+                "whole_text_visible": false
+              },
+              "adversarial-loop/SKILL.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 9496,
+                "file_sha256": "6c8605f4b1741e286e5cbd97cfd1629682d92ae781138c678655f19d4c675097",
+                "whole_text_visible": true
+              },
+              "develop/references/planning-and-review.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 3989,
+                "file_sha256": "f8ab46ebc104550de234edba7cef1b08a4a2eb7e468c0553105cd111f4995f86",
+                "whole_text_visible": true
+              },
+              "engineering-design/SKILL.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 1782,
+                "file_sha256": "0b1d387d2367c88f8b7b065b6c18503bf140992ab8910cad263d26c93ff61f73",
+                "whole_text_visible": true
+              },
+              "iterate/references/local-changes.md": {
+                "successful_root_commands_naming_guide": 1,
+                "file_bytes": 1986,
+                "file_sha256": "2d12a0a13696b08058ab9ab8e388b4be4c12c200134d4f3230b6efc0e676f4ec",
+                "whole_text_visible": true
+              }
+            },
+            "distinct_named_guide_bytes": 18553
+          }
+        }
+      }
+    },
+    {
+      "id": "review-and-proposal",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "receipt_sha256": "ef57dcc675e0a138054691d9bc658dc660b2aa7c66ddf4147c05f76fd80e2234",
+      "evidence": {
+        "case": "black",
+        "registration_sha256": "1d7dbb1eec4f5154635fa2721c5231b43a4f2e897808fa4781b7afa8a8a1844a",
+        "native_sha256": "92735145719e4b5b10fbd556b62e7f186b869a515e4f18220d8c2871b978667c",
+        "grade_sha256": "5579509f6b31d355b3c3a397050f7d361887071bf689f46d34687e0c4f9777d0",
+        "patch_sha256": "31f4d701181d6d556d0e1f65a24ebd4bb09b2684f204decad7096212174472ae",
+        "proposal_sha256": "72058c00b39ab1a70e3485d0bc9bd41105c81e84eab9bc0953f800755e8a8683",
+        "scope": "Native source-edit events and exact reviewer verdicts on this candidate. Shell writes are outside the file-change event list. Only explicitly named file hashes count as exact final-file matches. The proposal links to a worker-local file outside the submitted patch.",
+        "final_files": {
+          "CHANGES.md": "2e662e9cc813724919aa5c2dbe7356edaceef08e54b663d2b2b048f3773d21b1",
+          "src/black/comments.py": "1e67af8d47f8acf9a5d61440393548db464824495f65e3e543f8ea629ffe14b4",
+          "tests/data/cases/fmtskip_nested_with.py": "fbfeb5fc2890efc2ddb4a94b32707ad06d9ab5a50b918cc09f274c5deda2bcf2",
+          "tests/data/cases/fmtskip_nested_yield.py": "9b7651156ec47ed4df0e5449dffb104ac6c69105ae9a274c71e5285078a38f4f"
+        },
+        "fresh_spawns": {
+          "/root/intent_review": {
+            "at": "2026-10-29T22:37:19.994Z",
+            "fork_turns": "none"
+          },
+          "/root/artifact_review": {
+            "at": "2026-10-29T22:40:49.491Z",
+            "fork_turns": "none"
+          },
+          "/root/intent_review_yield": {
+            "at": "2026-10-29T22:44:55.133Z",
+            "fork_turns": "none"
+          },
+          "/root/artifact_review_final": {
+            "at": "2026-10-29T22:46:09.501Z",
+            "fork_turns": "none"
+          },
+          "/root/artifact_review_round3": {
+            "at": "2026-10-29T22:50:02.027Z",
+            "fork_turns": "none"
+          }
+        },
+        "source_edit_events": [
+          {
+            "at": "2026-10-29T22:39:20.223Z",
+            "paths": [
+              "src/black/comments.py"
+            ]
+          },
+          {
+            "at": "2026-10-29T22:39:23.655Z",
+            "paths": [
+              "CHANGES.md"
+            ]
+          },
+          {
+            "at": "2026-10-29T22:40:06.492Z",
+            "paths": [
+              "src/black/comments.py"
+            ]
+          },
+          {
+            "at": "2026-10-29T22:45:33.208Z",
+            "paths": [
+              "src/black/comments.py"
+            ]
+          },
+          {
+            "at": "2026-10-29T22:49:42.955Z",
+            "paths": [
+              "src/black/comments.py"
+            ]
+          }
+        ],
+        "lanes": {
+          "/root/intent_review_yield": {
+            "trace_sha256": "af52cd666b48bee98eab484f799d3c8accc20543f79377f5b61a73439a78f531",
+            "start": "2026-10-29T22:44:57.126Z",
+            "end": "2026-10-29T22:45:22.142Z",
+            "verdict": "aligned",
+            "verdict_sha256": "9529d739b6422e31dffe52b49de8ace2b00170c4d3be6c8aa0b3df651d088245",
+            "named_final_hashes": []
+          },
+          "/root/artifact_review_round3": {
+            "trace_sha256": "6634dd9c8fd24cc9c2295c722652cd3ba32ebf19dde50a8f9226df186a1085ae",
+            "start": "2026-10-29T22:50:03.224Z",
+            "end": "2026-10-29T22:51:40.385Z",
+            "verdict": "aligned",
+            "verdict_sha256": "d62eadf92e1958a9cf36d3f87b25e51604812e2d0cd169a0e91d5ecb028b67bb",
+            "named_final_hashes": [
+              "CHANGES.md",
+              "src/black/comments.py",
+              "tests/data/cases/fmtskip_nested_with.py",
+              "tests/data/cases/fmtskip_nested_yield.py"
+            ]
+          },
+          "/root/artifact_review": {
+            "trace_sha256": "27eab731460582a169fe0667c96598330c6a16c4deaefb7464bbb48f3d263c43",
+            "start": "2026-10-29T22:40:50.775Z",
+            "end": "2026-10-29T22:44:35.542Z",
+            "verdict": "changes required",
+            "verdict_sha256": "c2448338b5925cd4742c17038c280709beab900d1a8d27dff3f25d59c2b3fc7e",
+            "named_final_hashes": [
+              "CHANGES.md",
+              "tests/data/cases/fmtskip_nested_with.py"
+            ]
+          },
+          "/root/intent_review": {
+            "trace_sha256": "02112d55c283a546ba47413e7ebd383143162b2351c0882d68dda27cd01ae0bc",
+            "start": "2026-10-29T22:37:21.960Z",
+            "end": "2026-10-29T22:38:01.398Z",
+            "verdict": "aligned",
+            "verdict_sha256": "e9d49ebcea57f5d854c66ed85cd7f9d1e9ed988ad2746f8daa0977af2234c69c",
+            "named_final_hashes": []
+          },
+          "/root/artifact_review_final": {
+            "trace_sha256": "1b187f4bfee0ef34d2d15c141a6530e8e1ddaf9857d462b5301d7637c1f86ea0",
+            "start": "2026-10-29T22:46:11.997Z",
+            "end": "2026-10-29T22:49:39.797Z",
+            "verdict": "changes required",
+            "verdict_sha256": "4bca7397cdde65f4fd4a5037f1e9a4633d7373c4eca486d67b76aade7732d195",
+            "named_final_hashes": [
+              "CHANGES.md",
+              "tests/data/cases/fmtskip_nested_with.py"
+            ]
+          }
+        },
+        "proposal_worker_local_link": "/tmp/black-fmtskip-review.md"
+      }
+    },
+    {
+      "id": "terminal-readbacks",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "receipt_sha256": "9b9e448158cbe21a4af0acd58440856c4a63ededa6eac42694dc747dab1f2a92",
+      "evidence": {
+        "case": "black",
+        "registration_sha256": "1d7dbb1eec4f5154635fa2721c5231b43a4f2e897808fa4781b7afa8a8a1844a",
+        "measurement_sha256": "dcdffe3f61353efad6110ee2e4788b837c0d49adf2770b7c1efbfc4e7a12849c",
+        "scope": "Root samples whose only tool collected terminal output. These are measured costs. Some readbacks deliver required output.",
+        "roles": {
+          "candidate/develop": {
+            "responses": 73,
+            "poll_only_responses": 20,
+            "poll_only_tokens": 1317481,
+            "poll_only_usd": 0.2023972,
+            "root_tokens": 4495745,
+            "root_usd": 0.9562308,
+            "proposal_usd": 1.4350244,
+            "native_sha256": "92735145719e4b5b10fbd556b62e7f186b869a515e4f18220d8c2871b978667c",
+            "root_trace_sha256": "65b08883a8d63b0b1e887be30133448d33e74aa63a96e211ec4745a19eae369c"
+          },
+          "candidate/control": {
+            "state": "timeout",
+            "coverage": "lower bound",
+            "poll_only_usd": null
+          },
+          "prior/develop": {
+            "responses": 73,
+            "poll_only_responses": 24,
+            "poll_only_tokens": 1457636,
+            "poll_only_usd": 0.23381280000000002,
+            "root_tokens": 3796317,
+            "root_usd": 0.733234,
+            "proposal_usd": 1.1476355999999999,
+            "native_sha256": "4d98f886a426f53497c382b830a8754e0e1555e7acf98394f325e5cba79e1f92",
+            "root_trace_sha256": "e1dea248600f2d73891b88b9f39f166fe2739c0c3e80da078a1dbf97183cb4d0"
+          }
+        }
+      }
+    },
+    {
+      "id": "unary-trailer-and-prefix",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "receipt_sha256": "0f0dcf298537d07a8fb97a5dca66e97b7c1f6f5ba74f30ede59260a692a1d7f1",
+      "evidence": {
+        "case": "black",
+        "registration_sha256": "1d7dbb1eec4f5154635fa2721c5231b43a4f2e897808fa4781b7afa8a8a1844a",
+        "probe_sha256": "9d60db767d27257ed12de3cb2fb2c62246a7129c18ea92c7af1a58ddd15817b6",
+        "scope": "Pre-release supplemental Black probe, reused from the published same-check trial. Report AST, stability and exact skipped prefix separately. Primary gates and scores are unchanged.",
+        "roles": {
+          "base": {
+            "grade_sha256": "9a70747b27e7cff71db74e33adc8890236fda573af8c49e1fedb7d8cf75fb1b6",
+            "patch_sha256": null,
+            "stages": {
+              "operand": {
+                "exit": 0,
+                "seconds": 1.2221768780145794,
+                "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+                "log_sha256": "b402684637e9f6282f6892bcd138123df1591630f383fe9a007131bc8bf81e59",
+                "output": "{\"case\": \"unary_trailer\", \"error\": \"INTERNAL ERROR: Black 26.10.1 on Python (CPython) 3.13.18 produced invalid code:\\ncannot parse: 1:4\\n    with\\n       ^\\nParseError: bad input\\nPlease report a bug on https://github.com/psf/black/issues.  This invalid output might be helpful: /tmp/blk_kts1e4yl.log\", \"error_type\": \"InvalidInput\"}\n{\"case\": \"directive_prefix\", \"error\": \"INTERNAL ERROR: Black 26.10.1 on Python (CPython) 3.13.18 produced invalid code:\\ncannot parse: 1:4\\n    with\\n       ^\\nParseError: bad input\\nPlease report a bug on https://github.com/psf/black/issues.  This invalid output might be helpful: /tmp/blk_tk0x7cpr.log\", \"error_type\": \"InvalidInput\"}"
+              }
+            }
+          },
+          "gold": {
+            "grade_sha256": "6077b1cc3e7671064c3b024f63ee907f3eac2da7593479a885870e55787a4ead",
+            "patch_sha256": "ee9a6e9b1d712ad6be09bc4e98f56faee2d6f05d53aa389714b0e636308d1bb3",
+            "stages": {
+              "operand": {
+                "exit": 0,
+                "seconds": 1.3931145949754864,
+                "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+                "log_sha256": "50488bc398a8d10cad30ed7ea1fcbdb3ab0470436b6e792d3cff21d8a4058d9a",
+                "output": "{\"case\": \"unary_trailer\", \"directive_line_unchanged\": true, \"formatted\": \"with -(  # fmt: skip\\n    a\\n).real and b:\\n    pass\\n\", \"idempotent\": true, \"preserved_ast\": true}\n{\"case\": \"directive_prefix\", \"directive_line_unchanged\": true, \"formatted\": \"with  left  + (  # fmt: skip\\n    kept(  )\\n) as value:\\n    variable = 1\\n\", \"idempotent\": true, \"preserved_ast\": true}"
+              }
+            }
+          },
+          "candidate-develop": {
+            "grade_sha256": "5579509f6b31d355b3c3a397050f7d361887071bf689f46d34687e0c4f9777d0",
+            "patch_sha256": "31f4d701181d6d556d0e1f65a24ebd4bb09b2684f204decad7096212174472ae",
+            "stages": {
+              "operand": {
+                "exit": 0,
+                "seconds": 1.2202451329212636,
+                "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+                "log_sha256": "a8cbba4be980276cc8cfdeb87c9acb4b5e4a360405dadebfcc6362a750f8b3ee",
+                "output": "{\"case\": \"unary_trailer\", \"error\": \"not enough values to unpack (expected 2, got 1)\", \"error_type\": \"ValueError\"}\n{\"case\": \"directive_prefix\", \"directive_line_unchanged\": true, \"formatted\": \"with  left  + (  # fmt: skip\\n    kept(  )\\n) as value:\\n    variable = 1\\n\", \"idempotent\": true, \"preserved_ast\": true}"
+              }
+            }
+          },
+          "candidate-control": {
+            "grade_sha256": "5eaaed3124fb1be150d900e1cb29f5814f878af755b2a0687e0ebb8cd7c1a219",
+            "patch_sha256": "797244bea75ef531fc1eb53b2f712d14cb47f1352272784ffc44f4e4202e4bbd",
+            "stages": {
+              "operand": {
+                "exit": 0,
+                "seconds": 1.067652994999662,
+                "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+                "log_sha256": "a8cbba4be980276cc8cfdeb87c9acb4b5e4a360405dadebfcc6362a750f8b3ee",
+                "output": "{\"case\": \"unary_trailer\", \"error\": \"not enough values to unpack (expected 2, got 1)\", \"error_type\": \"ValueError\"}\n{\"case\": \"directive_prefix\", \"directive_line_unchanged\": true, \"formatted\": \"with  left  + (  # fmt: skip\\n    kept(  )\\n) as value:\\n    variable = 1\\n\", \"idempotent\": true, \"preserved_ast\": true}"
+              }
+            }
+          },
+          "prior-develop": {
+            "grade_sha256": "ea0ae0e0264edf6a9cbb1b23a6d72de679173ca87f6e24184638420e4ef80e75",
+            "patch_sha256": "ad366d98490caa4ac7b7f0fa5f7e5c316f98c3d21be6f7c530ce2767372157d4",
+            "stages": {
+              "operand": {
+                "exit": 0,
+                "seconds": 1.118744743987918,
+                "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+                "log_sha256": "a8cbba4be980276cc8cfdeb87c9acb4b5e4a360405dadebfcc6362a750f8b3ee",
+                "output": "{\"case\": \"unary_trailer\", \"error\": \"not enough values to unpack (expected 2, got 1)\", \"error_type\": \"ValueError\"}\n{\"case\": \"directive_prefix\", \"directive_line_unchanged\": true, \"formatted\": \"with  left  + (  # fmt: skip\\n    kept(  )\\n) as value:\\n    variable = 1\\n\", \"idempotent\": true, \"preserved_ast\": true}"
+              }
+            }
+          }
+        }
+      },
+      "probe": "import ast\nimport json\nimport black\n\ncases = {\n    \"unary_trailer\": \"with -(  # fmt: skip\\n    a\\n).real and b:\\n    pass\\n\",\n    \"directive_prefix\": \"with  left  + (  # fmt: skip\\n    kept(  )\\n) as value:\\n    variable=  1\\n\",\n}\nfor name, source in cases.items():\n    original = ast.dump(ast.parse(source))\n    try:\n        formatted = black.format_str(source, mode=black.Mode())\n        result = {\"formatted\": formatted, \"preserved_ast\": ast.dump(ast.parse(formatted)) == original,\n                  \"idempotent\": black.format_str(formatted, mode=black.Mode()) == formatted,\n                  \"directive_line_unchanged\": source.splitlines()[0] == formatted.splitlines()[0]}\n    except Exception as exc:\n        result = {\"error_type\": type(exc).__name__, \"error\": str(exc)}\n    print(json.dumps({\"case\": name, **result}, sort_keys=True))\n"
+    }
+  ]
+}

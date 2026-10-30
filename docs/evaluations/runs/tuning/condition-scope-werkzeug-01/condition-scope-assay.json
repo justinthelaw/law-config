@@ -1,0 +1,1330 @@
+{
+  "format": "law-config.condition-scope-postscore/v1",
+  "pilot": "condition-scope-werkzeug-01",
+  "scope": "One exposed registered Werkzeug tuning pilot; canonical post-score assay and checker only. No fresh holdout, provider call, score/rubric change, promotion or savings claim.",
+  "target": {
+    "path": "result.json",
+    "sha256": "a52bc9e4843444439451f8b2a345727341427717d04a44c4733032e58a2ecc66",
+    "raw_collector_sha256": "b72133786209402a67b744bad6c7eeeb9396dd13b251a6fd47b8cc367a837997",
+    "registration_sha256": "38ffb3daef0d8d75f83a9a9a2391b389e2c3b49d7a42512c1e4cf93834002696",
+    "descriptor_sha256": "f4ad51813101a6e1555b929c8793a4aa217628f0526e4705e019da54d42cdddc",
+    "prompt_sha256": "2d2b01a70ce1822e55ece82a6f056088db9e39385a0a7c0a9651b7e95e4b829d",
+    "rubric_sha256": "0bdd8699f00ba1f5266927d7666bc2a117fa4873e113fdfa831da93cd2abbc08",
+    "runtime_sha256": "aeb30a53e8554e5800f9e22f562231e6d5b84aa2f209d4593ffd9df79a0a4489",
+    "treatments": {
+      "prior": "7ed91df07062b0a88cab8cd5b5e74ee8a7c7e258afa2a42645b60e793ea68791",
+      "candidate": "acb1e02b18a075d68b2ecaad2dd25503948afc9647b94114260458accfc6bfab"
+    }
+  },
+  "registered_inputs": {
+    "canonical_addendum_sha256": "2c4451aa9cced7b1a69943d67127aede089b5676ed2b81121c07bc78edd78a79",
+    "replay_program_sha256": "962f577ab30585ea4d9744497f2b00d2c2453ed4c67b5865e74760fc31cd1b8b",
+    "checker_sha256": "5234803f3e13a4e5552fa6c77f911497dc22b4ca22121621834333d69b1429b8",
+    "policy_sha256": "8de371262858ea1c40062c6d7a520cb60c38d17d66441a986c25b2ae0065ad9a",
+    "behavior_registration_sha256": "c7452c2198d8bb41db3334fc65129a9259c4142081a85453c38085c5d9ff32ab",
+    "consumer_registration_sha256": "3b4001383a684833879a78dc91eaaca48ace3fa7e64522cff1251b3867f9d46d",
+    "full_modules_registration_sha256": "3db06880dc606f03b9364d48620dc75b66e16d01836173837586c91c54de33dd",
+    "original_test_sha256": {
+      "tests/test_internal.py": "6e9a55d6e86de73f25025d5b442d2bfa085676360ed91d6c008d11c447219991",
+      "tests/test_test.py": "7da9e79e0d4e553261a6557f930e5a4c08431eab728b100127965ed69e426d89"
+    },
+    "constructive_positive_patch_sha256": "de69e522f591bd630079935034f65958fce803e472f4f85f9ec94c47033c2468",
+    "trusted_allocation_expectation_sha256": "206748f2cd098717b0b1a8a5270625813fbc26ad54eff997c57c311e23ae63c4",
+    "result_bound_expectation_sha256": "b6c88ea96755185811a700b9c180bc30be0481031bcc0458c266a8232f79b7dc",
+    "result_bound_expectation": {
+      "name": "condition-scope-werkzeug-01",
+      "case": "werkzeug",
+      "base": "15fc22b699ecacd04824092453c0cd2a8c4a3a67",
+      "merged": "28360ef872ae984cc08209cb333db5649ce977bc",
+      "prompt_sha256": "2d2b01a70ce1822e55ece82a6f056088db9e39385a0a7c0a9651b7e95e4b829d",
+      "registration_sha256": "38ffb3daef0d8d75f83a9a9a2391b389e2c3b49d7a42512c1e4cf93834002696",
+      "descriptor_sha256": "f4ad51813101a6e1555b929c8793a4aa217628f0526e4705e019da54d42cdddc",
+      "treatments": {
+        "prior": "7ed91df07062b0a88cab8cd5b5e74ee8a7c7e258afa2a42645b60e793ea68791",
+        "candidate": "acb1e02b18a075d68b2ecaad2dd25503948afc9647b94114260458accfc6bfab"
+      },
+      "target_sha256": "a52bc9e4843444439451f8b2a345727341427717d04a44c4733032e58a2ecc66"
+    }
+  },
+  "execution": {
+    "canonical_replay_command": "OAIPKG_DISABLE_META_MISSING=1 PYTHONDONTWRITEBYTECODE=1 PANEL_CPUSET=0,1 taskset -c 0,1 /usr/bin/python3 -B docs/evaluations/treatments/composite-acb1e02b18a075d68b2ecaad2dd25503948afc9647b94114260458accfc6bfab/condition-scope/replay.py docs/evaluations/runs/tuning/condition-scope-werkzeug-01/result.json condition-scope-01",
+    "replay_exit": 0,
+    "replay_log_sha256": "4c124e145b39151f9427c7d606d8c1763ca6735c8f26546409cfcc3b6eab2e49",
+    "checker_command": "From generated replay workspace: /usr/bin/python3 -B <canonical condition-scope/checker/decision_check.py> --target <unchanged result.json> --descriptor <preregistered hypothesis.json> --expect <result-bound expectation> --expect-sha256 b6c88ea96755185811a700b9c180bc30be0481031bcc0458c266a8232f79b7dc --policy <canonical decision-policy-bound.json> --v2 <condition-scope-01-assessed.json> --modules <condition-scope-01-modules.json> --behavior <condition-scope-01-replay.json> --output <condition-scope-01-decision.json>",
+    "checker_cli_exit": 0,
+    "cpus": [
+      0,
+      1
+    ],
+    "physical_cpu_lease": "Canonical measure/v2/modules use the existing lease helper; no overlap with producer CPUs6,7.",
+    "network": "none",
+    "production_and_original_test_mounts": "read-only",
+    "temporary_storage": "Ignored task-local output; canonical runner uses its documented portable-work/condition-scope-measure scratch paths. Benchmark report owns its standard ignored state/volatile path; Docker manages image layers.",
+    "python": "3.13.18",
+    "pytest": "8.4.2",
+    "setup_failures": [],
+    "unavailable_producers": []
+  },
+  "behavior": {
+    "observable-red-green-replay": {
+      "probe_sha256": "24bb35b1c130ac4e93f75b07dc382328b8d3bc10d8a18371eec16a19ccf876df",
+      "source_receipt_sha256": "7377874d50114ce1ba0371177f082b7ddc7ceaecea066a26d11ae2a5e4ed8b64",
+      "rows": {
+        "base": {
+          "patch_sha256": null,
+          "exit": 42,
+          "outcome": "red-behavior",
+          "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+          "log_sha256": "12672732852e1bb86d70ddad498cc46e847c73e1f13609a3b353b3c1ab92f370",
+          "cases": 144,
+          "failed": 132,
+          "passed": 12
+        },
+        "merged": {
+          "patch_sha256": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76",
+          "exit": 42,
+          "outcome": "red-behavior",
+          "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+          "log_sha256": "12672732852e1bb86d70ddad498cc46e847c73e1f13609a3b353b3c1ab92f370",
+          "cases": 144,
+          "failed": 132,
+          "passed": 12
+        },
+        "stock": {
+          "patch_sha256": "566618ae342df87e2a96ee3a4900b9605e7fe3ad4003617845aa7353c10cbc97",
+          "exit": 42,
+          "outcome": "red-behavior",
+          "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+          "log_sha256": "12672732852e1bb86d70ddad498cc46e847c73e1f13609a3b353b3c1ab92f370",
+          "cases": 144,
+          "failed": 132,
+          "passed": 12
+        },
+        "candidate": {
+          "patch_sha256": "b73587c3eb020ca6f3f56fc0238137c16a2cf0cfbc6d130b2412472aae00f2b1",
+          "exit": 0,
+          "outcome": "green",
+          "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+          "log_sha256": "9b4625cc7ea29050905246824e6c5fc593d46eec81ff54f2786bb7e31a079657",
+          "cases": 144,
+          "failed": 0,
+          "passed": 144
+        },
+        "prior": {
+          "patch_sha256": "7876defa9000204d9428c6524f7348fb3359e613ff1376f6ae88f1aa9112fcc3",
+          "exit": 0,
+          "outcome": "green",
+          "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+          "log_sha256": "9b4625cc7ea29050905246824e6c5fc593d46eec81ff54f2786bb7e31a079657",
+          "cases": 144,
+          "failed": 0,
+          "passed": 144
+        }
+      }
+    },
+    "condition-scope-body-warnings": {
+      "probe_sha256": "10a00577e48b91d2783a3b8124692d7b0d930985c80f2cd87caa76d05bdc15b6",
+      "source_receipt_sha256": "929cd0a2e47eff7f9bb2cea9a94b52c81fb93f4f904457481bf01d8b9a54119c",
+      "rows": {
+        "base": {
+          "patch_sha256": null,
+          "exit": 42,
+          "outcome": "red-behavior",
+          "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+          "log_sha256": "4a731e1d65f93ba8974a70eae3adac0f1e9f921fbbfdb4eb2b3e7ed0a643db07",
+          "cases": 4,
+          "passed": 2,
+          "input_partition": [
+            {
+              "input": "strings",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": []
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": true
+            },
+            {
+              "input": "bytes",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": []
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": true
+            },
+            {
+              "input": "bytes-strings",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": []
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": false
+            },
+            {
+              "input": "strings-bytes",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": []
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": false
+            }
+          ]
+        },
+        "merged": {
+          "patch_sha256": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76",
+          "exit": 0,
+          "outcome": "green",
+          "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+          "log_sha256": "e7c1b533ff304caca207f9cbf767c57dd2a5058537c457ed5dc9cf8e247aed1d",
+          "cases": 4,
+          "passed": 4,
+          "input_partition": [
+            {
+              "input": "strings",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": []
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": true
+            },
+            {
+              "input": "bytes",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": []
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": true
+            },
+            {
+              "input": "bytes-strings",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": [
+                    {
+                      "class": "builtins.DeprecationWarning",
+                      "filename": "/work/src/werkzeug/wrappers/response.py",
+                      "line": 335,
+                      "message": "The response iterable must contain only bytes or only strings, not both. Support for mixed types is deprecated and will be removed in Werkzeug 4.0."
+                    }
+                  ]
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": true
+            },
+            {
+              "input": "strings-bytes",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": [
+                    {
+                      "class": "builtins.DeprecationWarning",
+                      "filename": "/work/src/werkzeug/wrappers/response.py",
+                      "line": 335,
+                      "message": "The response iterable must contain only bytes or only strings, not both. Support for mixed types is deprecated and will be removed in Werkzeug 4.0."
+                    }
+                  ]
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": true
+            }
+          ]
+        },
+        "stock": {
+          "patch_sha256": "566618ae342df87e2a96ee3a4900b9605e7fe3ad4003617845aa7353c10cbc97",
+          "exit": 42,
+          "outcome": "red-behavior",
+          "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+          "log_sha256": "80d12daed25679d19ee22d2d05bb36163a9ebf49e235db8436d3aa456bc7bdf3",
+          "cases": 4,
+          "passed": 3,
+          "input_partition": [
+            {
+              "input": "strings",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": [
+                    {
+                      "class": "builtins.DeprecationWarning",
+                      "filename": "/work/src/werkzeug/wrappers/response.py",
+                      "line": 309,
+                      "message": "Response iterables must yield bytes. Yielding non-bytes is deprecated and will be removed in Werkzeug 4.0."
+                    },
+                    {
+                      "class": "builtins.DeprecationWarning",
+                      "filename": "/work/src/werkzeug/wrappers/response.py",
+                      "line": 309,
+                      "message": "Response iterables must yield bytes. Yielding non-bytes is deprecated and will be removed in Werkzeug 4.0."
+                    }
+                  ]
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": false
+            },
+            {
+              "input": "bytes",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": []
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": true
+            },
+            {
+              "input": "bytes-strings",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": [
+                    {
+                      "class": "builtins.DeprecationWarning",
+                      "filename": "/work/src/werkzeug/wrappers/response.py",
+                      "line": 309,
+                      "message": "Response iterables must yield bytes. Yielding non-bytes is deprecated and will be removed in Werkzeug 4.0."
+                    }
+                  ]
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": true
+            },
+            {
+              "input": "strings-bytes",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": [
+                    {
+                      "class": "builtins.DeprecationWarning",
+                      "filename": "/work/src/werkzeug/wrappers/response.py",
+                      "line": 309,
+                      "message": "Response iterables must yield bytes. Yielding non-bytes is deprecated and will be removed in Werkzeug 4.0."
+                    }
+                  ]
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": true
+            }
+          ]
+        },
+        "candidate": {
+          "patch_sha256": "b73587c3eb020ca6f3f56fc0238137c16a2cf0cfbc6d130b2412472aae00f2b1",
+          "exit": 42,
+          "outcome": "red-behavior",
+          "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+          "log_sha256": "6cb4f212ec017e92cf14b5eef4f9c4086bc63ed75e9173524b8bd437eba55862",
+          "cases": 4,
+          "passed": 3,
+          "input_partition": [
+            {
+              "input": "strings",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": [
+                    {
+                      "class": "builtins.DeprecationWarning",
+                      "filename": "/work/src/werkzeug/wrappers/response.py",
+                      "line": 299,
+                      "message": "Response iterable items must be bytes. Other types are deprecated and will not be supported in Werkzeug 4.0."
+                    },
+                    {
+                      "class": "builtins.DeprecationWarning",
+                      "filename": "/work/src/werkzeug/wrappers/response.py",
+                      "line": 299,
+                      "message": "Response iterable items must be bytes. Other types are deprecated and will not be supported in Werkzeug 4.0."
+                    }
+                  ]
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": false
+            },
+            {
+              "input": "bytes",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": []
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": true
+            },
+            {
+              "input": "bytes-strings",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": [
+                    {
+                      "class": "builtins.DeprecationWarning",
+                      "filename": "/work/src/werkzeug/wrappers/response.py",
+                      "line": 299,
+                      "message": "Response iterable items must be bytes. Other types are deprecated and will not be supported in Werkzeug 4.0."
+                    }
+                  ]
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": true
+            },
+            {
+              "input": "strings-bytes",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": [
+                    {
+                      "class": "builtins.DeprecationWarning",
+                      "filename": "/work/src/werkzeug/wrappers/response.py",
+                      "line": 299,
+                      "message": "Response iterable items must be bytes. Other types are deprecated and will not be supported in Werkzeug 4.0."
+                    }
+                  ]
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": true
+            }
+          ]
+        },
+        "prior": {
+          "patch_sha256": "7876defa9000204d9428c6524f7348fb3359e613ff1376f6ae88f1aa9112fcc3",
+          "exit": 42,
+          "outcome": "red-behavior",
+          "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+          "log_sha256": "d38281c794be073a04bd02742e374545167b21eb4938d529640da3082224f1eb",
+          "cases": 4,
+          "passed": 3,
+          "input_partition": [
+            {
+              "input": "strings",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": [
+                    {
+                      "class": "builtins.DeprecationWarning",
+                      "filename": "/work/src/werkzeug/wrappers/response.py",
+                      "line": 303,
+                      "message": "Response iterable items must be bytes. Passing other types is deprecated and will be removed in Werkzeug 4.0."
+                    },
+                    {
+                      "class": "builtins.DeprecationWarning",
+                      "filename": "/work/src/werkzeug/wrappers/response.py",
+                      "line": 303,
+                      "message": "Response iterable items must be bytes. Passing other types is deprecated and will be removed in Werkzeug 4.0."
+                    }
+                  ]
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": false
+            },
+            {
+              "input": "bytes",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": []
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": true
+            },
+            {
+              "input": "bytes-strings",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": [
+                    {
+                      "class": "builtins.DeprecationWarning",
+                      "filename": "/work/src/werkzeug/wrappers/response.py",
+                      "line": 303,
+                      "message": "Response iterable items must be bytes. Passing other types is deprecated and will be removed in Werkzeug 4.0."
+                    }
+                  ]
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": true
+            },
+            {
+              "input": "strings-bytes",
+              "operations": [
+                {
+                  "operation": "get_data",
+                  "warnings": [
+                    {
+                      "class": "builtins.DeprecationWarning",
+                      "filename": "/work/src/werkzeug/wrappers/response.py",
+                      "line": 303,
+                      "message": "Response iterable items must be bytes. Passing other types is deprecated and will be removed in Werkzeug 4.0."
+                    }
+                  ]
+                },
+                {
+                  "operation": "close",
+                  "warnings": []
+                }
+              ],
+              "bytes": [
+                120,
+                121
+              ],
+              "pass": true
+            }
+          ]
+        }
+      }
+    }
+  },
+  "unchanged_consumers": {
+    "base": {
+      "patch_sha256": null,
+      "outcome": "green",
+      "collected": 74,
+      "passed": 74,
+      "failed": 0,
+      "failure_ids": [],
+      "test_exit": 0,
+      "driver_exit": 0,
+      "driver_log_sha256": "188e59764b6c8b0eb5158a0fe599faee9b05bfc17df8ee248c0c3bd6804ecb0a",
+      "xml_sha256": "d26bada44bc8c9257338397297eb3cb5001fe042d95f55c6470412c2d1027922",
+      "original_test_and_production_sha256": {
+        "src/werkzeug/wrappers/response.py": "5595d6c49b2b9998e8757e18125117f826ef5c14c1e1062721734440706b9025",
+        "tests/test_internal.py": "6e9a55d6e86de73f25025d5b442d2bfa085676360ed91d6c008d11c447219991",
+        "tests/test_test.py": "7da9e79e0d4e553261a6557f930e5a4c08431eab728b100127965ed69e426d89"
+      },
+      "named_consumers": {
+        "collected": 2,
+        "passed": 2,
+        "failed": 0,
+        "outcome": "green",
+        "test_exit": 0,
+        "driver_exit": 0,
+        "driver_log_sha256": "4968cc48d6a43dd6d6d89664672893c4bfba888b279b80aaa0865d0c52f2165c",
+        "xml_sha256": "7225f396c8c38eb4c3a67ac152fa3cae12f367d8cc77acc00e7114982a98b387"
+      }
+    },
+    "merged": {
+      "patch_sha256": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76",
+      "outcome": "green",
+      "collected": 74,
+      "passed": 74,
+      "failed": 0,
+      "failure_ids": [],
+      "test_exit": 0,
+      "driver_exit": 0,
+      "driver_log_sha256": "6e9521d825c6ad69894f48dd65607cdb145a87523d81aa7bf1efe9b38b0504cf",
+      "xml_sha256": "8299e6be218986b307c4e628c6b2d707de1174f58e3fad151938947646f1e2ab",
+      "original_test_and_production_sha256": {
+        "src/werkzeug/wrappers/response.py": "dc0a5540001d032c6f755e82a346ca902019eb5978be67a3d778c0e5dfe8eefe",
+        "tests/test_internal.py": "6e9a55d6e86de73f25025d5b442d2bfa085676360ed91d6c008d11c447219991",
+        "tests/test_test.py": "7da9e79e0d4e553261a6557f930e5a4c08431eab728b100127965ed69e426d89"
+      },
+      "named_consumers": {
+        "collected": 2,
+        "passed": 2,
+        "failed": 0,
+        "outcome": "green",
+        "test_exit": 0,
+        "driver_exit": 0,
+        "driver_log_sha256": "a1a4ed5bcbdfafc15e100fc796a0bc29e8287eb83c5b837d3d5f1f8e84650885",
+        "xml_sha256": "1d93d1b80c786cfdb258a103035acc577f8100dd388d501ad4f3a2e58e05c2c5"
+      }
+    },
+    "stock": {
+      "patch_sha256": "566618ae342df87e2a96ee3a4900b9605e7fe3ad4003617845aa7353c10cbc97",
+      "outcome": "red-behavior",
+      "collected": 74,
+      "passed": 72,
+      "failed": 2,
+      "failure_ids": [
+        "tests/test_internal.py::test_wrapper_internals",
+        "tests/test_test.py::test_path_info_script_name_unquoting"
+      ],
+      "test_exit": 1,
+      "driver_exit": 0,
+      "driver_log_sha256": "1d7828b868c66e4fa6b4d623c15d87ecc68adcf7acdad4263bef0a4b6c35bf17",
+      "xml_sha256": "6a42187f9b46c741a4647b197421bf3134522d08e1293b6b3bf14d50a78a962a",
+      "original_test_and_production_sha256": {
+        "src/werkzeug/wrappers/response.py": "38f02c3ae13d87d8a454fd19f967aa105a809a6ea40b8152ce50a92e2fdd9cfd",
+        "tests/test_internal.py": "6e9a55d6e86de73f25025d5b442d2bfa085676360ed91d6c008d11c447219991",
+        "tests/test_test.py": "7da9e79e0d4e553261a6557f930e5a4c08431eab728b100127965ed69e426d89"
+      },
+      "named_consumers": {
+        "collected": 2,
+        "passed": 0,
+        "failed": 2,
+        "outcome": "red-behavior",
+        "test_exit": 1,
+        "driver_exit": 0,
+        "driver_log_sha256": "b80961c79c2e045735ef714aec80dbc3ae5bcef2c261b1ba12d9caf1283a2108",
+        "xml_sha256": "2cdf5692db01f8850d34e1763ee4fd6ec0e323204840948f713767cc03871e01"
+      }
+    },
+    "candidate": {
+      "patch_sha256": "b73587c3eb020ca6f3f56fc0238137c16a2cf0cfbc6d130b2412472aae00f2b1",
+      "outcome": "red-behavior",
+      "collected": 74,
+      "passed": 72,
+      "failed": 2,
+      "failure_ids": [
+        "tests/test_internal.py::test_wrapper_internals",
+        "tests/test_test.py::test_path_info_script_name_unquoting"
+      ],
+      "test_exit": 1,
+      "driver_exit": 0,
+      "driver_log_sha256": "95c8918a2326a29421aa8cf669d71c595f2ef0fc84b765ebc4e8e050da3f65ef",
+      "xml_sha256": "d2619c3afb626d9b35dd10ce2b2bc4a95222a34445520b9edf67edc48c70e198",
+      "original_test_and_production_sha256": {
+        "src/werkzeug/wrappers/response.py": "9439403e0546825fb49942ee039200bf074f4007a3ec1c7c89633421f4250f54",
+        "tests/test_internal.py": "6e9a55d6e86de73f25025d5b442d2bfa085676360ed91d6c008d11c447219991",
+        "tests/test_test.py": "7da9e79e0d4e553261a6557f930e5a4c08431eab728b100127965ed69e426d89"
+      },
+      "named_consumers": {
+        "collected": 2,
+        "passed": 0,
+        "failed": 2,
+        "outcome": "red-behavior",
+        "test_exit": 1,
+        "driver_exit": 0,
+        "driver_log_sha256": "bb41d83f3a2e8d6350bf40435b0e47fe539115b0f7085a6ee1b5a9476c532d87",
+        "xml_sha256": "8ca41533f2966dab725259700c503e54fe6c3a48aa5d344aacdaeb7f47191668"
+      }
+    },
+    "prior": {
+      "patch_sha256": "7876defa9000204d9428c6524f7348fb3359e613ff1376f6ae88f1aa9112fcc3",
+      "outcome": "red-behavior",
+      "collected": 74,
+      "passed": 72,
+      "failed": 2,
+      "failure_ids": [
+        "tests/test_internal.py::test_wrapper_internals",
+        "tests/test_test.py::test_path_info_script_name_unquoting"
+      ],
+      "test_exit": 1,
+      "driver_exit": 0,
+      "driver_log_sha256": "676d1c01cee25488d7309624c4e275803735d64015d97b2851783dcb93a0e4f8",
+      "xml_sha256": "3a1c90efc6ae76010e53169c12c1eb57e5ceeb5e79475974e6fdffe874260c6e",
+      "original_test_and_production_sha256": {
+        "src/werkzeug/wrappers/response.py": "b9ee5b261c9b8ad91e82f40f20343781b826d74595c765b8e7ff0265da0d21a2",
+        "tests/test_internal.py": "6e9a55d6e86de73f25025d5b442d2bfa085676360ed91d6c008d11c447219991",
+        "tests/test_test.py": "7da9e79e0d4e553261a6557f930e5a4c08431eab728b100127965ed69e426d89"
+      },
+      "named_consumers": {
+        "collected": 2,
+        "passed": 0,
+        "failed": 2,
+        "outcome": "red-behavior",
+        "test_exit": 1,
+        "driver_exit": 0,
+        "driver_log_sha256": "8fdf3873bd7dc2d53f28b43c4b27ffbdb558e47273752b7db0e9a3808386f3b6",
+        "xml_sha256": "6fa6dd4f9acedfc6a1d4c4eb9aa0aa39f54ff80e5d5f5be497a374a04eae1da7"
+      }
+    },
+    "constructive-positive": {
+      "patch_sha256": "de69e522f591bd630079935034f65958fce803e472f4f85f9ec94c47033c2468",
+      "outcome": "green",
+      "collected": 74,
+      "passed": 74,
+      "failed": 0,
+      "failure_ids": [],
+      "test_exit": 0,
+      "driver_exit": 0,
+      "driver_log_sha256": "233597db76bbd1680790ad0adfac8406f31c23bbf12b28545355da284102f715",
+      "xml_sha256": "5bd69fa6c7246e0e92fe1f980c26daf0ecff53a299fce8a2caba87e01fbb51ba",
+      "original_test_and_production_sha256": {
+        "src/werkzeug/wrappers/response.py": "86f27d35c5984e07e854afd98d7d38ea7847af4787b97995612647007c0099bf",
+        "tests/test_internal.py": "6e9a55d6e86de73f25025d5b442d2bfa085676360ed91d6c008d11c447219991",
+        "tests/test_test.py": "7da9e79e0d4e553261a6557f930e5a4c08431eab728b100127965ed69e426d89"
+      },
+      "named_consumers": null
+    }
+  },
+  "canonical_decision": {
+    "scope": "Exposed mechanical screen only; no confirmation or promotion.",
+    "confirmation_allowed": false,
+    "historical_calibration_only": false,
+    "all_three_producers_complete": true,
+    "complete_monetary_metering": true,
+    "unavailable_producers": [],
+    "quality_signal": {
+      "readiness_first_pair": {
+        "verdict": "develop",
+        "reason": "blinded rubric",
+        "score_delta": 21.25,
+        "votes": [
+          "develop",
+          "develop",
+          "develop"
+        ],
+        "order_sensitive": false
+      },
+      "blinded_full_pr": {
+        "verdict": "develop",
+        "reason": "blinded rubric",
+        "score_delta": 21.25,
+        "votes": [
+          "develop",
+          "develop",
+          "develop"
+        ],
+        "order_sensitive": false
+      },
+      "equal_or_lower_complete_cost": false,
+      "ready_blind_win_at_no_more_cost": false
+    },
+    "strictly_cheaper_than_prior": true,
+    "strictly_faster_than_prior": true,
+    "candidate_behavior_green": false,
+    "candidate_original_consumers_green": false,
+    "original_consumer_controls_green": true,
+    "mechanical_criteria_met": false,
+    "decision": "rejected-or-incomplete",
+    "human_review_required": [
+      "Meaning and correct condition unit; outside-scope preservation intent.",
+      "Preproduction intent-review chronology and mechanism difference from matched parent.",
+      "Required final artifact review; actual stock and every descendant model/effort inventory."
+    ],
+    "target_sha256": "a52bc9e4843444439451f8b2a345727341427717d04a44c4733032e58a2ecc66",
+    "registration_sha256": "38ffb3daef0d8d75f83a9a9a2391b389e2c3b49d7a42512c1e4cf93834002696",
+    "descriptor_sha256": "f4ad51813101a6e1555b929c8793a4aa217628f0526e4705e019da54d42cdddc",
+    "raw_xml": {
+      "base/modules": {
+        "green": true,
+        "xml_sha256": "d26bada44bc8c9257338397297eb3cb5001fe042d95f55c6470412c2d1027922",
+        "collected": 74
+      },
+      "base/named": {
+        "green": true,
+        "xml_sha256": "7225f396c8c38eb4c3a67ac152fa3cae12f367d8cc77acc00e7114982a98b387",
+        "collected": 2
+      },
+      "candidate-control/modules": {
+        "green": false,
+        "xml_sha256": "6a42187f9b46c741a4647b197421bf3134522d08e1293b6b3bf14d50a78a962a",
+        "collected": 74
+      },
+      "candidate-control/named": {
+        "green": false,
+        "xml_sha256": "2cdf5692db01f8850d34e1763ee4fd6ec0e323204840948f713767cc03871e01",
+        "collected": 2
+      },
+      "candidate-develop/modules": {
+        "green": false,
+        "xml_sha256": "d2619c3afb626d9b35dd10ce2b2bc4a95222a34445520b9edf67edc48c70e198",
+        "collected": 74
+      },
+      "candidate-develop/named": {
+        "green": false,
+        "xml_sha256": "8ca41533f2966dab725259700c503e54fe6c3a48aa5d344aacdaeb7f47191668",
+        "collected": 2
+      },
+      "constructive-positive/modules": {
+        "green": true,
+        "xml_sha256": "5bd69fa6c7246e0e92fe1f980c26daf0ecff53a299fce8a2caba87e01fbb51ba",
+        "collected": 74
+      },
+      "gold/modules": {
+        "green": true,
+        "xml_sha256": "8299e6be218986b307c4e628c6b2d707de1174f58e3fad151938947646f1e2ab",
+        "collected": 74
+      },
+      "gold/named": {
+        "green": true,
+        "xml_sha256": "1d93d1b80c786cfdb258a103035acc577f8100dd388d501ad4f3a2e58e05c2c5",
+        "collected": 2
+      },
+      "prior-develop/modules": {
+        "green": false,
+        "xml_sha256": "3a1c90efc6ae76010e53169c12c1eb57e5ceeb5e79475974e6fdffe874260c6e",
+        "collected": 74
+      },
+      "prior-develop/named": {
+        "green": false,
+        "xml_sha256": "6fa6dd4f9acedfc6a1d4c4eb9aa0aa39f54ff80e5d5f5be497a374a04eae1da7",
+        "collected": 2
+      }
+    }
+  },
+  "native_proposals": {
+    "stock": {
+      "patch_sha256": "566618ae342df87e2a96ee3a4900b9605e7fe3ad4003617845aa7353c10cbc97",
+      "complete_meter": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 1039634,
+          "cachedInputTokens": 944640,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 11541,
+          "reasoningOutputTokens": 2583,
+          "totalTokens": 1051175
+        },
+        "threads": 1,
+        "usd_estimate": 0.399862
+      },
+      "checkout_to_proposal_seconds": 391.0051946709864,
+      "thread_count": 1,
+      "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+      "native_sha256": "027acbae415a0c8a9e59fa3b603b0e4dbc335cbda46cd9eb4e6abb72ad74fb32",
+      "all_descendant_model_effort_match": true
+    },
+    "candidate": {
+      "patch_sha256": "b73587c3eb020ca6f3f56fc0238137c16a2cf0cfbc6d130b2412472aae00f2b1",
+      "complete_meter": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 2967307,
+          "cachedInputTokens": 2815104,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 20183,
+          "reasoningOutputTokens": 5917,
+          "totalTokens": 2987490
+        },
+        "threads": 3,
+        "usd_estimate": 0.7877464000000001
+      },
+      "checkout_to_proposal_seconds": 673.8671017920133,
+      "thread_count": 3,
+      "inventory_sha256": "ec10625cdca6ce33be8bf0226bc52e79b320867acb2a0f068b1270b66f82f3aa",
+      "native_sha256": "d67200009a25704f25fb9c1ed1bc1a24b170ed14752d5d8361cce655760d6f9d",
+      "all_descendant_model_effort_match": true
+    },
+    "prior": {
+      "patch_sha256": "7876defa9000204d9428c6524f7348fb3359e613ff1376f6ae88f1aa9112fcc3",
+      "complete_meter": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 3322993,
+          "cachedInputTokens": 3160192,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 24848,
+          "reasoningOutputTokens": 7098,
+          "totalTokens": 3347841
+        },
+        "threads": 4,
+        "usd_estimate": 0.8901012
+      },
+      "checkout_to_proposal_seconds": 674.6528293709271,
+      "thread_count": 4,
+      "inventory_sha256": "97f992b2b386d0d9f55452d2dcf830e2e63e8ccb4258e74efd7194637b3db761",
+      "native_sha256": "c2bd7613b1ad90e23e733357daa30d6c73f29095a77269b1a32b3bdbb9449848",
+      "all_descendant_model_effort_match": true
+    }
+  },
+  "stock_control": {
+    "result_sha256": "eb31b27bc10788ae2312abc6e065f0d86b0660ed5803b8b60083115f5202c4ab",
+    "native_sha256": "027acbae415a0c8a9e59fa3b603b0e4dbc335cbda46cd9eb4e6abb72ad74fb32",
+    "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+    "turn_input_sha256": "af4098fd44eb1cf2325ef8bee9819d2e4e28105d08c7d6aa99e098a4f73c301b",
+    "plugins": [],
+    "apps": [],
+    "mcp": [],
+    "global_instructions": [],
+    "repository_instruction_hashes": {},
+    "skills": [
+      "imagegen",
+      "openai-docs",
+      "review-agent",
+      "skill-creator",
+      "skill-installer"
+    ],
+    "root": "01a18b4e-6fb7-72c0-b3d8-1ad5aa1048cc",
+    "children": [],
+    "threads": [
+      {
+        "id": "01a18b4e-6fb7-72c0-b3d8-1ad5aa1048cc",
+        "parent": null,
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "trace_sha256": "f8ea40b289d8cfed16edc1cbd81697f7ff14d0ead7b3b17c4711579b167fb249",
+        "settings_line": 10,
+        "settings_timestamp": "2026-10-30T05:35:42.698Z",
+        "settings_event_sha256": "abdef2f4f1c42ab51a375eb8178710cef36f4b07ad78f780b81caee0bd609258",
+        "turns_complete": true
+      }
+    ],
+    "meter": {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 1039634,
+        "cachedInputTokens": 944640,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 11541,
+        "reasoningOutputTokens": 2583,
+        "totalTokens": 1051175
+      },
+      "threads": 1,
+      "usd_estimate": 0.399862
+    },
+    "proposal_wall_seconds": 391.0051946709864,
+    "official_patch_sha256": "566618ae342df87e2a96ee3a4900b9605e7fe3ad4003617845aa7353c10cbc97"
+  },
+  "qualification": {
+    "prior": {
+      "qualification_sha256": "42355c776c69f06673a4df8e7b92a0a15a0f388f588f55d95205bf13c35b40c7",
+      "package_sha256": "239dccfc0fe4c090a777d8cf46216c99c57bc2bebc08eca013402215b65c7c28",
+      "passed": true,
+      "evidence_hashes_verified": true,
+      "probes": {
+        "control": {
+          "passed": true,
+          "meter": {
+            "coverage": "complete",
+            "tokens": {
+              "inputTokens": 100573,
+              "cachedInputTokens": 93824,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 383,
+              "reasoningOutputTokens": 0,
+              "totalTokens": 100956
+            },
+            "threads": 2,
+            "usd_estimate": 0.026710400000000002
+          },
+          "probe_sha256": "14ca2d4d4d9c61d0c2e6d0701d7e0376598ef72945e482d1e8998a3f9c032994"
+        },
+        "develop": {
+          "passed": true,
+          "meter": {
+            "coverage": "complete",
+            "tokens": {
+              "inputTokens": 120590,
+              "cachedInputTokens": 101248,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 524,
+              "reasoningOutputTokens": 0,
+              "totalTokens": 121114
+            },
+            "threads": 2,
+            "usd_estimate": 0.054048799999999994
+          },
+          "probe_sha256": "770fb5bef7c54041f8da5644c7aeb489321ed6ec6184f192df8ea01651569277"
+        }
+      },
+      "limit": "Install, hook, profile and runtime qualification only; not a condition-scope behavior or final-PR guarantee. These prior qualification meters are separate from trial proposal and blinded-assessor costs."
+    },
+    "candidate": {
+      "qualification_sha256": "cf30c6ab4cfc4ea6be4ff57d37a3300e7a23226da6af5db09cc0c108d6387677",
+      "package_sha256": "a86479bd1141b6936fd11a06cab5d93d9804bfa4c2809283adba1eea5ec84318",
+      "passed": true,
+      "evidence_hashes_verified": true,
+      "probes": {
+        "control": {
+          "passed": true,
+          "meter": {
+            "coverage": "complete",
+            "tokens": {
+              "inputTokens": 86111,
+              "cachedInputTokens": 79616,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 345,
+              "reasoningOutputTokens": 0,
+              "totalTokens": 86456
+            },
+            "threads": 2,
+            "usd_estimate": 0.0244016
+          },
+          "probe_sha256": "82efabd268ae3da8bf2d59b2426b47031104a3465cdcbbfb0e3fb4401b2efdcd"
+        },
+        "develop": {
+          "passed": true,
+          "meter": {
+            "coverage": "complete",
+            "tokens": {
+              "inputTokens": 134008,
+              "cachedInputTokens": 124672,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 530,
+              "reasoningOutputTokens": 13,
+              "totalTokens": 134538
+            },
+            "threads": 2,
+            "usd_estimate": 0.0364392
+          },
+          "probe_sha256": "22ee93311eb76ed9fbbf480e5705d354b41155ded4a95e4dac229b187c134723"
+        }
+      },
+      "limit": "Install, hook, profile and runtime qualification only; not a condition-scope behavior or final-PR guarantee. These prior qualification meters are separate from trial proposal and blinded-assessor costs."
+    }
+  },
+  "prices_usd_per_million": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "assessor_costs": {
+    "blind_grading_receipts": [
+      {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 1031647,
+          "cachedInputTokens": 960000,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 3419,
+          "reasoningOutputTokens": 614,
+          "totalTokens": 1035066
+        },
+        "threads": 1,
+        "usd_estimate": 0.273484
+      },
+      {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 482080,
+          "cachedInputTokens": 423040,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2863,
+          "reasoningOutputTokens": 422,
+          "totalTokens": 484943
+        },
+        "threads": 1,
+        "usd_estimate": 0.189014
+      },
+      {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 756056,
+          "cachedInputTokens": 696960,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2869,
+          "reasoningOutputTokens": 425,
+          "totalTokens": 758925
+        },
+        "threads": 1,
+        "usd_estimate": 0.216578
+      }
+    ],
+    "total_estimated_usd": 0.679076,
+    "tokens": {
+      "inputTokens": 2269783,
+      "cachedInputTokens": 2080000,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 9151,
+      "reasoningOutputTokens": 1461,
+      "totalTokens": 2278934
+    },
+    "local_registered_replay_provider_calls": 0,
+    "local_replay_cpu_dollar_cost": null,
+    "unknown_human_labor_cost": null
+  },
+  "official_quality": {
+    "control": {
+      "state": "completed",
+      "readiness": "ready",
+      "full_pr_points_100": 75.0,
+      "diff_points_85": 63.75,
+      "rotation_labels": {
+        "0": "B",
+        "1": "A",
+        "2": "C"
+      },
+      "native_gate_exits": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0
+      },
+      "rotation_full_pr_points": {
+        "0": 81.25,
+        "1": 75.0,
+        "2": 75.0
+      }
+    },
+    "develop": {
+      "state": "completed",
+      "readiness": "ready",
+      "full_pr_points_100": 96.25,
+      "diff_points_85": 85.0,
+      "rotation_labels": {
+        "0": "C",
+        "1": "B",
+        "2": "A"
+      },
+      "native_gate_exits": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0
+      },
+      "rotation_full_pr_points": {
+        "0": 96.25,
+        "1": 96.25,
+        "2": 96.25
+      }
+    },
+    "upstream": {
+      "state": "merged",
+      "readiness": "pending",
+      "full_pr_points_100": 43.75,
+      "diff_points_85": 36.25,
+      "rotation_labels": {
+        "0": "A",
+        "1": "C",
+        "2": "B"
+      },
+      "native_gate_exits": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0
+      },
+      "rotation_full_pr_points": {
+        "0": 43.75,
+        "1": 43.75,
+        "2": 43.75
+      }
+    }
+  },
+  "official_comparisons": {
+    "develop_control": {
+      "verdict": "develop",
+      "reason": "blinded rubric",
+      "score_delta": 21.25,
+      "votes": [
+        "develop",
+        "develop",
+        "develop"
+      ],
+      "order_sensitive": false
+    },
+    "develop_upstream": {
+      "verdict": "unresolved",
+      "reason": "missing or disputed evidence"
+    },
+    "control_upstream": {
+      "verdict": "unresolved",
+      "reason": "missing or disputed evidence"
+    }
+  },
+  "official_goal_win": false,
+  "prior_soft_pr_points": null,
+  "prompt_scope_note": {
+    "participant_wording": "Deprecate mixed nonbytes chunks, Response.stream and automatically_set_content_length while preserving ordinary byte responses.",
+    "limitation": "The participant prompt did not explicitly require silent homogeneous-string iterables. Homogeneous-body silence is the preregistered preservation contract, grounded in earlier unchanged base consumers and the merged implementation. The registered assay failure is retained without retrospectively changing the prompt or scores. This limits interpretation of the process mechanism: readable evidence cannot establish the intended mapping, and encrypted handoffs remain unknown."
+  },
+  "mechanism_summary": "Changed instruction fully delivered before edit, but readable before-edit review does not establish accepted/corrected whole-iterable/homogeneous mapping; encrypted handoffs limit the inference. Both Develop first patches apply per-item warnings and later adapt homogeneous-string fixtures. No supported condition-scope decision difference from parent.",
+  "full_pr_vs_upstream": "Original comparisons with upstream remain unresolved because the merged submission is Pending despite passing frozen executable gates. Separate followup adjudication confirms materially weakened applicable test coverage and labels it failed; no new points or rewritten original comparison are claimed.",
+  "outcome": "Registered screen rejected: candidate stream behavior is green, but warning scope and unchanged consumers fail, process mechanism is unsupported, and proposal cost exceeds stock. Complete native cost/time are numerically below prior; no causal or savings conclusion follows.",
+  "negative_controls": {
+    "format": "law-config.condition-scope-negative-controls/v1",
+    "scope": "Previously exercised checker integrity negatives repeated in memory only on actual sealed target/replay; no producer patch, XML, result, descriptor or score file changed; no provider or Docker calls.",
+    "target_sha256": "a52bc9e4843444439451f8b2a345727341427717d04a44c4733032e58a2ecc66",
+    "checker_sha256": "5234803f3e13a4e5552fa6c77f911497dc22b4ca22121621834333d69b1429b8",
+    "policy_sha256": "8de371262858ea1c40062c6d7a520cb60c38d17d66441a986c25b2ae0065ad9a",
+    "existing_negative_control_receipts": {
+      "reviewed_checker_selftest_sha256": "655c01a2a7152d11c5fb9e966823d010e9fed76b801896e676e2fa1dd3c1d6df",
+      "screen_selftest_sha256": "c347dac448ec54cbb9db2773f84cd9f553c6cd675cafe2cada0291134d01d243"
+    },
+    "cases": {
+      "wrong-target": {
+        "outcome": "rejected",
+        "error": "wrong target"
+      },
+      "changed-descriptor": {
+        "outcome": "rejected",
+        "error": "changed descriptor"
+      },
+      "omitted-raw-measure": {
+        "outcome": "rejected",
+        "error": "required measure omitted or substituted"
+      },
+      "omitted-summary-measure": {
+        "outcome": "rejected",
+        "error": "required measure omitted or substituted"
+      },
+      "skipped-original-case": {
+        "outcome": "rejected",
+        "error": "skipped or setup cases"
+      }
+    },
+    "source_files_unchanged": true,
+    "all_passed": true
+  },
+  "receipt_sha256": {
+    "behavior": "9e940d5aaa7460c3f141da2e386a8f255f079b8a6268f0d6d1840e18ea1412c8",
+    "v2": "05a25629e42e52a167c78be669bf62cadce0cc3f932cd82ba9cf4544f38673c0",
+    "modules": "dd7277c286d72e0b360b815e462efc8376d0ff98ded748698165b03ed27f1492",
+    "decision": "564e5c00d563b46f36c3e52d611bf6d757a86da28ca589d12feb1dea00fe9ed2",
+    "native_inventory": "e289ffacd4afb3307176f3892ee89766ddec925e3bb131656bdfee9456202fe0",
+    "negative_controls": "80040947ee622bba0be71138db8d00d4987169d757ac30b3cc43584c3dd19333"
+  },
+  "limits": [
+    "One already exposed tuning case, post-score; no confirmation or promotion.",
+    "The homogeneous-string silence criterion comes from the registered preservation assay and earlier consumers/merge; the participant wording did not state it explicitly. No prompt was retrospectively rewritten.",
+    "No setup/import failures or uncollected tests in this canonical replay; test exits1 with driver exit0 are meaningful warning failures.",
+    "Selected submitted test counts differ from the unchanged74-case denominator and do not replace it.",
+    "Unknown human labor and local CPU dollar cost remain null; blinded-assessor costs and historical qualification meters remain separate from proposal cost.",
+    "Full-PR preference over stock does not meet equal-or-lower-cost criterion; upstream original readiness and comparisons remain disputed in the original bytes."
+  ],
+  "related_supplements": {
+    "process-audit.json": {
+      "sha256": "8d1415162336119661cfa3519b9c4904f83a5491a9a3a714b6f30bf4a800973f"
+    },
+    "merged-readiness-adjudication.json": {
+      "sha256": "98a196f261eb050c6e77ed42d18a54c4a6ede00ff13aaa3cc2cadb68ce7e854d"
+    }
+  }
+}

@@ -26,7 +26,7 @@
         "composerIcon": "./assets/logo.png",
         "brandColor": "#C99554",
         "shortDescription": "Build, review, and improve",
-        "longDescription": "Ten skills for engineering/interface planning, repository changes, dependency upgrades, thread-scoped cleanup, independent review, and workflow improvement. Explicit-only deep-clean inspects user-expanded machine scope; upgrade-codex audits Codex compatibility. A native Codex context guard denies known oversized whole-file reads and offers opt-in verified result preservation; otherwise oversized results warn and pass through. No external workflow plugin required.",
+        "longDescription": "Ten skills for engineering/interface planning, repository changes, dependency upgrades, thread-scoped cleanup, independent review, and workflow improvement. Explicitly select Clean for thread resources, Deep Clean for a wider inventory, Upgrade for dependencies or Upgrade Codex for Codex compatibility. A native Codex context guard denies known oversized whole-file reads and offers opt-in verified result preservation; otherwise oversized results warn and pass through. No external workflow plugin required.",
         "developerName": "justinthelaw",
         "category": "Developer Tools",
         "capabilities": [
@@ -36,7 +36,7 @@
         "websiteURL": "https://github.com/justinthelaw/law-config/tree/main/plugins/develop",
         "defaultPrompt": [
           "develop iterate: fix this repository\u2019s failing build.",
-          "develop upgrade: assess and upgrade this repository\u2019s dependencies.",
+          "$develop:upgrade Assess and upgrade this repository\u2019s dependencies.",
           "develop kaizen: review these selected sessions and recommend workflow improvements."
         ]
       }

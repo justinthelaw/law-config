@@ -1,0 +1,29 @@
+{
+  "case": "werkzeug",
+  "registration_sha256": "77e3ef83da346dea6098cb614d1f721ea3ee76e399425a6f16d04a8792a37a30",
+  "attempt_sha256": "f97d8415ed4ae2653bb953e52d0c7eb740b9e6be0f7fc21aaad95b2da41002e4",
+  "patch_sha256": "b408b7ab4b5d3d3c0c771143dea1020a2b85ad1415885cc2f617b14a81ec3413",
+  "review_trace_sha256": "0b39e0eaf8830a7b027a515e0082c76b28ffa184c79a9f4c595c98f33f365509",
+  "root_trace_sha256": "066d2fc29e2e2670862fe431688aff920ee8e2ea257d76adc3a2b7f69118f1e6",
+  "reviewed_diff_headers": {
+    "CHANGES.rst": "e46f2f0",
+    "docs/wrappers.rst": "c055f6b",
+    "src/werkzeug/wrappers/response.py": "a605372",
+    "tests/test_internal.py": "f38cfcc",
+    "tests/test_wrappers.py": "040293c"
+  },
+  "reconstructed_git_blobs": {
+    "CHANGES.rst": "e46f2f073601fb7e13de3ff8f96014aa21b8af72",
+    "docs/wrappers.rst": "c055f6b464c3ad9e39ed8d7855f8fc333020068a",
+    "src/werkzeug/wrappers/response.py": "a60537251b9570e30155afcd5481da6f682b278e",
+    "tests/test_internal.py": "f38cfcc3b3fc5b3297de7349b1974a840b5b81d9",
+    "tests/test_wrappers.py": "040293c440eb2a4433ce7f014432c67b8ca4907d"
+  },
+  "negative_control": "In public-result-pytest-01 the reviewer saw the earlier test assertion, and the root later changed it; the final-review-revision observation records no reviewer output matching the submitted assertion. Review identity requires checking for later edits.",
+  "run": "review-entry-werkzeug-01",
+  "result_sha256": "1aa59088427787cc88fc2314d959e4cf3fed286f442f7470b59cf0419a284dd5",
+  "corrects_observation": "blocked-review-binding",
+  "original_receipt_sha256": "05c1c2cfb4aaa40542d79b4bbab9629579ff721f758ca7d8639fa71e9d08dc03",
+  "source_receipt_sha256": "3d8e52599b6951ecf12ca4ea5a23131ed80b9acc86f1c379c38cecbff66a458a",
+  "scope": "Post-score audit. The final reviewer outputs at 01:33:00 and 01:33:07 UTC reproduce all additions, deletions, context and headers of the sealed five-path patch exactly, across two outputs. The diff stat reports five files; reconstructed final worktree has five modified paths and no untracked files. No subsequent edit is observed in the captured root trace. Full Git blob hashes were computed from reconstructed files; their seven-digit prefixes match the output. New blobs are absent from the local object database, so global prefix uniqueness cannot be resolved there. This is revision identity evidence, not proof of reviewer comprehension or a non-ASCII tell check. The official blocked status and scores are unchanged."
+}

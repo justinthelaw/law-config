@@ -1,0 +1,170 @@
+{
+  "format": "law-config.post-run-profile-check/v1",
+  "run": "rule-combinations-marked-01",
+  "reports_sha256": {
+    "command-waits-black-01": "9e5f0417b9694e1a8251760f22d9a1ab64f7b99937fb1b2e8c2c53bdd2acd5e9",
+    "rule-combinations-marked-01": "74568f3b4fa070138de4c33a3d5c198ee4605897a5f95e27b168bb4640e92c03"
+  },
+  "registration_sha256": "fac6124975a2742e141c19c6f24f3d2e4aabea52049931bb31ee3cdfe8257b75",
+  "scope": "Captured release inputs and inventory, plus repeated inspection of retained profiles. Original timeout states, partial metering and quality results are unchanged.",
+  "audit_sha256": "c98402d8c5a1350ad7c278458386e0e97d18b60debcda2e7bab56185d30913f8",
+  "profiles": {
+    "control": {
+      "release": {
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "ephemeral": false,
+        "plugins": [],
+        "input_sha256": "232f554e058bdfe4289ce18e632123bb87ee6ea8bcfe2c43f8f323ab0c391e1b",
+        "inventory_sha256": "f26dfcf5b97dc8525ebf58546f0e7f5a69c189421174bbfb01138dd21e8335d4",
+        "native_sha256": "e4a66b61d02847ac8d8eb2dcf4abe7321b652df370535d1d49d1e1edcae79369",
+        "root_trace_sha256": "85668032a9e1087a97f1a1c01e80fa49658ada46c6347975b6ee9d882117c720",
+        "hook_calls": {
+          "isolated_hook_calls": 0,
+          "native_hook_receipts": 0
+        },
+        "turn_input_types": [
+          "text"
+        ],
+        "stock": {
+          "apps": [],
+          "mcp": [],
+          "config_layers": [
+            "user",
+            "enterpriseManaged",
+            "system"
+          ],
+          "profile_keys": [
+            "approval_policy",
+            "features",
+            "model",
+            "model_reasoning_effort",
+            "plugins",
+            "sandbox_mode",
+            "web_search"
+          ],
+          "repository_instructions_sha256": {
+            "AGENTS.md": "5a43508733e7682902b3f930d3796984796655f9a426d27057a4570b5e14056e"
+          },
+          "global_instructions": [],
+          "stock_skills": [
+            "imagegen",
+            "openai-docs",
+            "review-agent",
+            "skill-creator",
+            "skill-installer"
+          ]
+        },
+        "plugin_install_sha256": null,
+        "exact_paired_input": true
+      },
+      "retained_profile_inspection": {
+        "effective_inventory_matches_release": true,
+        "config_sha256": "ffb7a01379ceee64bd8dbcb7b6a4c1f7be7d1dfd7fe4f6115d889730ec47396d",
+        "configuration_changes": {
+          "config_layers": [
+            "project",
+            "user",
+            "enterpriseManaged",
+            "system"
+          ],
+          "profile_keys": [
+            "approval_policy",
+            "features",
+            "model",
+            "model_reasoning_effort",
+            "plugins",
+            "projects",
+            "sandbox_mode",
+            "web_search"
+          ]
+        },
+        "plugin_install_sha256": null
+      },
+      "original_state": "timeout",
+      "original_metering_coverage": "lower bound"
+    },
+    "develop": {
+      "release": {
+        "model": "gpt-6.1-sol",
+        "effort": "medium",
+        "ephemeral": false,
+        "plugins": [
+          "develop@law-config"
+        ],
+        "input_sha256": "d1bb1ccbbf5652a342a86f9e324728bbecfc1d039675fc76d7165fbba1f0e9b3",
+        "inventory_sha256": "51ed5952fd05efe90c1ca31b579b8b0289577f1ac41a230f316910e60aa5b725",
+        "native_sha256": "91b2c599c2fc69dd259aca2268e52c2235bf4c5a9acded187b78f836527062b3",
+        "root_trace_sha256": "199477ee59b71bc8bb48638e0f55017df998384cd9dbb0341d7b05e6dd33f3dc",
+        "hook_calls": {
+          "isolated_hook_calls": 172,
+          "native_hook_receipts": 172
+        },
+        "turn_input_types": [
+          "text",
+          "skill"
+        ],
+        "stock": {
+          "apps": [],
+          "mcp": [],
+          "config_layers": [
+            "user",
+            "enterpriseManaged",
+            "system"
+          ],
+          "profile_keys": [
+            "approval_policy",
+            "features",
+            "hooks",
+            "marketplaces",
+            "model",
+            "model_reasoning_effort",
+            "plugins",
+            "sandbox_mode",
+            "web_search"
+          ],
+          "repository_instructions_sha256": {
+            "AGENTS.md": "5a43508733e7682902b3f930d3796984796655f9a426d27057a4570b5e14056e"
+          },
+          "global_instructions": [],
+          "stock_skills": [
+            "imagegen",
+            "openai-docs",
+            "review-agent",
+            "skill-creator",
+            "skill-installer"
+          ]
+        },
+        "plugin_install_sha256": "81b11159e5ff7bfda6774474b9f6a9ccc4486d45caedcd726e480c668e0c4b8f",
+        "exact_paired_input": true
+      },
+      "retained_profile_inspection": {
+        "effective_inventory_matches_release": true,
+        "config_sha256": "e7eeed1275c6958ba3d8da3a7663678733aae91609a848df4b0643dde52dcc83",
+        "configuration_changes": {
+          "config_layers": [
+            "project",
+            "user",
+            "enterpriseManaged",
+            "system"
+          ],
+          "profile_keys": [
+            "approval_policy",
+            "features",
+            "hooks",
+            "marketplaces",
+            "model",
+            "model_reasoning_effort",
+            "plugins",
+            "projects",
+            "sandbox_mode",
+            "web_search"
+          ]
+        },
+        "plugin_install_sha256": "81b11159e5ff7bfda6774474b9f6a9ccc4486d45caedcd726e480c668e0c4b8f"
+      },
+      "original_state": "timeout",
+      "original_metering_coverage": "lower bound"
+    }
+  }
+}

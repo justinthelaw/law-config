@@ -1,0 +1,39 @@
+{
+  "package_sha256": "579bba8e795debf349127719d68e3d499fc6f759f176ccb13db17062ea25f9b8",
+  "files": 104,
+  "plugin_version": "0.9.0",
+  "enabled_plugins": [
+    "develop@law-config"
+  ],
+  "enabled_plugin_skills": [
+    "develop:adversarial-loop",
+    "develop:clean",
+    "develop:deep-clean",
+    "develop:develop",
+    "develop:engineering-design",
+    "develop:interface-design",
+    "develop:iterate",
+    "develop:kaizen",
+    "develop:upgrade",
+    "develop:upgrade-codex"
+  ],
+  "plugin_hooks": [
+    {
+      "event": "postToolUse",
+      "enabled": true,
+      "trust": "trusted",
+      "digest": "sha256:23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c/sha256:540b53863058609c94318b58085444431bfe2595fe6f57a5fbede5e3b620e92f"
+    },
+    {
+      "event": "preToolUse",
+      "enabled": true,
+      "trust": "trusted",
+      "digest": "sha256:577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368/sha256:540b53863058609c94318b58085444431bfe2595fe6f57a5fbede5e3b620e92f"
+    }
+  ],
+  "external_mcp_servers": [],
+  "kind": "native-installation-preflight",
+  "verified_utc": "2026-10-29T06:45:26.054270+00:00",
+  "stock_cli_sha256": "c1eecb4b2304cb0e077a673231e30c9d759dec8fea4a6b8818078865e392fa90",
+  "bwrap_sha256": "77360cb751ccedc5971391444ac86a8a33c15b04d6b4a6fe45f5d25496e62c4c"
+}

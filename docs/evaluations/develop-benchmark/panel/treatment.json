@@ -1,0 +1,9 @@
+{
+  "label": "develop-0.9.0-revised",
+  "package_sha256": "c619be0cc2668f45fc51c3a8582af64581a83c993b83981e776fa45f90e10fbb",
+  "plugin_hook_sha256": "ac6e190ec47b97ea91894054c7ec9b8e5c32d2f6c9caed08a0666ba58d46b2a8",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}

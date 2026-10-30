@@ -1,0 +1,107 @@
+{
+  "case": "black",
+  "run": "same-check-black-01",
+  "result_sha256": "44747b8361e9d516cd3666e5bd5408aeed81efcc6496c559d88ab40f47eae86a",
+  "scope": "Independent post-score replay of the unary/trailer example from all three raw assessments and a live-prefix spacing example. The first three booleans describe actual formatter output. Prefix spacing is reported separately because the skipped range has more than one plausible interpretation. The frozen scores and gates are unchanged.",
+  "probe_sha256": "9d60db767d27257ed12de3cb2fb2c62246a7129c18ea92c7af1a58ddd15817b6",
+  "probe": "import ast\nimport json\nimport black\n\ncases = {\n    \"unary_trailer\": \"with -(  # fmt: skip\\n    a\\n).real and b:\\n    pass\\n\",\n    \"directive_prefix\": \"with  left  + (  # fmt: skip\\n    kept(  )\\n) as value:\\n    variable=  1\\n\",\n}\nfor name, source in cases.items():\n    original = ast.dump(ast.parse(source))\n    try:\n        formatted = black.format_str(source, mode=black.Mode())\n        result = {\"formatted\": formatted, \"preserved_ast\": ast.dump(ast.parse(formatted)) == original,\n                  \"idempotent\": black.format_str(formatted, mode=black.Mode()) == formatted,\n                  \"directive_line_unchanged\": source.splitlines()[0] == formatted.splitlines()[0]}\n    except Exception as exc:\n        result = {\"error_type\": type(exc).__name__, \"error\": str(exc)}\n    print(json.dumps({\"case\": name, **result}, sort_keys=True))\n",
+  "roles": {
+    "base": {
+      "grade_sha256": "9a70747b27e7cff71db74e33adc8890236fda573af8c49e1fedb7d8cf75fb1b6",
+      "stage_sha256": "1dddb5599dacd00251ad5a695864c26a957ca58b2f5788c48ff723c3cc4e7ead",
+      "log_sha256": "c9b78e70fb00df0a6400e9240d79a8e041984e87e2338fac6dbec030946aa55d",
+      "observations": [
+        {
+          "case": "unary_trailer",
+          "error": "INTERNAL ERROR: Black 26.10.1 on Python (CPython) 3.13.18 produced invalid code:\ncannot parse: 1:4\n    with\n       ^\nParseError: bad input\nPlease report a bug on https://github.com/psf/black/issues.  This invalid output might be helpful: /tmp/blk_dua_9zjn.log",
+          "error_type": "InvalidInput"
+        },
+        {
+          "case": "directive_prefix",
+          "error": "INTERNAL ERROR: Black 26.10.1 on Python (CPython) 3.13.18 produced invalid code:\ncannot parse: 1:4\n    with\n       ^\nParseError: bad input\nPlease report a bug on https://github.com/psf/black/issues.  This invalid output might be helpful: /tmp/blk_k53apwu1.log",
+          "error_type": "InvalidInput"
+        }
+      ]
+    },
+    "gold": {
+      "grade_sha256": "6077b1cc3e7671064c3b024f63ee907f3eac2da7593479a885870e55787a4ead",
+      "stage_sha256": "76bf30990295be9aff70f13c73558b004ad7e9e017f8e9dce35cb6be4d3ecc01",
+      "log_sha256": "50488bc398a8d10cad30ed7ea1fcbdb3ab0470436b6e792d3cff21d8a4058d9a",
+      "observations": [
+        {
+          "case": "unary_trailer",
+          "directive_line_unchanged": true,
+          "formatted": "with -(  # fmt: skip\n    a\n).real and b:\n    pass\n",
+          "idempotent": true,
+          "preserved_ast": true
+        },
+        {
+          "case": "directive_prefix",
+          "directive_line_unchanged": true,
+          "formatted": "with  left  + (  # fmt: skip\n    kept(  )\n) as value:\n    variable = 1\n",
+          "idempotent": true,
+          "preserved_ast": true
+        }
+      ]
+    },
+    "candidate-develop": {
+      "grade_sha256": "bc3e6b08360fc77244865e8e657739dcc0d38ae21be4fdfcd197a08eaa52fddd",
+      "stage_sha256": "22e87620548be83a269ee538110c585cb1b0a4f19e5fbefb0556afec0599859f",
+      "log_sha256": "50488bc398a8d10cad30ed7ea1fcbdb3ab0470436b6e792d3cff21d8a4058d9a",
+      "observations": [
+        {
+          "case": "unary_trailer",
+          "directive_line_unchanged": true,
+          "formatted": "with -(  # fmt: skip\n    a\n).real and b:\n    pass\n",
+          "idempotent": true,
+          "preserved_ast": true
+        },
+        {
+          "case": "directive_prefix",
+          "directive_line_unchanged": true,
+          "formatted": "with  left  + (  # fmt: skip\n    kept(  )\n) as value:\n    variable = 1\n",
+          "idempotent": true,
+          "preserved_ast": true
+        }
+      ]
+    },
+    "candidate-control": {
+      "grade_sha256": "67f750f133b035a97cd5d9c8e28f63038c3c2f26edd29e8148a45dc7c5767a98",
+      "stage_sha256": "9ba7fc893dcdf3876ecc69541da7a457cbc9eefcb1b469e157d7dc765d652b9d",
+      "log_sha256": "a8cbba4be980276cc8cfdeb87c9acb4b5e4a360405dadebfcc6362a750f8b3ee",
+      "observations": [
+        {
+          "case": "unary_trailer",
+          "error": "not enough values to unpack (expected 2, got 1)",
+          "error_type": "ValueError"
+        },
+        {
+          "case": "directive_prefix",
+          "directive_line_unchanged": true,
+          "formatted": "with  left  + (  # fmt: skip\n    kept(  )\n) as value:\n    variable = 1\n",
+          "idempotent": true,
+          "preserved_ast": true
+        }
+      ]
+    },
+    "prior-develop": {
+      "grade_sha256": "b2153a344743aed87544643e055987a8828cff669ac39d3234d34ae14d0316f8",
+      "stage_sha256": "5bbe9d8f344f9d6de5d5671f0eaad9c2e5ffb9b9ebd31f81aeb1dea98ef2bc2f",
+      "log_sha256": "a8cbba4be980276cc8cfdeb87c9acb4b5e4a360405dadebfcc6362a750f8b3ee",
+      "observations": [
+        {
+          "case": "unary_trailer",
+          "error": "not enough values to unpack (expected 2, got 1)",
+          "error_type": "ValueError"
+        },
+        {
+          "case": "directive_prefix",
+          "directive_line_unchanged": true,
+          "formatted": "with  left  + (  # fmt: skip\n    kept(  )\n) as value:\n    variable = 1\n",
+          "idempotent": true,
+          "preserved_ast": true
+        }
+      ]
+    }
+  }
+}

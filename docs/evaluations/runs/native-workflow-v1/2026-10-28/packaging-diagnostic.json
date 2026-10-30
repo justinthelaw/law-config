@@ -1,0 +1,21 @@
+{
+  "case": "packaging",
+  "type": "post_review_exploratory",
+  "experiment": "8eb4f065459241e3d5b123cbd43076699d880a0cd701dc0f4475d9f812e287b6",
+  "source": "Two consequences of the sealed masked judgment; outside the frozen primary checks.",
+  "code": "import json\nfrom packaging.specifiers import Specifier, SpecifierSet\ns=SpecifierSet('>=1')\ntry:\n numeric=repr(Specifier('==1').__replace__(version=2))\nexcept Exception as exc:\n numeric=type(exc).__name__\nprint(json.dumps({'equivalent_set_preserves_identity':s.__replace__(specifiers='>=1') is s, 'integer_version_result':numeric}))",
+  "results": {
+    "control": {
+      "equivalent_set_preserves_identity": true,
+      "integer_version_result": "TypeError"
+    },
+    "develop": {
+      "equivalent_set_preserves_identity": true,
+      "integer_version_result": "TypeError"
+    },
+    "reference": {
+      "equivalent_set_preserves_identity": false,
+      "integer_version_result": "<Specifier('==2')>"
+    }
+  }
+}

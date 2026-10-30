@@ -1,0 +1,9 @@
+{
+  "label": "preserve-exposed-behavior",
+  "package_sha256": "fb6b2eacbc6ae3a94fb237d6a54c4166ecbbb7d5678ae9b3273fdaf072c6b372",
+  "plugin_hook_sha256": "b438419e63dd5af730290bcbb7735c1529f1e770b721da345a32aaf0edfe0dab",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}

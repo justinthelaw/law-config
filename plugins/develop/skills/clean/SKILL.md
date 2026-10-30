@@ -1,49 +1,22 @@
 ---
 name: clean
-description: Clean verified disposable artifacts and hanging processes attributable to this thread on Windows, Linux or macOS.
+description: Use when explicitly selected to inspect or clean verified disposable resources from this thread and its delegated work.
 ---
 
 # Clean
 
-Inspect first, remove verified disposable targets, and measure the result.
+Use this skill only when the user names or selects it. Limit discovery to resources attributable to the current thread and its workers, wherever located. A wider inspection request does not invoke Deep Clean. Handle the authorized request within its stated scope and identify any part beyond this skill.
 
-## Start
-
-Read [the shared contract](../develop/references/contract.md) and [platform guidance](references/platforms.md). Reuse the invocation and [applicable review gates](../develop/references/contract.md#review-gates); consequential removals require inventory and evidence review, while routine read-only/no-op findings do not spawn automatic review pairs.
-
-Default to this thread's activities, including delegated work: temporary artifacts, disposable caches, generated scratch and hanging processes wherever located. Use observed commands, tool results and process ancestry to attribute exact candidates; location, timestamps or mere use by this thread do not establish ownership or disposability. Keep a temporary candidate list, not a permanent attribution database. No default depth, age, size, count or time cutoff applies within this semantic scope. Continue through verified candidates; retain uncertain candidates and report them. A scoped cleanup request authorizes eligible members without repeated per-item approval.
-
-Only explicit user scope expansion permits wider discovery. After a request such as "index and clean my entire machine starting at `/`", hand off to [deep-clean](../deep-clean/SKILL.md), preserving root, exclusions and audit/cleanup authority. Never infer expansion from invocation, a large candidate or a no-op.
-
-Read [shared protections](references/protections.md) once per instruction revision; immediately revalidate the protected set and target conditions before every mutation. Identify the actual OS, shell, writable roots and tools. A local, remote or hosted runtime does not grant access to another device. Respect the requested scope; inspection-only means no deletion or process stopping.
-
-In upgrade **prepare mode**, remove only verified unused, rebuildable caches/build output within authorized workspace/scratch boundaries. Preserve checkouts, current directory, installed toolchains and active services; a measured no-op is valid.
+Read the [shared protections](references/protections.md), the [host guidance](references/platforms.md) and the applicable [review gates](../develop/references/planning-and-review.md#review-gates). Use the actual host and writable roots. An audit permits inspection only.
 
 ## Workflow
 
-1. **Measure.** Record current directory, available/used memory, free disk per affected filesystem and candidate sizes. Use comparable before/after methods; distinguish logical/allocated bytes and label unavailable metrics.
-2. **Inspect.** Inspect attributed candidates wherever located, grouping only verified thread-owned roots. Enumerate their metadata with native tools; do not sweep the checkout, profile or machine merely because candidates exist there. Never read credentials, `.env` contents, transcripts or documents to size them. Include hidden and ignored artifacts such as `.next`, `.venv`, `node_modules` and caches; exclude protected Git metadata. Check ownership, active handles/process use, reconstruction inputs, symlinks/reparse points and mounted descendants, including same-device bind mounts.
-3. **Classify.** Mark exact paths removable, protected or blocked with evidence. Protect source, lockfiles, credentials, persistent data, referenced context-guard recovery artifacts, managed runtimes/mounts, active services/previews, dirty/untracked work, worktrees, stashes, unpublished commits and active incident logs. Inspect repository state and recoverability before considering an old checkout; age proves nothing. Dependency trees require retained reconstruction inputs and no active use. Prefer package-manager dry-run/cleanup support for caches and orphan packages.
-4. **Review.** For consequential cleanup or a required review, send the concrete inventory to the intent checkpoint. No safe candidates means a no-op, not broader scope.
-5. **Remove.** Immediately re-resolve every exact absolute target inside its authorized parent; recheck ownership, use and traversal boundaries. Reject roots, home directories, entire workspace/scratch roots, unresolved globs and ambiguous paths. Do not traverse links, junctions or mounted descendants; preserve targets whose traversal cannot be proven safe. Use the host's system Trash or Recycle Bin and verify the destination. If it is unavailable, ask before deleting. In unattended mode, retain the target for a decision. Never empty Trash. Use one native shell end-to-end, PowerShell `-LiteralPath` on Windows; never interpolate enumerated paths into another shell. POSIX `-xdev` alone does not exclude same-device mounts.
-6. **Verify.** Check exit statuses and actual removals; preserve partial-failure evidence. Repeat measurements, protected-boundary and service checks. Run package consistency checks if databases changed. Complete the applicable evidence checkpoint.
+1. Record the working directory, used memory, free disk by filesystem and candidate sizes. Keep raw units and distinguish logical from allocated bytes.
+2. Attribute each exact path or PID to observed thread activity. Check ownership, reconstruction inputs, repository state, live handles, service ancestry, links and mounted descendants. Include hidden disposable artifacts within scope. Preserve uncertain candidates. Age, location, size and PPID alone establish neither ownership nor disposability. Apply no default age, depth or size cutoff.
+3. Classify candidates as eligible, protected or blocked. Review a consequential inventory before mutation. For explicitly authorized upgrade preparation, limit cleanup to unused, rebuildable output in the selected workspace or scratch area. Preserve checkouts, toolchains and services.
+4. Re-resolve each target under its authorized parent immediately before acting. Reject aggregate roots, globs, ambiguous identities and unsafe traversal, including same-device bind mounts and reparse points. Use literal paths in one native shell. Leave an explicitly selected current directory first and handle it last. Preserve managed mounts.
+5. Move eligible files to the host’s system Trash or Recycle Bin and verify the destination. If unavailable, ask before deletion. Retain targets pending that decision. Never empty Trash. Prefer a package manager’s dry run for its own caches.
+6. For a live process, recheck PID, owner, command, working directory, parent and service ownership. Stop only a verified disposable task within explicit scope. Prefer graceful termination. Force requires explicit authorization. A zombie needs parent reaping.
+7. Verify each outcome, protected boundary and affected service. Repeat the original measurements. Check package consistency after database changes and retain partial failures. Complete the applicable evidence review.
 
-Recoverable moves must have verified destinations and do not count as reclaimed disk space. If removal of the current directory was explicitly requested, leave it, revalidate and handle it last. Never unmount harness-managed contents.
-
-## Processes
-
-Inspect PID, parent, owner, command, working directory and service ancestry. PPID 1 or high RAM use does not establish disposability. Preserve supervisors, agent/transfer/preview services and system processes. Zombies need parent reaping, not killing or supervisor restarts.
-
-Stop only verified disposable live tasks within explicit scope. Prefer graceful termination; forced termination requires applicable explicit authorization. Recheck process identity and state because inventories race.
-
-## Report
-
-Summarize removed, protected and blocked targets, then return:
-
-| Metric | Result |
-| --- | --- |
-| RAM reclaimed, estimate | Before-used minus after-used; retain negative values |
-| Disk reclaimed, estimate | Verified deletions' allocated bytes; deduplicate overlaps/hard links, or mark unavailable |
-| Filesystem free-space change | After-available minus before-available per same filesystem |
-
-Give bytes and readable units. Exclude failed deletions, proposed sizes and quarantine moves; label unmeasurable partial deletion unknown. Explain discrepancies from concurrent activity, open deleted files or shared storage. Stop when scoped cleanup is verified.
+Report removed, protected and blocked targets. Give estimated RAM change as before-used minus after-used, verified deleted allocated bytes with hardlinks deduplicated, and free-space change per filesystem. Show bytes and readable units. Trash moves reclaim zero bytes. Retain negative and unknown results and explain material differences.

@@ -7,7 +7,7 @@ description: Use before engineering changes or consequential architecture, API, 
 
 Make the smallest decision brief that lets the existing execution owner implement and verify the right change.
 
-Use the shared [planning and review path](../develop/references/contract.md#applicable-planning). Revalidate an accepted plan before reusing it; a new skill handoff alone does not restart planning. Read only affected owners, consumers, contracts and relevant tests, widening for hidden consumers or conflicting evidence.
+Use the shared [planning and review path](../develop/references/planning-and-review.md#applicable-planning). Revalidate an accepted plan before reusing it; a new skill handoff alone does not restart planning. Read only affected owners, consumers, contracts and relevant tests, widening for hidden consumers or conflicting evidence.
 
 The brief covers what matters for this change:
 

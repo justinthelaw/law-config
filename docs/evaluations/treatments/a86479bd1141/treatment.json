@@ -1,0 +1,9 @@
+{
+  "label": "condition-scope",
+  "package_sha256": "a86479bd1141b6936fd11a06cab5d93d9804bfa4c2809283adba1eea5ec84318",
+  "plugin_hook_sha256": "51c5dbfe8f029dec6ce08e26d8af3a18919c635fee89e8fabe9019c483b52327",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}

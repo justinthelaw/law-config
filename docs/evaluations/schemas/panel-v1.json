@@ -1,0 +1,394 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Develop benchmark portable records v1",
+  "$ref": "#/$defs/run",
+  "$defs": {
+    "digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "runtime": {
+      "type": "object",
+      "properties": {
+        "source_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "package_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "cli_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "bwrap_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "treatment": {"type": "object"},
+        "model": {"type": "string"},
+        "effort": {"type": "string"},
+        "seed": {"type": "integer"},
+        "rubric_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "rates_usd_per_million": {
+          "type": "object",
+          "properties": {
+            "uncached_input": {"type": "number", "minimum": 0},
+            "cached_input": {"type": "number", "minimum": 0},
+            "output": {"type": "number", "minimum": 0}
+          },
+          "required": ["uncached_input", "cached_input", "output"],
+          "additionalProperties": false
+        },
+        "executor": {
+          "type": "object",
+          "required": ["cpus_per_worker", "memory", "lanes", "boundary", "managed_hooks", "judge"],
+          "properties": {
+            "cpus_per_worker": {"type": "integer", "minimum": 1}, "memory": {"type": "string"},
+            "lanes": {"type": "integer", "minimum": 1}, "boundary": {"type": "object"},
+            "managed_hooks": {"type": "object"},
+            "recovery_release_policy": {"type":"object","required":["on_block","prior_releases"],"properties":{"on_block":{"const":"pause"},"prior_releases":{"type":"array","uniqueItems":true,"items":{"type":"string"}}},"additionalProperties":false},
+            "judge": {"type": "object", "required": ["model", "effort", "rotations", "entrypoint_sha256", "max_attempts_per_rotation"]}
+          }, "additionalProperties": false
+        },
+        "qualifier": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "implementation_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "required": [
+        "source_sha256",
+        "package_sha256",
+        "cli_sha256",
+        "bwrap_sha256",
+        "treatment",
+        "model",
+        "effort",
+        "seed",
+        "rubric_sha256",
+        "rates_usd_per_million",
+        "executor",
+        "qualifier",
+        "implementation_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "case": {
+      "type": "object",
+      "properties": {
+        "id": {"type": "string"},
+        "repo": {"type": "string"},
+        "pr": {"type": "integer", "minimum": 1},
+        "base": {"type": "string", "pattern": "^[a-f0-9]{40,64}$"},
+        "merged": {"type": "string", "pattern": "^[a-f0-9]{40,64}$"},
+        "split": {"enum": ["tuning", "confirmation"]},
+        "stratum": {"type": "string"},
+        "language": {"type": "string"},
+        "domain": {"type": "string"},
+        "complexity": {"type": ["string", "null"]},
+        "prompt": {"type": "string"},
+        "first_commit": {"type": "string"},
+        "authorship": {"type": "string"},
+        "base_files": {"type": "integer", "minimum": 0},
+        "base_bytes": {"type": "integer", "minimum": 0},
+        "pr_delta": {"type": "array", "items": {"type": "integer", "minimum": 0}, "minItems": 3, "maxItems": 3},
+        "pr_open_to_merge_seconds": {"type": "number", "minimum": 0},
+        "controls": {
+          "type": "object",
+          "required": ["fixture_sha256", "prompt_sha256", "merged_patch_sha256", "dependencies_sha256", "workers",
+                       "deadline_seconds", "arm_order", "cpu_pair", "build", "worker_native", "grader_native", "independent_check"],
+          "properties": {
+            "fixture_sha256": {"$ref": "#/$defs/digest"}, "prompt_sha256": {"$ref": "#/$defs/digest"},
+            "merged_patch_sha256": {"$ref": "#/$defs/digest"}, "dependencies_sha256": {"$ref": "#/$defs/digest"},
+            "workers": {"type": "object", "required": ["toolchain", "worker"]},
+            "deadline_seconds": {"type": "integer", "minimum": 1},
+            "arm_order": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"enum": ["control", "develop"]}},
+            "cpu_pair": {"type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true, "items": {"type": "integer", "minimum": 0}},
+            "build": {"type": "string"}, "worker_native": {"type": "string"}, "grader_native": {"type": "string"},
+            "independent_check": {"type": "boolean"}
+          }, "additionalProperties": false
+        },
+        "comparison": {"type": "object"},
+        "judge_attempts": {"type": "array", "items": {"type": "object", "required": ["coverage", "tokens", "threads", "usd_estimate",
+            "rotation", "attempt", "native_sha256", "accepted", "state", "wall_seconds", "limitations"],
+          "properties": {"coverage": {"enum": ["complete", "lower bound", "unknown"]}, "tokens": {"type": "object"},
+            "rotation": {"type": "integer", "minimum": 0, "maximum": 2}, "attempt": {"type": "integer", "minimum": 0, "maximum": 1},
+            "native_sha256": {"$ref": "#/$defs/digest"}, "accepted": {"type": "boolean"}, "state": {"type": "string"},
+            "wall_seconds": {"type": ["number", "null"], "minimum": 0}, "limitations": {"type": "array"},
+            "threads": {"type": "integer", "minimum": 0}, "usd_estimate": {"type": ["number", "null"], "minimum": 0}},
+          "additionalProperties": false}}
+      },
+      "required": [
+        "id",
+        "repo",
+        "pr",
+        "base",
+        "merged",
+        "split",
+        "stratum",
+        "language",
+        "domain",
+        "complexity",
+        "prompt",
+        "first_commit",
+        "authorship",
+        "base_files",
+        "base_bytes",
+        "pr_delta",
+        "pr_open_to_merge_seconds",
+        "controls",
+        "comparison",
+        "judge_attempts"
+      ],
+      "additionalProperties": false
+    },
+    "assessment": {
+      "type": "object",
+      "properties": {
+        "rotation": {"type": "integer", "minimum": 0, "maximum": 2},
+        "label": {"enum": ["A", "B", "C"]},
+        "scores": {
+          "type": "object",
+          "properties": {
+            "contract": {"type": ["number", "null"], "minimum": 0, "maximum": 4},
+            "tests": {"type": ["number", "null"], "minimum": 0, "maximum": 4},
+            "design": {"type": ["number", "null"], "minimum": 0, "maximum": 4},
+            "proposal": {"type": ["number", "null"], "minimum": 0, "maximum": 4}
+          },
+          "required": ["contract", "tests", "design", "proposal"],
+          "additionalProperties": false
+        },
+        "evidence": {
+          "type": "object",
+          "properties": {
+            "contract": {"type": "string"},
+            "tests": {"type": "string"},
+            "design": {"type": "string"},
+            "proposal": {"type": "string"}
+          },
+          "required": ["contract", "tests", "design", "proposal"],
+          "additionalProperties": false
+        },
+        "flags": {"type": "array", "items": {"type": "string"}},
+        "confidence": {"enum": ["low", "medium", "high"]}
+      },
+      "required": ["rotation", "label", "scores", "evidence", "flags", "confidence"],
+      "additionalProperties": false
+    },
+    "quality": {
+      "type": "object",
+      "properties": {
+        "axes": {
+          "type": "object",
+          "properties": {
+            "contract": {"type": ["number", "null"], "minimum": 0, "maximum": 4},
+            "tests": {"type": ["number", "null"], "minimum": 0, "maximum": 4},
+            "design": {"type": ["number", "null"], "minimum": 0, "maximum": 4},
+            "proposal": {"type": ["number", "null"], "minimum": 0, "maximum": 4}
+          },
+          "required": ["contract", "tests", "design", "proposal"],
+          "additionalProperties": false
+        },
+        "proposal_points_100": {"type": ["number", "null"], "minimum": 0, "maximum": 100},
+        "diff_points_85": {"type": ["number", "null"], "minimum": 0, "maximum": 85},
+        "rotation_points_85": {"type": "object", "additionalProperties": {"type": ["number", "null"], "minimum": 0, "maximum": 85}},
+        "assessments": {"type": "array", "items": {"$ref": "#/$defs/assessment"}}
+      },
+      "required": ["axes", "proposal_points_100", "diff_points_85", "rotation_points_85", "assessments"],
+      "additionalProperties": false
+    },
+    "stage": {
+      "type": "object",
+      "properties": {
+        "exit": {"type": ["integer", "null"]},
+        "log_sha256": {"anyOf": [{"type": "string", "pattern": "^[a-f0-9]{64}$"}, {"type": "null"}]},
+        "command": {"type": ["string", "null"]},
+        "reason": {"type": ["string", "null"]}
+      },
+      "required": ["exit", "log_sha256", "command", "reason"],
+      "additionalProperties": false
+    },
+    "effort": {
+      "type": "object",
+      "properties": {
+        "coverage": {"enum": ["complete", "lower bound", "unknown"]},
+        "tokens": {
+          "type": "object",
+          "properties": {
+            "inputTokens": {"type": ["integer", "null"], "minimum": 0},
+            "cachedInputTokens": {"type": ["integer", "null"], "minimum": 0},
+            "cacheWriteInputTokens": {"type": ["integer", "null"], "minimum": 0},
+            "outputTokens": {"type": ["integer", "null"], "minimum": 0},
+            "reasoningOutputTokens": {"type": ["integer", "null"], "minimum": 0},
+            "totalTokens": {"type": ["integer", "null"], "minimum": 0}
+          },
+          "required": [
+            "inputTokens",
+            "cachedInputTokens",
+            "cacheWriteInputTokens",
+            "outputTokens",
+            "reasoningOutputTokens",
+            "totalTokens"
+          ],
+          "additionalProperties": false
+        },
+        "estimated_usd": {"type": ["number", "null"], "minimum": 0},
+        "billed_usd": {"type": "null"},
+        "checkout_to_proposal_seconds": {"type": ["number", "null"], "minimum": 0},
+        "prompt_to_terminal_seconds": {"type": ["number", "null"], "minimum": 0},
+        "through_grading_seconds": {"type": ["number", "null"], "minimum": 0},
+        "setup_seconds": {"type": ["number", "null"], "minimum": 0},
+        "grading_seconds": {"type": ["number", "null"], "minimum": 0},
+        "thread_count": {"type": "integer", "minimum": 0},
+        "child_count": {"type": "integer", "minimum": 0},
+        "root_tokens": {"type": ["object", "null"]},
+        "descendant_tokens": {"type": ["object", "null"]},
+        "observed_commands": {"type": "integer", "minimum": 0},
+        "native_hook_receipts": {"type": "integer", "minimum": 0}
+      },
+      "required": [
+        "coverage",
+        "tokens",
+        "estimated_usd",
+        "billed_usd",
+        "checkout_to_proposal_seconds",
+        "prompt_to_terminal_seconds",
+        "through_grading_seconds",
+        "setup_seconds",
+        "grading_seconds",
+        "thread_count",
+        "child_count",
+        "root_tokens",
+        "descendant_tokens",
+        "observed_commands",
+        "native_hook_receipts"
+      ],
+      "additionalProperties": false
+    },
+    "submission": {
+      "type": "object",
+      "properties": {
+        "format": {"const": "law-config.eval-submission/v1"},
+        "plan_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "case_id": {"type": "string"},
+        "role": {"enum": ["control", "develop", "upstream"]},
+        "state": {"enum": ["completed", "timeout", "blocked", "interrupted", "unreleased", "merged"]},
+        "readiness": {"enum": ["ready", "failed", "unavailable", "pending"]},
+        "executable_pass": {"type": "boolean"},
+        "failure_kind": {"type": ["string", "null"]},
+        "stages": {"type": "object", "additionalProperties": {"$ref": "#/$defs/stage"}},
+        "patch": {"type": ["string", "null"]},
+        "patch_sha256": {"anyOf": [{"type": "string", "pattern": "^[a-f0-9]{64}$"}, {"type": "null"}]},
+        "proposal": {"type": ["string", "null"]},
+        "proposal_sha256": {"anyOf": [{"type": "string", "pattern": "^[a-f0-9]{64}$"}, {"type": "null"}]},
+        "quality": {"$ref": "#/$defs/quality"},
+        "adjudication": {"anyOf": [{"type": "null"}, {"type": "object", "required": ["evidence", "resolution"],
+          "properties": {"resolution": {"enum": ["confirmed", "cleared"]}, "evidence": {"type": "string", "minLength": 1},
+            "reviewer": {"type": "string"}, "probe_receipts_sha256": {"type": "object", "additionalProperties": {"$ref": "#/$defs/digest"}}}}]},
+        "effort": {"anyOf": [{"$ref": "#/$defs/effort"}, {"type": "null"}]},
+        "receipt_sha256": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[a-f0-9]{64}$"}},
+        "proposal_observation": {"enum": ["present", "omitted", "unavailable", "incomplete"]},
+        "bindings": {
+          "type": "object",
+          "properties": {
+            "grade_patch_sha256": {"anyOf": [{"type": "string", "pattern": "^[a-f0-9]{64}$"}, {"type": "null"}]},
+            "judges": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "rotation",
+                  "label",
+                  "patch_sha256",
+                  "proposal_sha256",
+                  "judgment_sha256",
+                  "mapping_sha256",
+                  "assessor_sha256",
+                  "packet_sha256",
+                  "prompt_sha256"
+                ],
+                "properties": {
+                  "rotation": {"type": "integer", "minimum": 0, "maximum": 2},
+                  "label": {"enum": ["A", "B", "C"]},
+                  "patch_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+                  "proposal_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+                  "judgment_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+                  "mapping_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+                  "assessor_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+                  "packet_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+                  "prompt_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": ["grade_patch_sha256", "judges"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "format",
+        "plan_sha256",
+        "case_id",
+        "role",
+        "state",
+        "readiness",
+        "executable_pass",
+        "failure_kind",
+        "stages",
+        "patch",
+        "patch_sha256",
+        "proposal",
+        "proposal_sha256",
+        "quality",
+        "adjudication",
+        "effort",
+        "receipt_sha256",
+        "proposal_observation",
+        "bindings"
+      ],
+      "additionalProperties": false
+    },
+    "run": {
+      "type": "object",
+      "properties": {
+        "format": {"const": "law-config.eval-run/v1"},
+        "protocol": {"type": "string"},
+        "name": {"type": "string"},
+        "plan_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "cohort": {"enum": ["primary", "capacity-recovery"]},
+        "selection": {"anyOf": [{"type": "null"}, {"type": "object",
+          "required": ["split", "cases", "declared_unix", "plan_sha256", "sha256"],
+          "properties": {"split": {"enum": ["tuning", "confirmation"]}, "cases": {"type": "array", "items": {"type": "string"}, "minItems": 1, "uniqueItems": true},
+            "declared_unix": {"type": "number"}, "plan_sha256": {"$ref": "#/$defs/digest"}, "sha256": {"$ref": "#/$defs/digest"}},
+          "additionalProperties": false}]},
+        "parent_plan_sha256": {"anyOf": [{"type": "string", "pattern": "^[a-f0-9]{64}$"}, {"type": "null"}]},
+        "frozen_unix": {"type": "number", "minimum": 0},
+        "runtime": {"$ref": "#/$defs/runtime"},
+        "cases": {"type": "array", "items": {"$ref": "#/$defs/case"}},
+        "groups": {"type": "object"},
+        "evaluator": {"type": "object", "required": ["attempts", "complete_receipts", "observed_usd"],
+          "properties": {"attempts": {"type": "integer", "minimum": 0}, "complete_receipts": {"type": "integer", "minimum": 0},
+            "observed_usd": {"type": "number", "minimum": 0}}, "additionalProperties": false},
+        "campaign_elapsed_seconds": {"type": ["number", "null"], "minimum": 0},
+        "submission_span_seconds": {"type": ["number", "null"], "minimum": 0},
+        "observations": {"type": "array", "items": {"type": "object"}},
+        "submissions": {
+          "type": "object",
+          "properties": {
+            "path": {"const": "submissions.jsonl"},
+            "rows": {"type": "integer", "minimum": 0},
+            "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+          },
+          "required": ["path", "rows", "sha256"],
+          "additionalProperties": false
+        },
+        "source": {"type": "object"}
+      },
+      "required": [
+        "format",
+        "protocol",
+        "name",
+        "plan_sha256",
+        "cohort",
+        "selection",
+        "parent_plan_sha256",
+        "frozen_unix",
+        "runtime",
+        "cases",
+        "groups",
+        "evaluator",
+        "campaign_elapsed_seconds",
+        "submission_span_seconds",
+        "observations",
+        "submissions",
+        "source"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,449 @@
+{
+  "protocol": "develop-efficiency-pilot-v1",
+  "name": "boundary-pytest-install-02",
+  "split": "tuning",
+  "case": "pytest",
+  "repository": "pytest-dev/pytest",
+  "pull_request": 15193,
+  "registration_sha256": "de807165e4196021a33b92840ebfc01bcce24ee765623388db009a473c8261c9",
+  "result_sha256": "d2304519cdad5584deb8689961818427fc267d5be7970f39082d87ef106713cd",
+  "operator_sha256": "58ad26c0ef85d0b1a927f1900fbbda1edd58e680a64b1cacb08a86a583f3b796",
+  "hypothesis": "replay-one-public-boundary",
+  "goal_win": false,
+  "proposal_order": [
+    [
+      "candidate",
+      "control"
+    ],
+    [
+      "prior",
+      "develop"
+    ],
+    [
+      "candidate",
+      "develop"
+    ]
+  ],
+  "full_pr_verdicts": {
+    "develop_control": {
+      "verdict": "develop",
+      "reason": "blinded rubric",
+      "score_delta": 36.25,
+      "votes": [
+        "develop",
+        "develop",
+        "develop"
+      ],
+      "order_sensitive": false
+    },
+    "develop_upstream": {
+      "verdict": "develop",
+      "reason": "hard gates"
+    },
+    "control_upstream": {
+      "verdict": "control",
+      "reason": "hard gates"
+    }
+  },
+  "roles": {
+    "pure": {
+      "state": "completed",
+      "treatment_sha256": null,
+      "runtime_sha256": "0e651b925b946faa82a2146bcc295afc89c304412e92320cdf794b0d8fbeb227",
+      "release_sha256": "ec83c29bd69e306ff209780cfb87039753d6c7b4edf9d892fa33531a10726309",
+      "result_sha256": "5f88c7ae46fd9000c39474201b129bde6627c44aecc4aa67266f6a47e8be72ea",
+      "patch_sha256": "0a9ccadd42fab7076b91ce84c0e55a673d1cc73596a93b24edd150510896c029",
+      "proposal_sha256": "6344ae28647ef4ee185ec3ec4d43eef9f8137f6209030fc5a11a91d8db07c947",
+      "patch": "diff --git a/changelog/0.feature.rst b/changelog/0.feature.rst\nnew file mode 100644\nindex 0000000..ebcdf22\n--- /dev/null\n+++ b/changelog/0.feature.rst\n@@ -0,0 +1,3 @@\n+Expose :class:`pytest.ParameterSet` for annotating helpers returning :func:`pytest.param`.\n+Create parameter sets with ``pytest.param()``; direct construction is unsupported and now emits a deprecation warning.\n+``ParameterSet`` is now a frozen dataclass instead of a named tuple; use its ``values``, ``marks`` and ``id`` attributes.\ndiff --git a/doc/en/reference/reference.rst b/doc/en/reference/reference.rst\nindex 4e0f40f..8c8e798 100644\n--- a/doc/en/reference/reference.rst\n+++ b/doc/en/reference/reference.rst\n@@ -1037,6 +1037,13 @@ Metafunc\n .. autoclass:: pytest.Metafunc()\n     :members:\n \n+ParameterSet\n+~~~~~~~~~~~~\n+\n+.. autoclass:: pytest.ParameterSet()\n+    :members: values, marks, id\n+\n+\n Parser\n ~~~~~~\n \ndiff --git a/src/_pytest/mark/__init__.py b/src/_pytest/mark/__init__.py\nindex 996322d..514b945 100644\n--- a/src/_pytest/mark/__init__.py\n+++ b/src/_pytest/mark/__init__.py\n@@ -69,6 +69,8 @@ def param(\n \n     :param values: Variable args of the values of the parameter set, in order.\n \n+    :returns: A :class:`pytest.ParameterSet` containing the values, marks and ID.\n+\n     :param marks:\n         A single mark or a list of marks to be applied to this parameter set.\n \ndiff --git a/src/_pytest/mark/structures.py b/src/_pytest/mark/structures.py\nindex 34a004f..219d77d 100644\n--- a/src/_pytest/mark/structures.py\n+++ b/src/_pytest/mark/structures.py\n@@ -15,7 +15,6 @@ import inspect\n from typing import Any\n from typing import final\n from typing import Literal\n-from typing import NamedTuple\n from typing import overload\n from typing import TYPE_CHECKING\n from typing import TypeVar\n@@ -80,10 +79,18 @@ def get_empty_parameterset_mark(\n             assert_never(unreachable)\n \n \n-class ParameterSet(NamedTuple):\n+@final\n+@dataclasses.dataclass(frozen=True)\n+class ParameterSet:\n     \"\"\"A set of values for a set of parameters along with associated marks and\n     an optional ID for the set.\n \n+    Use :func:`pytest.param` to create parameter sets. Direct construction is\n+    not supported. This type can be used to annotate helpers::\n+\n+        def case(value: object) -> pytest.ParameterSet:\n+            return pytest.param(value)\n+\n     Examples::\n \n         pytest.param(1, 2, 3)\n@@ -108,10 +115,29 @@ class ParameterSet(NamedTuple):\n         # ParameterSet(values=(40, 2, 42), marks=(), id=\"everything\")\n     \"\"\"\n \n+    __module__ = \"pytest\"\n+\n+    #: The parameter values, in order.\n     values: Sequence[object | NotSetType]\n+    #: The marks associated with this parameter set.\n     marks: Collection[MarkDecorator | Mark]\n+    #: The parameter set ID, or None for an automatically generated ID.\n     id: str | _HiddenParam | None\n \n+    def __init__(\n+        self,\n+        values: Sequence[object | NotSetType],\n+        marks: Collection[MarkDecorator | Mark],\n+        id: str | _HiddenParam | None,\n+        *,\n+        _ispytest: bool = False,\n+    ) -> None:\n+        \"\"\":meta private:\"\"\"\n+        check_ispytest(_ispytest)\n+        object.__setattr__(self, \"values\", values)\n+        object.__setattr__(self, \"marks\", marks)\n+        object.__setattr__(self, \"id\", id)\n+\n     @classmethod\n     def param(\n         cls,\n@@ -135,7 +161,7 @@ class ParameterSet(NamedTuple):\n                     \"Expected id to be a string or a `pytest.HIDDEN_PARAM` sentinel, \"\n                     f\"got {type(id)}: {id!r}\",\n                 )\n-        return cls(values, marks, id)\n+        return cls(values, marks, id, _ispytest=True)\n \n     @classmethod\n     def extract_from(\n@@ -163,7 +189,7 @@ class ParameterSet(NamedTuple):\n             #\n             #   @pytest.mark.parametrize(('x', 'y'), [1, 2])\n             #   def test_foo(x, y): pass\n-            return cls(parameterset, marks=[], id=None)  # type: ignore[arg-type]\n+            return cls(parameterset, marks=[], id=None, _ispytest=True)  # type: ignore[arg-type]\n \n     @staticmethod\n     def _parse_parametrize_args(\n@@ -253,7 +279,10 @@ class ParameterSet(NamedTuple):\n             mark = get_empty_parameterset_mark(config, argnames, func)\n             parameters.append(\n                 ParameterSet(\n-                    values=(NOTSET,) * len(argnames), marks=[mark], id=\"NOTSET\"\n+                    values=(NOTSET,) * len(argnames),\n+                    marks=[mark],\n+                    id=\"NOTSET\",\n+                    _ispytest=True,\n                 )\n             )\n         return argnames, parameters\ndiff --git a/src/pytest/__init__.py b/src/pytest/__init__.py\nindex f6ea24f..ecd075f 100644\n--- a/src/pytest/__init__.py\n+++ b/src/pytest/__init__.py\n@@ -42,6 +42,7 @@ from _pytest.mark import MARK_GEN as mark\n from _pytest.mark import MarkDecorator\n from _pytest.mark import MarkGenerator\n from _pytest.mark import param\n+from _pytest.mark import ParameterSet\n from _pytest.monkeypatch import MonkeyPatch\n from _pytest.nodes import Collector\n from _pytest.nodes import Directory\n@@ -130,6 +131,7 @@ __all__ = [\n     \"MonkeyPatch\",\n     \"OptionGroup\",\n     \"Package\",\n+    \"ParameterSet\",\n     \"Parser\",\n     \"PytestApproxDecimalToleranceWarning\",\n     \"PytestAssertRewriteWarning\",\ndiff --git a/testing/test_parameter_set.py b/testing/test_parameter_set.py\nnew file mode 100644\nindex 0000000..b343c6e\n--- /dev/null\n+++ b/testing/test_parameter_set.py\n@@ -0,0 +1,102 @@\n+from __future__ import annotations\n+\n+import dataclasses\n+import pickle\n+from typing import get_type_hints\n+import warnings\n+\n+from _pytest.mark.structures import _HiddenParam\n+from _pytest.mark.structures import ParameterSet\n+import pytest\n+\n+\n+def test_public_type() -> None:\n+    def case(value: object) -> pytest.ParameterSet:\n+        return pytest.param(value)\n+\n+    assert \"ParameterSet\" in pytest.__all__\n+    assert pytest.ParameterSet is ParameterSet\n+    assert pytest.ParameterSet.__module__ == \"pytest\"\n+    assert get_type_hints(case)[\"return\"] is pytest.ParameterSet\n+    assert get_type_hints(pytest.param)[\"return\"] is pytest.ParameterSet\n+    assert isinstance(case(42), pytest.ParameterSet)\n+\n+\n+@pytest.mark.parametrize(\"id\", [None, \"case-ä\", pytest.HIDDEN_PARAM])\n+@pytest.mark.parametrize(\"multiple_marks\", [False, True])\n+def test_param_preserves_fields(\n+    id: str | _HiddenParam | None, multiple_marks: bool\n+) -> None:\n+    value = object()\n+    mark = pytest.mark.skip(reason=\"example\")\n+    marks = [mark, pytest.mark.xfail.mark] if multiple_marks else mark\n+    with warnings.catch_warnings():\n+        warnings.simplefilter(\"error\")\n+        parameter = pytest.param(value, 42, marks=marks, id=id)\n+        other = pytest.ParameterSet.param(value, 42, marks=marks, id=id)\n+    assert isinstance(parameter, pytest.ParameterSet)\n+    assert parameter.values == (value, 42)\n+    assert parameter.values[0] is value\n+    assert parameter.marks == (marks if multiple_marks else (mark,))\n+    assert parameter.id is id\n+    assert other == parameter\n+    with pytest.raises(dataclasses.FrozenInstanceError):\n+        parameter.id = \"changed\"  # type: ignore[misc]\n+\n+\n+def test_param_defaults_and_pickle() -> None:\n+    with warnings.catch_warnings():\n+        warnings.simplefilter(\"error\")\n+        parameter = pytest.param(42)\n+        assert parameter.values == (42,)\n+        assert parameter.marks == ()\n+        assert parameter.id is None\n+        assert pickle.loads(pickle.dumps(parameter)) == parameter\n+\n+\n+@pytest.mark.parametrize(\"keyword\", [False, True])\n+def test_direct_construction_warns(keyword: bool) -> None:\n+    values = [42]\n+    marks = [pytest.mark.skip]\n+    with pytest.warns(pytest.PytestDeprecationWarning, match=\"private pytest\"):\n+        if keyword:\n+            parameter = pytest.ParameterSet(values=values, marks=marks, id=\"case\")\n+        else:\n+            parameter = pytest.ParameterSet(values, marks, \"case\")\n+    assert parameter.values is values\n+    assert parameter.marks is marks\n+    assert parameter.id == \"case\"\n+\n+\n+def test_parametrize_factories_without_warnings(pytester: pytest.Pytester) -> None:\n+    pytester.makepyfile(\n+        \"\"\"\n+        import pytest\n+\n+        def case(value: int) -> pytest.ParameterSet:\n+            return pytest.param(value, id=\"named\")\n+\n+        @pytest.mark.parametrize(\"value\", [case(42)])\n+        def test_helper(value, request):\n+            assert value == 42\n+            assert request.node.name == \"test_helper[named]\"\n+\n+        @pytest.mark.parametrize((\"a\", \"b\"), [(1, 2)])\n+        def test_tuple(a, b):\n+            assert (a, b) == (1, 2)\n+\n+        @pytest.mark.parametrize(\"value\", [42])\n+        def test_scalar(value):\n+            assert value == 42\n+\n+        @pytest.mark.parametrize(\"value\", [])\n+        def test_empty(value):\n+            assert False\n+\n+        @pytest.mark.parametrize(\"value\", [pytest.param(42, marks=pytest.mark.skip)])\n+        def test_mark(value):\n+            assert False\n+        \"\"\"\n+    )\n+    result = pytester.runpytest(\"-W\", \"error\")\n+    result.assert_outcomes(passed=3, skipped=2)\n",
+      "proposal": "Expose pytest.ParameterSet as a documented public type\n\nExport `pytest.ParameterSet` for annotating helpers returning `pytest.param()`, and identify its module as `pytest`. Preserve values, marks and IDs, keep factories warning-free, and warn on unsupported direct construction.\n\nAdd documentation, a changelog entry and contract tests covering annotations, field preservation, immutability, serialization and parametrization.\n\nVerification performed offline:\n\n- Compilation and `git diff --check` passed.\n- Contract and mark-expression tests: 160 passed.\n- Broader mark and parametrization tests: 259 passed, one xfailed, two invocation-related failures. Both failures passed when rerun with absolute source and example-directory paths.\n\nCompatibility note: `ParameterSet` is now a frozen dataclass; previous internal tuple operations are no longer supported.\n\nGaps: documentation, lint and type-checking tools were unavailable. Independent review could not start because the agent tool failed. The changelog filename uses `0` pending a PR number.",
+      "grade_sha256": "e26ca683a49122b388001448abc1a78d62ddbd6a2a2a6cf0f4a8b248142d01b7",
+      "grade_exits": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "full_pr_score": 63.75,
+      "rotation_scores": [
+        {
+          "contract": 2,
+          "tests": 3,
+          "design": 2,
+          "proposal": 4
+        },
+        {
+          "contract": 2,
+          "tests": 3,
+          "design": 2,
+          "proposal": 4
+        },
+        {
+          "contract": 2,
+          "tests": 3,
+          "design": 2,
+          "proposal": 4
+        }
+      ],
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 2326043,
+          "cachedInputTokens": 2252544,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 11657,
+          "reasoningOutputTokens": 4265,
+          "totalTokens": 2337700
+        },
+        "threads": 1,
+        "usd_estimate": 0.48882240000000005
+      },
+      "proposal_wall_seconds": 628.3774390129838,
+      "ephemeral": true,
+      "stock": {
+        "apps": [],
+        "mcp": [],
+        "config_layers": [
+          "user",
+          "enterpriseManaged",
+          "system"
+        ],
+        "profile_keys": [
+          "approval_policy",
+          "features",
+          "model",
+          "model_reasoning_effort",
+          "plugins",
+          "projects",
+          "sandbox_mode",
+          "web_search"
+        ],
+        "repository_instructions_sha256": {},
+        "global_instructions": [],
+        "stock_skills": [
+          "imagegen",
+          "openai-docs",
+          "review-agent",
+          "skill-creator",
+          "skill-installer"
+        ],
+        "plugins": [],
+        "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+        "input_sha256": "25a7067a3dc5a513b04a89d5689a9edcc4900ce51d200a18c838bdc7f3f03dbe"
+      },
+      "tuple": {
+        "values": [
+          7
+        ],
+        "marks": [],
+        "id": "example",
+        "tuple_instance": false,
+        "unpack_error": "TypeError"
+      }
+    },
+    "prior": {
+      "state": "completed",
+      "treatment_sha256": "6f23f7f98c2636db58d960418014e6c9233db5d5132561296f3922a73bfce5c8",
+      "runtime_sha256": "0e651b925b946faa82a2146bcc295afc89c304412e92320cdf794b0d8fbeb227",
+      "release_sha256": "bd16e8aeb9e1d696b298004e2ad3bbff7cdfccf6854650d6985da822aa7a0df8",
+      "result_sha256": "4bd886f22275d155c2ce6793a8549bc6656fd661303b69d951329daadc257633",
+      "patch_sha256": "2eb34ba1462c1af6d875a92db53981c771ae2a36ac7da230c32ce7b231fb7ff4",
+      "proposal_sha256": "60daf368184acc70579bae25522018f561825c60f513d7bb395e4f3ed5745408",
+      "patch": "diff --git a/changelog/parameter-set-public.feature.rst b/changelog/parameter-set-public.feature.rst\nnew file mode 100644\nindex 0000000..fd6ccdd\n--- /dev/null\n+++ b/changelog/parameter-set-public.feature.rst\n@@ -0,0 +1,2 @@\n+Expose :class:`pytest.ParameterSet` as a public type for annotating helpers that return :func:`pytest.param`.\n+Direct construction is unsupported and now emits a deprecation warning; use :func:`pytest.param` instead.\ndiff --git a/doc/en/reference/reference.rst b/doc/en/reference/reference.rst\nindex 4e0f40f..58b3447 100644\n--- a/doc/en/reference/reference.rst\n+++ b/doc/en/reference/reference.rst\n@@ -1031,6 +1031,12 @@ Mark\n     :members:\n \n \n+ParameterSet\n+~~~~~~~~~~~~\n+\n+.. autoclass:: pytest.ParameterSet()\n+\n+\n Metafunc\n ~~~~~~~~\n \ndiff --git a/src/_pytest/mark/__init__.py b/src/_pytest/mark/__init__.py\nindex 996322d..ebd631d 100644\n--- a/src/_pytest/mark/__init__.py\n+++ b/src/_pytest/mark/__init__.py\n@@ -67,6 +67,8 @@ def param(\n         def test_eval(test_input, expected):\n             assert eval(test_input) == expected\n \n+    :returns: A :class:`pytest.ParameterSet`.\n+\n     :param values: Variable args of the values of the parameter set, in order.\n \n     :param marks:\ndiff --git a/src/_pytest/mark/structures.py b/src/_pytest/mark/structures.py\nindex 34a004f..dff7313 100644\n--- a/src/_pytest/mark/structures.py\n+++ b/src/_pytest/mark/structures.py\n@@ -80,10 +80,28 @@ def get_empty_parameterset_mark(\n             assert_never(unreachable)\n \n \n-class ParameterSet(NamedTuple):\n+class _ParameterSet(NamedTuple):\n+    values: Sequence[object | NotSetType]\n+    marks: Collection[MarkDecorator | Mark]\n+    id: str | _HiddenParam | None\n+\n+\n+class ParameterSet(_ParameterSet):\n     \"\"\"A set of values for a set of parameters along with associated marks and\n     an optional ID for the set.\n \n+    Returned by :func:`pytest.param`. Use this type to annotate helpers which\n+    return parameter sets::\n+\n+        def case(value: object) -> pytest.ParameterSet:\n+            return pytest.param(value, id=\"case\")\n+\n+    Direct construction is not supported. Use :func:`pytest.param` instead.\n+\n+    :ivar values: The parameter values, in order.\n+    :ivar marks: The marks associated with this parameter set.\n+    :ivar id: The optional ID, :data:`pytest.HIDDEN_PARAM`, or ``None``.\n+\n     Examples::\n \n         pytest.param(1, 2, 3)\n@@ -108,9 +126,20 @@ class ParameterSet(NamedTuple):\n         # ParameterSet(values=(40, 2, 42), marks=(), id=\"everything\")\n     \"\"\"\n \n-    values: Sequence[object | NotSetType]\n-    marks: Collection[MarkDecorator | Mark]\n-    id: str | _HiddenParam | None\n+    __slots__ = ()\n+    __module__ = \"pytest\"\n+\n+    def __new__(\n+        cls,\n+        values: Sequence[object | NotSetType],\n+        marks: Collection[MarkDecorator | Mark],\n+        id: str | _HiddenParam | None,\n+        *,\n+        _ispytest: bool = False,\n+    ) -> ParameterSet:\n+        \"\"\":meta private:\"\"\"\n+        check_ispytest(_ispytest)\n+        return super().__new__(cls, values, marks, id)\n \n     @classmethod\n     def param(\n@@ -135,7 +164,7 @@ class ParameterSet(NamedTuple):\n                     \"Expected id to be a string or a `pytest.HIDDEN_PARAM` sentinel, \"\n                     f\"got {type(id)}: {id!r}\",\n                 )\n-        return cls(values, marks, id)\n+        return cls(values, marks, id, _ispytest=True)\n \n     @classmethod\n     def extract_from(\n@@ -163,7 +192,9 @@ class ParameterSet(NamedTuple):\n             #\n             #   @pytest.mark.parametrize(('x', 'y'), [1, 2])\n             #   def test_foo(x, y): pass\n-            return cls(parameterset, marks=[], id=None)  # type: ignore[arg-type]\n+            return cls(\n+                parameterset, marks=[], id=None, _ispytest=True  # type: ignore[arg-type]\n+            )\n \n     @staticmethod\n     def _parse_parametrize_args(\n@@ -253,7 +284,10 @@ class ParameterSet(NamedTuple):\n             mark = get_empty_parameterset_mark(config, argnames, func)\n             parameters.append(\n                 ParameterSet(\n-                    values=(NOTSET,) * len(argnames), marks=[mark], id=\"NOTSET\"\n+                    values=(NOTSET,) * len(argnames),\n+                    marks=[mark],\n+                    id=\"NOTSET\",\n+                    _ispytest=True,\n                 )\n             )\n         return argnames, parameters\ndiff --git a/src/pytest/__init__.py b/src/pytest/__init__.py\nindex f6ea24f..ecd075f 100644\n--- a/src/pytest/__init__.py\n+++ b/src/pytest/__init__.py\n@@ -42,6 +42,7 @@ from _pytest.mark import MARK_GEN as mark\n from _pytest.mark import MarkDecorator\n from _pytest.mark import MarkGenerator\n from _pytest.mark import param\n+from _pytest.mark import ParameterSet\n from _pytest.monkeypatch import MonkeyPatch\n from _pytest.nodes import Collector\n from _pytest.nodes import Directory\n@@ -130,6 +131,7 @@ __all__ = [\n     \"MonkeyPatch\",\n     \"OptionGroup\",\n     \"Package\",\n+    \"ParameterSet\",\n     \"Parser\",\n     \"PytestApproxDecimalToleranceWarning\",\n     \"PytestAssertRewriteWarning\",\ndiff --git a/testing/test_mark.py b/testing/test_mark.py\nindex 82a941d..ea22023 100644\n--- a/testing/test_mark.py\n+++ b/testing/test_mark.py\n@@ -5,7 +5,9 @@ from collections.abc import Iterator\n import os\n import sys\n from typing import cast\n+from typing import get_type_hints\n from unittest import mock\n+import warnings\n \n from _pytest.config import Config\n from _pytest.config import ExitCode\n@@ -24,7 +26,7 @@ import pytest\n \n \n class TestMark:\n-    @pytest.mark.parametrize(\"attr\", [\"mark\", \"param\"])\n+    @pytest.mark.parametrize(\"attr\", [\"mark\", \"param\", \"ParameterSet\"])\n     def test_pytest_exists_in_namespace_all(self, attr: str) -> None:\n         module = sys.modules[\"pytest\"]\n         assert attr in module.__all__\n@@ -1677,3 +1679,96 @@ def test_module_getattr_without_attributeerror(pytester: Pytester) -> None:\n     # The module is buggy (__getattr__ returns None for all attributes),\n     # so no tests are collected, but pytest should NOT crash with a TypeError.\n     assert result.ret != ExitCode.INTERNAL_ERROR\n+\n+\n+class TestParameterSet:\n+    def test_public_type(self) -> None:\n+        from pytest import ParameterSet\n+\n+        def case() -> ParameterSet:\n+            return pytest.param(42)\n+\n+        assert type(case()) is ParameterSet\n+        assert ParameterSet.__module__ == \"pytest\"\n+        assert get_type_hints(pytest.param)[\"return\"] is ParameterSet\n+        assert set(get_type_hints(ParameterSet)) == {\"values\", \"marks\", \"id\"}\n+\n+    @pytest.mark.parametrize(\"id\", [None, \"case\", pytest.HIDDEN_PARAM])\n+    @pytest.mark.parametrize(\"multiple_marks\", [False, True])\n+    def test_factory_preserves_fields(self, id, multiple_marks: bool) -> None:\n+        value = object()\n+        mark = pytest.mark.xfail(reason=\"example\")\n+        marks = [mark, pytest.mark.skip] if multiple_marks else mark\n+        with warnings.catch_warnings():\n+            warnings.simplefilter(\"error\")\n+            parameter = pytest.param(value, 42, marks=marks, id=id)\n+        assert isinstance(parameter, pytest.ParameterSet)\n+        assert parameter.values == (value, 42)\n+        assert parameter.marks == (marks if multiple_marks else (mark,))\n+        assert parameter.id is id\n+        # Retain the tuple behavior of existing pytest.param() results.\n+        assert isinstance(parameter, tuple)\n+        assert tuple(parameter) == (parameter.values, parameter.marks, id)\n+        assert parameter == (parameter.values, parameter.marks, id)\n+        with pytest.raises(AttributeError):\n+            parameter.id = \"changed\"  # type: ignore[misc]\n+\n+    def test_defaults(self) -> None:\n+        with warnings.catch_warnings():\n+            warnings.simplefilter(\"error\")\n+            parameter = pytest.param()\n+        assert parameter.values == ()\n+        assert parameter.marks == ()\n+        assert parameter.id is None\n+\n+    @pytest.mark.parametrize(\"keyword\", [False, True])\n+    def test_direct_construction_warns(self, keyword: bool) -> None:\n+        values = [object()]\n+        marks = [pytest.mark.skip]\n+        with pytest.warns(\n+            pytest.PytestDeprecationWarning, match=\"A private pytest class or function\"\n+        ):\n+            if keyword:\n+                parameter = pytest.ParameterSet(values=values, marks=marks, id=\"case\")\n+            else:\n+                parameter = pytest.ParameterSet(values, marks, \"case\")\n+        assert parameter.values is values\n+        assert parameter.marks is marks\n+        assert parameter.id == \"case\"\n+\n+    def test_extraction_does_not_warn(self) -> None:\n+        parameter = pytest.param(42, id=\"case\")\n+        values = [1, 2]\n+        with warnings.catch_warnings():\n+            warnings.simplefilter(\"error\")\n+            assert pytest.ParameterSet.extract_from(parameter) is parameter\n+            wrapped = pytest.ParameterSet.extract_from(values, force_tuple=True)\n+            unwrapped = pytest.ParameterSet.extract_from(values)\n+        assert wrapped.values == (values,)\n+        assert unwrapped.values is values\n+        assert unwrapped.marks == []\n+        assert unwrapped.id is None\n+\n+    def test_parametrize_does_not_warn(self, pytester: Pytester) -> None:\n+        pytester.makepyfile(\n+            \"\"\"\n+            import pytest\n+\n+            def case() -> pytest.ParameterSet:\n+                return pytest.param(42, id=\"case\", marks=pytest.mark.xfail)\n+\n+            @pytest.mark.parametrize(\"value\", [case(), 1])\n+            def test_single(value):\n+                assert value == 1\n+\n+            @pytest.mark.parametrize((\"a\", \"b\"), [(1, 2)])\n+            def test_multiple(a, b):\n+                assert a + b == 3\n+\n+            @pytest.mark.parametrize(\"value\", [])\n+            def test_empty(value):\n+                pass\n+            \"\"\"\n+        )\n+        result = pytester.runpytest(\"-W\", \"error::pytest.PytestDeprecationWarning\")\n+        result.assert_outcomes(passed=2, skipped=1, xfailed=1)\ndiff --git a/testing/typing_checks.py b/testing/typing_checks.py\nindex 1179f3f..2475751 100644\n--- a/testing/typing_checks.py\n+++ b/testing/typing_checks.py\n@@ -78,3 +78,9 @@ def check_scope_typing() -> None:\n @pytest.mark.parametrize(\"x\", [ImportError, AttributeError])\n def check_mypy_bug_with_argvalues(x) -> None:\n     pass\n+\n+\n+def check_parameter_set_annotation() -> pytest.ParameterSet:\n+    parameter = pytest.param(42, id=\"answer\")\n+    assert_type(parameter, pytest.ParameterSet)\n+    return parameter\n",
+      "proposal": "Expose pytest.ParameterSet as a documented public type\n\nExport `pytest.ParameterSet` for helper return annotations and identify its module as `pytest`. Preserve values, marks, IDs, and tuple behavior. Keep factories warning-free while warning on unsupported direct construction. Add API documentation and regression tests.\n\nVerification: compilation and `git diff --check` passed; 149 expression tests passed; the mark suite had 140 passes and one expected failure. Its sole configuration failure passed on rerun with the example directory configured. Independent design and implementation reviews passed.\n\nFull lint, static typing, documentation builds, and tox checks were not run offline. The changelog fragment needs an issue or PR number. Changes remain in the checkout.",
+      "grade_sha256": "3931b2b2f88c3ac5705807c185d594216b14a57697f5bc13e96b905ea9788526",
+      "grade_exits": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "full_pr_score": null,
+      "rotation_scores": [],
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 2887194,
+          "cachedInputTokens": 2618240,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 16827,
+          "reasoningOutputTokens": 5106,
+          "totalTokens": 2904021
+        },
+        "threads": 3,
+        "usd_estimate": 0.968002
+      },
+      "proposal_wall_seconds": 619.5072232040111,
+      "ephemeral": true,
+      "stock": {
+        "apps": [],
+        "mcp": [],
+        "config_layers": [
+          "user",
+          "enterpriseManaged",
+          "system"
+        ],
+        "profile_keys": [
+          "approval_policy",
+          "features",
+          "hooks",
+          "marketplaces",
+          "model",
+          "model_reasoning_effort",
+          "plugins",
+          "projects",
+          "sandbox_mode",
+          "web_search"
+        ],
+        "repository_instructions_sha256": {},
+        "global_instructions": [],
+        "stock_skills": [
+          "imagegen",
+          "openai-docs",
+          "review-agent",
+          "skill-creator",
+          "skill-installer"
+        ],
+        "plugins": [
+          "develop@law-config"
+        ],
+        "inventory_sha256": "bc271ef35157838f2a69017dff68d084789fb32f1479348311b3bfcc3a17e0b1",
+        "input_sha256": "155557a8c78a758300ee72d06109fc8ee8d058a7b6bc6dc0e5045c5f53f5db93"
+      },
+      "tuple": {
+        "values": [
+          7
+        ],
+        "marks": [],
+        "id": "example",
+        "tuple_instance": true,
+        "unpacked": [
+          [
+            7
+          ],
+          [],
+          "example"
+        ]
+      }
+    },
+    "candidate": {
+      "state": "completed",
+      "treatment_sha256": "a826a2341b6c2e360099ceb56981fd5adce3b92af160bbb7db3f2ac48467f3ff",
+      "runtime_sha256": "0e651b925b946faa82a2146bcc295afc89c304412e92320cdf794b0d8fbeb227",
+      "release_sha256": "7ac6d899cd40b4bb2f49507f3df896aadd05cfdd70efa808e6d447c4a4594350",
+      "result_sha256": "76d62f7059e4ea4331909b65a44034298a54e5aed1ea15f4433a99c204e3e9e6",
+      "patch_sha256": "8745da84ffa1b0bdd8fc982ada7ff8aa4de22950bcdb865bc0bb3505aca97da3",
+      "proposal_sha256": "5b6356473b31516c0d7172dfc7d2cee9bd016f244aef54e58755762f6347ba85",
+      "patch": "diff --git a/changelog/parameter-set-public.improvement.rst b/changelog/parameter-set-public.improvement.rst\nnew file mode 100644\nindex 0000000..7bf89b7\n--- /dev/null\n+++ b/changelog/parameter-set-public.improvement.rst\n@@ -0,0 +1,3 @@\n+Expose :class:`pytest.ParameterSet`, the return type of :func:`pytest.param`, for\n+type annotations. Create instances with :func:`pytest.param`; direct construction\n+is unsupported and now emits :class:`pytest.PytestDeprecationWarning`.\ndiff --git a/doc/en/reference/reference.rst b/doc/en/reference/reference.rst\nindex 4e0f40f..5e9f96e 100644\n--- a/doc/en/reference/reference.rst\n+++ b/doc/en/reference/reference.rst\n@@ -1037,6 +1037,23 @@ Metafunc\n .. autoclass:: pytest.Metafunc()\n     :members:\n \n+ParameterSet\n+~~~~~~~~~~~~\n+\n+.. autoclass:: pytest.ParameterSet()\n+\n+   The return type of :func:`pytest.param`, exposed for type annotations.\n+   Create parameter sets with :func:`pytest.param`; direct construction is\n+   unsupported and emits :class:`pytest.PytestDeprecationWarning`.\n+\n+   For example, a helper can annotate its return type as follows::\n+\n+       def case(value: object) -> pytest.ParameterSet:\n+           return pytest.param(value, id=str(value))\n+\n+   Instances provide ``values``, ``marks``, and ``id`` attributes.\n+\n+\n Parser\n ~~~~~~\n \ndiff --git a/src/_pytest/mark/structures.py b/src/_pytest/mark/structures.py\nindex 34a004f..6ad5a38 100644\n--- a/src/_pytest/mark/structures.py\n+++ b/src/_pytest/mark/structures.py\n@@ -80,10 +80,19 @@ def get_empty_parameterset_mark(\n             assert_never(unreachable)\n \n \n-class ParameterSet(NamedTuple):\n+class _ParameterSet(NamedTuple):\n+    values: Sequence[object | NotSetType]\n+    marks: Collection[MarkDecorator | Mark]\n+    id: str | _HiddenParam | None\n+\n+\n+class ParameterSet(_ParameterSet):\n     \"\"\"A set of values for a set of parameters along with associated marks and\n     an optional ID for the set.\n \n+    Use :func:`pytest.param` to create instances. This type is exposed for\n+    annotations; direct construction is not supported.\n+\n     Examples::\n \n         pytest.param(1, 2, 3)\n@@ -108,9 +117,22 @@ class ParameterSet(NamedTuple):\n         # ParameterSet(values=(40, 2, 42), marks=(), id=\"everything\")\n     \"\"\"\n \n-    values: Sequence[object | NotSetType]\n-    marks: Collection[MarkDecorator | Mark]\n-    id: str | _HiddenParam | None\n+    __slots__ = ()\n+    __module__ = \"pytest\"\n+\n+    def __new__(\n+        cls,\n+        values: Sequence[object | NotSetType],\n+        marks: Collection[MarkDecorator | Mark],\n+        id: str | _HiddenParam | None,\n+        *,\n+        _ispytest: bool = False,\n+    ) -> ParameterSet:\n+        check_ispytest(_ispytest)\n+        return super().__new__(cls, values, marks, id)\n+\n+    def __getnewargs_ex__(self) -> tuple[tuple[object, ...], dict[str, bool]]:\n+        return tuple(self), {\"_ispytest\": True}\n \n     @classmethod\n     def param(\n@@ -135,7 +157,7 @@ class ParameterSet(NamedTuple):\n                     \"Expected id to be a string or a `pytest.HIDDEN_PARAM` sentinel, \"\n                     f\"got {type(id)}: {id!r}\",\n                 )\n-        return cls(values, marks, id)\n+        return cls(values, marks, id, _ispytest=True)\n \n     @classmethod\n     def extract_from(\n@@ -163,7 +185,7 @@ class ParameterSet(NamedTuple):\n             #\n             #   @pytest.mark.parametrize(('x', 'y'), [1, 2])\n             #   def test_foo(x, y): pass\n-            return cls(parameterset, marks=[], id=None)  # type: ignore[arg-type]\n+            return cls(parameterset, marks=[], id=None, _ispytest=True)  # type: ignore[arg-type]\n \n     @staticmethod\n     def _parse_parametrize_args(\n@@ -253,7 +275,10 @@ class ParameterSet(NamedTuple):\n             mark = get_empty_parameterset_mark(config, argnames, func)\n             parameters.append(\n                 ParameterSet(\n-                    values=(NOTSET,) * len(argnames), marks=[mark], id=\"NOTSET\"\n+                    values=(NOTSET,) * len(argnames),\n+                    marks=[mark],\n+                    id=\"NOTSET\",\n+                    _ispytest=True,\n                 )\n             )\n         return argnames, parameters\ndiff --git a/src/pytest/__init__.py b/src/pytest/__init__.py\nindex f6ea24f..ecd075f 100644\n--- a/src/pytest/__init__.py\n+++ b/src/pytest/__init__.py\n@@ -42,6 +42,7 @@ from _pytest.mark import MARK_GEN as mark\n from _pytest.mark import MarkDecorator\n from _pytest.mark import MarkGenerator\n from _pytest.mark import param\n+from _pytest.mark import ParameterSet\n from _pytest.monkeypatch import MonkeyPatch\n from _pytest.nodes import Collector\n from _pytest.nodes import Directory\n@@ -130,6 +131,7 @@ __all__ = [\n     \"MonkeyPatch\",\n     \"OptionGroup\",\n     \"Package\",\n+    \"ParameterSet\",\n     \"Parser\",\n     \"PytestApproxDecimalToleranceWarning\",\n     \"PytestAssertRewriteWarning\",\ndiff --git a/testing/test_mark.py b/testing/test_mark.py\nindex 82a941d..9eed3b0 100644\n--- a/testing/test_mark.py\n+++ b/testing/test_mark.py\n@@ -2,10 +2,14 @@\n from __future__ import annotations\n \n from collections.abc import Iterator\n+import copy\n import os\n+import pickle\n import sys\n from typing import cast\n+from typing import get_type_hints\n from unittest import mock\n+import warnings\n \n from _pytest.config import Config\n from _pytest.config import ExitCode\n@@ -24,7 +28,7 @@ import pytest\n \n \n class TestMark:\n-    @pytest.mark.parametrize(\"attr\", [\"mark\", \"param\"])\n+    @pytest.mark.parametrize(\"attr\", [\"mark\", \"param\", \"ParameterSet\"])\n     def test_pytest_exists_in_namespace_all(self, attr: str) -> None:\n         module = sys.modules[\"pytest\"]\n         assert attr in module.__all__\n@@ -54,6 +58,110 @@ class TestMark:\n             _ = mark._some_name\n \n \n+class TestParameterSet:\n+    def test_public_type(self) -> None:\n+        from _pytest.mark.structures import ParameterSet\n+\n+        def case(value: object) -> pytest.ParameterSet:\n+            return pytest.param(value)\n+\n+        assert pytest.ParameterSet is ParameterSet\n+        assert pytest.ParameterSet.__module__ == \"pytest\"\n+        assert get_type_hints(case)[\"return\"] is pytest.ParameterSet\n+        assert type(case(42)) is pytest.ParameterSet\n+\n+    @pytest.mark.parametrize(\"id\", [None, \"case\", pytest.HIDDEN_PARAM])\n+    @pytest.mark.parametrize(\"multiple_marks\", [False, True])\n+    def test_factory_preserves_fields(self, id, multiple_marks: bool) -> None:\n+        value = object()\n+        mark = pytest.mark.skip(reason=\"example\")\n+        marks = [mark, pytest.mark.xfail] if multiple_marks else mark\n+        with warnings.catch_warnings():\n+            warnings.simplefilter(\"error\")\n+            parameter = pytest.param(value, 42, marks=marks, id=id)\n+            from_factory = pytest.ParameterSet.param(value, 42, marks=marks, id=id)\n+\n+        assert type(parameter) is pytest.ParameterSet\n+        assert parameter.values == (value, 42)\n+        assert parameter.values[0] is value\n+        assert parameter.marks == (marks if multiple_marks else (mark,))\n+        if multiple_marks:\n+            assert parameter.marks is marks\n+        assert parameter.id is id\n+        assert from_factory == parameter\n+        assert tuple(parameter) == (parameter.values, parameter.marks, id)\n+        with pytest.raises(AttributeError):\n+            parameter.id = \"changed\"  # type: ignore[misc]\n+\n+    def test_direct_construction_warns(self) -> None:\n+        values = [42]\n+        marks = [pytest.mark.skip]\n+        with pytest.warns(\n+            pytest.PytestDeprecationWarning, match=\"private pytest class or function\"\n+        ) as recorded:\n+            parameter = pytest.ParameterSet(values, marks, \"case\")\n+        assert len(recorded) == 1\n+        assert recorded[0].filename == __file__\n+        assert parameter.values is values\n+        assert parameter.marks is marks\n+        assert parameter.id == \"case\"\n+\n+    def test_extraction(self) -> None:\n+        parameter = pytest.param(42, id=\"case\")\n+        values = [1, 2]\n+        with warnings.catch_warnings():\n+            warnings.simplefilter(\"error\")\n+            assert pytest.ParameterSet.extract_from(parameter) is parameter\n+            extracted = pytest.ParameterSet.extract_from(values)\n+            wrapped = pytest.ParameterSet.extract_from(values, force_tuple=True)\n+        assert type(extracted) is pytest.ParameterSet\n+        assert extracted.values is values\n+        assert extracted.marks == []\n+        assert extracted.id is None\n+        assert wrapped.values == (values,)\n+        assert wrapped.marks == ()\n+        assert wrapped.id is None\n+\n+    def test_copy_and_pickle(self) -> None:\n+        parameter = pytest.param(42, marks=pytest.mark.xfail, id=pytest.HIDDEN_PARAM)\n+        with warnings.catch_warnings():\n+            warnings.simplefilter(\"error\")\n+            copies = [\n+                copy.copy(parameter),\n+                copy.deepcopy(parameter),\n+                pickle.loads(pickle.dumps(parameter)),\n+            ]\n+        for copied in copies:\n+            assert type(copied) is pytest.ParameterSet\n+            assert copied == parameter\n+\n+    def test_parametrize_without_warnings(self, pytester: Pytester) -> None:\n+        pytester.makeini(\"[pytest]\")\n+        pytester.makepyfile(\n+            \"\"\"\n+            import pytest\n+\n+            def case() -> pytest.ParameterSet:\n+                return pytest.param(1, 2, marks=pytest.mark.xfail, id=\"case\")\n+\n+            @pytest.mark.parametrize(\"a,b\", [case(), (3, 4)])\n+            def test_pair(a, b):\n+                assert a < b\n+\n+            @pytest.mark.parametrize(\"value\", [42])\n+            def test_single(value):\n+                assert value == 42\n+\n+            @pytest.mark.parametrize(\"value\", [])\n+            def test_empty(value):\n+                pass\n+            \"\"\"\n+        )\n+        result = pytester.runpytest(\"-W\", \"error\", \"-v\")\n+        result.assert_outcomes(passed=2, skipped=1, xpassed=1)\n+        result.stdout.fnmatch_lines([\"*test_pair*case*XPASS*\"])\n+\n+\n def test_marked_class_run_twice(pytester: Pytester) -> None:\n     \"\"\"Test fails file is run twice that contains marked class.\n     See issue#683.\n",
+      "proposal": "Expose pytest.ParameterSet for public type annotations\n\nExport and document `pytest.ParameterSet` so helpers returning `pytest.param()` can use a public annotation. Identify the class as belonging to `pytest`, warn on unsupported direct construction, and preserve tuple behavior, values, marks, IDs, and warning-free factories and reconstruction.\n\nAdd public-contract tests and a changelog entry. Independent design and implementation reviews found no material issues.\n\nVerified offline: compilation, 149 expression tests, 11 final public-contract tests, and `git diff --check`. Broader coverage produced 288 passes and one expected failure; its sole configuration-related failure passed after restoring the examples path.\n\nLinting, static typing, and documentation builds remain unverified because their tools are unavailable offline. Changes remain in the checkout.",
+      "grade_sha256": "cbd845dbc632b7aacfd4961cd9369771503c5153efff564add131889224f3643",
+      "grade_exits": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "full_pr_score": 100.0,
+      "rotation_scores": [
+        {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 4
+        },
+        {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 4
+        },
+        {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 4
+        }
+      ],
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 3142188,
+          "cachedInputTokens": 2980736,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 15650,
+          "reasoningOutputTokens": 3873,
+          "totalTokens": 3157838
+        },
+        "threads": 4,
+        "usd_estimate": 0.7774776
+      },
+      "proposal_wall_seconds": 745.3661279950757,
+      "ephemeral": true,
+      "stock": {
+        "apps": [],
+        "mcp": [],
+        "config_layers": [
+          "user",
+          "enterpriseManaged",
+          "system"
+        ],
+        "profile_keys": [
+          "approval_policy",
+          "features",
+          "hooks",
+          "marketplaces",
+          "model",
+          "model_reasoning_effort",
+          "plugins",
+          "projects",
+          "sandbox_mode",
+          "web_search"
+        ],
+        "repository_instructions_sha256": {},
+        "global_instructions": [],
+        "stock_skills": [
+          "imagegen",
+          "openai-docs",
+          "review-agent",
+          "skill-creator",
+          "skill-installer"
+        ],
+        "plugins": [
+          "develop@law-config"
+        ],
+        "inventory_sha256": "00167068dd9875c034e32d73415f00517524f931b7e32179d8019c95f24fc659",
+        "input_sha256": "25735e0dff127ccfdf89bf950fed4e13b820a030ad5ce0c60b9a2ba2a7ac5707"
+      },
+      "tuple": {
+        "values": [
+          7
+        ],
+        "marks": [],
+        "id": "example",
+        "tuple_instance": true,
+        "unpacked": [
+          [
+            7
+          ],
+          [],
+          "example"
+        ]
+      }
+    }
+  },
+  "assessors": [
+    {
+      "rotation": 0,
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 829236,
+          "cachedInputTokens": 791936,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 3601,
+          "reasoningOutputTokens": 461,
+          "totalTokens": 832837
+        },
+        "threads": 1,
+        "usd_estimate": 0.18980360000000002
+      },
+      "wall": 215.41252380097285,
+      "assessed_unix": 1793297440.1749964,
+      "limitations": [
+        "Evaluation used packet/task.json, packet/rubric.md, the complete A/B/C proposals and patches in supplied order, and relevant starting source. Candidate patches were neither applied nor executed.",
+        "Frozen observations provide exit codes, with only a short failure output for B. The named native scope is testing/test_mark_expression.py; contract, preserve and independent check bodies and full logs are unavailable. No broader suite, documentation, lint, static typing, review or timing claims were treated as established execution evidence.",
+        "B has a recorded independent failure despite successful earlier checks and a visible public export. Its failure is retained without inventing a diagnosis. Patch-application timing and historical review/tool events cannot be established from this packet.",
+        "A tuple compatibility loss is mechanically evident from its class replacement, but no demonstrated critical downstream regression is supplied, so it affects compatibility/design scores without a critical-regression flag."
+      ]
+    },
+    {
+      "rotation": 1,
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 364201,
+          "cachedInputTokens": 320256,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2668,
+          "reasoningOutputTokens": 338,
+          "totalTokens": 366869
+        },
+        "threads": 1,
+        "usd_estimate": 0.1465956
+      },
+      "wall": 178.88871909095906,
+      "assessed_unix": 1793297405.3090005,
+      "limitations": [
+        "Only the supplied frozen observations were used as execution evidence; no candidate was executed, applied or edited. No agents or external services were used.",
+        "The packet provides exit statuses but no check implementations or detailed logs except A's independent failure output. Its exact failed predicate cannot be reconstructed from that output alone. Successful statuses establish only the supplied check scope, not full-suite compatibility.",
+        "Eligibility timing, patch-application logs, static typing, lint, documentation builds, detailed broader-suite reruns and claimed review outcomes are unavailable. Proposal claims alone were not credited as executed checks.",
+        "The tuple compatibility counterexamples for C and missing direct-construction warning for A follow mechanically from the full patches and starting source; they were not executed. C's compatibility loss is scored as material, without asserting an unproven critical regression."
+      ]
+    },
+    {
+      "rotation": 2,
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 503287,
+          "cachedInputTokens": 469376,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2780,
+          "reasoningOutputTokens": 311,
+          "totalTokens": 506067
+        },
+        "threads": 1,
+        "usd_estimate": 0.1425596
+      },
+      "wall": 214.84591500507668,
+      "assessed_unix": 1793297439.3060184,
+      "limitations": [
+        "Assessment uses packet/task.json frozen execution outcomes and static inspection of the full A, B and C patches/proposals and relevant starting source. No candidate was executed, applied or edited.",
+        "Frozen evidence supplies exit codes rather than detailed test transcripts for most checks. Native coverage is the selected testing/test_mark_expression.py slice; full-suite, documentation, lint and static-type success are not established. Proposal-only review claims, exact counts and broader reruns are not treated as execution evidence.",
+        "The independent C failure is recorded as supplied; its brief output does not reveal the exact assertion or establish that public export itself is absent. The missing constructor warning is independently visible in the patch and starting source.",
+        "No concrete integrity bypass or demonstrated critical regression is established. The B tuple-compatibility loss and C missing behavior/coverage are scored directly rather than escalated into unsupported integrity findings. Patch replay, timing and historical eligibility logs are unavailable."
+      ]
+    }
+  ],
+  "tuple_probe_sha256": "a12d0ac72aabddf69ecea8e9314fb442f14a4d1bb10f604d2b74ac4961b8cc75",
+  "recovery_of": {
+    "primary": "boundary-pytest-01",
+    "primary_registration_sha256": "7a12ebf728e652b08a621a309ecee192902751e3150c851d345103be3fc1a7c6",
+    "primary_result_sha256": "73bc657c1450b59d4dfb273960bc77a0ae15163fd2c6e92730d5037a72e493d2",
+    "reason": "Candidate plugin add returned exit 1 before model release. A fresh native install passed from the same sealed marketplace."
+  },
+  "merged_reference": {
+    "full_pr_score": 30.0,
+    "grade_exits": {
+      "build": 0,
+      "native": 0,
+      "contract": 0,
+      "preserve": 0,
+      "independent": 42
+    },
+    "tuple": {
+      "values": [
+        7
+      ],
+      "marks": [],
+      "id": "example",
+      "tuple_instance": true,
+      "unpacked": [
+        [
+          7
+        ],
+        [],
+        "example"
+      ]
+    },
+    "cost": null,
+    "wall_seconds": null
+  },
+  "limitations": [
+    "One draw per registered arm. A prior Develop patch has no blind PR score.",
+    "The tuple probe was registered separately and did not change the five frozen gates or blind scores.",
+    "The temporary parent thread prevents a default context-inheriting child launch. Child tasks without inherited history can still run."
+  ]
+}

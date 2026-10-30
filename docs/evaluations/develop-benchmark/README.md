@@ -1,6 +1,6 @@
 # Develop benchmark
 
-[Read the illustrated report](report.pdf) · [Frozen case manifest](cases.csv) · [Historical ledger](ledger.csv) · [New scored trials](replication/README.md)
+[Read the illustrated report](report.pdf) · [Frozen case manifest](cases.csv) · [Historical ledger](ledger.csv) · [Scored source-packet trials](replication/README.md) · [Six-repository native workflow](workflow/README.md) · [Twenty-repository PR quality panel](panel/README.md)
 
 **Develop completed zero tasks that Control missed.** Given the same starting code, task and model, `gpt-6.1-sol`, both arms passed Svelte, law-config and Tokio. Both failed fmt and runner-space. Personal site remained unresolved for both. Of the four tasks with recovered tests, each arm passed 2/4 (50%). With replacement tests, each passed 1/2 (50%). The observed change in verified completion was **0 percentage points in each group**. Each task ran once per arm. [Frozen grades and usage](replication/results.json)
 

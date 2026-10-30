@@ -24,12 +24,12 @@ body { margin: 0; font-size: 20px; line-height: 1.4; }
 h1, h2, h3, p { margin: 0; }
 a { color: inherit; text-underline-offset: 4px; }
 a:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
-.sheet { width: min(100%, 1000px); margin: auto; padding: 30px 36px 34px; background: radial-gradient(ellipse at 100% 0, #67483155, transparent 30%), var(--paper); }
+.sheet { width: min(100%, 1000px); margin: auto; padding: 16px 36px; background: radial-gradient(ellipse at 100% 0, #67483155, transparent 30%), var(--paper); }
 .section-heading { display: flex; align-items: baseline; gap: 16px; margin-bottom: 8px; }
 .section-number { color: var(--accent); font-size: 20px; }
 h1 { font-size: 36px; line-height: 1.15; letter-spacing: -1.1px; font-weight: 650; }
 h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
-.intro { color: var(--muted); margin: 0 0 22px 40px; }
+.intro { color: var(--muted); margin: 0 0 12px 40px; }
 .workflow-map { position: relative; isolation: isolate; padding: 0 80px; }
 .connectors { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: -1; }
 .edge { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
@@ -40,7 +40,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 .flow-node p { font-size: 20px; color: var(--muted); }
 .router { width: 224px; margin: 0 auto; background: var(--accent); color: #2d211a; border-color: var(--accent); }
 .route-caption { margin: 10px auto 0; width: fit-content; padding: 0 9px; color: var(--accent); background: var(--paper); text-align: center; position: relative; }
-.branches { display: grid; grid-template-columns: 214px minmax(0, 1fr) 214px; gap: 72px; align-items: start; margin-top: 36px; }
+.branches { display: grid; grid-template-columns: 204px minmax(0, 1fr) 204px; gap: 60px; align-items: start; margin-top: 36px; }
 .assessment-lane { display: grid; gap: 14px; }
 .explicit-entry { margin-top: 10px; }
 .branch-label { position: relative; width: fit-content; padding: 0 5px; margin: 0 auto 9px; background: var(--paper); font-size: 20px; line-height: 1.3; color: var(--accent); text-align: center; }
@@ -49,8 +49,8 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 .delivery { border-color: #d8ac7d; background: #493425; padding: 13px 10px 16px; }
 .delivery h3 { margin-bottom: 10px; }
 .implementation-lane { min-width: 0; }
-.external { margin-top: 16px; border-style: dashed; background: #2b2420; }
-.external-title { display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 22px; font-weight: 600; text-decoration-color: #997352; }
+.external { margin-top: 16px; padding-inline: 4px; border-style: dashed; background: #2b2420; }
+.external-title { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px; font-size: 20px; font-weight: 600; text-decoration-color: #997352; }
 .external img { display: block; width: 48px; height: 48px; border-radius: 6px; background: #fff; }
 .external p { margin-top: 5px; }
 .delivery p { margin-bottom: 12px; }
@@ -72,10 +72,10 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 .review-return { font-size: 20px; color: var(--muted); text-align: center; margin-top: 48px; }
 .context-guard { margin-top: 12px; padding-top: 8px; border-top: 1px solid #73533e; font-size: 20px; color: var(--muted); text-align: center; }
 .context-guard a { color: var(--accent); }
-#skills { margin-top: 26px; padding-top: 23px; border-top: 1px solid #73533e; }
-#skills .section-heading { margin-bottom: 17px; }
-.skill-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.skill-card { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 15px; align-items: center; padding: 14px 16px; min-width: 0; border: 1px solid #73533e; border-radius: 12px; background: #30231d; }
+#skills { margin-top: 15px; padding-top: 14px; border-top: 1px solid #73533e; }
+#skills .section-heading { margin-bottom: 9px; }
+.skill-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.skill-card { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 15px; align-items: center; padding: 8px 16px; min-width: 0; border: 1px solid #73533e; border-radius: 12px; background: #30231d; }
 .skill-card img { display: block; width: 64px; height: 64px; object-fit: contain; image-rendering: pixelated; }
 .skill-card h3 { font-size: 23px; font-weight: 600; letter-spacing: -.4px; line-height: 1.25; margin-bottom: 5px; }
 .skill-card h3 a { text-decoration-color: #997352; text-decoration-thickness: 1px; }
@@ -135,14 +135,14 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
   <div class="section-heading"><span class="section-number">01</span><h1 id="workflow-title">Develop · One connected workflow</h1></div>
   <p class="intro">In chat, type "$develop:develop Why did this CI job fail?"</p>
   <div class="workflow-map" role="group" aria-labelledby="workflow-title" aria-describedby="workflow-description">
-    <p id="workflow-description" class="sr-only">Develop sends the CI question to Iterate. Iterate examines the failed job log and tells the user what caused the failure or what evidence is missing. Users can also invoke a skill directly. Develop routes other outcomes to Upgrade, Kaizen, Clean or Adversarial loop. Upgrade Codex is available only by explicit invocation. Upgrade, Kaizen and Upgrade Codex may return findings; they hand changes to Iterate only when implementation is authorized. Iterate performs the requested work and can loop through validation, authorized delivery, monitoring and authorized repair. Clean expands to Deep clean only for explicitly widened scope. Adversarial loop reviews applicable checkpoints and returns findings to the owner within a bounded review budget. An audit-only Upgrade Codex review is opt-in. Iterate may use compatible installed Superpowers guidance for planning, debugging and testing, then resumes with its existing scope and gates. Engineering Design must fire for engineering work and Interface Design must fire for interface work, with or without human input. Default to requesting human input and review. Only explicit user waiver within their authority bypasses planning or review. Explicit delegation to Adversarial loop permits unattended planning review with assumptions and unresolved decisions recorded. Unanswered approval is not permission; required human, legal and security approvals and execution scope remain binding.</p>
+    <p id="workflow-description" class="sr-only">Develop sends the CI question to Iterate. Iterate examines the failed job log and tells the user what caused the failure or what evidence is missing. Users can also invoke a skill directly. Develop also routes to Kaizen and Adversarial loop. Clean, Deep Clean, Upgrade and Upgrade Codex each require explicit selection. Upgrade, Kaizen and Upgrade Codex may return findings; they hand changes to Iterate only when implementation is authorized. Iterate performs the requested work and can loop through validation, authorized delivery, monitoring and authorized repair. Adversarial loop reviews applicable checkpoints and returns findings to the owner within a bounded review budget. An audit-only Upgrade Codex review is opt-in. Iterate may use compatible installed Superpowers guidance for planning, debugging and testing, then resumes with its existing scope and gates. Engineering Design must fire for engineering work and Interface Design must fire for interface work, with or without human input. Default to requesting human input and review. Only explicit user waiver within their authority bypasses planning or review. Explicit delegation to Adversarial loop permits unattended planning review with assumptions and unresolved decisions recorded. Unanswered approval is not permission; required human, legal and security approvals and execution scope remain binding.</p>
     <div class="exchange-note feedback-note" id="note-review" data-exchange="review"><span>← Request review</span><span>→ Return findings</span></div>
     <svg class="connectors" aria-hidden="true"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#e8c8a6"/></marker><marker id="feedback-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#bc9471"/></marker></defs><g id="edge-layer"></g></svg>
     <div class="flow-node router" id="node-develop" data-skill="develop"><h3>Develop</h3></div>
     <p class="route-caption">Route by outcome · follow <a href="#node-iterate">Iterate</a> for this question</p>
     <div class="branches">
       <div class="assessment-lane">
-        <div class="flow-node" id="node-upgrade" data-skill="upgrade"><h3>Upgrade</h3></div>
+        <div class="flow-node explicit" id="node-upgrade" data-skill="upgrade"><h3>Upgrade</h3><p>Explicit selection</p></div>
         <div class="flow-node" id="node-kaizen" data-skill="kaizen"><h3>Kaizen</h3></div>
         <div class="explicit-entry">
           <p class="branch-label">Explicit invocation only</p>
@@ -164,9 +164,9 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
         </div>
       </div>
       <div class="cleanup-lane">
-        <div class="flow-node" id="node-clean" data-skill="clean"><h3>Clean</h3></div>
+        <div class="flow-node explicit" id="node-clean" data-skill="clean"><h3>Clean</h3><p>Explicit selection</p></div>
         <div class="explicit-entry">
-          <p class="branch-label">Explicit wider scope</p>
+          <p class="branch-label">Explicit invocation only</p>
           <div class="flow-node explicit" id="node-deep-clean" data-skill="deep-clean"><h3>Deep clean</h3></div>
         </div>
         <div class="exchange-note" id="note-interface-design" data-exchange="interface-design"><span>↓ Request plan</span><span>↑ Return plan</span></div>
@@ -227,7 +227,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
       }
       layer.append(path);
     };
-    const D = box('develop'), I = box('iterate'), C = box('clean'), X = box('deep-clean'), R = box('adversarial-loop'), S = box('superpowers');
+    const D = box('develop'), I = box('iterate'), R = box('adversarial-loop'), S = box('superpowers');
     edge(`M ${I.x} ${I.bottom + 8} V ${S.top - 8}`, 'conditional', true);
     const reviewNote = document.getElementById('note-review');
     reviewNote.style.left = (12 - 125) + 'px';
@@ -249,7 +249,7 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
 
     if (mobile) {
       const routeX = 56, handoffX = bounds.width - 32;
-      for (const id of ['upgrade', 'kaizen', 'iterate', 'clean']) {
+      for (const id of ['kaizen', 'iterate']) {
         const B = box(id);
         edge(`M ${D.left - 8} ${D.y} H ${routeX} V ${B.y} H ${B.left - 8}`);
       }
@@ -263,16 +263,12 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
         const attachY = I.bottom - (id === 'engineering-design' ? 64 : 28);
         edge(`M ${B.x} ${B.top - 8} V ${noteTop(id) - 12} H ${designX} V ${attachY} H ${I.right + 8}`, 'conditional', true, id);
       }
-      edge(`M ${C.x} ${C.bottom + 8} V ${X.top - 8}`, 'conditional');
       edge(`M ${D.left - 8} ${D.y} H 12 V ${R.y} H ${R.left - 8}`, 'feedback', true);
     } else {
       const fanY = D.bottom + 26, routeX = 56;
-      for (const id of ['upgrade', 'kaizen']) {
-        const B = box(id);
-        edge(`M ${D.x} ${D.bottom + 8} V ${fanY} H ${routeX} V ${B.y} H ${B.left - 8}`);
-      }
+      const K = box('kaizen');
+      edge(`M ${D.x} ${D.bottom + 8} V ${fanY} H ${routeX} V ${K.y} H ${K.left - 8}`);
       edge(`M ${D.x} ${D.bottom + 8} V ${I.top - 8}`);
-      edge(`M ${D.x} ${D.bottom + 8} V ${fanY} H ${C.x} V ${C.top - 8}`);
       const busX = I.left - 48;
       for (const id of ['upgrade', 'kaizen', 'upgrade-codex']) {
         const B = box(id);
@@ -281,7 +277,6 @@ h2 { font-size: 28px; letter-spacing: -.6px; font-weight: 650; }
       const E = box('engineering-design'), U = box('interface-design');
       edge(`M ${E.x} ${E.top - 8} V ${noteTop('engineering-design') - 12} H ${I.left - 24} V ${I.bottom - 28} H ${I.left - 8}`, 'conditional', true, 'engineering-design');
       edge(`M ${U.x} ${U.top - 8} V ${noteTop('interface-design') - 12} H ${I.right + 36} V ${I.bottom - 28} H ${I.right + 8}`, 'conditional', true, 'interface-design');
-      edge(`M ${C.x} ${C.bottom + 8} V ${X.top - 8}`, 'conditional');
       edge(`M ${D.left - 8} ${D.y} H 12 V ${R.bottom + 24} H ${R.x} V ${R.bottom + 8}`, 'feedback', true);
     }
   }

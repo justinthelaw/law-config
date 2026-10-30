@@ -1,0 +1,1217 @@
+{
+  "format": "develop-confirmation-fixtures-v1",
+  "selection_sha256": "6ddc2cc8c0eec0ef154a3a3a8a72aa3cd7c30dc968ba2fdf66559a2fee5a5f22",
+  "selection_policies": [
+    {
+      "format": "develop-confirmation-selection-v1",
+      "cutoff": "2026-10-29T14:07:27Z",
+      "from": "2026-09-15",
+      "repository_set": "Same 20 identities as the frozen primary panel.",
+      "pool": "Up to 100 merged PRs per repository in the fixed date window. Search created-desc. Archive provider response once.",
+      "order": "Newest merge first, breaking ties by descending PR number. Follow this order without using any native proposal outcome.",
+      "exclude": "Exclude PR IDs, merge revisions and semantically repeated tasks previously evaluated by Develop. Exclude external dependency/vendor syncs, generated-only changes, metadata-only changes and docs-only changes without runnable behavioral acceptance criteria.",
+      "scope": "At most 80 changed files and 3000 added plus removed lines. Require a supported pinned offline build and identifiable merge parent. Include features, fixes and regressions with a precise public behavior; a stated resource or output contract is eligible. Technical credentials/network-dependent tasks are ineligible.",
+      "admit": "Before any confirmation arm, require a reached behavioral failure on base, preservation controls passing on base, and a passing merged reference on the independently specified behavior. Keep original merged code replayable and report distinct specification deviations. Record deterministic exclusion reasons. If no eligible task in a repository, withhold the panel rather than substitute repositories.",
+      "blinding": "Do not use confirmation task contents or outcomes to edit the candidate. Freeze selected tasks, both prompts, all grader digests, treatment lock, prices, schedule and deadlines before releasing either arm. Keep every attempt."
+    },
+    {
+      "format": "develop-confirmation-selection-v2",
+      "inherits": "selection-policy.json",
+      "reason": "The most recent owner-project PRs are dependency maintenance. Keep every recent row and rejection. The behavioral rule applies equally to every repository.",
+      "preferred_window": [
+        "2026-09-15",
+        "2026-10-29T14:07:27Z"
+      ],
+      "fallback_window": [
+        "2026-08-01",
+        "2026-09-14T23:59:59Z"
+      ],
+      "fallback": "Only after all preferred-window options have documented ineligibility or failed base/gold calibration, continue in the fallback window in the same order, using the same project, exclusion and grading rules. Require first implementation commit no earlier than 2026-08-01 for fallback cases. Keep every attempted case. If no eligible case exists in both windows, leave the repository unfilled. This rule is fixed before any confirmatory model proposal or score.",
+      "freshness": "Do not infer absence from model training data from dates alone."
+    }
+  ],
+  "calibration_attempts": [
+    {
+      "id": "black",
+      "pr": 5635,
+      "base": "ad56c609f491c9ec86053188cdc881565e19f933",
+      "merged": "2231c3877d6274004df2a78357202a44dc2ef0c9",
+      "passed": false,
+      "receipt_sha256": "ba2ae5b21febf9c9019284c0b53c54608bd0c363285088a888463404979e382e"
+    },
+    {
+      "id": "black",
+      "pr": 5635,
+      "base": "ad56c609f491c9ec86053188cdc881565e19f933",
+      "merged": "2231c3877d6274004df2a78357202a44dc2ef0c9",
+      "passed": true,
+      "receipt_sha256": "4727d8d071245b8cf9b99f07d63be895094f571e19fb782e573a5ad71a898caf"
+    },
+    {
+      "id": "cli11",
+      "pr": 1470,
+      "base": "8a434aa0f5a268741ec00974131abf44fbd1de7b",
+      "merged": "fb7eb86af71afde547c13d062e5aebfa27fc45c5",
+      "passed": true,
+      "receipt_sha256": "149ee1aa859b90b02668b56fe739721a98768e1c5e8465e9dea6d069395c6dd2"
+    },
+    {
+      "id": "commander",
+      "pr": 2660,
+      "base": "1536d5bb9da38d1d94926aedfa31c8ece1f7dce5",
+      "merged": "580286c9f21f72d4b6ff7f3f01fbfb057e94dbe3",
+      "passed": true,
+      "receipt_sha256": "6de5570a39cc0324a99a04b3f5513453689a82900e32e95220999b8d7c14fae5"
+    },
+    {
+      "id": "commons-lang",
+      "pr": 1843,
+      "base": "a5d6c5ed8847b2b14dacf062b646f94d6cc61a10",
+      "merged": "7d325c2a5bfb61991020f46585ae78a34546527e",
+      "passed": true,
+      "receipt_sha256": "ebd562471f5d96cf2c2f11713a7909c7a123df3e2df07a881e302b4e8acf11de"
+    },
+    {
+      "id": "django",
+      "pr": 22209,
+      "base": "c61620099cfa1874c12771a4637e405f59c287a8",
+      "merged": "817df1c4d6d38f416460d7d9354d7deab9d35139",
+      "passed": true,
+      "receipt_sha256": "c76c70d228cb328668b9c0772f2af32aaf6d6222d90401f500e0cba6886129ac"
+    },
+    {
+      "id": "expat",
+      "pr": 1452,
+      "base": "2480a0520fee623a8f7c3f038ff9fb491105472c",
+      "merged": "aea08c97840e73a7c4bcefc63d4aafc8e86702c5",
+      "passed": true,
+      "receipt_sha256": "a2fc1c5f8c5675e57b41e1b3d6ed77831a96525ee86378f5de10f413096a91c4"
+    },
+    {
+      "id": "fd",
+      "pr": 2193,
+      "base": "22d11e135263621eebd1521f99d54413f8da164e",
+      "merged": "3c784f63b8e7976650682d550926bb79e9e1f640",
+      "passed": true,
+      "receipt_sha256": "3a244f883d1666e8dc38ab9202be90fb4f9300861fcc06feb4baba000d8829b0"
+    },
+    {
+      "id": "fmt",
+      "pr": 4987,
+      "base": "88a0ae2020a22c6ced639703b72ad4fd8d9ae1d4",
+      "merged": "3a2dcb59efff30e5ab1698007c6c9745c4a368eb",
+      "passed": false,
+      "receipt_sha256": "490227c6fe6bc9cf4b879a7f2fe277b752b4913c4975ea5e79ded58a6277ea8d"
+    },
+    {
+      "id": "fmt",
+      "pr": 4987,
+      "base": "88a0ae2020a22c6ced639703b72ad4fd8d9ae1d4",
+      "merged": "3a2dcb59efff30e5ab1698007c6c9745c4a368eb",
+      "passed": true,
+      "receipt_sha256": "98119989f612cebc8af9f10a8ad457b73a14af25b86594c084139e4856bc3c94"
+    },
+    {
+      "id": "go-git",
+      "pr": 2525,
+      "base": "11ba0542bb55994f767a5a3b7a3c834099ca1b33",
+      "merged": "18dfee1bbe785c83b9208341c726b64e4c9c6b0d",
+      "passed": true,
+      "receipt_sha256": "4acf468b5fa43a9b9a16bfa0137da3a1143b313ea763dfa101c5983cacf2e25c"
+    },
+    {
+      "id": "jq",
+      "pr": 3679,
+      "base": "864d769d888e49621849c8ad616d794f099e713f",
+      "merged": "ac35c7dcbb991fa0f3c3196dd00ca479211e9847",
+      "passed": false,
+      "receipt_sha256": "02b87c6cc6aeded04e00e5f9abd2aaa3b5c89f388faca6e9f8ada891f3610712"
+    },
+    {
+      "id": "jq",
+      "pr": 3679,
+      "base": "864d769d888e49621849c8ad616d794f099e713f",
+      "merged": "ac35c7dcbb991fa0f3c3196dd00ca479211e9847",
+      "passed": true,
+      "receipt_sha256": "0546b6cf6aed51d477ca6922a97d2ed85e42dfb487f2331557609005d676b44b"
+    },
+    {
+      "id": "libarchive",
+      "pr": 3637,
+      "base": "d9d8e47f94791a64e7ed856b70a13e297a98044f",
+      "merged": "7574249bdc19f34c63b52ef0102d056f4fb7ba39",
+      "passed": true,
+      "receipt_sha256": "ef1cb8ecb32e5a84cb6bb53f63b1fbef12e91e12a2c0dff3baefa0f0b8f8d6a7"
+    },
+    {
+      "id": "marked",
+      "pr": 4131,
+      "base": "2d3899bf7c9e604805c4937b16dd0022480e64ce",
+      "merged": "15f59bb88bd462876cbc3af075baf73ec9337e31",
+      "passed": true,
+      "receipt_sha256": "cbb36a1922e191af161af26db31c48fd3202c53f70303a2684eb65a1c8ad07c4"
+    },
+    {
+      "id": "packaging",
+      "pr": 1471,
+      "base": "01fc80c47251ca5fead213e588d15b5d4b83b824",
+      "merged": "b635dc5e60d6fb8020416c6bab9421964bfa342a",
+      "passed": true,
+      "receipt_sha256": "85fee840c0011248c67522c2b86b29f3686cb45e0d0b448ea02c8e019b2ba19e"
+    },
+    {
+      "id": "prometheus",
+      "pr": 2197,
+      "base": "f2138807ccd28ca1c9b347b02a2267ec31908991",
+      "merged": "74d21147c40a2c77276819a1ca372306c45e7754",
+      "passed": false,
+      "receipt_sha256": "342fba5125663b95f924442b985e55cb9a26191206de3791c7e4845f765f6523"
+    },
+    {
+      "id": "prometheus",
+      "pr": 2197,
+      "base": "f2138807ccd28ca1c9b347b02a2267ec31908991",
+      "merged": "74d21147c40a2c77276819a1ca372306c45e7754",
+      "passed": false,
+      "receipt_sha256": "6c941d33480c2c6064b9715b7d388b90da667c0ea89ffdc0d60d11f3b471c23b"
+    },
+    {
+      "id": "prometheus",
+      "pr": 2197,
+      "base": "f2138807ccd28ca1c9b347b02a2267ec31908991",
+      "merged": "74d21147c40a2c77276819a1ca372306c45e7754",
+      "passed": true,
+      "receipt_sha256": "5ec1485fc40d3608c9865cc84308a83ee23cab685a0abafcfc0c9872fb864ecd"
+    },
+    {
+      "id": "pytest",
+      "pr": 15255,
+      "base": "ae37a013763e9c4a143245eda1acdc3c27961685",
+      "merged": "082ed70e314ee8e1ab117763d17fe801648f7508",
+      "passed": false,
+      "receipt_sha256": "a1e376d0aa175e664bda0d0cadfa4816dbd3844cd081e9e10e4566b6178caaa5"
+    },
+    {
+      "id": "pytest",
+      "pr": 15255,
+      "base": "ae37a013763e9c4a143245eda1acdc3c27961685",
+      "merged": "082ed70e314ee8e1ab117763d17fe801648f7508",
+      "passed": true,
+      "receipt_sha256": "50c1c4353f0d68ab3bb738a755796c01cbefed83313446efd27266bdae53ea26"
+    },
+    {
+      "id": "ripgrep",
+      "pr": 3561,
+      "base": "9d07a922605313dc47b78b802c7b0616fd76d409",
+      "merged": "d19650f4fca84c0f65f4ec024b16200bf3d41c33",
+      "passed": false,
+      "receipt_sha256": "6ac8179ed95f22287aabf258f4b4b1a91e883a2baf91fa34cf385b0e2917929e"
+    },
+    {
+      "id": "ripgrep",
+      "pr": 3561,
+      "base": "9d07a922605313dc47b78b802c7b0616fd76d409",
+      "merged": "d19650f4fca84c0f65f4ec024b16200bf3d41c33",
+      "passed": true,
+      "receipt_sha256": "b4d8a869834ab0733aac51ec1cc0b9e2028410b7a5bb7ccb1a454adbe9d63b1a"
+    },
+    {
+      "id": "rspec",
+      "pr": 350,
+      "base": "311b5d262dc0e0656d6946878ee7ef407d66bab2",
+      "merged": "14c880461cf8e6eacd3020a4b72a067b289df96e",
+      "passed": true,
+      "receipt_sha256": "b21c0d892879f680805cb2b399b9be102b383e1f4f39b2023accfb0194e46f8f"
+    },
+    {
+      "id": "runner-space",
+      "pr": 49,
+      "base": "ab8cbab7abef3d8a2565cc7827c22ffd462202be",
+      "merged": "febfb12c55c6954ca53e1501e66118552cb3fd52",
+      "passed": false,
+      "receipt_sha256": "998c6e430df2326957d9ad4ba52d27895f9ee8ab6fc91836728ac3f7d853b0a8"
+    },
+    {
+      "id": "runner-space",
+      "pr": 49,
+      "base": "ab8cbab7abef3d8a2565cc7827c22ffd462202be",
+      "merged": "febfb12c55c6954ca53e1501e66118552cb3fd52",
+      "passed": true,
+      "receipt_sha256": "3f146f28dc6bb7f8f8aa6078a9734c3f9b0525fa763480602f1da35adf6e4f9d"
+    },
+    {
+      "id": "sympy",
+      "pr": 30885,
+      "base": "36e94607e83b672e423e6b17ab978261831f4613",
+      "merged": "6134f599e14a0a7cd857d801fdc8636e72bd7253",
+      "passed": true,
+      "receipt_sha256": "09535e73010f7fba86e7d77c6ad2e686440637b94365233835d2a15ab25c857a"
+    },
+    {
+      "id": "werkzeug",
+      "pr": 3338,
+      "base": "ec95ee993a7975460c2e6468ebeccdd7c67386ba",
+      "merged": "b73dce5a2ce14f7c7fd645699d1d878de48d2948",
+      "passed": true,
+      "receipt_sha256": "6f700591c717c0b6bd03fe3f59035e326143cb752e75a6898b0245452352b02d"
+    }
+  ],
+  "cases": [
+    {
+      "id": "black",
+      "repository": "psf/black",
+      "pr": 5635,
+      "base": "ad56c609f491c9ec86053188cdc881565e19f933",
+      "gold": "2231c3877d6274004df2a78357202a44dc2ef0c9",
+      "first_commit": "2026-10-28T18:29:10Z",
+      "created_at": "2026-10-28T18:53:57Z",
+      "merged_at": "2026-10-28T19:39:08Z",
+      "merged_diff_sha256": "314d08d2c04f61f140369fedaff478eac9cca2b5d3e8130f97646dc220d0db66",
+      "prompt": "Black's --line-ranges can generate invalid code when an unselected compound statement has several clauses and one clause has its body on the same line. Make selection formatting work on such files, including if/else and try/except. Preserve the untouched lines and the semantics of formatting the selected region.",
+      "probe": "checks/black.py",
+      "probe_sha256": "5f9c84bc2712f23d3cd3f9221b45e09cd25942586f9a245c36613f4a0f76bfff",
+      "probe_build": null,
+      "probe_run": "PYTHONPATH=src:/deps/lib python3 /probe.py",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e8122861ecaeea1388fca45cfed5a89aad721e379eef4cf8619bf02c938e0b33"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "9bc85b342aa4adeced1badbf78a36443d5b8692ed1f63731ad62a9509eb3cb42"
+          }
+        },
+        "merged": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e8122861ecaeea1388fca45cfed5a89aad721e379eef4cf8619bf02c938e0b33"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "58b2e57884928ba75f25d5d9a9e27000b81ee4de2f44987a22396a1010ff6027"
+          }
+        }
+      },
+      "initial_receipt_sha256": "4727d8d071245b8cf9b99f07d63be895094f571e19fb782e573a5ad71a898caf",
+      "upstream": {
+        "title": "Fix --line-ranges crash on clauses with their body on the same line",
+        "body": "### Description\n\nWith `--line-ranges`, Black fails on a file when a statement outside the selected lines is an `if`, `for`, `while` or `try` statement with more than one clause and one of the clauses has its body on the same line. Editors use `--line-ranges` for \"Format Selection\" and for formatting only the modified lines, so this shows up in older code that uses one-line clauses. For example, `black --line-ranges=12-12 --diff example.py` on:\n\n```python\nclass Dialog:\n    def ask(self):\n        if self.saved:\n            reply = \"yes\"\n        else: reply = \"no\"\n        return reply\n\ndef check(path):\n    try: f = open(path)\n    except OSError:\n        return None\n    return  f\n```\n\nfails with \"INTERNAL ERROR: Black ... produced invalid code: cannot parse\" and exits with 123. CPython's `Lib/idlelib/iomenu.py` fails the same way with `--line-ranges=216-230`. In other cases Black doesn't crash but changes lines outside the ranges, e.g. `if sizeof(kind) == 2: c_uint16 = kind` in `ctypes/__init__.py` becomes `if sizeof(kind) == 2:c_uint16 = kind`.\n\nA body on the same line as its clause was handled as a line of its own. The top-level pass converted it to a standalone comment without its newline, so the next clause was joined to it (`if a: b()else:`), and the line-by-line pass converted it once on its own and again with the next clause's header. A last clause such as `else: c()` after an indented block converted the whole statement after its inner lines were already converted, which lost their indentation. Now such a body is converted together with its clause, so each clause line becomes one standalone comment. One-liners with a single clause, such as `def f(): ...`, keep the existing path. For an `async for` or `async with` statement, the `async` keyword is now joined only to its first clause line, so a later `else:` line isn't converted together with it. With the change, the example above only changes `return  f` to `return f`.\n\nRan: `pytest tests --run-optional no_jupyter`, then the jupyter tests with the extra installed, `black --check .`, and isort, flake8, mypy and prettier at the pre-commit versions (no new findings).\nChecked: every one-line and three-line range of about 40 small variants (comments between clauses, `# fmt: skip` and `# fmt: off`, `# type: ignore`, multi-line headers and bodies, backslashes, semicolons, CRLF, tabs, `match`, `except*`, decorated and async one-liners, `async for` with `else`, pyi and preview): 186 errors on `main`, none with the patch, and no range where the patch changes a line that `main` kept. On the CPython 3.14 stdlib with single-line clause bodies moved onto their clause line, 902 of 2,220 random ranges failed on `main` and none with the patch, and all of them pass the equivalence and stability checks. On the unmodified stdlib, 3 of 3,624 ranges failed on `main` and none with the patch; the 4 other differences are unselected lines that are now kept as they were.\n\n### Checklist - did you ...\n\n- [x] Implement any code style changes under the `--preview` style, following the stability policy?\n- [x] Add an entry in `CHANGES.md` if necessary?\n- [x] Add / update tests if necessary?\n- [x] Add new / update outdated documentation?\n"
+      }
+    },
+    {
+      "id": "cli11",
+      "repository": "CLIUtils/CLI11",
+      "pr": 1470,
+      "base": "8a434aa0f5a268741ec00974131abf44fbd1de7b",
+      "gold": "fb7eb86af71afde547c13d062e5aebfa27fc45c5",
+      "first_commit": "2026-10-12T20:11:35Z",
+      "created_at": "2026-10-12T20:11:47Z",
+      "merged_at": "2026-10-17T14:20:14Z",
+      "merged_diff_sha256": "a2e356b5d63ac7f4cddb00006015f43106ff74e05e113fb73c3d097d2d43e014",
+      "prompt": "CLI::Range accepts a floating-point NaN as inside an inclusive numeric interval. Fix this for numeric range validators, including PositiveNumber when parsing options. Preserve finite boundary values, explicitly infinite bounds and existing integer and custom-type behavior.",
+      "probe": "checks/cli11.cpp",
+      "probe_sha256": "50a0924ef58c0011120a8790e4feddf9de0fc225bd195d5f869d971379177678",
+      "probe_build": null,
+      "probe_run": "g++ -std=c++17 -Iinclude /probe.cpp -o /tmp/probe && /tmp/probe",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "a2fe58ca2116336904f3cfeeb0d87244aa21aee4d1eb60a8c215525d7454a75a"
+          }
+        },
+        "merged": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      "initial_receipt_sha256": "149ee1aa859b90b02668b56fe739721a98768e1c5e8465e9dea6d069395c6dd2",
+      "upstream": {
+        "title": "Reject NaN values from numeric range validators",
+        "body": "`--ratio nan` is currently accepted by an option checked with `CLI::Range(0.0, 1.0)`, and `PositiveNumber` also accepts it. Neither `<` nor `>` reports an out-of-range value for NaN, so the advertised inclusive interval check succeeds.\n\nReject NaN when the range type is floating-point. Tag dispatch keeps the existing comparison requirements and behavior for non-floating types. Finite endpoints and explicitly infinite bounds retain their existing behavior.\n\nValidation: two public option-parsing regressions fail with three failed assertions before the fix. The default header-only workflow passes all 82 CTest targets. The focused NaN/infinite-bound tests pass 12 assertions, the public C++11 reproduction now raises ValidationError, and the Clang-Tidy 20 preset matching CI, clang-format check and `git diff --check` pass.\n\nPrepared and tested with OpenAI Codex assistance.\n"
+      }
+    },
+    {
+      "id": "commander",
+      "repository": "tj/commander.js",
+      "pr": 2660,
+      "base": "1536d5bb9da38d1d94926aedfa31c8ece1f7dce5",
+      "gold": "580286c9f21f72d4b6ff7f3f01fbfb057e94dbe3",
+      "first_commit": "2026-10-25T02:01:00Z",
+      "created_at": "2026-10-25T02:14:20Z",
+      "merged_at": "2026-10-25T02:22:11Z",
+      "merged_diff_sha256": "6e8ed640589477a48696f9bb02e782ce79eb676eb4f7749329414903e11ec881",
+      "prompt": "Deprecate Command.combineFlagAndOptionalValue(). Surface the deprecation to TypeScript editors and update usage and deprecation documentation. Keep the method callable with its existing behavior.",
+      "probe": "checks/commander.cjs",
+      "probe_sha256": "49c225c8ede1a19245df6a66c6fe964a7e836058802f48969befe9bb680c4215",
+      "probe_build": null,
+      "probe_run": "node /probe.cjs",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "a514b341f3b562b914d028a605ff1e24f24a832e2d2cc80775376085d2b47289"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "f0d381e1bbe82df7139b24fbe2e3260b2bf1234d32bd34dd9af3c3c4afa631fd"
+          }
+        },
+        "merged": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "a514b341f3b562b914d028a605ff1e24f24a832e2d2cc80775376085d2b47289"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "fc39e4cf9f9379e189416a0a3efb561e277d69ef5dc1e4c31cc383cf8130b347"
+          }
+        }
+      },
+      "initial_receipt_sha256": "6de5570a39cc0324a99a04b3f5513453689a82900e32e95220999b8d7c14fae5",
+      "upstream": {
+        "title": "Deprecate combineFlagAndOptionalValue",
+        "body": "## Problem\n\n`combineFlagAndOptionalValue` was mainly added to simplify upgrades from older versions of Commander when we first added support for specifying option value straight after short option (like `-p80`) back in Commander v6. It is not used much in the wild, and I don't want to keep variant behaviours around forever unless an important pattern.\n\n## Solution\n\nRemove from usage documentation and add to deprecated documentation.\n\nWhile I was working on deprecated documentation, I added `cmd.` on the front of the headings for deprecated Command methods for some additional context.\n\n## ChangeLog\n\n- deprecated: `cmd.combineFlagAndOptionalValue()`"
+      }
+    },
+    {
+      "id": "commons-lang",
+      "repository": "apache/commons-lang",
+      "pr": 1843,
+      "base": "a5d6c5ed8847b2b14dacf062b646f94d6cc61a10",
+      "gold": "7d325c2a5bfb61991020f46585ae78a34546527e",
+      "first_commit": "2026-10-26T15:52:51Z",
+      "created_at": "2026-10-27T17:21:25Z",
+      "merged_at": "2026-10-28T10:57:00Z",
+      "merged_diff_sha256": "5534e659bbe3462a42fe71ff2544c370f41ddb4d49fcdc0e24430599752f450c",
+      "prompt": "RandomStringUtils.random can throw for a valid character range when acceptable characters are sparse. Make valid sparse inputs reliable, including a 64-character array containing a single letter when letters are required. Preserve bounded failure for impossible inputs and honor the supplied Random.",
+      "probe": "checks/commons-lang.java",
+      "probe_sha256": "dcffbc309dd161d032515aea28cc3a38d27ad17fe45d56ed660a6d6fcf981165",
+      "probe_build": "mkdir -p target/panel-classes && javac -encoding UTF-8 -d target/panel-classes -sourcepath src/main/java /probe.java",
+      "probe_run": "java -cp target/panel-classes Probe",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "026608506dd3be326bd8dc47d72ea9acf6d9405f700007102157db26750c97ca"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "380f31e94339b3d9ff346c103fdf35f1610e3e588ba6e2e514af09e824b4cc49"
+          }
+        },
+        "merged": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "026608506dd3be326bd8dc47d72ea9acf6d9405f700007102157db26750c97ca"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      "initial_receipt_sha256": "ebd562471f5d96cf2c2f11713a7909c7a123df3e2df07a881e302b4e8acf11de",
+      "upstream": {
+        "title": "Keep RandomStringUtils.random rejection cap from failing valid ranges",
+        "body": "`RandomStringUtils.random(int, int, int, boolean, boolean, char[], Random)` bounds consecutive rejected draws with `Math.max(64, gap * 10)`, added in #1638 so that a range with no acceptable value throws instead of hanging. Each draw takes `gapBits` random bits, so a valid range whose acceptable values are sparse accepts a draw with probability as low as `1 / 2^gapBits`, and the cap fires on input the method's own up-front validation has already accepted.\n\nRepro: `chars` is 63 `'-'` plus one `'x'`, then `RandomStringUtils.random(100, 0, 64, true, false, chars, new Random(seed))`.\nExpected: `\"xxx...x\"` (100 chars).\nActual: `gapBits` is 7, so a draw is accepted with probability 1/128 against a cap of 640; 90 of 200 calls threw `IllegalArgumentException: No acceptable code points found in range [0, 64) within 640 attempts.` The `secure()` / `insecure()` / `secureStrong()` `next(...)` overloads and the static `random*` methods go through the same loop.\nCause: the cap is sized by `gap`, but the rejection rate depends on the `2^gapBits` sample space.\nFix: cap at `64L << gapBits` (and a `long` counter, so a large `chars` array cannot overflow it). A range with at least one acceptable value now exhausts it with probability below `e^-64` per character. A range with no acceptable value still throws: `testOnlyRejectedCodePoints` (`[0xE000, 0xF900)`) throws after 524,288 draws in about 80 ms, and the widest all-rejected range I could build, `[0xE01F0, 0x10FFFF)`, throws in about 0.75 s.\n\n`testSparseAcceptableValuesDoNotTripRejectionCap` fails before the change and passes after. The reproducer goes from 90/200 failures to 0/200.\n\n\n\n- [x] Read the [contribution guidelines](CONTRIBUTING.md) for this project.\n- [x] Read the [ASF Generative Tooling Guidance](https://www.apache.org/legal/generative-tooling.html) if you use Artificial Intelligence (AI).\n- [x] I used AI to create any part of, or all of, this pull request. Which AI tool was used to create this pull request, and to what extent did it contribute? Claude Code (Anthropic) found the defect and drafted the patch, the test and this description; I reviewed all of it before submitting.\n- [x] Run a successful build using the default [Maven](https://maven.apache.org/) goal with `mvn`; that's `mvn` on the command line by itself.\n- [x] Write unit tests that match behavioral changes, where the tests fail if the changes to the runtime are not applied. This may not always be possible, but it is a best practice.\n- [x] Write a pull request description that is detailed enough to understand what the pull request does, how, and why.\n- [x] Each commit in the pull request should have a meaningful subject line and body. Note that a maintainer may squash commits during the merge process.\n"
+      }
+    },
+    {
+      "id": "django",
+      "repository": "django/django",
+      "pr": 22209,
+      "base": "c61620099cfa1874c12771a4637e405f59c287a8",
+      "gold": "817df1c4d6d38f416460d7d9354d7deab9d35139",
+      "first_commit": "2026-10-28T21:03:56Z",
+      "created_at": "2026-10-28T21:05:01Z",
+      "merged_at": "2026-10-29T12:01:02Z",
+      "merged_diff_sha256": "5557d6c13ea49f8b8eed7b2b1065c0365b2b2464f69bcccb00a54a4533ec7ce0",
+      "prompt": "Calling BoundField.legend_tag() can modify the caller's attrs dictionary in place. Preserve caller-owned attributes across rendering and repeated calls. Keep the rendered legend and existing label, id and accessibility semantics.",
+      "probe": "checks/django.py",
+      "probe_sha256": "5dbea44cea25cf877379fe3b5a0fa0a065233e60ae90462e00fe15b54092ffcc",
+      "probe_build": null,
+      "probe_run": "PYTHONPATH=.:src:/deps/lib python3 /probe.py",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "61938c87dda5b295f36a7beb937453780f2cfc50161868a0162dc1744ca5c8dd"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "61938c87dda5b295f36a7beb937453780f2cfc50161868a0162dc1744ca5c8dd"
+          }
+        },
+        "merged": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "db841963b9925620adc79b5dcac10de85aab2f3bc96bbbbfaa741b03a2c4afb8"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "db841963b9925620adc79b5dcac10de85aab2f3bc96bbbbfaa741b03a2c4afb8"
+          }
+        }
+      },
+      "initial_receipt_sha256": "c76c70d228cb328668b9c0772f2af32aaf6d6222d90401f500e0cba6886129ac",
+      "upstream": {
+        "title": "Fixed #37463 -- Fixed attrs mutation in legend_tag().",
+        "body": "#### Trac ticket number\nticket-37463\n\n#### Branch description\nRegression in 0eec2a163a4b2ea4e82c53ae1d7b71bf43ac911d.\n\n#### AI Assistance Disclosure (REQUIRED)\n<!-- Please select exactly ONE of the following: -->\n- [x] **No AI tools were used** in preparing this PR.\n- [ ] **If AI tools were used**, I have disclosed which ones, and fully reviewed and verified their output.\n\n#### Checklist\n- [x] This PR follows the [contribution guidelines](https://docs.djangoproject.com/en/stable/internals/contributing/writing-code/submitting-patches/).\n- [x] This PR **does not** disclose a security vulnerability (see [vulnerability reporting](https://docs.djangoproject.com/en/stable/internals/security/)).\n- [x] This PR targets the `main` branch. <!-- Backports will be evaluated and done by mergers, when necessary. -->\n- [x] The commit message is written in past tense, mentions the ticket number, and ends with a period (see [guidelines](https://docs.djangoproject.com/en/dev/internals/contributing/committing-code/#committing-guidelines)).\n- [x] I have not requested, and will not request, an automated AI review for this PR. <!-- You are welcome to do so in your own fork. -->\n- [x] I have checked the \"Has patch\" ticket flag in the Trac system.\n- [x] I have added or updated relevant tests.\n- [x] I have added or updated relevant docs, including release notes if applicable.\n- [x] I have attached screenshots in both light and dark modes for any UI changes."
+      }
+    },
+    {
+      "id": "expat",
+      "repository": "libexpat/libexpat",
+      "pr": 1452,
+      "base": "2480a0520fee623a8f7c3f038ff9fb491105472c",
+      "gold": "aea08c97840e73a7c4bcefc63d4aafc8e86702c5",
+      "first_commit": "2026-10-27T17:12:50Z",
+      "created_at": "2026-10-27T18:34:13Z",
+      "merged_at": "2026-10-29T11:34:28Z",
+      "merged_diff_sha256": "38aa16b8865b26e34be137162120a361337a6525bfcb8558851cfc1bb9ee0176",
+      "prompt": "XML_GetParsingStatus on a newly created or reset parser can expose an undefined finalBuffer value before data is parsed. Make the initial state deterministic, including when a custom allocator returns nonzero memory. Preserve the status transitions of partial and final parses.",
+      "probe": "checks/expat.c",
+      "probe_sha256": "4b94e2fa25c8a2845b794db4825755b096c93a117f26ee893ec64e1127f9e2ed",
+      "probe_build": "cmake=/deps/lib/cmake/data/bin/cmake; $cmake -S expat -B build-panel -DEXPAT_BUILD_DOCS=OFF -DEXPAT_BUILD_TESTS=OFF && $cmake --build build-panel --target expat -j2 && cc -Iexpat/lib /probe.c -Lbuild-panel -Lbuild-panel/lib -Wl,-rpath,/work/build-panel:/work/build-panel/lib -lexpat -o build-panel/probe",
+      "probe_run": "build-panel/probe",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "06151c026bbdae6c55149c5f46cd5134923b4315dc3886a3376ce8975e6746c5"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "73d08a120481f6c8d62f942da9f5bb6d3c31df9cc0bfc947df75024d4fd9fe0d"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "2c368bc2e0017a9eb2b7e3a896d8a0b2438c39d99c375803b8134da73e418f40"
+          }
+        },
+        "merged": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "478bf1c53855627ac7273781a214f488887313fecc7bd300c12978f8cae2ad60"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "73d08a120481f6c8d62f942da9f5bb6d3c31df9cc0bfc947df75024d4fd9fe0d"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "762824db11f94348e91cc2a0951ac0b0e8ab8a3d2733b667f2ce38897979f271"
+          }
+        }
+      },
+      "initial_receipt_sha256": "a2fc1c5f8c5675e57b41e1b3d6ed77831a96525ee86378f5de10f413096a91c4",
+      "upstream": {
+        "title": "lib: Initialize `m_parsingStatus.finalBuffer` in `parserInit`",
+        "body": "<!-- Thanks for your interest in contributing to the libexpat project or \"Expat\"! -->\n\n# Self-Diagnosis\n\n<!-- PLEASE ANSWER THE FOLLOWING: -->\n- [x] This pull request fixes #1451.\n- [ ] This pull request is related to SOME_REFERENCE.\n- [x] This pull request is small, uncontroversial, complete, and easy to review.\n- [ ] I have enabled and run all GitHub Actions CI in my fork repository,\n  and hence expect CI to be all-green for this pull request.\n- [x] I have read the [contribution guidelines](https://github.com/libexpat/libexpat/blob/HEAD/CONTRIBUTING.md), and this pull request meets these guidelines for contribution.\n- [ ] I had trouble understanding parts of this questionnaire. (Please elaborate.)\n\n\n# Description\n\nThis pull request initializes `m_parsingStatus.finalBuffer` in `parserInit()` because it was never written before the first `XML_Parse()` / `XML_ParseBuffer()` call, in order to make `XML_GetParsingStatus()` return a defined value for a parser that has not started parsing (MSan reported a use-of-uninitialized-value, details in #1451).\n\nEffect on `XML_ParserReset()`: it also calls `parserInit()`, so after this change `finalBuffer` reads 0 after every reset, the same as for a fresh parser. Before, it kept the `isFinal` of the last parse call before the reset. I did not find any library code that reads `finalBuffer` before `XML_Parse()` / `XML_ParseBuffer()` assign it, so the parsing behaviour itself should not change.\n\nThe test creates the parser through `XML_ParserCreate_MM()` with an allocator that fills new blocks with `0xA5`, so it fails without the fix even in builds without sanitizers.\n\nTested locally on top of master 40705075 (clang 21.1.8, Linux):\n\n- `ctest` (default CMake build): all checks pass; with only the test commit applied, the new test fails (12 times, once per chunk size / deferral combination) and nothing else does.\n- `tests/runtests` built with `-fsanitize=memory -fsanitize-memory-track-origins=2`: 5268 checks, 0 failures.\n- `clang-format-21` leaves both files unchanged (CI uses clang-format 23, not run locally).\n\nCI in my fork (branch `finalbuffer-init`): all workflows passed (the Coverity Scan upload is skipped outside libexpat/libexpat) except \"Run Linux CI tasks\", where one of the two MinGW jobs (`CC=i686-w64-mingw32-gcc`) timed out in `apt-get install` under `timeout 10m` (exit code 124) before building, on the first run and on two re-runs: https://github.com/GeekQAQ/libexpat/actions/runs/40548708575 . All other jobs of that workflow passed, including the ASan, UBSan and MSan ones. That is why I left the CI box unchecked.\n\nNo `Changes` entry included, since `Changes` seems to be written at release time.\n"
+      }
+    },
+    {
+      "id": "fd",
+      "repository": "sharkdp/fd",
+      "pr": 2193,
+      "base": "22d11e135263621eebd1521f99d54413f8da164e",
+      "gold": "3c784f63b8e7976650682d550926bb79e9e1f640",
+      "first_commit": "2026-10-25T16:51:51Z",
+      "created_at": "2026-10-25T16:56:49Z",
+      "merged_at": "2026-10-28T05:54:25Z",
+      "merged_diff_sha256": "406e58e24dd19c242ce63447bc6747209f47c98bccb7634828cd25c55c1e315a",
+      "prompt": "For fd's unrestricted (-u) mode, a later --ignore must restore ignore rules without losing hidden-file search, and a later --no-hidden must turn off hidden-file search without restoring ignore rules. Preserve argument precedence in the reverse order and ordinary -u semantics.",
+      "probe": "checks/fd.sh",
+      "probe_sha256": "bd576e41a49864d6ec93c2e8608b3854a8beb1d6227fc1cad364beef22c4750a",
+      "probe_build": "cargo build --offline --locked --bin fd",
+      "probe_run": "sh /probe.sh",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "4cda91b058529d795fa1cfd6be4930b4b39e3f03637eb3357c7a0c1efb8461ff"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "7f976923991d8f662022cd844b6e6fe85fc8c9c9b6883344a9a366d7ee017484"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "b1ab5ce81e204d7deda7a1c193c6b043e3c79be549be9cfade367fe2c6e9e52d"
+          }
+        },
+        "merged": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "03afd2a754b1b781c6eea684fb138cf81d976d1a4da5a443c3a5dc19b9a92915"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "7f976923991d8f662022cd844b6e6fe85fc8c9c9b6883344a9a366d7ee017484"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "4b7e84a0cc369c034ad4876aca9644727b51212d4c24ba9ae65dd459728fa5e0"
+          }
+        }
+      },
+      "initial_receipt_sha256": "3a244f883d1666e8dc38ab9202be90fb4f9300861fcc06feb4baba000d8829b0",
+      "upstream": {
+        "title": "fix: let --ignore and --no-hidden override only their half of -u",
+        "body": "`-u` had `overrides_with_all([\"ignore\", \"no_hidden\"])`, so a later `--ignore` cleared all of `-u`, hidden included, and `--no-hidden` cleared its no-ignore half too. Clap can't make one flag set two others, so after parsing `-u` now turns on `hidden` and `no_ignore` unless a `--no-hidden` or `--ignore` comes after it. `-u --ignore` now behaves like `-H`, `-u --no-hidden` like `-I`, and `--ignore -u` is still plain `-u`. Added tests for all three.\n\nI used Claude Code to help write the fix.\n\nFixes #2192\n"
+      }
+    },
+    {
+      "id": "fmt",
+      "repository": "fmtlib/fmt",
+      "pr": 4987,
+      "base": "88a0ae2020a22c6ced639703b72ad4fd8d9ae1d4",
+      "gold": "3a2dcb59efff30e5ab1698007c6c9745c4a368eb",
+      "first_commit": "2026-10-16T18:07:26Z",
+      "created_at": "2026-10-17T07:07:49Z",
+      "merged_at": "2026-10-25T16:17:27Z",
+      "merged_diff_sha256": "6c011402d4afc62b77c3d867c0ef00d34123537a5be51ddf560c0d61c36c40db",
+      "prompt": "When the required formatted output exceeds INT_MAX, the C formatting API and vfprintf can report a wrapped output size. Report the API's documented error value and preserve representable counts, including size-only queries and truncated writes.",
+      "probe": "checks/fmt.c",
+      "probe_sha256": "7eab27279cec3c6561ecb7dd21b248e4ef54d9e019017e395a917456e1c15bb2",
+      "probe_build": "cmake=/deps/lib/cmake/data/bin/cmake; $cmake -S . -B build -DFMT_DOC=OFF -DFMT_TEST=OFF && $cmake --build build -j2 --target fmt-c && cc -Iinclude -c /probe.c -o build/p.o && g++ build/p.o build/libfmt-c.a build/libfmt.a -o build/probe",
+      "probe_run": "build/probe",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "4b70c1b125c8d36f5437459531be9abe8e6e48ed4d68cf4d8ea8925a09443d6d"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "9ab87f22dc414395290083da57c44f0a4e582239ba5dcdfc7de054a805dca238"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "936ab0ac3cabcb9fad082e3936342b74f188eae46b94bd96d5340980139cebc0"
+          }
+        },
+        "merged": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "3e335d4e85c4983aa1efbdd019f1f862f7626ff6820bfb03af1a0316d2fc5d4a"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "9ab87f22dc414395290083da57c44f0a4e582239ba5dcdfc7de054a805dca238"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "51d86c5383dd66b01d1ec5676cea9377de9f07c9911b6d6e990ea32dff4d45e6"
+          }
+        }
+      },
+      "initial_receipt_sha256": "98119989f612cebc8af9f10a8ad457b73a14af25b86594c084139e4856bc3c94",
+      "upstream": {
+        "title": "Don't truncate output size to int in fmt_vformat and vfprintf",
+        "body": "`fmt_vformat` and `fmt::vfprintf` cast the output size to `int` unchecked, so output larger than INT_MAX wraps (`fmt_format(NULL, 0, \"{:2147483647}{:2147483647}{:12}\", 1, 2, 3)` returns 10 and `fmt::fprintf(f, \"%2147483647d%2d\", 1, 2)` returns -2147483647); return `fmt_error`/-1 instead, like `snprintf`/`fprintf` failing with `EOVERFLOW`.\n"
+      }
+    },
+    {
+      "id": "go-git",
+      "repository": "go-git/go-git",
+      "pr": 2525,
+      "base": "11ba0542bb55994f767a5a3b7a3c834099ca1b33",
+      "gold": "18dfee1bbe785c83b9208341c726b64e4c9c6b0d",
+      "first_commit": "2026-10-16T02:34:15Z",
+      "created_at": "2026-10-16T20:37:11Z",
+      "merged_at": "2026-10-23T04:08:07Z",
+      "merged_diff_sha256": "94643daed02bc2a0b977765dbf33879095757370391a186f35de41084945796f",
+      "prompt": "The pack parser fails on a thin pack containing an OFS delta whose base is a REF delta backed by an object outside the pack. Make Parse resolve that chain when the provided object storage contains the external base. Preserve errors for genuinely missing bases and existing behavior for self-contained packs.",
+      "probe": "checks/go-git.sh",
+      "probe_sha256": "b614adddf69ea19eedfeee0ac4af0897b3c457555d7a7940f91c3690d752e684",
+      "probe_build": null,
+      "probe_run": "sh /probe.sh",
+      "grader_only_reference_files": {
+        "plumbing/format/packfile/parser_test.go": "dea930d90c06685f6450335cf8263d9f3dfb4e51fa2fedbd917275c8600deaab"
+      },
+      "initial_calibration": {
+        "base": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "a724d145e1f5108c4d1047268d8987db71977539ba8b4aae0eb464db26df360c"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "1edd57dac55acea4aa3a34319846012435eae9f1f1112dfa59113080e25561f1"
+          }
+        },
+        "merged": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "019b35c751adf6de8c4bc87353b3b2dd342a4deafa5dee30b874b3e36e0ba761"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "e0fe82113614fa1328a589e7ae66bc54ec8a2d1239029656ac53d0cc18d693fa"
+          }
+        }
+      },
+      "initial_receipt_sha256": "4acf468b5fa43a9b9a16bfa0137da3a1143b313ea763dfa101c5983cacf2e25c",
+      "upstream": {
+        "title": "plumbing: format/packfile, Resolve OFS-deltas on external REF-deltas",
+        "body": "`Parser.Parse` rejects a thin pack in which an OFS-delta's base is a REF-delta whose own base is outside the pack:\n\n```\nprocessing ofs-delta at offset 1731: object not found\n```\n\nThis happens even when the parser is given a storage that holds the missing base, for example through `packfile.UpdateObjectStorage` into a memory storage.\n\n### Cause\n\n`resolveDeltas` walks the delta graph depth-first from the non-delta objects in the pack. Afterwards it resolves the REF-deltas the walk didn't reach against their external bases, but it never visits the children of those REF-deltas. An OFS-delta built on one of them stays unresolved and hits the final error.\n\nThis is a regression from #2163 (commit 0b2ed687, \"depth-first delta walk\"). Before that, all REF-deltas were resolved before any OFS-delta, which is what #1416 relied on for this shape. The new test passes at 0b2ed687's parent and fails at 0b2ed687. Both v6.0.0-alpha.5 and v6.0.0-beta.1 ship the bug. v5 isn't affected.\n\n### When Git writes this shape\n\n`git pack-objects --thin` may use objects the receiver already has as delta bases. Those bases aren't in the pack, so such deltas are REF-deltas, and other objects can then be deltified against them as OFS-deltas. `git bundle create` always runs `pack-objects --stdout --thin --delta-base-offset` ([bundle.c](https://github.com/git/git/blob/v2.54.0/bundle.c#L333-L336)), so incremental bundles can contain this shape. go-git's own fetch doesn't ask for thin packs and its receive-pack advertises `no-thin` (#1490), so the bug shows up when a bundle or thin pack is parsed with a storage (see #985 for bundles). `git index-pack` handles it in [`fix_unresolved_deltas`](https://github.com/git/git/blob/v2.54.0/builtin/index-pack.c#L1475), which walks every delta descendant of the missing base once it has read it.\n\n### Fix\n\nAfter a REF-delta is resolved against its external base, walk its children with the same `visit` function the main walk uses. The `resolveDeltas` doc comment now says so and links to `fix_unresolved_deltas`.\n\n### Test\n\n`TestParserResolvesOfsDeltaOfExternalRefDelta` builds a two-entry thin pack, `[REF-delta(base = a blob not in the pack), OFS-delta(base = that REF-delta)]`, and puts the missing blob in the storage. It then checks that both blobs resolve to the expected content, using memory storage and filesystem storage in low- and high-memory mode. Without the fix, all three subtests fail with `processing ofs-delta at offset 83: object not found`.\n\n```sh\ngo test ./plumbing/format/packfile/ -run TestParserResolvesOfsDeltaOfExternalRefDelta -v\n```\n\n<details>\n<summary>Reproducing with git</summary>\n\nThis script builds an incremental bundle whose pack has the shape, plus a bare repository holding the bundle's prerequisite commit:\n\n```sh\ngit init -q -b main src && cd src\nfor i in $(seq 300); do echo \"line $i: the quick brown fox jumps over the lazy dog $i\"; done > file.txt\ngit add file.txt && git commit -qm base && git tag base\nfor i in $(seq 200); do echo \"appended $i: pack my box with five dozen liquor jugs $i\"; done >> file.txt\ngit commit -qam second\necho \"one more line\" >> file.txt && git commit -qam third\ngit bundle create -q ../incr.bundle main ^base\ncd .. && git init -q --bare pre.git && git -C pre.git fetch -q ../src base\n```\n\nGit 2.55.0 accepts the bundle: `git bundle verify`, fetching from it and `git fsck` all pass. In its pack, the third version of `file.txt` is a REF-delta against the first version, which is not in the pack, and the second version is an OFS-delta on top of the third.\n\nImport the pack with go-git:\n\n```go\npackage main\n\nimport (\n\t\"bytes\"\n\t\"fmt\"\n\t\"os\"\n\n\t\"github.com/go-git/go-billy/v6/osfs\"\n\n\t\"github.com/go-git/go-git/v6/plumbing/cache\"\n\t\"github.com/go-git/go-git/v6/plumbing/format/packfile\"\n\t\"github.com/go-git/go-git/v6/storage/filesystem\"\n)\n\nfunc main() {\n\tbundle, err := os.ReadFile(\"incr.bundle\")\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\tpack := bundle[bytes.Index(bundle, []byte(\"\\n\\n\"))+2:] // skip the bundle header\n\n\t// pre.git holds the bundle's prerequisite commit.\n\tst := filesystem.NewStorage(osfs.New(\"pre.git\"), cache.NewObjectLRUDefault())\n\tdefer func() { _ = st.Close() }()\n\n\t_, err = packfile.NewParser(bytes.NewReader(pack), packfile.WithStorage(st)).Parse()\n\tfmt.Println(\"parse:\", err)\n}\n```\n\nOn main this prints `parse: processing ofs-delta at offset 1731: object not found` (the offset depends on the commit metadata). With this change it prints `parse: <nil>`.\n\n</details>\n\ncc @hiddeco, who wrote the depth-first walk in #2163.\n\nAI disclosure: this change was prepared with help from Claude (Opus 5.5 and Sonnet 5.5); the commit carries `Assisted-by` trailers.\n\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n"
+      }
+    },
+    {
+      "id": "jq",
+      "repository": "jqlang/jq",
+      "pr": 3679,
+      "base": "864d769d888e49621849c8ad616d794f099e713f",
+      "gold": "ac35c7dcbb991fa0f3c3196dd00ca479211e9847",
+      "first_commit": "2026-10-15T12:30:00Z",
+      "created_at": "2026-10-15T15:56:54Z",
+      "merged_at": "2026-10-25T05:40:53Z",
+      "merged_diff_sha256": "43fc2d1aca621b04af408457146de29133ebf70b37565c80d6dc31f85d961b56",
+      "prompt": "When strptime/1 parses a date without a day-of-month field, the result can contain day zero and convert to the previous month. Default the missing day to the first day of the represented month. Preserve explicit day and day-of-year parsing.",
+      "probe": "checks/jq.sh",
+      "probe_sha256": "8fcfdb34918138e1cd116caffce45ec6182d4a3af2274bd92424c7adbe65134b",
+      "probe_build": "autoreconf -fi && ./configure --with-oniguruma=builtin --disable-docs && make -j2",
+      "probe_run": "sh /probe.sh",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "a1d0fe4a321b174e10bc4ff89cf6a9c0a2d46ee1be7b3c4a528d8eff48f94f8f"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "238903180cc104ec2c5d8b3f20c5bc61b389ec0a967df8cc208cdc7cd454174f"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+          }
+        },
+        "merged": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "8b114ced0b1742ca4d8b257bab3be87f5743e62454dcc290c0f3ce51a1a319a9"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "238903180cc104ec2c5d8b3f20c5bc61b389ec0a967df8cc208cdc7cd454174f"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+          }
+        }
+      },
+      "initial_receipt_sha256": "0546b6cf6aed51d477ca6922a97d2ed85e42dfb487f2331557609005d676b44b",
+      "upstream": {
+        "title": "Default the day of the month to 1 in `strptime/1`",
+        "body": "`strptime/1` starts from a zeroed `struct tm`, so a format without `%d` leaves the day of the month at 0, and `mktime` reads day 0 as the last day of the previous month:\n\n```\n$ jq -nc '\"2024-06\" | strptime(\"%Y-%m\") | ., todate'\n[2024,5,0,0,0,0,5,151]\n\"2024-05-31T00:00:00Z\"\n$ jq -nc '\"2024\" | strptime(\"%Y\") | todate'\n\"2023-12-31T00:00:00Z\"\n```\n\nA time-only format also leaks the weekday and day-of-year placeholders (8 and 367), because they are only filled in when the day is non-zero:\n\n```\n$ jq -nc '\"10:15\" | strptime(\"%H:%M\")'\n[1900,0,0,10,15,0,8,367]\n```\n\nThis sets the day to 1 before calling `strptime()`, as Python's `datetime.strptime` and gojq do. Formats with `%d`, `%j` or a week number still set the day themselves.\n\nWith the day set, `\"10:15\"` lands on 1900-01-01, and `set_tm_wday` returned Sunday for it: it steps the year back for January and February without borrowing from the century, so those months of 1900 and 2100 were wrong (its comment said so). It now borrows. I compared it with `gmtime()` for every day from 1900-01-01 to 2101-12-31.\n\nThe bundled `strptime` (Windows, or no system `strptime`) only works out the day of the year from a full date, and jq only filled in the weekday on that path, so `367` still came out for `\"%Y-%m\"`. It now fills in the day of the year too.\n\nAfter:\n\n```\n$ jq -nc '\"2024-06\" | strptime(\"%Y-%m\") | ., todate'\n[2024,5,1,0,0,0,6,152]\n\"2024-06-01T00:00:00Z\"\n$ jq -nc '\"10:15\" | strptime(\"%H:%M\")'\n[1900,0,1,10,15,0,1,0]\n```\n\nThe new tests in `tests/jq.test` fail on master and pass with this change. `make check` passes on Linux, and `tests/jq.test` also passes on Linux with a build forced onto the bundled `strptime`. Not run on macOS, BSD or Windows.\n"
+      }
+    },
+    {
+      "id": "libarchive",
+      "repository": "libarchive/libarchive",
+      "pr": 3637,
+      "base": "d9d8e47f94791a64e7ed856b70a13e297a98044f",
+      "gold": "7574249bdc19f34c63b52ef0102d056f4fb7ba39",
+      "first_commit": "2026-10-06T17:23:12Z",
+      "created_at": "2026-10-06T20:54:14Z",
+      "merged_at": "2026-10-28T04:15:54Z",
+      "merged_diff_sha256": "da1151996447b738a23799f820cb1335c52a56734b5e0d704955d2de89ac0993",
+      "prompt": "After reading the end of a possibly multi-volume archive, the reader repeatedly seeks to determine its total size. Avoid redundant end seeks when the size is already known. Preserve normal single- and multi-volume reads, seek errors, and errors from opening a missing volume.",
+      "probe": "checks/libarchive.c",
+      "probe_sha256": "f4fa70c7ed1b65d834c70d77bf65b2c1ed2f2bec6679747df67500034961d5a2",
+      "probe_build": "cmake=/deps/lib/cmake/data/bin/cmake; $cmake -S . -B build-panel -DENABLE_TEST=OFF -DENABLE_CPIO=OFF -DENABLE_CAT=OFF && $cmake --build build-panel -j2 --target archive && cc -Ilibarchive /probe.c -Lbuild-panel/libarchive -Wl,-rpath,/work/build-panel/libarchive -larchive -o build-panel/probe",
+      "probe_run": "build-panel/probe",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "a40c94713c77152a51a22415b09ff96775bd38bf9624a8f7141f184fcabf8268"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "142fa3acd7bdfb0d036cc56d12d4a63eedff3b3dec21bf2c1e89195c44cd9f1b"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "0afaf50c787c58ab04f73d630335b53c80cd4ebce9ea7841f8c6fc444429bd3f"
+          }
+        },
+        "merged": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "bd624cdbaecac3f43c73f00fec60d53ce8a3503260b42ce0faf0351429a56c3c"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "142fa3acd7bdfb0d036cc56d12d4a63eedff3b3dec21bf2c1e89195c44cd9f1b"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "9df78a586b8c7f335f1203a7050f380b163d90b637221de11f93e743cbe3d65b"
+          }
+        }
+      },
+      "initial_receipt_sha256": "ef1cb8ecb32e5a84cb6bb53f63b1fbef12e91e12a2c0dff3baefa0f0b8f8d6a7",
+      "upstream": {
+        "title": "read: Reduce amount of SEEK_SET seeks",
+        "body": "We don't have to seek to the end as often as we currently do: As soon as we have reached the end of all client objects, we know the total size of the (multi volume) archive. Retrieve that information without seeking again.\r\n\r\nAccessing a non-archive file before:\r\n```\r\nstrace -f bsdtar -tvf unzip/bsdunzip-cmdline.o\r\n```\r\n```\r\nopenat(AT_FDCWD, \"unzip/bsdunzip-cmdline.o\", O_RDONLY|O_CLOEXEC) = 3\r\nfcntl(3, F_GETFD)                       = 0x1 (flags FD_CLOEXEC)\r\nfstat(3, {st_mode=S_IFREG|0644, st_size=8944, ...}) = 0\r\nread(3, \"\\177ELF\\2\\1\\1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\1\\0>\\0\\1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 65536) = 8944\r\nread(3, \"\", 65536)                      = 0\r\nlseek(3, 0, SEEK_END)                   = 8944\r\nlseek(3, 7088, SEEK_SET)                = 7088\r\nread(3, \"\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 65536) = 1856\r\nread(3, \"\", 65536)                      = 0\r\nlseek(3, 0, SEEK_END)                   = 8944\r\nlseek(3, 0, SEEK_SET)                   = 0\r\nread(3, \"\\177ELF\\2\\1\\1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\1\\0>\\0\\1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 65536) = 8944\r\nbrk(0x55732ce72000)                     = 0x55732ce72000\r\nread(3, \"\", 65536)                      = 0\r\nlseek(3, 0, SEEK_END)                   = 8944\r\nlseek(3, 8944, SEEK_SET)                = 8944\r\nlseek(3, 0, SEEK_END)                   = 8944\r\nlseek(3, 0, SEEK_SET)                   = 0\r\nread(3, \"\\177ELF\\2\\1\\1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\1\\0>\\0\\1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 65536) = 8944\r\nclose(3)                                = 0\r\n```\r\n\r\nAccessing it with PR applied:\r\n```\r\nstrace -f bsdtar -tvf unzip/bsdunzip-cmdline.o\r\n```\r\n```\r\nopenat(AT_FDCWD, \"unzip/bsdunzip-cmdline.o\", O_RDONLY|O_CLOEXEC) = 3\r\nfcntl(3, F_GETFD)                       = 0x1 (flags FD_CLOEXEC)\r\nfstat(3, {st_mode=S_IFREG|0644, st_size=8944, ...}) = 0\r\nread(3, \"\\177ELF\\2\\1\\1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\1\\0>\\0\\1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 65536) = 8944\r\nread(3, \"\", 65536)                      = 0\r\nlseek(3, 0, SEEK_END)                   = 8944\r\nlseek(3, 7088, SEEK_SET)                = 7088\r\nread(3, \"\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 65536) = 1856\r\nread(3, \"\", 65536)                      = 0\r\nlseek(3, 0, SEEK_SET)                   = 0\r\nread(3, \"\\177ELF\\2\\1\\1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\1\\0>\\0\\1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 65536) = 8944\r\nbrk(0x556cb9445000)                     = 0x556cb9445000\r\nread(3, \"\", 65536)                      = 0\r\nlseek(3, 8944, SEEK_SET)                = 8944\r\nlseek(3, 0, SEEK_SET)                   = 0\r\nread(3, \"\\177ELF\\2\\1\\1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\1\\0>\\0\\1\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 65536) = 8944\r\nclose(3)                                = 0\r\n```\r\n\r\nWith additionally applied https://github.com/libarchive/libarchive/pull/3636, the last remaining `lseek(3, 0, SEEK_END)` call would be gone for this file as well. It really depends if a bidder reaches EOF before some format bidder starts seeking.\r\n\r\nUpcoming changes based on these two PRs keep buffers as long as possible and will remove all lseeks in this example, so stay tuned! :)"
+      }
+    },
+    {
+      "id": "marked",
+      "repository": "markedjs/marked",
+      "pr": 4131,
+      "base": "2d3899bf7c9e604805c4937b16dd0022480e64ce",
+      "gold": "15f59bb88bd462876cbc3af075baf73ec9337e31",
+      "first_commit": "2026-10-11T03:34:26Z",
+      "created_at": "2026-10-11T03:37:48Z",
+      "merged_at": "2026-10-26T05:55:17Z",
+      "merged_diff_sha256": "dfd120138a2be894aff8fc245913cc12c61e93afbf0763d27b8cb3cef435d38a",
+      "prompt": "Inline formatting nested inside an image description can leak Markdown syntax into the HTML alt attribute. Render the image description as plain text, including nested emphasis and code spans. Preserve text content, escaping and the existing image output.",
+      "probe": "checks/marked.mjs",
+      "probe_sha256": "b6868207bf199ab20c62d5d8bb1b6339a2e58a594b922de74e2a0da09990deb9",
+      "probe_build": "npm run build:esbuild",
+      "probe_run": "node /probe.mjs",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "9dbec7f8cf527da95aecbda20fce977a0ba1e0c3d1a707278067f572f30d5954"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "a497db20ca25dfeb6d03efd0c15a6973c4030315d077152889063992c7245daa"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "f12204061a5c91f063d5a9778a14557cdaaa0d8fee8b4f1b9c9a95ade6243d1b"
+          }
+        },
+        "merged": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "9dbec7f8cf527da95aecbda20fce977a0ba1e0c3d1a707278067f572f30d5954"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "a497db20ca25dfeb6d03efd0c15a6973c4030315d077152889063992c7245daa"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "a497db20ca25dfeb6d03efd0c15a6973c4030315d077152889063992c7245daa"
+          }
+        }
+      },
+      "initial_receipt_sha256": "cbb36a1922e191af161af26db31c48fd3202c53f70303a2684eb65a1c8ad07c4",
+      "upstream": {
+        "title": "fix: render nested image alt formatting as plain text",
+        "body": "**Marked version:** 18.1.0\n**Markdown flavor:** CommonMark / GFM\n\n## Description\n\nNested formatting in image descriptions leaves Markdown in the alt text.\n\n```md\n![**a `b`**](image.png)\n```\n\nExpected: `alt=\"a b\"`. Actual: ``alt=\"a `b`\"``.\n\nWalk the child tokens in the text renderer, as the normal renderer does. Code spans keep their literal contents. This matches CommonMark's plain-text image description behavior and follows #3668.\n\nAdded regressions for nested emphasis, code, deletion, links and images. `npm test` passes.\n\n## Contributor\n\n- [x] Tests exist to ensure functionality and minimize regression."
+      }
+    },
+    {
+      "id": "packaging",
+      "repository": "pypa/packaging",
+      "pr": 1471,
+      "base": "01fc80c47251ca5fead213e588d15b5d4b83b824",
+      "gold": "b635dc5e60d6fb8020416c6bab9421964bfa342a",
+      "first_commit": "2026-10-07T19:54:57Z",
+      "created_at": "2026-10-26T22:02:45Z",
+      "merged_at": "2026-10-27T16:06:02Z",
+      "merged_diff_sha256": "c85c6c3b790c1e71457620a8efb406a62bee1aad805937f067e7170b6d1e1629",
+      "prompt": "Determining whether two version ranges are disjoint does unnecessary work after an overlapping pair is found. Make this query stop at the first overlap and preserve results for disjoint ranges, touching boundaries and empty ranges.",
+      "probe": "checks/packaging.py",
+      "probe_sha256": "b6f26eaa9fd23e0045ea5c597fa98e933276353aa5b0cfe81b1e0cff2240d94f",
+      "probe_build": null,
+      "probe_run": "PYTHONPATH=src:/deps/lib python3 /probe.py",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "f7ffc93cc12466b573183af9229ef724659b19bcc781265a276789a68621a40e"
+          }
+        },
+        "merged": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "5f61c3fb409e77d465ecae78db264e36cd693b3aa02275e01fbdf93bdf0f1440"
+          }
+        }
+      },
+      "initial_receipt_sha256": "85fee840c0011248c67522c2b86b29f3686cb45e0d0b448ea02c8e019b2ba19e",
+      "upstream": {
+        "title": "perf(ranges): stop disjointness queries at the first overlap",
+        "body": "Another performance upstream from the vendored version of packaging in nab.\n\nDetermining if two ranges are disjoint can return early, vs. determining the intersection of two ranges, as well as not needing to construct an object. Saves about 11% time calculating disjointness in  nab benchmarks based on real world resolutions."
+      }
+    },
+    {
+      "id": "prometheus",
+      "repository": "prometheus/client_golang",
+      "pr": 2197,
+      "base": "f2138807ccd28ca1c9b347b02a2267ec31908991",
+      "gold": "74d21147c40a2c77276819a1ca372306c45e7754",
+      "first_commit": "2026-10-28T12:59:48Z",
+      "created_at": "2026-10-28T15:55:52Z",
+      "merged_at": "2026-10-29T06:37:41Z",
+      "merged_diff_sha256": "d827bab5c896b6a70fc07cb52991acc489b6f0cc558de2a07cb64712b5bf09c0",
+      "prompt": "Pushgateway job and grouping values containing spaces are encoded as though they were query strings. Make Push and Delete preserve spaces and literal plus signs when decoded from the URL path. Preserve the existing handling of slashes, empty values, dot segments and ordinary values.",
+      "probe": "checks/prometheus.sh",
+      "probe_sha256": "f5cbc45387958e8da570ffecff5528762162badf9d60d7a0d2a2b66f9527ef8e",
+      "probe_build": null,
+      "probe_run": "sh /probe.sh",
+      "grader_only_reference_files": {
+        "prometheus/push/push_test.go": "3cbe333993b4ce208a196d142c39f262122a923be6707efca87ef1540b154def"
+      },
+      "initial_calibration": {
+        "base": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "344d454092bad9bd0e846561eb40f5bfbd424efb9d7fba551e8ebee35d15b282"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "ac1a21af7602d84823675d41e105275310f45ae9dc886ddaf2fcd5cc2d8c5e5c"
+          }
+        },
+        "merged": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "fa5021bb8b10d0b862ce661f82ed328c8acff2f675a57aad2bd4da672f1fc42e"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "f08308075bd36dcd2bf6498704c5169ad0fe0550c3d7293f102f864f8bdcfa1c"
+          }
+        }
+      },
+      "initial_receipt_sha256": "5ec1485fc40d3608c9865cc84308a83ee23cab685a0abafcfc0c9872fb864ecd",
+      "upstream": {
+        "title": "push: path-escape job and grouping values",
+        "body": "`push.Pusher` builds the push URL with `encodeComponent`, which falls back to `url.QueryEscape` for the job name and grouping values. `QueryEscape` encodes a space as `+`, but `+` only means a space in query strings. In a URL path it is a literal plus sign.\n\nThe Pushgateway takes the job and grouping values from the decoded path through `prometheus/common/route`, so `push.New(url, \"test job\")` is stored as `job=\"test+job\"`, and a grouping value `a b+c` comes out as `a+b+c`. `Delete` builds the same URL, so it also targets the wrong group. I checked this against a `common/route` router with the Pushgateway's `/metrics/job/:job/*labels` route: on main it receives `job=\"test+job\"` and `labels=\"/instance/a+b+c\"`.\n\nThis change switches the fallback to `url.PathEscape`, which encodes a space as `%20` and decodes back to the original value. Values that contain `/`, are empty, or are `.` or `..` still use base64 as before, and values without a space decode to the same string as before.\n\nOne thing worth noting for release notes: anyone who already pushes a job or grouping value with a space has an existing group under the `+` form, and after this change pushes go to the correctly named group instead.\n\nI added two cases to the table test that sends pushes through `http.ServeMux` and checks the decoded path, and renamed it from `TestPushDotSegments` to `TestPushPathSegments` since it now covers more than dot segments. On main they fail with `Path = \"/metrics/job/test+job\", want \"/metrics/job/test job\"` and `Path = \"/metrics/job/testjob/instance/a+b+c\", want \"/metrics/job/testjob/instance/a b+c\"`, and they pass with the change. `go test -race ./prometheus/push/`, `go vet` and golangci-lint v2.14.0 with the repo config are clean.\n"
+      }
+    },
+    {
+      "id": "pytest",
+      "repository": "pytest-dev/pytest",
+      "pr": 15255,
+      "base": "ae37a013763e9c4a143245eda1acdc3c27961685",
+      "gold": "082ed70e314ee8e1ab117763d17fe801648f7508",
+      "first_commit": "2026-10-24T10:22:45Z",
+      "created_at": "2026-10-24T10:23:05Z",
+      "merged_at": "2026-10-25T17:50:00Z",
+      "merged_diff_sha256": "d3b2fb855c9c07a9d429fbe2dd5a3a3ed13ee75ce44c3d232f82a48ebb6b9b91",
+      "prompt": "Allocating numbered temporary directories repeatedly scans basetemp. Make TempPathFactory.mktemp and tmp_path allocate numbered directories without a full base-directory scan on every call. Preserve numbering by prefix, collision handling, normal cleanup and use by concurrent processes.",
+      "probe": "checks/pytest.py",
+      "probe_sha256": "3e3d628e36325fc85f08e0a456c0a3226748a69dd47558f10941db75d9a34c7a",
+      "probe_build": null,
+      "probe_run": "PYTHONPATH=src:/deps/lib python3 /probe.py",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "1bf5a3df6f070034e2da19c35d9d27c577b0771b801cbbc883ad48d6ff7b0b07"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "f9f9623e0012230be52aa1ea2aff0f9ac9b95c5606d44845a94800efaf5b4a90"
+          }
+        },
+        "merged": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "1bf5a3df6f070034e2da19c35d9d27c577b0771b801cbbc883ad48d6ff7b0b07"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "566e30ed3f34ddd75987cef176b3f05865daf448ef501d64017c630ba9eae5f7"
+          }
+        }
+      },
+      "initial_receipt_sha256": "50c1c4353f0d68ab3bb738a755796c01cbefed83313446efd27266bdae53ea26",
+      "upstream": {
+        "title": "tmpdir: hand out numbered dirs from a per-prefix counter",
+        "body": "<!-- claude-projects-attribution: {\"github_login\":\"RonnyPfannschmidt\"} -->\n_Requested by **Ronny** · [project thread](https://claude.ai/code/project/chan_016UJjZXYjfpXuyNsZWbXxvR?thread=cmsg_016UJjZXYjfpXuyNsZWbXxvRStBm5SmoryYY9KZJ4WBT64)_\n\n🤖 Written by Claude Opus 5.5 via Claude Code for the pytest maintainers; I prompted it, it did the work, I read it.\n\nCloses #15254.\n\n`TempPathFactory.mktemp()` and `tmp_path` used `make_numbered_dir()`, which lists the whole basetemp on every call to find the next free number. basetemp gains entries with every test (two directories and a `*current` symlink per test in the issue's reproducer), so a session does O(N²) work. At N=3000, profiling put 41 of 54 s in `find_prefixed`.\n\nThis PR is a simpler alternative to the stat-validated listing cache proposed in the issue. The factory keeps a per-prefix counter (`_next_number`, keyed by the lower-cased prefix):\n\n- `mktemp(numbered=True)`, and through it `tmp_path` and pytester, counts from 0 without listing basetemp. The factory always creates basetemp itself (a fresh `pytest-N`, or a `--basetemp` it has just wiped).\n- `mkdir` decides uniqueness. A name it fails on (a directory, file or dangling symlink already there, or a `PermissionError` on Windows for a name still being deleted) is skipped. After 10 failures in a row, basetemp is listed once to jump past the run. After 20, an `OSError` chained to the last error is raised, so a filesystem that reports every name as taken cannot make it loop forever.\n- `make_numbered_dir()` and its other callers (the `pytest-of-<user>` session root) are unchanged.\n\n## Behaviour differences\n\n- `mktemp` numbers are no longer \"greater than any existing one\". Existing names are skipped instead, and the docstring now says so. With a basetemp the factory owns, that only matters for directories something else creates there.\n- Numbers never go down. With main, a number freed by the `tmp_path` retention removal could be reused.\n- On a case-sensitive filesystem, a foreign `X2` no longer pushes `x` past 2, because `mkdir` decides the collision. Main matched the listing case-insensitively.\n\nCovered by tests: no listing in `mktemp`, unexpected entries (directory, file, dangling symlink), a run of 50 taken names (one listing), overlapping prefixes (`test_a` and `test_a1` both produce `test_a10`), the probing limit, and retries on other `OSError`s.\n\n## Numbers\n\nReproducer from the issue (`pytest -q -p no:cacheprovider`, noisy cloud box, wall-clock):\n\n| tests | main | this PR |\n|---|---|---|\n| 1000 | 3.9 s | ~3–4 s |\n| 2000 | 10.9 s | ~3.5 s |\n| 4000 | 37.3 s | ~7.5 s |\n\nRun time now grows linearly. What remains is mkdir/symlink syscalls.\n\n## Checklist\n\n- [x] Include new tests or update existing tests when applicable.\n- [x] Allow maintainers to push and squash when merging my commits.\n- [x] Add text like ``closes #XYZW`` to the PR description and/or commits.\n- [x] If AI agents were used, they are credited in `Co-authored-by` commit trailers.\n- [x] Create a new changelog file in the `changelog` directory.\n\nFull test suite passed locally (4662 passed). pre-commit is clean."
+      }
+    },
+    {
+      "id": "ripgrep",
+      "repository": "BurntSushi/ripgrep",
+      "pr": 3561,
+      "base": "9d07a922605313dc47b78b802c7b0616fd76d409",
+      "gold": "d19650f4fca84c0f65f4ec024b16200bf3d41c33",
+      "first_commit": "2026-10-15T16:44:26Z",
+      "created_at": "2026-10-15T17:10:39Z",
+      "merged_at": "2026-10-27T18:13:02Z",
+      "merged_diff_sha256": "b91c1f7671d5ef71ab1a7d25d6b577b202c66ef9d6ce61034db69430ea78a698",
+      "prompt": "Globset spends time searching whole paths for filename-only globs such as **/*.py[cod]. Make repeated matching independent of directory-prefix length when only the basename can match. Preserve path-separator behavior, matching results and globs that genuinely depend on the full path.",
+      "probe": "checks/ripgrep.sh",
+      "probe_sha256": "8dfacde03c45703c1f0b95b346aa08e1198d948c8775ef9ad7a14cdfb8e8aeec",
+      "probe_build": "sh /probe.sh",
+      "probe_run": "sh /probe.sh",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "f0302cd8baa0e2c36d7b1ddc3dbda7729b8c6944365e8f05107d6b6da16e3372"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "915db7c2cb824f257dbbb83bf9663d08081e4061a8a71473a652bfba5b6c5130"
+          }
+        },
+        "merged": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "360cdcc8c4fd5907aed50a2f765a17f8b8a8c1f2995aaf290c1c009f6374f1e8"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "7d5faf824da48b73473ece46de9e51a85dc122532784ec77d98ad12d0fe79dbf"
+          }
+        }
+      },
+      "initial_receipt_sha256": "b4d8a869834ab0733aac51ec1cc0b9e2028410b7a5bb7ccb1a454adbe9d63b1a",
+      "upstream": {
+        "title": "globset: match filename-only regexes against basenames",
+        "body": "We now match filename-only globs such as `**/.venv*` and `**/*.py[cod]` against the basename, avoiding a regex search over the full path. We use this strategy only when the filename pattern cannot match a path separator.\n\nOn Linux x86-64 against `3fce3b5`, building the Python ignore rules is about 23% faster. Warm incremental replay over Ruff paths improves 4–9%; replay over uv paths is flat in the default build and improves 2–4% with fat LTO. The default-build Ruff parallel walk is 3.7% slower.\n"
+      }
+    },
+    {
+      "id": "rspec",
+      "repository": "rspec/rspec",
+      "pr": 350,
+      "base": "311b5d262dc0e0656d6946878ee7ef407d66bab2",
+      "gold": "14c880461cf8e6eacd3020a4b72a067b289df96e",
+      "first_commit": "2026-10-07T23:14:54Z",
+      "created_at": "2026-10-07T21:26:51Z",
+      "merged_at": "2026-10-09T10:57:32Z",
+      "merged_diff_sha256": "6c4817b10867463de243aa1f28150cf1da1282c76124db3bda5bb644fa25b62f",
+      "prompt": "After stub_const or hide_const is reset, Ruby can report the helper as a constant's source location. Restore both the original value and its original source location. Preserve behavior for nested constants and constants with no Ruby source location.",
+      "probe": "checks/rspec.rb",
+      "probe_sha256": "7a1d4372379168491e9149a7f22c1ad6c07884402400efd6a740b98fffe15e7e",
+      "probe_build": null,
+      "probe_run": "RUBYLIB=rspec-mocks/lib:rspec-support/lib ruby /probe.rb",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "4096679de34cae452336ac8de174486c24d332b1161e4d92148840e0207423e9"
+          }
+        },
+        "merged": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "bab4ead095f6ac81f21d56eb744c912a49f9d49170c6651309b790f6ddc52f9c"
+          }
+        }
+      },
+      "initial_receipt_sha256": "b21c0d892879f680805cb2b399b9be102b383e1f4f39b2023accfb0194e46f8f",
+      "upstream": {
+        "title": "Restore const_source_location after stub_const/hide_const reset",
+        "body": "When a stubbed or hidden constant is reset, rspec-mocks restores it with `const_set`, and Ruby records the caller of `const_set` as the constant's source location. After any `stub_const`/`hide_const` of a loaded constant, `Object.const_source_location` points at `mutate_const.rb` for the rest of the process instead of the file that defined the constant.\r\n\r\nRecord the constant's source location when it is mutated, and on reset perform the `const_set` from a lambda evaluated at that file and line, so the restored constant keeps its original location. Constants without a Ruby source location (defined in C) fall back to a plain `const_set`.\r\n\r\nFixes rspec/rspec-mocks#1554"
+      }
+    },
+    {
+      "id": "runner-space",
+      "repository": "justinthelaw/maximize-github-runner-space",
+      "pr": 49,
+      "base": "ab8cbab7abef3d8a2565cc7827c22ffd462202be",
+      "gold": "febfb12c55c6954ca53e1501e66118552cb3fd52",
+      "first_commit": "2026-08-18T13:57:54Z",
+      "created_at": "2026-08-18T13:58:41Z",
+      "merged_at": "2026-08-18T15:16:58Z",
+      "merged_diff_sha256": "0150144021eb8e77dd653e8494dd08f77229212d953247b34584738fb45ce2c7",
+      "prompt": "Positive swap sizes smaller than one MiB can round down to zero bytes and silently disable swap. Reject all positive sub-MiB values, including very small decimal quantities. Keep an explicit zero as the opt-out and preserve existing rounding and unit aliases for valid sizes.",
+      "probe": "checks/runner-space.mjs",
+      "probe_sha256": "3f6cbd1e36f8cfdef32ad11b2d322177e1c1b2bd58fc2663c0f92974612f9c6c",
+      "probe_build": "node node_modules/typescript/bin/tsc --project tsconfig.build.json",
+      "probe_run": "node /probe.mjs",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "e2c0093a1a363070a04c0ea8518e9e144f78e8ec9628b534557e01162d6c82c7"
+          }
+        },
+        "merged": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "895e7f834f4878aa62d3de7e1ed28b8dc16dc7cbcac0fd985e54b24bb9ca30dc"
+          }
+        }
+      },
+      "initial_receipt_sha256": "3f146f28dc6bb7f8f8aa6078a9734c3f9b0525fa763480602f1da35adf6e4f9d",
+      "upstream": {
+        "title": "fix: reject sub-mebibyte swap sizes",
+        "body": "## Summary\n- Fix swapfile-size parsing so a positive value that rounds below 1 MiB cannot be interpreted as zero (which would remove swap).\n- Add regression coverage for the root parsing bug.\n- Upgrade pre-commit to 4.6.2 in CI and the repository minimum.\n- Refresh the committed ncc distribution bundle.\n\n## Validation\n- TypeScript typecheck: passed\n- 119 Node tests: passed\n- Prettier check: passed\n- npm audit --audit-level=moderate: 0 vulnerabilities\n- node --check dist/index.js: passed\n- Generated dist parity: verified against the clean build before commit"
+      }
+    },
+    {
+      "id": "sympy",
+      "repository": "sympy/sympy",
+      "pr": 30885,
+      "base": "36e94607e83b672e423e6b17ab978261831f4613",
+      "gold": "6134f599e14a0a7cd857d801fdc8636e72bd7253",
+      "first_commit": "2026-10-29T10:56:22Z",
+      "created_at": "2026-10-29T11:19:43Z",
+      "merged_at": "2026-10-29T11:58:56Z",
+      "merged_diff_sha256": "3636a7842a6b61ccf0cc445736b4dfb383853b8302176d22ab256ab176ff030e",
+      "prompt": "Simplifying a complemented univariate interval can change whether its endpoints are included. Preserve truth values at open and closed endpoints, including combinations of multiple excluded intervals. Keep existing simplification behavior for ordinary intervals.",
+      "probe": "checks/sympy.py",
+      "probe_sha256": "8aa45087cc86cc4bc978b8bf48b31164bd7f26ea091bc3524c9337870c5ac71c",
+      "probe_build": null,
+      "probe_run": "PYTHONPATH=.:src:/deps/lib python3 /probe.py",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "5a1af82cabdaf1fbdea8d5ab795b1594b9eaaa0510c5358e4e84e43beb72dd7a"
+          }
+        },
+        "merged": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      "initial_receipt_sha256": "09535e73010f7fba86e7d77c6ad2e686440637b94365233835d2a15ab25c857a",
+      "upstream": {
+        "title": "logic: Fix endpoint inclusion in simplify_univariate",
+        "body": "<!-- DO NOT DELETE OR REPLACE THIS TEMPLATE or the PR will be closed.\n\nRead our Policy on AI Generated Code and Communication at\nhttps://docs.sympy.org/dev/contributing/ai-generated-code-policy.html.\n\nAs required in the policy do not use AI-generated text to complete the PR\ndescription below or the PR will be closed. Follow the instructions in the\ntemplate below and keep all section headings or the PR will be closed.\n\nThe PR title above should be a short description of what was changed. Do not\ninclude the issue number in the title. -->\n\n#### References to other Issues or PRs\n\n<!-- If there is an issue related to this PR, include a link to the issue here.\nIt is important not to waste reviewer's time by skipping this section.\n\nIf this pull request fixes an issue, write \"Fixes #NNNN\" in that exact format,\ne.g. \"Fixes #1234\" (see https://tinyurl.com/auto-closing for more information).\n\nIf this pull request does not completely fix the issue, write \"See #NNNN\", e.g.\n\"See #1234\". Do not write \"partially fixes #NNNN\" or use \"fix\", \"resolve\"/\"resolves\",\n\"close\"/\"closes\" (or any form of these words) ahead of the issue number, since\nGitHub's auto-close parser matches those keywords next to a number and will close\nthe issue regardless of what precedes or follows them. -->\n\nFixes #30884\n\n#### Brief description of what is fixed or changed\n\nFixed a bug in `simplify_univariate` inducing wrong simplifications, such as `~((x > 2) & (x < 5))` to `(x >= 5) | (x < 2)` instead of `(x >= 5) | (x <= 2)`.\n\n\n#### Other comments\n\n\n#### AI Generation Disclosure\n\n<!-- If this pull request includes AI-generated code or text, please disclose\nthe tool used and specify which lines were generated. Disclosure is not\nrequired for minor assistive tasks, such as spell-checking or code reviewing,\nin primarily human-authored work. Otherwise, write \"NO AI USE\" in the text area\nbelow.\n\nDO NOT just delete this AI section of the PR template and do not leave this\nblank, or the PR will be closed. If you write \"NO AI USE\" and the code looks\nlike it was generated by AI then the PR will be closed. -->\n\nAll the code in this branch was generated by Claude Opus 5.5 (and reviewed manually).\n\n#### Release Notes\n\n<!-- Write the release notes for this release below between the BEGIN and END\nstatements. The basic format is a bulleted list with the name of the subpackage\nand the release note for this PR. For example:\n\n* solvers\n  * Added a new solver for logarithmic equations.\n\n* functions\n  * Fixed a bug with log of integers. Formerly, `log(-x)` incorrectly gave `-log(x)`.\n\n* physics.units\n  * Corrected a semantical error in the conversion between volt and statvolt which\n    reported the volt as being larger than the statvolt.\n\nor if no release note(s) should be included use:\n\nNO ENTRY\n\nSee https://github.com/sympy/sympy/wiki/Writing-Release-Notes for more\ninformation on how to write release notes. The bot will check your release\nnotes automatically to see if they are formatted correctly. -->\n\n<!-- BEGIN RELEASE NOTES -->\n* logic\n  * Fixed `simplify` giving wrong endpoint inclusion for some univariate boolean conditions, e.g. `simplify(~((x > 2) & (x < 5)))` gave `(x >= 5) | (x < 2)` instead of `(x >= 5) | (x <= 2)`.\n<!-- END RELEASE NOTES -->\n"
+      }
+    },
+    {
+      "id": "werkzeug",
+      "repository": "pallets/werkzeug",
+      "pr": 3338,
+      "base": "ec95ee993a7975460c2e6468ebeccdd7c67386ba",
+      "gold": "b73dce5a2ce14f7c7fd645699d1d878de48d2948",
+      "first_commit": "2026-10-26T02:58:40Z",
+      "created_at": "2026-10-26T03:01:24Z",
+      "merged_at": "2026-10-26T03:13:49Z",
+      "merged_diff_sha256": "b94d0881e227f56efc2dcc31d3d72ee902f21ab603fd4a5047dbf63e3d49c56b",
+      "prompt": "Improve MIME accept-header matching and cookie parsing for long inputs. Reduce repeated parsing and unnecessary backtracking while preserving MIME parameter ordering, best-match semantics, and valid cookie and malformed-input behavior.",
+      "probe": "checks/werkzeug.py",
+      "probe_sha256": "756a8ffc32312b161d3d7cbd02bacd3f16e2663a33f5990d29495407d66cc13c",
+      "probe_build": null,
+      "probe_run": "PYTHONPATH=src:/deps/lib python3 /probe.py",
+      "grader_only_reference_files": {},
+      "initial_calibration": {
+        "base": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "dd10c1a2edebccae9819f26263cb88b0454f632e694c617be3b8d806483e0570"
+          },
+          "contract": {
+            "exit": 42,
+            "log_sha256": "dd10c1a2edebccae9819f26263cb88b0454f632e694c617be3b8d806483e0570"
+          }
+        },
+        "merged": {
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "acb714e3f4cc1b74da0058ac02140656961cdf9ef66ec00294e743df4586cd28"
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "acb714e3f4cc1b74da0058ac02140656961cdf9ef66ec00294e743df4586cd28"
+          }
+        }
+      },
+      "initial_receipt_sha256": "6f700591c717c0b6bd03fe3f59035e326143cb752e75a6898b0245452352b02d",
+      "upstream": {
+        "title": "improve parsing performance",
+        "body": "- `parse_cookie` uses possessive quantifiers now to avoid any unnecessary backtracking. These were added in Python 3.11.\n- `_normalize_mime` uses `str.split` instead of `re.split`."
+      }
+    }
+  ]
+}

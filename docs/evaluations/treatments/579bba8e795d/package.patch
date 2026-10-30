@@ -1,0 +1,76 @@
+diff --git a/plugins/develop/AGENTS.md b/plugins/develop/AGENTS.md
+--- a/plugins/develop/AGENTS.md
++++ b/plugins/develop/AGENTS.md
+@@ -10,7 +10,7 @@
+ 
+ ## Review guidelines
+ 
+-When a passing test could miss the behavior it claims to cover, check whether it catches a plausible defect and still passes after a harmless refactor. Tie findings to the observed results and identify any untested case. The [test-quality controls](tests/evaluations/quality.md) give a bounded example.
++When a passing test could miss the behavior it claims to cover, check whether it catches a plausible defect and still passes after a harmless refactor. Tie findings to the observed results and identify any untested case.
+ 
+ ## Verify and release
+ 
+@@ -26,7 +26,7 @@
+ 
+ Run `git diff --check` and the [contribution checks](../../docs/CONTRIBUTING.md#validation) from the repository root. Commit the source metadata and generated manifest together. For detached installed payloads, omit `--marketplace-root`; run fixture-writing package tests on a disposable copy outside the installed cache.
+ 
+-For Develop changes, follow [behavioral testing](AGENTS.test.md): observe fresh ephemeral agents on affected scenarios before relying on unit-test results. Before publication, also check affected packaged references/helpers from an unrelated working directory and changed artwork at actual display sizes. Inspect actual artifacts; structure checks, text matching and simulated decisions do not prove agent behavior, installation, live publication or deployment. Commit only scoped changes, update the plugin version when releasing, and verify the same Git revision on each installed surface.
++For changes to workflow behavior, observe fresh agents on the affected tasks. Before publication, also check affected packaged references/helpers from an unrelated working directory and changed artwork at actual display sizes. Inspect actual artifacts; structure checks, text matching and simulated decisions do not prove agent behavior, installation, live publication or deployment. Commit only scoped changes, update the plugin version when releasing, and verify the same Git revision on each installed surface.
+ 
+ ## Host metadata and activation
+ 
+@@ -36,7 +36,7 @@
+ 
+ The [context guard](docs/context-guard.md) additionally requires native hook review/trust and supported local orchestration and execution. Cloud orchestration does not run plugin command hooks, even with local tools. Keep hook-bearing distribution in the existing Git marketplace; it is not eligible for the public plugin directory. Skill portability does not establish hook support on another host. Do not install, enable or trust hooks as a side effect of source validation.
+ 
+-In Codex, installed invocation uses `$develop:develop` or the exact `/skills` entry; an unnamespaced repository-local copy uses `$develop`. Put whitespace before task text; a trailing colon becomes part of the skill name. Catalog metadata does not prove instruction/reference consumption. Follow the [native activation trials](tests/evaluations/native-hosts.md), including positive and unrelated-task controls. Repository-local `.agents/skills` authoring tests loading separately from marketplace installation.
++In Codex, installed invocation uses `$develop:develop` or the exact `/skills` entry; an unnamespaced repository-local copy uses `$develop`. Put whitespace before task text; a trailing colon becomes part of the skill name. Catalog metadata does not prove instruction/reference consumption. Check native activation on both an explicitly invoked task and an unrelated task. Repository-local `.agents/skills` authoring tests loading separately from marketplace installation.
+ 
+ Other hosts use their documented loading and account/workspace distribution flows. Verify filesystem access, native provider tools and fresh independent reviewer capability; do not assume another host's commands or permissions. Report required reviewer matching as unverified when the runtime cannot establish it.
+ 
+diff --git a/plugins/develop/docs/context-guard.md b/plugins/develop/docs/context-guard.md
+--- a/plugins/develop/docs/context-guard.md
++++ b/plugins/develop/docs/context-guard.md
+@@ -98,8 +98,7 @@
+ promise rejection. The contract does **not** guarantee the resolved value/type:
+ field access, aggregation and explicit printing require actual host testing, and
+ scripts may re-emit large data. Synthetic tests prove handler/storage behavior,
+-not native activation or code-mode compatibility. See the
+-[native trials](../tests/evaluations/native-hosts.md#context-hook-trials).
++not native activation or code-mode compatibility.
+ 
+ The sole runtime manifest is `.codex-plugin/plugin.json`; root `plugin.json`
+ would suppress native hooks. Hook commands use `-I -B` and a fixed bootstrap;
+diff --git a/plugins/develop/skills/AGENTS.md b/plugins/develop/skills/AGENTS.md
+--- a/plugins/develop/skills/AGENTS.md
++++ b/plugins/develop/skills/AGENTS.md
+@@ -4,5 +4,5 @@
+ - Put shared defaults and handoffs in `develop/references/contract.md`, and domain mechanics in their owning skills.
+ - Repository entry points reuse the shared invocation and adversarial gates. Standalone Kaizen, adversarial reviews and audit-only `upgrade-codex` follow their entrypoint's completion policy; requested implementation uses the shared gates. Avoid recursive reviews.
+ - Preserve original/steering user intent, fresh non-forked review, and original model/effort matching. Never turn review into permission to bypass host controls.
+-- Update `agents/openai.yaml` with each skill's behavior; keep references relative and packaged. Test changes with fresh-context [scenarios](../tests/scenarios.md).
++- Update `agents/openai.yaml` with each skill's behavior; keep references relative and packaged. Test changed behavior in a fresh context.
+ - Keep each `assets/icon.png` square and transparent. Match existing Roux icons' chocolate/cream palette, character proportions and crisp pixel edges; vary only the clear task prop. Declare the asset in both `icon_small` and `icon_large` in `agents/openai.yaml`. Preserve approved pixels and verify the whole set together at 48 px and smaller.
+diff --git a/plugins/develop/skills/adversarial-loop/references/review-packet.md b/plugins/develop/skills/adversarial-loop/references/review-packet.md
+--- a/plugins/develop/skills/adversarial-loop/references/review-packet.md
++++ b/plugins/develop/skills/adversarial-loop/references/review-packet.md
+@@ -1,6 +1,6 @@
+ # Fresh reviewer packet
+ 
+-Fill task-relevant fields with a bounded review contract. Pass relevant literal user messages with secrets and unrelated private content redacted, not a paraphrase alone or a conversation dump. Mark absent optional inputs as not provided. Use an explicit fresh-context tool option and documented original-model/effort matching outside the prompt as well; prose cannot configure the runtime.
++Fill task-relevant fields with a bounded review contract. Pass relevant literal user messages with secrets and unrelated private content redacted, not a paraphrase alone or a conversation dump. Group absent optional inputs once. When a reviewer can open the pinned source, send its path and the relevant check result. Include excerpts when the reviewer needs them to reproduce a finding. Use an explicit fresh-context tool option and documented original-model/effort matching outside the prompt as well; prose cannot configure the runtime.
+ 
+ ```text
+ Role: [intent reviewer | artifact reviewer, specialty]
+diff --git a/plugins/develop/skills/iterate/references/implementation.md b/plugins/develop/skills/iterate/references/implementation.md
+--- a/plugins/develop/skills/iterate/references/implementation.md
++++ b/plugins/develop/skills/iterate/references/implementation.md
+@@ -5,7 +5,7 @@
+ 1. Establish the requested behavior, affected owners/interfaces and a concrete success check. Resolve [user standards](../../develop/references/contract.md#user-standards) once, then read current source using [focused source reading](documentation.md#focused-source-reading): start with the owner, one caller and a relevant test. Widen the search to resolve a specific question or meet a coverage requirement. Preserve complete coverage where required. For material requirements, connect each acceptance criterion to the evidence that will establish it; keep missing evidence explicit. Separate user requirements from assumptions; ask only when a missing decision materially changes the solution.
+ 2. Apply [applicable planning](../../develop/references/contract.md#applicable-planning), including on direct invocation. Consume one current accepted, explicitly waived or delegated-review brief; combine engineering/interface decisions. Choose the smallest complete readable change and preserve its owners, contracts, invariants and acceptance checks. Revalidate changed assumptions rather than repeat planning or human approval at handoffs.
+ 3. Reuse a suitable checkout/branch. Isolate work when concurrent or unrelated changes could interfere, using native workspace tools or worktrees. Preserve existing work and keep writers on disjoint files; parallelize only independent tasks.
+-4. Reproduce a defect before changing it. Compare a known-good baseline and trace the actual failing contract. For rendered surfaces, use [visual validation](visual-validation.md) to inspect the actual DOM or native structure and screenshots, reproduce the selected issue and preserve unrelated views and host controls. For behavior changes, use a regression that fails for the relevant behavior and passes after the smallest fix. Test the outcome a caller can observe. Use a unit test for a pure rule and the real boundary for integration behavior, such as selecting a literal filename in a Git patch. Run changed documentation examples against safe fixtures. Reversible prose/metadata changes need proportionate artifact checks.
++4. Reproduce a defect before changing it. Compare a known-good baseline and trace the actual failing contract. For rendered surfaces, use [visual validation](visual-validation.md) to inspect the actual DOM or native structure and screenshots, reproduce the selected issue and preserve unrelated views and host controls. For behavior changes, use a regression that fails for the relevant behavior and passes after the smallest fix. Trace each affected public entry point to an observable check. As soon as the edit is runnable, build the changed code and its tests together, repair the first actionable failure and rerun before handing the patch to reviewers. Run changed documentation examples against safe fixtures. Reversible prose/metadata changes need proportionate artifact checks.
+ 5. Apply DRY and SOLID through clear responsibilities and stable contracts with their existing owners. Give each shared rule one owner; trace decisions to its real consumers, preserved invariants and actual tests, including affected failure paths. Maintainability applies even when planning is waived. For example, a CLI and an API can reuse a retry limit while keeping their input parsers separate. Check the supported runtime, lockfile and current maintainer guide before choosing a library or syntax. Prefer a standard library when it supports the required behavior across that range. Use [bounded refactoring](refactoring.md) when requested or justified within the affected scope, not as automatic polishing. Preserve APIs and security controls; investigate unexpected failures before stacking retries or workarounds.
+ 6. Follow [validation evidence](validation.md) and the shared review checkpoints. A fresh result establishes only the artifact and environment actually tested. Hand authorized publication to [publication](publication.md); local completion does not imply deployment.
+ 

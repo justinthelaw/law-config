@@ -1,0 +1,39 @@
+{
+  "scope": "Assessor-only; original scores and states unchanged; diagnostic until separate official screen.",
+  "previous_registration_sha256": "c7452c2198d8bb41db3334fc65129a9259c4142081a85453c38085c5d9ff32ab",
+  "runner_sha256": "955fab47071de2d02665e15fdc09caa160aea09af3cc1ba8e7dbc1b11f84e5b4",
+  "source_sha256": "ef964bbe31faee6884025ac0cc64b969727934d7e37f44b60eac001bed59683a",
+  "fixtures": {
+    "test_test.py": "7da9e79e0d4e553261a6557f930e5a4c08431eab728b100127965ed69e426d89",
+    "capture.py": "a3e1ac6a4fbd98eaaba1c7b2a53bc524d378ec6e9b91f3f3ad7974f1efc5eb01",
+    "test_internal.py": "6e9a55d6e86de73f25025d5b442d2bfa085676360ed91d6c008d11c447219991"
+  },
+  "helper_source": "tmp/pr-quality-panel/consumer-suite-selection/docker-capture.py",
+  "helper_source_sha256": "a3e1ac6a4fbd98eaaba1c7b2a53bc524d378ec6e9b91f3f3ad7974f1efc5eb01",
+  "consumer_source_sha256": "2d58e8a3ed0b0f485ff4d26f5b38bf7011380d932edd14cbf4983df704a10913",
+  "consumer_test_sha256": {
+    "tests/test_internal.py": "6e9a55d6e86de73f25025d5b442d2bfa085676360ed91d6c008d11c447219991",
+    "tests/test_test.py": "7da9e79e0d4e553261a6557f930e5a4c08431eab728b100127965ed69e426d89"
+  },
+  "consumer_command": [
+    "python",
+    "-B",
+    "/evidence/capture.py",
+    "base-tests",
+    "consumer"
+  ],
+  "pytest_command": [
+    "python",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=/evidence/consumer-temp",
+    "--junitxml=/evidence/consumer.xml",
+    "tests/test_internal.py::test_wrapper_internals",
+    "tests/test_test.py::test_path_info_script_name_unquoting"
+  ],
+  "selftest_sha256": "a5bdc74171ae4924ccc7722796b7b72975b692912624fdfc8a51a292d43e22f7"
+}

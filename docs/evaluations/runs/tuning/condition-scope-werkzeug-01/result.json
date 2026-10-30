@@ -1,0 +1,918 @@
+{
+  "format": "law-config.eval-pilot/v1",
+  "name": "condition-scope-werkzeug-01",
+  "case": "werkzeug",
+  "repository": "pallets/werkzeug",
+  "pr": 3325,
+  "registration": {
+    "protocol": "develop-efficiency-pilot-v1",
+    "name": "condition-scope-werkzeug-01",
+    "case": "werkzeug",
+    "plans": {
+      "prior": {
+        "path": "runs/condition-scope-werkzeug-01-prior/plan.json",
+        "sha256": "13457f4e8b2dce68c2c66f1c8c79c8603fddef078ac206cd77150c5702f6fe56"
+      },
+      "candidate": {
+        "path": "runs/condition-scope-werkzeug-01-candidate/plan.json",
+        "sha256": "e299196a27d9f89bae5656e79e8a457ae9cbfc6f45d19a4e24c00583389beb7b"
+      }
+    },
+    "operator_sha256": "703b8cad2e19c3b69b6520ae07471b3bb1b4f058fd99d81132deaf02088db79e",
+    "cpus": [
+      6,
+      7
+    ],
+    "order": [
+      [
+        "candidate",
+        "develop"
+      ],
+      [
+        "prior",
+        "develop"
+      ],
+      [
+        "candidate",
+        "control"
+      ]
+    ],
+    "hypothesis": "condition-scope-werkzeug",
+    "tuning_policy_sha256": "589902e5ac1b940405e6f65707f3890987e02e4cc0986132382143fb494cce11",
+    "hypothesis_sha256": "f4ad51813101a6e1555b929c8793a4aa217628f0526e4705e019da54d42cdddc",
+    "falsifier": "Reject absent or late unit and preserved caller mapping, setup presented as behavior, any lost contract or full original module regression, missing required intent/artifact review, duplicate workflow, cost or wall time not strictly below matched parent, non-ready candidate, score tie/loss to stock or cost above stock. Missing proof is unsupported; retain partials. Reject lost prior verified behavior or required review, failure of either strict prior cost or wall improvement, non-ready candidate, or full-PR loss to pure. Missing measures or unverifiable review leave the comparison unestablished.",
+    "quality": "Three blind candidate/pure/merge rotations. Prior Develop soft PR quality is unknown.",
+    "goal": "A ready Develop PR strictly wins the full rubric against a terminal pure proposal at complete cost <= pure.",
+    "attempts": "One proposal per registered slot. All allocations including technical failures remain in the ledger."
+  },
+  "registration_sha256": "38ffb3daef0d8d75f83a9a9a2391b389e2c3b49d7a42512c1e4cf93834002696",
+  "result_sha256": "b72133786209402a67b744bad6c7eeeb9396dd13b251a6fd47b8cc367a837997",
+  "treatments": {
+    "prior": "7ed91df07062b0a88cab8cd5b5e74ee8a7c7e258afa2a42645b60e793ea68791",
+    "candidate": "acb1e02b18a075d68b2ecaad2dd25503948afc9647b94114260458accfc6bfab"
+  },
+  "treatment_components": {
+    "prior": {
+      "label": "superpowers-observable-caller",
+      "package_sha256": "239dccfc0fe4c090a777d8cf46216c99c57bc2bebc08eca013402215b65c7c28",
+      "plugin_hook_sha256": "2820cd4662b8438ba0654c55f9f24577fb8ec13bcc9ad362c598d8777b94ec1b",
+      "hook_sha256": {
+        "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+        "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+      },
+      "companion": {
+        "source": "https://github.com/openai/plugins",
+        "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+        "source_path": "plugins/superpowers",
+        "version": "6.3.0",
+        "manifest_sha256": "18eb497a5c3c5aade93fe1982db0fbd2ab23d4a428fc552da6ee3cc520c9706d",
+        "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+        "skills": {
+          "brainstorming": "74edf03ea6d24ef53db48677b93558d14a979bdf052ca3f57ecdca0c66791608",
+          "dispatching-parallel-agents": "1968923066f3b707eb01d1992cdf4c42284c3855f70253b9cd5000ff45fca13c",
+          "executing-plans": "c4c3d8b628c51114cd165fb8246fe02744cd8be180032328391252e653028d9b",
+          "finishing-a-development-branch": "8db5a922b242dd4e1bf824cb91c13b3e8d8e8a86d6ceaf7f0774eb9cce909d65",
+          "receiving-code-review": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438",
+          "requesting-code-review": "d71cc01ba56d2325cf8af5f7c11837819b63ecd57de0bfdb812f7f3ff7751df8",
+          "subagent-driven-development": "8dd1b8e698edec3700c6d89517dbe96febd3bacd3f6ea21c1a3569c62ea104b5",
+          "systematic-debugging": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787",
+          "test-driven-development": "bf1b8216e523851a411e91d429a7c1c2a173e79d88957bc78e348218d50edd54",
+          "using-git-worktrees": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd",
+          "using-superpowers": "30f2ab78e20ddc27ee7158ae8d4a2abe161c360981c7cc3548070913142d3dc3",
+          "verification-before-completion": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+          "writing-plans": "48508f44bbfd7d24b029fbf3a314f3cd14c9615599059366e922f47b8dc08cf2",
+          "writing-skills": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b"
+        }
+      }
+    },
+    "candidate": {
+      "label": "condition-scope-superpowers-modules",
+      "package_sha256": "a86479bd1141b6936fd11a06cab5d93d9804bfa4c2809283adba1eea5ec84318",
+      "plugin_hook_sha256": "51c5dbfe8f029dec6ce08e26d8af3a18919c635fee89e8fabe9019c483b52327",
+      "hook_sha256": {
+        "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+        "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+      },
+      "companion": {
+        "source": "https://github.com/openai/plugins",
+        "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+        "source_path": "plugins/superpowers",
+        "version": "6.3.0",
+        "manifest_sha256": "18eb497a5c3c5aade93fe1982db0fbd2ab23d4a428fc552da6ee3cc520c9706d",
+        "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+        "skills": {
+          "brainstorming": "74edf03ea6d24ef53db48677b93558d14a979bdf052ca3f57ecdca0c66791608",
+          "dispatching-parallel-agents": "1968923066f3b707eb01d1992cdf4c42284c3855f70253b9cd5000ff45fca13c",
+          "executing-plans": "c4c3d8b628c51114cd165fb8246fe02744cd8be180032328391252e653028d9b",
+          "finishing-a-development-branch": "8db5a922b242dd4e1bf824cb91c13b3e8d8e8a86d6ceaf7f0774eb9cce909d65",
+          "receiving-code-review": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438",
+          "requesting-code-review": "d71cc01ba56d2325cf8af5f7c11837819b63ecd57de0bfdb812f7f3ff7751df8",
+          "subagent-driven-development": "8dd1b8e698edec3700c6d89517dbe96febd3bacd3f6ea21c1a3569c62ea104b5",
+          "systematic-debugging": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787",
+          "test-driven-development": "bf1b8216e523851a411e91d429a7c1c2a173e79d88957bc78e348218d50edd54",
+          "using-git-worktrees": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd",
+          "using-superpowers": "30f2ab78e20ddc27ee7158ae8d4a2abe161c360981c7cc3548070913142d3dc3",
+          "verification-before-completion": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+          "writing-plans": "48508f44bbfd7d24b029fbf3a314f3cd14c9615599059366e922f47b8dc08cf2",
+          "writing-skills": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b"
+        }
+      }
+    }
+  },
+  "base": "15fc22b699ecacd04824092453c0cd2a8c4a3a67",
+  "merged": "28360ef872ae984cc08209cb333db5649ce977bc",
+  "prompt": "Implement the following task in this checkout and add relevant tests. Use your natural local workflow and verification tools. I waive interactive review of the local implementation plan and authorize you to proceed unattended. Follow all applicable repository requirements and complete any required independent review of consequential design or public contracts. Work offline and leave the proposed changes in the checkout. In your final message, put a concise PR title on the first line, followed by a blank line and a PR body explaining the change, motivation, verification actually performed and any material gaps.\n\nUpdate Response iterable handling. Recognize Sequence objects, recognize streamed non-sequences even if they have a length, and close the original iterable immediately on conversion. Deprecate mixed nonbytes chunks, Response.stream and automatically_set_content_length while preserving ordinary byte responses. Keep length calculation, warnings, user documentation and tests consistent.\n\nAvailable offline verification commands:\nPYTHONPATH=src:/deps/lib python -m compileall -q src/werkzeug\nPYTHONPATH=src:/deps/lib python -m pytest -q -o addopts= tests/test_wrappers.py",
+  "prompt_sha256": "2d2b01a70ce1822e55ece82a6f056088db9e39385a0a7c0a9651b7e95e4b829d",
+  "runtime_sha256": "aeb30a53e8554e5800f9e22f562231e6d5b84aa2f209d4593ffd9df79a0a4489",
+  "rubric_sha256": "0bdd8699f00ba1f5266927d7666bc2a117fa4873e113fdfa831da93cd2abbc08",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "rates": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "profiles": {
+    "candidate/develop": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "hooks",
+        "marketplaces",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {},
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [
+        "develop@law-config",
+        "superpowers@superpowers-local"
+      ],
+      "ephemeral": false,
+      "inventory_sha256": "ec10625cdca6ce33be8bf0226bc52e79b320867acb2a0f068b1270b66f82f3aa",
+      "input_sha256": "73db7085de0d027835572c560612ce77a17b3867706f512b7ebed5dcaf76edb7",
+      "config_sha256": "a2eedcc45874c0c5607e1a0d158cda1c700b105e7b4147c4912a45df5df670f4"
+    },
+    "prior/develop": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "hooks",
+        "marketplaces",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {},
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [
+        "develop@law-config",
+        "superpowers@superpowers-local"
+      ],
+      "ephemeral": false,
+      "inventory_sha256": "97f992b2b386d0d9f55452d2dcf830e2e63e8ccb4258e74efd7194637b3db761",
+      "input_sha256": "80b187c83565773e7173b38f7be0401fd06a7e10d6955aebf14fe7002a9d6603",
+      "config_sha256": "417d51fb0a700d60964c48e000bc0380dad6d55f43e95fcd5d20c8ceb7b3cf3d"
+    },
+    "candidate/control": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {},
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [],
+      "ephemeral": false,
+      "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+      "input_sha256": "af4098fd44eb1cf2325ef8bee9819d2e4e28105d08c7d6aa99e098a4f73c301b",
+      "config_sha256": "7723f687c5db64bea7a1eeb3ac4f21d49deb211048cca1cb32fe9c34fd8ace75"
+    }
+  },
+  "comparisons": {
+    "develop_control": {
+      "verdict": "develop",
+      "reason": "blinded rubric",
+      "score_delta": 21.25,
+      "votes": [
+        "develop",
+        "develop",
+        "develop"
+      ],
+      "order_sensitive": false
+    },
+    "develop_upstream": {
+      "verdict": "unresolved",
+      "reason": "missing or disputed evidence"
+    },
+    "control_upstream": {
+      "verdict": "unresolved",
+      "reason": "missing or disputed evidence"
+    }
+  },
+  "goal_win": false,
+  "submissions": {
+    "control": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "e299196a27d9f89bae5656e79e8a457ae9cbfc6f45d19a4e24c00583389beb7b",
+      "case_id": "werkzeug",
+      "role": "control",
+      "state": "completed",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=src:/deps/lib python -m compileall -q src/werkzeug",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "8797b690ac3d368ae53fcc16a3505dca5c47c79b110e38ae2f894a570b26b1d5",
+          "command": "PYTHONPATH=src:/deps/lib python -m pytest -q -o addopts= tests/test_wrappers.py",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "54bd20a612bcb896a05d1410a07a6cf9568ef4bea04aebd4a3103d03c6b8fa3e",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "54bd20a612bcb896a05d1410a07a6cf9568ef4bea04aebd4a3103d03c6b8fa3e",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/CHANGES.rst b/CHANGES.rst\nindex 5fee5f3..b212c69 100644\n--- a/CHANGES.rst\n+++ b/CHANGES.rst\n@@ -3,6 +3,14 @@\n Version 3.2.0\n -------------\n \n+-   ``Response`` recognizes all ``collections.abc.Sequence`` bodies as\n+    buffered. Other iterables are streamed even if they have a length.\n+    Converting a body to a list closes the original iterable immediately.\n+-   Non-bytes chunks in response iterables, ``Response.stream``, and setting\n+    ``Response.automatically_set_content_length`` are deprecated and will be\n+    removed in Werkzeug 4.0. Encode text chunks before yielding them. A single\n+    string or bytes body remains supported. Use ``io.BytesIO`` to build a body\n+    before passing it to the response instead of writing to ``response.stream``.\n -   Drop support for Python 3.9 and 3.10. :pr:`3098`\n -   Remove previous deprecated code: :pr:`3099`\n \ndiff --git a/docs/wrappers.rst b/docs/wrappers.rst\nindex 05d8066..0e228ae 100644\n--- a/docs/wrappers.rst\n+++ b/docs/wrappers.rst\n@@ -24,6 +24,34 @@ modify it multiple times. Set it to ``None`` or use ``del`` to unset the header.\n Each property below documents its type and what behaviors it has.\n \n \n+Response Bodies\n+---------------\n+\n+Pass a single string or bytes object to :class:`.Response` for a complete body.\n+Strings are encoded as UTF-8. For multiple chunks, pass a\n+:class:`collections.abc.Sequence` of bytes, such as a list or tuple. Werkzeug\n+can calculate the content length of a sequence without consuming a stream.\n+Other iterables are streamed, even if they define ``__len__``.\n+\n+Calling :meth:`.Response.get_data`, :meth:`.Response.make_sequence`, or\n+:meth:`.Response.calculate_content_length` may buffer a streamed iterable.\n+Conversion closes the original iterable immediately. :meth:`.Response.freeze`\n+also buffers and closes it, and sets the content length and ETag.\n+\n+.. deprecated:: 3.2\n+\n+    Non-bytes chunks are deprecated and will be removed in Werkzeug 4.0.\n+    Encode text chunks before yielding them, for example ``yield text.encode()``.\n+    Passing a single string as the body remains supported.\n+\n+    :attr:`.Response.stream` is deprecated. Write to an :class:`io.BytesIO`\n+    buffer and pass ``buffer.getvalue()`` to the response instead.\n+\n+    Setting :attr:`.Response.automatically_set_content_length` is deprecated.\n+    Content length will always be set when possible in Werkzeug 4.0. Use a\n+    streaming iterable when the content length should not be calculated.\n+\n+\n Wrapping a WSGI Application\n ---------------------------\n \ndiff --git a/src/werkzeug/wrappers/response.py b/src/werkzeug/wrappers/response.py\nindex c8a2f42..4de0151 100644\n--- a/src/werkzeug/wrappers/response.py\n+++ b/src/werkzeug/wrappers/response.py\n@@ -2,6 +2,8 @@ from __future__ import annotations\n \n import json\n import typing as t\n+import warnings\n+from collections.abc import Sequence\n from http import HTTPStatus\n from types import TracebackType\n from urllib.parse import urljoin\n@@ -24,6 +26,13 @@ if t.TYPE_CHECKING:\n \n def _iter_encoded(iterable: t.Iterable[str | bytes]) -> t.Iterator[bytes]:\n     for item in iterable:\n+        if not isinstance(item, bytes):\n+            warnings.warn(\n+                \"Response iterables must yield bytes. Yielding non-bytes is\"\n+                \" deprecated and will be removed in Werkzeug 4.0.\",\n+                DeprecationWarning,\n+                stacklevel=2,\n+            )\n         if isinstance(item, str):\n             yield item.encode()\n         else:\n@@ -37,10 +46,11 @@ class Response(_SansIOResponse):\n \n     The response body is flexible to support different use cases. The\n     simple form is passing bytes, or a string which will be encoded as\n-    UTF-8. Passing an iterable of bytes or strings makes this a\n-    streaming response. A generator is particularly useful for building\n-    a CSV file in memory or using SSE (Server Sent Events). A file-like\n-    object is also iterable, although the\n+    UTF-8. Passing a sequence of bytes makes a fixed-length response.\n+    Passing any other iterable of bytes makes a streaming response. A\n+    generator is particularly useful for building a CSV file in memory or\n+    using SSE (Server Sent Events). A file-like object is also iterable,\n+    although the\n     :func:`~werkzeug.utils.send_file` helper should be used in that\n     case.\n \n@@ -67,9 +77,9 @@ class Response(_SansIOResponse):\n             return response(environ, start_response)\n \n     :param response: The data for the body of the response. A string or\n-        bytes, or tuple or list of strings or bytes, for a fixed-length\n-        response, or any other iterable of strings or bytes for a\n-        streaming response. Defaults to an empty body.\n+        bytes, or a :class:`collections.abc.Sequence` of bytes, for a\n+        fixed-length response, or any other iterable of bytes for a streaming\n+        response. Defaults to an empty body.\n     :param status: The status code for the response. Either an int, in\n         which case the default status message is added, or a string in\n         the form ``{code} {message}``, like ``404 Not Found``. Defaults\n@@ -89,6 +99,15 @@ class Response(_SansIOResponse):\n         checks. Use :func:`~werkzeug.utils.send_file` instead of setting\n         this manually.\n \n+    .. deprecated:: 3.2\n+        Yielding non-bytes chunks from the response iterable will be removed\n+        in Werkzeug 4.0. Encode text chunks to UTF-8 before yielding them.\n+        Passing a single string as the body is still supported.\n+\n+    .. versionchanged:: 3.2\n+        Any :class:`collections.abc.Sequence` is considered buffered. Other\n+        iterables are streamed even if they define ``__len__``.\n+\n     .. versionchanged:: 2.1\n         Old ``BaseResponse`` and mixin classes were removed.\n \n@@ -124,15 +143,23 @@ class Response(_SansIOResponse):\n     #: .. versionadded:: 0.8\n     autocorrect_location_header: None = None\n \n-    #: Should this response object automatically set the content-length\n-    #: header if possible?  This is true by default.\n+    #: Whether to automatically set content length when possible.\n+    #: The default, ``None``, behaves as ``True``.\n+    #:\n+    #: .. deprecated:: 3.2\n+    #:     Will be removed in Werkzeug 4.0. Content length will always be set\n+    #:     when possible. Use a streaming iterable to avoid calculating it.\n     #:\n     #: .. versionadded:: 0.8\n-    automatically_set_content_length = True\n+    automatically_set_content_length: bool | None = None\n \n-    #: The response body to send as the WSGI iterable. A list of strings\n-    #: or bytes represents a fixed-length response, any other iterable\n-    #: is a streaming response. Strings are encoded to bytes as UTF-8.\n+    #: The response body to send as the WSGI iterable. A\n+    #: :class:`collections.abc.Sequence` of bytes represents a fixed-length\n+    #: response, any other iterable is a streaming response.\n+    #:\n+    #: .. deprecated:: 3.2\n+    #:     Non-bytes chunks will no longer be supported in Werkzeug 4.0.\n+    #:     Encode text chunks to UTF-8 before yielding them.\n     #:\n     #: Do not set to a plain string or bytes, that will cause sending\n     #: the response to be very inefficient as it will iterate one byte\n@@ -189,7 +216,7 @@ class Response(_SansIOResponse):\n         if self.is_sequence:\n             body_info = f\"{sum(map(len, self.iter_encoded()))} bytes\"\n         else:\n-            body_info = \"streamed\" if self.is_streamed else \"likely-streamed\"\n+            body_info = \"streamed\"\n         return f\"<{type(self).__name__} {body_info} [{self.status}]>\"\n \n     @classmethod\n@@ -295,8 +322,8 @@ class Response(_SansIOResponse):\n         \"\"\"\n         if isinstance(value, str):\n             value = value.encode()\n-        self.response = [value]\n-        if self.automatically_set_content_length:\n+        self.response = [bytes(value)]\n+        if self._should_set_content_length():\n             self.headers[\"Content-Length\"] = str(len(value))\n \n     data = property(\n@@ -305,8 +332,23 @@ class Response(_SansIOResponse):\n         doc=\"A descriptor that calls :meth:`get_data` and :meth:`set_data`.\",\n     )\n \n+    def _should_set_content_length(self) -> bool:\n+        if self.automatically_set_content_length is not None:\n+            warnings.warn(\n+                \"Setting 'Response.automatically_set_content_length' is\"\n+                \" deprecated and will be removed in Werkzeug 4.0. Use a\"\n+                \" streaming iterable to avoid calculating content length.\",\n+                DeprecationWarning,\n+                stacklevel=3,\n+            )\n+            return self.automatically_set_content_length\n+\n+        return True\n+\n     def calculate_content_length(self) -> int | None:\n-        \"\"\"Returns the content length if available or `None` otherwise.\"\"\"\n+        \"\"\"Return the encoded body length, or ``None`` if sequence conversion\n+        is disabled. May consume a streaming iterable and close it.\n+        \"\"\"\n         try:\n             self._ensure_sequence()\n         except RuntimeError:\n@@ -323,7 +365,7 @@ class Response(_SansIOResponse):\n         if self.is_sequence:\n             # if we need a mutable object, we ensure it's a list.\n             if mutable and not isinstance(self.response, list):\n-                self.response = list(self.response)  # type: ignore[assignment]\n+                self._buffer_response()\n             return\n         if self.direct_passthrough:\n             raise RuntimeError(\n@@ -344,16 +386,22 @@ class Response(_SansIOResponse):\n         disabled, this method is not automatically called and some properties\n         might raise exceptions.  This also encodes all the items.\n \n+        .. versionchanged:: 3.2\n+            Close the original iterable immediately after consuming it.\n+\n         .. versionadded:: 0.6\n         \"\"\"\n         if not self.is_sequence:\n-            # if we consume an iterable we have to ensure that the close\n-            # method of the iterable is called if available when we tear\n-            # down the response\n-            close = getattr(self.response, \"close\", None)\n+            self._buffer_response()\n+\n+    def _buffer_response(self) -> None:\n+        close = getattr(self.response, \"close\", None)\n+\n+        try:\n             self.response = list(self.iter_encoded())\n+        finally:\n             if close is not None:\n-                self.call_on_close(close)\n+                close()\n \n     def iter_encoded(self) -> t.Iterator[bytes]:\n         \"\"\"Iter the response encoded with the encoding of the response.\n@@ -368,29 +416,26 @@ class Response(_SansIOResponse):\n \n     @property\n     def is_streamed(self) -> bool:\n-        \"\"\"If the response is streamed (the response is not an iterable with\n-        a length information) this property is `True`.  In this case streamed\n-        means that there is no information about the number of iterations.\n-        This is usually `True` if a generator is passed to the response object.\n+        \"\"\"Whether the body is streamed rather than buffered.\n+\n+        This is the inverse of :attr:`is_sequence`. An iterable with a length\n+        is still streamed if it is not a :class:`collections.abc.Sequence`.\n \n-        This is useful for checking before applying some sort of post\n-        filtering that should not take place for streamed responses.\n+        .. versionchanged:: 3.2\n+            Check for a sequence instead of length information.\n         \"\"\"\n-        try:\n-            len(self.response)  # type: ignore[arg-type]\n-        except (TypeError, AttributeError):\n-            return True\n-        return False\n+        return not self.is_sequence\n \n     @property\n     def is_sequence(self) -> bool:\n-        \"\"\"If the iterator is buffered, this property will be `True`.  A\n-        response object will consider an iterator to be buffered if the\n-        response attribute is a list or tuple.\n+        \"\"\"Whether the body is buffered as a :class:`collections.abc.Sequence`.\n+\n+        .. versionchanged:: 3.2\n+            Recognize all sequences, not only lists and tuples.\n \n         .. versionadded:: 0.6\n         \"\"\"\n-        return isinstance(self.response, (tuple, list))\n+        return isinstance(self.response, Sequence)\n \n     def close(self) -> None:\n         \"\"\"Close the wrapped response if possible.  You can also use the object\n@@ -420,7 +465,7 @@ class Response(_SansIOResponse):\n         following:\n \n         *   Buffer the response into a list, ignoring\n-            :attr:`implicity_sequence_conversion` and\n+            :attr:`implicit_sequence_conversion` and\n             :attr:`direct_passthrough`.\n         *   Set the ``Content-Length`` header.\n         *   Generate an ``ETag`` header if one is not already set.\n@@ -436,7 +481,7 @@ class Response(_SansIOResponse):\n         \"\"\"\n         # Always freeze the encoded response body, ignore\n         # implicit_sequence_conversion and direct_passthrough.\n-        self.response = list(self.iter_encoded())\n+        self._buffer_response()\n         self.headers[\"Content-Length\"] = str(sum(map(len, self.response)))\n         self.add_etag()\n \n@@ -457,8 +502,8 @@ class Response(_SansIOResponse):\n \n            Also starting with 0.6, Werkzeug will attempt to set the content\n            length if it is able to figure it out on its own.  This is the\n-           case if all the strings in the response iterable are already\n-           encoded and the iterable is buffered.\n+           case if the response body is a buffered sequence. The length is\n+           calculated from the encoded chunks.\n \n         :param environ: the WSGI environment of the request.\n         :return: returns a new :class:`~werkzeug.datastructures.Headers`\n@@ -486,8 +531,6 @@ class Response(_SansIOResponse):\n             location = iri_to_uri(location)\n \n             if self.autocorrect_location_header:\n-                import warnings\n-\n                 from .request import Request\n \n                 warnings.warn(\n@@ -526,11 +569,10 @@ class Response(_SansIOResponse):\n \n         # if we can determine the content length automatically, we\n         # should try to do that.  But only if this does not involve\n-        # flattening the iterator or encoding of strings in the\n-        # response. We however should not do that if we have a 304\n-        # response.\n+        # consuming a streamed iterable. Status codes without a body\n+        # must not receive an automatically calculated length.\n         if (\n-            self.automatically_set_content_length\n+            self._should_set_content_length()\n             and self.is_sequence\n             and content_length is None\n             and status not in (204, 304)\n@@ -652,7 +694,18 @@ class Response(_SansIOResponse):\n \n     @cached_property\n     def stream(self) -> ResponseStream:\n-        \"\"\"The response iterable as write-only stream.\"\"\"\n+        \"\"\"The response iterable as write-only stream.\n+\n+        .. deprecated:: 3.2\n+            Will be removed in Werkzeug 4.0. Write to an :class:`io.BytesIO`\n+            buffer, then pass its value to the response instead.\n+        \"\"\"\n+        warnings.warn(\n+            \"'Response.stream' is deprecated and will be removed in Werkzeug\"\n+            \" 4.0. Write to 'io.BytesIO' and pass its value to the response instead.\",\n+            DeprecationWarning,\n+            stacklevel=3,\n+        )\n         return ResponseStream(self)\n \n     # Preconditions and Range Requests\n@@ -811,8 +864,6 @@ class Response(_SansIOResponse):\n         .. versionchanged:: 2.0\n             Range processing is skipped if length is 0 instead of raising a 416.\n         \"\"\"\n-        import warnings\n-\n         warnings.warn(\n             \"'make_conditional' is deprecated and will be removed in Werkzeug 3.3.\"\n             \" Use 'apply_conditions' and 'apply_range' instead.\",\n@@ -855,7 +906,7 @@ class Response(_SansIOResponse):\n \n \n class ResponseStream:\n-    \"\"\"A file descriptor like object used by :meth:`Response.stream` to\n+    \"\"\"A file descriptor like object used by :attr:`Response.stream` to\n     represent the body of the stream. It directly pushes into the\n     response iterable of the response object.\n     \"\"\"\ndiff --git a/tests/test_wrappers.py b/tests/test_wrappers.py\nindex 7ec16ba..e3364ae 100644\n--- a/tests/test_wrappers.py\n+++ b/tests/test_wrappers.py\n@@ -1,5 +1,7 @@\n import contextlib\n import json\n+from collections import UserList\n+from collections.abc import Sequence\n from contextlib import nullcontext\n from datetime import datetime\n from datetime import timedelta\n@@ -230,7 +232,8 @@ def test_base_response():\n \n     # writing\n     response = wrappers.Response(\"foo\")\n-    response.stream.write(\"bar\")\n+    with pytest.deprecated_call(match=\"Response.stream\"):\n+        response.stream.write(b\"bar\")\n     assert response.get_data() == b\"foobar\"\n \n     # set cookie\n@@ -345,7 +348,7 @@ def test_response_init_status_empty_string():\n def test_type_forcing():\n     def wsgi_application(environ, start_response):\n         start_response(\"200 OK\", [(\"Content-Type\", \"text/html\")])\n-        return [\"Hello World!\"]\n+        return [b\"Hello World!\"]\n \n     base_response = wrappers.Response(\"Hello World!\", content_type=\"text/html\")\n \n@@ -542,9 +545,11 @@ def test_authenticate_quoted_qop():\n \n def test_response_stream():\n     response = wrappers.Response()\n-    response.stream.write(\"Hello \")\n-    response.stream.write(\"World!\")\n-    assert response.response == [\"Hello \", \"World!\"]\n+    with pytest.deprecated_call(match=\"Response.stream\"):\n+        stream = response.stream\n+    stream.write(b\"Hello \")\n+    stream.write(b\"World!\")\n+    assert response.response == [b\"Hello \", b\"World!\"]\n     assert response.get_data() == b\"Hello World!\"\n \n \n@@ -715,8 +720,8 @@ def test_response_iter_wrapping():\n             yield item.upper()\n \n     def generator():\n-        yield \"foo\"\n-        yield \"bar\"\n+        yield b\"foo\"\n+        yield b\"bar\"\n \n     req = wrappers.Request.from_values()\n     resp = wrappers.Response(generator())\n@@ -728,8 +733,8 @@ def test_response_iter_wrapping():\n \n def test_response_freeze():\n     def generate():\n-        yield \"foo\"\n-        yield \"bar\"\n+        yield b\"foo\"\n+        yield b\"bar\"\n \n     resp = wrappers.Response(generate())\n     resp.freeze()\n@@ -771,8 +776,8 @@ def test_new_response_iterator_behavior():\n         return headers.get(\"Content-Length\", type=int)\n \n     def generate_items():\n-        yield \"Hello \"\n-        yield \"W\u00f6rld!\"\n+        yield b\"Hello \"\n+        yield \"W\u00f6rld!\".encode()\n \n     # werkzeug encodes when set to `data` now, which happens\n     # if a string is passed to the response object.\n@@ -814,10 +819,13 @@ def test_new_response_iterator_behavior():\n     # stream makes it a list no matter how the conversion is set\n     for val in True, False:\n         resp.implicit_sequence_conversion = val\n-        resp.response = (\"foo\", \"bar\")\n+        resp.response = (b\"foo\", b\"bar\")\n         assert resp.is_sequence\n-        resp.stream.write(\"baz\")\n-        assert resp.response == [\"foo\", \"bar\", \"baz\"]\n+        with pytest.deprecated_call(match=\"Response.stream\"):\n+            stream = resp.stream\n+        stream.write(b\"baz\")\n+        assert resp.response == [b\"foo\", b\"bar\", b\"baz\"]\n+        del resp.stream\n \n \n def test_values():\n@@ -890,18 +898,20 @@ def test_auto_content_length():\n     resp = wrappers.Response(\"Hello World!\")\n     assert resp.content_length == 12\n \n-    resp = wrappers.Response([\"Hello World!\"])\n+    resp = wrappers.Response([b\"Hello World!\"])\n     assert resp.content_length is None\n     assert resp.get_wsgi_headers({})[\"Content-Length\"] == \"12\"\n \n \n def test_stream_content_length():\n     resp = wrappers.Response()\n-    resp.stream.writelines([\"foo\", \"bar\", \"baz\"])\n+    with pytest.deprecated_call(match=\"Response.stream\"):\n+        resp.stream.writelines([b\"foo\", b\"bar\", b\"baz\"])\n     assert resp.get_wsgi_headers({})[\"Content-Length\"] == \"9\"\n \n     resp = wrappers.Response(\"foo\")\n-    resp.stream.writelines([\"bar\", \"baz\"])\n+    with pytest.deprecated_call(match=\"Response.stream\"):\n+        resp.stream.writelines([b\"bar\", b\"baz\"])\n     assert resp.get_wsgi_headers({})[\"Content-Length\"] == \"9\"\n \n \n@@ -909,12 +919,14 @@ def test_disabled_auto_content_length():\n     class MyResponse(wrappers.Response):\n         automatically_set_content_length = False\n \n-    resp = MyResponse(\"Hello World!\")\n+    with pytest.deprecated_call(match=\"automatically_set_content_length\"):\n+        resp = MyResponse(\"Hello World!\")\n     assert resp.content_length is None\n \n     resp = MyResponse([\"Hello World!\"])\n     assert resp.content_length is None\n-    assert \"Content-Length\" not in resp.get_wsgi_headers({})\n+    with pytest.deprecated_call(match=\"automatically_set_content_length\"):\n+        assert \"Content-Length\" not in resp.get_wsgi_headers({})\n \n \n @pytest.mark.parametrize(\n@@ -979,7 +991,8 @@ def test_request_method_case_sensitivity():\n \n def test_write_length():\n     response = wrappers.Response()\n-    length = response.stream.write(b\"bar\")\n+    with pytest.deprecated_call(match=\"Response.stream\"):\n+        length = response.stream.write(b\"bar\")\n     assert length == 3\n \n \n@@ -987,7 +1000,9 @@ def test_stream_zip():\n     import zipfile\n \n     response = wrappers.Response()\n-    with contextlib.closing(zipfile.ZipFile(response.stream, mode=\"w\")) as z:\n+    with pytest.deprecated_call(match=\"Response.stream\"):\n+        stream = response.stream\n+    with contextlib.closing(zipfile.ZipFile(stream, mode=\"w\")) as z:\n         z.writestr(\"foo\", b\"bar\")\n \n     buffer = BytesIO(response.get_data())\n@@ -1143,3 +1158,153 @@ def test_response_coep():\n     assert response.cross_origin_embedder_policy is COEP.UNSAFE_NONE\n     response.cross_origin_embedder_policy = COEP.REQUIRE_CORP\n     assert response.headers[\"Cross-Origin-Embedder-Policy\"] == \"require-corp\"\n+\n+\n+@pytest.mark.parametrize(\n+    \"body\", [[b\"a\", b\"bc\"], (b\"a\", b\"bc\"), UserList([b\"a\", b\"bc\"])]\n+)\n+def test_response_sequences(body):\n+    response = wrappers.Response(body)\n+    assert response.is_sequence\n+    assert not response.is_streamed\n+    assert repr(response) == \"<Response 3 bytes [200 OK]>\"\n+    assert response.calculate_content_length() == 3\n+    assert response.get_wsgi_headers({})[\"Content-Length\"] == \"3\"\n+    assert response.get_data() == b\"abc\"\n+\n+\n+def test_response_sized_stream():\n+    class SizedStream:\n+        def __init__(self):\n+            self.iterated = False\n+\n+        def __len__(self):\n+            return 1\n+\n+        def __iter__(self):\n+            self.iterated = True\n+            yield b\"abc\"\n+\n+    body = SizedStream()\n+    response = wrappers.Response(body)\n+    assert response.is_streamed\n+    assert not response.is_sequence\n+    assert repr(response) == \"<Response streamed [200 OK]>\"\n+    assert \"Content-Length\" not in response.get_wsgi_headers({})\n+    assert not body.iterated\n+    response.implicit_sequence_conversion = False\n+    assert response.calculate_content_length() is None\n+    assert not body.iterated\n+    response.make_sequence()\n+    assert response.calculate_content_length() == 3\n+\n+\n+@pytest.mark.parametrize(\n+    \"method\", [\"make_sequence\", \"get_data\", \"calculate_content_length\", \"freeze\"]\n+)\n+def test_response_conversion_closes_immediately(method):\n+    class Body:\n+        closed = 0\n+\n+        def __iter__(self):\n+            yield b\"abc\"\n+\n+        def close(self):\n+            self.closed += 1\n+\n+    body = Body()\n+    response = wrappers.Response(body)\n+    callbacks = []\n+    response.call_on_close(lambda: callbacks.append(True))\n+    getattr(response, method)()\n+    assert body.closed == 1\n+    assert response.response == [b\"abc\"]\n+    assert callbacks == []\n+    response.close()\n+    assert body.closed == 1\n+    assert callbacks == [True]\n+\n+\n+@pytest.mark.parametrize(\"method\", [\"make_sequence\", \"freeze\"])\n+def test_response_conversion_failure_closes(method):\n+    class Body:\n+        closed = 0\n+\n+        def __iter__(self):\n+            yield b\"abc\"\n+            raise ValueError(\"iteration failed\")\n+\n+        def close(self):\n+            self.closed += 1\n+\n+    body = Body()\n+    response = wrappers.Response(body)\n+    with pytest.raises(ValueError, match=\"iteration failed\"):\n+        getattr(response, method)()\n+    assert body.closed == 1\n+\n+\n+@pytest.mark.parametrize(\"method\", [\"mutable\", \"freeze\"])\n+def test_response_sequence_conversion_closes(method):\n+    class Body(Sequence):\n+        closed = 0\n+\n+        def __len__(self):\n+            return 1\n+\n+        def __getitem__(self, index):\n+            return [b\"abc\"][index]\n+\n+        def close(self):\n+            self.closed += 1\n+\n+    body = Body()\n+    response = wrappers.Response(body)\n+    if method == \"mutable\":\n+        response._ensure_sequence(mutable=True)\n+    else:\n+        response.freeze()\n+    assert response.response == [b\"abc\"]\n+    assert body.closed == 1\n+    response.close()\n+    assert body.closed == 1\n+\n+\n+@pytest.mark.parametrize(\"chunk\", [\"\u4f60\u597d\", bytearray(b\"abc\"), memoryview(b\"abc\")])\n+@pytest.mark.parametrize(\"streamed\", [False, True])\n+def test_response_nonbytes_chunks_deprecated(chunk, streamed):\n+    body = [b\"prefix\", chunk, b\"suffix\"]\n+    response = wrappers.Response(iter(body) if streamed else body)\n+    with pytest.deprecated_call(match=\"Response iterables must yield bytes\"):\n+        assert response.get_data() == b\"prefix\" + (\n+            chunk.encode() if isinstance(chunk, str) else bytes(chunk)\n+        ) + b\"suffix\"\n+\n+\n+def test_response_text_chunks_length_deprecated():\n+    response = wrappers.Response([b\"a\", \"\u4f60\u597d\"])\n+    with pytest.deprecated_call(match=\"Response iterables must yield bytes\"):\n+        assert response.calculate_content_length() == 7\n+    with pytest.deprecated_call(match=\"Response iterables must yield bytes\"):\n+        assert response.get_wsgi_headers({})[\"Content-Length\"] == \"7\"\n+\n+\n+@pytest.mark.parametrize(\"body\", [b\"abc\", \"\u4f60\u597d\", bytearray(b\"abc\")])\n+def test_response_scalar_body(body):\n+    response = wrappers.Response(body)\n+    expected = body.encode() if isinstance(body, str) else bytes(body)\n+    assert response.get_data() == expected\n+    assert response.content_length == len(expected)\n+    assert response.get_wsgi_headers({})[\"Content-Length\"] == str(len(expected))\n+\n+\n+@pytest.mark.parametrize(\"auto\", [False, True])\n+def test_response_auto_content_length_deprecated(auto):\n+    response = wrappers.Response()\n+    response.automatically_set_content_length = auto\n+    with pytest.deprecated_call(match=\"automatically_set_content_length\"):\n+        response.set_data(b\"abc\")\n+    assert response.content_length == (3 if auto else None)\n+    with pytest.deprecated_call(match=\"automatically_set_content_length\"):\n+        headers = response.get_wsgi_headers({})\n+    assert headers.get(\"Content-Length\") == (\"3\" if auto else None)\n",
+      "patch_sha256": "566618ae342df87e2a96ee3a4900b9605e7fe3ad4003617845aa7353c10cbc97",
+      "proposal": "Update Response iterable handling and deprecations\n\nRecognize `Sequence` bodies as buffered and other iterables as streamed, even when they have a length. Close original iterables immediately during conversion to release resources promptly.\n\nDeprecate non-byte chunks, `Response.stream`, and `automatically_set_content_length` while preserving ordinary byte responses. Update length handling, documentation, changelog, and regression tests.\n\nVerified offline: wrapper tests (**106 passed**), `compileall`, and `git diff --check`. Full suite and documentation build were not run. Changes remain in the checkout.",
+      "proposal_sha256": "3d0951c4f75e1a37e99b00d084aafc6f10092dabeac44031c581a0579f4022f8",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "566618ae342df87e2a96ee3a4900b9605e7fe3ad4003617845aa7353c10cbc97",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "patch_sha256": "566618ae342df87e2a96ee3a4900b9605e7fe3ad4003617845aa7353c10cbc97",
+            "proposal_sha256": "3d0951c4f75e1a37e99b00d084aafc6f10092dabeac44031c581a0579f4022f8",
+            "judgment_sha256": "446cd363474ed150ecae3f6bc7e963b34dc4013d4b7d467dc9a3264d951e8a62",
+            "mapping_sha256": "04441ae156c49e5c36bc10038390f7e4b640f010504acab9f127e1d7df7cad71",
+            "assessor_sha256": "71a67b65b8248dd328877bb3b945567918d05864f13813d882937e1d9dd33a5d",
+            "packet_sha256": "e576594b809f0582255ba16ef59f73dc7cd9fc4fef35f80cca0f2ebb850121b4",
+            "prompt_sha256": "4f0322c5e7e25ea855357b6b95971d24f8a5fa3b1f9f789b32c80492871ad249"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "patch_sha256": "566618ae342df87e2a96ee3a4900b9605e7fe3ad4003617845aa7353c10cbc97",
+            "proposal_sha256": "3d0951c4f75e1a37e99b00d084aafc6f10092dabeac44031c581a0579f4022f8",
+            "judgment_sha256": "145364d04a4aa71f09ad6cb1c889dcc51ba26f94d014e7bd2cf35ea8f242056b",
+            "mapping_sha256": "642490d0a8441e1c3d4823f4c657111c1f557b8737dc53acf4bcbc1ce62c6d58",
+            "assessor_sha256": "7a7144fa787c0529de3979a5c35e8b7f0b57b1a6144217b091e8af3badcb823f",
+            "packet_sha256": "e675278e4f5814e0cb8156cadcaf3cb93a2142d4486df6dd75b98f628c6c60d8",
+            "prompt_sha256": "433cf6c8ff8569a40fed194cb284de7c2513b221bfb77333ef7b0d29a818a33f"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "patch_sha256": "566618ae342df87e2a96ee3a4900b9605e7fe3ad4003617845aa7353c10cbc97",
+            "proposal_sha256": "3d0951c4f75e1a37e99b00d084aafc6f10092dabeac44031c581a0579f4022f8",
+            "judgment_sha256": "4dcebb4765745ae87fda4086907fb07703edb6800e4c641013c08e8e2d81c082",
+            "mapping_sha256": "a8c4d6de03f19dac0f73a5c06553d598041131ef4052fbb49ea7eb7a3e7b4e73",
+            "assessor_sha256": "f841e37af68d72f0b5bfe355c0c69c53b90668d1e665ec052d9976e4492efd0f",
+            "packet_sha256": "6e95617a0f91ba4dce464b5d7bc09bf40187d9ea2acff40c9fb43e3914844b07",
+            "prompt_sha256": "40774f24acd49a594a1e7af2dca2e163b2204df7176fcbc088f0ce54ca47ef1a"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 3,
+          "tests": 3,
+          "design": 3,
+          "proposal": 3
+        },
+        "proposal_points_100": 75.0,
+        "diff_points_85": 63.75,
+        "rotation_points_85": {
+          "0": 70.0,
+          "1": 63.75,
+          "2": 63.75
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "scores": {
+              "contract": 3,
+              "tests": 3,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/B.patch response.py uses Sequence classification and a shared _buffer_response with finally-based close for normal, failed, mutable-sequence, and freeze conversion. Defaults preserve automatic length and ordinary byte/string scalar bodies; set_data normalizes bytearray to bytes. Nonbytes warnings precede yielded chunks, and status-specific length protections remain intact. docs/wrappers.rst and CHANGES.rst describe migration. One length inconsistency remains: ResponseStream.tell still sums raw chunk lengths. After obtaining response.stream and writing \"\u00e9\", tell returns 1 while get_data contains two UTF-8 bytes. Frozen build/native/contract/preserve exits are all 0, but no detailed frozen check covers this edge.",
+              "tests": "packet/B.patch tests/test_wrappers.py adds UserList classification, a sized stream with non-consumption assertions, all four buffering entry points, immediate close versus response callbacks, failed conversion, closeable Sequence conversion, nonbytes chunks in both streamed and buffered bodies, UTF-8 length, scalar bytearray compatibility, and both explicit auto-length values. Existing tuple conversion checks remain, with warnings handled. It does not test encoded ResponseStream.tell or explicitly assert warning-free ordinary byte responses. Frozen native exit 0 supports the wrapper slice, without independently establishing the claimed exact count.",
+              "design": "packet/B.patch keeps changes in response.py, its user documentation/changelog, and wrapper tests. A single finally-based buffering helper fixes resource ownership consistently and preserves unconditional freeze buffering and implicit-conversion guards. Sequence classification uses the standard ABC; the length-policy helper preserves explicit False while warning. Existing no-body status exclusions and conditional-request code are preserved. No validation bypass or material protection deletion is apparent.",
+              "proposal": "packet/B.md clearly names the changes, explains prompt resource release, and identifies that the full suite and documentation build were not run. Frozen build and native exit 0 support compilation and wrapper-test success. The exact 106-test count and git diff --check claim have no supporting output in the packet and receive no extra verification credit. It does not mention the remaining stream tell length inconsistency."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "scores": {
+              "contract": 3,
+              "tests": 3,
+              "design": 3,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/A.patch, src/werkzeug/wrappers/response.py: is_sequence uses Sequence and is_streamed is its inverse; _buffer_response closes in finally, including freeze and mutable conversion. Nonbytes warnings and default automatic lengths are implemented. Frozen build/native/contract/preserve exits are all 0. A remaining length inconsistency is ResponseStream.tell(), left as sum(map(len, self.response.response)): after stream.write(\"\u00e9\"), tell() reports 1 while get_data() and calculated content length use 2 UTF-8 bytes.",
+              "tests": "packet/A.patch, tests/test_wrappers.py adds UserList classification, sized-stream nonconsumption, four conversion entry points, failure cleanup, closeable Sequence conversion, mixed nonbytes warnings, encoded lengths and scalar bodies. Existing stream, tuple conversion and ZIP assertions remain, with warning expectations and bytes fixtures. No focused tell() encoded-length or explicit no-warning byte-response test is added; the text stream fixtures were changed to bytes. Frozen native exit 0 supports the selected wrapper slice only.",
+              "design": "packet/A.patch centralizes replacement and cleanup in _buffer_response with try/finally and uses a default None sentinel for the deprecated length setting. Changes stay in response implementation, docs, changelog and wrapper tests. Mutable conversion now encodes rather than preserving existing chunks, and length logic is still inconsistent in ResponseStream.tell(). The ordinary status exclusions in get_wsgi_headers remain intact.",
+              "proposal": "packet/A.md has a precise title, explains classification and prompt resource release, describes deprecations and explicitly excludes full-suite and documentation builds. Frozen compilation and wrapper outcomes support those check categories; the exact 106 count and diff --check claim have no supplied detailed execution evidence and receive no additional credit. The remaining tell() limitation is not identified."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "scores": {
+              "contract": 3,
+              "tests": 3,
+              "design": 3,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/C.patch response.py correctly classifies Sequence bodies and sized non-sequences, centralizes immediate closure in a finally block for ordinary conversion, freeze, and mutable conversion, and preserves conversion guards and status-code exclusions. Nonbytes, stream, and explicit auto-length use warn; scalar bytearray becomes bytes. docs/wrappers.rst and CHANGES.rst explain the behavior. A remaining length inconsistency is visible in the unchanged ResponseStream.tell: after stream.write(\"\u00e9\"), tell sums raw len and returns 1 although get_data emits two UTF-8 bytes. String writes still work during this deprecation period, so this is a concrete missing compatibility path. Frozen build/native/contract/preserve exits are all 0.",
+              "tests": "packet/C.patch tests/test_wrappers.py adds custom Sequence and UserList coverage, sized-stream nonconsumption with conversion disabled, four conversion entry points, failure cleanup, callback separation, closeable sequences, streamed/buffered nonbytes chunks, UTF-8 lengths, scalar bytearray, and explicit auto-length settings. Existing tuple conversion assertions remain and use bytes with explicit deprecation handling. It lacks a stream.tell encoded-length regression and an explicit warning-free byte-response assertion. Frozen native/contract/preserve checks pass, but the missing tell path is not exercised.",
+              "design": "packet/C.patch uses a small shared _buffer_response helper with finally cleanup and a shared automatic-length deprecation helper, fits existing response APIs, and keeps documentation and tests close to the behavioral changes. Converting scalar bytearray to bytes is consistent with emitted WSGI chunks. Length handling is still incomplete because ResponseStream.tell retains raw chunk lengths while the rest of the patch documents and computes encoded byte lengths; this can be corrected locally.",
+              "proposal": "packet/C.md has a precise title, summarizes classification, cleanup and compatibility, and explicitly states full-suite and documentation-build limitations. Frozen observations support compileall and wrapper-test success. The exact 106-pass count and git diff --check claim have no supporting output in the packet and receive no verification credit. The remaining stream.tell limitation is not mentioned."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 1039634,
+          "cachedInputTokens": 944640,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 11541,
+          "reasoningOutputTokens": 2583,
+          "totalTokens": 1051175
+        },
+        "estimated_usd": 0.399862,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 391.0051946709864,
+        "prompt_to_terminal_seconds": 361.9817710451316,
+        "through_grading_seconds": 399.15695786313154,
+        "setup_seconds": 27.82467992603779,
+        "grading_seconds": 6.721704422030598,
+        "thread_count": 1,
+        "child_count": 0,
+        "root_tokens": {
+          "totalTokens": 1051175,
+          "inputTokens": 1039634,
+          "cachedInputTokens": 944640,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 11541,
+          "reasoningOutputTokens": 2583
+        },
+        "descendant_tokens": {
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 0,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 0
+        },
+        "observed_commands": 24,
+        "native_hook_receipts": 0
+      },
+      "receipt_sha256": {
+        "grade": "ca46385aaa317d44782cb19891ebd6d59f8983b0123fa754d2c37b933b731109",
+        "release": "a823e8f548c4f4a125303350d6ce77f53ac9d792cc36cce79d1cffc509b111c8",
+        "native": "027acbae415a0c8a9e59fa3b603b0e4dbc335cbda46cd9eb4e6abb72ad74fb32",
+        "submission": "6f16794269feab3298d27f0b167248ca8fc6604df91232d2881b9851dcd9a5ca",
+        "result": "eb31b27bc10788ae2312abc6e065f0d86b0660ed5803b8b60083115f5202c4ab",
+        "inventory": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72"
+      }
+    },
+    "develop": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "e299196a27d9f89bae5656e79e8a457ae9cbfc6f45d19a4e24c00583389beb7b",
+      "case_id": "werkzeug",
+      "role": "develop",
+      "state": "completed",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=src:/deps/lib python -m compileall -q src/werkzeug",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "b3062b977b2697f1c45602aac9d4caf4f6af70dd74e899fe9fcf2027ee3ae829",
+          "command": "PYTHONPATH=src:/deps/lib python -m pytest -q -o addopts= tests/test_wrappers.py",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "54bd20a612bcb896a05d1410a07a6cf9568ef4bea04aebd4a3103d03c6b8fa3e",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "54bd20a612bcb896a05d1410a07a6cf9568ef4bea04aebd4a3103d03c6b8fa3e",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/CHANGES.rst b/CHANGES.rst\nindex 5fee5f3..1ae49d8 100644\n--- a/CHANGES.rst\n+++ b/CHANGES.rst\n@@ -3,6 +3,13 @@\n Version 3.2.0\n -------------\n \n+-   ``Response`` recognizes all ``collections.abc.Sequence`` bodies as buffered.\n+    Other iterables are streamed even if they define a length. Buffering closes\n+    the original iterable immediately, including when iteration fails.\n+-   Non-bytes chunks in response iterables, ``Response.stream``, and\n+    ``Response.automatically_set_content_length`` are deprecated and will be\n+    removed in Werkzeug 4.0. Single string bodies remain supported, and content\n+    length is still calculated automatically for buffered responses by default.\n -   Drop support for Python 3.9 and 3.10. :pr:`3098`\n -   Remove previous deprecated code: :pr:`3099`\n \ndiff --git a/docs/wrappers.rst b/docs/wrappers.rst\nindex 05d8066..fa2f936 100644\n--- a/docs/wrappers.rst\n+++ b/docs/wrappers.rst\n@@ -24,6 +24,37 @@ modify it multiple times. Set it to ``None`` or use ``del`` to unset the header.\n Each property below documents its type and what behaviors it has.\n \n \n+Response Bodies\n+---------------\n+\n+Pass a single string or bytes object to :class:`.Response` for a simple body.\n+Strings are encoded as UTF-8. A :class:`~collections.abc.Sequence` of bytes,\n+such as a list or tuple, is buffered and its byte length can be calculated\n+without consuming a stream. Other iterables are streamed, even if they define\n+``__len__``. Streaming bodies do not get an automatic ``Content-Length`` header.\n+\n+:meth:`.Response.get_data`, :meth:`.Response.make_sequence`, and\n+:meth:`.Response.calculate_content_length` may consume a stream into a list.\n+The original iterable is closed immediately when converted, including if\n+iteration fails. :meth:`.Response.freeze` also buffers and closes the original\n+iterable. Disable :attr:`.Response.implicit_sequence_conversion` to prevent\n+implicit buffering, or check :attr:`.Response.is_streamed` first.\n+\n+.. deprecated:: 3.2\n+\n+    Iterable chunks other than bytes, including strings mixed with bytes, will\n+    not be supported in Werkzeug 4.0. Encode text before yielding it. Passing a\n+    single string as the response body remains supported.\n+\n+    ``Response.stream`` will be removed in Werkzeug 4.0. Build the body in a\n+    separate buffer before passing it to the response, or yield bytes from a\n+    generator to stream it.\n+\n+    ``Response.automatically_set_content_length`` will be removed in Werkzeug\n+    4.0. Automatic length calculation remains enabled by default. Set the\n+    ``Content-Length`` header directly to override the calculated length.\n+\n+\n Wrapping a WSGI Application\n ---------------------------\n \ndiff --git a/src/werkzeug/wrappers/response.py b/src/werkzeug/wrappers/response.py\nindex c8a2f42..79acda0 100644\n--- a/src/werkzeug/wrappers/response.py\n+++ b/src/werkzeug/wrappers/response.py\n@@ -2,6 +2,8 @@ from __future__ import annotations\n \n import json\n import typing as t\n+import warnings\n+from collections.abc import Sequence\n from http import HTTPStatus\n from types import TracebackType\n from urllib.parse import urljoin\n@@ -24,10 +26,16 @@ if t.TYPE_CHECKING:\n \n def _iter_encoded(iterable: t.Iterable[str | bytes]) -> t.Iterator[bytes]:\n     for item in iterable:\n-        if isinstance(item, str):\n-            yield item.encode()\n-        else:\n-            yield item\n+        if not isinstance(item, bytes):\n+            warnings.warn(\n+                \"Response iterable items must be bytes. Other types are deprecated\"\n+                \" and will not be supported in Werkzeug 4.0.\",\n+                DeprecationWarning,\n+                stacklevel=2,\n+            )\n+            if isinstance(item, str):\n+                item = item.encode()\n+        yield item\n \n \n class Response(_SansIOResponse):\n@@ -37,8 +45,9 @@ class Response(_SansIOResponse):\n \n     The response body is flexible to support different use cases. The\n     simple form is passing bytes, or a string which will be encoded as\n-    UTF-8. Passing an iterable of bytes or strings makes this a\n-    streaming response. A generator is particularly useful for building\n+    UTF-8. Passing a sequence of bytes makes a fixed-length response.\n+    Other iterables of bytes make a streaming response, even if they have\n+    a length. A generator is particularly useful for building\n     a CSV file in memory or using SSE (Server Sent Events). A file-like\n     object is also iterable, although the\n     :func:`~werkzeug.utils.send_file` helper should be used in that\n@@ -67,8 +76,8 @@ class Response(_SansIOResponse):\n             return response(environ, start_response)\n \n     :param response: The data for the body of the response. A string or\n-        bytes, or tuple or list of strings or bytes, for a fixed-length\n-        response, or any other iterable of strings or bytes for a\n+        bytes, or a :class:`~collections.abc.Sequence` of bytes for a\n+        fixed-length response, or any other iterable of bytes for a\n         streaming response. Defaults to an empty body.\n     :param status: The status code for the response. Either an int, in\n         which case the default status message is added, or a string in\n@@ -124,15 +133,23 @@ class Response(_SansIOResponse):\n     #: .. versionadded:: 0.8\n     autocorrect_location_header: None = None\n \n-    #: Should this response object automatically set the content-length\n-    #: header if possible?  This is true by default.\n+    #: Automatically set the content length when possible. ``None`` uses\n+    #: the default behavior, which is enabled.\n+    #:\n+    #: .. deprecated:: 3.2\n+    #:     Will be removed in Werkzeug 4.0. Set the ``Content-Length`` header\n+    #:     directly to override the calculated length.\n     #:\n     #: .. versionadded:: 0.8\n-    automatically_set_content_length = True\n+    automatically_set_content_length: bool | None = None\n \n-    #: The response body to send as the WSGI iterable. A list of strings\n-    #: or bytes represents a fixed-length response, any other iterable\n-    #: is a streaming response. Strings are encoded to bytes as UTF-8.\n+    #: The response body to send as the WSGI iterable. A\n+    #: :class:`~collections.abc.Sequence` of bytes represents a fixed-length\n+    #: response, any other iterable of bytes is a streaming response.\n+    #:\n+    #: .. deprecated:: 3.2\n+    #:     Non-bytes items will not be supported in Werkzeug 4.0. Encode\n+    #:     strings to bytes before yielding them.\n     #:\n     #: Do not set to a plain string or bytes, that will cause sending\n     #: the response to be very inefficient as it will iterate one byte\n@@ -296,9 +313,20 @@ class Response(_SansIOResponse):\n         if isinstance(value, str):\n             value = value.encode()\n         self.response = [value]\n-        if self.automatically_set_content_length:\n+        if self._should_set_content_length():\n             self.headers[\"Content-Length\"] = str(len(value))\n \n+    def _should_set_content_length(self) -> bool:\n+        if self.automatically_set_content_length is not None:\n+            warnings.warn(\n+                \"'Response.automatically_set_content_length' is deprecated and\"\n+                \" will be removed in Werkzeug 4.0. Set the Content-Length header\"\n+                \" directly to override the calculated length.\",\n+                DeprecationWarning,\n+                stacklevel=3,\n+            )\n+        return self.automatically_set_content_length is not False\n+\n     data = property(\n         get_data,\n         set_data,\n@@ -323,7 +351,7 @@ class Response(_SansIOResponse):\n         if self.is_sequence:\n             # if we need a mutable object, we ensure it's a list.\n             if mutable and not isinstance(self.response, list):\n-                self.response = list(self.response)  # type: ignore[assignment]\n+                self._buffer_response(encoded=False)\n             return\n         if self.direct_passthrough:\n             raise RuntimeError(\n@@ -342,18 +370,24 @@ class Response(_SansIOResponse):\n         \"\"\"Converts the response iterator in a list.  By default this happens\n         automatically if required.  If `implicit_sequence_conversion` is\n         disabled, this method is not automatically called and some properties\n-        might raise exceptions.  This also encodes all the items.\n+        might raise exceptions. This also encodes all the items and closes\n+        the original iterable immediately, including if iteration fails.\n \n         .. versionadded:: 0.6\n         \"\"\"\n         if not self.is_sequence:\n-            # if we consume an iterable we have to ensure that the close\n-            # method of the iterable is called if available when we tear\n-            # down the response\n-            close = getattr(self.response, \"close\", None)\n-            self.response = list(self.iter_encoded())\n+            self._buffer_response()\n+\n+    def _buffer_response(self, *, encoded: bool = True) -> None:\n+        close = getattr(self.response, \"close\", None)\n+        try:\n+            if encoded:\n+                self.response = list(self.iter_encoded())\n+            else:\n+                self.response = list(self.response)  # type: ignore[assignment]\n+        finally:\n             if close is not None:\n-                self.call_on_close(close)\n+                close()\n \n     def iter_encoded(self) -> t.Iterator[bytes]:\n         \"\"\"Iter the response encoded with the encoding of the response.\n@@ -368,29 +402,27 @@ class Response(_SansIOResponse):\n \n     @property\n     def is_streamed(self) -> bool:\n-        \"\"\"If the response is streamed (the response is not an iterable with\n-        a length information) this property is `True`.  In this case streamed\n-        means that there is no information about the number of iterations.\n-        This is usually `True` if a generator is passed to the response object.\n+        \"\"\"Whether the response body is not a :class:`~collections.abc.Sequence`.\n+        This is usually true for a generator, even if it defines a length.\n \n-        This is useful for checking before applying some sort of post\n-        filtering that should not take place for streamed responses.\n+        Check this before applying filters that would consume a stream.\n+\n+        .. versionchanged:: 3.2\n+            Non-sequences with a length are considered streamed.\n         \"\"\"\n-        try:\n-            len(self.response)  # type: ignore[arg-type]\n-        except (TypeError, AttributeError):\n-            return True\n-        return False\n+        return not self.is_sequence\n \n     @property\n     def is_sequence(self) -> bool:\n-        \"\"\"If the iterator is buffered, this property will be `True`.  A\n-        response object will consider an iterator to be buffered if the\n-        response attribute is a list or tuple.\n+        \"\"\"Whether the response body is a :class:`~collections.abc.Sequence`,\n+        such as a list or tuple, and is therefore buffered.\n+\n+        .. versionchanged:: 3.2\n+            Recognizes all ``Sequence`` objects.\n \n         .. versionadded:: 0.6\n         \"\"\"\n-        return isinstance(self.response, (tuple, list))\n+        return isinstance(self.response, Sequence)\n \n     def close(self) -> None:\n         \"\"\"Close the wrapped response if possible.  You can also use the object\n@@ -436,7 +468,7 @@ class Response(_SansIOResponse):\n         \"\"\"\n         # Always freeze the encoded response body, ignore\n         # implicit_sequence_conversion and direct_passthrough.\n-        self.response = list(self.iter_encoded())\n+        self._buffer_response()\n         self.headers[\"Content-Length\"] = str(sum(map(len, self.response)))\n         self.add_etag()\n \n@@ -526,11 +558,10 @@ class Response(_SansIOResponse):\n \n         # if we can determine the content length automatically, we\n         # should try to do that.  But only if this does not involve\n-        # flattening the iterator or encoding of strings in the\n-        # response. We however should not do that if we have a 304\n+        # flattening the iterator. We should not do that if we have a 304\n         # response.\n         if (\n-            self.automatically_set_content_length\n+            self._should_set_content_length()\n             and self.is_sequence\n             and content_length is None\n             and status not in (204, 304)\n@@ -652,7 +683,18 @@ class Response(_SansIOResponse):\n \n     @cached_property\n     def stream(self) -> ResponseStream:\n-        \"\"\"The response iterable as write-only stream.\"\"\"\n+        \"\"\"The response iterable as write-only stream.\n+\n+        .. deprecated:: 3.2\n+            Will be removed in Werkzeug 4.0. Build the body before passing it\n+            to the response, or use a generator to stream it.\n+        \"\"\"\n+        warnings.warn(\n+            \"'Response.stream' is deprecated and will be removed in Werkzeug 4.0.\"\n+            \" Build the body before passing it to the response, or use a generator.\",\n+            DeprecationWarning,\n+            stacklevel=2,\n+        )\n         return ResponseStream(self)\n \n     # Preconditions and Range Requests\n@@ -892,7 +934,7 @@ class ResponseStream:\n \n     def tell(self) -> int:\n         self.response._ensure_sequence()\n-        return sum(map(len, self.response.response))\n+        return sum(map(len, self.response.iter_encoded()))\n \n     @property\n     def encoding(self) -> str:\ndiff --git a/tests/test_test.py b/tests/test_test.py\nindex d92f4d4..c33d802 100644\n--- a/tests/test_test.py\n+++ b/tests/test_test.py\n@@ -579,7 +579,7 @@ def test_cookie_across_redirect():\n def test_path_info_script_name_unquoting():\n     def test_app(environ, start_response):\n         start_response(\"200 OK\", [(\"Content-Type\", \"text/plain\")])\n-        return [f\"{environ['PATH_INFO']}\\n{environ['SCRIPT_NAME']}\"]\n+        return [f\"{environ['PATH_INFO']}\\n{environ['SCRIPT_NAME']}\".encode()]\n \n     c = Client(test_app)\n     resp = c.get(\"/foo%40bar\")\ndiff --git a/tests/test_wrappers.py b/tests/test_wrappers.py\nindex 7ec16ba..3591f3f 100644\n--- a/tests/test_wrappers.py\n+++ b/tests/test_wrappers.py\n@@ -1,5 +1,6 @@\n import contextlib\n import json\n+from collections import UserList\n from contextlib import nullcontext\n from datetime import datetime\n from datetime import timedelta\n@@ -230,7 +231,8 @@ def test_base_response():\n \n     # writing\n     response = wrappers.Response(\"foo\")\n-    response.stream.write(\"bar\")\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        response.stream.write(b\"bar\")\n     assert response.get_data() == b\"foobar\"\n \n     # set cookie\n@@ -345,7 +347,7 @@ def test_response_init_status_empty_string():\n def test_type_forcing():\n     def wsgi_application(environ, start_response):\n         start_response(\"200 OK\", [(\"Content-Type\", \"text/html\")])\n-        return [\"Hello World!\"]\n+        return [b\"Hello World!\"]\n \n     base_response = wrappers.Response(\"Hello World!\", content_type=\"text/html\")\n \n@@ -542,9 +544,10 @@ def test_authenticate_quoted_qop():\n \n def test_response_stream():\n     response = wrappers.Response()\n-    response.stream.write(\"Hello \")\n-    response.stream.write(\"World!\")\n-    assert response.response == [\"Hello \", \"World!\"]\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        response.stream.write(b\"Hello \")\n+    response.stream.write(b\"World!\")\n+    assert response.response == [b\"Hello \", b\"World!\"]\n     assert response.get_data() == b\"Hello World!\"\n \n \n@@ -698,7 +701,7 @@ def test_response_streamed():\n     assert not r.is_streamed\n     r = wrappers.Response(\"Hello World\")\n     assert not r.is_streamed\n-    r = wrappers.Response([\"foo\", \"bar\"])\n+    r = wrappers.Response([b\"foo\", b\"bar\"])\n     assert not r.is_streamed\n \n     def gen():\n@@ -715,8 +718,8 @@ def test_response_iter_wrapping():\n             yield item.upper()\n \n     def generator():\n-        yield \"foo\"\n-        yield \"bar\"\n+        yield b\"foo\"\n+        yield b\"bar\"\n \n     req = wrappers.Request.from_values()\n     resp = wrappers.Response(generator())\n@@ -728,8 +731,8 @@ def test_response_iter_wrapping():\n \n def test_response_freeze():\n     def generate():\n-        yield \"foo\"\n-        yield \"bar\"\n+        yield b\"foo\"\n+        yield b\"bar\"\n \n     resp = wrappers.Response(generate())\n     resp.freeze()\n@@ -771,8 +774,8 @@ def test_new_response_iterator_behavior():\n         return headers.get(\"Content-Length\", type=int)\n \n     def generate_items():\n-        yield \"Hello \"\n-        yield \"W\u00f6rld!\"\n+        yield b\"Hello \"\n+        yield \"W\u00f6rld!\".encode()\n \n     # werkzeug encodes when set to `data` now, which happens\n     # if a string is passed to the response object.\n@@ -814,10 +817,14 @@ def test_new_response_iterator_behavior():\n     # stream makes it a list no matter how the conversion is set\n     for val in True, False:\n         resp.implicit_sequence_conversion = val\n-        resp.response = (\"foo\", \"bar\")\n+        resp.response = (b\"foo\", b\"bar\")\n         assert resp.is_sequence\n-        resp.stream.write(\"baz\")\n-        assert resp.response == [\"foo\", \"bar\", \"baz\"]\n+        if val:\n+            with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+                resp.stream.write(b\"baz\")\n+        else:\n+            resp.stream.write(b\"baz\")\n+        assert resp.response == [b\"foo\", b\"bar\", b\"baz\"]\n \n \n def test_values():\n@@ -890,18 +897,20 @@ def test_auto_content_length():\n     resp = wrappers.Response(\"Hello World!\")\n     assert resp.content_length == 12\n \n-    resp = wrappers.Response([\"Hello World!\"])\n+    resp = wrappers.Response([b\"Hello World!\"])\n     assert resp.content_length is None\n     assert resp.get_wsgi_headers({})[\"Content-Length\"] == \"12\"\n \n \n def test_stream_content_length():\n     resp = wrappers.Response()\n-    resp.stream.writelines([\"foo\", \"bar\", \"baz\"])\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        resp.stream.writelines([b\"foo\", b\"bar\", b\"baz\"])\n     assert resp.get_wsgi_headers({})[\"Content-Length\"] == \"9\"\n \n     resp = wrappers.Response(\"foo\")\n-    resp.stream.writelines([\"bar\", \"baz\"])\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        resp.stream.writelines([b\"bar\", b\"baz\"])\n     assert resp.get_wsgi_headers({})[\"Content-Length\"] == \"9\"\n \n \n@@ -909,12 +918,14 @@ def test_disabled_auto_content_length():\n     class MyResponse(wrappers.Response):\n         automatically_set_content_length = False\n \n-    resp = MyResponse(\"Hello World!\")\n+    with pytest.warns(DeprecationWarning, match=\"automatically_set_content_length\"):\n+        resp = MyResponse(\"Hello World!\")\n     assert resp.content_length is None\n \n-    resp = MyResponse([\"Hello World!\"])\n+    resp = MyResponse([b\"Hello World!\"])\n     assert resp.content_length is None\n-    assert \"Content-Length\" not in resp.get_wsgi_headers({})\n+    with pytest.warns(DeprecationWarning, match=\"automatically_set_content_length\"):\n+        assert \"Content-Length\" not in resp.get_wsgi_headers({})\n \n \n @pytest.mark.parametrize(\n@@ -979,7 +990,8 @@ def test_request_method_case_sensitivity():\n \n def test_write_length():\n     response = wrappers.Response()\n-    length = response.stream.write(b\"bar\")\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        length = response.stream.write(b\"bar\")\n     assert length == 3\n \n \n@@ -987,7 +999,9 @@ def test_stream_zip():\n     import zipfile\n \n     response = wrappers.Response()\n-    with contextlib.closing(zipfile.ZipFile(response.stream, mode=\"w\")) as z:\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        stream = response.stream\n+    with contextlib.closing(zipfile.ZipFile(stream, mode=\"w\")) as z:\n         z.writestr(\"foo\", b\"bar\")\n \n     buffer = BytesIO(response.get_data())\n@@ -1143,3 +1157,157 @@ def test_response_coep():\n     assert response.cross_origin_embedder_policy is COEP.UNSAFE_NONE\n     response.cross_origin_embedder_policy = COEP.REQUIRE_CORP\n     assert response.headers[\"Cross-Origin-Embedder-Policy\"] == \"require-corp\"\n+\n+\n+@pytest.mark.parametrize(\n+    \"body\", [[b\"a\", b\"bc\"], (b\"a\", b\"bc\"), UserList([b\"a\", b\"bc\"])]\n+)\n+def test_response_sequence_body(body):\n+    response = wrappers.Response(body)\n+    assert response.is_sequence\n+    assert not response.is_streamed\n+    assert response.get_wsgi_headers({})[\"Content-Length\"] == \"3\"\n+    assert response.calculate_content_length() == 3\n+    assert response.get_data() == b\"abc\"\n+    assert response.response is body\n+\n+\n+class SizedResponseIterable:\n+    def __init__(self, fail=False):\n+        self.closed = 0\n+        self.fail = fail\n+\n+    def __len__(self):\n+        return 42\n+\n+    def __iter__(self):\n+        yield b\"a\"\n+        if self.fail:\n+            raise ValueError(\"iteration failed\")\n+        yield b\"bc\"\n+\n+    def close(self):\n+        self.closed += 1\n+\n+\n+@pytest.mark.parametrize(\n+    \"convert\", [\"make_sequence\", \"get_data\", \"freeze\", \"calculate_content_length\"]\n+)\n+def test_response_sized_iterable_conversion(convert):\n+    body = SizedResponseIterable()\n+    response = wrappers.Response(body)\n+    callbacks = []\n+    response.call_on_close(lambda: callbacks.append(True))\n+    assert response.is_streamed\n+    assert not response.is_sequence\n+    assert \"Content-Length\" not in response.get_wsgi_headers({})\n+    getattr(response, convert)()\n+    assert body.closed == 1\n+    assert response.response == [b\"a\", b\"bc\"]\n+    assert response.calculate_content_length() == 3\n+    assert not callbacks\n+    response.close()\n+    assert callbacks == [True]\n+    assert body.closed == 1\n+\n+\n+@pytest.mark.parametrize(\"convert\", [\"make_sequence\", \"freeze\"])\n+def test_response_conversion_failure_closes(convert):\n+    body = SizedResponseIterable(fail=True)\n+    response = wrappers.Response(body)\n+    with pytest.raises(ValueError, match=\"iteration failed\"):\n+        getattr(response, convert)()\n+    assert body.closed == 1\n+\n+\n+@pytest.mark.parametrize(\n+    \"operation\",\n+    [\"iter_encoded\", \"get_data\", \"calculate_content_length\", \"get_wsgi_headers\", \"freeze\"],\n+)\n+def test_response_nonbytes_deprecated(operation):\n+    response = wrappers.Response([b\"a\", \"\u00e9\"])\n+    with pytest.warns(DeprecationWarning, match=\"bytes\"):\n+        if operation == \"iter_encoded\":\n+            assert list(response.iter_encoded()) == [b\"a\", b\"\\xc3\\xa9\"]\n+        elif operation == \"get_wsgi_headers\":\n+            assert response.get_wsgi_headers({})[\"Content-Length\"] == \"3\"\n+        elif operation == \"calculate_content_length\":\n+            assert response.calculate_content_length() == 3\n+        elif operation == \"get_data\":\n+            assert response.get_data() == b\"a\\xc3\\xa9\"\n+        else:\n+            response.freeze()\n+            assert response.content_length == 3\n+\n+\n+def test_response_stream_deprecated():\n+    response = wrappers.Response()\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        stream = response.stream\n+    assert response.stream is stream\n+    stream.write(b\"abc\")\n+    assert response.get_data() == b\"abc\"\n+\n+\n+@pytest.mark.parametrize(\"auto\", [True, False])\n+def test_response_auto_length_deprecated(auto):\n+    response = wrappers.Response()\n+    response.automatically_set_content_length = auto\n+    with pytest.warns(DeprecationWarning, match=\"automatically_set_content_length\"):\n+        response.set_data(b\"abc\")\n+    assert response.content_length == (3 if auto else None)\n+    response.headers.pop(\"Content-Length\", None)\n+    with pytest.warns(DeprecationWarning, match=\"automatically_set_content_length\"):\n+        headers = response.get_wsgi_headers({})\n+    assert headers.get(\"Content-Length\") == (\"3\" if auto else None)\n+\n+\n+@pytest.mark.parametrize(\"mutable\", [False, True])\n+def test_response_close_sequence_on_conversion(mutable):\n+    class CloseableSequence(UserList):\n+        closed = 0\n+\n+        def close(self):\n+            self.closed += 1\n+\n+    body = CloseableSequence([b\"abc\"])\n+    response = wrappers.Response(body)\n+    if mutable:\n+        with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+            response.stream.write(b\"def\")\n+    else:\n+        response.freeze()\n+    assert body.closed == 1\n+    assert response.response == ([b\"abc\", b\"def\"] if mutable else [b\"abc\"])\n+    response.close()\n+    assert body.closed == 1\n+\n+\n+@pytest.mark.parametrize(\"chunk\", [bytearray(b\"abc\"), memoryview(b\"abc\")])\n+def test_response_nonstring_chunk_deprecated(chunk):\n+    response = wrappers.Response([b\"prefix\", chunk])\n+    with pytest.warns(DeprecationWarning, match=\"bytes\"):\n+        assert response.get_data() == b\"prefixabc\"\n+\n+\n+@pytest.mark.parametrize(\n+    \"body\", [b\"abc\", \"\u00e9\", [b\"abc\"], (b\"abc\",), UserList([b\"abc\"])]\n+)\n+def test_response_bytes_no_deprecation(body, recwarn):\n+    response = wrappers.Response(body)\n+    headers = response.get_wsgi_headers({})\n+    assert int(headers[\"Content-Length\"]) == len(response.get_data())\n+    assert response.calculate_content_length() == len(response.get_data())\n+    response.freeze()\n+    assert list(response.get_app_iter(create_environ())) == response.response\n+    response.close()\n+    assert not recwarn\n+\n+\n+def test_response_stream_tell_encoded_length():\n+    response = wrappers.Response()\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        stream = response.stream\n+    stream.write(\"\u00e9\")\n+    with pytest.warns(DeprecationWarning, match=\"bytes\"):\n+        assert stream.tell() == 2\n",
+      "patch_sha256": "b73587c3eb020ca6f3f56fc0238137c16a2cf0cfbc6d130b2412472aae00f2b1",
+      "proposal": "Fix Response iterable classification and cleanup\n\nRecognize Sequence bodies as buffered and other iterables as streamed, regardless of length. Close original iterables immediately during conversion to release resources promptly.\n\nDeprecate nonbytes chunks, `Response.stream`, and `automatically_set_content_length`, while preserving ordinary byte and single-string responses. Align encoded byte lengths, warnings, documentation, and regression tests.\n\nVerified offline: compilation, 109 wrapper tests, 115 adjacent tests, and `git diff --check`. Independent design and artifact reviews passed.\n\nFull-suite, documentation-build, and lint checks were not run; Ruff is unavailable. Changes remain in the checkout.",
+      "proposal_sha256": "17f88d7592db79e315efb55aa0855335d293d826e923792b8eac0fa26c0128b2",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "b73587c3eb020ca6f3f56fc0238137c16a2cf0cfbc6d130b2412472aae00f2b1",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "patch_sha256": "b73587c3eb020ca6f3f56fc0238137c16a2cf0cfbc6d130b2412472aae00f2b1",
+            "proposal_sha256": "17f88d7592db79e315efb55aa0855335d293d826e923792b8eac0fa26c0128b2",
+            "judgment_sha256": "446cd363474ed150ecae3f6bc7e963b34dc4013d4b7d467dc9a3264d951e8a62",
+            "mapping_sha256": "04441ae156c49e5c36bc10038390f7e4b640f010504acab9f127e1d7df7cad71",
+            "assessor_sha256": "71a67b65b8248dd328877bb3b945567918d05864f13813d882937e1d9dd33a5d",
+            "packet_sha256": "e576594b809f0582255ba16ef59f73dc7cd9fc4fef35f80cca0f2ebb850121b4",
+            "prompt_sha256": "4f0322c5e7e25ea855357b6b95971d24f8a5fa3b1f9f789b32c80492871ad249"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "patch_sha256": "b73587c3eb020ca6f3f56fc0238137c16a2cf0cfbc6d130b2412472aae00f2b1",
+            "proposal_sha256": "17f88d7592db79e315efb55aa0855335d293d826e923792b8eac0fa26c0128b2",
+            "judgment_sha256": "145364d04a4aa71f09ad6cb1c889dcc51ba26f94d014e7bd2cf35ea8f242056b",
+            "mapping_sha256": "642490d0a8441e1c3d4823f4c657111c1f557b8737dc53acf4bcbc1ce62c6d58",
+            "assessor_sha256": "7a7144fa787c0529de3979a5c35e8b7f0b57b1a6144217b091e8af3badcb823f",
+            "packet_sha256": "e675278e4f5814e0cb8156cadcaf3cb93a2142d4486df6dd75b98f628c6c60d8",
+            "prompt_sha256": "433cf6c8ff8569a40fed194cb284de7c2513b221bfb77333ef7b0d29a818a33f"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "patch_sha256": "b73587c3eb020ca6f3f56fc0238137c16a2cf0cfbc6d130b2412472aae00f2b1",
+            "proposal_sha256": "17f88d7592db79e315efb55aa0855335d293d826e923792b8eac0fa26c0128b2",
+            "judgment_sha256": "4dcebb4765745ae87fda4086907fb07703edb6800e4c641013c08e8e2d81c082",
+            "mapping_sha256": "a8c4d6de03f19dac0f73a5c06553d598041131ef4052fbb49ea7eb7a3e7b4e73",
+            "assessor_sha256": "f841e37af68d72f0b5bfe355c0c69c53b90668d1e665ec052d9976e4492efd0f",
+            "packet_sha256": "6e95617a0f91ba4dce464b5d7bc09bf40187d9ea2acff40c9fb43e3914844b07",
+            "prompt_sha256": "40774f24acd49a594a1e7af2dca2e163b2204df7176fcbc088f0ce54ca47ef1a"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        "proposal_points_100": 96.25,
+        "diff_points_85": 85.0,
+        "rotation_points_85": {
+          "0": 85.0,
+          "1": 85.0,
+          "2": 85.0
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/C.patch response.py recognizes Sequence and treats sized non-sequences as streamed; _buffer_response closes in finally and is used for mutable copying and unconditional encoded freeze buffering. Nonbytes chunks warn before yielding, strings continue encoding, default byte responses retain automatic length, and explicit auto-length settings warn while preserving bool behavior. ResponseStream.tell now measures iter_encoded bytes, fixing UTF-8 chunk lengths. docs/wrappers.rst and CHANGES.rst explain classification, cleanup, and migrations. Frozen build/native/contract/preserve exits are all 0. Existing 1xx/204/304 length restrictions, passthrough and implicit-conversion guards are retained.",
+              "tests": "packet/C.patch tests/test_wrappers.py covers UserList identity/classification, sized-stream conversion through four entry points, closing and deferred response callbacks, iteration failure, closeable sequence conversion through freeze and stream writes, warnings across five encoding/length operations, nonstring buffer chunks, both auto-length settings, cached stream access, encoded tell length, and explicit absence of warnings for ordinary bytes and scalar strings. Existing tuple conversion under both flag settings remains; changed text fixtures use bytes while dedicated nonbytes cases retain compatibility checks. tests/test_test.py changes only a fixture encoding and preserves its assertions. Frozen native exit 0 supports the selected wrapper tests.",
+              "design": "packet/C.patch centralizes cleanup in a small finally-based _buffer_response helper. Its encoded=False path preserves raw mutable-copy behavior, while freeze retains the previous unconditional encoded list. The targeted tell fix aligns the remaining byte-length consumer. Changes stay within response handling, related documentation, and test fixtures. Inspection finds no removed status, passthrough, implicit-conversion, conditional-request, or validation protection.",
+              "proposal": "packet/C.md precisely describes classification, cleanup motivation, compatibility, and length/warning alignment, and states full-suite, docs-build, and lint limitations. Frozen build/native statuses corroborate compilation and wrapper-test success. Exact counts, 115 adjacent tests, diff checking, independent reviews, and Ruff availability are not supported by supplied frozen output and receive no credit. These unsupported claims alone do not establish an integrity violation."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/B.patch, src/werkzeug/wrappers/response.py recognizes Sequence and classifies sized non-sequences as streamed. _buffer_response closes originals in finally for ordinary buffering, freeze and mutable conversion, preserving deferred response callbacks. _iter_encoded warns on nonbytes while encoding text; automatic length stays enabled by default and explicit False remains honored with a warning. ResponseStream.tell() now counts encoded bytes. Frozen build/native/contract/preserve exits are all 0, with focused tests supplying affirmative boundary evidence.",
+              "tests": "packet/B.patch, tests/test_wrappers.py adds UserList identity and length checks, four sized-iterable conversion routes, failure cleanup, separate callback timing, closeable sequence conversion, mixed-chunk warnings across five operations, bytearray/memoryview chunks, cached stream access, True/False length settings, explicit warning-free ordinary bytes/single-string consumers, and UTF-8 stream.tell(). Existing tuple conversion, stream write and ZIP assertions are retained. tests/test_test.py updates its WSGI fixture to bytes without removing its behavioral assertions. Frozen native exit 0 covers the specified wrapper suite.",
+              "design": "packet/B.patch uses the existing Sequence and encoding interfaces, a small shared cleanup helper, and a None sentinel to avoid warnings for ordinary responses. encoded=False preserves chunk representation during mutable sequence conversion while still closing replaced originals. tell() uses iter_encoded consistently. Source edits are confined to response handling; the adjacent test fixture and user documentation directly support the deprecation. Status-based Content-Length protections and implicit/direct-passthrough guards remain.",
+              "proposal": "packet/B.md gives a concrete title, explains prompt cleanup and preserved ordinary responses, and states full-suite, docs and lint limitations. Compilation and wrapper check categories are supported by frozen exits. Exact test counts, 115 adjacent tests, diff --check and independent reviews lack supporting frozen output and receive no verification credit; the review claims add little reviewable information."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/A.patch: response.py recognizes collections.abc.Sequence and makes is_streamed its inverse; _buffer_response closes the captured original in finally, including freeze and mutable-sequence conversion. Existing passthrough and implicit-conversion guards remain. Nonbytes warnings preserve text encoding, default automatic length remains enabled, and ResponseStream.tell now sums encoded byte lengths. docs/wrappers.rst and CHANGES.rst explain the changes. packet/task.json records build/native/contract/preserve exits of 0; the named native scope is tests/test_wrappers.py.",
+              "tests": "packet/A.patch tests/test_wrappers.py adds UserList/list/tuple classification and length assertions, sized non-sequence conversion through four entry points, immediate closure and callback separation, failure cleanup, closeable sequence conversion, mixed text and other nonbytes warnings, cached stream access, explicit auto-length True/False, encoded tell, and warning-free ordinary byte/single-string responses. Existing tuple-to-list conversion assertions remain with bytes and explicit stream warnings. The test_test.py fixture switches to valid WSGI bytes while preserving its path assertion. Frozen native/contract/preserve checks all exit 0.",
+              "design": "packet/A.patch centralizes conversion and resource cleanup in _buffer_response, with encoded=False preserving the existing mutable-sequence behavior. A shared _should_set_content_length helper provides deprecation handling without warning on defaults. Changes stay within response handling, its documentation, and affected tests; status-code exclusions and implicit conversion protections remain intact.",
+              "proposal": "packet/A.md supplies a precise title, behavior and resource-release motivation, deprecation scope, and explicit full-suite/docs/lint limitations. Frozen evidence supports successful compilation and the wrapper-test command, but does not substantiate the stated 109/115 counts, adjacent-test run, diff check, or independent reviews; those claims receive no verification credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 2967307,
+          "cachedInputTokens": 2815104,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 20183,
+          "reasoningOutputTokens": 5917,
+          "totalTokens": 2987490
+        },
+        "estimated_usd": 0.7877464000000001,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 673.8671017920133,
+        "prompt_to_terminal_seconds": 633.1542200578842,
+        "through_grading_seconds": 683.37922539399,
+        "setup_seconds": 39.172763790003955,
+        "grading_seconds": 7.981040293117985,
+        "thread_count": 3,
+        "child_count": 2,
+        "root_tokens": {
+          "totalTokens": 2213954,
+          "inputTokens": 2197351,
+          "cachedInputTokens": 2119808,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 16603,
+          "reasoningOutputTokens": 4786
+        },
+        "descendant_tokens": {
+          "inputTokens": 769956,
+          "cachedInputTokens": 695296,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 3580,
+          "reasoningOutputTokens": 1131,
+          "totalTokens": 773536
+        },
+        "observed_commands": 46,
+        "native_hook_receipts": 109
+      },
+      "receipt_sha256": {
+        "grade": "ec40790d469c35c342730c3c5cfd74e3e08842f52e5c351845474cf976b179e5",
+        "release": "0677e3c6619be391f8d1fac2e276eb0e936d68078226b7ec6c865b17e65a4c92",
+        "native": "d67200009a25704f25fb9c1ed1bc1a24b170ed14752d5d8361cce655760d6f9d",
+        "submission": "79185bdb0f49c0fd8d08d1ea1c21e634aedce84140e87d6a12c3826da1adc2f1",
+        "result": "36dc031da3497fcf918ce171caf541a961425042e27d101dce2b87ad42585bb3",
+        "inventory": "ec10625cdca6ce33be8bf0226bc52e79b320867acb2a0f068b1270b66f82f3aa"
+      }
+    },
+    "upstream": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "e299196a27d9f89bae5656e79e8a457ae9cbfc6f45d19a4e24c00583389beb7b",
+      "case_id": "werkzeug",
+      "role": "upstream",
+      "state": "merged",
+      "readiness": "pending",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=src:/deps/lib python -m compileall -q src/werkzeug",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "e42746d267406dfb04bf22cc68bf5aa483cdda778a713d90930c0cfc011f6afc",
+          "command": "PYTHONPATH=src:/deps/lib python -m pytest -q -o addopts= tests/test_wrappers.py",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "54bd20a612bcb896a05d1410a07a6cf9568ef4bea04aebd4a3103d03c6b8fa3e",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "54bd20a612bcb896a05d1410a07a6cf9568ef4bea04aebd4a3103d03c6b8fa3e",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/CHANGES.rst b/CHANGES.rst\nindex 5fee5f3..a8418ea 100644\n--- a/CHANGES.rst\n+++ b/CHANGES.rst\n@@ -156,6 +156,14 @@ Version 3.2.0\n     filter while building a new ``Headers`` instead. :issue:`3303`\n -   ``remove_entity_headers`` and ``is_entity_header`` are deprecated. Use\n     ``Response`` instead. :issue:`3303`.\n+-   A ``Response.response`` iterable with mixed strings and bytes is deprecated.\n+    This was a holdover from Python 2 and caused unnecessary overhead.\n+    :issue:`3323`\n+-   ``Response.stream`` is deprecated. Use a list comprehension, generator, or\n+    ``send_file(BytesIO)`` instead. :issue:`3324`\n+-   ``Response.automatically_set_content_length`` is deprecated. Set\n+    ``response`` to a non-sequence iterable to indicate that the content length\n+    should not be set. :issue:`3323`\n -   ``is_hop_by_hop_header`` accepts a parsed ``Connection`` header to check\n     against. The list of headers to always remove is updated to RFC 9110.\n -   The list of headers removed from 304 responses is updated to RFC 9110.\n@@ -252,6 +260,13 @@ Version 3.2.0\n -   ``SharedDataMiddleware`` uses ``send_file``. ``cache_timeout`` is not set by\n     default, enabling conditional caching. `` The ``cache`` and\n     ``fallback_mimetype`` parameters are deprecated. :issue:`3291`\n+-   ``Response.set_data`` can be passed an iterable or ``None``, not only a\n+    string or bytes. ``Content-Length`` will be cleared for arbitrary iterables.\n+-   ``Response.is_sequence`` (and therefore ``make_sequence``) accepts any\n+    ``Sequence`` instead of only ``list`` or ``tuple``. ``is_streamed`` rejects\n+    any non ``Sequence`` instead of anything without ``len``. :issue:`3323`\n+-   ``Response.make_sequence`` closes the original iterable immediately rather\n+    than deferring until the response is closed. :issue:`3323`\n \n \n Version 3.1.9\ndiff --git a/src/werkzeug/wrappers/response.py b/src/werkzeug/wrappers/response.py\nindex c8a2f42..452f2ca 100644\n--- a/src/werkzeug/wrappers/response.py\n+++ b/src/werkzeug/wrappers/response.py\n@@ -1,5 +1,6 @@\n from __future__ import annotations\n \n+import collections.abc as cabc\n import json\n import typing as t\n from http import HTTPStatus\n@@ -22,13 +23,31 @@ if t.TYPE_CHECKING:\n     from .request import Request\n \n \n-def _iter_encoded(iterable: t.Iterable[str | bytes]) -> t.Iterator[bytes]:\n+def _iter_encoded(iterable: cabc.Iterable[str | bytes]) -> cabc.Iterator[bytes]:\n+    has_str = False\n+    has_bytes = False\n+    warned = False\n+\n     for item in iterable:\n         if isinstance(item, str):\n+            has_str = True\n             yield item.encode()\n         else:\n+            has_bytes = True\n             yield item\n \n+        if has_str and has_bytes and not warned:\n+            import warnings\n+\n+            warned = True\n+            warnings.warn(\n+                \"The response iterable must contain only bytes or only strings,\"\n+                \" not both. Support for mixed types is deprecated and will be\"\n+                \" removed in Werkzeug 4.0.\",\n+                DeprecationWarning,\n+                stacklevel=2,\n+            )\n+\n \n class Response(_SansIOResponse):\n     \"\"\"Represents an outgoing WSGI HTTP response with body, status, and\n@@ -100,15 +119,15 @@ class Response(_SansIOResponse):\n         The ``direct_passthrough`` parameter was added.\n     \"\"\"\n \n-    #: if set to `False` accessing properties on the response object will\n-    #: not try to consume the response iterator and convert it into a list.\n-    #:\n-    #: .. versionadded:: 0.6.2\n-    #:\n-    #:    That attribute was previously called `implicit_seqence_conversion`.\n-    #:    (Notice the typo).  If you did use this feature, you have to adapt\n-    #:    your code to the name change.\n     implicit_sequence_conversion = True\n+    \"\"\"Set to ``False`` to disable places where an arbitrary :attr:`response`\n+    iterable would be automatically converted into a fixed-length sequence. In\n+    that case, a ``RuntimeError`` will be raised unless ``response`` is already\n+    a sequence.\n+\n+    .. versionchanged:: 0.6.2\n+        Renamed from the typo ``implicit_seqence_conversion``.\n+    \"\"\"\n \n     #: If a redirect ``Location`` header is a relative URL, make it an\n     #: absolute URL, including scheme and domain.\n@@ -124,27 +143,58 @@ class Response(_SansIOResponse):\n     #: .. versionadded:: 0.8\n     autocorrect_location_header: None = None\n \n-    #: Should this response object automatically set the content-length\n-    #: header if possible?  This is true by default.\n-    #:\n-    #: .. versionadded:: 0.8\n-    automatically_set_content_length = True\n+    automatically_set_content_length = None\n+    \"\"\"Set to ``False`` to disable automatically calculating and setting\n+    :attr:`content_length` in certain places. It can be set automatically when\n+    the :attr:`response` iterable is a fixed-length sequence.\n+\n+    .. deprecated:: 3.2\n+        Will be removed in Werkzeug 4.0. Set ``response`` to a non-sequence\n+        iterable to indicate that the content length should not be set.\n+\n+    .. versionadded:: 0.8\n+    \"\"\"\n+\n+    @property\n+    def _auto_length(self) -> bool:\n+        if self.automatically_set_content_length is None:\n+            return True\n+\n+        import warnings\n+\n+        warnings.warn(\n+            \"The 'automatically_set_content_length' attribute is deprecated and\"\n+            \" will be removed in Werkzeug 4.0. Set 'response' to a non-sequence\"\n+            \" iterable to indicate that the content length should not be set.\",\n+            DeprecationWarning,\n+            stacklevel=2,\n+        )\n+        return self.automatically_set_content_length\n \n-    #: The response body to send as the WSGI iterable. A list of strings\n-    #: or bytes represents a fixed-length response, any other iterable\n-    #: is a streaming response. Strings are encoded to bytes as UTF-8.\n-    #:\n-    #: Do not set to a plain string or bytes, that will cause sending\n-    #: the response to be very inefficient as it will iterate one byte\n-    #: at a time.\n     response: t.Iterable[str] | t.Iterable[bytes]\n+    \"\"\"The response body to send as the WSGI iterable. A sequence with ``len``\n+    is a fixed-length response, any other iterable is a streaming response.\n+\n+    This should contain bytes. For convenience, it can also be strings, which\n+    will be encoded as UTF-8. If you know the body is bytes, set\n+    :attr:`direct_passthrough` to avoid some overhead.\n+\n+    Use :meth:`set_data` rather than modifying this directly in most cases.\n+\n+    Do not set this to a plain string or bytes. That would be very inefficient,\n+    as it would iterate one byte at a time.\n+\n+    .. versionchanged:: 3.2\n+        An iterable that contains both bytes and strings is deprecated and will\n+        not be supported in Werkzeug 4.0.\n+    \"\"\"\n \n     def __init__(\n         self,\n-        response: t.Iterable[bytes] | bytes | t.Iterable[str] | str | None = None,\n+        response: str | bytes | cabc.Iterable[str] | cabc.Iterable[bytes] | None = None,\n         status: int | str | HTTPStatus | None = None,\n-        headers: t.Mapping[str, str | t.Iterable[str]]\n-        | t.Iterable[tuple[str, str]]\n+        headers: cabc.Mapping[str, str | cabc.Iterable[str]]\n+        | cabc.Iterable[tuple[str, str]]\n         | None = None,\n         mimetype: str | None = None,\n         content_type: str | None = None,\n@@ -157,19 +207,20 @@ class Response(_SansIOResponse):\n             content_type=content_type,\n         )\n \n-        #: Pass the response body directly through as the WSGI iterable.\n-        #: This can be used when the body is a binary file or other\n-        #: iterator of bytes, to skip some unnecessary checks. Use\n-        #: :func:`~werkzeug.utils.send_file` instead of setting this\n-        #: manually.\n         self.direct_passthrough = direct_passthrough\n+        \"\"\"Use :attr:`response` directly as the WSGI iterable, rather than\n+        passing it through :meth:`iter_encoded`. Should be enabled when\n+        ``response`` is a binary file. It is enabled automatically when using\n+        :func:`.send_file`.\n+        \"\"\"\n+\n         self._on_close: list[t.Callable[[], t.Any]] = []\n \n-        # we set the response after the headers so that if a class changes\n-        # the charset attribute, the data is set in the correct charset.\n+        # Can't call set_data(response) for all types here, it may clear the\n+        # content-type header.\n         if response is None:\n             self.response = []\n-        elif isinstance(response, (str, bytes, bytearray)):\n+        elif isinstance(response, (str, bytes)):\n             self.set_data(response)\n         else:\n             self.response = response\n@@ -187,9 +238,10 @@ class Response(_SansIOResponse):\n \n     def __repr__(self) -> str:\n         if self.is_sequence:\n-            body_info = f\"{sum(map(len, self.iter_encoded()))} bytes\"\n+            body_info = f\"{self.calculate_content_length()} bytes\"\n         else:\n-            body_info = \"streamed\" if self.is_streamed else \"likely-streamed\"\n+            body_info = \"streamed\"\n+\n         return f\"<{type(self).__name__} {body_info} [{self.status}]>\"\n \n     @classmethod\n@@ -261,20 +313,21 @@ class Response(_SansIOResponse):\n \n     @t.overload\n     def get_data(self, as_text: t.Literal[False] = False) -> bytes: ...\n-\n     @t.overload\n     def get_data(self, as_text: t.Literal[True]) -> str: ...\n-\n     def get_data(self, as_text: bool = False) -> bytes | str:\n-        \"\"\"The string representation of the response body.  Whenever you call\n-        this property the response iterable is encoded and flattened.  This\n-        can lead to unwanted behavior if you stream big data.\n+        \"\"\"Read the :attr:`response` iterable into a single bytes value.\n \n-        This behavior can be disabled by setting\n-        :attr:`implicit_sequence_conversion` to `False`.\n+        Typically, this should only be used in tests, to examine an expected\n+        response. It causes ``response`` to be iterated and encoded immediately,\n+        which will be a problem with large or infinite streamed data.\n \n-        If `as_text` is set to `True` the return value will be a decoded\n-        string.\n+        Set :attr:`implicit_sequence_conversion` to ``False`` to disable this\n+        behavior for arbitrary iterables. In that case, this can only be\n+        accessed if the body is already a fixed-length sequence. This cannot be\n+        accessed if :attr:`direct_passthrough` is ``True``.\n+\n+        :param as_text: Decode the bytes as UTF-8 and return a string.\n \n         .. versionadded:: 0.9\n         \"\"\"\n@@ -286,111 +339,159 @@ class Response(_SansIOResponse):\n \n         return rv\n \n-    def set_data(self, value: bytes | str) -> None:\n-        \"\"\"Sets a new string as response.  The value must be a string or\n-        bytes. If a string is set it's encoded to the charset of the\n-        response (utf-8 by default).\n+    def set_data(self, value: str | bytes) -> None:\n+        \"\"\"Set the :attr:`response` iterable and :attr:`content_length`. A\n+        string is encoded as UTF-8. The value is wrapped as a single-item\n+        sequence.nse.\n \n         .. versionadded:: 0.9\n         \"\"\"\n         if isinstance(value, str):\n             value = value.encode()\n+\n         self.response = [value]\n-        if self.automatically_set_content_length:\n-            self.headers[\"Content-Length\"] = str(len(value))\n \n-    data = property(\n-        get_data,\n-        set_data,\n-        doc=\"A descriptor that calls :meth:`get_data` and :meth:`set_data`.\",\n-    )\n+        if self._auto_length:\n+            self.content_length = len(value)\n+\n+    @property\n+    def data(self) -> bytes:\n+        \"\"\"The data from the response body. See :meth:`get_data` and\n+        :meth:`set_data`.\n+        \"\"\"\n+        return self.get_data()\n+\n+    @data.setter\n+    def data(self, value: str | bytes) -> None:\n+        self.set_data(value)\n \n     def calculate_content_length(self) -> int | None:\n-        \"\"\"Returns the content length if available or `None` otherwise.\"\"\"\n+        \"\"\"Calculate the total bytes returned by the :attr:`response` iterable.\n+\n+        This does not set :attr:`content_length`, it only calculates the value.\n+        It does not read :attr:`content_length` either, it's only based on what\n+        :attr:`response` contains.\n+\n+        This causes ``response`` to be iterated and encoded immediately, which\n+        will be a problem with large or infinite streamed data.\n+        Set :attr:`implicit_sequence_conversion` to ``False`` to disable this\n+        behavior for arbitrary iterables. In that case, this can only be\n+        accessed if the body is already a fixed-length sequence. This cannot be\n+        accessed if :attr:`direct_passthrough` is ``True``.\n+        \"\"\"\n         try:\n             self._ensure_sequence()\n         except RuntimeError:\n             return None\n-        return sum(len(x) for x in self.iter_encoded())\n+\n+        return sum(map(len, self.iter_encoded()))\n \n     def _ensure_sequence(self, mutable: bool = False) -> None:\n-        \"\"\"This method can be called by methods that need a sequence.  If\n-        `mutable` is true, it will also ensure that the response sequence\n-        is a standard Python list.\n+        \"\"\"Use before operations that need :attr:`response` to be a\n+        fixed-length sequence, while obeying flags that disable this behavior.\n+        Use :meth:`make_sequence` to override those flags.\n+\n+        This causes ``response`` to be iterated and encoded immediately, which\n+        will be a problem with large or infinite streamed data.\n+\n+        :param mutable: Convert to a mutable sequence.\n+        :raise RuntimeError: If it is not already a sequence and\n+            :attr:direct_passthrough` is enabled or\n+            :attr:`implicit_sequence_conversion` is disabled.\n \n         .. versionadded:: 0.6\n         \"\"\"\n         if self.is_sequence:\n-            # if we need a mutable object, we ensure it's a list.\n-            if mutable and not isinstance(self.response, list):\n+            if mutable and not isinstance(self.response, cabc.MutableSequence):\n                 self.response = list(self.response)  # type: ignore[assignment]\n+\n             return\n+\n         if self.direct_passthrough:\n             raise RuntimeError(\n                 \"Attempted implicit sequence conversion but the\"\n                 \" response object is in direct passthrough mode.\"\n             )\n+\n         if not self.implicit_sequence_conversion:\n             raise RuntimeError(\n                 \"The response object required the iterable to be a\"\n-                \" sequence, but the implicit conversion was disabled.\"\n-                \" Call make_sequence() yourself.\"\n+                \" sequence, but implicit conversion was disabled.\"\n+                \" Call 'make_sequence()' manually.\"\n             )\n+\n         self.make_sequence()\n \n     def make_sequence(self) -> None:\n-        \"\"\"Converts the response iterator in a list.  By default this happens\n-        automatically if required.  If `implicit_sequence_conversion` is\n-        disabled, this method is not automatically called and some properties\n-        might raise exceptions.  This also encodes all the items.\n+        \"\"\"Convert the :attr:`response` iterator to a fixed-length sequence if\n+        it is not already.\n+\n+        Sets :attr:`content_length` unless :attr:`automatically_set_content_length`\n+        is disabled.\n+\n+        If the original ``response`` has a ``close`` method, it will be called\n+        after iterating.\n+\n+        Some other methods automatically do this conversion, but will raise an\n+        error instead if :attr:`direct_passthrough` is enabled or\n+        :attr:`implicit_sequence_conversion` is disabled. Call this method to\n+        override those checks. This causes ``response`` to be iterated and\n+        encoded immediately, which will be a problem with large or infinite\n+        streamed data.\n+\n+        .. versionchanged:: 3.2\n+            ``close`` is called immediately instead of with the response.\n \n         .. versionadded:: 0.6\n         \"\"\"\n         if not self.is_sequence:\n-            # if we consume an iterable we have to ensure that the close\n-            # method of the iterable is called if available when we tear\n-            # down the response\n-            close = getattr(self.response, \"close\", None)\n+            close: t.Callable[[], None] | None = getattr(self.response, \"close\", None)\n             self.response = list(self.iter_encoded())\n+\n             if close is not None:\n-                self.call_on_close(close)\n+                close()\n+\n+    def iter_encoded(self) -> cabc.Iterator[bytes]:\n+        \"\"\"Iterate over the :attr:`response` iterable as bytes. If the iterable\n+        is strings, they will be encoded as UTF-8.\n \n-    def iter_encoded(self) -> t.Iterator[bytes]:\n-        \"\"\"Iter the response encoded with the encoding of the response.\n-        If the response object is invoked as WSGI application the return\n-        value of this method is used as application iterator unless\n-        :attr:`direct_passthrough` was activated.\n+        This is used as the WSGI iterator unless :attr:`direct_passthrough` is\n+        enabled. That signals that you know the ``response`` is bytes and the\n+        check can be skipped, which will be more efficient.\n+\n+        .. versionchanged:: 3.2\n+            An iterable that contains both bytes and strings is deprecated and\n+            will not be supported in Werkzeug 4.0.\n         \"\"\"\n-        # Encode in a separate function so that self.response is fetched\n-        # early.  This allows us to wrap the response with the return\n-        # value from get_app_iter or iter_encoded.\n+        # Use a separate generator rather than yielding directly. Yielding here\n+        # wouldn't access `response` until the first iteration was requested,\n+        # meaning `r.response = process(r.iter_encoded())` would create a\n+        # circular reference.\n         return _iter_encoded(self.response)\n \n     @property\n     def is_streamed(self) -> bool:\n-        \"\"\"If the response is streamed (the response is not an iterable with\n-        a length information) this property is `True`.  In this case streamed\n-        means that there is no information about the number of iterations.\n-        This is usually `True` if a generator is passed to the response object.\n+        \"\"\"``True`` if the :attr:`response` iterable is not a sequence with a\n+        length, for example a generator. This means the number of iterations is\n+        unknown, it may end or it may be infinite.\n \n-        This is useful for checking before applying some sort of post\n-        filtering that should not take place for streamed responses.\n+        .. versionchanged:: 3.2\n+            Rejects any non ``Sequence`` instead of anything without ``len``.\n         \"\"\"\n-        try:\n-            len(self.response)  # type: ignore[arg-type]\n-        except (TypeError, AttributeError):\n-            return True\n-        return False\n+        return not self.is_sequence\n \n     @property\n     def is_sequence(self) -> bool:\n-        \"\"\"If the iterator is buffered, this property will be `True`.  A\n-        response object will consider an iterator to be buffered if the\n-        response attribute is a list or tuple.\n+        \"\"\"``True`` if the :attr:`response` iterator is a sequence with a\n+        length, for example a list. This means the number of iterations is\n+        known, although it may change if you modify the body.\n+\n+        .. versionchanged:: 3.2\n+            Accepts any ``Sequence`` instead of only ``list`` or ``tuple``.\n \n         .. versionadded:: 0.6\n         \"\"\"\n-        return isinstance(self.response, (tuple, list))\n+        return isinstance(self.response, cabc.Sequence)\n \n     def close(self) -> None:\n         \"\"\"Close the wrapped response if possible.  You can also use the object\n@@ -404,7 +505,7 @@ class Response(_SansIOResponse):\n         for func in self._on_close:\n             func()\n \n-    def __enter__(self) -> Response:\n+    def __enter__(self) -> t.Self:\n         return self\n \n     def __exit__(\n@@ -416,14 +517,15 @@ class Response(_SansIOResponse):\n         self.close()\n \n     def freeze(self) -> None:\n-        \"\"\"Make the response object ready to be pickled. Does the\n-        following:\n+        \"\"\"Make the response pickleable.\n \n-        *   Buffer the response into a list, ignoring\n-            :attr:`implicity_sequence_conversion` and\n-            :attr:`direct_passthrough`.\n-        *   Set the ``Content-Length`` header.\n-        *   Generate an ``ETag`` header if one is not already set.\n+        -   Call :attr:`make_sequence` to buffer the response in memory,\n+            ignoring :attr:`direct_passthrough` and\n+            :attr:`implicit_sequence_conversion`.\n+        -   Set :attr:`content_length` to :meth:`calculate_content_length`, even\n+            if it's already set.\n+        -   Call :attr:`add_etag` to generate an ``ETag`` header if it's not\n+            already set.\n \n         .. versionchanged:: 2.1\n             Removed the ``no_etag`` parameter.\n@@ -434,10 +536,8 @@ class Response(_SansIOResponse):\n         .. versionchanged:: 0.6\n             The ``Content-Length`` header is set.\n         \"\"\"\n-        # Always freeze the encoded response body, ignore\n-        # implicit_sequence_conversion and direct_passthrough.\n-        self.response = list(self.iter_encoded())\n-        self.headers[\"Content-Length\"] = str(sum(map(len, self.response)))\n+        self.make_sequence()\n+        self.content_length = self.calculate_content_length()\n         self.add_etag()\n \n     def get_wsgi_headers(self, environ: WSGIEnvironment) -> Headers:\n@@ -467,7 +567,7 @@ class Response(_SansIOResponse):\n         headers = Headers(self.headers)\n         location: str | None = None\n         content_location: str | None = None\n-        content_length: str | int | None = None\n+        content_length: str | None = None\n         status = self.status_code\n \n         # iterate over the headers to find all values in one go.  Because\n@@ -523,25 +623,12 @@ class Response(_SansIOResponse):\n                 \"content-length\",\n             ):\n                 headers.remove(name)\n-\n-        # if we can determine the content length automatically, we\n-        # should try to do that.  But only if this does not involve\n-        # flattening the iterator or encoding of strings in the\n-        # response. We however should not do that if we have a 304\n-        # response.\n-        if (\n-            self.automatically_set_content_length\n-            and self.is_sequence\n-            and content_length is None\n-            and status not in (204, 304)\n-            and not (100 <= status < 200)\n-        ):\n-            content_length = sum(len(x) for x in self.iter_encoded())\n-            headers[\"Content-Length\"] = str(content_length)\n+        elif self._auto_length and content_length is None and self.is_sequence:\n+            headers[\"Content-Length\"] = str(self.calculate_content_length())\n \n         return headers\n \n-    def get_app_iter(self, environ: WSGIEnvironment) -> t.Iterable[bytes]:\n+    def get_app_iter(self, environ: WSGIEnvironment) -> cabc.Iterable[bytes]:\n         \"\"\"Returns the application iterator for the given environ.  Depending\n         on the request method and the current status code the return value\n         might be an empty response rather than the one from the response.\n@@ -570,7 +657,7 @@ class Response(_SansIOResponse):\n \n     def get_wsgi_response(\n         self, environ: WSGIEnvironment\n-    ) -> tuple[t.Iterable[bytes], str, list[tuple[str, str]]]:\n+    ) -> tuple[cabc.Iterable[bytes], str, list[tuple[str, str]]]:\n         \"\"\"Returns the final WSGI response as tuple.  The first item in\n         the tuple is the application iterator, the second the status and\n         the third the list of headers.  The response returned is created\n@@ -589,7 +676,7 @@ class Response(_SansIOResponse):\n \n     def __call__(\n         self, environ: WSGIEnvironment, start_response: StartResponse\n-    ) -> t.Iterable[bytes]:\n+    ) -> cabc.Iterable[bytes]:\n         \"\"\"Process this response as WSGI application.\n \n         :param environ: the WSGI environment.\n@@ -652,7 +739,20 @@ class Response(_SansIOResponse):\n \n     @cached_property\n     def stream(self) -> ResponseStream:\n-        \"\"\"The response iterable as write-only stream.\"\"\"\n+        \"\"\"The response iterable as write-only stream.\n+\n+        .. deprecated:: 3.2\n+            Will be removed in Werkzeug 4.0. Use a list comprehension or\n+            generator instead.\n+        \"\"\"\n+        import warnings\n+\n+        warnings.warn(\n+            \"The 'stream' attribute is deprecated and will be removed in\"\n+            \" Werkzeug 4.0. Use a list comprehension or generator instead.\",\n+            DeprecationWarning,\n+            stacklevel=2,\n+        )\n         return ResponseStream(self)\n \n     # Preconditions and Range Requests\n@@ -712,7 +812,6 @@ class Response(_SansIOResponse):\n                     raise PreconditionFailed()\n \n                 self.status_code = 304\n-                return\n         else:\n             if (\n                 request.method in {\"GET\", \"HEAD\"}\n@@ -871,10 +970,10 @@ class ResponseStream:\n             raise ValueError(\"I/O operation on closed file\")\n         self.response._ensure_sequence(mutable=True)\n         self.response.response.append(value)  # type: ignore[union-attr]\n-        self.response.headers.pop(\"Content-Length\", None)\n+        self.response.content_length = None\n         return len(value)\n \n-    def writelines(self, seq: t.Iterable[bytes]) -> None:\n+    def writelines(self, seq: cabc.Iterable[bytes]) -> None:\n         for item in seq:\n             self.write(item)\n \ndiff --git a/tests/test_wrappers.py b/tests/test_wrappers.py\nindex 7ec16ba..54d088d 100644\n--- a/tests/test_wrappers.py\n+++ b/tests/test_wrappers.py\n@@ -1,4 +1,3 @@\n-import contextlib\n import json\n from contextlib import nullcontext\n from datetime import datetime\n@@ -228,11 +227,6 @@ def test_base_response():\n     response = wrappers.Response(\"\u00f6\u00e4\u00fc\")\n     assert response.get_data() == \"\u00f6\u00e4\u00fc\".encode()\n \n-    # writing\n-    response = wrappers.Response(\"foo\")\n-    response.stream.write(\"bar\")\n-    assert response.get_data() == b\"foobar\"\n-\n     # set cookie\n     response = wrappers.Response()\n     response.set_cookie(\n@@ -542,9 +536,12 @@ def test_authenticate_quoted_qop():\n \n def test_response_stream():\n     response = wrappers.Response()\n-    response.stream.write(\"Hello \")\n-    response.stream.write(\"World!\")\n-    assert response.response == [\"Hello \", \"World!\"]\n+\n+    with pytest.deprecated_call():\n+        response.stream.write(b\"Hello \")\n+        response.stream.write(b\"World!\")\n+\n+    assert response.response == [b\"Hello \", b\"World!\"]\n     assert response.get_data() == b\"Hello World!\"\n \n \n@@ -811,14 +808,6 @@ def test_new_response_iterator_behavior():\n     assert not resp.is_streamed\n     assert resp.is_sequence\n \n-    # stream makes it a list no matter how the conversion is set\n-    for val in True, False:\n-        resp.implicit_sequence_conversion = val\n-        resp.response = (\"foo\", \"bar\")\n-        assert resp.is_sequence\n-        resp.stream.write(\"baz\")\n-        assert resp.response == [\"foo\", \"bar\", \"baz\"]\n-\n \n def test_values():\n     r = wrappers.Request.from_values(\n@@ -897,11 +886,17 @@ def test_auto_content_length():\n \n def test_stream_content_length():\n     resp = wrappers.Response()\n-    resp.stream.writelines([\"foo\", \"bar\", \"baz\"])\n+\n+    with pytest.deprecated_call():\n+        resp.stream.writelines([b\"foo\", b\"bar\", b\"baz\"])\n+\n     assert resp.get_wsgi_headers({})[\"Content-Length\"] == \"9\"\n \n     resp = wrappers.Response(\"foo\")\n-    resp.stream.writelines([\"bar\", \"baz\"])\n+\n+    with pytest.deprecated_call():\n+        resp.stream.writelines([b\"bar\", b\"baz\"])\n+\n     assert resp.get_wsgi_headers({})[\"Content-Length\"] == \"9\"\n \n \n@@ -909,12 +904,16 @@ def test_disabled_auto_content_length():\n     class MyResponse(wrappers.Response):\n         automatically_set_content_length = False\n \n-    resp = MyResponse(\"Hello World!\")\n+    with pytest.deprecated_call():\n+        resp = MyResponse(\"Hello World!\")\n+\n     assert resp.content_length is None\n \n     resp = MyResponse([\"Hello World!\"])\n     assert resp.content_length is None\n-    assert \"Content-Length\" not in resp.get_wsgi_headers({})\n+\n+    with pytest.deprecated_call():\n+        assert \"Content-Length\" not in resp.get_wsgi_headers({})\n \n \n @pytest.mark.parametrize(\n@@ -979,7 +978,10 @@ def test_request_method_case_sensitivity():\n \n def test_write_length():\n     response = wrappers.Response()\n-    length = response.stream.write(b\"bar\")\n+\n+    with pytest.deprecated_call():\n+        length = response.stream.write(b\"bar\")\n+\n     assert length == 3\n \n \n@@ -987,11 +989,14 @@ def test_stream_zip():\n     import zipfile\n \n     response = wrappers.Response()\n-    with contextlib.closing(zipfile.ZipFile(response.stream, mode=\"w\")) as z:\n+\n+    with pytest.deprecated_call():\n+        stream = response.stream\n+\n+    with zipfile.ZipFile(stream, mode=\"w\") as z:\n         z.writestr(\"foo\", b\"bar\")\n \n-    buffer = BytesIO(response.get_data())\n-    with contextlib.closing(zipfile.ZipFile(buffer, mode=\"r\")) as z:\n+    with zipfile.ZipFile(BytesIO(response.get_data()), mode=\"r\") as z:\n         assert z.namelist() == [\"foo\"]\n         assert z.read(\"foo\") == b\"bar\"\n \n",
+      "patch_sha256": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76",
+      "proposal": "clean up `Response.response` handling and docs\n\n- Mixed str/bytes iterable is deprecated. closes #3323 \r\n- `Response.stream` is deprecated. closes #3324 \r\n- `is_sequence` checks `Sequence` instead of only `list` or `tuple`. `is_streamed` checks `Sequence` instead of `len`.\r\n- `make_sequence` closes the original iterable immediately rather than deferring it to close with the response.\r\n- Use `calculate_content_length` consistently.\r\n- `automatically_set_content_length` is deprecated.\r\n- Rewrite all the docstrings that deal with the response iterable in some way.",
+      "proposal_sha256": "e8a4005153e2501073ca2aaf54804a828001415c27b375af8e3c901668246a02",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "patch_sha256": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76",
+            "proposal_sha256": "e8a4005153e2501073ca2aaf54804a828001415c27b375af8e3c901668246a02",
+            "judgment_sha256": "446cd363474ed150ecae3f6bc7e963b34dc4013d4b7d467dc9a3264d951e8a62",
+            "mapping_sha256": "04441ae156c49e5c36bc10038390f7e4b640f010504acab9f127e1d7df7cad71",
+            "assessor_sha256": "71a67b65b8248dd328877bb3b945567918d05864f13813d882937e1d9dd33a5d",
+            "packet_sha256": "e576594b809f0582255ba16ef59f73dc7cd9fc4fef35f80cca0f2ebb850121b4",
+            "prompt_sha256": "4f0322c5e7e25ea855357b6b95971d24f8a5fa3b1f9f789b32c80492871ad249"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "patch_sha256": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76",
+            "proposal_sha256": "e8a4005153e2501073ca2aaf54804a828001415c27b375af8e3c901668246a02",
+            "judgment_sha256": "145364d04a4aa71f09ad6cb1c889dcc51ba26f94d014e7bd2cf35ea8f242056b",
+            "mapping_sha256": "642490d0a8441e1c3d4823f4c657111c1f557b8737dc53acf4bcbc1ce62c6d58",
+            "assessor_sha256": "7a7144fa787c0529de3979a5c35e8b7f0b57b1a6144217b091e8af3badcb823f",
+            "packet_sha256": "e675278e4f5814e0cb8156cadcaf3cb93a2142d4486df6dd75b98f628c6c60d8",
+            "prompt_sha256": "433cf6c8ff8569a40fed194cb284de7c2513b221bfb77333ef7b0d29a818a33f"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "patch_sha256": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76",
+            "proposal_sha256": "e8a4005153e2501073ca2aaf54804a828001415c27b375af8e3c901668246a02",
+            "judgment_sha256": "4dcebb4765745ae87fda4086907fb07703edb6800e4c641013c08e8e2d81c082",
+            "mapping_sha256": "a8c4d6de03f19dac0f73a5c06553d598041131ef4052fbb49ea7eb7a3e7b4e73",
+            "assessor_sha256": "f841e37af68d72f0b5bfe355c0c69c53b90668d1e665ec052d9976e4492efd0f",
+            "packet_sha256": "6e95617a0f91ba4dce464b5d7bc09bf40187d9ea2acff40c9fb43e3914844b07",
+            "prompt_sha256": "40774f24acd49a594a1e7af2dca2e163b2204df7176fcbc088f0ce54ca47ef1a"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 2,
+          "tests": 1,
+          "design": 2,
+          "proposal": 2
+        },
+        "proposal_points_100": 43.75,
+        "diff_points_85": 36.25,
+        "rotation_points_85": {
+          "0": 36.25,
+          "1": 36.25,
+          "2": 36.25
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "scores": {
+              "contract": 2,
+              "tests": 1,
+              "design": 2,
+              "proposal": 2
+            },
+            "evidence": {
+              "contract": "packet/A.patch: response.py recognizes cabc.Sequence, makes is_streamed its inverse, warns for mixed str/bytes, and closes successfully consumed non-sequences immediately. However, removing bytearray from __init__ scalar handling makes Response(bytearray(b\"abc\")).get_data() join integers and raise TypeError instead of returning bytes. freeze now calls make_sequence, so an existing Sequence is neither copied into a list nor necessarily encoded or closed; a closeable custom Sequence remains attached. make_sequence also skips close if iteration raises. CHANGES.rst promises iterable/None set_data support and length clearing that set_data does not implement, and its make_sequence docstring promises setting content_length without doing so. Frozen build/native/contract/preserve exits are all 0; these statuses do not resolve these additional source-visible edges.",
+              "tests": "packet/A.patch tests/test_wrappers.py adds deprecation contexts for stream and explicit auto-length settings, but adds no discriminating tests for general Sequence recognition, sized non-sequences, immediate closing, failed iteration, or mixed-chunk warnings. It deletes the existing append-to-populated-response check in test_base_response and the tuple-to-list stream conversion checks under both implicit_sequence_conversion settings in test_new_response_iterator_behavior. Those deleted paths have no equivalent replacement. Frozen native exit 0 establishes only that the selected wrapper slice passed.",
+              "design": "packet/A.patch response.py implements classification directly, but broadly rewrites annotations, descriptors, and docstrings alongside behavior changes. Reusing make_sequence in freeze loses the previous unconditional encoded-list snapshot. The changed MutableSequence check also no longer guarantees the standard list expected by the old conversion path. The removed return in apply_conditions is unrelated; inspection of the starting method shows it was at the end of that branch, so no changed conditional behavior is established. The rewritten get_wsgi_headers elif preserves the existing 1xx/204/304 length exclusions.",
+              "proposal": "packet/A.md gives a title and accurate high-level classification and deprecation bullets, and explains immediate closing. It provides no verification report or material limitations. Its broad description of docstring cleanup does not identify the inconsistent set_data and make_sequence documentation in the patch. Proposal observation is present; this is an observed communication omission, not unavailable historical evidence."
+            },
+            "flags": [
+              "Materially weakened regression protection: packet/A.patch deletes the tuple-to-list stream-write assertions for both implicit_sequence_conversion settings in tests/test_wrappers.py::test_new_response_iterator_behavior while modifying _ensure_sequence. Verify mechanically by comparing that deleted loop with the remaining tests: no replacement exercises this conversion under both settings."
+            ],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "scores": {
+              "contract": 2,
+              "tests": 1,
+              "design": 2,
+              "proposal": 2
+            },
+            "evidence": {
+              "contract": "packet/C.patch, src/werkzeug/wrappers/response.py implements Sequence classification, sized streaming, successful make_sequence immediate close, stream and length-setting warnings. Frozen build/native/contract/preserve exits are all 0. Distinct missing paths remain: make_sequence does not close when list(iter_encoded()) raises; mutable conversion replaces an immutable closeable Sequence without closing it; freeze now calls make_sequence, which skips existing Sequences, so it no longer guarantees an encoded list or closes a retained closeable sequence. __init__ removes bytearray scalar handling, so Response(bytearray(b\"abc\")).get_data() reaches integer chunks and fails instead of returning bytes. _iter_encoded warns only after both strings and nonstrings have been yielded, leaving nonbytes-only iterables unwarned and warning after delivery rather than before it.",
+              "tests": "packet/C.patch, tests/test_wrappers.py adds warning contexts around existing stream and disabled-length tests but no distinguishing tests for custom Sequence, sized non-sequence, immediate close, failed conversion, or mixed-chunk warnings. It deletes the tuple-to-list stream-write checks under both implicit_sequence_conversion settings from test_new_response_iterator_behavior and the mixed scalar-plus-stream write example in test_base_response. ZIP body assertions remain meaningful after the context-manager rewrite. Existing tests and frozen successes do not cover the identified new boundary failures.",
+              "design": "packet/C.patch uses Sequence and a length sentinel appropriately, but replacing unconditional freeze buffering with make_sequence weakens the existing encoded-list guarantee. Cleanup is not shared or exception-safe. The broad typing/property rewrites and apply_conditions return deletion are unnecessary for the request; inspection of starting source shows the removed return was at the branch end, so no concrete conditional regression is inferred. get_wsgi_headers replaces explicit no-body exclusions with an equivalent elif after the 1xx/204/304 branches, retaining that protection. CHANGES.rst incorrectly claims set_data accepts None/arbitrary iterables and clears their length, while implementation still wraps value and calls len(value); make_sequence docstring also claims it sets content_length although it does not.",
+              "proposal": "packet/C.md provides an observed title/body and accurately lists the main intended edits, but supplies no verification scope, results or limitations, and little explanation of motivation. This is an observed communication omission, not unavailable historical text. It does not claim checks, so frozen successes are assessed independently and are not attributed to the proposal."
+            },
+            "flags": [
+              "Concrete regression-protection weakening in packet/C.patch, tests/test_wrappers.py:test_new_response_iterator_behavior: the entire tuple stream-write conversion loop for implicit_sequence_conversion=True and False is deleted without replacement. Verify mechanically against the full patch and starting test: neither setting retains the tuple-to-list/write assertion. This is a removed applicable check, not evidence of intent or a demonstrated critical production regression."
+            ],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "scores": {
+              "contract": 2,
+              "tests": 1,
+              "design": 2,
+              "proposal": 2
+            },
+            "evidence": {
+              "contract": "packet/B.patch response.py repairs Sequence classification and closes successfully consumed non-sequences immediately; stream and explicit auto-length use warn. Independent omissions remain: make_sequence lacks finally, so an iterator that raises never reaches close; mutable conversion drops a closeable immutable Sequence without closing it. freeze now calls make_sequence, which skips existing sequences, so a non-pickleable custom Sequence is retained and a closeable Sequence is not closed. Removing bytearray from __init__ scalar handling makes Response(bytearray(b\"abc\")).get_data() iterate integers and fail instead of returning b\"abc\". CHANGES.rst claims set_data accepts iterable/None and clears length, while the implementation still wraps value and calls len(value). Frozen build/native/contract/preserve exits are all 0, but do not resolve these static counterexamples.",
+              "tests": "packet/B.patch tests/test_wrappers.py adds deprecation contexts around existing stream and disabled-length tests, but adds no tests for custom Sequence classification, sized streams, immediate cleanup, conversion failure, or mixed-chunk warnings. It deletes the base-response append assertion and the entire tuple-to-list stream conversion loop under both implicit-conversion settings. The latter removes distinct conversion protection without replacement; verify the deleted test_new_response_iterator_behavior hunk. Existing ZIP and byte-stream assertions remain, and frozen native/contract/preserve exits are 0. Some deprecation coverage is meaningful, but the primary iterable changes are unprotected.",
+              "design": "packet/B.patch uses appropriate Sequence checks and a shared _auto_length property, but the freeze refactor removes unconditional buffering and encoding, and cleanup is duplicated incompletely rather than shared across conversion paths. The warning state machine treats every non-str as bytes and warns only after yielding the mixed chunk; [b\"a\", bytearray(b\"b\")] never warns. Unrelated typing/property rewrites and removal of the final return in apply_conditions broaden scope; source inspection shows the removed return was at the method end, so it is not a demonstrated conditional-protection bypass. The inaccurate set_data changelog and make_sequence content-length docstring also need correction.",
+              "proposal": "packet/B.md identifies the requested classification, closure, and deprecations and explains the intended cleanup. It supplies no verification scope or limitations and little motivation beyond a change list. There is no proposal check claim to credit; the successful frozen checks are assessed independently. The proposal does not disclose the compatibility changes to bytearray construction or sequence freezing."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": null,
+      "receipt_sha256": {
+        "grade": "553645a7bb3f959b99c119369c5cb4973d4b8c5de8baa3de34e0932a00e5ee13"
+      }
+    }
+  },
+  "route_review": "Requires inspection of the recorded independent review events.",
+  "prior_develop": {
+    "state": "completed",
+    "effort": {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 3322993,
+        "cachedInputTokens": 3160192,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 24848,
+        "reasoningOutputTokens": 7098,
+        "totalTokens": 3347841
+      },
+      "estimated_usd": 0.8901012,
+      "billed_usd": null,
+      "checkout_to_proposal_seconds": 674.6528293709271,
+      "prompt_to_terminal_seconds": 632.9091278698761,
+      "through_grading_seconds": 682.85691102501,
+      "setup_seconds": 40.35264882608317,
+      "grading_seconds": 6.712348731001839,
+      "thread_count": 4,
+      "child_count": 3,
+      "root_tokens": {
+        "totalTokens": 2466552,
+        "inputTokens": 2446464,
+        "cachedInputTokens": 2371968,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 20088,
+        "reasoningOutputTokens": 6199
+      },
+      "descendant_tokens": {
+        "inputTokens": 876529,
+        "cachedInputTokens": 788224,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 4760,
+        "reasoningOutputTokens": 899,
+        "totalTokens": 881289
+      },
+      "observed_commands": 51,
+      "native_hook_receipts": 137
+    },
+    "stage_exits": {
+      "build": 0,
+      "native": 0,
+      "contract": 0,
+      "preserve": 0
+    },
+    "patch_sha256": "7876defa9000204d9428c6524f7348fb3359e613ff1376f6ae88f1aa9112fcc3",
+    "proposal_sha256": "144659b59234af48bccd2d2ff03791c2ba467da4b75c153ca172bf49670f9762",
+    "full_pr_score": null,
+    "patch": "diff --git a/CHANGES.rst b/CHANGES.rst\nindex 5fee5f3..989d0c7 100644\n--- a/CHANGES.rst\n+++ b/CHANGES.rst\n@@ -3,6 +3,13 @@\n Version 3.2.0\n -------------\n \n+-   ``Response`` recognizes all ``collections.abc.Sequence`` bodies as\n+    buffered. Other iterables are streamed even if they have a length. When\n+    buffering an iterable, close it immediately, including if iteration fails.\n+-   Nonbytes chunks in a ``Response`` iterable are deprecated. Encode strings\n+    before yielding them. Passing a string directly remains supported.\n+    ``Response.stream`` and setting ``automatically_set_content_length`` are\n+    deprecated. These will be removed in Werkzeug 4.0.\n -   Drop support for Python 3.9 and 3.10. :pr:`3098`\n -   Remove previous deprecated code: :pr:`3099`\n \ndiff --git a/docs/wrappers.rst b/docs/wrappers.rst\nindex 05d8066..4a20a54 100644\n--- a/docs/wrappers.rst\n+++ b/docs/wrappers.rst\n@@ -24,6 +24,37 @@ modify it multiple times. Set it to ``None`` or use ``del`` to unset the header.\n Each property below documents its type and what behaviors it has.\n \n \n+Response Bodies\n+---------------\n+\n+Pass a string or bytes to :class:`.Response` for a simple body. A string is\n+encoded as UTF-8, and a bytearray is copied to bytes. A\n+:class:`~collections.abc.Sequence` of byte chunks, such as\n+a list or tuple, is buffered, and its ``Content-Length`` can be calculated\n+automatically. Other iterables are streamed, even if they implement ``len``.\n+The length of an iterable counts chunks, not bytes.\n+\n+Iterable chunks should be bytes. Passing strings or other nonbytes chunks is\n+deprecated and will not be supported in Werkzeug 4.0. Encode text before\n+yielding it::\n+\n+    def generate():\n+        yield \"Hello, \u4e16\u754c!\".encode(\"utf-8\")\n+\n+    response = Response(generate())\n+\n+Reading :attr:`.Response.data` can consume and buffer a streaming body.\n+When the body is converted to a list, its original iterable is closed\n+immediately if it has a ``close`` method, including if iteration fails.\n+Callbacks registered with :meth:`.Response.call_on_close` still run when\n+the response is closed.\n+\n+:attr:`.Response.stream` is deprecated. Write to a separate buffer such as\n+:class:`io.BytesIO`, then pass its value to the response instead. Setting\n+:attr:`.Response.automatically_set_content_length` is also deprecated;\n+content length will always be set automatically when possible in Werkzeug 4.0.\n+\n+\n Wrapping a WSGI Application\n ---------------------------\n \ndiff --git a/src/werkzeug/wrappers/response.py b/src/werkzeug/wrappers/response.py\nindex c8a2f42..f3b3c91 100644\n--- a/src/werkzeug/wrappers/response.py\n+++ b/src/werkzeug/wrappers/response.py\n@@ -2,6 +2,8 @@ from __future__ import annotations\n \n import json\n import typing as t\n+import warnings\n+from collections.abc import Sequence\n from http import HTTPStatus\n from types import TracebackType\n from urllib.parse import urljoin\n@@ -24,6 +26,14 @@ if t.TYPE_CHECKING:\n \n def _iter_encoded(iterable: t.Iterable[str | bytes]) -> t.Iterator[bytes]:\n     for item in iterable:\n+        if not isinstance(item, bytes):\n+            warnings.warn(\n+                \"Response iterable items must be bytes. Passing other types is\"\n+                \" deprecated and will be removed in Werkzeug 4.0.\",\n+                DeprecationWarning,\n+                stacklevel=2,\n+            )\n+\n         if isinstance(item, str):\n             yield item.encode()\n         else:\n@@ -37,10 +47,11 @@ class Response(_SansIOResponse):\n \n     The response body is flexible to support different use cases. The\n     simple form is passing bytes, or a string which will be encoded as\n-    UTF-8. Passing an iterable of bytes or strings makes this a\n-    streaming response. A generator is particularly useful for building\n-    a CSV file in memory or using SSE (Server Sent Events). A file-like\n-    object is also iterable, although the\n+    UTF-8. Passing a :class:`~collections.abc.Sequence` of bytes makes\n+    a fixed-length response. Other iterables of bytes make a streaming\n+    response, even if they have a length. A generator is particularly useful\n+    for building a CSV file in memory or using SSE (Server Sent Events).\n+    A file-like object is also iterable, although the\n     :func:`~werkzeug.utils.send_file` helper should be used in that\n     case.\n \n@@ -66,10 +77,11 @@ class Response(_SansIOResponse):\n \n             return response(environ, start_response)\n \n-    :param response: The data for the body of the response. A string or\n-        bytes, or tuple or list of strings or bytes, for a fixed-length\n-        response, or any other iterable of strings or bytes for a\n-        streaming response. Defaults to an empty body.\n+    :param response: The data for the body of the response. A string,\n+        bytes, bytearray, or a :class:`~collections.abc.Sequence` of bytes, for a\n+        fixed-length response, or any other iterable of bytes for a\n+        streaming response. Defaults to an empty body. Nonbytes iterable\n+        items are deprecated; encode strings to bytes before yielding them.\n     :param status: The status code for the response. Either an int, in\n         which case the default status message is added, or a string in\n         the form ``{code} {message}``, like ``404 Not Found``. Defaults\n@@ -124,24 +136,33 @@ class Response(_SansIOResponse):\n     #: .. versionadded:: 0.8\n     autocorrect_location_header: None = None\n \n-    #: Should this response object automatically set the content-length\n-    #: header if possible?  This is true by default.\n+    #: Automatically set the content-length header if possible. The default\n+    #: ``None`` enables this behavior. Explicit ``True`` and ``False`` values\n+    #: are deprecated.\n+    #:\n+    #: .. deprecated:: 3.2\n+    #:     Will be removed in Werkzeug 4.0. Content length will always be\n+    #:     set automatically when possible.\n     #:\n     #: .. versionadded:: 0.8\n-    automatically_set_content_length = True\n+    automatically_set_content_length: bool | None = None\n \n-    #: The response body to send as the WSGI iterable. A list of strings\n-    #: or bytes represents a fixed-length response, any other iterable\n-    #: is a streaming response. Strings are encoded to bytes as UTF-8.\n+    #: The response body to send as the WSGI iterable. A\n+    #: :class:`~collections.abc.Sequence` of bytes represents a fixed-length\n+    #: response, any other iterable is a streaming response.\n+    #:\n+    #: .. deprecated:: 3.2\n+    #:     Nonbytes items will not be supported in Werkzeug 4.0. Encode\n+    #:     strings to bytes before adding them to the iterable.\n     #:\n     #: Do not set to a plain string or bytes, that will cause sending\n     #: the response to be very inefficient as it will iterate one byte\n     #: at a time.\n-    response: t.Iterable[str] | t.Iterable[bytes]\n+    response: t.Iterable[str | bytes]\n \n     def __init__(\n         self,\n-        response: t.Iterable[bytes] | bytes | t.Iterable[str] | str | None = None,\n+        response: t.Iterable[bytes | str] | bytes | bytearray | str | None = None,\n         status: int | str | HTTPStatus | None = None,\n         headers: t.Mapping[str, str | t.Iterable[str]]\n         | t.Iterable[tuple[str, str]]\n@@ -189,7 +210,7 @@ class Response(_SansIOResponse):\n         if self.is_sequence:\n             body_info = f\"{sum(map(len, self.iter_encoded()))} bytes\"\n         else:\n-            body_info = \"streamed\" if self.is_streamed else \"likely-streamed\"\n+            body_info = \"streamed\"\n         return f\"<{type(self).__name__} {body_info} [{self.status}]>\"\n \n     @classmethod\n@@ -286,17 +307,19 @@ class Response(_SansIOResponse):\n \n         return rv\n \n-    def set_data(self, value: bytes | str) -> None:\n+    def set_data(self, value: bytes | bytearray | str) -> None:\n         \"\"\"Sets a new string as response.  The value must be a string or\n-        bytes. If a string is set it's encoded to the charset of the\n-        response (utf-8 by default).\n+        bytes, or bytearray. A string is encoded as UTF-8. A bytearray is\n+        copied to bytes.\n \n         .. versionadded:: 0.9\n         \"\"\"\n         if isinstance(value, str):\n             value = value.encode()\n+        elif isinstance(value, bytearray):\n+            value = bytes(value)\n         self.response = [value]\n-        if self.automatically_set_content_length:\n+        if self._should_set_content_length():\n             self.headers[\"Content-Length\"] = str(len(value))\n \n     data = property(\n@@ -305,6 +328,18 @@ class Response(_SansIOResponse):\n         doc=\"A descriptor that calls :meth:`get_data` and :meth:`set_data`.\",\n     )\n \n+    def _should_set_content_length(self) -> bool:\n+        if self.automatically_set_content_length is not None:\n+            warnings.warn(\n+                \"'Response.automatically_set_content_length' is deprecated and\"\n+                \" will be removed in Werkzeug 4.0. Content length will always\"\n+                \" be set automatically when possible.\",\n+                DeprecationWarning,\n+                stacklevel=3,\n+            )\n+\n+        return self.automatically_set_content_length is not False\n+\n     def calculate_content_length(self) -> int | None:\n         \"\"\"Returns the content length if available or `None` otherwise.\"\"\"\n         try:\n@@ -323,7 +358,7 @@ class Response(_SansIOResponse):\n         if self.is_sequence:\n             # if we need a mutable object, we ensure it's a list.\n             if mutable and not isinstance(self.response, list):\n-                self.response = list(self.response)  # type: ignore[assignment]\n+                self._buffer_response(encode=False)\n             return\n         if self.direct_passthrough:\n             raise RuntimeError(\n@@ -344,16 +379,23 @@ class Response(_SansIOResponse):\n         disabled, this method is not automatically called and some properties\n         might raise exceptions.  This also encodes all the items.\n \n+        .. versionchanged:: 3.2\n+            Close the original iterable immediately after conversion, including\n+            if iteration fails.\n+\n         .. versionadded:: 0.6\n         \"\"\"\n         if not self.is_sequence:\n-            # if we consume an iterable we have to ensure that the close\n-            # method of the iterable is called if available when we tear\n-            # down the response\n-            close = getattr(self.response, \"close\", None)\n-            self.response = list(self.iter_encoded())\n+            self._buffer_response()\n+\n+    def _buffer_response(self, *, encode: bool = True) -> None:\n+        close = getattr(self.response, \"close\", None)\n+\n+        try:\n+            self.response = list(self.iter_encoded() if encode else self.response)\n+        finally:\n             if close is not None:\n-                self.call_on_close(close)\n+                close()\n \n     def iter_encoded(self) -> t.Iterator[bytes]:\n         \"\"\"Iter the response encoded with the encoding of the response.\n@@ -368,29 +410,29 @@ class Response(_SansIOResponse):\n \n     @property\n     def is_streamed(self) -> bool:\n-        \"\"\"If the response is streamed (the response is not an iterable with\n-        a length information) this property is `True`.  In this case streamed\n-        means that there is no information about the number of iterations.\n-        This is usually `True` if a generator is passed to the response object.\n+        \"\"\"Whether the response body is not a buffered\n+        :class:`~collections.abc.Sequence`. Other iterables are streamed,\n+        even if they provide length information.\n+\n+        This is useful for checking before applying post-processing that\n+        should not take place for streamed responses.\n \n-        This is useful for checking before applying some sort of post\n-        filtering that should not take place for streamed responses.\n+        .. versionchanged:: 3.2\n+            A non-sequence with a length is considered streamed.\n         \"\"\"\n-        try:\n-            len(self.response)  # type: ignore[arg-type]\n-        except (TypeError, AttributeError):\n-            return True\n-        return False\n+        return not self.is_sequence\n \n     @property\n     def is_sequence(self) -> bool:\n-        \"\"\"If the iterator is buffered, this property will be `True`.  A\n-        response object will consider an iterator to be buffered if the\n-        response attribute is a list or tuple.\n+        \"\"\"Whether the response body is a buffered\n+        :class:`~collections.abc.Sequence`, such as a list or tuple.\n+\n+        .. versionchanged:: 3.2\n+            Recognize all ``Sequence`` objects, not only lists and tuples.\n \n         .. versionadded:: 0.6\n         \"\"\"\n-        return isinstance(self.response, (tuple, list))\n+        return isinstance(self.response, Sequence)\n \n     def close(self) -> None:\n         \"\"\"Close the wrapped response if possible.  You can also use the object\n@@ -425,6 +467,10 @@ class Response(_SansIOResponse):\n         *   Set the ``Content-Length`` header.\n         *   Generate an ``ETag`` header if one is not already set.\n \n+        .. versionchanged:: 3.2\n+            Close the original iterable immediately after buffering, including\n+            if iteration fails.\n+\n         .. versionchanged:: 2.1\n             Removed the ``no_etag`` parameter.\n \n@@ -436,7 +482,7 @@ class Response(_SansIOResponse):\n         \"\"\"\n         # Always freeze the encoded response body, ignore\n         # implicit_sequence_conversion and direct_passthrough.\n-        self.response = list(self.iter_encoded())\n+        self._buffer_response()\n         self.headers[\"Content-Length\"] = str(sum(map(len, self.response)))\n         self.add_etag()\n \n@@ -457,8 +503,8 @@ class Response(_SansIOResponse):\n \n            Also starting with 0.6, Werkzeug will attempt to set the content\n            length if it is able to figure it out on its own.  This is the\n-           case if all the strings in the response iterable are already\n-           encoded and the iterable is buffered.\n+           case if the response iterable is a buffered sequence. Length is\n+           calculated in bytes after encoding any deprecated string items.\n \n         :param environ: the WSGI environment of the request.\n         :return: returns a new :class:`~werkzeug.datastructures.Headers`\n@@ -526,11 +572,10 @@ class Response(_SansIOResponse):\n \n         # if we can determine the content length automatically, we\n         # should try to do that.  But only if this does not involve\n-        # flattening the iterator or encoding of strings in the\n-        # response. We however should not do that if we have a 304\n+        # consuming a streaming iterable. We should not do that for a 304\n         # response.\n         if (\n-            self.automatically_set_content_length\n+            self._should_set_content_length()\n             and self.is_sequence\n             and content_length is None\n             and status not in (204, 304)\n@@ -652,7 +697,18 @@ class Response(_SansIOResponse):\n \n     @cached_property\n     def stream(self) -> ResponseStream:\n-        \"\"\"The response iterable as write-only stream.\"\"\"\n+        \"\"\"The response iterable as write-only stream.\n+\n+        .. deprecated:: 3.2\n+            Will be removed in Werkzeug 4.0. Write to a separate buffer, then\n+            pass its value to the response instead.\n+        \"\"\"\n+        warnings.warn(\n+            \"'Response.stream' is deprecated and will be removed in Werkzeug\"\n+            \" 4.0. Write to a separate buffer, then pass its value to the response.\",\n+            DeprecationWarning,\n+            stacklevel=2,\n+        )\n         return ResponseStream(self)\n \n     # Preconditions and Range Requests\n@@ -892,7 +948,7 @@ class ResponseStream:\n \n     def tell(self) -> int:\n         self.response._ensure_sequence()\n-        return sum(map(len, self.response.response))\n+        return sum(map(len, self.response.iter_encoded()))\n \n     @property\n     def encoding(self) -> str:\ndiff --git a/tests/test_internal.py b/tests/test_internal.py\nindex 188aee9..1f3d005 100644\n--- a/tests/test_internal.py\n+++ b/tests/test_internal.py\n@@ -25,7 +25,8 @@ def test_wrapper_internals():\n     assert repr(resp) == \"<Response streamed [200 OK]>\"\n \n     response = Response([\"H\u00e4llo W\u00f6rld\"])\n-    headers = response.get_wsgi_headers(create_environ())\n+    with pytest.warns(DeprecationWarning, match=\"bytes\"):\n+        headers = response.get_wsgi_headers(create_environ())\n     assert \"Content-Length\" in headers\n \n     response = Response([\"H\u00e4llo W\u00f6rld\".encode()])\ndiff --git a/tests/test_test.py b/tests/test_test.py\nindex d92f4d4..c33d802 100644\n--- a/tests/test_test.py\n+++ b/tests/test_test.py\n@@ -579,7 +579,7 @@ def test_cookie_across_redirect():\n def test_path_info_script_name_unquoting():\n     def test_app(environ, start_response):\n         start_response(\"200 OK\", [(\"Content-Type\", \"text/plain\")])\n-        return [f\"{environ['PATH_INFO']}\\n{environ['SCRIPT_NAME']}\"]\n+        return [f\"{environ['PATH_INFO']}\\n{environ['SCRIPT_NAME']}\".encode()]\n \n     c = Client(test_app)\n     resp = c.get(\"/foo%40bar\")\ndiff --git a/tests/test_wrappers.py b/tests/test_wrappers.py\nindex 7ec16ba..832ed0d 100644\n--- a/tests/test_wrappers.py\n+++ b/tests/test_wrappers.py\n@@ -1,5 +1,6 @@\n import contextlib\n import json\n+from collections import UserList\n from contextlib import nullcontext\n from datetime import datetime\n from datetime import timedelta\n@@ -230,7 +231,8 @@ def test_base_response():\n \n     # writing\n     response = wrappers.Response(\"foo\")\n-    response.stream.write(\"bar\")\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        response.stream.write(b\"bar\")\n     assert response.get_data() == b\"foobar\"\n \n     # set cookie\n@@ -345,7 +347,7 @@ def test_response_init_status_empty_string():\n def test_type_forcing():\n     def wsgi_application(environ, start_response):\n         start_response(\"200 OK\", [(\"Content-Type\", \"text/html\")])\n-        return [\"Hello World!\"]\n+        return [b\"Hello World!\"]\n \n     base_response = wrappers.Response(\"Hello World!\", content_type=\"text/html\")\n \n@@ -542,9 +544,11 @@ def test_authenticate_quoted_qop():\n \n def test_response_stream():\n     response = wrappers.Response()\n-    response.stream.write(\"Hello \")\n-    response.stream.write(\"World!\")\n-    assert response.response == [\"Hello \", \"World!\"]\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        stream = response.stream\n+    stream.write(b\"Hello \")\n+    stream.write(b\"World!\")\n+    assert response.response == [b\"Hello \", b\"World!\"]\n     assert response.get_data() == b\"Hello World!\"\n \n \n@@ -698,7 +702,7 @@ def test_response_streamed():\n     assert not r.is_streamed\n     r = wrappers.Response(\"Hello World\")\n     assert not r.is_streamed\n-    r = wrappers.Response([\"foo\", \"bar\"])\n+    r = wrappers.Response([b\"foo\", b\"bar\"])\n     assert not r.is_streamed\n \n     def gen():\n@@ -715,8 +719,8 @@ def test_response_iter_wrapping():\n             yield item.upper()\n \n     def generator():\n-        yield \"foo\"\n-        yield \"bar\"\n+        yield b\"foo\"\n+        yield b\"bar\"\n \n     req = wrappers.Request.from_values()\n     resp = wrappers.Response(generator())\n@@ -728,8 +732,8 @@ def test_response_iter_wrapping():\n \n def test_response_freeze():\n     def generate():\n-        yield \"foo\"\n-        yield \"bar\"\n+        yield b\"foo\"\n+        yield b\"bar\"\n \n     resp = wrappers.Response(generate())\n     resp.freeze()\n@@ -771,8 +775,8 @@ def test_new_response_iterator_behavior():\n         return headers.get(\"Content-Length\", type=int)\n \n     def generate_items():\n-        yield \"Hello \"\n-        yield \"W\u00f6rld!\"\n+        yield b\"Hello \"\n+        yield \"W\u00f6rld!\".encode()\n \n     # werkzeug encodes when set to `data` now, which happens\n     # if a string is passed to the response object.\n@@ -812,12 +816,14 @@ def test_new_response_iterator_behavior():\n     assert resp.is_sequence\n \n     # stream makes it a list no matter how the conversion is set\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        stream = resp.stream\n     for val in True, False:\n         resp.implicit_sequence_conversion = val\n-        resp.response = (\"foo\", \"bar\")\n+        resp.response = (b\"foo\", b\"bar\")\n         assert resp.is_sequence\n-        resp.stream.write(\"baz\")\n-        assert resp.response == [\"foo\", \"bar\", \"baz\"]\n+        stream.write(b\"baz\")\n+        assert resp.response == [b\"foo\", b\"bar\", b\"baz\"]\n \n \n def test_values():\n@@ -890,18 +896,20 @@ def test_auto_content_length():\n     resp = wrappers.Response(\"Hello World!\")\n     assert resp.content_length == 12\n \n-    resp = wrappers.Response([\"Hello World!\"])\n+    resp = wrappers.Response([b\"Hello World!\"])\n     assert resp.content_length is None\n     assert resp.get_wsgi_headers({})[\"Content-Length\"] == \"12\"\n \n \n def test_stream_content_length():\n     resp = wrappers.Response()\n-    resp.stream.writelines([\"foo\", \"bar\", \"baz\"])\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        resp.stream.writelines([b\"foo\", b\"bar\", b\"baz\"])\n     assert resp.get_wsgi_headers({})[\"Content-Length\"] == \"9\"\n \n     resp = wrappers.Response(\"foo\")\n-    resp.stream.writelines([\"bar\", \"baz\"])\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        resp.stream.writelines([b\"bar\", b\"baz\"])\n     assert resp.get_wsgi_headers({})[\"Content-Length\"] == \"9\"\n \n \n@@ -909,12 +917,14 @@ def test_disabled_auto_content_length():\n     class MyResponse(wrappers.Response):\n         automatically_set_content_length = False\n \n-    resp = MyResponse(\"Hello World!\")\n+    with pytest.warns(DeprecationWarning, match=\"automatically_set_content_length\"):\n+        resp = MyResponse(\"Hello World!\")\n     assert resp.content_length is None\n \n-    resp = MyResponse([\"Hello World!\"])\n+    resp = MyResponse([b\"Hello World!\"])\n     assert resp.content_length is None\n-    assert \"Content-Length\" not in resp.get_wsgi_headers({})\n+    with pytest.warns(DeprecationWarning, match=\"automatically_set_content_length\"):\n+        assert \"Content-Length\" not in resp.get_wsgi_headers({})\n \n \n @pytest.mark.parametrize(\n@@ -979,7 +989,8 @@ def test_request_method_case_sensitivity():\n \n def test_write_length():\n     response = wrappers.Response()\n-    length = response.stream.write(b\"bar\")\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        length = response.stream.write(b\"bar\")\n     assert length == 3\n \n \n@@ -987,7 +998,9 @@ def test_stream_zip():\n     import zipfile\n \n     response = wrappers.Response()\n-    with contextlib.closing(zipfile.ZipFile(response.stream, mode=\"w\")) as z:\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        stream = response.stream\n+    with contextlib.closing(zipfile.ZipFile(stream, mode=\"w\")) as z:\n         z.writestr(\"foo\", b\"bar\")\n \n     buffer = BytesIO(response.get_data())\n@@ -1143,3 +1156,181 @@ def test_response_coep():\n     assert response.cross_origin_embedder_policy is COEP.UNSAFE_NONE\n     response.cross_origin_embedder_policy = COEP.REQUIRE_CORP\n     assert response.headers[\"Cross-Origin-Embedder-Policy\"] == \"require-corp\"\n+\n+\n+@pytest.mark.parametrize(\"body\", [[], (), UserList([b\"hello\", b\" world\"])])\n+def test_response_sequence(body):\n+    response = wrappers.Response(body)\n+    assert response.is_sequence\n+    assert not response.is_streamed\n+    assert response.get_wsgi_headers({})[\"Content-Length\"] == str(sum(map(len, body)))\n+    assert response.get_data() == b\"\".join(body)\n+    app_iter, status, headers = run_wsgi_app(response, create_environ(), buffered=True)\n+    assert status == \"200 OK\"\n+    assert b\"\".join(app_iter) == b\"\".join(body)\n+    assert headers[\"Content-Length\"] == str(sum(map(len, body)))\n+\n+\n+def test_response_sized_stream():\n+    lengths = []\n+\n+    class SizedStream:\n+        def __len__(self):\n+            lengths.append(True)\n+            return 1\n+\n+        def __iter__(self):\n+            yield b\"hello\"\n+\n+    response = wrappers.Response(SizedStream())\n+    assert response.is_streamed\n+    assert not response.is_sequence\n+    assert \"Content-Length\" not in response.get_wsgi_headers({})\n+    assert lengths == []\n+    assert response.get_data() == b\"hello\"\n+    assert response.calculate_content_length() == 5\n+\n+\n+@pytest.mark.parametrize(\"convert\", [\"make_sequence\", \"get_data\", \"freeze\"])\n+def test_response_conversion_closes_iterable(convert):\n+    closed = []\n+\n+    class Body:\n+        def __iter__(self):\n+            yield b\"hello\"\n+\n+        def close(self):\n+            closed.append(\"body\")\n+\n+    response = wrappers.Response(Body())\n+    response.call_on_close(lambda: closed.append(\"callback\"))\n+    getattr(response, convert)()\n+    assert closed == [\"body\"]\n+    assert response.get_data() == b\"hello\"\n+    response.close()\n+    assert closed == [\"body\", \"callback\"]\n+\n+\n+@pytest.mark.parametrize(\"convert\", [\"make_sequence\", \"freeze\"])\n+def test_response_conversion_error_closes_iterable(convert):\n+    closed = []\n+\n+    class Body:\n+        def __iter__(self):\n+            yield b\"hello\"\n+            raise ValueError(\"iteration failed\")\n+\n+        def close(self):\n+            closed.append(True)\n+\n+    response = wrappers.Response(Body())\n+    with pytest.raises(ValueError, match=\"iteration failed\"):\n+        getattr(response, convert)()\n+    assert closed == [True]\n+\n+\n+@pytest.mark.parametrize(\"body\", [[b\"hello\", \"\u4f60\u597d\"], iter([b\"hello\", \"\u4f60\u597d\"])])\n+def test_response_nonbytes_chunks_deprecated(body):\n+    response = wrappers.Response(body)\n+    with pytest.warns(DeprecationWarning, match=\"bytes\"):\n+        assert response.calculate_content_length() == 11\n+    with (\n+        pytest.warns(DeprecationWarning, match=\"bytes\")\n+        if isinstance(body, list)\n+        else nullcontext()\n+    ):\n+        assert response.get_data() == b\"hello\" + \"\u4f60\u597d\".encode()\n+\n+\n+def test_response_stream_deprecated():\n+    response = wrappers.Response()\n+    with pytest.warns(DeprecationWarning, match=\"stream\"):\n+        stream = response.stream\n+    assert response.stream is stream\n+    stream.write(b\"hello\")\n+    assert response.get_data() == b\"hello\"\n+\n+\n+@pytest.mark.parametrize(\"enabled\", [True, False])\n+def test_response_auto_content_length_deprecated(enabled):\n+    class Response(wrappers.Response):\n+        automatically_set_content_length = enabled\n+\n+    with pytest.warns(DeprecationWarning, match=\"automatically_set_content_length\"):\n+        response = Response(b\"hello\")\n+    assert response.content_length == (5 if enabled else None)\n+    response = Response([b\"hello\"])\n+    with pytest.warns(DeprecationWarning, match=\"automatically_set_content_length\"):\n+        headers = response.get_wsgi_headers({})\n+    assert headers.get(\"Content-Length\") == (\"5\" if enabled else None)\n+\n+\n+@pytest.mark.parametrize(\"convert\", [\"mutable\", \"freeze\"])\n+def test_response_closeable_sequence_conversion(convert):\n+    closed = []\n+\n+    class Body(UserList):\n+        def close(self):\n+            closed.append(True)\n+\n+    response = wrappers.Response(Body([b\"hello\"]))\n+    if convert == \"mutable\":\n+        with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+            response.stream.write(b\" world\")\n+        assert response.get_data() == b\"hello world\"\n+    else:\n+        response.freeze()\n+        assert response.get_data() == b\"hello\"\n+    assert closed == [True]\n+    response.close()\n+    assert closed == [True]\n+\n+\n+@pytest.mark.parametrize(\n+    \"body\", [b\"hello\", bytearray(b\"hello\"), \"hello\", [b\"hello\"], (b\"hello\",)]\n+)\n+def test_response_ordinary_body(body):\n+    response = wrappers.Response(body)\n+    assert response.calculate_content_length() == 5\n+    assert response.get_wsgi_headers({})[\"Content-Length\"] == \"5\"\n+    assert response.get_data() == b\"hello\"\n+\n+\n+@pytest.mark.parametrize(\"enabled\", [True, False])\n+def test_response_auto_content_length_instance_deprecated(enabled):\n+    response = wrappers.Response()\n+    response.automatically_set_content_length = enabled\n+    with pytest.warns(DeprecationWarning, match=\"automatically_set_content_length\"):\n+        response.set_data(b\"hello\")\n+    assert response.content_length == (5 if enabled else None)\n+\n+\n+@pytest.mark.parametrize(\"chunk\", [\"hello\", bytearray(b\"hello\"), memoryview(b\"hello\")])\n+def test_response_nonbytes_iter_encoded_deprecated(chunk):\n+    response = wrappers.Response([b\"prefix\", chunk])\n+    with pytest.warns(DeprecationWarning, match=\"bytes\"):\n+        assert list(response.iter_encoded()) == [b\"prefix\", b\"hello\"]\n+\n+\n+@pytest.mark.parametrize(\"implicit\", [True, False])\n+@pytest.mark.parametrize(\"passthrough\", [True, False])\n+def test_response_length_stream_conversion_policy(implicit, passthrough):\n+    response = wrappers.Response(iter([b\"hello\"]), direct_passthrough=passthrough)\n+    response.implicit_sequence_conversion = implicit\n+    if implicit and not passthrough:\n+        assert response.calculate_content_length() == 5\n+        assert response.is_sequence\n+    else:\n+        assert response.calculate_content_length() is None\n+        assert response.is_streamed\n+        assert list(response.response) == [b\"hello\"]\n+\n+\n+def test_response_stream_tell_encoded_length():\n+    response = wrappers.Response([\"\u4f60\u597d\"])\n+    with pytest.warns(DeprecationWarning, match=\"Response.stream\"):\n+        stream = response.stream\n+    with pytest.warns(DeprecationWarning, match=\"bytes\"):\n+        assert stream.tell() == 6\n+    with pytest.warns(DeprecationWarning, match=\"bytes\"):\n+        assert response.get_wsgi_headers({})[\"Content-Length\"] == \"6\"\n",
+    "proposal": "Correct Response iterable handling and deprecate legacy APIs\n\nRecognize all Sequence bodies as buffered and other iterables as streamed, regardless of length. Close original iterables immediately when buffering finishes or fails, releasing resources promptly.\n\nDeprecate nonbytes chunks, Response.stream, and explicit automatically_set_content_length settings while preserving ordinary byte responses. Align byte-length calculations, documentation, and regression tests.\n\nVerified offline: compilation, 273 tests across six affected suites, and git diff --check. Independent design and final-diff reviews found no material issues.\n\nFull repository tests, typing/lint checks, and documentation build were not run. Changes remain in the checkout."
+  },
+  "assessor_costs": [
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 1031647,
+        "cachedInputTokens": 960000,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 3419,
+        "reasoningOutputTokens": 614,
+        "totalTokens": 1035066
+      },
+      "threads": 1,
+      "usd_estimate": 0.273484
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 482080,
+        "cachedInputTokens": 423040,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2863,
+        "reasoningOutputTokens": 422,
+        "totalTokens": 484943
+      },
+      "threads": 1,
+      "usd_estimate": 0.189014
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 756056,
+        "cachedInputTokens": 696960,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2869,
+        "reasoningOutputTokens": 425,
+        "totalTokens": 758925
+      },
+      "threads": 1,
+      "usd_estimate": 0.216578
+    }
+  ],
+  "observations": []
+}

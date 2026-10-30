@@ -1,0 +1,9 @@
+{
+  "label": "explicit-maintenance",
+  "package_sha256": "5b59b578a1bcbf5e58f45e319775d1634a9d78256fe40a449dee428f66232b87",
+  "plugin_hook_sha256": "f6ab9516ea3d8090a3fcefe7a427d2977a4f1916209cb501086faadb0a80d2aa",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}

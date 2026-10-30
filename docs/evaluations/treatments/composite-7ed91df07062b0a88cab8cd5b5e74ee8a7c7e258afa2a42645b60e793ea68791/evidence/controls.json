@@ -1,0 +1,417 @@
+{
+  "scope": "Corrected model-free calibration on exposed sealed artifacts only. Prior ignored observations and immutable scores remain unchanged.",
+  "program_sha256": "7acba3f1a23460897f761ee93705c39780a9229783d8f10b6f2b12b4f498a7e8",
+  "probe_sha256": {
+    "werkzeug_stream_model.py": "24bb35b1c130ac4e93f75b07dc382328b8d3bc10d8a18371eec16a19ccf876df",
+    "expat_literal_model.py": "274c02149c2b36a9793561d4d19e34fd876bb080db16180ded2343cf7583a842",
+    "expat_parameter_entities.py": "c9959ec8fed9bd5b06ea14706d5ed40ca29a69c92f4d605b6604e609a581f7e8"
+  },
+  "source_result_sha256": "1aa59088427787cc88fc2314d959e4cf3fed286f442f7470b59cf0419a284dd5",
+  "base": "15fc22b699ecacd04824092453c0cd2a8c4a3a67",
+  "merged": "28360ef872ae984cc08209cb333db5649ce977bc",
+  "cpus": [
+    0,
+    1
+  ],
+  "seed": null,
+  "corpus": "Eight fixed strings, one/two writes and two normalization orders. Shrinking preserves the failed public operation.",
+  "rows": {
+    "werkzeug/base": {
+      "outcome": "red-behavior",
+      "exit": 42,
+      "observed": {
+        "outcome": "red-behavior",
+        "generated_cases": 144,
+        "failing_cases": 132,
+        "minimal_replay": {
+          "chunks": [
+            "\u0080"
+          ],
+          "normalize_before_tell": false,
+          "operation": "tell",
+          "expected": 2,
+          "actual": 1
+        },
+        "oracle": "UTF-8 bytes accumulated by public writes; tell equals byte count; get_data preserves bytes; repeat tell after normalization."
+      },
+      "stdout_sha256": "12672732852e1bb86d70ddad498cc46e847c73e1f13609a3b353b3c1ab92f370",
+      "patch_sha256": null,
+      "native_proposal": null,
+      "reconstructed_grade_sha256": "58a3913c4af1db13caffe342b8dd19f77c2f7abc0b53bec704150c36e4fefa0c"
+    },
+    "werkzeug/original-merge": {
+      "outcome": "red-behavior",
+      "exit": 42,
+      "observed": {
+        "outcome": "red-behavior",
+        "generated_cases": 144,
+        "failing_cases": 132,
+        "minimal_replay": {
+          "chunks": [
+            "\u0080"
+          ],
+          "normalize_before_tell": false,
+          "operation": "tell",
+          "expected": 2,
+          "actual": 1
+        },
+        "oracle": "UTF-8 bytes accumulated by public writes; tell equals byte count; get_data preserves bytes; repeat tell after normalization."
+      },
+      "stdout_sha256": "12672732852e1bb86d70ddad498cc46e847c73e1f13609a3b353b3c1ab92f370",
+      "patch_sha256": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76",
+      "native_proposal": null,
+      "reconstructed_grade_sha256": "a5d63472343abd0b4b78b7f58db2fa6a6c33b46a386c283c47b1bbb9143dc3df"
+    },
+    "werkzeug/stock": {
+      "outcome": "red-behavior",
+      "exit": 42,
+      "observed": {
+        "outcome": "red-behavior",
+        "generated_cases": 144,
+        "failing_cases": 132,
+        "minimal_replay": {
+          "chunks": [
+            "\u0080"
+          ],
+          "normalize_before_tell": false,
+          "operation": "tell",
+          "expected": 2,
+          "actual": 1
+        },
+        "oracle": "UTF-8 bytes accumulated by public writes; tell equals byte count; get_data preserves bytes; repeat tell after normalization."
+      },
+      "stdout_sha256": "12672732852e1bb86d70ddad498cc46e847c73e1f13609a3b353b3c1ab92f370",
+      "patch_sha256": "afa8d0609fadffa0e5ff3c03344732c98362d38800500aef83c90958c65a91ad",
+      "native_proposal": {
+        "installed_package_sha256": null,
+        "paired_plan_treatment_sha256": "c979c41b0fe2c9eff5615dea243334b70b442a3cb7b13d18f5e19773b9263825",
+        "state": "completed",
+        "estimated_usd": 0.2801852,
+        "coverage": "complete"
+      },
+      "reconstructed_grade_sha256": "af21f4c9fab0d4262148ff8025f5646066fb27b9c85a529db7b12f9938a52f69"
+    },
+    "werkzeug/develop-3b": {
+      "outcome": "green",
+      "exit": 0,
+      "observed": {
+        "outcome": "green",
+        "generated_cases": 144,
+        "failing_cases": 0,
+        "minimal_replay": null,
+        "oracle": "UTF-8 bytes accumulated by public writes; tell equals byte count; get_data preserves bytes; repeat tell after normalization."
+      },
+      "stdout_sha256": "9b4625cc7ea29050905246824e6c5fc593d46eec81ff54f2786bb7e31a079657",
+      "patch_sha256": "40be6a2039e1bfb78cadf689bbfc4728ae04eb1e2b1381092ef8407e929320e7",
+      "native_proposal": {
+        "installed_package_sha256": "3b0bd70d20a63dbf66750151ef0730b26032ecf30e0f4bf3599256ab1398cbb5",
+        "paired_plan_treatment_sha256": "3b0bd70d20a63dbf66750151ef0730b26032ecf30e0f4bf3599256ab1398cbb5",
+        "state": "completed",
+        "estimated_usd": 0.5319448,
+        "coverage": "complete"
+      },
+      "reconstructed_grade_sha256": "c75a7dceb966d18683f3d7ce90b1acdbf7be19c20f9ca016b2a96ea91733575f"
+    },
+    "werkzeug/develop-c979": {
+      "outcome": "red-behavior",
+      "exit": 42,
+      "observed": {
+        "outcome": "red-behavior",
+        "generated_cases": 144,
+        "failing_cases": 132,
+        "minimal_replay": {
+          "chunks": [
+            "\u0080"
+          ],
+          "normalize_before_tell": false,
+          "operation": "tell",
+          "expected": 2,
+          "actual": 1
+        },
+        "oracle": "UTF-8 bytes accumulated by public writes; tell equals byte count; get_data preserves bytes; repeat tell after normalization."
+      },
+      "stdout_sha256": "12672732852e1bb86d70ddad498cc46e847c73e1f13609a3b353b3c1ab92f370",
+      "patch_sha256": "b408b7ab4b5d3d3c0c771143dea1020a2b85ad1415885cc2f617b14a81ec3413",
+      "native_proposal": {
+        "installed_package_sha256": "c979c41b0fe2c9eff5615dea243334b70b442a3cb7b13d18f5e19773b9263825",
+        "paired_plan_treatment_sha256": "c979c41b0fe2c9eff5615dea243334b70b442a3cb7b13d18f5e19773b9263825",
+        "state": "blocked",
+        "estimated_usd": 0.863358,
+        "coverage": "lower bound"
+      },
+      "reconstructed_grade_sha256": "86e5bd8c72b56eccf3e8af699762bc8f8cc2095a90568bd7bdb28517bd5254e3"
+    }
+  },
+  "expected_control_exits": {
+    "werkzeug/base": 42,
+    "werkzeug/original-merge": 42,
+    "werkzeug/stock": 42,
+    "werkzeug/develop-3b": 0,
+    "werkzeug/develop-c979": 42
+  },
+  "calibration_valid": true,
+  "source_receipt_sha256": "e33a75222f5fb52303ae7a4562ef082a6e3170c8ad523d61d981c17e0174e7d9",
+  "archival_expat": {
+    "scope": "Archival exposed Expat results; not rerun by portable calibrate.py. Requires prepared historical shared libraries for independent reconstruction.",
+    "rows": {
+      "expat/base": {
+        "outcome": "red-behavior",
+        "exit": 42,
+        "observed": {
+          "outcome": "red-behavior",
+          "cases": 8,
+          "failures": [
+            "literal_chain_comment",
+            "literal_chain_pi"
+          ],
+          "observations": [
+            {
+              "case": "simple_comment",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "unused_chain",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "literal_cycle_comment",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "literal_cycle_pi",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "literal_chain_comment",
+              "accepted": false,
+              "error_code": 43,
+              "error": "limit on input amplification factor (from DTD and entities) breached"
+            },
+            {
+              "case": "literal_chain_pi",
+              "accepted": false,
+              "error_code": 43,
+              "error": "limit on input amplification factor (from DTD and entities) breached"
+            },
+            {
+              "case": "real_cycle",
+              "accepted": false,
+              "error_code": 12,
+              "error": "recursive entity reference"
+            },
+            {
+              "case": "real_chain",
+              "accepted": false,
+              "error_code": 43,
+              "error": "limit on input amplification factor (from DTD and entities) breached"
+            }
+          ]
+        },
+        "stdout_sha256": "384c79725849938588d8a2f719b85823bb2ebaec13796d3c307206d2f489eb9b",
+        "grade_sha256": "e907fc3a24afbc0b6d5c073d495ba030bce3f53322be9622b60573ab569ede91",
+        "library_sha256": "901da7a5581ce4b75ca36532bd69322ea4539c573e80fe97a2bba76fa4cb59c1",
+        "public_header_sha256": "49628ba5baef8e47aff8246a72dd0e239ebf09fec966dfe7d2ccb9a959ddc63d"
+      },
+      "expat/merge": {
+        "outcome": "green",
+        "exit": 0,
+        "observed": {
+          "outcome": "green",
+          "cases": 8,
+          "failures": [],
+          "observations": [
+            {
+              "case": "simple_comment",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "unused_chain",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "literal_cycle_comment",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "literal_cycle_pi",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "literal_chain_comment",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "literal_chain_pi",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "real_cycle",
+              "accepted": false,
+              "error_code": 12,
+              "error": "recursive entity reference"
+            },
+            {
+              "case": "real_chain",
+              "accepted": false,
+              "error_code": 43,
+              "error": "limit on input amplification factor (from DTD and entities) breached"
+            }
+          ]
+        },
+        "stdout_sha256": "5f121ce46a6aac141eaa568e48331e8f85a0972cb836fbf1674a55ee63aa3d65",
+        "grade_sha256": "0d760750da8ad83198e2b081a36ea0e2497606909a941723dfa0724fa57f89db",
+        "library_sha256": "cc73e2182e7a3eadf03fabae6dce0e5d371b7e15885f65b6c9bce78bb0ed8c56",
+        "public_header_sha256": "49628ba5baef8e47aff8246a72dd0e239ebf09fec966dfe7d2ccb9a959ddc63d"
+      },
+      "expat/control": {
+        "outcome": "green",
+        "exit": 0,
+        "observed": {
+          "outcome": "green",
+          "cases": 8,
+          "failures": [],
+          "observations": [
+            {
+              "case": "simple_comment",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "unused_chain",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "literal_cycle_comment",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "literal_cycle_pi",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "literal_chain_comment",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "literal_chain_pi",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "real_cycle",
+              "accepted": false,
+              "error_code": 12,
+              "error": "recursive entity reference"
+            },
+            {
+              "case": "real_chain",
+              "accepted": false,
+              "error_code": 43,
+              "error": "limit on input amplification factor (from DTD and entities) breached"
+            }
+          ]
+        },
+        "stdout_sha256": "5f121ce46a6aac141eaa568e48331e8f85a0972cb836fbf1674a55ee63aa3d65",
+        "grade_sha256": "cc15bdb60cdb57bef17c22d46e1bba612d455968c927fe54fec42dea87be0833",
+        "library_sha256": "5ac28baedf517b08cf62d19a55cb826c2708e309561636da39e90a18ab63900f",
+        "public_header_sha256": "49628ba5baef8e47aff8246a72dd0e239ebf09fec966dfe7d2ccb9a959ddc63d"
+      },
+      "expat/develop": {
+        "outcome": "red-behavior",
+        "exit": 42,
+        "observed": {
+          "outcome": "red-behavior",
+          "cases": 8,
+          "failures": [
+            "literal_chain_comment",
+            "literal_chain_pi"
+          ],
+          "observations": [
+            {
+              "case": "simple_comment",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "unused_chain",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "literal_cycle_comment",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "literal_cycle_pi",
+              "accepted": true,
+              "error_code": 0,
+              "error": ""
+            },
+            {
+              "case": "literal_chain_comment",
+              "accepted": false,
+              "error_code": 43,
+              "error": "limit on input amplification factor (from DTD and entities) breached"
+            },
+            {
+              "case": "literal_chain_pi",
+              "accepted": false,
+              "error_code": 43,
+              "error": "limit on input amplification factor (from DTD and entities) breached"
+            },
+            {
+              "case": "real_cycle",
+              "accepted": false,
+              "error_code": 12,
+              "error": "recursive entity reference"
+            },
+            {
+              "case": "real_chain",
+              "accepted": false,
+              "error_code": 43,
+              "error": "limit on input amplification factor (from DTD and entities) breached"
+            }
+          ]
+        },
+        "stdout_sha256": "384c79725849938588d8a2f719b85823bb2ebaec13796d3c307206d2f489eb9b",
+        "grade_sha256": "71f5218acc173b83d2b6361365d9dc291be5d610da4eef4c2c89a73fbf16bd30",
+        "library_sha256": "e3db751fa7f97f7a2f091f780651c52a2a91d7e593ed6b533b99f7e60b0a97d7",
+        "public_header_sha256": "49628ba5baef8e47aff8246a72dd0e239ebf09fec966dfe7d2ccb9a959ddc63d"
+      }
+    }
+  }
+}

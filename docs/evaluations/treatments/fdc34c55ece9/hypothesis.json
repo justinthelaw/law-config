@@ -1,0 +1,42 @@
+{
+  "id": "start-with-the-working-caller",
+  "previous": "a826a2341b6c2e360099ceb56981fd5adce3b92af160bbb7db3f2ac48467f3ff",
+  "targets": [
+    "plugins/develop/skills/develop/SKILL.md"
+  ],
+  "baseline_plan_sha256": "53a8bd549c93423b9ac7b889702be24b7b8823baaaba439a965e7ba6685975ad",
+  "evidence": [
+    {
+      "case": "werkzeug",
+      "baseline_native_sha256": "2c47f99b8b862300a3a7b2d48c7d99ee4fd56c6f5455d41f1d6d4b17cefc0d22",
+      "validation_reference_commands": 0,
+      "diff_delta_85": -21.25,
+      "develop_usd": 0.7022088,
+      "control_usd": 0.2843692
+    },
+    {
+      "case": "pytest",
+      "baseline_native_sha256": "b98f763b1eea407cda3dee14ee6ead71b816124d6edbc1f987660006d59e3c82",
+      "validation_reference_commands": 0,
+      "diff_delta_85": -36.25,
+      "develop_usd": 0.716884,
+      "control_usd": 0.338172
+    },
+    {
+      "case": "black",
+      "baseline_native_sha256": "b7e84ef83261d503816faeb806470e9e937431805e8b60a968246f6638612af3",
+      "validation_reference_commands": 1,
+      "diff_delta_85": 30.0,
+      "develop_usd": 0.47375880000000004,
+      "control_usd": 0.322308
+    }
+  ],
+  "change": "Put the known-working caller check at initial Develop activation and consolidate repeated routing instructions.",
+  "prediction": "Preserve an adjacent caller on the base and patch, with higher PR quality at equal or lower complete cost than stock Codex.",
+  "sequence": [
+    "werkzeug",
+    "pytest",
+    "black"
+  ],
+  "falsifier": "Reject if the registered stream, tuple, or grammar counterexample regresses, a required review is lost, or the shorter entry point selects a maintenance skill without an explicit request. Use fresh stored parent threads in both arms. Check all material warning behavior on Werkzeug before any promotion. A positive tuning result still requires a fresh 20-repository confirmation."
+}

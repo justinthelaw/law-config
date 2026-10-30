@@ -1,0 +1,39 @@
+{
+  "id": "read-the-focused-review-file",
+  "previous": "e23550bff4a75d97c1f569bce32f5ebfe4a2eb43b93c1bb6c656187c93ed8e67",
+  "targets": [
+    "plugins/develop/skills/adversarial-loop/SKILL.md",
+    "plugins/develop/skills/clean/SKILL.md",
+    "plugins/develop/skills/develop/SKILL.md",
+    "plugins/develop/skills/develop/references/contract.md",
+    "plugins/develop/skills/develop/references/planning-and-review.md",
+    "plugins/develop/skills/engineering-design/SKILL.md",
+    "plugins/develop/skills/interface-design/SKILL.md",
+    "plugins/develop/skills/iterate/SKILL.md",
+    "plugins/develop/skills/iterate/references/implementation.md",
+    "plugins/develop/skills/iterate/references/local-changes.md",
+    "plugins/develop/skills/kaizen/SKILL.md",
+    "plugins/develop/skills/upgrade/SKILL.md"
+  ],
+  "evidence": [
+    {
+      "case": "pytest",
+      "source": "runs/tuning/scoped-pytest-01/result.json",
+      "source_sha256": "3a856110cb6fb56287b983118e3a3a194753dcba8d7ebcf3e01f80d63451452c",
+      "contract_read_scope_receipt": "42101664e9d5217578313ba3396e9574534b1d6a20c959bc6afdd9ea3c0bac2e",
+      "copy_pickle_receipt": "52b04c1502ae84bdf5e2af0721a98aa6fb1b8e602ffe9cbb1406a98faa4d7a7e",
+      "prior_native_usd": 0.797008,
+      "candidate_usd": 0.5006536,
+      "pure_usd": 0.4988732,
+      "full_contract_bytes": 17101,
+      "focused_file_bytes": 3989,
+      "moved_policy_sha256": "ca931d5884756b31bec148ee3f75de238b7e49b43a3c8910e75ede9ab33fab0f"
+    }
+  ],
+  "change": "Move the existing 504-word planning and review policy unchanged into a dedicated file. Point its ten skill callers there and preserve both original anchors.",
+  "prediction": "The participant reads the focused policy instead of the whole invocation contract. Root guide bytes and complete proposal cost decline versus the matched prior while every required independent checkpoint remains.",
+  "sequence": [
+    "pytest"
+  ],
+  "falsifier": "Reject if the measured guide footprint does not fall versus prior, the whole invocation contract is still read in addition to the focused policy, a required review or frozen gate is lost, or any tuple, shallow copy, deep copy or pickle check regresses relative to the base. Retain every attempt and the strict three-judge quality and cost threshold against stock. Report headroom when the raw comparator is near the scoring ceiling; a tie is not a win."
+}

@@ -1,0 +1,97 @@
+{
+  "id": "compare-interacting-rules",
+  "previous": "fb6b2eacbc6ae3a94fb237d6a54c4166ecbbb7d5678ae9b3273fdaf072c6b372",
+  "targets": [
+    "plugins/develop/skills/iterate/references/local-changes.md"
+  ],
+  "evidence": [
+    {
+      "case": "marked",
+      "source": "runs/pr-quality-panel-v2/baseline-53a8bd549c93/run.json",
+      "source_sha256": "79d1eac46f473ecaf3d2620ddae08a903de6d9b3a9d93c64ee155364c2042160",
+      "case_results": {
+        "control": {
+          "state": "completed",
+          "readiness": "failed",
+          "full_pr_score": 56.25,
+          "grade_sha256": "5690d48283b508a7cd6c64c47cc59d92c5233dec090f7cf4f3966a195db83f9f",
+          "proposal_usd": 0.6866948,
+          "cost_coverage": "complete"
+        },
+        "develop": {
+          "state": "blocked",
+          "readiness": "unavailable",
+          "full_pr_score": null,
+          "grade_sha256": "a1947740a4f5439ef4d80e3ad4f8b41f197bf8d3f56c2656ae598bcbf53721b8",
+          "proposal_usd": 0.5887948000000001,
+          "cost_coverage": "lower bound"
+        },
+        "upstream": {
+          "state": "merged",
+          "readiness": "failed",
+          "full_pr_score": 53.75,
+          "grade_sha256": "c6af86cbae547e0964b62bd6f5d8716e0c4b664c0e48e87b880fdddf9ea4dbd8",
+          "proposal_usd": null,
+          "cost_coverage": null
+        }
+      }
+    },
+    {
+      "case": "marked",
+      "source": "runs/pr-quality-panel-v2/capacity-recovery-10864a781080/run.json",
+      "source_sha256": "de09d2bf765e2b39431efff20af658ce8ca99c906c38edd3bbd0d8714b99ba91",
+      "case_results": {
+        "control": {
+          "state": "completed",
+          "readiness": "failed",
+          "full_pr_score": 56.25,
+          "grade_sha256": "630902cf172de92b9011fe36d3e8ccedfed18f9fd41e18a5f2d9b5f189f0c007",
+          "proposal_usd": 0.8916772,
+          "cost_coverage": "complete"
+        },
+        "develop": {
+          "state": "completed",
+          "readiness": "failed",
+          "full_pr_score": 56.25,
+          "grade_sha256": "d5d6bcf1b48dd903c3921a4821216b7ff2e55385196a664320ae59f373f5fbdf",
+          "proposal_usd": 0.5896624,
+          "cost_coverage": "complete"
+        },
+        "upstream": {
+          "state": "merged",
+          "readiness": "failed",
+          "full_pr_score": 53.75,
+          "grade_sha256": "c6af86cbae547e0964b62bd6f5d8716e0c4b664c0e48e87b880fdddf9ea4dbd8",
+          "proposal_usd": null,
+          "cost_coverage": null
+        }
+      }
+    },
+    {
+      "case": "black",
+      "source": "runs/tuning/restore-contract-black-01/result.json",
+      "source_sha256": "fd263568703f4b2fb1ce06a792553c9ebe3b530b19359820bac54f69ebe40a21",
+      "supplement_sha256": "daf2ade25e3f575a0bfc520edd41a6a55afc4ab461465f7ec0e57b89ef732709",
+      "observation": "All three frozen judges preferred stock. The sealed conditional-yield replay found an AST change in the merge and previous Develop. Revised Develop retained an extra space in unskipped code; stock preserved the AST and normalized that space."
+    }
+  ],
+  "change": "Replace one local verification paragraph. When rules interact and the repository supplies a reference implementation, compare short input combinations and keep a small regression.",
+  "prediction": "A bounded differential check finds a missed delimiter interaction before repeated hand-picked tests or final review. Measure complete proposal cost and time as well as sealed behavior.",
+  "sequence": [
+    "Run Marked after the already queued Black and eligible pytest screens if no treatment has earned fresh confirmation.",
+    "Only after Marked clears all registered criteria, run Black as a guard under the same package."
+  ],
+  "falsifier": "Require a ready full-PR win at or below complete stock proposal cost, plus lower cost and checkout-to-proposal time than the matched prior. For Marked, require both reference parsers to agree on all 3,648 inputs, all 132 official emphasis examples to pass, fewer generated mismatches than prior and no more than stock. Inspect successful participant commands for a generated input comparison and a regression that exposes the defect. Reject skipped required review. For Black, require both registered fixtures, AST preservation and idempotence for the unary/trailer and conditional-tail inputs, normalized surrounding code, and preserved directive text. Keep ties, score ceilings, incomplete evidence and every attempt. A guard or tuning pass is insufficient for a panel-wide claim.",
+  "measurement_source": "runs/pr-quality-panel-v2/marked-delimiter-replay.json",
+  "measurement_source_sha256": "3d36d08687a9dd926a077d89e0c63f1b34c24a623820a73341b81894f92a57f0",
+  "measurement_program_sha256": "e5d2eb67d4f7a20b11af936d81d4a0aaf0b159425206b474ef5a32877fa08b9f",
+  "measure_with": "python3 -B docs/evaluations/treatments/81b11159e5ff/measure_marked.py RUN",
+  "black_probes": {
+    "supplementary_fixtures": {
+      "fmtskip_nested_with.py": "056f1a7f94c4d0cad54477b1ac0399f6ed5fc8f4cf4c415e3bccd95b1f5fe517",
+      "fmtskip_nested_yield.py": "95767a80084d8c7b352156ece4aa8fe59caf641606f2e689691c49e9a92e9181"
+    },
+    "operand_probe_sha256": "9d60db767d27257ed12de3cb2fb2c62246a7129c18ea92c7af1a58ddd15817b6",
+    "operand_source_sha256": "c5a881ddb51233346a12c1b2d0c89dc7272a1ce3681fe230983259435b63fb73"
+  }
+}

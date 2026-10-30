@@ -1,0 +1,104 @@
+{
+  "id": "intent-reviewer-caller-example",
+  "previous": "239dccfc0fe4c090a777d8cf46216c99c57bc2bebc08eca013402215b65c7c28",
+  "candidate_package_sha256": "9fc24395cd2368cc236c115e058d4de5536c8357b78fd248cae542314fbb6438",
+  "common_companion": {
+    "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+    "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+  },
+  "composite_identities": {
+    "prior": "7ed91df07062b0a88cab8cd5b5e74ee8a7c7e258afa2a42645b60e793ea68791",
+    "candidate": "555fc64f2d48774897af2db6e88b2b67ec1c7878788cda90cbbc2f3ed55ee098"
+  },
+  "targets": [
+    "plugins/develop/skills/iterate/references/local-changes.md"
+  ],
+  "change": "Keep the existing independent intent review. Before production edits, verify a runnable caller and expected outcome from that reviewer or cite matching execution evidence. Retain independent review of the tested final diff.",
+  "evidence": [
+    {
+      "case": "black",
+      "source": "runs/tuning/restore-contract-black-01/result.json",
+      "sha256": "fd263568703f4b2fb1ce06a792553c9ebe3b530b19359820bac54f69ebe40a21"
+    }
+  ],
+  "context": [
+    {
+      "source": "runs/tuning/observable-werkzeug-01/result.json",
+      "sha256": "ef964bbe31faee6884025ac0cc64b969727934d7e37f44b60eac001bed59683a"
+    },
+    {
+      "source": "runs/tuning/native-record-pytest-01/result.json",
+      "sha256": "2f09917193059e0c4a49f89cbf36c4b31de03cfdd750db7dfbd55f21ed410deb"
+    }
+  ],
+  "selection": "One exposed Black tuning task. Freeze one prior Develop, one revised Develop and one stock proposal with the same default GPT-6.1 Sol Medium, resources, authority, budget, pinned base, grader and rotated judge policy. No conditional release to another case under this registration.",
+  "historical_case": {
+    "focus": "The independent intent reviewer identified the suffix risk before edits. The first exercised tuple caller passed on base, failed on the intermediate patch, and prompted a repair. This is a previously working caller.",
+    "root_trace_sha256": "9de6ac0b5abc0a34269ab2e6adcc25aec77297d8cb683bf65eaa1c869177f009",
+    "trace_lines": [
+      151,
+      159,
+      175,
+      221,
+      315,
+      316
+    ],
+    "public_base": "04afd895bf343e5dc41fc168ba3f8ac378a7ee5f",
+    "merged": "062d76a492d7337f3de951bd7ef1af1096a439ee",
+    "suffix_input_sha256": "a14b44e0e2b0343d9c640fe5b768a2ccd6db2965edfbc6a6406a5071d2e362b8",
+    "intermediate_source_sha256": "47ca539aa244dfb40eb22eafa23003f765f5c6cef1793eddce75fbb6c16d57b4",
+    "intermediate_limit": "Reconstructed from the captured initial diff and two literal subsequent replacements. No independently sealed intermediate file digest was available.",
+    "intermediate_replay_sha256": "f2c870c1ff1e5c972091d991cc40b866c9b0b7925ffd87c42ab8f5bff73c3834",
+    "control_outcomes": {
+      "base": "green",
+      "merged": "red",
+      "historical_revised": "green",
+      "historical_stock": "red",
+      "historical_prior": "red"
+    },
+    "calibration_note": "The final probe distinguishes supported Black exceptions from setup failures. Each of its five stages preserves the previously calibrated outcome on all five historical revisions."
+  },
+  "baseline_states": {
+    "requested_new_behavior": "Expected intended behavioral red before production; setup error is unsupported.",
+    "preservation": "Previously working caller must be green on base and patch; Black yielded-tuple AST/stability is this class.",
+    "unsupported": "Missing prerequisite or absent status leaves evidence unestablished and never waives a gate."
+  },
+  "measurement": {
+    "case_delivery": "Classify (A) newly supplied reviewer case: reviewer delivers runnable public call or exact executable reference with concrete inputs/state and expected public outcome absent from its initial packet/current coordinator proof; (B) adopted existing case/proof: reviewer explicitly accepts an exact current executable case or prior revision/environment-matching status, without claiming novel discovery; (C) no executable delivery: topic list, concern or pseudocode without executable setup. Both A and B satisfy delivery; only A counts novel. New witness still needs coordinator base execution unless valid evidence already covers it. Never force duplicate execution.",
+    "chronology": "Bind reviewer-delivery timestamp before first production-source mutation; separately bind actual base command/input revision/environment/status and subsequent same-caller patch result. A text claim that tests ran is insufficient. Prior matching executable evidence may be cited; do not rerun it solely to satisfy the sentence.",
+    "all_descendant_cost": "Enumerate root plus transitive child thread IDs from native records and session metadata, deduplicate, require terminal usage for each. Compare total and uncached/cached input plus output at the same registered rates, including reviewer/implementation/test/wait turns; missing descendants/meters are unsupported, never zero. Keep wall time checkout-to-captured-proposal and command counts. Price full proposals, not estimated repair savings.",
+    "late_preservation_correction": "Within each arm, link one caller ID (concrete source/input/assertions) and green base revision/status to: first recorded discovery after first production mutation that the same caller fails on intermediate revision; then a production correction and/or reopened applicable review responding to that failure. Bind event timestamps, thread IDs, commands/results, changed-source/artifact revisions and the corrective linkage. Count caller-linked events, not each failing suite or generic review remark. A transient intermediate failure followed by successful correction is an observed recovery, not itself a quality disqualification.",
+    "mechanism_comparison": "Compare late-preservation-correction events for matched parent/candidate. If parent has no linked late event, preventive mechanism is unevaluable; still report executable delivery/adoption, strict economic and quality results separately. Never infer an avoided event from a missing record. Candidate earlier detection/recovery may be beneficial, but must be observed and costed.",
+    "mechanism_failure": "No executable delivery/adoption before production, setup failure called behavioral red, a new dedicated example-only reviewer, or duplicate execution solely to satisfy this sentence despite matching evidence. Legitimate required review reopenings remain permitted and fully metered. Final/unresolved preservation loss disqualifies; corrected intermediate failures do not.",
+    "efficiency_disconfirmation": "Candidate full proposal cost OR wall time fails to improve against matched parent; executable case can succeed while efficiency fails. Strict stock cost+quality remains a separate required goal gate.",
+    "record_location": "Reuse normal native/session/patch/grade artifacts. No new campaign verifier framework or private record requirement."
+  },
+  "controls": {
+    "native": "Required compileall and full fmtskip suite, preserved skipped text, normally formatted surroundings, AST equivalence and idempotence, including harness modes/line limits.",
+    "original_suffix": "black-suffix-example.py, inherited public AST/stability assertions, base green then final patch green.",
+    "stored_fixture_with": "056f1a7f94c4d0cad54477b1ac0399f6ed5fc8f4cf4c415e3bccd95b1f5fe517",
+    "stored_fixture_yield": "95767a80084d8c7b352156ece4aa8fe59caf641606f2e689691c49e9a92e9181",
+    "operand_probe": "9d60db767d27257ed12de3cb2fb2c62246a7129c18ea92c7af1a58ddd15817b6",
+    "conditional_tail_probe": "4f6d74ff293bb36e1cdf1fc04c09821a703e55aa17b9a6e2b94a1421467b097d",
+    "policy": "Use these already exposed tests/probes with original AST/stability/directive-preservation expectations. No narrower witness replaces accepted whole-contract checks or changes frozen scores. Missing control leaves the gate unestablished."
+  },
+  "prediction": [
+    "Existing intent reviewer supplies or explicitly adopts a source-grounded runnable boundary input plus expected public outcome before first production edit. Classify novel supply separately from valid evidence adoption; category advice alone fails delivery.",
+    "Coordinator records base green for the previously working boundary and patch green on the same operation; if changing behavior, separately records intended base red before production.",
+    "No dedicated example-only reviewer, nested review, waived required check, reviewer model/effort reduction, authority change, or post-final material edit without fresh applicable review. Legitimate required reopenings remain allowed and metered; absent applicable intent review leaves the mechanism untested, never authorizes inventing a new gate.",
+    "The full proposal including all root/child execution is completely metered. Valid adoption of matching proof is success, not novel discovery; duplicate execution solely to satisfy the sentence fails the no-duplicate mechanism. Efficiency fails unless cost and wall time improve over matched parent; no parent late event makes prevention unevaluable rather than an economic pass/fail.",
+    "Require all frozen and exposed Black AST/stability/preserved-text checks, current-final-diff review, and strict full-PR quality above stock at no greater complete metered cost; missing evidence cannot pass."
+  ],
+  "reviewed_design_sha256": "6d0f369bd065faf42b36db2c1d314c0a6342dde145c0c8f9744719b3b8a8cb28",
+  "falsifier": "Reject missing required base/patch caller proof, a lost frozen or calibrated behavior, unsupported required checks or missing required review. Without fewer documented late preservation corrections than the matched parent the mechanism is unsupported. A parent with no eligible event leaves prevention untested. For nomination require a ready higher-rated PR than stock at no greater complete proposal cost, strictly lower complete cost and shorter checkout-to-proposal than prior. Keep all allocations and separate assessor spend.",
+  "assessment": "Three blind rotations comparing revised Develop, stock and merge. Prior Develop has no blinded full-PR score. Capture complete root and descendant usage, timestamps, final reviewed revision and exposure. Report unsupported evidence explicitly. These tuning observations do not change primary gates or establish confirmation performance.",
+  "caller_capture": {
+    "program_sha256": "fdcab3e100fa1b760bdba3bbae2a29758a273843d5848c39969b68eeebf8f682",
+    "replay_program_sha256": "ece16bcb5b051d37c0dd7dd60a800ccfb5c0e41dcef04044c57700b63e3c3488",
+    "calibration_sha256": "bce83572881b8f863072d4b09dafe12adcaea169249fcbd85ced92452a4fecc4",
+    "probe_sha256": "5c31308e131b91c1d894b783bb34787cae8496c956cc9e5642495cb0f7f166f8",
+    "calibration_source": "docs/evaluations/runs/tuning/restore-contract-black-01/result.json"
+  },
+  "measure_with": "/usr/bin/python3 -B docs/evaluations/treatments/composite-555fc64f2d48774897af2db6e88b2b67ec1c7878788cda90cbbc2f3ed55ee098/capture_callers.py intent-example-black-01",
+  "capture_phase": "Run from the repository root after all three proposals and three blind rotations seal, before publishing result.json. Replay the five caller stages on base, merge, stock, prior and revised Develop. Reject setup failures, skips and missing grades. Record a behavioral failure separately from setup failure. Keep this diagnostic out of the blind judge packets."
+}

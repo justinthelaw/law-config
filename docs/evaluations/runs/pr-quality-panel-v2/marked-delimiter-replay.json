@@ -1,0 +1,209 @@
+{
+  "case": "marked",
+  "base": "3a11ad148397b7628256f5e5d76a454213480c63",
+  "merged": "5d8e2340d78c25c611e1d8215b302fd48f01a601",
+  "probe_sha256": "cd5e65a5b6d3d2abe4d1fa71c1bb6620816688f9af59b5738689960a39892c6c",
+  "probe": "const { readFileSync } = require(\"node:fs\");\nconst { createRequire } = require(\"node:module\");\nconst { pathToFileURL } = require(\"node:url\");\nconst load = createRequire(\"/work/package.json\");\nconst { Parser, HtmlRenderer } = load(\"commonmark\");\nconst markdownIt = load(\"markdown-it\")(\"commonmark\");\n\n(async () => {\n  const { marked } = await import(pathToFileURL(\"/work/lib/marked.esm.js\"));\n  const common = new Parser();\n  const html = new HtmlRenderer();\n  const specs = JSON.parse(readFileSync(\"/work/test/specs/commonmark/commonmark.0.31.2.json\"))\n    .filter(row => row.section === \"Emphasis and strong emphasis\");\n  const mismatchedSpec = specs.filter(row => marked.parse(row.markdown, { gfm: false }) !== row.html);\n  const observations = { official_examples: specs.length, official_mismatches: mismatchedSpec.map(row => row.example),\n    generated: 0, reference_disagreements: 0, differs_from_both: 0, shortest: [] };\n  let current = [\"\"];\n  for (let length = 1; length <= 6; length++) {\n    current = current.flatMap(prefix => [\"*\", \"_\", \"a\", \"!\"].map(c => prefix + c));\n    for (const form of current) {\n      if (!form.includes(\"a\") || (form.match(/[*_]/g) || []).length < 2) continue;\n      const input = \"x \" + form + \" x\";\n      const a = html.render(common.parse(input));\n      const b = markdownIt.renderInline(input);\n      observations.generated++;\n      if (a !== \"<p>\" + b + \"</p>\\n\") {\n        observations.reference_disagreements++;\n        continue;\n      }\n      const actual = marked.parseInline(input, { gfm: false });\n      if (actual !== b) {\n        observations.differs_from_both++;\n        if (observations.shortest.length < 3) observations.shortest.push({ input, expected: b, actual });\n      }\n    }\n  }\n  console.log(JSON.stringify(observations));\n})().catch(error => { console.error(error); process.exitCode = 1; });\n",
+  "scope": "Post-score comparison of the bundled CommonMark emphasis section and short inputs accepted by two pinned local references. The inputs are deterministic and overlapping, not a prevalence estimate.",
+  "roles": {
+    "base": {
+      "state": "base",
+      "grade_sha256": "d296efaa5dea0551ae38c8f0a7e0254e7f6425e0d36ca2c53ace8cd02234e5e6",
+      "patch_sha256": null,
+      "log_sha256": "f039f9ce0d6152e8493fa6c8da8ea09844b2abd51ad2f36b45c6a42023e897e1",
+      "observations": {
+        "official_examples": 132,
+        "official_mismatches": [],
+        "generated": 3648,
+        "reference_disagreements": 0,
+        "differs_from_both": 123,
+        "shortest": [
+          {
+            "input": "x **_a* x",
+            "expected": "x *<em>_a</em> x",
+            "actual": "x **_a* x"
+          },
+          {
+            "input": "x **!a* x",
+            "expected": "x *<em>!a</em> x",
+            "actual": "x **!a* x"
+          },
+          {
+            "input": "x *_*a_ x",
+            "expected": "x *<em>*a</em> x",
+            "actual": "x *_*a_ x"
+          }
+        ]
+      }
+    },
+    "gold": {
+      "state": "gold",
+      "grade_sha256": "c6af86cbae547e0964b62bd6f5d8716e0c4b664c0e48e87b880fdddf9ea4dbd8",
+      "patch_sha256": "3affc55aebbd9f2345b890cb9f6dc40a6fdb024bc4674e697ffaaf37d49dcd6a",
+      "log_sha256": "8706959e71bd1d92e820603abaa41cb72fea8610d1a407cde87a5ed149772d65",
+      "observations": {
+        "official_examples": 132,
+        "official_mismatches": [],
+        "generated": 3648,
+        "reference_disagreements": 0,
+        "differs_from_both": 61,
+        "shortest": [
+          {
+            "input": "x *_*a_ x",
+            "expected": "x *<em>*a</em> x",
+            "actual": "x *_*a_ x"
+          },
+          {
+            "input": "x *_!a_ x",
+            "expected": "x *<em>!a</em> x",
+            "actual": "x *_!a_ x"
+          },
+          {
+            "input": "x a*_*_ x",
+            "expected": "x a*<em>*</em> x",
+            "actual": "x a*_*_ x"
+          }
+        ]
+      }
+    },
+    "baseline-control": {
+      "state": "completed",
+      "grade_sha256": "5690d48283b508a7cd6c64c47cc59d92c5233dec090f7cf4f3966a195db83f9f",
+      "patch_sha256": "f873fc0f3a798be8108ac4191f602b5e70c008d92ba39e944c2bbb6daee160d3",
+      "log_sha256": "205fc34b2d91b01c94123a8ec7312d21788a9708e645ba38192b5bfb2410322a",
+      "observations": {
+        "official_examples": 132,
+        "official_mismatches": [],
+        "generated": 3648,
+        "reference_disagreements": 0,
+        "differs_from_both": 24,
+        "shortest": [
+          {
+            "input": "x a_*_* x",
+            "expected": "x a_<em>_</em> x",
+            "actual": "x a_*_* x"
+          },
+          {
+            "input": "x a_*!* x",
+            "expected": "x a_<em>!</em> x",
+            "actual": "x a_*!* x"
+          },
+          {
+            "input": "x **a*a* x",
+            "expected": "x **a<em>a</em> x",
+            "actual": "x *<em>a*a</em> x"
+          }
+        ]
+      }
+    },
+    "baseline-develop": {
+      "state": "blocked",
+      "grade_sha256": "a1947740a4f5439ef4d80e3ad4f8b41f197bf8d3f56c2656ae598bcbf53721b8",
+      "patch_sha256": "6a9456731e932378c882724836a4072bcaaa50c09fbf7733614a7266f5c57c92",
+      "log_sha256": "205fc34b2d91b01c94123a8ec7312d21788a9708e645ba38192b5bfb2410322a",
+      "observations": {
+        "official_examples": 132,
+        "official_mismatches": [],
+        "generated": 3648,
+        "reference_disagreements": 0,
+        "differs_from_both": 24,
+        "shortest": [
+          {
+            "input": "x a_*_* x",
+            "expected": "x a_<em>_</em> x",
+            "actual": "x a_*_* x"
+          },
+          {
+            "input": "x a_*!* x",
+            "expected": "x a_<em>!</em> x",
+            "actual": "x a_*!* x"
+          },
+          {
+            "input": "x **a*a* x",
+            "expected": "x **a<em>a</em> x",
+            "actual": "x *<em>a*a</em> x"
+          }
+        ]
+      }
+    },
+    "capacity-recovery-control": {
+      "state": "completed",
+      "grade_sha256": "630902cf172de92b9011fe36d3e8ccedfed18f9fd41e18a5f2d9b5f189f0c007",
+      "patch_sha256": "a668f2264583f2f9287087b2e0efb85ffa8f2accf8b46accb9c8dd410ee4fdef",
+      "log_sha256": "4f55017ced99fc3dbe60fddaeba910086bfff502c1ee7e86821f6aa85ca54dbc",
+      "observations": {
+        "official_examples": 132,
+        "official_mismatches": [],
+        "generated": 3648,
+        "reference_disagreements": 0,
+        "differs_from_both": 27,
+        "shortest": [
+          {
+            "input": "x a_*_* x",
+            "expected": "x a_<em>_</em> x",
+            "actual": "x a_*_* x"
+          },
+          {
+            "input": "x a_*!* x",
+            "expected": "x a_<em>!</em> x",
+            "actual": "x a_*!* x"
+          },
+          {
+            "input": "x *_*a_* x",
+            "expected": "x <em><em>*a</em></em> x",
+            "actual": "x *<em>*a</em>* x"
+          }
+        ]
+      }
+    },
+    "capacity-recovery-develop": {
+      "state": "completed",
+      "grade_sha256": "d5d6bcf1b48dd903c3921a4821216b7ff2e55385196a664320ae59f373f5fbdf",
+      "patch_sha256": "387b0fac6ed0da3cbd0f992cfbc0869f422580000e15deb2f104480b82475309",
+      "log_sha256": "205fc34b2d91b01c94123a8ec7312d21788a9708e645ba38192b5bfb2410322a",
+      "observations": {
+        "official_examples": 132,
+        "official_mismatches": [],
+        "generated": 3648,
+        "reference_disagreements": 0,
+        "differs_from_both": 24,
+        "shortest": [
+          {
+            "input": "x a_*_* x",
+            "expected": "x a_<em>_</em> x",
+            "actual": "x a_*_* x"
+          },
+          {
+            "input": "x a_*!* x",
+            "expected": "x a_<em>!</em> x",
+            "actual": "x a_*!* x"
+          },
+          {
+            "input": "x **a*a* x",
+            "expected": "x **a<em>a</em> x",
+            "actual": "x *<em>a*a</em> x"
+          }
+        ]
+      }
+    }
+  },
+  "registered_sources": {
+    "baseline": {
+      "run": "runs/pr-quality-panel-v2/baseline-53a8bd549c93/run.json",
+      "run_sha256": "79d1eac46f473ecaf3d2620ddae08a903de6d9b3a9d93c64ee155364c2042160",
+      "plan_sha256": "53a8bd549c93423b9ac7b889702be24b7b8823baaaba439a965e7ba6685975ad",
+      "deps_sha256": "f08bb6c6875287e2d561d736c4c33a97bb90f22aadf6e9d6260267795495296b"
+    },
+    "capacity-recovery": {
+      "run": "runs/pr-quality-panel-v2/capacity-recovery-10864a781080/run.json",
+      "run_sha256": "de09d2bf765e2b39431efff20af658ce8ca99c906c38edd3bbd0d8714b99ba91",
+      "plan_sha256": "10864a78108003f2b2616a695a00013dbbb3ac1bb4e7b0ffaca5b714041511af",
+      "deps_sha256": "f08bb6c6875287e2d561d736c4c33a97bb90f22aadf6e9d6260267795495296b"
+    }
+  },
+  "reference_package_lock": {
+    "sha256": "f9de5921d75d0a8139c81b77af9a41f8b3f872f603e97c30a35553ab620f68df",
+    "commonmark": "0.31.2",
+    "markdown-it": "15.0.3"
+  }
+}

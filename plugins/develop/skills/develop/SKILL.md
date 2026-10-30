@@ -5,33 +5,18 @@ description: Use when the user invokes Develop for repository work, dependency u
 
 # Develop
 
-Route the user's intent into verified work.
+For local implementation, use Iterate’s [local changes](../iterate/references/local-changes.md). Keep an existing representation when it fits. Before replacing it, test an operation exposed to callers even without an in-tree use. Check the requested behavior and a working neighbor on base and patch. Follow the wider workflow for listed risks.
 
-## Start
+For other work, carry the original request, steering, scope and authority to one owner. A bare `develop` permits context discovery. Use the [input policy](references/contract.md#unattended-continuation) if the outcome remains unclear.
 
-Resolve the user's outcome, then route below. Repository workflows read [the shared contract](references/contract.md); standalone session analysis and independent review use their own scope rules. Preserve one invocation and its original/steering messages across handoffs. A bare `develop` permits context discovery. Use the [input policy](references/contract.md#unattended-continuation) if the outcome remains unclear.
+| Requested outcome | Owner and scope |
+| --- | --- |
+| Implement, refactor, maintain or review a repository | [Iterate](../iterate/SKILL.md) owns the selected targets, constraints and behavior to preserve. |
+| Diagnose, publish, monitor CI or prepare a deployment | [Iterate](../iterate/SKILL.md) owns the selected environment, revision, evidence and authorized repairs or delivery. |
+| Design a change | [Engineering Design](../engineering-design/SKILL.md) and [Interface Design](../interface-design/SKILL.md) share one applicable brief and review. Return decisions to the execution owner. |
+| Challenge a plan, artifact or result | [Adversarial Loop](../adversarial-loop/SKILL.md) reviews it against the original intent and evidence. |
+| Improve a workflow from selected sessions | [Kaizen](../kaizen/SKILL.md) follows the selected sources, limits and action authority. |
 
-## Route
+Clean, Deep Clean, Upgrade and Upgrade Codex require explicit selection of the specific skill. Route ordinary dependency work to Iterate and handle resource questions within their requested scope.
 
-| Intent | Required skill | Handoff |
-| --- | --- | --- |
-| Implement, fix, refactor, maintain or review repository work | [iterate](../iterate/SKILL.md) | Targets, outcome, implementation constraints; bounded refactor objective/invariants when relevant |
-| Diagnose a failure or local, staged or live incident | [iterate](../iterate/SKILL.md) | Selected service/environment/log bundle, time window, diagnosis/repair boundary |
-| Publish existing changes or monitor/fix CI | [iterate](../iterate/SKILL.md) | Selected roots, delivery mode, existing authority, thread signing preference |
-| Prepare a deployment or operations handoff | [iterate](../iterate/SKILL.md) | Selected release/repository, target environment, candidate identity, evidence and authority gaps |
-| Review or upgrade dependencies/runtimes; consolidate dependency PRs | [upgrade](../upgrade/SKILL.md) | Targets, review/implementation boundary, dependency and PR scope |
-| Inspect or reclaim disk/RAM; investigate processes | [clean](../clean/SKILL.md) | Thread activity evidence, audit/cleanup authority, protected work; explicit widening only |
-| Challenge facts, visuals, writing, plans or results | [adversarial-loop](../adversarial-loop/SKILL.md) | Intent, artifacts, evaluation criteria |
-| Learn from selected sessions and improve agent workflows | [kaizen](../kaizen/SKILL.md) | User-selected sessions/sources and limits, desired improvement, action authority |
-
-[deep-clean](../deep-clean/SKILL.md) is explicit-only. Route to it only when the user names it or explicitly expands cleanup/inspection beyond thread activities; pass the selected root and authority. Ordinary cleanup defaults to this thread and requires no repository discovery.
-
-Apply the shared [planning path](references/contract.md#applicable-planning) through the selected owner; engineering and interface planning share one brief and review. Direct design requests use [Engineering Design](../engineering-design/SKILL.md) or [Interface Design](../interface-design/SKILL.md) and return decisions to that owner.
-
-For mixed requests, select the initial owner from the requested outcome, then use the smallest ordered combination and one coordinator. Iterate owns the CI/requested-review → diagnosis → authorized repair → validation → authorized publication loop; domain references do not route recursively back here. Reuse relevant review checkpoints across nested skills. A handoff from analysis to implementation preserves its target and existing authorization; it never expands to other repositories or histories.
-
-[upgrade-codex](../upgrade-codex/SKILL.md) is available only when the user explicitly invokes it. Do not select it from general development, maintenance or dependency-upgrade requests.
-
-## Report
-
-Carry an implementation/delivery invocation through Iterate's [completion and report](../iterate/SKILL.md#report); users need not invoke each phase separately. Narrow review, diagnosis, monitoring and analysis requests keep their selected stop condition and authority. For mixed work, combine the owning reports and identify incomplete gates.
+For repository work outside the local path, use the applicable [shared contract](references/contract.md) and [planning gates](references/planning-and-review.md#applicable-planning). Reuse current checkpoints across handoffs. Carry authorized implementation and delivery through [Iterate’s report](../iterate/SKILL.md#report). For review, diagnosis, monitoring or analysis, honor the requested stopping condition and report any unmet gate.

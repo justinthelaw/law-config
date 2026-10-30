@@ -1,0 +1,11 @@
+const ts=require('/fixture-tool/lib/typescript.js');
+const path=require('node:path');
+const entry=path.join(process.cwd(),'editor-fixture.ts');
+const method=process.env.PANEL_STAGE==='contract'?'combineFlagAndOptionalValue':'version';
+const code="import {Command} from './typings/index';\nnew Command()."+method+"();";
+const host={getCompilationSettings:()=>({skipLibCheck:true, moduleResolution:ts.ModuleResolutionKind.Node10}),getScriptFileNames:()=>[entry],getScriptVersion:()=>'1',getScriptSnapshot:f=>{const text=f===entry?code:ts.sys.readFile(f);return text===undefined?undefined:ts.ScriptSnapshot.fromString(text)},getCurrentDirectory:()=>process.cwd(),getDefaultLibFileName:ts.getDefaultLibFilePath,fileExists:ts.sys.fileExists,readFile:ts.sys.readFile,readDirectory:ts.sys.readDirectory};
+const info=ts.createLanguageService(host).getQuickInfoAtPosition(entry,code.indexOf(method)+3);
+if(!info || !info.displayParts?.some(p=>p.text===method))throw Error('TypeScript could not resolve the public method');
+const deprecated=info.tags?.some(t=>t.name==='deprecated')??false;
+console.log(method,deprecated,ts.version);
+if(deprecated!==(process.env.PANEL_STAGE==='contract'))process.exit(42);

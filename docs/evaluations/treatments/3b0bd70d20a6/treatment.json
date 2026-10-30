@@ -1,0 +1,9 @@
+{
+  "label": "await-local-commands",
+  "package_sha256": "3b0bd70d20a63dbf66750151ef0730b26032ecf30e0f4bf3599256ab1398cbb5",
+  "plugin_hook_sha256": "8d9640702245b7761ee180154d90d7b9be9db54c2feb782f5adc18d032789f85",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "run": "restore-contract-black-01",
+  "case": "black",
+  "result_sha256": "fd263568703f4b2fb1ce06a792553c9ebe3b530b19359820bac54f69ebe40a21",
+  "scope": "Post-score replay of the conditional-yield example in a blind assessment of the merged PR.",
+  "judgment_sha256": "d133a0cd484e0ab3f1c943cad192a9ee2ea99c7ee2fe0a7c8a94beef9a956e61",
+  "probe_sha256": "4f6d74ff293bb36e1cdf1fc04c09821a703e55aa17b9a6e2b94a1421467b097d",
+  "probe": "import ast\nimport json\nimport black\n\nsource = \"def f():\\n    yield a if b else (  # fmt: skip\\n        c\\n    ) +  d\\n\"\ntry:\n    formatted = black.format_str(source, mode=black.Mode())\n    result = {\"formatted\": formatted, \"same_ast\": ast.dump(ast.parse(formatted)) == ast.dump(ast.parse(source)),\n              \"idempotent\": black.format_str(formatted, mode=black.Mode()) == formatted}\nexcept Exception as exc:\n    result = {\"error_type\": type(exc).__name__}\nprint(json.dumps(result, sort_keys=True))\n",
+  "roles": {
+    "base": {
+      "grade_sha256": "9a70747b27e7cff71db74e33adc8890236fda573af8c49e1fedb7d8cf75fb1b6",
+      "log_sha256": "215148bee7a962005524660bea19702d85bcd804438974dd36205a6c794cd993",
+      "observation": {
+        "formatted": "def f():\n    yield a if b else (  # fmt: skip\n        c\n    ) (\n        +d\n    )\n",
+        "idempotent": true,
+        "same_ast": false
+      }
+    },
+    "gold": {
+      "grade_sha256": "6077b1cc3e7671064c3b024f63ee907f3eac2da7593479a885870e55787a4ead",
+      "log_sha256": "215148bee7a962005524660bea19702d85bcd804438974dd36205a6c794cd993",
+      "observation": {
+        "formatted": "def f():\n    yield a if b else (  # fmt: skip\n        c\n    ) (\n        +d\n    )\n",
+        "idempotent": true,
+        "same_ast": false
+      }
+    },
+    "candidate/develop": {
+      "grade_sha256": "8a72735c9665e1eae363bcdfaa9936e49cdf5c860f612d8f3320944855202a2e",
+      "log_sha256": "a7fcbe25be0320f5d5b6698308e93cffcd2627f08d792cf547c5d5e460a07648",
+      "observation": {
+        "formatted": "def f():\n    yield a if b else (  # fmt: skip\n        c\n    ) +  d\n",
+        "idempotent": true,
+        "same_ast": true
+      }
+    },
+    "candidate/control": {
+      "grade_sha256": "5f4f0154eb6636dce06eaa15b61690835df5a51188e389a40ae57208843fdebc",
+      "log_sha256": "4042ce2f7dd1f30de13f7e10614caed4fd6184367ccfaf44cfd134ee08900bc4",
+      "observation": {
+        "formatted": "def f():\n    yield a if b else (  # fmt: skip\n        c\n    ) + d\n",
+        "idempotent": true,
+        "same_ast": true
+      }
+    },
+    "prior/develop": {
+      "grade_sha256": "c57d50cb2a76c0ced090408f3817d2426c4626146b195f26f4f5d7487b871dc1",
+      "log_sha256": "215148bee7a962005524660bea19702d85bcd804438974dd36205a6c794cd993",
+      "observation": {
+        "formatted": "def f():\n    yield a if b else (  # fmt: skip\n        c\n    ) (\n        +d\n    )\n",
+        "idempotent": true,
+        "same_ast": false
+      }
+    }
+  }
+}

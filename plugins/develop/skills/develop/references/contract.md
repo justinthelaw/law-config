@@ -24,7 +24,7 @@ Raw tool responses require the separate [private storage grant](../../../docs/co
 
 ## Targets
 
-Cleanup uses activity scope rather than repository scope: `clean` defaults to verified disposable resources attributable to the current thread and delegated work wherever located, with no arbitrary scan cutoff. No repository discovery or new repository selection is required. Only explicit user widening permits [deep-clean](../../deep-clean/SKILL.md); preserve selected roots, exclusions and audit/cleanup authority. Both apply [shared protections](../../clean/references/protections.md), even for entire-machine requests. The repository selection rules below apply to repository workflows.
+Explicit Clean uses thread and delegated activity as its scope, wherever located, with no arbitrary scan cutoff. Explicit Deep Clean uses the selected roots, exclusions and inspection or cleanup authority. Both follow the [shared protections](../../clean/references/protections.md). Neither requires repository discovery.
 
 Incident diagnosis uses the explicitly selected service, environment or log bundle; no checkout is required for read-only diagnosis. Preserve that bounded target and evidence access. Resolve a repository only when a code repair needs one; diagnosis does not authorize broader account discovery or operational changes.
 
@@ -38,7 +38,7 @@ Prefer connected provider tools, then permitted authenticated CLI/API and Git. S
 
 ## Dependencies and autonomy
 
-- `upgrade` owns assessment and migration decisions; `iterate` owns implementation and delivery. Use `clean` only when requested or when an identified resource constraint needs authorized cleanup. Review-only work does not enter cleanup or implementation.
+- Explicit Upgrade owns assessment and migration decisions. Iterate owns authorized implementation and delivery. Review-only work stops after assessment. A resource constraint alone does not select Clean.
 - Resolve qualified installed skills or their packaged sibling files. The bundled [implementation guidance](../../iterate/references/implementation.md) is sufficient without an external workflow plugin; use compatible installed guidance when useful. Do not invent tools, dependencies or capabilities.
 - A scoped implementation request permits execution within its authority after the applicable planning path below; it is not itself a plan-review waiver. Reuse accepted decisions instead of repeating approval rounds. Independent review cannot replace a required human decision or host approval.
 - Preserve repository instructions, contribution requirements, host approvals, access controls and explicit user stops. Review cannot supply missing authorization. Merges, destructive actions, production changes and person-directed messages require applicable authorization.
@@ -91,18 +91,8 @@ Before yielding, save completed checks, open findings, remaining budget and the 
 
 ## Applicable planning
 
-Before engineering changes or consequential engineering decisions, use [Engineering Design](../../engineering-design/SKILL.md). For interface work, also use [Interface Design](../../interface-design/SKILL.md); non-interface work never requires it. The existing execution owner checks applicability even on direct Iterate or Upgrade calls. Read-only discovery and unchanged/no-op assessments need no new design. Maintainability and meaningful verification still apply to every coding task.
-
-Use one proportionate decision brief and one review for all applicable design skills. Reuse a current accepted plan after checking intent, affected source/consumer revisions, constraints and acceptance evidence; revisit only changed decisions. A small fix may need a few sentences, not a document. Keep the brief in existing task storage, not a new template or coordinator.
-
-Default: ask for user input and review of the concrete brief before dependent implementation. Explicit user waiver may bypass planning or its review within that user's authority. Explicit delegation to [Adversarial loop](../../adversarial-loop/SKILL.md) permits unattended planning review: record assumptions, unresolved decisions and the bounded review result, then return to the same execution owner. Combine this with any applicable intent checkpoint; do not repeat discovery or approval at the Upgrade → Iterate handoff.
-
-Planning still applies when the user is unavailable. Separate optional design feedback from missing consequential intent or authority: delegated review may proceed on recorded, reversible assumptions, but cannot decide a missing authorization. Silence and an unanswered approval grant no permission. Host, security, legal and required human approvals remain binding; a waiver or review never expands execution scope.
+See [applicable planning](planning-and-review.md#applicable-planning).
 
 ## Review gates
 
-Use the bounded [adversarial protocol](../../adversarial-loop/SKILL.md) for explicitly requested independent reviews, delegated unattended planning review, repository/host-required reviews and consequential changes: public contracts, migrations/persistent data, security, destructive operations or publication. The coordinator reviews **intent** before consequential work and **evidence** before completion; reuse the planning review for the same intent and revision.
-
-Routine read-only answers, unchanged/no-op assessments and ordinary Kaizen findings require source-backed validation, not automatic reviewer pairs. Small reversible work uses proportionate checks; add independent review for an identified risk or explicit requirement. A blocked/no-op result does not erase an already-required review of a consequential proposal. Never claim independent review when none ran.
-
-Nested workers reuse applicable checkpoints; reviewers never recurse. Repeat affected reviews after material steering, design/scope changes or repairs, recording intent and artifact revisions. Reuse unchanged evidence, but publication readiness requires current-head checks/reviews. If a required fresh matching reviewer is unavailable, complete independent safe work and report that gate blocked/unverified, never a solo substitute. Completion requires validation and applicable reviews without unresolved material findings; internal review cannot replace tests, CI, provider reviews or human approvals, and never authorizes merging.
+See [review gates](planning-and-review.md#review-gates).

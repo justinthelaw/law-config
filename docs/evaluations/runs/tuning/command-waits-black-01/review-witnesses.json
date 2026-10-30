@@ -1,0 +1,90 @@
+{
+  "run": "command-waits-black-01",
+  "case": "black",
+  "registration_sha256": "1d7dbb1eec4f5154635fa2721c5231b43a4f2e897808fa4781b7afa8a8a1844a",
+  "scope": "Supplementary replay of examples from two rejected revisions. These observations are separate from the registered gates and blind scores.",
+  "reviewers": {
+    "/root/artifact_review": {
+      "trace_sha256": "27eab731460582a169fe0667c96598330c6a16c4deaefb7464bbb48f3d263c43",
+      "verdict_sha256": "c2448338b5925cd4742c17038c280709beab900d1a8d27dff3f25d59c2b3fc7e"
+    },
+    "/root/artifact_review_final": {
+      "trace_sha256": "1b187f4bfee0ef34d2d15c141a6530e8e1ddaf9857d462b5301d7637c1f86ea0",
+      "verdict_sha256": "4bca7397cdde65f4fd4a5037f1e9a4633d7373c4eca486d67b76aade7732d195"
+    }
+  },
+  "probe": "import ast, json, black\nsources = {'/root/artifact_review': 'def f():\\n    x = yield a, (  # fmt: skip\\n        b  +  c\\n    ), d\\n', '/root/artifact_review_final': 'def f():\\n    value: T = yield first, (  # fmt: skip\\n        second  +  third\\n    ), fourth\\n    after  =  1\\n'}\nresults = {}\nfor name, source in sources.items():\n    try:\n        formatted = black.format_str(source, mode=black.Mode())\n        results[name] = {\"same_ast\": ast.dump(ast.parse(formatted)) == ast.dump(ast.parse(source)),\n                         \"idempotent\": black.format_str(formatted, mode=black.Mode()) == formatted,\n                         \"formatted\": formatted}\n    except Exception as exc:\n        results[name] = {\"error_type\": type(exc).__name__}\nprint(json.dumps(results, sort_keys=True))\n",
+  "probe_sha256": "188e891782d95ebe1990381f6a18d367e38c5f656246085359c3bf1a4e49fd36",
+  "roles": {
+    "base": {
+      "grade_sha256": "9a70747b27e7cff71db74e33adc8890236fda573af8c49e1fedb7d8cf75fb1b6",
+      "log_sha256": "778a35fbcbc7d24c6bd928046620f3ecee4e4a0ff51cd697e991fcbcb5254ae9",
+      "observations": {
+        "/root/artifact_review": {
+          "error_type": "InvalidInput"
+        },
+        "/root/artifact_review_final": {
+          "error_type": "InvalidInput"
+        }
+      }
+    },
+    "gold": {
+      "grade_sha256": "6077b1cc3e7671064c3b024f63ee907f3eac2da7593479a885870e55787a4ead",
+      "log_sha256": "778a35fbcbc7d24c6bd928046620f3ecee4e4a0ff51cd697e991fcbcb5254ae9",
+      "observations": {
+        "/root/artifact_review": {
+          "error_type": "InvalidInput"
+        },
+        "/root/artifact_review_final": {
+          "error_type": "InvalidInput"
+        }
+      }
+    },
+    "candidate/develop": {
+      "grade_sha256": "5579509f6b31d355b3c3a397050f7d361887071bf689f46d34687e0c4f9777d0",
+      "log_sha256": "ef3c558aec379dd319e4f245fb3984d8205c10341ca55582104071b104533c86",
+      "observations": {
+        "/root/artifact_review": {
+          "formatted": "def f():\n    x = yield a, (  # fmt: skip\n        b  +  c\n    ), d\n",
+          "idempotent": true,
+          "same_ast": true
+        },
+        "/root/artifact_review_final": {
+          "formatted": "def f():\n    value: T = yield first, (  # fmt: skip\n        second  +  third\n    ), fourth\n    after = 1\n",
+          "idempotent": true,
+          "same_ast": true
+        }
+      }
+    },
+    "candidate/control": {
+      "grade_sha256": "5eaaed3124fb1be150d900e1cb29f5814f878af755b2a0687e0ebb8cd7c1a219",
+      "log_sha256": "ef3c558aec379dd319e4f245fb3984d8205c10341ca55582104071b104533c86",
+      "observations": {
+        "/root/artifact_review": {
+          "formatted": "def f():\n    x = yield a, (  # fmt: skip\n        b  +  c\n    ), d\n",
+          "idempotent": true,
+          "same_ast": true
+        },
+        "/root/artifact_review_final": {
+          "formatted": "def f():\n    value: T = yield first, (  # fmt: skip\n        second  +  third\n    ), fourth\n    after = 1\n",
+          "idempotent": true,
+          "same_ast": true
+        }
+      }
+    },
+    "prior/develop": {
+      "grade_sha256": "ea0ae0e0264edf6a9cbb1b23a6d72de679173ca87f6e24184638420e4ef80e75",
+      "log_sha256": "778a35fbcbc7d24c6bd928046620f3ecee4e4a0ff51cd697e991fcbcb5254ae9",
+      "observations": {
+        "/root/artifact_review": {
+          "error_type": "InvalidInput"
+        },
+        "/root/artifact_review_final": {
+          "error_type": "InvalidInput"
+        }
+      }
+    }
+  },
+  "result_sha256": "9e5f0417b9694e1a8251760f22d9a1ab64f7b99937fb1b2e8c2c53bdd2acd5e9",
+  "review_evidence_sha256": "ef57dcc675e0a138054691d9bc658dc660b2aa7c66ddf4147c05f76fd80e2234"
+}

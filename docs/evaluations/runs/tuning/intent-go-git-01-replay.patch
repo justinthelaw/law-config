@@ -1,0 +1,93 @@
+--- a/docs/evaluations/develop-benchmark/panel/stock.py
++++ b/docs/evaluations/develop-benchmark/panel/stock.py
+@@ -1,5 +1,4 @@
+ """Check what a native worker actually loads before releasing a model turn."""
+-from hashlib import sha256
+ from pathlib import Path
+ import subprocess
+ import tomllib
+@@ -31,21 +30,9 @@
+     config = settings["config"]
+     if any(config.get(k) for k in FORBIDDEN_INSTRUCTIONS):
+         raise ValueError("effective worker configuration injects instructions")
+-    layers = []
+-    for layer in settings["layers"]:
+-        if layer.get("disabledReason"):
+-            continue
+-        name = layer["name"]
+-        kind = name["type"]
+-        if kind == "project":
+-            directory = work / ".codex"
+-            if (name.get("dotCodexFolder") != str(directory) or directory.is_symlink()
+-                    or not directory.is_dir() or any(directory.iterdir())
+-                    or layer.get("config") != {} or layer.get("version") != "sha256:" + sha256(b"{}").hexdigest()):
+-                raise ValueError("unreviewed project configuration layer")
+-        elif kind not in {"user", "enterpriseManaged", "system"}:
+-            raise ValueError("unreviewed configuration layer: " + kind)
+-        layers.append(kind)
++    layers = [x["name"]["type"] for x in settings["layers"] if not x.get("disabledReason")]
++    if set(layers) - {"user", "enterpriseManaged", "system"}:
++        raise ValueError("unreviewed configuration layer: " + str(layers))
+     with (server.home / "config.toml").open("rb") as source:
+         authored = tomllib.load(source)
+     expected = {
+--- a/docs/evaluations/tools/efficiency_pilot.py
++++ b/docs/evaluations/tools/efficiency_pilot.py
+@@ -88,36 +88,28 @@
+             or inv["plugins"] != ([E.host.PLUGIN] if role else []) or inv["stock"]["apps"] or inv["stock"]["mcp"]
+             ):
+         raise ValueError("release no longer matches its stock inventory or paired model input")
+-    # Trust and the repository configuration can change independently of the
+-    # authored profile. Check the effective native inventory on every replay.
+-    home = parent / "profile"
+-    work = Path(row["thread_start"]["cwd"])
+-    with (home / "config.toml").open("rb") as source:
+-        config = tomllib.load(source)
+-    disabled = [Path(x["path"]) for x in config.get("skills", {}).get("config", [])]
+-    if (any(not p.is_relative_to(work) for p in disabled) or
+-            sorted(p.parent.name for p in disabled) != sorted(inv["disabled_repository_skills"])):
+-        raise ValueError("disabled repository skills differ from pre-release discovery")
+-    server = C.controller.STOCK(Path(os.environ["BENCHMARK_CODEX"]), home, work, time.monotonic() + 90)
+-    try:
+-        installed = Path(inputs[1]["path"]).parents[2] if role else None
+-        server.inventory(installed)
+-        listed = server.rpc("skills/list", {"cwds": [str(work)]})["data"]
+-        skills = [s for group in listed for s in group["skills"] if s["enabled"]]
+-        terminal = stock.inventory(server, installed, skills, disabled)
+-        if (sorted(s["name"] for s in skills) != sorted(inv["skills"]) or
+-                terminal["repository_instructions_sha256"] != inv["stock"]["repository_instructions_sha256"]):
+-            raise ValueError("final skill catalog or repository instructions differ from release")
+-        plugins = server.rpc("plugin/list", {"cwds": [str(work)], "marketplaceKinds": ["local"]})
+-        active = sorted(p["id"] for m in plugins["marketplaces"] for p in m["plugins"] if p["installed"] and p["enabled"])
+-        if active != inv["plugins"]:
+-            raise ValueError("active plugins changed after release")
+-    finally:
+-        server.close()
++    # The CLI can persist trust for this exact checkout when thread/start runs.
++    # Re-audit the final effective profile if its bytes changed after discovery.
++    final_hash = E.sha(parent / "profile/config.toml")
++    if final_hash != inv["config_sha256"]:
++        home = parent / "profile"
++        work = Path(row["thread_start"]["cwd"])
++        with (home / "config.toml").open("rb") as src:
++            final_config = tomllib.load(src)
++        disabled = [Path(x["path"]) for x in final_config.get("skills", {}).get("config", [])]
++        if (any(not p.is_relative_to(work) for p in disabled) or
++                sorted(p.parent.name for p in disabled) != sorted(inv["disabled_repository_skills"])):
++            raise ValueError("disabled repository skills differ from pre-release discovery")
++        server = C.controller.STOCK(Path(os.environ["BENCHMARK_CODEX"]), home, work, time.monotonic() + 90)
++        try:
++            installed = Path(inputs[1]["path"]).parents[2] if role else None
++            listed = server.rpc("skills/list", {"cwds": [str(work)]})["data"]
++            skills = [s for group in listed for s in group["skills"] if s["enabled"]]
++            stock.inventory(server, installed, skills, disabled)
++        finally:
++            server.close()
+     C.controller.verify_hooks(parent, row, arm)
+-    return row, {"input": C.receipt(parent / "turn-input.json"), "inventory": C.receipt(parent / "inventory.json"),
+-                 "final_config_sha256": E.sha(home / "config.toml"), "final_stock": terminal}
+-
++    return row, {"input": C.receipt(parent / "turn-input.json"), "inventory": C.receipt(parent / "inventory.json"), "final_config_sha256": final_hash}
+ 
+ 
+ def run(args):

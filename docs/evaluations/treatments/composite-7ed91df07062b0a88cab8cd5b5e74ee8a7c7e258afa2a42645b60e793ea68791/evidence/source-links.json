@@ -1,0 +1,30 @@
+[
+  {
+    "url": "https://effect.website/docs/v4/error-management/expected-errors",
+    "principle": "Keep successful outcomes, expected domain failures, and infrastructure defects/interruption distinct."
+  },
+  {
+    "url": "https://effect.website/docs/v4/resource-management/scope",
+    "principle": "Treat acquisition/use/release as one lifecycle; verify release on success and failure."
+  },
+  {
+    "url": "https://effect.website/docs/v4/testing/testclock",
+    "principle": "Control time explicitly for time-sensitive properties instead of waiting for wall-clock sleeps."
+  },
+  {
+    "url": "https://fast-check.dev/docs/core-blocks/",
+    "principle": "Generate inputs for a property and shrink failing examples."
+  },
+  {
+    "url": "https://fast-check.dev/docs/advanced/model-based-testing/",
+    "principle": "Model external commands and legal transitions; preserve seed/path plus replayPath for actual fast-check command replay."
+  },
+  {
+    "url": "https://fast-check.dev/docs/api/interfaces/RunDetailsCommon/",
+    "principle": "Record seed, minimal counterexample, counterexamplePath, and shrink count."
+  },
+  {
+    "url": "https://hypothesis.readthedocs.io/en/latest/stateful.html",
+    "principle": "Use existing language-native rules/invariants and retain reproducible operation sequences."
+  }
+]

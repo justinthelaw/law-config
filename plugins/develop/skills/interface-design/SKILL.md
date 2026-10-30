@@ -7,7 +7,7 @@ description: Use before creating or changing user-facing interfaces, interaction
 
 Plan the user task and observable behavior before changing an interface.
 
-Use the shared [planning and review path](../develop/references/contract.md#applicable-planning). Reuse a current accepted design after checking its task, source and constraints. Non-interface work does not invoke this skill. Read the affected surface, existing components/tokens, callers and relevant accessibility or interaction tests.
+Use the shared [planning and review path](../develop/references/planning-and-review.md#applicable-planning). Reuse a current accepted design after checking its task, source and constraints. Non-interface work does not invoke this skill. Read the affected surface, existing components/tokens, callers and relevant accessibility or interaction tests.
 
 Add only applicable decisions to the existing brief:
 

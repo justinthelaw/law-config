@@ -1,0 +1,98 @@
+{
+  "id": "configured-authored-tests",
+  "previous": "239dccfc0fe4c090a777d8cf46216c99c57bc2bebc08eca013402215b65c7c28",
+  "candidate_package_sha256": "b73fe2ba8de7f25b9b4fce253bde165d6e8624bff4e3fbd78b6fff1e082ba1cb",
+  "common_companion": {
+    "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+    "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+  },
+  "composite_identities": {
+    "prior": "7ed91df07062b0a88cab8cd5b5e74ee8a7c7e258afa2a42645b60e793ea68791",
+    "candidate": "b62d7b648cee85ddf6c7ea808bedb55582d28cbba5076e37cdd073013fab71f8"
+  },
+  "targets": [
+    "plugins/develop/skills/iterate/references/local-changes.md"
+  ],
+  "change": {
+    "replace": "Check neighboring behavior, update affected docs and run affected caller suites and required checks before final artifact review.",
+    "with": "Check neighboring behavior, update affected docs and run every added or changed test through the repository’s configured test route, with affected caller suites and required checks, before final artifact review."
+  },
+  "evidence": [
+    {
+      "case": "pytest",
+      "source": "docs/evaluations/runs/tuning/public-result-pytest-01/result.json",
+      "sha256": "2877f04236ade4d162b9645cc3697174852098bfd5afae551198b683df5c21cb",
+      "supplement": "docs/evaluations/runs/tuning/public-result-pytest-01/authored-test-sensitivity.json",
+      "supplement_sha256": "c03fe920944060d24af06e936dc622031be5b06cf0331821a55e54d82bc51820"
+    }
+  ],
+  "selection": "One exposed pytest tuning task. Freeze unchanged parent, revised Develop and pure Codex with matched base, workers, resources, authority, model/effort, price policy, rubric and three blind rotations. Both Develop arms retain the same pinned Superpowers; stock retains no plugins, apps, MCP servers or special instructions. No conditional new case or promotion inference.",
+  "mechanism": "Use the repository-configured command for all authored tests before final artifact review instead of claiming stripped-config success. Preserve affected caller suites and required commands. Reuse a qualifying existing command rather than add identical execution. Verify actual command/configuration, complete case execution and test assertions. If the parent already does the same, record no distinct observed mechanism and no demonstrated avoided work.",
+  "prediction": "Earlier exposure of authored-test configuration failures may avoid misleading green verification and late correction; complete proposal price and wall time must improve prospectively. No saving is inferred from historical command duration or root/child partitions.",
+  "measurement": {
+    "implementation": "Reuse the existing pinned Docker/pytest replay and existing full-PR assessment/meters. Manual receipt and pytest terminal/JUnit evidence; no new scorer, scanner, fixture, framework or participant-package asset.",
+    "timing": "After all proposals and blind rotations seal, before the screen decision, record a separate diagnostic. Keep it out of unchanged blind packets and official scores.",
+    "identity": "Reconstruct exact published proposal bytes; bind result/patch, image/dependencies, original project configuration and conftest hashes, command/cwd, exit, log/XML hashes and wall. No participant/official tree mutations.",
+    "command": "python -B -m pytest -q --tb=short -p no:cacheprovider --basetemp=/evidence/configured-tests-temp --junitxml=/evidence/configured-tests.xml <complete added-or-changed test module paths>",
+    "configuration": "Use normal repository configuration, conftest, declared plugins and warning/strictness policy; no -c /dev/null, policy weakening, deselection hooks or partial overlay. A documented alternative generated/configured route is acceptable only with owning evidence. Direct pytest does not establish full tox/CI completion.",
+    "inventory": "Before replay, review complete test diffs for each sealed proposal and bind every added/changed case and relevant parameter axis. Verify calls/pass outcomes, not collection counts alone. Preserve prior nonredundant new regressions and assertions; explicitly map equivalent reorganizations. Historical 15 cases are a calibration denominator, not a forced fresh-proposal count.",
+    "outcomes": "Require exit 0 with all inventoried authored cases executed and passing and logs/XML consistent. Collection error, empty/deselected/skipped/xfail authored case, timeout or wrong inventory cannot pass. Distinguish a behavioral assertion failure from unavailable setup. Normal route unavailable leaves evidence unestablished, never pass. Repository-required skips are disclosed separately and cannot establish execution of a claimed authored case.",
+    "public_behavior": "Retain all existing frozen gates and tuple unpacking, warning-free copy/deepcopy/pickle, fresh imports in both orders and base-supported public annotation lookup probes. Authored-test success cannot replace independent behavior evidence.",
+    "review": "Preserve independent pre-edit intent review, fresh review of the tested final artifact, original model/effort, material-revision re-reviews, affected caller suites and every required command.",
+    "economics": "Complete root plus transitive descendant proposal price and checkout-to-proposal wall must both be strictly below matched parent. Require ready full PR strictly higher than stock under the existing registered win rule and complete proposal price <= stock. Keep every allocation, failure, partial and original blind score; meter diagnostic/assessor cost separately."
+  },
+  "model_free_calibration": {
+    "source": "docs/evaluations/runs/tuning/public-result-pytest-01/authored-test-sensitivity.json",
+    "sha256": "c03fe920944060d24af06e936dc622031be5b06cf0331821a55e54d82bc51820",
+    "complete_positive": {
+      "reference": "id_naming_controls.controls.unique",
+      "exit": 0,
+      "collected": 15,
+      "executed": 15,
+      "passed": 15,
+      "test_sha256": "9636f95d344a57d0c8dd0f94364c6c8add5017f2b6d205a404582d31c5476dfd",
+      "policy": "Original strict project configuration; only two distinct factory display IDs added; all assertions, inputs and production unchanged."
+    },
+    "noncollecting_negative": {
+      "reference": "id_naming_controls.controls.still-bad",
+      "exit": 2,
+      "collected": 0,
+      "executed": 0,
+      "test_failures": 0,
+      "policy": "Duplicate explicit IDs still block collection. Reject as unavailable authored-test execution, not 15 behavioral failures."
+    },
+    "stripped_config_negative": {
+      "reference": "config_pair.rows.null",
+      "exit": 0,
+      "collected": 15,
+      "executed": 15,
+      "policy": "Reject as configured-route evidence despite 15 passes; /dev/null removed project strictness."
+    },
+    "regression_negative": {
+      "reference": "nonfactory_projection.rows.stock",
+      "exit": 1,
+      "executed": 7,
+      "passed": 6,
+      "test_failures": 1,
+      "failure": "test_parameter_set_tuple_compatibility: cannot unpack non-iterable ParameterSet",
+      "policy": "Genuine historical stock regression. This diagnostic projection calibrates assertion detection only; seven cases never satisfy full-module acceptance."
+    },
+    "incomplete_negative": {
+      "reference": "nonfactory_projection.rows.develop",
+      "exit": 0,
+      "executed": 7,
+      "passed": 7,
+      "excluded_factory_cases": 8,
+      "policy": "Reject full-suite claim although the subset passes."
+    }
+  },
+  "acceptance": "All frozen gates and preserved public behaviors pass, complete configured authored-case execution is established without dropped/weak assertions, required reviews and commands remain; complete price and wall strictly improve on parent, candidate ready full-PR quality strictly beats stock at <= complete stock cost. Equivalent parent verification yields no demonstrated distinct mechanism. Missing evidence or score ceiling is unsuccessful.",
+  "falsifier": "Reject lost behavior, silent authored-case omission, stripped/weakened configuration, skipped required review/command, non-ready candidate, stock quality tie/loss, cost above stock, or candidate cost/wall not strictly below parent. Setup errors, missing meters and unverifiable evidence are unestablished, never pass. Keep all original scores and attempts.",
+  "limits": [
+    "One already exposed pytest task; no causal/general economic claim or automatic confirmation nomination.",
+    "Existing validation guidance already prohibits weakening tests; deletion alone lacks a removable stripped-config rule.",
+    "Werkzeug broad configured collection was blocked by missing test dependencies; config fidelity cannot supply absent prerequisites.",
+    "Black limits blanket full-suite expansion; execute complete authored cases while retaining affected and required checks.",
+    "Configured green tests can still overfit representation or miss adjacent contracts."
+  ]
+}

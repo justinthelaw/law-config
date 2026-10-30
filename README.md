@@ -7,7 +7,7 @@ Start with [Linux setup](docs/setup-linux.md) or [macOS setup](docs/setup-macos.
 | --- | --- |
 | Configure a machine | [Linux](docs/setup-linux.md) · [macOS](docs/setup-macos.md) |
 | Use Develop | [Workflow diagram](plugins/develop/docs/develop-overview.png) · [Plugin guide](plugins/develop/README.md) · [Install and sync](plugins/develop/INSTALL.md) |
-| Review the Develop benchmark | [Evaluation method, report, and data](docs/evaluations/develop-benchmark/README.md) |
+| Run or compare Develop evaluations | [Environments, quality rubric and benchmark records](docs/evaluations/README.md) |
 | Contribute changes | [Required checks](docs/CONTRIBUTING.md#validation) · [Repository instructions](AGENTS.md) |
 
 ## Plugins

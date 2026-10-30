@@ -4,13 +4,13 @@
 
 - Keep ten portable skills and the concrete native Codex context guard: `PreToolUse` and `PostToolUse` in `hooks/hooks.json`, handled by `hooks/context_guard.py`. Bundled, explicitly invoked offline/read-only helpers remain separate. Do not add machine-specific paths, tokens, other executable hooks, an MCP server or a service dependency without a concrete need. Preserve existing runtime pins and Git/security hooks.
 - For changes under `skills/`, follow the [skill authoring rules](skills/AGENTS.md). Keep shared defaults and handoffs in `skills/develop/references/contract.md`, with domain detail in owning references. Standalone `kaizen`, `adversarial-loop` and audit-only `upgrade-codex` use their entrypoint's completion policy without repository discovery or coding dependencies.
-- Preserve selected repository/session scope, dependency assessment before upgrades, explicit post-plan bypass, fresh non-forked reviews and original model/effort matching. Bundled implementation guidance works without an external framework. Host metadata and optional adapters must not become generic prerequisites. Keep ten entry points; `upgrade` owns dependency upgrades and explicit-only `upgrade-codex` owns Codex compatibility sweeps. Never route generic upgrades or Kaizen requests to `upgrade-codex`.
+- Preserve selected repository/session scope, dependency assessment before upgrades, explicit post-plan bypass, fresh non-forked reviews and original model/effort matching. Bundled implementation guidance works without an external framework. Host metadata and optional adapters must not become generic prerequisites. Clean, Deep Clean, Upgrade and Upgrade Codex require explicit user selection. Keep all four entry points, native invocation policies and routing in sync.
 - Commit signing is nonblocking: prefer an existing noninteractive signer and fall back unsigned, preserving the thread's explicit preference and actual repository/server restrictions. Do not import donor signing gates, change persistent Git configuration or set up keys to satisfy this workflow.
 - Change user-facing behavior only within the request; never use internal review as authorization to bypass host controls. Keep conversation packets and task-specific findings outside tracked files.
 
 ## Review guidelines
 
-When a passing test could miss the behavior it claims to cover, check whether it catches a plausible defect and still passes after a harmless refactor. Tie findings to the observed results and identify any untested case. The [test-quality controls](tests/evaluations/quality.md) give a bounded example.
+When a passing test could miss the behavior it claims to cover, check whether it catches a plausible defect and still passes after a harmless refactor. Tie findings to the observed results and identify any untested case.
 
 ## Verify and release
 
@@ -26,7 +26,7 @@ python -m unittest discover -s skills/deep-clean/tests -p 'test_*.py'
 
 Run `git diff --check` and the [contribution checks](../../docs/CONTRIBUTING.md#validation) from the repository root. Commit the source metadata and generated manifest together. For detached installed payloads, omit `--marketplace-root`; run fixture-writing package tests on a disposable copy outside the installed cache.
 
-For Develop changes, follow [behavioral testing](AGENTS.test.md): observe fresh ephemeral agents on affected scenarios before relying on unit-test results. Before publication, also check affected packaged references/helpers from an unrelated working directory and changed artwork at actual display sizes. Inspect actual artifacts; structure checks, text matching and simulated decisions do not prove agent behavior, installation, live publication or deployment. Commit only scoped changes, update the plugin version when releasing, and verify the same Git revision on each installed surface.
+For changes to workflow behavior, observe fresh agents on the affected tasks. Before publication, also check affected packaged references/helpers from an unrelated working directory and changed artwork at actual display sizes. Inspect actual artifacts; structure checks, text matching and simulated decisions do not prove agent behavior, installation, live publication or deployment. Commit only scoped changes, update the plugin version when releasing, and verify the same Git revision on each installed surface.
 
 ## Host metadata and activation
 
@@ -36,7 +36,7 @@ Use each host's supported installer and update flow. Checkout, publication, inst
 
 The [context guard](docs/context-guard.md) additionally requires native hook review/trust and supported local orchestration and execution. Cloud orchestration does not run plugin command hooks, even with local tools. Keep hook-bearing distribution in the existing Git marketplace; it is not eligible for the public plugin directory. Skill portability does not establish hook support on another host. Do not install, enable or trust hooks as a side effect of source validation.
 
-In Codex, installed invocation uses `$develop:develop` or the exact `/skills` entry; an unnamespaced repository-local copy uses `$develop`. Put whitespace before task text; a trailing colon becomes part of the skill name. Catalog metadata does not prove instruction/reference consumption. Follow the [native activation trials](tests/evaluations/native-hosts.md), including positive and unrelated-task controls. Repository-local `.agents/skills` authoring tests loading separately from marketplace installation.
+In Codex, installed invocation uses `$develop:develop` or the exact `/skills` entry; an unnamespaced repository-local copy uses `$develop`. Put whitespace before task text; a trailing colon becomes part of the skill name. Catalog metadata does not prove instruction/reference consumption. Check native activation on both an explicitly invoked task and an unrelated task. Repository-local `.agents/skills` authoring tests loading separately from marketplace installation.
 
 Other hosts use their documented loading and account/workspace distribution flows. Verify filesystem access, native provider tools and fresh independent reviewer capability; do not assume another host's commands or permissions. Report required reviewer matching as unverified when the runtime cannot establish it.
 

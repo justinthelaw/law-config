@@ -1,0 +1,75 @@
+{
+  "id": "condition-scope-body-warnings",
+  "source_sha256": "ef964bbe31faee6884025ac0cc64b969727934d7e37f44b60eac001bed59683a",
+  "probe": "\"\"\"Four public body calls; warning attribution is isolated by operation.\"\"\"\nimport json\nimport warnings\n\ntry:\n    import werkzeug\n    from werkzeug import Response\n    assert werkzeug.__file__.startswith('/work/src/werkzeug/')\nexcept Exception as error:\n    print(json.dumps({'outcome': 'setup-error', 'error': type(error).__name__}))\n    raise SystemExit(70)\n\nrows = []\nfor name, body, mixed in [('strings', ['x', 'y'], False),\n                          ('bytes', [b'x', b'y'], False),\n                          ('bytes-strings', [b'x', 'y'], True),\n                          ('strings-bytes', ['x', b'y'], True)]:\n    row = {'input': name, 'operations': []}\n    response = None\n    for operation in ('get_data', 'close'):\n        with warnings.catch_warnings(record=True) as caught:\n            warnings.simplefilter('always')\n            try:\n                if operation == 'get_data':\n                    response = Response(body)\n                    row['bytes'] = list(response.get_data())\n                elif response is not None:\n                    response.close()\n            except Exception as error:\n                row['error'] = type(error).__module__ + '.' + type(error).__qualname__\n        row['operations'].append({'operation': operation, 'warnings': [\n            {'class': w.category.__module__ + '.' + w.category.__qualname__,\n             'filename': w.filename, 'line': w.lineno, 'message': str(w.message)} for w in caught]})\n    classes = [w['class'] for op in row['operations'] for w in op['warnings']]\n    body_classes = [w['class'] for w in row['operations'][0]['warnings']]\n    row['pass'] = (not row.get('error') and row.get('bytes') == [120, 121]\n                   and (bool(body_classes) if mixed else not classes)\n                   and all(c == 'builtins.DeprecationWarning' for c in classes))\n    rows.append(row)\npassed = all(row['pass'] for row in rows)\nprint(json.dumps({'outcome': 'green' if passed else 'red-behavior', 'rows': rows}))\nraise SystemExit(0 if passed else 42)\n",
+  "evidence": {
+    "case": "werkzeug",
+    "registration_sha256": "51c4eb9950f037e41021b7bfd4933f95e739d4880a97b93555dbd29765dc6fa2",
+    "probe_sha256": "10a00577e48b91d2783a3b8124692d7b0d930985c80f2cd87caa76d05bdc15b6",
+    "warning_contract_source_sha256": "2d58e8a3ed0b0f485ff4d26f5b38bf7011380d932edd14cbf4983df704a10913",
+    "roles": {
+      "base": {
+        "patch_sha256": null,
+        "grade_sha256": "a52e9eeec56f428dc610819ec39eaf702ca96077cf7ad1991af26133c16aad61",
+        "stages": {
+          "caller": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "4a731e1d65f93ba8974a70eae3adac0f1e9f921fbbfdb4eb2b3e7ed0a643db07",
+            "output": "{\"outcome\": \"red-behavior\", \"rows\": [{\"input\": \"strings\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": []}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}, {\"input\": \"bytes\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": []}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}, {\"input\": \"bytes-strings\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": []}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": false}, {\"input\": \"strings-bytes\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": []}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": false}]}\n"
+          }
+        }
+      },
+      "gold": {
+        "patch_sha256": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76",
+        "grade_sha256": "553645a7bb3f959b99c119369c5cb4973d4b8c5de8baa3de34e0932a00e5ee13",
+        "stages": {
+          "caller": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 0,
+            "log_sha256": "e7c1b533ff304caca207f9cbf767c57dd2a5058537c457ed5dc9cf8e247aed1d",
+            "output": "{\"outcome\": \"green\", \"rows\": [{\"input\": \"strings\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": []}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}, {\"input\": \"bytes\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": []}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}, {\"input\": \"bytes-strings\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": [{\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/work/src/werkzeug/wrappers/response.py\", \"line\": 335, \"message\": \"The response iterable must contain only bytes or only strings, not both. Support for mixed types is deprecated and will be removed in Werkzeug 4.0.\"}]}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}, {\"input\": \"strings-bytes\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": [{\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/work/src/werkzeug/wrappers/response.py\", \"line\": 335, \"message\": \"The response iterable must contain only bytes or only strings, not both. Support for mixed types is deprecated and will be removed in Werkzeug 4.0.\"}]}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}]}\n"
+          }
+        }
+      },
+      "candidate-develop": {
+        "patch_sha256": "e8c9d512d446a48a621eb4283913f91a16a050535bda7aa75fc28aaf7cdae4a1",
+        "grade_sha256": "d226fd9c919b8831c250d3ae0362775ba98c97f6b80f6530f6e7171eeb9f188e",
+        "stages": {
+          "caller": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "b9e365e25757fd1121a5fb43e6d610af590fb573fec1112bd6bfc2df25ca6e24",
+            "output": "{\"outcome\": \"red-behavior\", \"rows\": [{\"input\": \"strings\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": [{\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/work/src/werkzeug/wrappers/response.py\", \"line\": 298, \"message\": \"Response iterable items must be bytes. Nonbytes items are deprecated and will be unsupported in Werkzeug 4.0. Encode strings before adding them to the iterable.\"}, {\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/work/src/werkzeug/wrappers/response.py\", \"line\": 298, \"message\": \"Response iterable items must be bytes. Nonbytes items are deprecated and will be unsupported in Werkzeug 4.0. Encode strings before adding them to the iterable.\"}]}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": false}, {\"input\": \"bytes\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": []}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}, {\"input\": \"bytes-strings\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": [{\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/work/src/werkzeug/wrappers/response.py\", \"line\": 298, \"message\": \"Response iterable items must be bytes. Nonbytes items are deprecated and will be unsupported in Werkzeug 4.0. Encode strings before adding them to the iterable.\"}]}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}, {\"input\": \"strings-bytes\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": [{\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/work/src/werkzeug/wrappers/response.py\", \"line\": 298, \"message\": \"Response iterable items must be bytes. Nonbytes items are deprecated and will be unsupported in Werkzeug 4.0. Encode strings before adding them to the iterable.\"}]}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}]}\n"
+          }
+        }
+      },
+      "candidate-control": {
+        "patch_sha256": "531e2a62a23d4d8859b52b864c8664ac457266ed75b03d379a442b9e01b00b21",
+        "grade_sha256": "3a57840dbca3720dc247008de8e87d6899019c00a30c25e3fb61b8b8e6938f59",
+        "stages": {
+          "caller": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "b00df1ceb967b6d946a307adfceeb845e6b59c37b0c9c896a6a14cdfe4e950a5",
+            "output": "{\"outcome\": \"red-behavior\", \"rows\": [{\"input\": \"strings\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": [{\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/work/src/werkzeug/wrappers/response.py\", \"line\": 307, \"message\": \"Response iterable items must be bytes. Non-bytes items are deprecated and will not be supported in Werkzeug 4.0.\"}, {\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/work/src/werkzeug/wrappers/response.py\", \"line\": 307, \"message\": \"Response iterable items must be bytes. Non-bytes items are deprecated and will not be supported in Werkzeug 4.0.\"}]}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": false}, {\"input\": \"bytes\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": []}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}, {\"input\": \"bytes-strings\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": [{\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/work/src/werkzeug/wrappers/response.py\", \"line\": 307, \"message\": \"Response iterable items must be bytes. Non-bytes items are deprecated and will not be supported in Werkzeug 4.0.\"}]}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}, {\"input\": \"strings-bytes\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": [{\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/work/src/werkzeug/wrappers/response.py\", \"line\": 307, \"message\": \"Response iterable items must be bytes. Non-bytes items are deprecated and will not be supported in Werkzeug 4.0.\"}]}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}]}\n"
+          }
+        }
+      },
+      "prior-develop": {
+        "patch_sha256": "7409a51870a0dd146998ce5ea0b1d03ab4c54a269fee41d429486ee014404e5e",
+        "grade_sha256": "ceb52f2044adda7c6b3efad7a5cdb7b1df209e82a85a9dd25ebc74aa37e2f97a",
+        "stages": {
+          "caller": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "53f54b4495867058eaec4510d054f059f5faa39dda02e0caf76c40fcbbcc1fdc",
+            "output": "{\"outcome\": \"red-behavior\", \"rows\": [{\"input\": \"strings\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": [{\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/work/src/werkzeug/wrappers/response.py\", \"line\": 303, \"message\": \"Response iterable items must be bytes. Non-bytes items are deprecated and will not be supported in Werkzeug 4.0.\"}, {\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/work/src/werkzeug/wrappers/response.py\", \"line\": 303, \"message\": \"Response iterable items must be bytes. Non-bytes items are deprecated and will not be supported in Werkzeug 4.0.\"}]}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": false}, {\"input\": \"bytes\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": []}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}, {\"input\": \"bytes-strings\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": [{\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/work/src/werkzeug/wrappers/response.py\", \"line\": 303, \"message\": \"Response iterable items must be bytes. Non-bytes items are deprecated and will not be supported in Werkzeug 4.0.\"}]}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}, {\"input\": \"strings-bytes\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": [{\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/work/src/werkzeug/wrappers/response.py\", \"line\": 303, \"message\": \"Response iterable items must be bytes. Non-bytes items are deprecated and will not be supported in Werkzeug 4.0.\"}]}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}]}\n"
+          }
+        }
+      }
+    },
+    "scope": "Post-score supplement; exact logs calibrate identity, not message/count requirements."
+  },
+  "receipt_sha256": "929cd0a2e47eff7f9bb2cea9a94b52c81fb93f4f904457481bf01d8b9a54119c"
+}

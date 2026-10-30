@@ -1,0 +1,77 @@
+{
+  "format": "law-config.eval-catalog/v1",
+  "current_treatment": "treatments/composite-6885dd085133250a524251e7dd0bfbb0302a841e5d08464c580890c9055f71aa/treatment.json",
+  "operator": "benchmark.py",
+  "package_root": "plugins/develop",
+  "artifact_root": "runs",
+  "protocols": [
+    {
+      "id": "historical-tool-ledger",
+      "guide": "develop-benchmark/README.md",
+      "cases": "develop-benchmark/cases.csv",
+      "results": "develop-benchmark/ledger.csv",
+      "unit": "historical attempt or merge",
+      "comparable_to_panel": false
+    },
+    {
+      "id": "source-packet-replication",
+      "guide": "develop-benchmark/replication/README.md",
+      "environment": "develop-benchmark/replication",
+      "cases": "develop-benchmark/replication/workload.json",
+      "results": "develop-benchmark/replication/results.json",
+      "unit": "source-packet role on a case",
+      "comparable_to_panel": false
+    },
+    {
+      "id": "six-repository-native-workflow",
+      "guide": "develop-benchmark/workflow/README.md",
+      "environment": "develop-benchmark/workflow",
+      "cases": "develop-benchmark/workflow/cases.json",
+      "results": "runs/native-workflow-v1/2026-10-28/comparison.json",
+      "unit": "one native arm on a repository task",
+      "comparable_to_panel": false
+    },
+    {
+      "id": "pr-quality-panel-v2",
+      "guide": "develop-benchmark/panel/README.md",
+      "environment": "develop-benchmark/panel",
+      "cases": "develop-benchmark/panel/panel.json",
+      "rubric": "develop-benchmark/panel/rubric.md",
+      "record_schema": "schemas/panel-v1.json",
+      "results_glob": "runs/pr-quality-panel-v2/*/run.json",
+      "readout": "runs/pr-quality-panel-v2/README.md",
+      "tuning_hypotheses": "runs/pr-quality-panel-v2/tuning.json",
+      "treatment_hypotheses_glob": "treatments/*/hypothesis.json",
+      "tuning_results": ["runs/tuning/*.json", "runs/tuning/*/result.json"],
+      "unit": "one producer on a pinned repository task",
+      "cohorts": [
+        "primary",
+        "capacity-recovery"
+      ],
+      "roles": {
+        "control": "plugin-free Codex",
+        "develop": "same Codex with the pinned Develop package",
+        "upstream": "observed merged PR"
+      }
+    },
+    {
+      "id": "develop-efficiency-pilot-v1",
+      "guide": "develop-benchmark/panel/README.md",
+      "environment": "tools/efficiency_pilot.py",
+      "cases": "develop-benchmark/panel/panel.json",
+      "rubric": "develop-benchmark/panel/rubric.md",
+      "results_glob": "runs/tuning/*/result.json",
+      "unit": "one tuning task with a fresh stock control, previous Develop and revised Develop. Judges compare stock, revised and merge."
+    },
+    {
+      "id": "pr-quality-confirmation-v1",
+      "guide": "README.md",
+      "environment": "develop-benchmark/panel",
+      "cases": "develop-benchmark/confirmation/fixtures.json",
+      "rubric": "develop-benchmark/panel/rubric.md",
+      "record_schema": "schemas/panel-v1.json",
+      "results_glob": "runs/pr-quality-confirmation-v1/*/run.json",
+      "unit": "one fresh matched pair and its merged PR on each of the twenty repositories"
+    }
+  ]
+}

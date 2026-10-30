@@ -4,3 +4,7 @@
 # Python test artifacts
 __pycache__/
 *.pyc
+
+# Disposable benchmark workers, dependency caches and trial receipts
+/tmp/six-repo-workflow/
+/tmp/pr-quality-panel/

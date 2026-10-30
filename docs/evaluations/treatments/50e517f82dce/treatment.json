@@ -1,0 +1,9 @@
+{
+  "label": "stable-intent-evidence-v1",
+  "package_sha256": "50e517f82dcefbba09122de12284817c257d7059f1dbbe9eb2d89708a5a7d4f0",
+  "plugin_hook_sha256": "d7f93f7fb6fc45ea25af6a1f80ece4984aec8d953943e28169bb2e977d688bb4",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}

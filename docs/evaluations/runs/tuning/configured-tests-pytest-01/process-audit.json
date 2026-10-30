@@ -1,0 +1,179 @@
+{
+  "format": "configured-tests-native-process/v1",
+  "pilot": "configured-tests-pytest-01",
+  "scope": "Independent sealed native process/stock-control audit; no blind-score assessment or participant replay",
+  "files": {
+    "stock.json": "dd0bdd1a42a6f46e1ca0161a9736f085b2b6b6edbef34ec11aa4a643ad852524",
+    "prior.json": "917a9d216856db1ba10ffee5eb948e35ce09b75ec6e1bc4f9bf6f7f0cdfe52cc",
+    "candidate.json": "e0bb10f4ef89e4767afe78825c44d614c0301a392d66d750070580a6e54ee82b"
+  },
+  "source_release_and_input_comparability": {
+    "base_gold_budget_cpus_identical": true,
+    "pinned_fixture_reference_object_identical": true,
+    "registered_rates_identical": true,
+    "stock_zero_plugins_apps_connectors_special_instructions": true,
+    "stock_standard_skills_and_managed_hooks_retained": true,
+    "same_develop_companion_source_manifest": true,
+    "develop_source_files_changed": [
+      "skills/iterate/references/local-changes.md"
+    ],
+    "develop_source_manifest_sha256": {
+      "prior": "44f7d720db0497494f98f53c1f709d61d9cb04ef9de56fec80220c46f0fc65d7",
+      "candidate": "a23f86b30837c6a01e2e518add815349a451abbaffc03b80c61e03bcef77afd2"
+    },
+    "companion_source_manifest_sha256": "5b9baba5819c2bdcd6e2485d6630e2018374ffe2da94f822ce49b99e32256770",
+    "final_effective_native_inventory_export": "verified all three exported terminal profiles against bound inventory/current config/turn input hashes",
+    "registered_hypothesis_matches_descriptor": true
+  },
+  "roles": {
+    "stock": {
+      "patch_sha256": "ca835110f0736935332b648f9df2f51b808e021867656e2f8ac2a92a45879725",
+      "proposal_sha256": "e48f919392737f21acf583d8e55b51f80986141e1eb511c0ffffb0208fd84bdd",
+      "native_sha256": "cfbba623dcb4d2a1eb92835a12a9e1cfc36373e30b7af8732481eb5518d50124",
+      "release_sha256": "2cf83d65a3b2c7875b66b4b0e8d6e0868fb0ad64777279db3fcf8dad4d23b0a9",
+      "receipt_sha256": "dd0bdd1a42a6f46e1ca0161a9736f085b2b6b6edbef34ec11aa4a643ad852524",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "thread_count": 2,
+      "response_meters": 48,
+      "root_usd": 0.429564,
+      "descendant_usd": 0.05383959999999999,
+      "complete_usd": 0.4834036,
+      "checkout_to_proposal_seconds": 577.5025043929927,
+      "normal_config_authored_execution": false,
+      "configured_green_before_last_artifact_review": false,
+      "source_config_equals_public_base": true,
+      "complete_added_or_changed_outer_cases": 12
+    },
+    "prior": {
+      "patch_sha256": "72921d7af0b75c45ec22d4a0fe96690aa5b688435cd67efcae1f9c0e08fe0519",
+      "proposal_sha256": "717603c45c40ee2fb30f0ce8e8c7d918290f689b85f107e3c5cc3bef212890cd",
+      "native_sha256": "dd55e7cd702549b66e4fa69678c3fd8cd9eff3bb8d31934a3d67e3177a26ef79",
+      "release_sha256": "c2c36e3f25991ec90ef2c2bd775c92b292e64669cd7fd1293cb2619ba035aca0",
+      "receipt_sha256": "917a9d216856db1ba10ffee5eb948e35ce09b75ec6e1bc4f9bf6f7f0cdfe52cc",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "thread_count": 3,
+      "response_meters": 77,
+      "root_usd": 0.533502,
+      "descendant_usd": 0.15738439999999998,
+      "complete_usd": 0.6908864,
+      "checkout_to_proposal_seconds": 898.6744120239746,
+      "normal_config_authored_execution": false,
+      "configured_green_before_last_artifact_review": false,
+      "source_config_equals_public_base": true,
+      "complete_added_or_changed_outer_cases": 14
+    },
+    "candidate": {
+      "patch_sha256": "3957f3a6ce11fece3667db79295050f01124f7dfbd95573de53e23d44b69c653",
+      "proposal_sha256": "df1d31400765022457fb9f4e1f5032ff162ea61dd3035855d5bec55ceb314b6c",
+      "native_sha256": "a20cbc7558643ac1dbbc7a6155ddb83a297838550ea966b0fcf9ad807e8e125e",
+      "release_sha256": "7cfa3c66dca89395df387f175e0ebac73116c50fd61aaaa38acef7c484e2e240",
+      "receipt_sha256": "e0bb10f4ef89e4767afe78825c44d614c0301a392d66d750070580a6e54ee82b",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "thread_count": 3,
+      "response_meters": 66,
+      "root_usd": 0.3900592,
+      "descendant_usd": 0.19421440000000006,
+      "complete_usd": 0.5842736000000001,
+      "checkout_to_proposal_seconds": 685.8325612850022,
+      "normal_config_authored_execution": true,
+      "configured_green_before_last_artifact_review": false,
+      "source_config_equals_public_base": true,
+      "complete_added_or_changed_outer_cases": 9
+    }
+  },
+  "mechanism": {
+    "actual_new_sentence_only_source_change": true,
+    "prior_full_guidance_returned": [
+      {
+        "line": 19,
+        "time": "2026-10-30T06:01:28.105Z",
+        "stdout_sha256": "88a2485726770349d61fd7c14322c9e5d81f9ce300fe82a0c9760b7d492313a9",
+        "full_owning_guidance_returned": true
+      }
+    ],
+    "candidate_full_guidance_returned": [
+      {
+        "line": 21,
+        "time": "2026-10-30T06:17:00.583Z",
+        "stdout_sha256": "d0d746474fbd1bdad0a71395e611fbd0e4fba28830e93e25e6351201a9b83181",
+        "full_owning_guidance_returned": true
+      }
+    ],
+    "stock_configured_authored": "not observed",
+    "prior_configured_authored": "not observed",
+    "candidate_configured_authored": "observed eventual complete configured pass",
+    "candidate_configured_green_before_final_artifact_review": false,
+    "candidate_final_correct_input_covered": true,
+    "candidate_final_completed_output_covered": false,
+    "candidate_process_acceptance": "not met: independent review finishes before configured green/evidence and no later review closes it",
+    "causal_claim": "A route difference is observed; causal treatment effect on representation, economics or quality not established by one draw",
+    "candidate_native_execution_timing": {
+      "last_review_final": "2026-10-30T06:23:42.884Z",
+      "focused_actual_complete": "2026-10-30T06:24:42.083Z",
+      "full_actual_complete": "2026-10-30T06:27:13.962Z",
+      "no_later_reviewer_task": true
+    },
+    "candidate_pre_edit_intent_chronology": false,
+    "candidate_pre_production_intent_chronology": true,
+    "candidate_early_authored_edits": [
+      {
+        "line": 74,
+        "time": "2026-10-30T06:18:56.170Z",
+        "kind": "add TestParameterSet tests and extend namespace axis"
+      },
+      {
+        "line": 81,
+        "time": "2026-10-30T06:19:05.294Z",
+        "kind": "move authored class to restore TestMark boundary"
+      }
+    ]
+  },
+  "economics": {
+    "candidate_minus_prior_usd": -0.10661279999999995,
+    "candidate_minus_prior_wall_seconds": -212.84185073897243,
+    "candidate_minus_stock_usd": 0.10087000000000007,
+    "candidate_minus_stock_wall_seconds": 108.33005689200945,
+    "candidate_cheaper_and_faster_than_prior": true,
+    "candidate_cost_at_most_stock": false,
+    "review_phase_observation": {
+      "before_root_test_repair_response_count": 8,
+      "before_root_test_repair_usd": 0.0919696,
+      "first_artifact_turn_usd": 0.11017880000000001,
+      "corrected_input_turn_usd": 0.018484800000000003,
+      "avoidable_spend": null,
+      "necessary_review_remaining": "Independent evidence check of completed configured outputs, reusing unchanged source review where policy permits. Not executed or priced by this audit.",
+      "before_root_test_repair_cutoff": "root repair request issuance, not inferred filesystem mutation instant"
+    },
+    "spend_is_not_billed_or_savings": true
+  },
+  "common_eligibility_comparison": {
+    "stock": "Natural reviewer starts before authored tests exist/execute, final precedes test-pattern repair and final results; no configured authored route. It is not subject to the Develop reviewer rule.",
+    "prior": "Artifact task starts with stripped focused tests pending, later final cites their pass while broader checks remain pending; no configured authored route.",
+    "candidate": "Artifact task starts with configured focused run pending, corrects input after root finds bad glob, then finalizes before configured focused/full green.",
+    "reviewer_briefs": "Encrypted; exact per-lane supplied criteria and awareness are not inferred."
+  },
+  "native_process_verdict": "reject registered complete process/economic acceptance: authored edits precede intent final, completed configured output is not independently reviewed before finalization, and complete price exceeds stock; eventual configured route difference observed",
+  "public_assay_crosslink": "pending separate portable assay receipt; never counted as participant execution",
+  "official_blind_scores_changed": false,
+  "new_model_calls": 0,
+  "new_test_runs": 0,
+  "participant_or_evaluator_mutations": 0,
+  "limits": [
+    "No participant JUnit/per-node receipt; complete file/selection and final source constrain counts",
+    "No private paths included",
+    "No cumulative turn totals priced as increments: multi-turn artifact counters reconcile via deltas and unique response IDs",
+    "No hypothetical review deletion, needed-check reduction or savings is authorized"
+  ],
+  "exported_result_binding": {
+    "logical_source": "docs/evaluations/runs/tuning/configured-tests-pytest-01/result.json",
+    "sha256": "b6987fb36fc41b922d878530e57f2e21e5edf219c3d645ea6e15e489aaa82bca",
+    "raw_result_sha256": "d20c8148d59def9ce7c326df249c3d4db18e93920a492228698647e0ce8bf99c",
+    "registration_sha256": "2c5ead5990b02fe54e565a8b3d65970862dadfd2509631981b84827a7148a084",
+    "hypothesis_sha256": "368a37904b2124aa42db85b8c38bda1295d3ea08e11716168fc24d306ac74d9f",
+    "blind_scores_inspected_for_this_audit": false
+  },
+  "review_remaining": "Independent evidence closure on completed configured output, reusing the verified final-input review coverage if allowed; not performed or priced in this audit."
+}

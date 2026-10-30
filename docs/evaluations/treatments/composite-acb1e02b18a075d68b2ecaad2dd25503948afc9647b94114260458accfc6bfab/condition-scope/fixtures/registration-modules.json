@@ -1,0 +1,34 @@
+{
+  "scope": "Additional preserved original two-module assessor supplement; diagnostic only.",
+  "v2_registration_sha256": "3b4001383a684833879a78dc91eaaca48ace3fa7e64522cff1251b3867f9d46d",
+  "runner_sha256": "ed260218d3bff8a6b4a57a786994907dc4ff0630438dd25e381dd25c56724d82",
+  "collector_source_sha256": "a3e1ac6a4fbd98eaaba1c7b2a53bc524d378ec6e9b91f3f3ad7974f1efc5eb01",
+  "collector_sha256": "5e48c2dcb64be3e1d5f6f1df5b55afe88808b7e8d20d92411c09649470ed0f7d",
+  "collector_change": "Only replace the two existing node-ID selection arguments with their full module paths.",
+  "test_sha256": {
+    "tests/test_internal.py": "6e9a55d6e86de73f25025d5b442d2bfa085676360ed91d6c008d11c447219991",
+    "tests/test_test.py": "7da9e79e0d4e553261a6557f930e5a4c08431eab728b100127965ed69e426d89"
+  },
+  "expected_tests": 74,
+  "command": [
+    "python",
+    "-B",
+    "/evidence/capture.py",
+    "base-tests",
+    "modules"
+  ],
+  "pytest_command": [
+    "python",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=/evidence/modules-temp",
+    "--junitxml=/evidence/modules.xml",
+    "tests/test_internal.py",
+    "tests/test_test.py"
+  ],
+  "selftest": "74 pass green; 73 pass/1 failure red; 0/73 collected, test error, exit mismatch and driver setup rejected"
+}

@@ -22,6 +22,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from generate_codex_manifest import codex_manifest, load_json, openai_extension
 from validate_context_hooks import HOOK_PATH, validate_context_hooks
 
+EXPLICIT_SKILLS = {"clean", "deep-clean", "upgrade", "upgrade-codex"}
 SKILLS = {"develop", "iterate", "upgrade", "upgrade-codex", "clean", "deep-clean", "adversarial-loop", "kaizen", "engineering-design", "interface-design"}
 SCHEMA = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
 MAX_ICON_BYTES = 1024 * 1024
@@ -275,7 +276,7 @@ def validate(root, marketplace_root=None):
         ui_path = path.parent / "agents/openai.yaml"
         try:
             ui = parse_ui_metadata(contained_text(ui_path))
-            if path.parent.name in {"upgrade-codex", "deep-clean"}:
+            if path.parent.name in EXPLICIT_SKILLS:
                 check(ui.get("policy", {}).get("allow_implicit_invocation") is False,
                       f"{ui_path.relative_to(root)}: require one policy block with allow_implicit_invocation: false")
             values = ui["interface"]
@@ -286,7 +287,7 @@ def validate(root, marketplace_root=None):
                            f"{ui_path.relative_to(root)}: {key}")
         except (OSError, ValueError, RuntimeError) as exc:
             errors.append(f"{ui_path.relative_to(root)}: {exc}")
-            if path.parent.name in {"upgrade-codex", "deep-clean"}:
+            if path.parent.name in EXPLICIT_SKILLS:
                 errors.append(f"{ui_path.relative_to(root)}: require one policy block with allow_implicit_invocation: false")
 
     # Delivery helpers ship inside the owning skill. Check their local import

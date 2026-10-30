@@ -1,0 +1,9 @@
+{
+  "label": "reuse-native-review-records",
+  "package_sha256": "51f3fbdd78668147ee2acd5839fedc141b509ef86b5b8ac517d074b639b38b09",
+  "plugin_hook_sha256": "12d6aac76a82eb59336b27757b57119140164813ae15d05c4d008a47466401fb",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}

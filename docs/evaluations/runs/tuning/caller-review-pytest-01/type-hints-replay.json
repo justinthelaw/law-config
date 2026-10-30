@@ -1,0 +1,92 @@
+{
+  "run": "caller-review-pytest-01",
+  "case": "pytest",
+  "result_sha256": "6a3893e6a7e3240e38a05e8731e9622895f3cd580303d6a13fad47b33be91939",
+  "review_evidence_sha256": "b759757fdcaf8d4766b2574e58ae30adc5fecf4353c193c31c74612772d01c61",
+  "review_message_sha256": "7732a2f9c1fe6f92b0523b00787acb043368613039903d45f2e2be5eb19e4a87",
+  "scope": "Post-score replay of the final artifact reviewer\u2019s class-field introspection finding. Helper return annotations are in the task contract. Class-field introspection is an adjacent operation.",
+  "probe_sha256": "719079adb57b7ffe2d7f7763f57804d6f0eeb7446fe5db7fd864523361ca465f",
+  "probe": "from __future__ import annotations\nimport json\nfrom typing import get_type_hints\n\nimport pytest\nfrom _pytest.mark.structures import ParameterSet as Implementation\n\ndef helper() -> pytest.ParameterSet:\n    return pytest.param(1)\n\ndef resolve(target):\n    try:\n        hints = get_type_hints(target)\n    except (AttributeError, NameError, TypeError) as error:\n        return {\"error\": type(error).__name__, \"message\": str(error)}\n    if target is helper:\n        return {\"return_is_factory_type\": hints.get(\"return\") is type(helper())}\n    return {\"field_names\": sorted(hints)}\n\nprint(json.dumps({\"public_identity\": getattr(pytest, \"ParameterSet\", None) is Implementation,\n                  \"helper\": resolve(helper), \"implementation_fields\": resolve(Implementation)}, sort_keys=True))\n",
+  "roles": {
+    "base": {
+      "grade_sha256": "915e2b2a63df1fa038e29ca85747e6e2bcc42750bba4d64bab8af94d8acb51c7",
+      "log_sha256": "09a9613049880b9daa68f817790e1a092a40a9ec65c0c959a4db31e33d7d2303",
+      "observation": {
+        "helper": {
+          "error": "AttributeError",
+          "message": "module 'pytest' has no attribute 'ParameterSet'"
+        },
+        "implementation_fields": {
+          "field_names": [
+            "id",
+            "marks",
+            "values"
+          ]
+        },
+        "public_identity": false
+      }
+    },
+    "gold": {
+      "grade_sha256": "7bc93d9d71342e190b3cef0eb7545b71188804df9918aea76f5c954311fc8da2",
+      "log_sha256": "fd9877ec6b6cbc590dfc50a9facf2cf74c10a658cb7be6532a6f7f3ccae3d9ab",
+      "observation": {
+        "helper": {
+          "return_is_factory_type": true
+        },
+        "implementation_fields": {
+          "error": "NameError",
+          "message": "name 'Sequence' is not defined"
+        },
+        "public_identity": true
+      }
+    },
+    "candidate/control": {
+      "grade_sha256": "8bc43174b4a2a920f5c7d2c39f6d67421e9307e2931b3fc19c2417d255fdcaea",
+      "log_sha256": "109b1621f7686592210b16139e5d8596132a1f0ef3d4970f6d1e95dd02c7444b",
+      "observation": {
+        "helper": {
+          "return_is_factory_type": true
+        },
+        "implementation_fields": {
+          "field_names": [
+            "id",
+            "marks",
+            "values"
+          ]
+        },
+        "public_identity": true
+      }
+    },
+    "prior/develop": {
+      "grade_sha256": "e3e7a043d33eb2d8e0a38e297cf3b5062239ee6c89ff4a727deeb5188de66726",
+      "log_sha256": "109b1621f7686592210b16139e5d8596132a1f0ef3d4970f6d1e95dd02c7444b",
+      "observation": {
+        "helper": {
+          "return_is_factory_type": true
+        },
+        "implementation_fields": {
+          "field_names": [
+            "id",
+            "marks",
+            "values"
+          ]
+        },
+        "public_identity": true
+      }
+    },
+    "candidate/develop": {
+      "grade_sha256": "0d7e3e7eabe5277e0c806f318b6be6e0097462596bccbbb4395fd33a0c63a243",
+      "log_sha256": "fd9877ec6b6cbc590dfc50a9facf2cf74c10a658cb7be6532a6f7f3ccae3d9ab",
+      "observation": {
+        "helper": {
+          "return_is_factory_type": true
+        },
+        "implementation_fields": {
+          "error": "NameError",
+          "message": "name 'Sequence' is not defined"
+        },
+        "public_identity": true
+      }
+    }
+  }
+}

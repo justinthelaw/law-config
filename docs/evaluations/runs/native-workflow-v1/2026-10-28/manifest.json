@@ -1,0 +1,12 @@
+{
+  "format": "law-config.native-workflow-snapshot/v1",
+  "protocol": "six-repository-native-workflow",
+  "planned_pairs": 6,
+  "source_plan_sha256": "75c39886e807de50821e96f04e8043909a8d1f1f683d808dec622f5c5515833f",
+  "files": {
+    "comparison.json": "ce86e7bc0788fb135d92c98866f8d928b3a23d4c3c414a3862e0ed4fcb1a26a2",
+    "go-git-diagnostic.json": "b2de3c0abbce1e3abf1f918bab8dfd578a9661e8cfdc72ea375ffbcf8638a174",
+    "marked-diagnostic.json": "0ca959048b313c66ec36866038e95e31701d7ad467f48e7765deefd41fddd9b7",
+    "packaging-diagnostic.json": "561d417e3e642f1b85b31a759670355372f46c3612e6d2b6e282c5da93731e15"
+  }
+}

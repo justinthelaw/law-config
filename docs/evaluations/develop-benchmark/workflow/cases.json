@@ -1,0 +1,155 @@
+{
+  "protocol": "native-workflow-v1",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "seconds_per_arm": 1200,
+  "cpus": 2,
+  "memory": "4g",
+  "images": {
+    "python": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+    "rust": "rust@sha256:4ec71e955e6c08aeb238885083222ddff79d82eb87654a96c76e38e94da1a53b",
+    "node": "node@sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+    "buildpack-deps": "buildpack-deps@sha256:0ac99c7dcee4d051ea036dd4dc6db33cef4c5d2088c0bed4001d81e3d6cf53bd",
+    "golang": "golang@sha256:88750ccdd0f2a77fcc00a14b1a48d6409bd8ddb5d7c2dd6ec0b4a2e916daf9d9"
+  },
+  "cases": [
+    {
+      "id": "packaging",
+      "repo": "pypa/packaging",
+      "pr": 1457,
+      "author": "notatallshaw",
+      "opened": "2026-10-19",
+      "merged": "2026-10-20",
+      "first_commit": "2026-10-19",
+      "base": "fc613377731e5211ab6e08e6fd6163f09ae67ce8",
+      "gold": "ffced26d0a30557a0e181dbaca561a0432ddec53",
+      "delta": [
+        3,
+        186,
+        1
+      ],
+      "complexity": "Python library, two public types",
+      "image": "python",
+      "prompt": "Support Python's __replace__ protocol on Specifier and SpecifierSet. Callers can override the operator/version of a single specifier, the specifiers in a set, or prerelease handling. Omitted fields retain their original values, and explicitly resetting prereleases to None restores automatic behavior. A no-op replacement returns the same object. Preserve the original on changes and reject invalid replacements. Document and test the API.",
+      "build": "PYTHONPATH=src python -m compileall -q src/packaging",
+      "native": "PYTHONPATH=src:/deps/lib python -m pytest -q -o addopts= tests/test_specifiers.py",
+      "check": "packaging.py"
+    },
+    {
+      "id": "ripgrep",
+      "repo": "BurntSushi/ripgrep",
+      "pr": 3578,
+      "author": "CheckPickerUpper",
+      "opened": "2026-10-26",
+      "merged": "2026-10-27",
+      "first_commit": "2026-10-26",
+      "base": "d19650f4fca84c0f65f4ec024b16200bf3d41c33",
+      "gold": "65e072fab262fdaaa19ef788bbb468ae6f8e4f8e",
+      "delta": [
+        1,
+        8,
+        1
+      ],
+      "complexity": "Rust workspace, linked-worktree traversal",
+      "image": "rust",
+      "prompt": "When the ignore walker is configured to apply Git excludes without requiring a Git repository, linked worktrees should honor the shared repository's info/exclude. Preserve behavior for ordinary directories and when Git excludes are disabled. Add regression coverage.",
+      "build": "cargo build --locked --offline -p ignore",
+      "native": "cargo test --locked --offline -p ignore --lib",
+      "check": "linked_worktree.rs"
+    },
+    {
+      "id": "jq",
+      "repo": "jqlang/jq",
+      "pr": 3694,
+      "author": "Huang-404-Q",
+      "opened": "2026-10-23",
+      "merged": "2026-10-24",
+      "first_commit": "2026-10-23",
+      "base": "da4da65c0cfffe0481ebf26ad64346eb45e4f34d",
+      "gold": "bd56a745624a5246fac7fe80d11a9cd6fb361ddb",
+      "delta": [
+        2,
+        9,
+        8
+      ],
+      "complexity": "C interpreter, observable CLI bytes",
+      "image": "buildpack-deps",
+      "prompt": "Make halt_error emit the documented byte-exact stderr output for non-string inputs as well as strings. Preserve its exit status, stdout behavior, and existing null behavior. Add a regression that distinguishes an appended newline.",
+      "build": "autoreconf -fi && ./configure --with-oniguruma=builtin --disable-docs && make -j2",
+      "native": "make check-am TESTS=tests/shtest",
+      "check": "halt_error.py",
+      "submodule": {
+        "path": "vendor/oniguruma",
+        "repo": "kkos/oniguruma",
+        "sha": "4ef89209a239c1aea328cf13c05a2807e5c146d1"
+      }
+    },
+    {
+      "id": "marked",
+      "repo": "markedjs/marked",
+      "pr": 4145,
+      "author": "ybai08",
+      "opened": "2026-10-17",
+      "merged": "2026-10-26",
+      "first_commit": "2026-10-17",
+      "base": "3a11ad148397b7628256f5e5d76a454213480c63",
+      "gold": "5d8e2340d78c25c611e1d8215b302fd48f01a601",
+      "delta": [
+        3,
+        55,
+        12
+      ],
+      "complexity": "TypeScript Markdown parser, interacting delimiter rules",
+      "image": "node",
+      "prompt": "Bring emphasis parsing into line with CommonMark delimiter-run flanking and the multiple-of-three rule for runs of asterisks and underscores, including when a run can both open and close. Preserve ordinary emphasis, strong emphasis and intraword behavior. Add focused parser regression examples.",
+      "build": "npm run build:esbuild && ./node_modules/.bin/tsc --noEmit",
+      "native": "npm run test:specs",
+      "check": "emphasis.mjs"
+    },
+    {
+      "id": "go-git",
+      "repo": "go-git/go-git",
+      "pr": 2538,
+      "author": "hiddeco",
+      "opened": "2026-10-23",
+      "merged": "2026-10-23",
+      "first_commit": "2026-10-23",
+      "base": "e59664470f3644a3114c6760086892dbcd0d7ac9",
+      "gold": "41c3e4d6c870cafea5c4343623d2e3a8ffa31d05",
+      "delta": [
+        5,
+        386,
+        70
+      ],
+      "complexity": "Go Git implementation, streamed decoding and file-mode semantics",
+      "image": "golang",
+      "prompt": "Make tree decoding agree with Git on octal file modes. Handle zero padding and modes that span a read buffer, canonicalize regular files using the owner execute bit, and return the malformed-tree error for invalid encodings. Expose Canonical on FileMode for Git's tree mode semantics. FromBytes accepts zero-padded octal values through uint32 and rejects overflow or invalid bytes. Preserve round trips, non-regular types and existing public contracts. Add regression coverage.",
+      "build": "go build ./plumbing/filemode ./plumbing/object",
+      "native": "go test ./plumbing/filemode ./plumbing/object",
+      "check": "tree_modes.go"
+    },
+    {
+      "id": "runner-space",
+      "repo": "justinthelaw/maximize-github-runner-space",
+      "pr": 69,
+      "author": "justinthelaw",
+      "opened": "2026-10-25",
+      "merged": "2026-10-25",
+      "first_commit": "2026-10-25",
+      "base": "a2f3ac8c38982d83e3d02e89342d856a7e026268",
+      "gold": "bbaad53e5c844645ef54d9309adf96be46ab159e",
+      "delta": [
+        3,
+        55,
+        2
+      ],
+      "complexity": "GitHub Action, maintenance and immutable workflow pins",
+      "image": "node",
+      "prompt": "Update the lint tooling to actions/setup-python v7.1.0 (upstream tag commit 6d4fd22b20465ccc0f7354476588e8df7c9ca0e0) and markdownlint-cli2 v0.24.0. Record both changes and any deferred upgrades in the repository's dependency ledger. Preserve supported runtime versions, action behavior and generated distribution.",
+      "build": "npm run typecheck",
+      "native": "npm run format:check",
+      "check": "lint_pins.mjs",
+      "stratum": "owner-maintenance"
+    }
+  ]
+}
