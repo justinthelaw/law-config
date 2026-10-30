@@ -252,6 +252,29 @@ class PortableRecords(unittest.TestCase):
         self.assertEqual(group["quality"]["mean_paired_delta_100"],8.75)
         self.assertIsNone(group["context"]["evaluator_protocol"])
 
+    def test_tuning_blind_merged_quality_is_independent_of_readiness(self):
+        pilot = self.tuning_fixture()
+        develop, control, upstream = (pilot["submissions"][role] for role in ("develop", "control", "upstream"))
+        upstream["quality"]["assessments"] = copy.deepcopy(control["quality"]["assessments"])
+        # Displayed medians tie, but paired rotations favor Develop over upstream.
+        self.assertEqual(develop["quality"]["proposal_points_100"], upstream["quality"]["proposal_points_100"])
+        for readiness in ("failed", "pending"):
+            with self.subTest(readiness=readiness):
+                upstream["readiness"] = readiness
+                pilot["comparisons"]["develop_upstream"] = records.proposal_verdict(develop, upstream, 3)
+                row = records.tuning_summary([pilot])["groups"][0]["runs"][0]
+                self.assertEqual(row["merged_readiness"], readiness)
+                self.assertEqual(row["develop_merged_readiness_first"], pilot["comparisons"]["develop_upstream"])
+                blind = row["blind_full_pr_vs_merged"]
+                self.assertEqual(blind["develop"]["verdict"], "develop")
+                self.assertEqual(blind["develop"]["votes"], ["develop", "develop", "upstream"])
+                self.assertEqual(blind["develop"]["score_delta"], 8.75)
+                self.assertEqual(blind["control"]["verdict"], "tie")
+        upstream["quality"]["assessments"].pop()
+        row = records.tuning_summary([pilot])["groups"][0]["runs"][0]
+        for blind in row["blind_full_pr_vs_merged"].values():
+            self.assertEqual(blind, {"verdict":"unresolved", "reason":"missing paired rotations"})
+
     def test_tuning_incomplete_and_missing_time_are_not_zero_or_win(self):
         pilot = self.tuning_fixture()
         pilot["submissions"]["develop"]["effort"]["coverage"]="lower bound"

@@ -1,0 +1,9 @@
+{
+  "label": "preserve-external-entry",
+  "package_sha256": "21cec3d7f1e35d759bf9209a708e6c9d317dea580d1a48f97e210aa00d2d3638",
+  "plugin_hook_sha256": "28aae9d80fc8e4bb1cb8f6e70113a836c10af797c7057e45ac1800f860390c66",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}

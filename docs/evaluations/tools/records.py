@@ -677,6 +677,8 @@ def tuning_summary(pilots):
                               "blind_full_pr": signal["blinded_full_pr"],
                               "full_pr_points_100": {role: row["quality"]["proposal_points_100"]
                                                      for role, row in pilot["submissions"].items()},
+                              "blind_full_pr_vs_merged": {arm["role"]: blinded_proposal_verdict(
+                                  arm, pilot["submissions"]["upstream"], 3) for arm in arms},
                               "merged_readiness": pilot["submissions"]["upstream"]["readiness"],
                               "develop_merged_readiness_first": pilot["comparisons"]["develop_upstream"],
                               "strict_joint_win": signal["ready_blind_win_at_no_more_cost"],
@@ -708,7 +710,7 @@ def tuning_summary(pilots):
                                           "through_grading_seconds": metric(ready, "through_grading_seconds")}
     return {"records": len(pilots),
             "scope": "Repeated exposed tasks and different treatments are diagnostic; no cross-context metric totals.",
-            "quality_measure": "Mean paired median rotation delta (/100, Develop minus control), not displayed-score subtraction. Merged verdicts are readiness-first.",
+            "quality_measure": "Develop versus stock uses the mean of paired median rotation differences (/100). blind_full_pr_vs_merged uses the blind rotations. develop_merged_readiness_first gives hard gates precedence.",
             "joint_measure": "Published ready_blind_win_at_no_more_cost helper across all records, independently of the ready/ready table.",
             "measurement_scope": "Complete root+descendant estimates; wall totals sum proposal durations, not campaign elapsed. Each metric has a paired denominator.",
             "protocol_note": "Unknown protocol stays null; runtime hash also partitions.",

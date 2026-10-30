@@ -1,0 +1,507 @@
+{
+  "format": "law-config.pilot-process-audit/v1",
+  "scope": "Sealed read-only accounting; USD rate estimates not invoice. Three accepted rotations; postscore evidence does not change frozen verdicts.",
+  "preview_sha256": "c85e29a187ee730a24cfc6fc2aee097e6354c84524a4c79b0c85bd161927319c",
+  "raw_result_sha256": "976a9af67f8dc7151d4d31f6844949904c90d298eaf305889fd21612197cae71",
+  "registration_sha256": "d48d7cac3ede839336c617870046e17a49c0ded438ec1a2f15017bc4cf57a627",
+  "evaluator_protocol": "pr-quality-pytest-entry-v1",
+  "runtime_sha256": "a53ad6e006bebf7b48dd5042fccdd3ca4594cea85c7d6d43f8011a1811be5803",
+  "prompt_sha256": "95e93418812685c2387b8605ff7aa5ea218a707f34dab09f871ca7b74dd4b449",
+  "treatments": {
+    "prior": "b62d7b648cee85ddf6c7ea808bedb55582d28cbba5076e37cdd073013fab71f8",
+    "candidate": "f5c1cdefb7795b8ff34fe9ae94b2d39e08468af50700455691849417ce715116"
+  },
+  "components": {
+    "prior": {
+      "package_sha256": "b73fe2ba8de7f25b9b4fce253bde165d6e8624bff4e3fbd78b6fff1e082ba1cb",
+      "companion_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+    },
+    "candidate": {
+      "package_sha256": "2488466be8b48949dbd7291964425eef81c3d50e3b8e4a88f786d6e8bdbdd9e6",
+      "companion_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+    }
+  },
+  "rates_usd_per_million": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "arms": {
+    "candidate/control": {
+      "native_sha256": "d33f4542bf6966608e2b7197535067147ad7009e847076c6694940532bba3669",
+      "result_sha256": "2de0162a2df133542739b7a498888716538bfdc850f20508df777a76f66c00c7",
+      "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+      "config_sha256": "3020ba1e8afe4da9537d990dd7f825d764855e0a4908a7112c2aaaec933fadfa",
+      "turn_input_sha256": "45974251db81a8465e73eb83b2a04f268d457c1ffd270f68c01c65f8fd5798d3",
+      "plugins": [],
+      "state": "completed",
+      "readiness": "ready",
+      "prior_stage_exits": null,
+      "blind_full_pr": 100.0,
+      "patch_sha256": "1ee6bbe72c8abe2a5a6b02cdd53b573efbab2344467fbd313e4c0bae51f72f05",
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 2579166,
+          "cachedInputTokens": 2404864,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 14541,
+          "reasoningOutputTokens": 3635,
+          "totalTokens": 2593707
+        },
+        "estimated_usd": 0.7345003999999999,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 531.3796125529334,
+        "prompt_to_terminal_seconds": 501.9273983510211,
+        "through_grading_seconds": 544.5100551859941,
+        "setup_seconds": 27.8923685119953,
+        "grading_seconds": 11.676870396127924,
+        "thread_count": 2,
+        "child_count": 1,
+        "root_tokens": {
+          "totalTokens": 1772112,
+          "inputTokens": 1759800,
+          "cachedInputTokens": 1646336,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 12312,
+          "reasoningOutputTokens": 2996
+        },
+        "descendant_tokens": {
+          "inputTokens": 819366,
+          "cachedInputTokens": 758528,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2229,
+          "reasoningOutputTokens": 639,
+          "totalTokens": 821595
+        },
+        "observed_commands": 32,
+        "native_hook_receipts": 0
+      }
+    },
+    "candidate/develop": {
+      "native_sha256": "f6d8864ab3789f2992236483bb3a75fe6f71e547df6725aa64560e6037af18e2",
+      "result_sha256": "e175225e01e0f36a8bf37b0ccf8985facc705499d01b5f3335e7e453a99e3988",
+      "inventory_sha256": "b56400a5480d9c2de38698afb266d6caf28a15084364f4ad3fe858ebe14c07fe",
+      "config_sha256": "0c696dfa29b4b08466c623ce7d1e199af0cdad83183e5b5b49f5aa9dede189c4",
+      "turn_input_sha256": "406f9b8c75d4c1afb5702e939f8f51050a16725a2c17be9516dc411c677d6c97",
+      "plugins": [
+        "develop@law-config",
+        "superpowers@superpowers-local"
+      ],
+      "state": "completed",
+      "readiness": "ready",
+      "prior_stage_exits": null,
+      "blind_full_pr": 100.0,
+      "patch_sha256": "4e8ad8f81d784dba5af0de702611126b9dc6746bf69a06bee6c397aa31f3cfec",
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 4080170,
+          "cachedInputTokens": 3948416,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 20519,
+          "reasoningOutputTokens": 5883,
+          "totalTokens": 4100689
+        },
+        "estimated_usd": 0.8635396000000001,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 873.4355588410981,
+        "prompt_to_terminal_seconds": 831.0103660419118,
+        "through_grading_seconds": 887.9964755401015,
+        "setup_seconds": 40.606580218998715,
+        "grading_seconds": 13.015901603968814,
+        "thread_count": 4,
+        "child_count": 3,
+        "root_tokens": {
+          "totalTokens": 3355489,
+          "inputTokens": 3339897,
+          "cachedInputTokens": 3257216,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 15592,
+          "reasoningOutputTokens": 4777
+        },
+        "descendant_tokens": {
+          "inputTokens": 740273,
+          "cachedInputTokens": 691200,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 4927,
+          "reasoningOutputTokens": 1106,
+          "totalTokens": 745200
+        },
+        "observed_commands": 47,
+        "native_hook_receipts": 143
+      }
+    },
+    "prior/develop": {
+      "native_sha256": "735ef600da5bc55e54fce0abd706f1a88e1d96b87ac1d5bb30b492d0e2a64205",
+      "result_sha256": "8009f4e23095ff625ef6b165e36d9cf040408c06b38ccbd111625b6edba07aae",
+      "inventory_sha256": "6747aebb2a15b68b2d6e13b03796de86897517f1c0166ff60eb4232f840acbc3",
+      "config_sha256": "90be8d856c40249aef116a9f4b193ab98b93392805dd23cada26afc290a02a72",
+      "turn_input_sha256": "f0f0d7b9ac101b48088001d193e8feaf8793a6415a7064e2e5893e24eb6ab747",
+      "plugins": [
+        "develop@law-config",
+        "superpowers@superpowers-local"
+      ],
+      "state": "completed",
+      "readiness": null,
+      "prior_stage_exits": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 42,
+        "independent": 0
+      },
+      "blind_full_pr": null,
+      "patch_sha256": "b1616653e2ae62eb08d038b68310cf93d272880209da4344096175627b57a334",
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 5568284,
+          "cachedInputTokens": 5421952,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 25723,
+          "reasoningOutputTokens": 8751,
+          "totalTokens": 5594007
+        },
+        "estimated_usd": 1.0920892,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 1022.5814251599368,
+        "prompt_to_terminal_seconds": 983.4164032200351,
+        "through_grading_seconds": 1034.5263422869612,
+        "setup_seconds": 37.596392744919285,
+        "grading_seconds": 10.461959669133648,
+        "thread_count": 4,
+        "child_count": 3,
+        "root_tokens": {
+          "totalTokens": 4671357,
+          "inputTokens": 4650878,
+          "cachedInputTokens": 4570112,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 20479,
+          "reasoningOutputTokens": 7702
+        },
+        "descendant_tokens": {
+          "inputTokens": 917406,
+          "cachedInputTokens": 851840,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 5244,
+          "reasoningOutputTokens": 1049,
+          "totalTokens": 922650
+        },
+        "observed_commands": 55,
+        "native_hook_receipts": 155
+      }
+    }
+  },
+  "blind_comparisons": [
+    {
+      "left": "develop",
+      "right": "control",
+      "scores": [
+        {
+          "rotation": 0,
+          "left": 96.25,
+          "right": 96.25,
+          "delta": 0.0,
+          "direction": "tie"
+        },
+        {
+          "rotation": 1,
+          "left": 100.0,
+          "right": 100.0,
+          "delta": 0.0,
+          "direction": "tie"
+        },
+        {
+          "rotation": 2,
+          "left": 100.0,
+          "right": 100.0,
+          "delta": 0.0,
+          "direction": "tie"
+        }
+      ],
+      "blind_verdict": {
+        "verdict": "tie",
+        "reason": "blinded rubric",
+        "score_delta": 0.0,
+        "votes": [
+          "tie",
+          "tie",
+          "tie"
+        ],
+        "order_sensitive": false
+      },
+      "readiness": {
+        "develop": "ready",
+        "control": "ready"
+      }
+    },
+    {
+      "left": "develop",
+      "right": "upstream",
+      "scores": [
+        {
+          "rotation": 0,
+          "left": 96.25,
+          "right": 30.0,
+          "delta": 66.25,
+          "direction": "develop"
+        },
+        {
+          "rotation": 1,
+          "left": 100.0,
+          "right": 30.0,
+          "delta": 70.0,
+          "direction": "develop"
+        },
+        {
+          "rotation": 2,
+          "left": 100.0,
+          "right": 30.0,
+          "delta": 70.0,
+          "direction": "develop"
+        }
+      ],
+      "blind_verdict": {
+        "verdict": "develop",
+        "reason": "blinded rubric",
+        "score_delta": 70.0,
+        "votes": [
+          "develop",
+          "develop",
+          "develop"
+        ],
+        "order_sensitive": false
+      },
+      "readiness": {
+        "develop": "ready",
+        "upstream": "failed"
+      }
+    },
+    {
+      "left": "control",
+      "right": "upstream",
+      "scores": [
+        {
+          "rotation": 0,
+          "left": 96.25,
+          "right": 30.0,
+          "delta": 66.25,
+          "direction": "control"
+        },
+        {
+          "rotation": 1,
+          "left": 100.0,
+          "right": 30.0,
+          "delta": 70.0,
+          "direction": "control"
+        },
+        {
+          "rotation": 2,
+          "left": 100.0,
+          "right": 30.0,
+          "delta": 70.0,
+          "direction": "control"
+        }
+      ],
+      "blind_verdict": {
+        "verdict": "control",
+        "reason": "blinded rubric",
+        "score_delta": 70.0,
+        "votes": [
+          "control",
+          "control",
+          "control"
+        ],
+        "order_sensitive": false
+      },
+      "readiness": {
+        "control": "ready",
+        "upstream": "failed"
+      }
+    }
+  ],
+  "control_headroom": {
+    "case": "pytest",
+    "control_readiness": "ready",
+    "complete_control": true,
+    "rotation_scores_100": [
+      96.25,
+      100.0,
+      100.0
+    ],
+    "maximum_median_lead": 0.0,
+    "strict_win_route": "score ceiling"
+  },
+  "judges": [
+    {
+      "rotation": 0,
+      "native_sha256": "c56baf3a3f8214b46acccab59ce51ecad4940037d7acd15450b39717e748cb30",
+      "judgment_sha256": "c857d458101d96ee1df50cfaf7e9a65efed43d5e6ee6f249430702bc51d7d62f",
+      "setup_seconds": 88.40413192100823,
+      "assessment_started_unix": 1793356844.8794975,
+      "assessment_finished_unix": 1793357132.3239255,
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 756078,
+          "cachedInputTokens": 709120,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 3144,
+          "reasoningOutputTokens": 409,
+          "totalTokens": 759222
+        },
+        "threads": 1,
+        "usd_estimate": 0.196268
+      },
+      "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+      "inventory": "no plugins, apps, MCP or global instructions"
+    },
+    {
+      "rotation": 1,
+      "native_sha256": "bd628e0de9e6297bf49566cbdfbe1b685bf7e42eb129e5d79338480240fadad1",
+      "judgment_sha256": "7fe54e88d4ed1109c9f13b78abcc31e414286612996aff788e30bf2ea71218d6",
+      "setup_seconds": 90.5022081960924,
+      "assessment_started_unix": 1793356844.715386,
+      "assessment_finished_unix": 1793357130.46732,
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 369887,
+          "cachedInputTokens": 335488,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2814,
+          "reasoningOutputTokens": 413,
+          "totalTokens": 372701
+        },
+        "threads": 1,
+        "usd_estimate": 0.13048680000000001
+      },
+      "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+      "inventory": "no plugins, apps, MCP or global instructions"
+    },
+    {
+      "rotation": 2,
+      "native_sha256": "27141121cf63e6076ab6f5bd13848f796ce7716443fe409e9046de4197fe4633",
+      "judgment_sha256": "cfca67a436a84fe550163b2321ec021faa1445441ea7595dd3d3f572269bc8ba",
+      "setup_seconds": 84.31417905911803,
+      "assessment_started_unix": 1793356844.253486,
+      "assessment_finished_unix": 1793357120.106497,
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 442008,
+          "cachedInputTokens": 397440,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2628,
+          "reasoningOutputTokens": 262,
+          "totalTokens": 444636
+        },
+        "threads": 1,
+        "usd_estimate": 0.15516
+      },
+      "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+      "inventory": "no plugins, apps, MCP or global instructions"
+    }
+  ],
+  "judge_total_usd": 0.4819148,
+  "judge_total_tokens": 1576559,
+  "qualification_probes": [
+    {
+      "role": "prior",
+      "arm": "control",
+      "qualification_sha256": "776c90951cfd67500208f5def3354a25c48e4544a6491f4f16ee726c5c8da93a",
+      "probe_sha256": "8bd973f70a6aed63cc8ab42b755e6f9263e74bb70dd43e5e92350b779bd360d5",
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 86075,
+          "cachedInputTokens": 79616,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 313,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 86388
+        },
+        "threads": 2,
+        "usd_estimate": 0.0240096
+      }
+    },
+    {
+      "role": "prior",
+      "arm": "develop",
+      "qualification_sha256": "776c90951cfd67500208f5def3354a25c48e4544a6491f4f16ee726c5c8da93a",
+      "probe_sha256": "749311ee4da94199d097760faa82b2feb8f8c471ff3ca9267454f2fa5121d1c8",
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 120670,
+          "cachedInputTokens": 101248,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 580,
+          "reasoningOutputTokens": 22,
+          "totalTokens": 121250
+        },
+        "threads": 2,
+        "usd_estimate": 0.05476879999999999
+      }
+    },
+    {
+      "role": "candidate",
+      "arm": "control",
+      "qualification_sha256": "e4067db7d2910981ea8ff8238d28010c08aa19306528b460094c4f1ecb0ca2db",
+      "probe_sha256": "44342d38a808b9549507c14007cc810d38e3866ee294fedd18111ea4b93f0ba0",
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 86099,
+          "cachedInputTokens": 79616,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 342,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 86441
+        },
+        "threads": 2,
+        "usd_estimate": 0.024347599999999997
+      }
+    },
+    {
+      "role": "candidate",
+      "arm": "develop",
+      "qualification_sha256": "e4067db7d2910981ea8ff8238d28010c08aa19306528b460094c4f1ecb0ca2db",
+      "probe_sha256": "0ed51ecdcadab12d8ada4d6d8a52b0700611555847ce64c8204385dfb69bafcc",
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 120563,
+          "cachedInputTokens": 101120,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 539,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 121102
+        },
+        "threads": 2,
+        "usd_estimate": 0.054388
+      }
+    }
+  ],
+  "qualification_usd": 0.157514,
+  "qualification_tokens": 415181,
+  "operator_period": {
+    "first_checkout_start_unix": 1793354315.7055185,
+    "last_blind_assessment_end_unix": 1793357132.3239255,
+    "seconds": 2816.618407011032,
+    "scope": "Span includes staggered proposals, idle gaps, grading and overlapping assessments. Excludes pre-checkout qualification. Do not attribute shared assessor time to individual arms."
+  },
+  "report_behavior": "benchmark.py report with local pilot registration verifies raw sealed artifacts and writes immutable portable destination (possibly prior.json); it does not write raw result, registration, native or judge files. Existing different destination raises. Portable export is a write.",
+  "paired_deltas": {
+    "develop_minus_stock_usd": 0.12903920000000013,
+    "develop_minus_stock_seconds": 342.0559462881647,
+    "develop_minus_prior_usd": -0.2285495999999999,
+    "develop_minus_prior_seconds": -149.14586631883867,
+    "prior_soft_quality": null,
+    "prior_readiness": null,
+    "prior_preserve_exit": 42
+  },
+  "judge_setup_seconds_summed": 263.22051917621866,
+  "assessor_cost_order": "Portable assessor_costs list is not rotation ordered; three raw usage records match as a multiset. Each above is attached to its sealed rotation native hash."
+}

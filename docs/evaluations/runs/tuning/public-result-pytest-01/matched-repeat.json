@@ -1,0 +1,67 @@
+{
+  "format": "law-config.matched-treatment-behavior/v1",
+  "scope": "Two independent draws on one exposed pytest task with matched installed package and execution settings. Archived diagnostics supply the behavior observations.",
+  "package_sha256": "fb6b2eacbc6ae3a94fb237d6a54c4166ecbbb7d5678ae9b3273fdaf072c6b372",
+  "base": "4088e1a84ef1cb8ba80aac4e75449459fc092c12",
+  "evaluator_sha256": "a9cc8fbcb356eeb34cb4bc365a7b0ec9fbd871d00c13e1ebbb325c916ccbd01d",
+  "normalized_matched_settings_sha256": "43a61302dc3e51cb957388c02e5785abc1593492ed74b93ca38da90c1ba634b6",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "budget_seconds": 1200,
+  "cpu_set": [
+    4,
+    5
+  ],
+  "results": {
+    "public-result-pytest-01": "2877f04236ade4d162b9645cc3697174852098bfd5afae551198b683df5c21cb",
+    "native-record-pytest-01": "2f09917193059e0c4a49f89cbf36c4b31de03cfdd750db7dfbd55f21ed410deb"
+  },
+  "console_incidence_file_sha256": "5db7b6f100b1b8fb5786ca0dac73bbea7f7e0d583a3e0463e4e01bc79a739525",
+  "proposals": [
+    {
+      "pilot": "public-result-pytest-01",
+      "role": "candidate-develop",
+      "patch_sha256": "e38185b72060140d23990b6750979ba75ac5b472ba52fc49a3f4a10ca69e50ad",
+      "proposal_usd_estimate": 0.6259844,
+      "proposal_seconds": 657.159,
+      "total_tokens": 2841469,
+      "blind_full_pr_100": 96.25,
+      "console_startup": "pass"
+    },
+    {
+      "pilot": "public-result-pytest-01",
+      "role": "candidate-control",
+      "patch_sha256": "da9659ab93ccd3c834d22aaafbf8cd8aeacdbdd01b55daaf7c9033cfa819a538",
+      "proposal_usd_estimate": 0.5349088,
+      "proposal_seconds": 522.095,
+      "total_tokens": 2844936,
+      "blind_full_pr_100": 60.0,
+      "console_startup": "public-cli-startup-regression"
+    },
+    {
+      "pilot": "native-record-pytest-01",
+      "role": "prior-develop",
+      "patch_sha256": "dfafb4690a7e793dc207e67ddaaca906dc2cdbf99ffd76927bdffbc473d95f6b",
+      "proposal_usd_estimate": 0.8159296,
+      "proposal_seconds": 655.759,
+      "total_tokens": 3640440,
+      "blind_full_pr_100": null,
+      "console_startup": "pass"
+    },
+    {
+      "pilot": "native-record-pytest-01",
+      "role": "candidate-control",
+      "patch_sha256": "dcaf7ffbf6ceb9c6abbfaa09362545c7d9db3a282ee859759cf2f30905c20bfc",
+      "proposal_usd_estimate": 0.354328,
+      "proposal_seconds": 421.896,
+      "total_tokens": 1659976,
+      "blind_full_pr_100": 60.0,
+      "console_startup": "public-cli-startup-regression"
+    }
+  ],
+  "repeated_facts": {
+    "both_develop_patches": "Tuple unpacking, both import orders, warning-free copy and pickle, class annotation lookup and declared console startup succeeded.",
+    "both_stock_patches": "Unpacking raised TypeError. The internal-first import and console startup failed. Class annotation lookup raised NameError. The public-first import, helper annotation and copy/pickle checks passed.",
+    "comparison": "Across both draws, the four probes produced identical exit codes and structured outputs within each arm. Each arm produced two distinct patches. The repeated Develop proposal has no blind score."
+  }
+}

@@ -1,0 +1,250 @@
+{
+  "format": "law-config.prospective-hypothesis/v1",
+  "id": "external-entry-transfer",
+  "pilot": "external-entry-pytest-01",
+  "status": "bound_prospective_descriptor_not_registered",
+  "previous": "2488466be8b48949dbd7291964425eef81c3d50e3b8e4a88f786d6e8bdbdd9e6",
+  "candidate_package_sha256": "21cec3d7f1e35d759bf9209a708e6c9d317dea580d1a48f97e210aa00d2d3638",
+  "common_companion": {
+    "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+    "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+  },
+  "composite_identities": {
+    "prior": "f5c1cdefb7795b8ff34fe9ae94b2d39e08468af50700455691849417ce715116",
+    "candidate": "7aab5e963a6f0464adc6f3d7b223cbee7029828218fb96e204ce1781c45e1847"
+  },
+  "actual_treatment_files": {
+    "docs/evaluations/treatments/21cec3d7f1e3/treatment.json": "d0f30edc4a0aa8b573c17a10fc616a891ba683a1ee2f62f7c22ffeff5b16e39e",
+    "docs/evaluations/treatments/21cec3d7f1e3/recipe.json": "77c54f859faa61c34b6885186a00f5c30f4d9bd27e09daa52874d5fbba8f9e9c",
+    "docs/evaluations/treatments/21cec3d7f1e3/package.patch": "1cbd08a19a71b7ed824454e5b341ef4c99722b3ea4bd0c93e6f016f488a36ca5",
+    "docs/evaluations/treatments/composite-7aab5e963a6f0464adc6f3d7b223cbee7029828218fb96e204ce1781c45e1847/treatment.json": "f3f8e1809e437c861fc8e48a5e0c1cbbbe116468897eb98d1e71fd11b4d27a92",
+    "docs/evaluations/treatments/2488466be8b4/treatment.json": "6ec4e2a7b551b817d40f925a87b862cfbba2c7f380b653203098a1a9fd7e13f1",
+    "docs/evaluations/treatments/2488466be8b4/recipe.json": "eb79969d1650dd9a0257acdbc7d2df223e65fff4e458820441f8b6c08247f7a3",
+    "docs/evaluations/treatments/composite-f5c1cdefb7795b8ff34fe9ae94b2d39e08468af50700455691849417ce715116/treatment.json": "4d8cd7c7e8133cd8ae7f9d515be113edc26701f6fe854ca75acc1ee5f9468bd0"
+  },
+  "change": {
+    "target": "plugins/develop/skills/develop/SKILL.md",
+    "scope": "Only first local-work paragraph; all other 105 package files, declared-entry instruction, configured-test instruction, reviews and companion retained.",
+    "parent_entry_sha256": "4d7c13d5ecd8333ae5011d3457cebd864bb71dedf3eeec2aaf283e3785a7cfb4",
+    "candidate_entry_sha256": "4347e77f5730d74f750b7bde860e5b9e996af7e6b3f0893b5947de7810a66a72",
+    "local_instruction_sha256": "b88d09bfe5c8e57b9072e9b97bff40b5f3fbceb38a8900937fa8010135ea9e87",
+    "hypothesis": "Restoring public outward-operation coverage before replacing an existing representation may preserve caller behavior while retaining the declared-entry check and required verification at lower complete cost. Retention is a valid path; skill reading or incidental final success is not uptake."
+  },
+  "evidence": [
+    {
+      "case": "pytest",
+      "source": "docs/evaluations/runs/tuning/public-result-pytest-01/matched-repeat.json",
+      "sha256": "e6265411129179df2831bbfdf1469f825045e0c6b209a8b6982849c0a82fa7b1"
+    },
+    {
+      "case": "pytest",
+      "source": "docs/evaluations/runs/tuning/declared-entry-pytest-01/result.json",
+      "sha256": "0fce7e43a9dc5463eb1006ed4c910c90b3fee87845f312977e9e314c9f1754c0"
+    },
+    {
+      "case": "pytest",
+      "source": "docs/evaluations/runs/tuning/declared-entry-pytest-01/process-audit.json",
+      "sha256": "7c64f5a6926881a15c862a05236510c63798e365c262b279d4349786d65860be"
+    },
+    {
+      "case": "pytest",
+      "source": "docs/evaluations/runs/tuning/public-result-pytest-01/external-entry-controls.json",
+      "sha256": "c8f9c3c72a2bfaf0aaae1e0104c6c60735a59dc796b61dd09c96aabfa5767191"
+    }
+  ],
+  "training_interpretation": {
+    "matched_repeat": "Two fb6 Develop draws preserve tuple/unpacking, both imports, annotations and console; paired stocks fail selected public operations. Both Develop draws cost more. Only one Develop draw has blind quality. Repeated exposed-task observations are not causal instruction effects or a saving forecast.",
+    "declared_entry_pilot": {
+      "raw_result_sha256": "976a9af67f8dc7151d4d31f6844949904c90d298eaf305889fd21612197cae71",
+      "registration_sha256": "d48d7cac3ede839336c617870046e17a49c0ded438ec1a2f15017bc4cf57a627",
+      "observation_receipts": {
+        "declared-entry-uptake": "407cff6309026f9a8606f30451181e135048d3a6aba55363bbbe24e5b03dfd84",
+        "public-caller-compatibility": "4a152298e1abf6edbf8c3ed5e6f1aa13af3a6422c0562bec94f14a9a52e64ab3"
+      },
+      "complete_proposals": {
+        "stock": {
+          "complete_estimated_usd": 0.7345003999999999,
+          "checkout_to_proposal_seconds": 531.3796125529334,
+          "full_pr_points_100": 100.0
+        },
+        "candidate": {
+          "complete_estimated_usd": 0.8635396000000001,
+          "checkout_to_proposal_seconds": 873.4355588410981,
+          "full_pr_points_100": 100.0
+        },
+        "prior": {
+          "complete_estimated_usd": 1.0920892,
+          "checkout_to_proposal_seconds": 1022.5814251599368,
+          "full_pr_points_100": null
+        }
+      },
+      "blind_full_pr": {
+        "candidate_stock": {
+          "verdict": "tie",
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "votes": [
+            "tie",
+            "tie",
+            "tie"
+          ],
+          "order_sensitive": false
+        },
+        "candidate_merged": {
+          "verdict": "develop",
+          "reason": "blinded rubric",
+          "score_delta": 70.0,
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ],
+          "order_sensitive": false
+        },
+        "stock_merged": {
+          "verdict": "control",
+          "reason": "blinded rubric",
+          "score_delta": 70.0,
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ],
+          "order_sensitive": false
+        }
+      },
+      "readiness": {
+        "control": "ready",
+        "develop": "ready",
+        "upstream": "failed"
+      },
+      "scope": "Candidate/stock both100 but tie; candidate costs more than stock despite lower cost/wall than prior. No producer declared-launcher replay observed; candidate final reviewer precedes final configured completion. Prior closes its evidence but fails assessor console preserve42. Hidden assessor success is not uptake."
+    }
+  },
+  "evaluator_binding": {
+    "protocol": "pr-quality-pytest-entry-v1",
+    "source_sha256": "a53ad6e006bebf7b48dd5042fccdd3ca4594cea85c7d6d43f8011a1811be5803",
+    "case": "pytest",
+    "fixture_sha256": "a3d8eddf20c014afaa86a805f97569a0acab2442afe2324851be70ccaef3b790"
+  },
+  "operator_binding": {
+    "files": {
+      "docs/evaluations/benchmark.py": "def9fa83959aa3256ea554a0d5cd3730354df5ee721b86aca6839f8cff6a50eb",
+      "docs/evaluations/tools/efficiency_pilot.py": "d8ad5b1f3c6c5a6ef2dc867b7025ec632c1703ed7b2027c74f17f66ed8e872ad",
+      "docs/evaluations/tools/native_panel.py": "64818f54f5c90f388961a386109431305d90068cd1c38f0095484f4c62c3279c",
+      "docs/evaluations/tools/export_panel.py": "8b3f2b837619c2e3bd81770c36b656c0b28309252f1fe32a239b8e957891a023",
+      "docs/evaluations/tools/records.py": "167aa2f986b28f858ad98abc8ba9e9a7989a838094c5518c94ce539704584ca4",
+      "docs/evaluations/develop-benchmark/diff_quality.py": "59fac13873335e7984490c726cca1ba266012b9b533e4c76ee1c910de14bcdd1",
+      "docs/evaluations/develop-benchmark/recover_capacity.py": "24da4afcc7e9c227f670ba15f9f72168f32257577223d03ad3f1589767aa670c"
+    },
+    "reporter": "docs/evaluations/tools/records.py",
+    "reporter_patch_sha256": "86939ef691633ef12bda1387d1a50eadc6eb504cf12f65c4136b71a8cf72b530",
+    "reporter_test": {
+      "path": "docs/evaluations/tests/test_records.py",
+      "sha256": "affa60b9ea8e130d661051f1621d3db1e5d7d0b35d99076aa091e87421e733ce"
+    },
+    "scope": "Reporter tuning_summary reports blinded candidate/merged and stock/merged separately from readiness. records.py is outside evaluator version_digest; compare all listed hashes before qualification, registration, resume and reporting. Normal evaluator guard does not enforce this separate reporter binding."
+  },
+  "normal_admission": {
+    "receipt_sha256": "e7df52ce5437cf69c930f4a41aedaf851994eab2c6a5ddef0356bc2ca96079d4",
+    "passed": true,
+    "fingerprint": "a3d8eddf20c014afaa86a805f97569a0acab2442afe2324851be70ccaef3b790",
+    "base_and_merged_exits": {
+      "base": {
+        "build": 0,
+        "native": 0,
+        "contract": 42,
+        "preserve": 0,
+        "independent": 42
+      },
+      "gold": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 42
+      }
+    },
+    "workers": {
+      "toolchain": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+      "worker": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3"
+    },
+    "dependencies_sha256": "3943d438ec411c91cbe477975e33cf4846643cd9a896e6f83e099a65e9561e72",
+    "scope": "Existing normal model-free admission for exact current fixture; not provider qualification or registration for this pilot.",
+    "readiness_receipt_sha256": "ed3138257b07e4bc74a641278c0eebf71072ccec7ef7e9b16884b7bd693c25d3",
+    "normal_admitted": true,
+    "normal_cold_passed": true,
+    "cold_receipt_sha256": "628108089434bf876bbf6a9bd6db3e06905b91fe0da6c0e2d21c40b43c0353a3",
+    "cold_seconds": 66.64815664105117
+  },
+  "parameters": {
+    "case": "pytest",
+    "split": "already_exposed_tuning",
+    "repository": "pytest-dev/pytest",
+    "pr": 15193,
+    "base": "4088e1a84ef1cb8ba80aac4e75449459fc092c12",
+    "merged": "0f54d41bedf00505bb1ac2c724abf96ba6dcf48d",
+    "prompt_sha256": "95e93418812685c2387b8605ff7aa5ea218a707f34dab09f871ca7b74dd4b449",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "seed": 20261028,
+    "producer_cpus": [
+      2,
+      3
+    ],
+    "memory": "4g",
+    "proposal_deadline_seconds": 1200,
+    "slots": 3,
+    "attempts_per_slot": 1,
+    "judge_rotations": 3,
+    "rates_usd_per_million": {
+      "uncached_input": 2,
+      "cached_input": 0.1,
+      "output": 10
+    },
+    "toolchain_image": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+    "native_cli_sha256": "c1eecb4b2304cb0e077a673231e30c9d759dec8fea4a6b8818078865e392fa90",
+    "bwrap_sha256": "77360cb751ccedc5971391444ac86a8a33c15b04d6b4a6fe45f5d25496e62c4c",
+    "stock": "Stock CLI/model with standard skills, managed hooks and no plugins, apps, connectors, MCP or task-specific assistant instructions. Intrinsic repository instructions remain visible to both; stock has no Develop workflow obligation.",
+    "matching": "Prior and candidate share companion, source/fixture/worker, authority, task, rates, deadlines, resources and symmetric hard gates. Both use their frozen independent-review rules."
+  },
+  "capture_and_controls": {
+    "normal_capture_receipt_sha256": "556a81ee7a6743ecac1fc8765bf8e2b78d84e36394d8471cd7c22782b431e7ba",
+    "normal_capture_restore": "Passed model-free capture/restore 106 files, sole paragraph delta, package validator and metadata preflight. Actual canonical locks above verified; no participant release inferred.",
+    "model_free_controls_receipt_sha256": "9f344ad5074e0b6f45d8f67631ca6ec3b8a522fa367009872357073cabd9a545",
+    "controls": "Six-source model-free supplement above binds exact source/patches, original published probes/argv, current declared-entry helper and raw logs. Base/two archived fb6 positives preserve bounded caller/console cases; two stocks expose tuple/import/console regressions. Actual merge preserves startup but keeps independent 42 and class-annotation limitations. Current helper temp vectors are derived, not separately logged. Matched-repeat remains primary.",
+    "replay_rule": "Keep existing source-bound probe bytes/config/env/image/deps. Actual declared-entry launcher uses normal configuration and immutable assessor node. Setup/missing dependency/fixture/unknown execution is unestablished, never a behavioral pass. Do not modify the frozen scorer.",
+    "provider_qualification": {
+      "prior": {
+        "existing_verified_receipt_sha256": "e4067db7d2910981ea8ff8238d28010c08aa19306528b460094c4f1ecb0ca2db"
+      },
+      "candidate": null,
+      "scope": "Prior normal campaign.qualifier verifies existing receipt; candidate still needs its own valid qualification. Metadata preflight and admission are not provider qualification or registration."
+    },
+    "registered": false,
+    "new_producer_outcomes": null,
+    "new_uptake": null,
+    "current_metadata_preflight_sha256": "9b68fa493f8e68deede3c6c4289f96b163f2f0f379d03aff1d394df585018c36"
+  },
+  "procedure": [
+    "After #18 archive, verify these actual locks/operator/reporter hashes, normal metadata inventory, common companion and valid normal admission; obtain normal provider qualification separately, then freeze two matched plans allocating three proposal slots and the registration before release.",
+    "Run exactly one allocation per slot; retain setup failure, retries, timeouts, empty submissions and complete root+descendant usage. No replacement or favorable exclusion. Preserve every required check and independent review.",
+    "Use three existing blind full-PR rotations of stock/candidate/actual merged human PR. Keep labels blind; no uptake identities/probes/hints enter producer or judge packets. Prior soft quality stays unknown.",
+    "After all proposals and judgments seal, apply hash-bound uptake plan: sourced pre-edit retention plus verified base/final public operation, or authenticated outward-operation check before replacement. Bind actual declared-entry final test and completed independent artifact review separately. Match prior/stock facts without imposing Develop policy on stock.",
+    "Publish readiness and blind full-PR directions/deltas/votes separately for candidate/stock, candidate/merge and stock/merge, including failed merge. Keep uptake/public probes separate from original scores."
+  ],
+  "uptake_plan_sha256": "c75352deefe8c08181921bacbc811c225c4e0a68c2e73eff4a7134188f316c89",
+  "acceptance": {
+    "candidate_ready": true,
+    "blinded_full_pr_vs_stock": "All 3 rotations valid; median paired lead>=5/100 with at least 2 agreeing judges.",
+    "complete_candidate_cost_lte_stock": true,
+    "complete_candidate_cost_strictly_below_prior": true,
+    "checkout_to_proposal_strictly_below_prior": true,
+    "required_behavior_tests_and_independent_reviews_retained": true,
+    "applicable_uptake_and_final_declared_entry_evidence_verified": true,
+    "parent_equivalence": "Record separately. Equivalent prior behavior does not establish a treatment-specific mechanism. Missing decisions/bindings/timing remain null."
+  },
+  "economics": "Compare complete proposal estimates against stock and matched prior separately; include every root/descendant/allocation at frozen rates. Report setup, proposal wall, judging/qualification/diagnostic cost separately; unknown actual invoice and human labor/cost/time remain null. No saving estimate from historical probes.",
+  "falsifier": "Reject non-ready candidate, lost verified caller/declared-entry behavior or required tests/reviews, unestablished applicable uptake/final-byte/evidence closure, stock quality tie/loss or insufficient registered margin, cost above stock, or failure of either strict complete-cost or checkout-wall improvement over matched prior. Preserve all failed allocations and unknowns.",
+  "limits": "One repeatedly exposed pytest case cannot establish transfer, repeatability or promotion. This descriptor does not register, qualify providers, activate a package, rewrite old scores or authorize fresh 20-repository panel; fresh confirmation needs its own fixed plan."
+}
