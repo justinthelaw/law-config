@@ -69,6 +69,33 @@ def select_treatment():
     return lock
 
 
+def turn_contexts(home, thread, turns):
+    """Bind model settings to this thread's native turn IDs, excluding inherited history."""
+    files = list((home / "sessions").rglob(f"*{thread}*.jsonl"))
+    if len(files) != 1:
+        return None
+    try:
+        snapshot = files[0].read_bytes()
+        events = [json.loads(line) for line in snapshot.splitlines()]
+        headers = [e for e in events if e.get("type") == "session_meta"]
+        if not headers or headers[0].get("payload", {}).get("id") != thread:
+            return None
+        found = {}
+        for event in events:
+            item = event.get("payload", {})
+            if event.get("type") != "turn_context" or item.get("turn_id") not in turns:
+                continue
+            turn = item["turn_id"]
+            if turn in found:
+                return None
+            found[turn] = {"model": item.get("model"), "effort": item.get("effort")}
+        if set(found) != set(turns):
+            return None
+        return {"contexts": found, "trace_sha256": hashlib.sha256(snapshot).hexdigest()}
+    except (OSError, ValueError, TypeError):
+        return None
+
+
 class AuditedServer(STOCK):
     """Only the pinned hook interpreter gets the checkout and plugin, both read-only."""
     def __init__(self, cli, home, work, deadline):
@@ -217,6 +244,11 @@ class AuditedServer(STOCK):
                 except (TimeoutError,RuntimeError,OSError):
                     pass
                 row=self.run_record
+                if row.get("pricing_policy") == "natural-sol-v1":
+                    found = {thread: turn_contexts(self.home, thread, turns)
+                             for thread, turns in self.turn_meters.items()}
+                    row["turn_contexts"] = {thread: value["contexts"] for thread, value in found.items() if value}
+                    row["turn_context_receipts"] = {thread: value["trace_sha256"] for thread, value in found.items() if value}
                 row["turn_meters"]=self.turn_meters
                 for thread,turns in self.turn_meters.items():
                     metered=[m for m in turns.values() if "total" in m]

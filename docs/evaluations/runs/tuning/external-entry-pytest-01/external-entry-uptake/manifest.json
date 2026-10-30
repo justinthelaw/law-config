@@ -1,0 +1,8 @@
+{
+  "format": "law-config.supplement-manifest/v1",
+  "files": {
+    "README.md": "8a5e20111b834612eb31fd46e24897acca541989f6266867c80948e577f6c243",
+    "check.py": "c2f16a86d98bd358324f780f72c1636d577c56c6e2d9dcfc4cd18fbcca63013a",
+    "supplement.json": "e15f5f3b133c12db9063f333b9d4fe0d38e00f3bfedcf84242cebf2a48450ef3"
+  }
+}

@@ -42,6 +42,10 @@ The operator reconstructs each package in the ignored task directory. New recipe
 | `report NAME` | Regenerate the results after adjudication. A published result verifies offline. |
 | `recover PRIMARY NEW_NAME` | Run fresh pairs only for primary service-capacity failures. |
 
+New historical runs use `pr-quality-pytest-entry-natural-v1`. It includes the Pytest console check and Runner Space’s structural ledger check. Each arm starts on Sol Medium and can choose its own workers. For a new 20-repository confirmation, set `DEVELOP_EVAL_COHORT=pr-quality-confirmation-natural-v1`. Resume from the original evaluator source and treatment. The operator restores the named cohort. The qualifier uses Sol Medium. Unpriced worker usage leaves total proposal cost unknown.
+
+The `natural-standard-v2` estimate counts each participant’s final meter once at its verified model’s frozen rate. Missing proof or a model change within a single meter leaves total USD unknown. The estimate excludes contract discounts, regional and speed multipliers, and feature charges. [Frozen rates](pricing.py) · [Codex Standard rate card](https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing)
+
 Before proposal or assessor calls, the operator checks the reader package versions. Each case receives one native proposal from pure Codex and one from Develop. Each arm uses the same starting tree, task, tools, resources and deadline. Develop adds its installed skills and trusted hooks. Pure uses five stock skills. Both arms inherit the same two organization-managed protections and disable optional repository skills. Built-in repository instructions remain available.
 
 The plan fixes each arm’s order. Each lane runs both arms consecutively on one CPU pair. The operator serializes runs that share cache and CPU lanes. It preserves every allocation, including empty submissions and service failures. After a technical stop, inspect `status NAME`. Rerun the same name to requalify the service and release only remaining slots.

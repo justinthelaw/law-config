@@ -1,0 +1,41 @@
+{
+  "format": "law-config.historical-tuning-screen/v1",
+  "run": "iterate-entry-tuning-01",
+  "protocol": "pr-quality-pytest-entry-natural-v1",
+  "split": "tuning",
+  "cases": [
+    "packaging",
+    "ripgrep",
+    "jq",
+    "marked",
+    "go-git",
+    "runner-space",
+    "black",
+    "werkzeug",
+    "pytest",
+    "commander",
+    "fmt",
+    "expat"
+  ],
+  "case_manifest_sha256": "05419f4dc3ad14cf7dcb9805ca3f4b10f825d2c31bceb264ef220c6daaa61bf0",
+  "candidate_lock_sha256": "dae3bdcab229509cb85640f63eed7983d1a35fc2291f15d862c92152b47d7285",
+  "parent_lock_sha256": "f3f8e1809e437c861fc8e48a5e0c1cbbbe116468897eb98d1e71fd11b4d27a92",
+  "parent_observation": {
+    "source": "runs/tuning/external-entry-pytest-01/result.json",
+    "sha256": "ce220ef9cc728cc63c1261e6829aee37093561c1b16136b8350846e3a737c1f8"
+  },
+  "change": "Shorten Iterate's entry by 2,809 bytes. All 105 other Develop files and the Superpowers companion match the parent.",
+  "hypothesis": "A shorter route into the same local checks and risk-based review can reduce proposal cost and time while preserving or improving full-PR quality across repositories.",
+  "design": "One new stock proposal and one candidate proposal per registered case, in the panel's seeded arm order. Assess both and the actual merge in three blinded rotations. Keep every allocation. This panel has no concurrent parent arm.",
+  "primary": "Report per-repository readiness, strict blinded full-PR verdict, fully measured proposal USD and their joint result against stock. Exclude incomplete pairs only from the corresponding aggregate. A tie misses the strict quality target.",
+  "secondary": "Report separate diff and PR scores, verdicts against the merge, tokens, checkout-to-proposal and through-grading times, campaign wall time and assessor spend. Report the ceiling and every missing measurement.",
+  "mechanism": "After both proposals and judging are sealed, report observed reads of Iterate's entry. Distinguish a literal whole-file read from partial or indirect evidence. Do not convert file size into measured savings.",
+  "decisions": "A known miss rules out an all-repository win on this training panel. Missing evidence stays unknown unless another necessary condition is known false. Historical parent results are descriptive. Nomination for fresh confirmation requires a separate decision on verification, quality and measured cost. This screen cannot establish promotion.",
+  "scope": "Twelve previously exposed tuning tasks. No fresh task is released.",
+  "pricing": {
+    "policy": "natural-standard-v2",
+    "basis": "Frozen Codex Standard USD per million tokens by verified participant model. Count each participant once at its final cumulative meter. Incomplete model, lineage or meter evidence leaves the total unknown. Record priced usage separately.",
+    "source": "https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing",
+    "verified_utc": "2026-10-30T12:41:43Z"
+  }
+}

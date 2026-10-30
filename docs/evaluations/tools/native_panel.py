@@ -109,6 +109,8 @@ def pinned_cli():
 
 
 def preflight(plan=None):
+    if plan is not None:
+        C.verify_evaluator(plan)
     for tool in ("docker", "git", "taskset"):
         if not shutil.which(tool):
             raise ValueError(f"install {tool} before running a native evaluation")

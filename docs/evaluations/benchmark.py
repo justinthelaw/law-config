@@ -70,7 +70,7 @@ def operator(name=None):
 
 
 def panel_results():
-    return sorted(p for root in (BUNDLES, BUNDLES.with_name("pr-quality-confirmation-v1"), BUNDLES.with_name("pr-quality-runner-v3"), BUNDLES.with_name("pr-quality-pytest-entry-v1"))
+    return sorted(p for root in (BUNDLES, BUNDLES.with_name("pr-quality-confirmation-v1"), BUNDLES.with_name("pr-quality-confirmation-natural-v1"), BUNDLES.with_name("pr-quality-runner-v3"), BUNDLES.with_name("pr-quality-pytest-entry-v1"), BUNDLES.with_name("pr-quality-pytest-entry-natural-v1"))
                   for p in root.glob("*/run.json"))
 
 
@@ -102,8 +102,8 @@ def published_summary(name, bundle):
                       "proposal_states": dict(states), "assessments": assessments,
                       "allocated": slots("interrupted"), "unreleased": slots("unreleased"),
                       "pending_assessments": [], "stranded_assessments": [], "unadjudicated": [], "bundle": str(bundle)}
-    if manifest["protocol"] == "pr-quality-confirmation-v1":
-        summary["strict_confirmation_quality"] = confirmation_quality_summary(manifest["cases"], rows, manifest["runtime"]["treatment"], manifest["runtime"])
+    if manifest["protocol"] in ("pr-quality-confirmation-v1", "pr-quality-confirmation-natural-v1"):
+        summary["strict_confirmation_quality"] = confirmation_quality_summary(manifest["cases"], rows, manifest["runtime"]["treatment"], manifest["runtime"], natural=manifest["protocol"] == "pr-quality-confirmation-natural-v1")
     return manifest, summary
 
 
@@ -112,7 +112,7 @@ def pilot_file(name):
 
 
 def pilot_status(name, root):
-    from records import control_headroom, pilot_quality_signal, read_pilot
+    from records import blinded_proposal_verdict, control_headroom, pilot_quality_signal, read_pilot
     if pilot_file(name).is_file():
         record = read_pilot(pilot_file(name))
         rows = record["submissions"]
@@ -127,6 +127,9 @@ def pilot_status(name, root):
                               "tokens": (effort.get("tokens") or {}).get("totalTokens"),
                               "proposal_seconds": effort.get("checkout_to_proposal_seconds"),
                               "through_grading_seconds": effort.get("through_grading_seconds")}
+            if "pricing" in effort:
+                outcomes[role]["pricing"] = effort["pricing"]
+        outcomes["prior_develop"]["stage_exits"] = record["prior_develop"].get("stage_exits")
         assessors = record.get("assessor_costs") or []
         observed = [a["usd_estimate"] for a in assessors if a.get("usd_estimate") is not None]
         complete_receipts = sum(a.get("coverage") == "complete" and a.get("usd_estimate") is not None
@@ -139,6 +142,8 @@ def pilot_status(name, root):
                 **({"evaluator_protocol": record["evaluator_protocol"]} if "evaluator_protocol" in record else {}),
                 "outcomes": outcomes, "control_headroom": control_headroom(rows["control"]),
                 "quality_signal": pilot_quality_signal(record),
+                "blind_full_pr_vs_merged": {role: blinded_proposal_verdict(rows[role], rows["upstream"], 3)
+                                            for role in ("develop", "control")},
                 "proposal_states": {"candidate/control": rows["control"]["state"], "candidate/develop": rows["develop"]["state"],
                                     "prior/develop": record["prior_develop"]["state"]},
                 "assessor_costs": {"coverage": "complete" if complete else "lower bound" if observed else "unknown",
@@ -281,7 +286,59 @@ def configure_temp():
     tempfile.tempdir = str(scratch)
 
 
+
+def select_cohort(args):
+    """Choose native policy before imports; portable verification stays independent."""
+    if args.action not in {"run", "pilot", "recover", "preflight", "report"}:
+        return
+    name = getattr(args, "name", None)
+    registration = STATE / "pilots" / name / "registration.json" if name else None
+    archive = pilot_file(name) if name else None
+    bundle = published(name) if name else None
+    if bundle and args.action != "pilot":
+        return  # Published panel verification does not need an executor cohort.
+    if name and args.action == "run" and (registration.is_file() or archive.is_file()):
+        raise ValueError(f"{name} is a frozen pilot; use pilot with its original locks or report {name}, or choose a new run name")
+    if args.action == "report" and archive.is_file() and not registration.is_file():
+        return  # A copied portable pilot needs no private executor state.
+    if args.action == "pilot" and (bundle or (archive.is_file() and not registration.is_file())):
+        raise ValueError(f"{name} is archived; use report {name} or restore its original private state before resuming")
+    protocols, existing = set(), False
+    for selected in filter(None, (name, getattr(args, "parent", None))):
+        paths = [STATE / "runs" / selected / "plan.json", STATE / "pilots" / selected / "registration.json",
+                 *(STATE / "runs" / f"{selected}-{role}" / "plan.json" for role in ("candidate", "prior")),
+                 pilot_file(selected)]
+        if archived := published(selected):
+            paths.append(archived)
+        if args.action == "recover" and selected == args.parent and not paths[0].is_file():
+            raise ValueError(f"recovery needs {paths[0]}; restore the parent's original private state and evaluator source")
+        for path in paths:
+            if not path.is_file():
+                continue
+            existing = True
+            data = read(path)
+            protocol = data.get("protocol") if path.name in {"plan.json", "run.json"} else data.get("evaluator_protocol")
+            if path.name in {"plan.json", "run.json"} and not protocol:
+                raise ValueError(f"{path} has no frozen protocol; restore the original plan before resuming")
+            if args.action in {"run", "recover"} and data.get("pilot"):
+                raise ValueError(f"{selected} belongs to pilot {data['pilot']['name']}; resume that pilot with its original locks")
+            if protocol:
+                protocols.add(protocol)
+    if len(protocols) > 1:
+        raise ValueError("frozen cohorts conflict; restore matching registration, plans and recovery parent")
+    frozen = next(iter(protocols), read(PANEL / "panel.json")["protocol"] if existing else None)
+    explicit = os.environ.get("DEVELOP_EVAL_COHORT")
+    if frozen and explicit is not None and explicit != frozen:
+        raise ValueError(f"frozen cohort is {frozen}; unset DEVELOP_EVAL_COHORT or set it to {frozen} and use the original evaluator source")
+    selected = explicit if explicit is not None else frozen or "pr-quality-pytest-entry-natural-v1"
+    loaded = sys.modules.get("environment")
+    if loaded and loaded.PANEL["protocol"] != selected:
+        raise ValueError(f"native context already loaded {loaded.PANEL['protocol']}; restart benchmark.py with DEVELOP_EVAL_COHORT={selected}")
+    os.environ["DEVELOP_EVAL_COHORT"] = selected
+
+
 def dispatch(args):
+    select_cohort(args)
     if args.action == "status":
         print(json.dumps(status(args.name), indent=2))
         return 0
@@ -355,6 +412,12 @@ def dispatch(args):
         with operator(args.name):
             require_reader()
             import efficiency_pilot
+            registration = STATE / "pilots" / args.name / "registration.json"
+            frozen = ([efficiency_pilot.C.verify_receipt(entry) for entry in read(registration)["plans"].values()]
+                      if registration.is_file() else [read(path) for role in ("candidate", "prior")
+                      if (path := STATE / "runs" / f"{args.name}-{role}" / "plan.json").is_file()])
+            for plan in frozen:
+                efficiency_pilot.C.verify_evaluator(plan)
             efficiency_pilot.load_hypothesis(args)
             from cpu_leases import lease
             cpus = sorted(os.sched_getaffinity(0))[:2]

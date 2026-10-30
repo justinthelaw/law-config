@@ -9,6 +9,8 @@ from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "develop-benchmark/panel"))
 import composite
+import pricing
+import outcomes
 
 ROOT = Path(__file__).resolve().parents[1]
 ROLES = ("control", "develop", "upstream")
@@ -126,8 +128,12 @@ def blinded_proposal_verdict(left, right, required_rotations):
 
 
 def strict_win(pure, develop, verdict, seats):
+    if (any("pricing" in (r.get("effort") or {}) for r in (pure, develop))
+            and develop["readiness"] == "ready" and verdict == "develop"
+            and any((r.get("effort") or {}).get("coverage") != "complete" for r in (pure, develop))):
+        return None
     return (set(seats) == {0, 1, 2} and develop["readiness"] == "ready" and verdict == "develop"
-            and all(r["state"] == "completed" and r["proposal"] and r["effort"]["coverage"] == "complete"
+            and all(r["state"] == "completed" and r["proposal"] and r.get("effort") and r["effort"]["coverage"] == "complete"
                     for r in (pure, develop))
             and develop["effort"]["estimated_usd"] <= pure["effort"]["estimated_usd"])
 
@@ -146,7 +152,8 @@ def pilot_quality_signal(record):
             blind["verdict"] = None
 
     at_or_below = None
-    if all(row["effort"]["coverage"] == "complete" for row in arms):
+    if all(row.get("effort") and row["effort"]["coverage"] == "complete"
+           and type(row["effort"].get("estimated_usd")) in (int, float) for row in arms):
         at_or_below = develop["effort"]["estimated_usd"] <= control["effort"]["estimated_usd"]
     joint = None
     if (at_or_below is not None and blind["verdict"] in ("develop", "control", "tie")
@@ -191,7 +198,7 @@ def _confirmation_runtime(runtime, treatment):
         and all(judge.get(k) == v for k, v in CONFIRMATION_MODEL.items()))
 
 
-def confirmation_quality(case, rows, treatment=None, runtime=None):
+def confirmation_quality(case, rows, treatment=None, runtime=None, *, natural=False):
     """Strict blind-quality goal, independent of the historical readiness-first win."""
     decision = case["comparison"].get("confirmation")
     if not _confirmation_runtime(runtime, treatment):
@@ -203,8 +210,20 @@ def confirmation_quality(case, rows, treatment=None, runtime=None):
     if any(not _confirmation_profile(row, decision.get("profiles", {}).get(role), treatment)
            for role, row in pair.items()):
         return None
-    return pilot_quality_signal({"submissions": pair, "comparisons": case["comparison"]})[
-        "ready_blind_win_at_no_more_cost"]
+    if natural:
+        if any(((row.get("effort") or {}).get("pricing") or {}).get("root_default_verified") is not True
+               for row in pair.values()):
+            return None
+    signal = pilot_quality_signal({"submissions": pair, "comparisons": case["comparison"]})
+    if natural:
+        if (any(row["state"] != "completed" or not row.get("proposal") for row in pair.values())
+                or pair["control"]["readiness"] not in ("ready", "failed")):
+            return None
+        if (pair["develop"]["readiness"] == "failed"
+                or signal["blinded_full_pr"]["verdict"] in ("control", "tie")
+                or signal["equal_or_lower_complete_cost"] is False):
+            return False
+    return signal["ready_blind_win_at_no_more_cost"]
 
 
 def target_repositories():
@@ -221,7 +240,7 @@ def target_repositories():
         return None
 
 
-def confirmation_quality_summary(cases, rows, treatment=None, runtime=None):
+def confirmation_quality_summary(cases, rows, treatment=None, runtime=None, *, natural=False):
     def all_won(values):
         if False in values:
             return False
@@ -230,7 +249,7 @@ def confirmation_quality_summary(cases, rows, treatment=None, runtime=None):
     selected = [rows.get((case["id"], role)) for case in cases for role in ROLES]
     plans = {row.get("plan_sha256") for row in selected if row}
     one_plan = len(plans) == 1 and None not in plans
-    values = [confirmation_quality(case, rows, treatment, runtime) if one_plan else None for case in cases]
+    values = [confirmation_quality(case, rows, treatment, runtime, natural=natural) if one_plan else None for case in cases]
     repos = [case.get("repo") for case in cases]
     roster = target_repositories()
     target = [value for repo, value in zip(repos, values) if roster is not None and repo in roster]
@@ -257,7 +276,7 @@ def control_headroom(row):
             "rotation_scores_100": scores, "maximum_median_lead": gain, "strict_win_route": route}
 
 
-def verify_confirmation(case, rows, seats, treatment=None, runtime=None):
+def verify_confirmation(case, rows, seats, treatment=None, runtime=None, *, natural=False):
     decision = case["comparison"]["confirmation"]
     pair = [rows[case["id"], role] for role in ("control", "develop")]
     for row in pair:
@@ -270,7 +289,9 @@ def verify_confirmation(case, rows, seats, treatment=None, runtime=None):
     win = strict_win(*pair, case["comparison"]["develop_control"]["verdict"], seats)
     if decision["win"] is not win:
         raise ValueError(f"{case['id']} confirmation outcome differs from quality and cost evidence")
-    if "strict_quality_win" in decision and decision["strict_quality_win"] is not confirmation_quality(case, rows, treatment, runtime):
+    if natural and "strict_quality_win" not in decision:
+        raise ValueError(f"{case['id']} missing strict confirmation outcome")
+    if "strict_quality_win" in decision and decision["strict_quality_win"] is not confirmation_quality(case, rows, treatment, runtime, natural=natural):
         raise ValueError(f"{case['id']} strict confirmation outcome differs from blind quality and cost evidence")
 
 
@@ -339,11 +360,12 @@ def verify_summary(name, group, cases, rows):
         if not pairs or not report or report["pairs"] != len(pairs):
             raise ValueError(f"{name}/{metric} eligible pair count differs")
         pure, develop = (sum(pair[i] for pair in pairs) for i in (0, 1))
-        if not all(math.isclose(value, report[k], abs_tol=1e-12) for k, value in
-                   (("pure_sum",pure),("develop_sum",develop),("ratio",develop/pure),
-                    ("median_pair_ratio",statistics.median(y/x for x,y in pairs if x)))):
+        positive = [y/x for x,y in pairs if x]
+        if not all(report[k] is None if value is None else report[k] is not None and math.isclose(value, report[k], abs_tol=1e-12)
+                   for k, value in (("pure_sum",pure),("develop_sum",develop),("ratio",develop/pure if pure else None),
+                                    ("median_pair_ratio",statistics.median(positive) if positive else None))):
             raise ValueError(f"{name}/{metric} paired aggregate differs")
-        limits = interval(pairs, lambda p:sum(y for x,y in p)/sum(x for x,y in p))
+        limits = interval(pairs, lambda p:sum(y for x,y in p)/sum(x for x,y in p)) if all(x for x,y in pairs) else None
         if limits != report["ratio_interval"]:
             raise ValueError(f"{name}/{metric} paired interval differs")
     pairs = []
@@ -372,7 +394,133 @@ def verify_summary(name, group, cases, rows):
         raise ValueError(f"{name} simultaneous win list differs")
 
 
+def verify_model_pricing(key, effort):
+    p = effort["pricing"]
+    if json.dumps(p["rate_card"], sort_keys=True) != json.dumps(pricing.MODEL_RATE_CARD, sort_keys=True):
+        raise ValueError(f"{key} frozen Standard rate card differs")
+    proof = p["terminal_proof"]
+    if not isinstance(proof, list) or any(not isinstance(t, dict) for t in proof):
+        raise ValueError(f"{key} invalid model token proof")
+    threads = {t.get("thread"):t for t in proof}
+    if len(threads) != len(proof):
+        raise ValueError(f"{key} duplicate model token proof")
+    if not isinstance(p["root_start"], dict):
+        raise ValueError(f"{key} invalid root pricing proof")
+    root = p["root_start"].get("thread")
+    if proof and root not in threads:
+        raise ValueError(f"{key} missing root pricing proof")
+    for thread in proof:
+        if set(thread) != {"thread", "bound", "meter_consistent", "model", "tokens", "start", "trace_sha256", "turns"}:
+            raise ValueError(f"{key} invalid model token proof")
+        if (not isinstance(thread["thread"], str) or len(thread["thread"]) != 64
+                or set(thread["thread"]) - set("0123456789abcdef")):
+            raise ValueError(f"{key} invalid model thread identity")
+        if any(type(thread[k]) is not bool for k in ("bound", "meter_consistent")):
+            raise ValueError(f"{key} invalid model proof status")
+        if not thread["bound"] or not thread["meter_consistent"]:
+            continue
+        model, tokens, start, turns = (thread[k] for k in ("model", "tokens", "start", "turns"))
+        if (model not in pricing.MODEL_RATE_CARD["rates"] or not isinstance(tokens, dict)
+                or set(tokens) != set(effort["tokens"]) or any(type(v) is not int or v < 0 for v in tokens.values())
+                or not isinstance(start, dict) or set(start) != {"model", "effort", "parent"}
+                or start["model"] != model or not start["effort"] or not isinstance(turns, list) or not turns
+                or not isinstance(thread["trace_sha256"], str) or len(thread["trace_sha256"]) != 64
+                or set(thread["trace_sha256"]) - set("0123456789abcdef")):
+            raise ValueError(f"{key} unbound model tokens")
+        seen, current = set(), thread["thread"]
+        while current != root:
+            if current in seen or current not in threads:
+                raise ValueError(f"{key} unbound model ancestry")
+            seen.add(current)
+            current = threads[current].get("start", {}).get("parent")
+        if thread["thread"] == root and (start["parent"] is not None or model != "gpt-6.1-sol"
+                or p["root_start"]["effective_model"] != model or p["root_start"]["requested_model"] != model
+                or p["root_start"]["requested_effort"] != start["effort"]):
+            raise ValueError(f"{key} root model tokens differ")
+        if (not pricing.consistent_meter(turns, tokens, effort["tokens"])
+                or any(set(t) != {"turn", "model", "effort", "message_seq", "usage_seq", "terminal_seq", "status", "total"}
+                       or t["model"] != model or not t["effort"] for t in turns)):
+            raise ValueError(f"{key} inconsistent model meter proof")
+    if (not isinstance(p["model_tokens"], dict) or any(not isinstance(v, dict) or set(v) != {"threads", "tokens"}
+            or type(v["threads"]) is not int or v["threads"] <= 0 or not isinstance(v["tokens"], dict)
+            or set(v["tokens"]) != set(effort["tokens"]) or any(type(n) is not int or n < 0 for n in v["tokens"].values())
+            for v in p["model_tokens"].values())):
+        raise ValueError(f"{key} invalid per-model token partition")
+    partitions = pricing.model_partitions(proof)
+    observed = {k:sum(t["tokens"].get(k, 0) for t in proof if isinstance(t["tokens"], dict)
+                      and type(t["tokens"].get(k)) is int and t["tokens"][k] >= 0) for k in effort["tokens"]}
+    if any(observed[k] != (effort["tokens"][k] or 0) for k in observed):
+        raise ValueError(f"{key} thread token proof differs")
+    if (len(proof) != p["priced_threads"] + p["unpriced_threads"]
+            or p["model_tokens"] != partitions or sum(x["threads"] for x in partitions.values()) != p["priced_threads"]
+            or any(sum(x["tokens"][k] for x in partitions.values()) != p["priced_tokens"][k] for k in effort["tokens"])):
+        raise ValueError(f"{key} per-model token attribution differs")
+
+
+def verify_natural_pricing(key, effort, rates):
+    p = effort["pricing"]
+    model_pricing = isinstance(p, dict) and p.get("policy") == pricing.MODEL_POLICY
+    fields = {"policy", "token_coverage", "priced_tokens", "unpriced_tokens", "priced_threads",
+              "unpriced_threads", "unpriced_reasons", "known_usd_lower_bound", "native_sha256", "terminal_proof",
+              "root_start", "root_default_verified"}
+    if model_pricing:
+        fields |= {"rate_card", "model_tokens"}
+    if (not isinstance(p, dict) or set(p) != fields or p["policy"] not in ("natural-sol-v1", pricing.MODEL_POLICY)
+            or rates != pricing.SOL_RATES or p["token_coverage"] not in ("complete", "lower bound", "unknown")
+            or any(type(p[k]) is not int or p[k] < 0 for k in ("priced_threads", "unpriced_threads"))
+            or not isinstance(p["unpriced_reasons"], dict)
+            or any(not isinstance(k, str) or type(v) is not int or v <= 0 for k, v in p["unpriced_reasons"].items())
+            or sum(p["unpriced_reasons"].values()) != p["unpriced_threads"]):
+        raise ValueError(f"{key} invalid natural pricing policy")
+    if (not isinstance(p["terminal_proof"], list) or p["root_default_verified"] is not
+            pricing.root_default(p["root_start"], p["terminal_proof"])):
+        raise ValueError(f"{key} root default attestation differs")
+    for part in (p["priced_tokens"], p["unpriced_tokens"]):
+        if (not isinstance(part, dict) or set(part) != set(effort["tokens"])
+                or any(type(v) is not int or v < 0 for v in part.values())):
+            raise ValueError(f"{key} invalid token partition")
+    for field, value in effort["tokens"].items():
+        if (value or 0) != p["priced_tokens"][field] + p["unpriced_tokens"][field]:
+            raise ValueError(f"{key} token partition differs")
+    if model_pricing:
+        verify_model_pricing(key, effort)
+    subtotal = (pricing.partitions_cost(p["model_tokens"]) if model_pricing else
+                pricing.sol_cost(p["priced_tokens"]) if p["priced_threads"] else None)
+    if ((subtotal is None) != (p["known_usd_lower_bound"] is None) or
+            (subtotal is not None and not math.isclose(subtotal, p["known_usd_lower_bound"], abs_tol=1e-10))):
+        raise ValueError(f"{key} priced subtotal differs")
+    if effort["coverage"] == "complete":
+        proof = p["terminal_proof"]
+        if (not isinstance(proof, list) or len(proof) != effort["thread_count"]
+                or any(not isinstance(t, dict) for t in proof)
+                or len({t.get("thread") for t in proof}) != len(proof)):
+            raise ValueError(f"{key} missing terminal proof")
+        for thread in proof:
+            if (set(thread) != ({"thread", "bound", "meter_consistent", "trace_sha256", "turns"} |
+                               ({"model", "tokens", "start"} if model_pricing else set())) or thread["bound"] is not True
+                    or thread["meter_consistent"] is not True
+                    or not isinstance(thread["thread"], str) or len(thread["thread"]) != 64
+                    or not isinstance(thread["trace_sha256"], str) or len(thread["trace_sha256"]) != 64
+                    or not isinstance(thread["turns"], list) or not thread["turns"]):
+                raise ValueError(f"{key} missing thread binding")
+            for turn in thread["turns"]:
+                if (set(turn) != ({"turn", "model", "effort", "message_seq", "usage_seq", "terminal_seq", "status"} |
+                                     ({"total"} if model_pricing else set()))
+                        or (turn["model"] not in pricing.MODEL_RATE_CARD["rates"] if model_pricing else turn["model"] != "gpt-6.1-sol") or not turn["effort"] or turn["status"] != "completed"
+                        or any(type(turn[k]) is not int or turn[k] <= 0 for k in ("message_seq", "usage_seq", "terminal_seq"))
+                        or turn["usage_seq"] < turn["message_seq"] or turn["terminal_seq"] < turn["message_seq"]):
+                    raise ValueError(f"{key} missing terminal turn")
+        if (p["token_coverage"] != "complete" or p["unpriced_threads"] != 0
+                or p["priced_threads"] != effort["thread_count"] or not p["priced_threads"]
+                or not isinstance(p["native_sha256"], str) or len(p["native_sha256"]) != 64):
+            raise ValueError(f"{key} falsely complete price")
+    elif effort["estimated_usd"] is not None:
+        raise ValueError(f"{key} incomplete subtotal presented as total")
+
+
 def verify_cost(key, effort, rates):
+    if effort and "pricing" in effort:
+        verify_natural_pricing(key, effort, rates)
     if effort and effort["coverage"] == "complete":
         t = effort["tokens"]
         root, children = effort["root_tokens"], effort["descendant_tokens"]
@@ -386,6 +534,8 @@ def verify_cost(key, effort, rates):
             raise ValueError(f"{key} total tokens differ from input and output counters")
         cost = ((t["inputTokens"] - t["cachedInputTokens"]) * rates["uncached_input"] +
                 t["cachedInputTokens"] * rates["cached_input"] + t["outputTokens"] * rates["output"]) / 1e6
+        if effort.get("pricing", {}).get("policy") == pricing.MODEL_POLICY:
+            cost = pricing.partitions_cost(effort["pricing"]["model_tokens"])
         if not math.isclose(cost, effort["estimated_usd"], abs_tol=1e-10):
             raise ValueError(f"{key} estimated cost differs from complete token counters")
 
@@ -400,11 +550,16 @@ def verify_artifacts(key, row, artifacts):
             raise ValueError(f"{key} {field} digest differs")
 
 
-def verify_submission(row, rates, independent, observations, *, allow_open_flags=False):
+def verify_submission(row, rates, independent, observations, *, allow_open_flags=False, natural=False, deadline=None):
     key = row["case_id"], row["role"]
     verify_artifacts(key, row, row)
     if (row["effort"] is None) != (key[1] == "upstream"):
         raise ValueError(f"{key} incorrect measurement attribution")
+    if natural and key[1] != "upstream":
+        if "grade_applied" not in row or (row["grade_applied"] is not None and type(row["grade_applied"]) is not bool):
+            raise ValueError(f"{key} missing grade application evidence")
+        if ("grade" not in row["receipt_sha256"] and row["grade_applied"] is not None) or (row["executable_pass"] and row["grade_applied"] is not True):
+            raise ValueError(f"{key} inconsistent grade application evidence")
     flagged = any(j["flags"] for j in row["quality"]["assessments"])
     if ((flagged and not allow_open_flags) or row["adjudication"] is not None) and not resolved_ruling(row["adjudication"]):
         raise ValueError(f"{key} has no substantiated adjudication")
@@ -412,9 +567,25 @@ def verify_submission(row, rates, independent, observations, *, allow_open_flags
         for probe, checksum in row["adjudication"].get("probe_receipts_sha256", {}).items():
             if observations.get(probe) != checksum:
                 raise ValueError(f"{key} adjudication links to a different probe receipt")
+    if row["effort"] and "pricing" in row["effort"] and row["effort"]["pricing"]["native_sha256"] != row["receipt_sha256"].get("native"):
+        raise ValueError(f"{key} pricing native receipt differs")
     verify_cost(key, row["effort"], rates)
     if row["state"] in ("interrupted", "unreleased", "blocked"):
         readiness = "unavailable"
+    elif natural and key[1] != "upstream" and row["state"] == "completed":
+        observation = row["proposal_observation"]
+        proposal_valid = True if observation == "present" else False if observation in ("incomplete", "omitted") else None
+        elapsed = (row["effort"] or {}).get("prompt_to_terminal_seconds")
+        timely = None if elapsed is None or deadline is None else elapsed <= deadline
+        required = {"build", "native", "contract", "preserve"} | ({"independent"} if independent else set())
+        evidence = outcomes.grade_evidence(proposal_valid, timely, row["grade_applied"],
+                                           {k: v["exit"] for k, v in row["stages"].items()}, required,
+                                           (row["adjudication"] or {}).get("resolution") == "confirmed")
+        if (evidence == "pass" and not row["executable_pass"]
+                or evidence == "pending" and row["executable_pass"]):
+            raise ValueError(f"{key} executable evidence differs")
+        readiness = evidence if evidence != "pass" else (
+            "pending" if len(row["quality"]["assessments"]) < 3 or (flagged and not row["adjudication"]) else "ready")
     elif not row["executable_pass"] or (row["adjudication"] or {}).get("resolution") == "confirmed":
         readiness = "failed"
     elif len(row["quality"]["assessments"]) < 3 or (flagged and not row["adjudication"]):
@@ -495,8 +666,12 @@ def read_pilot(path):
         if (row["role"] != role or row["case_id"] != reg["case"]
                 or row["plan_sha256"] != reg["plans"]["candidate"]["sha256"]):
             raise ValueError("published pilot contains a submission from another case or plan")
+        if reg.get("evaluator_protocol") in pricing.NATURAL_PROTOCOLS and role != "upstream" and (not isinstance(row.get("effort"), dict) or "pricing" not in row["effort"]):
+            raise ValueError("natural protocol requires pricing attribution")
         verify_submission(row, record["rates"], independent, observations, allow_open_flags=True)
     prior = record["prior_develop"]
+    if reg.get("evaluator_protocol") in pricing.NATURAL_PROTOCOLS and (not isinstance(prior.get("effort"), dict) or "pricing" not in prior["effort"]):
+        raise ValueError("natural protocol requires prior pricing attribution")
     if "patch" in prior or "proposal" in prior:
         verify_artifacts("prior Develop", prior, prior)
     elif path.with_name("prior.json").is_file():
@@ -562,8 +737,12 @@ def read_bundle(path):
             raise ValueError(f"wrong run, case or duplicate role: {key}")
         if key[1] == "upstream" and row["patch_sha256"] != cases[key[0]]["controls"]["merged_patch_sha256"]:
             raise ValueError(f"{key} upstream patch differs from the frozen merged reference")
+        if manifest["protocol"] in pricing.NATURAL_PROTOCOLS and key[1] != "upstream" and (not isinstance(row.get("effort"), dict) or "pricing" not in row["effort"]):
+            raise ValueError("natural protocol requires pricing attribution")
         verify_submission(row, manifest["runtime"]["rates_usd_per_million"],
-                          cases[key[0]]["controls"]["independent_check"], observations)
+                          cases[key[0]]["controls"]["independent_check"], observations,
+                          natural=manifest["protocol"] == "pr-quality-confirmation-natural-v1",
+                          deadline=cases[key[0]]["controls"]["deadline_seconds"])
         rows[key] = row
     if set(rows) != {(case, role) for case in cases for role in ROLES} or len(rows) != manifest["submissions"]["rows"]:
         raise ValueError("expected exactly one record for each case and producer")
@@ -589,14 +768,21 @@ def read_bundle(path):
         accepted = [(a["rotation"], a["native_sha256"]) for a in meters if a["accepted"]]
         if sorted(accepted) != sorted((rotation, judges[0]["assessor_sha256"]) for rotation, judges in seats.items()):
             raise ValueError(f"{case['id']} scored assessor differs from its metering entry")
-        confirmation = manifest["protocol"] == "pr-quality-confirmation-v1"
+        confirmation = manifest["protocol"] in pricing.CONFIRMATION_PROTOCOLS
         for a,b in (("develop","control"),("develop","upstream"),("control","upstream")):
             if case["comparison"][a+"_"+b] != proposal_verdict(rows[case["id"],a], rows[case["id"],b], 3 if confirmation else 2):
                 raise ValueError(f"{case['id']} full proposal verdict differs from its paired votes and gates")
             if case["comparison"]["diff_85"][a+"_"+b] != within_panel_diff(rows[case["id"],a],rows[case["id"],b]):
                 raise ValueError(f"{case['id']} within-panel paired diff score differs")
         if confirmation:
-            verify_confirmation(case, rows, seats, manifest["runtime"]["treatment"], manifest["runtime"])
+            verify_confirmation(case, rows, seats, manifest["runtime"]["treatment"], manifest["runtime"], natural=manifest["protocol"] == "pr-quality-confirmation-natural-v1")
+        elif manifest["protocol"] in pricing.NATURAL_PROTOCOLS:
+            profiles = case["comparison"].get("profiles", dict.fromkeys(("control", "develop")))
+            if not isinstance(profiles, dict) or set(profiles) != {"control", "develop"}:
+                raise ValueError(f"{case['id']} invalid historical arm profiles")
+            for role, profile in profiles.items():
+                if profile is not None and not _confirmation_profile(rows[case["id"], role], profile, manifest["runtime"]["treatment"]):
+                    raise ValueError(f"{case['id']}/{role} stock profile differs from the sealed arm")
     attempts = [attempt for case in cases.values() for attempt in case["judge_attempts"]]
     assessor = manifest["evaluator"]
     if (assessor["attempts"] != len(attempts) or assessor["complete_receipts"] != sum(a["coverage"] == "complete" for a in attempts)

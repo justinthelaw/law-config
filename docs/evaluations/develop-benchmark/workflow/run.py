@@ -67,9 +67,31 @@ def admission(case):
     return latest
 
 
+NATURAL_DESCENDANTS = False
+
+
+def verify_qualifier_descendants(row):
+    starts = {}
+    for item in row.get("review_events", []):
+        if item.get("kind") != "started":
+            continue
+        a, b = item.get("agentThreadId"), item.get("childThreadId")
+        if a and b and a != b:
+            raise ValueError("conflicting qualifier child identity")
+        child = a or b
+        if not child or child in starts:
+            raise ValueError("missing or duplicate qualifier child identity")
+        starts[child] = (item.get("model"), item.get("reasoningEffort"))
+    if set(starts) != set(row.get("children", [])) or not starts or any(
+            v != (lab.SPEC["model"], lab.SPEC["effort"]) for v in starts.values()):
+        raise ValueError("qualifier descendant model or effort differs")
+
+
 def native(case, arm, run, work, prompt, nonce="", *, budget=300, capture=None):
     start = time.monotonic()
     row = {"arm": arm, "model": lab.SPEC["model"], "effort": lab.SPEC["effort"], "usd": None, "qualifying": bool(nonce)}
+    if NATURAL_DESCENDANTS and not nonce and capture is not None:
+        row["pricing_policy"] = "natural-sol-v1"
     server = None
     try:
         cli, home, installed = host.profile(case, arm, run, work, nonce)
@@ -81,9 +103,11 @@ def native(case, arm, run, work, prompt, nonce="", *, budget=300, capture=None):
             events = {event for event, status in row["hooks"] if status == "completed"}
             if row.get("hook_errors") or events != {"preToolUse", "postToolUse"}:
                 raise ValueError("treatment command hooks did not complete")
-        if any(item.get("kind") == "started" and
-               (item.get("model"), item.get("reasoningEffort")) != (lab.SPEC["model"], lab.SPEC["effort"])
-               for item in row.get("review_events", [])):
+        if NATURAL_DESCENDANTS and nonce:
+            verify_qualifier_descendants(row)
+        elif row.get("pricing_policy") != "natural-sol-v1" and any(item.get("kind") == "started" and
+                (item.get("model"), item.get("reasoningEffort")) != (lab.SPEC["model"], lab.SPEC["effort"])
+                for item in row.get("review_events", [])):
             raise ValueError("descendant model or effort changed")
         row["state"] = "completed"
     except TimeoutError as exc:

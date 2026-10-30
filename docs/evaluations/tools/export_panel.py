@@ -35,7 +35,11 @@ def computation_hash():
     return h.hexdigest()
 
 
-def meter(row, score):
+def meter(row, score, native_sha256=None):
+    if E.PANEL["protocol"] in {"pr-quality-pytest-entry-natural-v1", "pr-quality-confirmation-natural-v1"} and "pricing_policy" not in row:
+        if native_sha256 is not None or row.get("usage"):
+            raise ValueError("natural protocol has unbound native pricing")
+        row = dict(row, pricing_policy="natural-sol-v1")
     actual = R.usage(row)
     for key in ("coverage", "tokens", "usd_estimate"):
         if actual[key] != score[key]:
@@ -51,6 +55,7 @@ def meter(row, score):
         "setup_seconds": row.get("setup_seconds"), "grading_seconds": row.get("grading_seconds"),
         "thread_count": len(meters), "child_count": len(set(row.get("children", []))),
         "root_tokens": meters.get(root), "descendant_tokens": child_tokens,
+        **({"pricing": {**actual["pricing"], "native_sha256": native_sha256}} if "pricing" in actual else {}),
         "observed_commands": len(row.get("commands", [])), "native_hook_receipts": len(row.get("hooks", []))}
 
 
@@ -110,7 +115,7 @@ def submission(name, case, role, plan_sha, reference):
         if row["state"] == "unreleased" or row["state"] != score["state"] or (row["state"] == "interrupted" and C.launcher_active(name)):
             raise ValueError(f"cannot publish a nonterminal or stale {key}/{role} record")
         folder = root / "attempts" / key / role
-        for file in ("release", "native", "submission", "result", "inventory", *(("turn-input",) if E.COHORT else ())):
+        for file in ("release", "native", "submission", "result", "inventory", *(("turn-input",) if E.COHORT or E.PANEL["protocol"] in records.pricing.NATURAL_PROTOCOLS else ())):
             path = folder / (file + ".json")
             if path.is_file():
                 receipts[file] = E.sha(path)
@@ -119,7 +124,7 @@ def submission(name, case, role, plan_sha, reference):
         patch, proposal = artifacts["patch"], artifacts["proposal"]
         observation = ("present" if C.complete_proposal(proposal or "") else "incomplete" if proposal
                        else "omitted" if sealed and row["state"] == "completed" else "unavailable")
-        effort = meter(row, score)
+        effort = meter(row, score, receipts.get("native"))
         cause = ("provider_capacity" if "serverOverloaded" in str(row.get("error")) else row["state"]
                  if row["state"] != "completed" else None)
     if grade and grade.get("patch_sha256") != text_hash(patch):
@@ -132,7 +137,9 @@ def submission(name, case, role, plan_sha, reference):
     code = D.diff(score)
     return {"format":"law-config.eval-submission/v1","plan_sha256":plan_sha,"case_id":key,"role":role,
             "state":score["state"],"readiness":score["status"],"executable_pass":score["executable_pass"],
-            "failure_kind":cause,"stages":stages,"patch":patch,"patch_sha256":text_hash(patch),
+            "failure_kind":cause,"stages":stages,
+            **({"grade_applied":grade.get("applied")} if E.PANEL["protocol"] == "pr-quality-confirmation-natural-v1" and role != "upstream" else {}),
+            "patch":patch,"patch_sha256":text_hash(patch),
             "proposal":proposal,"proposal_sha256":text_hash(proposal),"proposal_observation":observation,
             "bindings":{"grade_patch_sha256":grade.get("patch_sha256"), "judges":judge_bindings(root,key,role,review["judgments"],patch,proposal)},
             "quality":{"axes":review["axes"],"proposal_points_100":review["score"],"diff_points_85":code["points"],
@@ -153,6 +160,8 @@ def export_pilot(name, destination):
         raise ValueError("pilot result differs from its registration or content hash")
     reg = C.verify_receipt(registration)
     plans = {role: C.verify_receipt(entry) for role, entry in reg["plans"].items()}
+    for plan in plans.values():
+        C.verify_evaluator(plan)
     raw, key = source["case"], reg["case"]
     if (reg["name"] != name or raw["case"] != key or raw["split"] != "tuning"
             or source["goal_win"] != R.goal_win(raw)):
@@ -195,6 +204,7 @@ def export_pilot(name, destination):
                      "inventory_sha256": proof["inventory"]["sha256"], "input_sha256": proof["input"]["sha256"],
                      "config_sha256": proof["final_config_sha256"]}
         profiles[role + "/" + arm] = proof
+    prior_native = C.run_dir(plans["prior"]["name"]) / "attempts" / key / "develop/native.json"
     record = {"format": "law-config.eval-pilot/v1", "name": name, "case": key, "repository": raw["repo"], "pr": raw["pr"],
               **({"evaluator_protocol": reg["evaluator_protocol"]} if "evaluator_protocol" in reg else {}),
               "registration": reg, "registration_sha256": registration["sha256"], "result_sha256": E.sha(paths[0]),
@@ -205,7 +215,7 @@ def export_pilot(name, destination):
               "model": E.PANEL["model"], "effort": E.PANEL["effort"], "rates": plan["cost_usd_per_million"],
               "profiles": profiles, "comparisons": raw["pairs"], "goal_win": source["goal_win"], "submissions": rows,
               "route_review": source["route_review"],
-              "prior_develop": {"state": prior["state"], "effort": meter(prior, source["prior"]), "stage_exits": exits,
+              "prior_develop": {"state": prior["state"], "effort": meter(prior, source["prior"], E.sha(prior_native) if prior_native.is_file() else None), "stage_exits": exits,
                                 "patch_sha256": prior.get("patch_sha256"), "proposal_sha256": prior.get("proposal_sha256"),
                                 "full_pr_score": None}, "assessor_costs": raw["evaluator_cost"], "observations": observations(root)}
     records.observation_receipts(record["observations"], pilot_registration=registration["sha256"])
@@ -257,16 +267,24 @@ def portable_case(raw, case, ref, plan, layout):
                 "cpu_pair":layout["cpu_pairs"][lane],"build":case["build"],"worker_native":E.guest.native_tests(case),
                 "grader_native":case["native"],"independent_check":bool(case.get("independent"))}
     comparisons = dict(raw["pairs"], diff_85={a+"_"+b:D.compare(raw,a,b) for a,b in R.PAIRS})
-    if E.COHORT:
+    if E.COHORT or E.PANEL["protocol"] in records.pricing.NATURAL_PROTOCOLS:
         from efficiency_pilot import check_input
         profiles = {}
         for role in ("control", "develop"):
-            attempt, proof = check_input(plan["name"], key, role)
+            try:
+                attempt, proof = check_input(plan["name"], key, role)
+            except FileNotFoundError:
+                if E.COHORT:
+                    raise
+                proof = None
             profiles[role] = None if proof is None else {
                 **proof["final_stock"], "plugins":E.read(E.STATE / proof["inventory"]["path"])["plugins"],
                 "inventory_sha256":proof["inventory"]["sha256"], "turn_sha256":proof["input"]["sha256"],
                 "config_sha256":proof["final_config_sha256"], "ephemeral":attempt["thread_start"]["ephemeral"]}
-        comparisons["confirmation"] = {"profiles":profiles, "win":all(profiles.values()) and R.goal_win(raw)}
+        if E.COHORT:
+            comparisons["confirmation"] = {"profiles":profiles, "win":R.goal_win(raw) if E.PANEL["protocol"] == "pr-quality-confirmation-natural-v1" else all(profiles.values()) and R.goal_win(raw)}
+        else:
+            comparisons["profiles"] = profiles
     return {"id":key,"repo":case["repo"],"pr":case["pr"],"base":case["base"],"merged":case["gold"],
             "split":case["split"],"stratum":case["stratum"],"language":case["language"],"domain":case["domain"],
             "complexity":case.get("complexity"),"prompt":case["prompt"],"first_commit":case["first_commit"],
@@ -366,7 +384,8 @@ def export(name, destination):
     for case in cases:
         if "confirmation" in case["comparison"]:
             case["comparison"]["confirmation"]["strict_quality_win"] = records.confirmation_quality(
-                case, per_role, runtime["treatment"], record["runtime"])
+                case, per_role, runtime["treatment"], record["runtime"],
+                natural=plan["protocol"] == "pr-quality-confirmation-natural-v1")
     policy = root / "operator-recovery.json"
     if policy.is_file():
         rule = E.read(policy)

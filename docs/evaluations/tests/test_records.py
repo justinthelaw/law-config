@@ -22,6 +22,25 @@ HASH = "a"*64
 GIT = "f"*40
 
 
+
+def confirmation_runtime():
+    return dict(records.CONFIRMATION_MODEL, **records.CONFIRMATION_NATIVE,
+        rates_usd_per_million=dict(records.CONFIRMATION_RATES), package_sha256=HASH,
+        treatment={"package_sha256": HASH, "plugin_hook_sha256": HASH,
+                   "hook_sha256": {"pre_tool_use": HASH, "post_tool_use": HASH}},
+        executor={"judge": dict(records.CONFIRMATION_MODEL)})
+
+
+def confirmation_profiles(rows):
+    profiles = {}
+    for row in rows:
+        row["receipt_sha256"].update(inventory=HASH, **{"turn-input": HASH})
+        profiles[row["role"]] = dict(ephemeral=False,
+            plugins=records.composite.expected_plugins(row["role"], None),
+            apps=[], mcp=[], global_instructions=[], inventory_sha256=HASH, turn_sha256=HASH)
+    return profiles
+
+
 def sample(temp, interrupted=False):
     rows, native, cases = [], [], []
     for index, key in enumerate(("full","partial")):
@@ -104,6 +123,42 @@ class PortableRecords(unittest.TestCase):
         self.path = Path(self.tmp.name)
         self.run, self.rows = sample(self.path)
 
+    def test_zero_stock_group_ratios_round_trip_without_losing_pairs(self):
+        scenarios = [([0,0],[0,0]), ([0,0],[1,2]), ([0,1],[1,2]), ([1,2],[2,3]), ([1,2],[0,0])]
+        for index,(stock,develop) in enumerate(scenarios):
+            with self.subTest(stock=stock,develop=develop):
+                run, rows = copy.deepcopy(self.run), copy.deepcopy(self.rows)
+                native = []
+                for i,case in enumerate(run['cases']):
+                    raw = dict(case=case['id'],assessors=[0,1,2],pairs=case['comparison'])
+                    for role in records.ROLES:
+                        row = next(r for r in rows if (r['case_id'],r['role'])==(case['id'],role))
+                        raw[role] = dict(state=row['state'],status=row['readiness'],review=dict(score=row['quality']['proposal_points_100']))
+                        if role=='upstream':continue
+                        effort = row['effort'];factor=(stock if role=='control' else develop)[i]
+                        effort['tokens'] = {k:v*factor for k,v in effort['tokens'].items()}
+                        effort.update(coverage='complete',root_tokens=effort['tokens'],estimated_usd=records.pricing.sol_cost(effort['tokens']))
+                        raw[role].update(coverage='complete',tokens=effort['tokens'],usd_estimate=effort['estimated_usd'],
+                            proposal_wall_seconds=effort['checkout_to_proposal_seconds'],wall_seconds=effort['prompt_to_terminal_seconds'],end_to_end_seconds=effort['through_grading_seconds'])
+                    native.append(raw)
+                group = R.group(native)
+                group['code_and_tokens'] = records.code_and_tokens([c['id'] for c in run['cases']],{(r['case_id'],r['role']):r for r in rows})
+                run['groups']['all'] = group
+                paired = group['paired']['usd_estimate'];positive=[y/x for x,y in zip(stock,develop) if x]
+                self.assertEqual(paired['pairs'],2)
+                self.assertAlmostEqual(paired['pure_sum'],sum(stock)*.00186)
+                self.assertAlmostEqual(paired['develop_sum'],sum(develop)*.00186)
+                if sum(stock):self.assertAlmostEqual(paired['ratio'],sum(develop)/sum(stock))
+                else:self.assertIsNone(paired['ratio'])
+                if positive:self.assertAlmostEqual(paired['median_pair_ratio'],statistics.median(positive))
+                else:self.assertIsNone(paired['median_pair_ratio'])
+                if not all(stock):self.assertIsNone(paired['ratio_interval'])
+                target=self.path/str(index);target.mkdir();write(target,run,rows)
+                records.read_bundle(target/'run.json')
+                bad=copy.deepcopy(run);bad['groups']['all']['paired']['usd_estimate']['ratio']=17
+                write(target,bad,rows)
+                with self.assertRaisesRegex(ValueError,'paired aggregate'):records.read_bundle(target/'run.json')
+
     def test_pilot_hard_gate_win_can_tie_the_blind_rubric(self):
         arms = {row["role"]: row for row in self.rows if row["case_id"] == "full"}
         control, develop = arms["control"], arms["develop"]
@@ -125,18 +180,10 @@ class PortableRecords(unittest.TestCase):
         self.assertIsNone(records.pilot_quality_signal(record)["equal_or_lower_complete_cost"])
 
     def test_confirmation_quality_is_blind_and_requires_complete_evidence(self):
-        runtime = dict(records.CONFIRMATION_MODEL, **records.CONFIRMATION_NATIVE,
-            rates_usd_per_million=dict(records.CONFIRMATION_RATES),
-            package_sha256=HASH, treatment={"package_sha256": HASH, "plugin_hook_sha256": HASH,
-                "hook_sha256": {"pre_tool_use": HASH, "post_tool_use": HASH}},
-            executor={"judge": dict(records.CONFIRMATION_MODEL)})
+        runtime = confirmation_runtime()
         rows = {(r["case_id"], r["role"]): r for r in self.rows}
         arms = {role: rows["full", role] for role in records.ROLES}
-        profiles = {}
-        for role in ("control", "develop"):
-            arms[role]["receipt_sha256"].update(inventory=HASH, **{"turn-input": HASH})
-            profiles[role] = dict(ephemeral=False, plugins=records.composite.expected_plugins(role, None),
-                apps=[], mcp=[], global_instructions=[], inventory_sha256=HASH, turn_sha256=HASH)
+        profiles = confirmation_profiles(arms[role] for role in ("control", "develop"))
         control, develop = arms["control"], arms["develop"]
         control["readiness"] = "failed"
         case = dict(id="full", repo=next(iter(records.target_repositories())), comparison={

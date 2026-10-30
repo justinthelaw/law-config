@@ -69,15 +69,32 @@ class OperatorTests(unittest.TestCase):
         self.assertEqual(snapshot["proposal_states"], {"candidate/control": "completed", "prior/develop": "allocated",
                                                        "candidate/develop": "unreleased"})
 
+    def test_published_status_shows_prior_gates_and_blind_merge_scores(self):
+        from records import blinded_proposal_verdict
+        name = "declared-entry-pytest-01"
+        record = B.read(B.HERE / "runs/tuning" / name / "result.json")
+        save(B.pilot_file(name), record)
+        status = B.status(name)
+        prior = status["outcomes"]["prior_develop"]
+        self.assertEqual(prior["stage_exits"]["preserve"], 42)
+        self.assertIsNone(prior["readiness"])
+        self.assertIsNone(prior["pr_score_100"])
+        for role in ("develop", "control"):
+            self.assertEqual(status["blind_full_pr_vs_merged"][role],
+                             blinded_proposal_verdict(record["submissions"][role],
+                                                      record["submissions"]["upstream"], 3))
+        self.assertEqual(status["outcomes"]["upstream"]["readiness"], "failed")
+
     def test_pilot_prepares_only_its_case_before_the_first_plan(self):
         import efficiency_pilot
         args = argparse.Namespace(action="pilot", name="trial", case="black")
         with patch.object(B, "configure_temp"), patch.object(N, "setup") as prepare, \
-                patch.object(B.os, "sched_setaffinity"), patch.dict(B.os.environ), \
+                patch.object(B.os, "sched_setaffinity"), patch.dict(B.os.environ, DEVELOP_EVAL_COHORT=N.E.PANEL["protocol"]), \
                 patch.object(efficiency_pilot, "run", return_value=0):
             self.assertEqual(B.dispatch(args), 0)
             prepare.assert_called_once_with([N.E.CASES["black"]])
-            save(self.state / "runs/trial-prior/plan.json", {})
+            save(self.state / "runs/trial-prior/plan.json", {"protocol":N.E.PANEL["protocol"], "name":"trial-prior",
+                 "runtime":{"source_sha256":N.E.version_digest()}, "rubric_sha256":N.E.sha(N.E.HERE/"rubric.md")})
             self.assertEqual(B.dispatch(args), 0)
             self.assertEqual(prepare.call_count, 1)
 
@@ -128,7 +145,10 @@ class OperatorTests(unittest.TestCase):
                 missing_rotation["submissions"][left], missing_rotation["submissions"][right], 3)
         missing_rotation["goal_win"] = False
         save(path, missing_rotation)
-        self.assertEqual(B.status(name)["assessor_costs"], {
+        status = B.status(name)
+        for comparison in status["blind_full_pr_vs_merged"].values():
+            self.assertEqual(comparison["verdict"], "unresolved")
+        self.assertEqual(status["assessor_costs"], {
             "coverage": "lower bound", "estimated_usd": None,
             "observed_usd": sum(a["usd_estimate"] for a in costs),
             "attempts": 3, "complete_receipts": 3})
@@ -342,7 +362,8 @@ class OperatorTests(unittest.TestCase):
 
     def test_reader_is_required_before_spending(self):
         output = io.StringIO()
-        with (patch.object(B,"configure_temp"), patch("importlib.metadata.version",return_value="wrong"),
+        with (patch.dict(B.os.environ, DEVELOP_EVAL_COHORT=N.E.PANEL["protocol"]),
+              patch.object(B,"configure_temp"), patch("importlib.metadata.version",return_value="wrong"),
               patch.object(N,"operate") as live, redirect_stderr(output)):
             self.assertEqual(B.main(["run","trial"]),2)
             live.assert_not_called()

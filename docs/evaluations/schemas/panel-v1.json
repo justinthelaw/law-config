@@ -227,6 +227,7 @@
         "child_count": {"type": "integer", "minimum": 0},
         "root_tokens": {"type": ["object", "null"]},
         "descendant_tokens": {"type": ["object", "null"]},
+        "pricing": {"type": "object"},
         "observed_commands": {"type": "integer", "minimum": 0},
         "native_hook_receipts": {"type": "integer", "minimum": 0}
       },
@@ -259,6 +260,7 @@
         "state": {"enum": ["completed", "timeout", "blocked", "interrupted", "unreleased", "merged"]},
         "readiness": {"enum": ["ready", "failed", "unavailable", "pending"]},
         "executable_pass": {"type": "boolean"},
+        "grade_applied": {"type": ["boolean", "null"]},
         "failure_kind": {"type": ["string", "null"]},
         "stages": {"type": "object", "additionalProperties": {"$ref": "#/$defs/stage"}},
         "patch": {"type": ["string", "null"]},

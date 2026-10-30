@@ -16,6 +16,7 @@ import guest
 import host
 import lab
 import run as native
+import pricing
 
 ROOT = lab.ROOT
 STATE = ROOT / "tmp/pr-quality-panel"
@@ -23,20 +24,22 @@ CACHE = STATE / "cache"
 PANEL = json.loads((HERE / "panel.json").read_bytes())
 COHORT = None
 cohort_name = os.environ.get("DEVELOP_EVAL_COHORT", PANEL["protocol"])
-if cohort_name == "pr-quality-runner-v3":
+if cohort_name in ("pr-quality-runner-v3", "pr-quality-pytest-entry-natural-v1"):
     PANEL["protocol"] = cohort_name
     runner = next(c for c in PANEL["cases"] if c["id"] == "runner-space")
     runner.update(check="runner_lint_ledger_v3.mjs", loopback_hosts=True)
-elif cohort_name == "pr-quality-pytest-entry-v1":
+if cohort_name in ("pr-quality-pytest-entry-v1", "pr-quality-pytest-entry-natural-v1"):
     PANEL["protocol"] = cohort_name
     next(c for c in PANEL["cases"] if c["id"] == "pytest")["console_preserve"] = True
 elif cohort_name != PANEL["protocol"]:
+    if cohort_name not in pricing.CONFIRMATION_PROTOCOLS:
+        raise ValueError("unknown PR benchmark cohort: " + cohort_name)
     sys.path.insert(0, str(HERE.parent))
     from confirmation import cohort as COHORT
-    if cohort_name != COHORT.NAME:
-        raise ValueError("unknown PR benchmark cohort: " + cohort_name)
     PANEL = COHORT.load(PANEL)
+    PANEL["protocol"] = cohort_name
     CACHE = STATE / "confirmation-cache"
+native.NATURAL_DESCENDANTS = PANEL["protocol"] in pricing.NATURAL_PROTOCOLS
 CASES = {c["id"]: c for c in PANEL["cases"]}
 
 

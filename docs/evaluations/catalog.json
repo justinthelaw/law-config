@@ -75,6 +75,16 @@
       "unit": "one historical producer with fresh declared-console preservation on pytest"
     },
     {
+      "id": "pr-quality-pytest-entry-natural-v1",
+      "guide": "develop-benchmark/panel/README.md",
+      "environment": "develop-benchmark/panel/environment.py",
+      "cases": "develop-benchmark/panel/panel.json",
+      "rubric": "develop-benchmark/panel/rubric.md",
+      "record_schema": "schemas/panel-v1.json",
+      "results_glob": "runs/pr-quality-pytest-entry-natural-v1/*/run.json",
+      "unit": "one historical proposal with Pytest console and Runner Space ledger checks, a Sol Medium start and metered workers"
+    },
+    {
       "id": "develop-efficiency-pilot-v1",
       "guide": "develop-benchmark/panel/README.md",
       "environment": "tools/efficiency_pilot.py",
@@ -92,6 +102,16 @@
       "record_schema": "schemas/panel-v1.json",
       "results_glob": "runs/pr-quality-confirmation-v1/*/run.json",
       "unit": "one fresh matched pair and its merged PR on each of the twenty repositories"
+    },
+    {
+      "id": "pr-quality-confirmation-natural-v1",
+      "guide": "README.md",
+      "environment": "develop-benchmark/panel",
+      "cases": "develop-benchmark/confirmation/fixtures.json",
+      "rubric": "develop-benchmark/panel/rubric.md",
+      "record_schema": "schemas/panel-v1.json",
+      "results_glob": "runs/pr-quality-confirmation-natural-v1/*/run.json",
+      "unit": "one fresh matched pair and its merged PR per repository, with a verified Sol Medium start and independently metered descendant settings"
     }
   ]
 }

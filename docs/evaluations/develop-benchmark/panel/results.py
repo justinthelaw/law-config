@@ -14,13 +14,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import campaign as C
 import environment as E
 import judge as J
+import pricing
+import outcomes
 
 TOKENS=("inputTokens","cachedInputTokens","cacheWriteInputTokens","outputTokens","reasoningOutputTokens","totalTokens")
 ROLES=J.ROLES
 PAIRS=(("develop","control"),("develop","upstream"),("control","upstream"))
 
 
-def usage(row):
+def _legacy_usage(row):
     by_thread=row.get("usage",{})
     participants=set(row.get("threads",[]))|set(row.get("children",[]))|{row.get("root")}
     def terminal(thread):
@@ -51,6 +53,104 @@ def usage(row):
     usd=micro_usd/1e6 if measured else None
     return {"coverage":"complete" if complete else "lower bound" if by_thread else "unknown",
             "tokens":sums,"threads":len(by_thread),"usd_estimate":usd}
+
+
+def usage(row):
+    if row.get("pricing_policy") != "natural-sol-v1":
+        return _legacy_usage(row)
+    root, meters = row.get("root"), row.get("usage", {})
+    result = {"threads":len(meters), "tokens":{k:None for k in TOKENS}}
+    for meter in meters.values():
+        for key in TOKENS:
+            value = meter.get(key) if isinstance(meter, dict) else None
+            if type(value) is int and value >= 0:
+                result["tokens"][key] = (result["tokens"][key] or 0) + value
+    participants = (set(row.get("threads", [])) | set(row.get("children", [])) | set(meters) | {root}) - {None}
+    starts = {}
+    for event in row.get("review_events", []):
+        if event.get("type") == "subAgentActivity" and event.get("kind") == "started":
+            a, b = event.get("agentThreadId"), event.get("childThreadId")
+            if a and b and a != b:
+                starts.setdefault(a, []).append(None)
+                starts.setdefault(b, []).append(None)
+            else:
+                starts.setdefault(a or b, []).append(event)
+
+    def rooted(thread):
+        seen = set()
+        while thread != root:
+            if thread in seen or len(starts.get(thread, [])) != 1 or not starts[thread][0]:
+                return False
+            seen.add(thread)
+            thread = starts[thread][0].get("parentThreadId")
+            if thread not in participants:
+                return False
+        return True
+
+    def consistent_meter(thread):
+        turns = row.get("turn_meters", {}).get(thread, {})
+        return pricing.consistent_meter(list(turns.values()), meters.get(thread), TOKENS)
+
+    priced, unpriced, reasons, proof = [], [], {}, []
+    for thread in sorted(participants):
+        tokens = meters.get(thread)
+        turns = row.get("turn_meters", {}).get(thread, {})
+        contexts = row.get("turn_contexts", {}).get(thread, {})
+        receipt = row.get("turn_context_receipts", {}).get(thread)
+        proven = (isinstance(receipt, str) and len(receipt) == 64
+                  and not set(receipt) - set("0123456789abcdef")
+                  and bool(turns) and set(contexts) == set(turns) and all(
+            c.get("model") in pricing.MODEL_RATE_CARD["rates"] and c.get("effort") for c in contexts.values()))
+        models = {c.get("model") for c in contexts.values()}
+        model = next(iter(models)) if len(models) == 1 else None
+        proven &= model is not None
+        start = {"model":row.get("thread_start", {}).get("model"), "effort":row.get("effort"), "parent":None}
+        if thread == root:
+            proven &= (row.get("effective_root_model") == "gpt-6.1-sol"
+                       and row.get("thread_start", {}).get("model") == model == "gpt-6.1-sol")
+        else:
+            events = starts.get(thread, [])
+            event = events[0] if len(events) == 1 and events[0] else {}
+            start = {"model":event.get("model"), "effort":event.get("reasoningEffort"),
+                     "parent":hashlib.sha256(event["parentThreadId"].encode()).hexdigest() if event.get("parentThreadId") else None}
+            proven &= (thread in row.get("children", []) and rooted(thread) and len(events) == 1
+                       and events[0] is not None and events[0].get("model") == model
+                       and bool(events[0].get("reasoningEffort")))
+        proof.append({"thread": hashlib.sha256(thread.encode()).hexdigest(), "bound": bool(proven),
+                      "meter_consistent": consistent_meter(thread), "model":model, "tokens":tokens, "start":start,
+                      "trace_sha256": receipt, "turns": [{
+                          "turn": hashlib.sha256(turn.encode()).hexdigest(),
+                          "model": contexts.get(turn, {}).get("model"),
+                          "effort": contexts.get(turn, {}).get("effort"),
+                          **{k: meter.get(k) for k in ("message_seq", "usage_seq", "terminal_seq", "status", "total")}}
+                          for turn, meter in sorted(turns.items())]})
+        if proven and consistent_meter(thread) and tokens is not None and pricing.model_cost(model, tokens) is not None:
+            priced.append(tokens)
+        else:
+            unpriced.append(tokens)
+            reasons["unpriced or unbound thread"] = reasons.get("unpriced or unbound thread", 0) + 1
+
+    def total(rows):
+        return {k: sum(t[k] for t in rows if t is not None and type(t.get(k)) is int and t[k] >= 0)
+                for k in TOKENS}
+    priced_tokens, unpriced_tokens = total(priced), total(unpriced)
+    token_complete = (row.get("state") == "completed" and bool(meters) and set(meters) == participants
+                      and all(consistent_meter(thread) for thread in participants))
+    complete = token_complete and bool(participants) and not unpriced
+    partitions = pricing.model_partitions(proof)
+    subtotal = pricing.partitions_cost(partitions)
+    result["coverage"] = "complete" if complete else "lower bound" if subtotal is not None else "unknown"
+    result["usd_estimate"] = subtotal if complete else None
+    root_start = {"thread": hashlib.sha256(root.encode()).hexdigest() if root else None,
+                  "requested_model": row.get("thread_start", {}).get("model"),
+                  "effective_model": row.get("effective_root_model"), "requested_effort": row.get("effort")}
+    result["pricing"] = {"policy": pricing.MODEL_POLICY, "rate_card":pricing.MODEL_RATE_CARD, "model_tokens":partitions, "root_start": root_start,
+                         "root_default_verified": pricing.root_default(root_start, proof),
+                         "token_coverage": "complete" if token_complete
+                         else "lower bound" if meters else "unknown", "priced_tokens": priced_tokens,
+                         "unpriced_tokens": unpriced_tokens, "priced_threads": len(priced), "unpriced_threads": len(unpriced),
+                         "unpriced_reasons": reasons, "known_usd_lower_bound": subtotal, "terminal_proof": proof}
+    return result
 
 
 def weighted(scores):
@@ -138,6 +238,10 @@ def pair_quality(left,right,items):
 
 def goal_win(row):
     a, b = row["develop"], row["control"]
+    if (any("pricing" in r for r in (a, b)) and a["status"] == "ready"
+            and row["pairs"]["develop_control"]["verdict"] == "develop"
+            and any(r["coverage"] != "complete" for r in (a, b))):
+        return None
     return (a["status"] == "ready" and all(r["state"] == "completed" and
             r["coverage"] == "complete" and r["usd_estimate"] is not None and
             r.get("proposal_sha256") not in (None, hashlib.sha256(b"").hexdigest()) for r in (a, b))
@@ -163,9 +267,16 @@ def case_row(name,c):
         else:
             row=C.read_attempt(name,key,role)
             grade=C.verified_grade(row["grade"]) if row.get("grade") else {}
-            executable=(row["state"]=="completed" and bool(grade) and grade.get("applied",False)
-                        and row.get("final_phase")=="final_answer" and C.complete_proposal(row.get("final",""))
-                        and row.get("wall_seconds",float("inf"))<=plan["references"][key]["deadline_seconds"])
+            if E.PANEL["protocol"] == "pr-quality-confirmation-natural-v1":
+                proposal_complete=(row["state"]=="completed" and row.get("final_phase")=="final_answer"
+                                   and C.complete_proposal(row.get("final","")))
+                wall = row.get("wall_seconds")
+                timely = type(wall) in (int, float) and wall <= plan["references"][key]["deadline_seconds"]
+                executable=proposal_complete and timely and bool(grade) and grade.get("applied",False)
+            else:
+                executable=(row["state"]=="completed" and bool(grade) and grade.get("applied",False)
+                            and row.get("final_phase")=="final_answer" and C.complete_proposal(row.get("final",""))
+                            and row.get("wall_seconds",float("inf"))<=plan["references"][key]["deadline_seconds"])
         exits={key:s["exit"] for key,s in grade.get("stages",{}).items()}
         mandatory={"build","native","contract","preserve"}|({"independent"} if c.get("independent") else set())
         gates=executable and set(exits)>=mandatory and all(exits[k]==0 for k in mandatory)
@@ -176,6 +287,13 @@ def case_row(name,c):
         status=("unavailable" if row["state"] in {"unreleased","blocked","interrupted"} else
                 "failed" if not gates or issue.get("resolution")=="confirmed" else
                 "pending" if len(assessors)<3 or (summaries[role]["flags"] and not issue) else "ready")
+        if (E.PANEL["protocol"] == "pr-quality-confirmation-natural-v1" and role != "upstream"
+                and row["state"] == "completed"):
+            evidence = outcomes.grade_evidence(proposal_complete, timely if wall is not None else None,
+                                               grade.get("applied"), exits, mandatory,
+                                               issue.get("resolution") == "confirmed")
+            status = evidence if evidence != "pass" else (
+                "pending" if len(assessors) < 3 or (summaries[role]["flags"] and not issue) else "ready")
         result[role]={"state":row["state"],"status":status,"executable_pass":gates,"stages":exits,
                       "grade_receipt":reference["gold_grade"] if role=="upstream" else row.get("grade"),
                       "review":summaries[role],"adjudication":issue}
@@ -213,10 +331,11 @@ def group(rows):
     for field in ("usd_estimate","proposal_wall_seconds","wall_seconds","end_to_end_seconds"):
         pairs=costs(rows,field)
         if pairs:
-            ratio=lambda p:sum(y for x,y in p)/sum(x for x,y in p)
+            ratio=lambda p:sum(y for x,y in p)/sum(x for x,y in p) if sum(x for x,y in p) else None
+            positive=[y/x for x,y in pairs if x]
             totals[field]={"pairs":len(pairs),"pure_sum":sum(x for x,y in pairs),"develop_sum":sum(y for x,y in pairs),
-                "ratio":ratio(pairs),"median_pair_ratio":statistics.median(y/x for x,y in pairs if x),
-                "ratio_interval":bootstrap(pairs,ratio)}
+                "ratio":ratio(pairs),"median_pair_ratio":statistics.median(positive) if positive else None,
+                "ratio_interval":bootstrap(pairs,ratio) if all(x for x,y in pairs) else None}
     scores=[[r["control"]["review"]["score"],r["develop"]["review"]["score"]] for r in rows
             if len(r["assessors"])==3 and r["control"]["review"]["score"] is not None
             and r["develop"]["review"]["score"] is not None]

@@ -33,17 +33,17 @@ python3 -B "$e/benchmark.py" run trial-01
 python3 -B "$e/benchmark.py" status trial-01
 ```
 
-The default run compares stock Codex with reference Develop and pinned Superpowers 6.3.0 on the historical tasks. Both arms can plan and delegate. Historical tasks authorize unattended implementation. Pilots with a hypothesis and fresh confirmation tasks waive interactive plan review and retain required independent review. Resume with the original command, cohort and evaluator source matching the frozen hash. Preparation and cold builds can take hours. [Treatment selection](develop-benchmark/panel/README.md#choose-a-treatment)
+Default runs compare stock Codex with reference Develop and pinned Superpowers 6.3.0 on historical tasks. Both start on GPT-6.1 Sol Medium and may plan or delegate. Historical tasks authorize unattended implementation. Hypothesis pilots and fresh confirmation tasks waive interactive plan review and retain required independent review. Resume a run from its frozen evaluator source. The operator restores its cohort and rejects conflicting overrides. Preparation and cold builds can take hours. [Treatment selection](develop-benchmark/panel/README.md#choose-a-treatment)
 
 | Goal | Path |
 | --- | --- |
 | Test one change on a tuning case | [Matched efficiency pilot](develop-benchmark/panel/README.md#run-a-matched-efficiency-pilot) · [Published tuning results](runs/tuning/) |
-| Test a fixed package on fresh cases | Set `DEVELOP_EVAL_COHORT=pr-quality-confirmation-v1` and `PANEL_TREATMENT_LOCK` to the candidate’s `treatment.json`, then run a newly named full panel. Inspect progress with `status NAME`. |
+| Test a fixed package on fresh cases | Set `DEVELOP_EVAL_COHORT=pr-quality-confirmation-natural-v1` and `PANEL_TREATMENT_LOCK` to the candidate’s `treatment.json`, then run a newly named full panel. Inspect progress with `status NAME`. |
 | Freeze a candidate | `python3 -B "$e/benchmark.py" capture-treatment --previous RECIPE --label NAME`. Add `--source CHECKOUT` for another checkout. |
 | Replay a published caller check | `python3 -B "$e/tools/replay_caller.py" caller-werkzeug-01 public-warnings`. Add `--run NAME` for another pilot on the same task. |
 | Recover primary capacity failures | `python3 -B "$e/benchmark.py" recover PRIMARY NEW_NAME`. Report recovery pairs separately. |
 
-The baseline exposed both splits. Use those cases for tuning and regression checks. Use fresh cases for promotion. [Published pilots](runs/tuning/) · [Promotion criteria](runs/pr-quality-panel-v2/tuning.json)
+The baseline exposed both splits. Use those cases for tuning and regression checks. Use fresh cases for promotion. [Published pilots](runs/tuning/) · [Historical tuning policy](runs/pr-quality-panel-v2/tuning.json) · [Current promotion criteria](develop-benchmark/panel/rubric.md)
 
 ## How scoring works
 

@@ -170,13 +170,21 @@ def freeze(name, seed=None, *, pilot=None):
     return plan
 
 
+
+def verify_evaluator(plan):
+    protocol, source = plan.get("protocol"), plan.get("runtime", {}).get("source_sha256")
+    if (protocol != E.PANEL["protocol"] or source != E.version_digest()
+            or plan.get("rubric_sha256") != E.sha(E.HERE / "rubric.md")):
+        raise ValueError(f"frozen evaluator mismatch for {plan.get('name', 'run')}: protocol {protocol}, source {source}; "
+                         f"use its original checkout with DEVELOP_EVAL_COHORT={protocol}, or choose a new run name")
+
+
 def plan_for(name):
     path=run_dir(name)/"plan.json"
     plan=E.read(path)
-    if plan["protocol"] != E.PANEL["protocol"]:
-        raise ValueError(f"frozen protocol {plan['protocol']}; set DEVELOP_EVAL_COHORT={plan['protocol']} and resume {name}")
-    if runtime()!=plan["runtime"] or plan["rubric_sha256"]!=E.sha(E.HERE/"rubric.md"):
-        raise ValueError("frozen runtime or rubric differs; version a new experiment")
+    verify_evaluator(plan)
+    if runtime() != plan["runtime"]:
+        raise ValueError("frozen native runtime differs; restore the original CLI, sandbox and treatment or choose a new run name")
     qualification = qualifier(plan["qualification"])
     if not composite.qualification_matches(qualification, plan["runtime"]["treatment"]):
         raise ValueError("qualification does not match frozen treatment")

@@ -204,6 +204,8 @@ def execute(server, prompt, skill, record, budget):
     root = thread["thread"]["id"]
     if thread["model"] != SPEC["model"]:
         raise ValueError("provider changed the requested model")
+    if record.get("pricing_policy") == "natural-sol-v1":
+        record["effective_root_model"] = thread["model"]
     inputs = [{"type": "text", "text": ("$" + SKILL + " " if skill else "") + prompt}]
     if skill:
         inputs.append({"type": "skill", "name": SKILL, "path": skill})
@@ -257,7 +259,9 @@ def execute(server, prompt, skill, record, budget):
             if item["type"] in {"subAgentActivity", "collabAgentToolCall"}:
                 record.setdefault("review_events", []).append({key: value for key, value in item.items()
                     if key in {"type", "tool", "kind", "model", "reasoningEffort", "agentPath",
-                               "agentThreadId", "receiverThreadIds", "agentsStates"}})
+                               "agentThreadId", "childThreadId", "receiverThreadIds", "agentsStates"}})
+                if record.get("pricing_policy") == "natural-sol-v1":
+                    record["review_events"][-1]["parentThreadId"] = thread_id
             if item["type"] == "subAgentActivity" and item.get("kind") == "started":
                 child = item.get("agentThreadId") or item.get("childThreadId")
                 if child and child not in record["children"]:
