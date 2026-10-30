@@ -1,0 +1,4134 @@
+{
+  "format": "law-config.owner-config-authored-tests/v1",
+  "scope": "Preregistered postscore assessor-only five-source/five-control/two-route assay. Scores and readiness unchanged.",
+  "bindings": {
+    "registration_sha256": "d07ad46854f02d4f032bc848cbf07b77b117a2be7568315ae468e5930c4487b3",
+    "raw_result_sha256": "97fecf417168c55bfac25f5a3437d8f258ab1cfe9b6a7013a37a9f847093ec8f",
+    "hypothesis_sha256": "d433a8249108ee4a727f1a5dbee266cdb8cc8a48d8fc4e918583a6e63bfb8d67",
+    "parent_seal_sha256": "4386c5eb708dfc30cc88cea22ef8fd946918ea8c40c8c80002d1f14f34bbb749",
+    "private_assay_receipt_sha256": "15a3d2f8bc00ff23cea3ffab702cd90bb09009ad800de3f0baad966ef267bf3f",
+    "assay_sha256": "3a8a8393bf2b323731e7a2934386ab5af29e439b88260596f70603ecedd6657d",
+    "validator_sha256": "4972973499d82d38db1ee4d62c36cd5e2f9774f9189bd2ef547925e984ba6211",
+    "original_plan_file_sha256": "b9434529e0fa00e62c7f29d8d691d5d5ee839d96385df788a652884301bb0663",
+    "evaluator_binding": {
+      "case": "runner-space",
+      "fixture_sha256": "502782e97e3bd55c8708331f6ed1617842baa5440a5c7f77af20e6be848092be",
+      "protocol": "pr-quality-runner-v3",
+      "source_sha256": "0d6c18d4c59b10d4ef17ccb21e666671761718f4f996f1069ddc7bc14bc5b6ac"
+    }
+  },
+  "subjects": {
+    "pure": {
+      "source_identity_sha256": "19ac7f5b898ad1375d04a71d4871a01a30d3da8f57229259c8a45c5aeb9a0e45",
+      "git_tree": "540f266f97c58eafdc67a60216e8f53dffd967c7",
+      "sealed_patch_sha256": "6bfbd68196b73da873868db52e2043e84867727a366f7a10b5f450d56c651656",
+      "official_grade": {
+        "path": "runs/owner-config-runner-space-01-candidate/attempts/runner-space/control/grade/grade.json",
+        "sha256": "ba5e40e398ec3e05cae328cfc90d2208ee426982a70e73d9a96e2320885644d5"
+      },
+      "source_full_tree_before_sha256": "19ac7f5b898ad1375d04a71d4871a01a30d3da8f57229259c8a45c5aeb9a0e45",
+      "source_full_tree_after_sha256": "19ac7f5b898ad1375d04a71d4871a01a30d3da8f57229259c8a45c5aeb9a0e45",
+      "owned_restored": true,
+      "source_unchanged": true,
+      "full_source_unchanged": true,
+      "compiled_tree_sha256": "d202278f14668f5b55deafdeae5c47e4cd3d2188be4173c0f672a2d204935c48",
+      "compile_inputs_sha256": "19ac7f5b898ad1375d04a71d4871a01a30d3da8f57229259c8a45c5aeb9a0e45",
+      "compile": {
+        "argv": [
+          "sh",
+          "-ec",
+          "npm run clean && tsc --project tsconfig.json"
+        ],
+        "exit": 0,
+        "log_sha256": "aec76fc7cdb9e8bc37254dd82a5329bad07ec090f74681123392d9c8860288d1",
+        "start_utc": "2026-10-30T09:25:33.364361+00:00",
+        "end_utc": "2026-10-30T09:25:34.808723+00:00",
+        "wall_seconds": 1.4443757080007344
+      },
+      "semantic_validation": {
+        "exit": 0,
+        "log_sha256": "6d2c254b3d2e9e996441611fddda4c17a7a24fbcde2326c73f03b9506e78e242",
+        "input_sha256": "b35dd841fd665a98307971ed29aa5c9bf96a12a19763e2c38c4a080477b26149",
+        "assessor_script_sha256": "4972973499d82d38db1ee4d62c36cd5e2f9774f9189bd2ef547925e984ba6211"
+      },
+      "discovery": {
+        "candidates": [
+          {
+            "compiled": "build/test/metadata.test.js",
+            "git_reference_lines": [],
+            "relevance_lines": [
+              1348,
+              1354,
+              1363,
+              1364,
+              1376,
+              1379,
+              1382,
+              1500
+            ],
+            "source": "test/metadata.test.ts",
+            "source_sha256": "e7c1c815f58004a241bd8f0e8d6409a93a42a6eaf4e47c074d5e9523a458af60",
+            "test_names": [
+              "action metadata retains every historical input and adds platform inputs",
+              "the public outputs are stable and documented",
+              "runtime discovery does not silently invent a hosted-runner home",
+              "remote workflow actions use immutable revisions and checkout drops credentials",
+              "action reference discovery covers named and anonymous steps",
+              "local action discovery supports action.yaml without admitting near spellings",
+              "local action discovery fails closed on symlinked entries",
+              "local action path inspection acquires stable explicit Windows reparse attributes",
+              "local action discovery rejects a symlinked traversal root",
+              "local action discovery fails closed on an injected reparse traversal root",
+              "local action discovery rejects an injected reparse manifest entry",
+              "workflow structure enumerates every job, step, and local action invocation",
+              "lint tooling retains its runtime and complete pre-push hook invocation",
+              "the exact-label sweep stays aligned with runner support docs",
+              "manual release validation uses fresh runners for all seven classes",
+              "pull-request coverage proves mount refusal and implicit Java preservation",
+              "release workflow contracts reject path and ordering decoys",
+              "public docs describe the v0.12.3 safety and release contracts",
+              "README swap examples identify their privileged Linux requirement"
+            ],
+            "unresolved_test_calls": 0
+          }
+        ],
+        "compiler_options": {
+          "declaration": false,
+          "esModuleInterop": true,
+          "exactOptionalPropertyTypes": true,
+          "forceConsistentCasingInFileNames": true,
+          "module": "NodeNext",
+          "moduleResolution": "NodeNext",
+          "noFallthroughCasesInSwitch": true,
+          "noImplicitOverride": true,
+          "noUncheckedIndexedAccess": true,
+          "noUnusedLocals": true,
+          "noUnusedParameters": true,
+          "outDir": "build",
+          "rootDir": ".",
+          "skipLibCheck": true,
+          "sourceMap": false,
+          "strict": true,
+          "target": "ES2024",
+          "types": [
+            "node"
+          ]
+        },
+        "configured_node_argv": [
+          "node",
+          "--test",
+          "build/test/*.test.js"
+        ],
+        "normal_discovery_inclusion": true,
+        "package_sha256": "e3098122a7843658449b7d89a6515e8ea9e30367926fa42a70303f2a6039de24",
+        "reason": null,
+        "scope": "candidate relevant modules, including inherited tests; no assertion-level authorship inferred",
+        "scripts": {
+          "clean": "node -e \"import('node:fs').then(({rmSync}) => { rmSync('build', { recursive: true, force: true }); })\"",
+          "test": "npm run clean && tsc --project tsconfig.json && node --test \"build/test/*.test.js\""
+        },
+        "source_inclusion": {
+          "test/metadata.test.ts": true
+        },
+        "status": "supported",
+        "tsconfig_sha256": "2566277c700608cc54768500986a515bf97bf7f839706772c00df701e51a15dd"
+      },
+      "selected_test_names": [
+        "action metadata retains every historical input and adds platform inputs",
+        "the public outputs are stable and documented",
+        "runtime discovery does not silently invent a hosted-runner home",
+        "remote workflow actions use immutable revisions and checkout drops credentials",
+        "action reference discovery covers named and anonymous steps",
+        "local action discovery supports action.yaml without admitting near spellings",
+        "local action discovery fails closed on symlinked entries",
+        "local action path inspection acquires stable explicit Windows reparse attributes",
+        "local action discovery rejects a symlinked traversal root",
+        "local action discovery fails closed on an injected reparse traversal root",
+        "local action discovery rejects an injected reparse manifest entry",
+        "workflow structure enumerates every job, step, and local action invocation",
+        "lint tooling retains its runtime and complete pre-push hook invocation",
+        "the exact-label sweep stays aligned with runner support docs",
+        "manual release validation uses fresh runners for all seven classes",
+        "pull-request coverage proves mount refusal and implicit Java preservation",
+        "release workflow contracts reject path and ordering decoys",
+        "public docs describe the v0.12.3 safety and release contracts",
+        "README swap examples identify their privileged Linux requirement"
+      ],
+      "source_modes": {
+        "file": {
+          "default": "0o644",
+          "overrides": {
+            ".github/workflows/lint.yml": "0o600",
+            ".pre-commit-config.yaml": "0o600",
+            "docs/dependency-upgrades/2026-10-30.md": "0o600",
+            "test/metadata.test.ts": "0o600"
+          }
+        },
+        "directory": {
+          "default": "0o700",
+          "overrides": {}
+        }
+      }
+    },
+    "prior": {
+      "source_identity_sha256": "37e8ccd0e5d0e4ce4594677ddc8a2e83fd05d93d0a870c1e806025b68e6f4e59",
+      "git_tree": "683d0e85f8473e83ea1aa906c5823fcc85e61c19",
+      "sealed_patch_sha256": "ac72e352ac237a80c15cb2827bffb6a6f133a699949ee993d7bfcb8b65e49de0",
+      "official_grade": {
+        "path": "runs/owner-config-runner-space-01-prior/attempts/runner-space/develop/grade/grade.json",
+        "sha256": "a19f3e27ab53269dcbbc7492a0f5af3dc3efad18181ba1b750fd9c82d5217e99"
+      },
+      "source_full_tree_before_sha256": "37e8ccd0e5d0e4ce4594677ddc8a2e83fd05d93d0a870c1e806025b68e6f4e59",
+      "source_full_tree_after_sha256": "37e8ccd0e5d0e4ce4594677ddc8a2e83fd05d93d0a870c1e806025b68e6f4e59",
+      "owned_restored": true,
+      "source_unchanged": true,
+      "full_source_unchanged": true,
+      "compiled_tree_sha256": "25dfc9f33e64736a0db5df79ea73eafaa7e2138eeb66e6dd0b381aa56fb0a377",
+      "compile_inputs_sha256": "37e8ccd0e5d0e4ce4594677ddc8a2e83fd05d93d0a870c1e806025b68e6f4e59",
+      "compile": {
+        "argv": [
+          "sh",
+          "-ec",
+          "npm run clean && tsc --project tsconfig.json"
+        ],
+        "exit": 0,
+        "log_sha256": "aec76fc7cdb9e8bc37254dd82a5329bad07ec090f74681123392d9c8860288d1",
+        "start_utc": "2026-10-30T09:26:05.617127+00:00",
+        "end_utc": "2026-10-30T09:26:07.033299+00:00",
+        "wall_seconds": 1.41613733000122
+      },
+      "semantic_validation": {
+        "exit": 0,
+        "log_sha256": "6d2c254b3d2e9e996441611fddda4c17a7a24fbcde2326c73f03b9506e78e242",
+        "input_sha256": "b35dd841fd665a98307971ed29aa5c9bf96a12a19763e2c38c4a080477b26149",
+        "assessor_script_sha256": "4972973499d82d38db1ee4d62c36cd5e2f9774f9189bd2ef547925e984ba6211"
+      },
+      "discovery": {
+        "candidates": [
+          {
+            "compiled": "build/test/lint-tooling.test.js",
+            "git_reference_lines": [],
+            "relevance_lines": [
+              7,
+              8,
+              21,
+              29,
+              30,
+              35,
+              39
+            ],
+            "source": "test/lint-tooling.test.ts",
+            "source_sha256": "e91add5bdd7198544a59714138a602aa4e9fdbb2b211048f0bba778195b14270",
+            "test_names": [
+              "lint tooling preserves supported runtimes and hook invocation",
+              "lint tooling uses the requested upstream releases"
+            ],
+            "unresolved_test_calls": 0
+          },
+          {
+            "compiled": "build/test/metadata.test.js",
+            "git_reference_lines": [],
+            "relevance_lines": [
+              1348,
+              1354,
+              1474
+            ],
+            "source": "test/metadata.test.ts",
+            "source_sha256": "a3541026029647a6d7d7371fc3dece77dca53bbede835b8991e447ef735eb384",
+            "test_names": [
+              "action metadata retains every historical input and adds platform inputs",
+              "the public outputs are stable and documented",
+              "runtime discovery does not silently invent a hosted-runner home",
+              "remote workflow actions use immutable revisions and checkout drops credentials",
+              "action reference discovery covers named and anonymous steps",
+              "local action discovery supports action.yaml without admitting near spellings",
+              "local action discovery fails closed on symlinked entries",
+              "local action path inspection acquires stable explicit Windows reparse attributes",
+              "local action discovery rejects a symlinked traversal root",
+              "local action discovery fails closed on an injected reparse traversal root",
+              "local action discovery rejects an injected reparse manifest entry",
+              "workflow structure enumerates every job, step, and local action invocation",
+              "the exact-label sweep stays aligned with runner support docs",
+              "manual release validation uses fresh runners for all seven classes",
+              "pull-request coverage proves mount refusal and implicit Java preservation",
+              "release workflow contracts reject path and ordering decoys",
+              "public docs describe the v0.12.3 safety and release contracts",
+              "README swap examples identify their privileged Linux requirement"
+            ],
+            "unresolved_test_calls": 0
+          }
+        ],
+        "compiler_options": {
+          "declaration": false,
+          "esModuleInterop": true,
+          "exactOptionalPropertyTypes": true,
+          "forceConsistentCasingInFileNames": true,
+          "module": "NodeNext",
+          "moduleResolution": "NodeNext",
+          "noFallthroughCasesInSwitch": true,
+          "noImplicitOverride": true,
+          "noUncheckedIndexedAccess": true,
+          "noUnusedLocals": true,
+          "noUnusedParameters": true,
+          "outDir": "build",
+          "rootDir": ".",
+          "skipLibCheck": true,
+          "sourceMap": false,
+          "strict": true,
+          "target": "ES2024",
+          "types": [
+            "node"
+          ]
+        },
+        "configured_node_argv": [
+          "node",
+          "--test",
+          "build/test/*.test.js"
+        ],
+        "normal_discovery_inclusion": true,
+        "package_sha256": "e3098122a7843658449b7d89a6515e8ea9e30367926fa42a70303f2a6039de24",
+        "reason": null,
+        "scope": "candidate relevant modules, including inherited tests; no assertion-level authorship inferred",
+        "scripts": {
+          "clean": "node -e \"import('node:fs').then(({rmSync}) => { rmSync('build', { recursive: true, force: true }); })\"",
+          "test": "npm run clean && tsc --project tsconfig.json && node --test \"build/test/*.test.js\""
+        },
+        "source_inclusion": {
+          "test/lint-tooling.test.ts": true,
+          "test/metadata.test.ts": true
+        },
+        "status": "supported",
+        "tsconfig_sha256": "2566277c700608cc54768500986a515bf97bf7f839706772c00df701e51a15dd"
+      },
+      "selected_test_names": [
+        "lint tooling preserves supported runtimes and hook invocation",
+        "lint tooling uses the requested upstream releases",
+        "action metadata retains every historical input and adds platform inputs",
+        "the public outputs are stable and documented",
+        "runtime discovery does not silently invent a hosted-runner home",
+        "remote workflow actions use immutable revisions and checkout drops credentials",
+        "action reference discovery covers named and anonymous steps",
+        "local action discovery supports action.yaml without admitting near spellings",
+        "local action discovery fails closed on symlinked entries",
+        "local action path inspection acquires stable explicit Windows reparse attributes",
+        "local action discovery rejects a symlinked traversal root",
+        "local action discovery fails closed on an injected reparse traversal root",
+        "local action discovery rejects an injected reparse manifest entry",
+        "workflow structure enumerates every job, step, and local action invocation",
+        "the exact-label sweep stays aligned with runner support docs",
+        "manual release validation uses fresh runners for all seven classes",
+        "pull-request coverage proves mount refusal and implicit Java preservation",
+        "release workflow contracts reject path and ordering decoys",
+        "public docs describe the v0.12.3 safety and release contracts",
+        "README swap examples identify their privileged Linux requirement"
+      ],
+      "source_modes": {
+        "file": {
+          "default": "0o644",
+          "overrides": {
+            ".github/workflows/lint.yml": "0o600",
+            ".pre-commit-config.yaml": "0o600",
+            "docs/dependency-upgrades/2026-10-30.md": "0o600",
+            "test/lint-tooling.test.ts": "0o600"
+          }
+        },
+        "directory": {
+          "default": "0o700",
+          "overrides": {}
+        }
+      }
+    },
+    "candidate": {
+      "source_identity_sha256": "867fd91099b0933c2868798121d19e97bee220987496e42512010556ed4a65d3",
+      "git_tree": "961b359afbbbe9c783cad04746739a90e81d5f3b",
+      "sealed_patch_sha256": "df725606190417e542230f977c777d5a2ff3c6eb648dc521eb7f5addc4b88e32",
+      "official_grade": {
+        "path": "runs/owner-config-runner-space-01-candidate/attempts/runner-space/develop/grade/grade.json",
+        "sha256": "f51ebc08e73dad5a9bebae2a6d349a479da8969292734773b363abb3f76d97c5"
+      },
+      "source_full_tree_before_sha256": "867fd91099b0933c2868798121d19e97bee220987496e42512010556ed4a65d3",
+      "source_full_tree_after_sha256": "867fd91099b0933c2868798121d19e97bee220987496e42512010556ed4a65d3",
+      "owned_restored": true,
+      "source_unchanged": true,
+      "full_source_unchanged": true,
+      "compiled_tree_sha256": "6c761787e6aa16bdda3295488b169b21f8146a2918313db0ab875e3f947aa75d",
+      "compile_inputs_sha256": "867fd91099b0933c2868798121d19e97bee220987496e42512010556ed4a65d3",
+      "compile": {
+        "argv": [
+          "sh",
+          "-ec",
+          "npm run clean && tsc --project tsconfig.json"
+        ],
+        "exit": 0,
+        "log_sha256": "aec76fc7cdb9e8bc37254dd82a5329bad07ec090f74681123392d9c8860288d1",
+        "start_utc": "2026-10-30T09:26:39.882153+00:00",
+        "end_utc": "2026-10-30T09:26:41.276334+00:00",
+        "wall_seconds": 1.3941981880925596
+      },
+      "semantic_validation": {
+        "exit": 0,
+        "log_sha256": "6d2c254b3d2e9e996441611fddda4c17a7a24fbcde2326c73f03b9506e78e242",
+        "input_sha256": "b35dd841fd665a98307971ed29aa5c9bf96a12a19763e2c38c4a080477b26149",
+        "assessor_script_sha256": "4972973499d82d38db1ee4d62c36cd5e2f9774f9189bd2ef547925e984ba6211"
+      },
+      "discovery": {
+        "candidates": [
+          {
+            "compiled": "build/test/metadata.test.js",
+            "git_reference_lines": [],
+            "relevance_lines": [
+              1348,
+              1354,
+              1363,
+              1364,
+              1368,
+              1370,
+              1374,
+              1382,
+              1383,
+              1395,
+              1398,
+              1401,
+              1520
+            ],
+            "source": "test/metadata.test.ts",
+            "source_sha256": "df5a7feefd17a12f884c51294e612885b12908ab339a129c7adf13580b5006d4",
+            "test_names": [
+              "action metadata retains every historical input and adds platform inputs",
+              "the public outputs are stable and documented",
+              "runtime discovery does not silently invent a hosted-runner home",
+              "remote workflow actions use immutable revisions and checkout drops credentials",
+              "action reference discovery covers named and anonymous steps",
+              "local action discovery supports action.yaml without admitting near spellings",
+              "local action discovery fails closed on symlinked entries",
+              "local action path inspection acquires stable explicit Windows reparse attributes",
+              "local action discovery rejects a symlinked traversal root",
+              "local action discovery fails closed on an injected reparse traversal root",
+              "local action discovery rejects an injected reparse manifest entry",
+              "workflow structure enumerates every job, step, and local action invocation",
+              "lint tooling uses the requested upstream versions",
+              "lint tooling preserves its runtime and hook invocation",
+              "the exact-label sweep stays aligned with runner support docs",
+              "manual release validation uses fresh runners for all seven classes",
+              "pull-request coverage proves mount refusal and implicit Java preservation",
+              "release workflow contracts reject path and ordering decoys",
+              "public docs describe the v0.12.3 safety and release contracts",
+              "README swap examples identify their privileged Linux requirement"
+            ],
+            "unresolved_test_calls": 0
+          }
+        ],
+        "compiler_options": {
+          "declaration": false,
+          "esModuleInterop": true,
+          "exactOptionalPropertyTypes": true,
+          "forceConsistentCasingInFileNames": true,
+          "module": "NodeNext",
+          "moduleResolution": "NodeNext",
+          "noFallthroughCasesInSwitch": true,
+          "noImplicitOverride": true,
+          "noUncheckedIndexedAccess": true,
+          "noUnusedLocals": true,
+          "noUnusedParameters": true,
+          "outDir": "build",
+          "rootDir": ".",
+          "skipLibCheck": true,
+          "sourceMap": false,
+          "strict": true,
+          "target": "ES2024",
+          "types": [
+            "node"
+          ]
+        },
+        "configured_node_argv": [
+          "node",
+          "--test",
+          "build/test/*.test.js"
+        ],
+        "normal_discovery_inclusion": true,
+        "package_sha256": "e3098122a7843658449b7d89a6515e8ea9e30367926fa42a70303f2a6039de24",
+        "reason": null,
+        "scope": "candidate relevant modules, including inherited tests; no assertion-level authorship inferred",
+        "scripts": {
+          "clean": "node -e \"import('node:fs').then(({rmSync}) => { rmSync('build', { recursive: true, force: true }); })\"",
+          "test": "npm run clean && tsc --project tsconfig.json && node --test \"build/test/*.test.js\""
+        },
+        "source_inclusion": {
+          "test/metadata.test.ts": true
+        },
+        "status": "supported",
+        "tsconfig_sha256": "2566277c700608cc54768500986a515bf97bf7f839706772c00df701e51a15dd"
+      },
+      "selected_test_names": [
+        "action metadata retains every historical input and adds platform inputs",
+        "the public outputs are stable and documented",
+        "runtime discovery does not silently invent a hosted-runner home",
+        "remote workflow actions use immutable revisions and checkout drops credentials",
+        "action reference discovery covers named and anonymous steps",
+        "local action discovery supports action.yaml without admitting near spellings",
+        "local action discovery fails closed on symlinked entries",
+        "local action path inspection acquires stable explicit Windows reparse attributes",
+        "local action discovery rejects a symlinked traversal root",
+        "local action discovery fails closed on an injected reparse traversal root",
+        "local action discovery rejects an injected reparse manifest entry",
+        "workflow structure enumerates every job, step, and local action invocation",
+        "lint tooling uses the requested upstream versions",
+        "lint tooling preserves its runtime and hook invocation",
+        "the exact-label sweep stays aligned with runner support docs",
+        "manual release validation uses fresh runners for all seven classes",
+        "pull-request coverage proves mount refusal and implicit Java preservation",
+        "release workflow contracts reject path and ordering decoys",
+        "public docs describe the v0.12.3 safety and release contracts",
+        "README swap examples identify their privileged Linux requirement"
+      ],
+      "source_modes": {
+        "file": {
+          "default": "0o644",
+          "overrides": {
+            ".github/workflows/lint.yml": "0o600",
+            ".pre-commit-config.yaml": "0o600",
+            "docs/dependency-upgrades/2026-10-30.md": "0o600",
+            "test/metadata.test.ts": "0o600"
+          }
+        },
+        "directory": {
+          "default": "0o700",
+          "overrides": {}
+        }
+      }
+    },
+    "base": {
+      "source_identity_sha256": "c56390ede8d9202d0ab8db365ed48302d912b1c6f3286d513efd64d4bf09b4d3",
+      "git_tree": "f7ed8e51e5b068fcbeb1fc8d8e92640aef3253e4",
+      "sealed_patch_sha256": null,
+      "official_grade": {
+        "path": "cache/calibration/runner-space/1793348925576851315/base/grade.json",
+        "sha256": "d24cb0a75067fde409ff06bb69824c886e928e385be5f1a4c68ef206ae9a2cf1"
+      },
+      "source_full_tree_before_sha256": "c56390ede8d9202d0ab8db365ed48302d912b1c6f3286d513efd64d4bf09b4d3",
+      "source_full_tree_after_sha256": "c56390ede8d9202d0ab8db365ed48302d912b1c6f3286d513efd64d4bf09b4d3",
+      "owned_restored": true,
+      "source_unchanged": true,
+      "full_source_unchanged": true,
+      "compiled_tree_sha256": "7cc7e9db2c5f743b8036021c5ec9aa5c8583039d33aabbd452588845df821469",
+      "compile_inputs_sha256": "c56390ede8d9202d0ab8db365ed48302d912b1c6f3286d513efd64d4bf09b4d3",
+      "compile": {
+        "argv": [
+          "sh",
+          "-ec",
+          "npm run clean && tsc --project tsconfig.json"
+        ],
+        "exit": 0,
+        "log_sha256": "aec76fc7cdb9e8bc37254dd82a5329bad07ec090f74681123392d9c8860288d1",
+        "start_utc": "2026-10-30T09:27:13.423417+00:00",
+        "end_utc": "2026-10-30T09:27:14.811893+00:00",
+        "wall_seconds": 1.3884878039825708
+      },
+      "semantic_validation": {
+        "exit": 0,
+        "log_sha256": "6d2c254b3d2e9e996441611fddda4c17a7a24fbcde2326c73f03b9506e78e242",
+        "input_sha256": "76a70c8a991421c2180f6ac35db5d1b792799548d9b8a535cdebb0db821126ed",
+        "assessor_script_sha256": "4972973499d82d38db1ee4d62c36cd5e2f9774f9189bd2ef547925e984ba6211"
+      },
+      "discovery": {
+        "candidates": [
+          {
+            "compiled": "build/test/metadata.test.js",
+            "git_reference_lines": [],
+            "relevance_lines": [
+              1348,
+              1354,
+              1474
+            ],
+            "source": "test/metadata.test.ts",
+            "source_sha256": "a3541026029647a6d7d7371fc3dece77dca53bbede835b8991e447ef735eb384",
+            "test_names": [
+              "action metadata retains every historical input and adds platform inputs",
+              "the public outputs are stable and documented",
+              "runtime discovery does not silently invent a hosted-runner home",
+              "remote workflow actions use immutable revisions and checkout drops credentials",
+              "action reference discovery covers named and anonymous steps",
+              "local action discovery supports action.yaml without admitting near spellings",
+              "local action discovery fails closed on symlinked entries",
+              "local action path inspection acquires stable explicit Windows reparse attributes",
+              "local action discovery rejects a symlinked traversal root",
+              "local action discovery fails closed on an injected reparse traversal root",
+              "local action discovery rejects an injected reparse manifest entry",
+              "workflow structure enumerates every job, step, and local action invocation",
+              "the exact-label sweep stays aligned with runner support docs",
+              "manual release validation uses fresh runners for all seven classes",
+              "pull-request coverage proves mount refusal and implicit Java preservation",
+              "release workflow contracts reject path and ordering decoys",
+              "public docs describe the v0.12.3 safety and release contracts",
+              "README swap examples identify their privileged Linux requirement"
+            ],
+            "unresolved_test_calls": 0
+          }
+        ],
+        "compiler_options": {
+          "declaration": false,
+          "esModuleInterop": true,
+          "exactOptionalPropertyTypes": true,
+          "forceConsistentCasingInFileNames": true,
+          "module": "NodeNext",
+          "moduleResolution": "NodeNext",
+          "noFallthroughCasesInSwitch": true,
+          "noImplicitOverride": true,
+          "noUncheckedIndexedAccess": true,
+          "noUnusedLocals": true,
+          "noUnusedParameters": true,
+          "outDir": "build",
+          "rootDir": ".",
+          "skipLibCheck": true,
+          "sourceMap": false,
+          "strict": true,
+          "target": "ES2024",
+          "types": [
+            "node"
+          ]
+        },
+        "configured_node_argv": [
+          "node",
+          "--test",
+          "build/test/*.test.js"
+        ],
+        "normal_discovery_inclusion": true,
+        "package_sha256": "e3098122a7843658449b7d89a6515e8ea9e30367926fa42a70303f2a6039de24",
+        "reason": null,
+        "scope": "candidate relevant modules, including inherited tests; no assertion-level authorship inferred",
+        "scripts": {
+          "clean": "node -e \"import('node:fs').then(({rmSync}) => { rmSync('build', { recursive: true, force: true }); })\"",
+          "test": "npm run clean && tsc --project tsconfig.json && node --test \"build/test/*.test.js\""
+        },
+        "source_inclusion": {
+          "test/metadata.test.ts": true
+        },
+        "status": "supported",
+        "tsconfig_sha256": "2566277c700608cc54768500986a515bf97bf7f839706772c00df701e51a15dd"
+      },
+      "selected_test_names": [
+        "action metadata retains every historical input and adds platform inputs",
+        "the public outputs are stable and documented",
+        "runtime discovery does not silently invent a hosted-runner home",
+        "remote workflow actions use immutable revisions and checkout drops credentials",
+        "action reference discovery covers named and anonymous steps",
+        "local action discovery supports action.yaml without admitting near spellings",
+        "local action discovery fails closed on symlinked entries",
+        "local action path inspection acquires stable explicit Windows reparse attributes",
+        "local action discovery rejects a symlinked traversal root",
+        "local action discovery fails closed on an injected reparse traversal root",
+        "local action discovery rejects an injected reparse manifest entry",
+        "workflow structure enumerates every job, step, and local action invocation",
+        "the exact-label sweep stays aligned with runner support docs",
+        "manual release validation uses fresh runners for all seven classes",
+        "pull-request coverage proves mount refusal and implicit Java preservation",
+        "release workflow contracts reject path and ordering decoys",
+        "public docs describe the v0.12.3 safety and release contracts",
+        "README swap examples identify their privileged Linux requirement"
+      ],
+      "source_modes": {
+        "file": {
+          "default": "0o644",
+          "overrides": {}
+        },
+        "directory": {
+          "default": "0o700",
+          "overrides": {}
+        }
+      }
+    },
+    "merged": {
+      "source_identity_sha256": "d7fa3ca05ae789b37c76dc71ddeb8e3cbfa6df518505d4bb66853a5614b6465d",
+      "git_tree": "e1242225521610bd86124a589247d1e78d05d43d",
+      "sealed_patch_sha256": "bcec41059a146bbfa3b4c42bfd0bff825b81cc6497c2003e00ddcfb6c92be56a",
+      "official_grade": {
+        "path": "cache/calibration/runner-space/1793348925576851315/gold/grade.json",
+        "sha256": "d7609639c6b8cd27c274a58e10f8111a6fc72e89ed3cd59b4fe708b1ab23fdfc"
+      },
+      "source_full_tree_before_sha256": "d7fa3ca05ae789b37c76dc71ddeb8e3cbfa6df518505d4bb66853a5614b6465d",
+      "source_full_tree_after_sha256": "d7fa3ca05ae789b37c76dc71ddeb8e3cbfa6df518505d4bb66853a5614b6465d",
+      "owned_restored": true,
+      "source_unchanged": true,
+      "full_source_unchanged": true,
+      "compiled_tree_sha256": "7cc7e9db2c5f743b8036021c5ec9aa5c8583039d33aabbd452588845df821469",
+      "compile_inputs_sha256": "d7fa3ca05ae789b37c76dc71ddeb8e3cbfa6df518505d4bb66853a5614b6465d",
+      "compile": {
+        "argv": [
+          "sh",
+          "-ec",
+          "npm run clean && tsc --project tsconfig.json"
+        ],
+        "exit": 0,
+        "log_sha256": "aec76fc7cdb9e8bc37254dd82a5329bad07ec090f74681123392d9c8860288d1",
+        "start_utc": "2026-10-30T09:27:45.812833+00:00",
+        "end_utc": "2026-10-30T09:27:47.175851+00:00",
+        "wall_seconds": 1.3630340320523828
+      },
+      "semantic_validation": {
+        "exit": 0,
+        "log_sha256": "6d2c254b3d2e9e996441611fddda4c17a7a24fbcde2326c73f03b9506e78e242",
+        "input_sha256": "b35dd841fd665a98307971ed29aa5c9bf96a12a19763e2c38c4a080477b26149",
+        "assessor_script_sha256": "4972973499d82d38db1ee4d62c36cd5e2f9774f9189bd2ef547925e984ba6211"
+      },
+      "discovery": {
+        "candidates": [
+          {
+            "compiled": "build/test/metadata.test.js",
+            "git_reference_lines": [],
+            "relevance_lines": [
+              1348,
+              1354,
+              1474
+            ],
+            "source": "test/metadata.test.ts",
+            "source_sha256": "a3541026029647a6d7d7371fc3dece77dca53bbede835b8991e447ef735eb384",
+            "test_names": [
+              "action metadata retains every historical input and adds platform inputs",
+              "the public outputs are stable and documented",
+              "runtime discovery does not silently invent a hosted-runner home",
+              "remote workflow actions use immutable revisions and checkout drops credentials",
+              "action reference discovery covers named and anonymous steps",
+              "local action discovery supports action.yaml without admitting near spellings",
+              "local action discovery fails closed on symlinked entries",
+              "local action path inspection acquires stable explicit Windows reparse attributes",
+              "local action discovery rejects a symlinked traversal root",
+              "local action discovery fails closed on an injected reparse traversal root",
+              "local action discovery rejects an injected reparse manifest entry",
+              "workflow structure enumerates every job, step, and local action invocation",
+              "the exact-label sweep stays aligned with runner support docs",
+              "manual release validation uses fresh runners for all seven classes",
+              "pull-request coverage proves mount refusal and implicit Java preservation",
+              "release workflow contracts reject path and ordering decoys",
+              "public docs describe the v0.12.3 safety and release contracts",
+              "README swap examples identify their privileged Linux requirement"
+            ],
+            "unresolved_test_calls": 0
+          }
+        ],
+        "compiler_options": {
+          "declaration": false,
+          "esModuleInterop": true,
+          "exactOptionalPropertyTypes": true,
+          "forceConsistentCasingInFileNames": true,
+          "module": "NodeNext",
+          "moduleResolution": "NodeNext",
+          "noFallthroughCasesInSwitch": true,
+          "noImplicitOverride": true,
+          "noUncheckedIndexedAccess": true,
+          "noUnusedLocals": true,
+          "noUnusedParameters": true,
+          "outDir": "build",
+          "rootDir": ".",
+          "skipLibCheck": true,
+          "sourceMap": false,
+          "strict": true,
+          "target": "ES2024",
+          "types": [
+            "node"
+          ]
+        },
+        "configured_node_argv": [
+          "node",
+          "--test",
+          "build/test/*.test.js"
+        ],
+        "normal_discovery_inclusion": true,
+        "package_sha256": "e3098122a7843658449b7d89a6515e8ea9e30367926fa42a70303f2a6039de24",
+        "reason": null,
+        "scope": "candidate relevant modules, including inherited tests; no assertion-level authorship inferred",
+        "scripts": {
+          "clean": "node -e \"import('node:fs').then(({rmSync}) => { rmSync('build', { recursive: true, force: true }); })\"",
+          "test": "npm run clean && tsc --project tsconfig.json && node --test \"build/test/*.test.js\""
+        },
+        "source_inclusion": {
+          "test/metadata.test.ts": true
+        },
+        "status": "supported",
+        "tsconfig_sha256": "2566277c700608cc54768500986a515bf97bf7f839706772c00df701e51a15dd"
+      },
+      "selected_test_names": [
+        "action metadata retains every historical input and adds platform inputs",
+        "the public outputs are stable and documented",
+        "runtime discovery does not silently invent a hosted-runner home",
+        "remote workflow actions use immutable revisions and checkout drops credentials",
+        "action reference discovery covers named and anonymous steps",
+        "local action discovery supports action.yaml without admitting near spellings",
+        "local action discovery fails closed on symlinked entries",
+        "local action path inspection acquires stable explicit Windows reparse attributes",
+        "local action discovery rejects a symlinked traversal root",
+        "local action discovery fails closed on an injected reparse traversal root",
+        "local action discovery rejects an injected reparse manifest entry",
+        "workflow structure enumerates every job, step, and local action invocation",
+        "the exact-label sweep stays aligned with runner support docs",
+        "manual release validation uses fresh runners for all seven classes",
+        "pull-request coverage proves mount refusal and implicit Java preservation",
+        "release workflow contracts reject path and ordering decoys",
+        "public docs describe the v0.12.3 safety and release contracts",
+        "README swap examples identify their privileged Linux requirement"
+      ],
+      "source_modes": {
+        "file": {
+          "default": "0o644",
+          "overrides": {
+            ".github/workflows/lint.yml": "0o600",
+            ".pre-commit-config.yaml": "0o600",
+            "docs/dependency-upgrades/2026-10-25.md": "0o600"
+          }
+        },
+        "directory": {
+          "default": "0o700",
+          "overrides": {}
+        }
+      }
+    }
+  },
+  "routes": [
+    {
+      "subject": "pure",
+      "case": "harmless-empty-env",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 310,
+        "pass": 307,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "bc9f357d8a57cdd0417fb2255a58fc64807bd6a7af27f1bf45f00a3d0088ddbd",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:25:53.144590+00:00",
+      "end_utc": "2026-10-30T09:25:57.827143+00:00",
+      "wall_seconds": 4.682557318825275,
+      "tree_before_sha256": "f388fbccfc6a77259b615abc5c670689a2acaa5f6b2c488c38913db36078c80e",
+      "tree_after_sha256": "f388fbccfc6a77259b615abc5c670689a2acaa5f6b2c488c38913db36078c80e",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "pure",
+      "case": "harmless-empty-env",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "c153b5af5bcf82413da14054054bb2b1635859c5c87018121ebfa1141ff67916",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:25:52.258438+00:00",
+      "end_utc": "2026-10-30T09:25:53.078552+00:00",
+      "wall_seconds": 0.8201149280648679,
+      "tree_before_sha256": "f388fbccfc6a77259b615abc5c670689a2acaa5f6b2c488c38913db36078c80e",
+      "tree_after_sha256": "f388fbccfc6a77259b615abc5c670689a2acaa5f6b2c488c38913db36078c80e",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "pure",
+      "case": "old-active-no-decoy",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 310,
+        "pass": 307,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "538600824e44cc7c5e88c35e4b0e7f448c7de8cfa76e23a1f58f3cb03bd2ff81",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:25:41.619267+00:00",
+      "end_utc": "2026-10-30T09:25:46.353878+00:00",
+      "wall_seconds": 4.734613798093051,
+      "tree_before_sha256": "55116643788967df77b0aa8dca612d8696ac7b0cd5c171147b7b5f89f809e64e",
+      "tree_after_sha256": "55116643788967df77b0aa8dca612d8696ac7b0cd5c171147b7b5f89f809e64e",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "pure",
+      "case": "old-active-no-decoy",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "89921bde827aae603fb6779650a92cd02fe8b51865053713acb4f5216a85725c",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:25:40.732071+00:00",
+      "end_utc": "2026-10-30T09:25:41.545126+00:00",
+      "wall_seconds": 0.8130554670933634,
+      "tree_before_sha256": "55116643788967df77b0aa8dca612d8696ac7b0cd5c171147b7b5f89f809e64e",
+      "tree_after_sha256": "55116643788967df77b0aa8dca612d8696ac7b0cd5c171147b7b5f89f809e64e",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "pure",
+      "case": "old-markdownlint",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 310,
+        "pass": 307,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "6e279f38412deaced8e20075cefaac240610f033a4b6fda35663358b884a6eca",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:25:58.841171+00:00",
+      "end_utc": "2026-10-30T09:26:03.595692+00:00",
+      "wall_seconds": 4.75452390499413,
+      "tree_before_sha256": "b73717344e2e22db11e3b4aa3bafb3caecb8cee68be726c836b148ff9775e1e6",
+      "tree_after_sha256": "b73717344e2e22db11e3b4aa3bafb3caecb8cee68be726c836b148ff9775e1e6",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "pure",
+      "case": "old-markdownlint",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "641b0c25547c0308ff4796fd73d435956277a7e0e3c589e8728f7979b9666592",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:25:57.957221+00:00",
+      "end_utc": "2026-10-30T09:25:58.773634+00:00",
+      "wall_seconds": 0.8164157778955996,
+      "tree_before_sha256": "b73717344e2e22db11e3b4aa3bafb3caecb8cee68be726c836b148ff9775e1e6",
+      "tree_after_sha256": "b73717344e2e22db11e3b4aa3bafb3caecb8cee68be726c836b148ff9775e1e6",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "pure",
+      "case": "requested",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 310,
+        "pass": 307,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "d3b0dae9d99d91afc67e6a420a9444289730f5dbd93e1f46203ca056b38cb9e1",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:25:35.839027+00:00",
+      "end_utc": "2026-10-30T09:25:40.602361+00:00",
+      "wall_seconds": 4.763337461045012,
+      "tree_before_sha256": "b4bb0eca1eb46f15a5ec79ffb31706ea1e464712e69938e2e88566a27a7e3836",
+      "tree_after_sha256": "b4bb0eca1eb46f15a5ec79ffb31706ea1e464712e69938e2e88566a27a7e3836",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "pure",
+      "case": "requested",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "65f027d21e64b3dea5e1a5ec34e13638bb03fc6a74da83baf3c102e464349b5a",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:25:34.901407+00:00",
+      "end_utc": "2026-10-30T09:25:35.771834+00:00",
+      "wall_seconds": 0.870429219910875,
+      "tree_before_sha256": "b4bb0eca1eb46f15a5ec79ffb31706ea1e464712e69938e2e88566a27a7e3836",
+      "tree_after_sha256": "b4bb0eca1eb46f15a5ec79ffb31706ea1e464712e69938e2e88566a27a7e3836",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "pure",
+      "case": "wrong-inactive-decoy",
+      "route": "configured-node-discovery",
+      "status": "reject",
+      "counts": {
+        "tests": 310,
+        "pass": 306,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "workflow structure enumerates every job, step, and local action invocation"
+      ],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "efc04d00de84cf64d9ade9188674e9d632d78b865ea7f1c93cd28fd317e494dc",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:25:47.359785+00:00",
+      "end_utc": "2026-10-30T09:25:52.122460+00:00",
+      "wall_seconds": 4.7626797740813345,
+      "tree_before_sha256": "4497bf49f303a4dcb74e05fb605fc76fc00420d48ccedb321fd550f1cadfb63f",
+      "tree_after_sha256": "4497bf49f303a4dcb74e05fb605fc76fc00420d48ccedb321fd550f1cadfb63f",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "pure",
+      "case": "wrong-inactive-decoy",
+      "route": "direct",
+      "status": "reject",
+      "counts": {
+        "tests": 19,
+        "pass": 18,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "workflow structure enumerates every job, step, and local action invocation"
+      ],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "9463dca4fdc4cde565471a6f7dfcad65195b38f8e4512df2331f370443e2f3fc",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:25:46.485699+00:00",
+      "end_utc": "2026-10-30T09:25:47.295686+00:00",
+      "wall_seconds": 0.8099865100812167,
+      "tree_before_sha256": "4497bf49f303a4dcb74e05fb605fc76fc00420d48ccedb321fd550f1cadfb63f",
+      "tree_after_sha256": "4497bf49f303a4dcb74e05fb605fc76fc00420d48ccedb321fd550f1cadfb63f",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "prior",
+      "case": "harmless-empty-env",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 311,
+        "pass": 308,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "970739802b61e8712388b3caef35055d00a69c954540b2ec027cf7292a5a238c",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:26.547551+00:00",
+      "end_utc": "2026-10-30T09:26:31.457251+00:00",
+      "wall_seconds": 4.909702304983512,
+      "tree_before_sha256": "e2da927d1557f5d886b6926e2c21a212156345f3ddb70f03b0034bd4140a17b2",
+      "tree_after_sha256": "e2da927d1557f5d886b6926e2c21a212156345f3ddb70f03b0034bd4140a17b2",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "prior",
+      "case": "harmless-empty-env",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 20,
+        "pass": 20,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/lint-tooling.test.js",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "03197147e8e63fcce4f04a6df456409b79218f51ecc8d008afd09acb58cb7f89",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:25.520778+00:00",
+      "end_utc": "2026-10-30T09:26:26.482522+00:00",
+      "wall_seconds": 0.9617439440917224,
+      "tree_before_sha256": "e2da927d1557f5d886b6926e2c21a212156345f3ddb70f03b0034bd4140a17b2",
+      "tree_after_sha256": "e2da927d1557f5d886b6926e2c21a212156345f3ddb70f03b0034bd4140a17b2",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "prior",
+      "case": "old-active-no-decoy",
+      "route": "configured-node-discovery",
+      "status": "reject",
+      "counts": {
+        "tests": 311,
+        "pass": 307,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "lint tooling uses the requested upstream releases"
+      ],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "b1d16180ca298e4080a797d0e7a1b6665b64c4a47779c3126297d3d92f51a257",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:14.441875+00:00",
+      "end_utc": "2026-10-30T09:26:19.445388+00:00",
+      "wall_seconds": 5.003518230980262,
+      "tree_before_sha256": "23ee8ef137e9997233d52c7f662fdf05ad898face36ac63ec103906d84591304",
+      "tree_after_sha256": "23ee8ef137e9997233d52c7f662fdf05ad898face36ac63ec103906d84591304",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "prior",
+      "case": "old-active-no-decoy",
+      "route": "direct",
+      "status": "reject",
+      "counts": {
+        "tests": 20,
+        "pass": 19,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "lint tooling uses the requested upstream releases"
+      ],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/lint-tooling.test.js",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "7b5802ef49420d0dbe0b6db628e3d5b5cd762ed445b64491c2bade047de56773",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:13.349679+00:00",
+      "end_utc": "2026-10-30T09:26:14.372759+00:00",
+      "wall_seconds": 1.0230805529281497,
+      "tree_before_sha256": "23ee8ef137e9997233d52c7f662fdf05ad898face36ac63ec103906d84591304",
+      "tree_after_sha256": "23ee8ef137e9997233d52c7f662fdf05ad898face36ac63ec103906d84591304",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "prior",
+      "case": "old-markdownlint",
+      "route": "configured-node-discovery",
+      "status": "reject",
+      "counts": {
+        "tests": 311,
+        "pass": 307,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "lint tooling uses the requested upstream releases"
+      ],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "3d23ce809372b68017bdd726c2288bd576e56d3b09bf5c1d7063d3f57fd2b83f",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:32.566909+00:00",
+      "end_utc": "2026-10-30T09:26:37.436779+00:00",
+      "wall_seconds": 4.869874363997951,
+      "tree_before_sha256": "db2314da513a0aaecd31c958db7945156a4dede28c2e1cfee18f022f8f0a9fe0",
+      "tree_after_sha256": "db2314da513a0aaecd31c958db7945156a4dede28c2e1cfee18f022f8f0a9fe0",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "prior",
+      "case": "old-markdownlint",
+      "route": "direct",
+      "status": "reject",
+      "counts": {
+        "tests": 20,
+        "pass": 19,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "lint tooling uses the requested upstream releases"
+      ],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/lint-tooling.test.js",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "e7d1301f18cc3ec7b2f5bc35d1ed4a1655de897f364c78718d14d0761a0703d8",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:31.595220+00:00",
+      "end_utc": "2026-10-30T09:26:32.501400+00:00",
+      "wall_seconds": 0.9061813489533961,
+      "tree_before_sha256": "db2314da513a0aaecd31c958db7945156a4dede28c2e1cfee18f022f8f0a9fe0",
+      "tree_after_sha256": "db2314da513a0aaecd31c958db7945156a4dede28c2e1cfee18f022f8f0a9fe0",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "prior",
+      "case": "requested",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 311,
+        "pass": 308,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "6be798d49406a60268d312e67e786955cb1788da8bc770fe5d9651b62593145e",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:08.140122+00:00",
+      "end_utc": "2026-10-30T09:26:13.213414+00:00",
+      "wall_seconds": 5.073290031868964,
+      "tree_before_sha256": "eeb476b9631f30259b53b4505155d14c8e1237e47f5d0541036fcc13d24b4152",
+      "tree_after_sha256": "eeb476b9631f30259b53b4505155d14c8e1237e47f5d0541036fcc13d24b4152",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "prior",
+      "case": "requested",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 20,
+        "pass": 20,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/lint-tooling.test.js",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "49e7f94798c1b4f841a570c43bedab5685c2904c401ab117b8549ccffe5d052f",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:07.128902+00:00",
+      "end_utc": "2026-10-30T09:26:08.067059+00:00",
+      "wall_seconds": 0.9381607670802623,
+      "tree_before_sha256": "eeb476b9631f30259b53b4505155d14c8e1237e47f5d0541036fcc13d24b4152",
+      "tree_after_sha256": "eeb476b9631f30259b53b4505155d14c8e1237e47f5d0541036fcc13d24b4152",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "prior",
+      "case": "wrong-inactive-decoy",
+      "route": "configured-node-discovery",
+      "status": "reject",
+      "counts": {
+        "tests": 311,
+        "pass": 307,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "workflow structure enumerates every job, step, and local action invocation"
+      ],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "b23d139eff61fa7759354591c4ea1ac2e3557a84c95483d687b36f33bedc14eb",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:20.524471+00:00",
+      "end_utc": "2026-10-30T09:26:25.376812+00:00",
+      "wall_seconds": 4.852343596052378,
+      "tree_before_sha256": "ce14940c729a08ae218b6fd0cab917f08aaa565d315ca529bfe510b2e390faba",
+      "tree_after_sha256": "ce14940c729a08ae218b6fd0cab917f08aaa565d315ca529bfe510b2e390faba",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "prior",
+      "case": "wrong-inactive-decoy",
+      "route": "direct",
+      "status": "reject",
+      "counts": {
+        "tests": 20,
+        "pass": 19,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "workflow structure enumerates every job, step, and local action invocation"
+      ],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/lint-tooling.test.js",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "0276d0900e8023cdd30df3a329d98ea44072d1c3fa07037574dc9e0ec3facaf1",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:19.583758+00:00",
+      "end_utc": "2026-10-30T09:26:20.456649+00:00",
+      "wall_seconds": 0.872892873827368,
+      "tree_before_sha256": "ce14940c729a08ae218b6fd0cab917f08aaa565d315ca529bfe510b2e390faba",
+      "tree_after_sha256": "ce14940c729a08ae218b6fd0cab917f08aaa565d315ca529bfe510b2e390faba",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "candidate",
+      "case": "harmless-empty-env",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 311,
+        "pass": 308,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "cf2207cdaae587932531a14f61487de903eda6d0e4d046e42a9e64b4eeb74ad9",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:00.495069+00:00",
+      "end_utc": "2026-10-30T09:27:05.514542+00:00",
+      "wall_seconds": 5.01947683095932,
+      "tree_before_sha256": "91ff055621e08cdb67d7d528b8570567d4565dbc6d5ca5a14c49c30eea11c6f8",
+      "tree_after_sha256": "91ff055621e08cdb67d7d528b8570567d4565dbc6d5ca5a14c49c30eea11c6f8",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "candidate",
+      "case": "harmless-empty-env",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 20,
+        "pass": 20,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "760e4052c5037b764dc02b33362488b53aea944cedb06ea354ce2eddf444338a",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:59.578125+00:00",
+      "end_utc": "2026-10-30T09:27:00.430462+00:00",
+      "wall_seconds": 0.8523374150972813,
+      "tree_before_sha256": "91ff055621e08cdb67d7d528b8570567d4565dbc6d5ca5a14c49c30eea11c6f8",
+      "tree_after_sha256": "91ff055621e08cdb67d7d528b8570567d4565dbc6d5ca5a14c49c30eea11c6f8",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "candidate",
+      "case": "old-active-no-decoy",
+      "route": "configured-node-discovery",
+      "status": "reject",
+      "counts": {
+        "tests": 311,
+        "pass": 307,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "lint tooling uses the requested upstream versions"
+      ],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "9186dc8c6782408de26996d5d43ad13d3e3b9a3db3bf807da91b6dd80466b923",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:48.419904+00:00",
+      "end_utc": "2026-10-30T09:26:53.475604+00:00",
+      "wall_seconds": 5.055705140111968,
+      "tree_before_sha256": "5e0492350c0bbf52b92567581b6a94faeed6efde02521bd2def898af4fb3dbdb",
+      "tree_after_sha256": "5e0492350c0bbf52b92567581b6a94faeed6efde02521bd2def898af4fb3dbdb",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "candidate",
+      "case": "old-active-no-decoy",
+      "route": "direct",
+      "status": "reject",
+      "counts": {
+        "tests": 20,
+        "pass": 19,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "lint tooling uses the requested upstream versions"
+      ],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "ca6a76c64e080dc5641314e7657a703cf13b025961d4eaa9302e34f86932cce6",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:47.421346+00:00",
+      "end_utc": "2026-10-30T09:26:48.354188+00:00",
+      "wall_seconds": 0.932840189896524,
+      "tree_before_sha256": "5e0492350c0bbf52b92567581b6a94faeed6efde02521bd2def898af4fb3dbdb",
+      "tree_after_sha256": "5e0492350c0bbf52b92567581b6a94faeed6efde02521bd2def898af4fb3dbdb",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "candidate",
+      "case": "old-markdownlint",
+      "route": "configured-node-discovery",
+      "status": "reject",
+      "counts": {
+        "tests": 311,
+        "pass": 307,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "lint tooling uses the requested upstream versions"
+      ],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "57393657dc7ebdbfce1f926fe4c190f3d9b736b3268efb02a252b7afc3759209",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:06.589376+00:00",
+      "end_utc": "2026-10-30T09:27:11.294605+00:00",
+      "wall_seconds": 4.705233153887093,
+      "tree_before_sha256": "2d955c2087572f394ceb82c2b00bf306027304d7acb7f64a8d60dd19988c9b8d",
+      "tree_after_sha256": "2d955c2087572f394ceb82c2b00bf306027304d7acb7f64a8d60dd19988c9b8d",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "candidate",
+      "case": "old-markdownlint",
+      "route": "direct",
+      "status": "reject",
+      "counts": {
+        "tests": 20,
+        "pass": 19,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "lint tooling uses the requested upstream versions"
+      ],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "086bec9a5b9420aaed17a2856d73f94f2e39ffa298a665b8170f9c582ee662e9",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:05.643887+00:00",
+      "end_utc": "2026-10-30T09:27:06.525057+00:00",
+      "wall_seconds": 0.881172067951411,
+      "tree_before_sha256": "2d955c2087572f394ceb82c2b00bf306027304d7acb7f64a8d60dd19988c9b8d",
+      "tree_after_sha256": "2d955c2087572f394ceb82c2b00bf306027304d7acb7f64a8d60dd19988c9b8d",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "candidate",
+      "case": "requested",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 311,
+        "pass": 308,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "b8399fd884cc9b2cb59f9f6e05114496a6eb9bf8dd22aa475826019ed13d1e37",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:42.385227+00:00",
+      "end_utc": "2026-10-30T09:26:47.289787+00:00",
+      "wall_seconds": 4.904562988085672,
+      "tree_before_sha256": "a51c4acda31b7b35ffccee24995c3e5c47cb3a8b5e19e9c8442bc7d0e143acf1",
+      "tree_after_sha256": "a51c4acda31b7b35ffccee24995c3e5c47cb3a8b5e19e9c8442bc7d0e143acf1",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "candidate",
+      "case": "requested",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 20,
+        "pass": 20,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "ae2dae7f3be15d48aef4807f9a2aefebf8c5825709284ff2fe85e1ae1437aaec",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:41.370857+00:00",
+      "end_utc": "2026-10-30T09:26:42.316200+00:00",
+      "wall_seconds": 0.9453431738074869,
+      "tree_before_sha256": "a51c4acda31b7b35ffccee24995c3e5c47cb3a8b5e19e9c8442bc7d0e143acf1",
+      "tree_after_sha256": "a51c4acda31b7b35ffccee24995c3e5c47cb3a8b5e19e9c8442bc7d0e143acf1",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "candidate",
+      "case": "wrong-inactive-decoy",
+      "route": "configured-node-discovery",
+      "status": "reject",
+      "counts": {
+        "tests": 311,
+        "pass": 306,
+        "fail": 2,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "fail",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "workflow structure enumerates every job, step, and local action invocation",
+        "lint tooling uses the requested upstream versions"
+      ],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "eacc53e546ae46834d97383a01d911696d8a9c3e4cb8ab092b2db58e97654da9",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:54.586604+00:00",
+      "end_utc": "2026-10-30T09:26:59.454549+00:00",
+      "wall_seconds": 4.86795001802966,
+      "tree_before_sha256": "3798678c0285475cbd075320fa14f3debca9f117b98ee98446ed0edb8739d4d7",
+      "tree_after_sha256": "3798678c0285475cbd075320fa14f3debca9f117b98ee98446ed0edb8739d4d7",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "candidate",
+      "case": "wrong-inactive-decoy",
+      "route": "direct",
+      "status": "reject",
+      "counts": {
+        "tests": 20,
+        "pass": 18,
+        "fail": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "fail",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "workflow structure enumerates every job, step, and local action invocation",
+        "lint tooling uses the requested upstream versions"
+      ],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "1b17978bf16fa7ea2cef37600ea346a3ba05d76f95274c7c0680373e1dc929f4",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:26:53.603274+00:00",
+      "end_utc": "2026-10-30T09:26:54.522552+00:00",
+      "wall_seconds": 0.9192800188902766,
+      "tree_before_sha256": "3798678c0285475cbd075320fa14f3debca9f117b98ee98446ed0edb8739d4d7",
+      "tree_after_sha256": "3798678c0285475cbd075320fa14f3debca9f117b98ee98446ed0edb8739d4d7",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "base",
+      "case": "harmless-empty-env",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 309,
+        "pass": 306,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "5118b178135ae82f2c7421db5a6b6cd99fe5ac601aee2624480bc4c1aa7fc752",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:33.249130+00:00",
+      "end_utc": "2026-10-30T09:27:38.130823+00:00",
+      "wall_seconds": 4.8816980889532715,
+      "tree_before_sha256": "e6d12d2bbebb83156a4c9b7ecffe9706beae418254231453af1f9f8d0aea7312",
+      "tree_after_sha256": "e6d12d2bbebb83156a4c9b7ecffe9706beae418254231453af1f9f8d0aea7312",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "base",
+      "case": "harmless-empty-env",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "05c4bc5fa1b403e4cfc5b3a88f8882043952834f61c2c4010de6eb72166ae336",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:32.348106+00:00",
+      "end_utc": "2026-10-30T09:27:33.175023+00:00",
+      "wall_seconds": 0.8269167421385646,
+      "tree_before_sha256": "e6d12d2bbebb83156a4c9b7ecffe9706beae418254231453af1f9f8d0aea7312",
+      "tree_after_sha256": "e6d12d2bbebb83156a4c9b7ecffe9706beae418254231453af1f9f8d0aea7312",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "base",
+      "case": "old-active-no-decoy",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 309,
+        "pass": 306,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "c5012b2a4c07f1817ad7ec502a863f85e86d2123607b6d0edeb588f939f91775",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:21.721576+00:00",
+      "end_utc": "2026-10-30T09:27:26.413622+00:00",
+      "wall_seconds": 4.692053358070552,
+      "tree_before_sha256": "fe47337dc69625a9373f72e36e4a468e51f9b69531a8b52f7af86f4e1a84ec0b",
+      "tree_after_sha256": "fe47337dc69625a9373f72e36e4a468e51f9b69531a8b52f7af86f4e1a84ec0b",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "base",
+      "case": "old-active-no-decoy",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "2feefbfed6f672c51f5aa263c829ea88bb19e227a04433ae4f8ae8d969130aad",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:20.840624+00:00",
+      "end_utc": "2026-10-30T09:27:21.658129+00:00",
+      "wall_seconds": 0.817505702842027,
+      "tree_before_sha256": "fe47337dc69625a9373f72e36e4a468e51f9b69531a8b52f7af86f4e1a84ec0b",
+      "tree_after_sha256": "fe47337dc69625a9373f72e36e4a468e51f9b69531a8b52f7af86f4e1a84ec0b",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "base",
+      "case": "old-markdownlint",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 309,
+        "pass": 306,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "12ba98f1ae44c60ae96a61aa57011ba8bd4575ed0652263c43a8f335ba27e8d0",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:39.088109+00:00",
+      "end_utc": "2026-10-30T09:27:43.767994+00:00",
+      "wall_seconds": 4.679888705024496,
+      "tree_before_sha256": "fbfd911363428df0cae4e3fa6995cc8ef47718da77516e0e6b248de848206fbb",
+      "tree_after_sha256": "fbfd911363428df0cae4e3fa6995cc8ef47718da77516e0e6b248de848206fbb",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "base",
+      "case": "old-markdownlint",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "3305f1b353e7f3f1fa70aba828f43648d7689d9d5f4ee89f852075a51b7a9c3d",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:38.263110+00:00",
+      "end_utc": "2026-10-30T09:27:39.023591+00:00",
+      "wall_seconds": 0.7604809941258281,
+      "tree_before_sha256": "fbfd911363428df0cae4e3fa6995cc8ef47718da77516e0e6b248de848206fbb",
+      "tree_after_sha256": "fbfd911363428df0cae4e3fa6995cc8ef47718da77516e0e6b248de848206fbb",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "base",
+      "case": "requested",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 309,
+        "pass": 306,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "693b06fb604048f03d21ee973eb09f1e738c4c8459469adb38e0a0126b932132",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:15.933330+00:00",
+      "end_utc": "2026-10-30T09:27:20.711098+00:00",
+      "wall_seconds": 4.777772551868111,
+      "tree_before_sha256": "456daf4561e9ecfd440c17f6239c85a4ecc80aeaffa2dc3ec711751f48648f02",
+      "tree_after_sha256": "456daf4561e9ecfd440c17f6239c85a4ecc80aeaffa2dc3ec711751f48648f02",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "base",
+      "case": "requested",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "f5ff0998986528ec53facd0d50c2ad18d00e038785af705c81278ab3713918ea",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:14.904898+00:00",
+      "end_utc": "2026-10-30T09:27:15.868843+00:00",
+      "wall_seconds": 0.9639442679472268,
+      "tree_before_sha256": "456daf4561e9ecfd440c17f6239c85a4ecc80aeaffa2dc3ec711751f48648f02",
+      "tree_after_sha256": "456daf4561e9ecfd440c17f6239c85a4ecc80aeaffa2dc3ec711751f48648f02",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "base",
+      "case": "wrong-inactive-decoy",
+      "route": "configured-node-discovery",
+      "status": "reject",
+      "counts": {
+        "tests": 309,
+        "pass": 305,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "workflow structure enumerates every job, step, and local action invocation"
+      ],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "1adc82f352e55b644f6fb612cf3c905bd3614825f807c44bf61b3b0ab5cfbe4f",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:27.424764+00:00",
+      "end_utc": "2026-10-30T09:27:32.217582+00:00",
+      "wall_seconds": 4.792816928122193,
+      "tree_before_sha256": "768bd3fe5450ce8d87e80ce215b586aad76f69bf32119f24002154f1e9d9bc46",
+      "tree_after_sha256": "768bd3fe5450ce8d87e80ce215b586aad76f69bf32119f24002154f1e9d9bc46",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "base",
+      "case": "wrong-inactive-decoy",
+      "route": "direct",
+      "status": "reject",
+      "counts": {
+        "tests": 18,
+        "pass": 17,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "workflow structure enumerates every job, step, and local action invocation"
+      ],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "e54e1ec6963eba899f870b4c32a4dc4d5bdb614bd3eee6b0efc6bf182fc933e8",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:26.541572+00:00",
+      "end_utc": "2026-10-30T09:27:27.359675+00:00",
+      "wall_seconds": 0.8181034300941974,
+      "tree_before_sha256": "768bd3fe5450ce8d87e80ce215b586aad76f69bf32119f24002154f1e9d9bc46",
+      "tree_after_sha256": "768bd3fe5450ce8d87e80ce215b586aad76f69bf32119f24002154f1e9d9bc46",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "merged",
+      "case": "harmless-empty-env",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 309,
+        "pass": 306,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "611fb85ad5027f57266e0b46d8d00e7d6a58fc67b3a772700ac780d17e2140c7",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:28:05.342496+00:00",
+      "end_utc": "2026-10-30T09:28:10.095788+00:00",
+      "wall_seconds": 4.753295923117548,
+      "tree_before_sha256": "b2a8b4c74c9cb68bfaa2221602921bb2f2e00604e2c7ad729568dd646ec12f82",
+      "tree_after_sha256": "b2a8b4c74c9cb68bfaa2221602921bb2f2e00604e2c7ad729568dd646ec12f82",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "merged",
+      "case": "harmless-empty-env",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "70588425a1cd69e08b29d0a5b9f678e16122e9dd89b981bc85ece1eaa1223506",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:28:04.434302+00:00",
+      "end_utc": "2026-10-30T09:28:05.277852+00:00",
+      "wall_seconds": 0.8435511589050293,
+      "tree_before_sha256": "b2a8b4c74c9cb68bfaa2221602921bb2f2e00604e2c7ad729568dd646ec12f82",
+      "tree_after_sha256": "b2a8b4c74c9cb68bfaa2221602921bb2f2e00604e2c7ad729568dd646ec12f82",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "merged",
+      "case": "old-active-no-decoy",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 309,
+        "pass": 306,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "04b04fdc805745fd465248be0ec66f0f5dd6cb0884ce8fb44899ca4d65acf437",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:53.883258+00:00",
+      "end_utc": "2026-10-30T09:27:58.527484+00:00",
+      "wall_seconds": 4.644226722884923,
+      "tree_before_sha256": "49211d1f1a6d13b18931d3293e33a7a4caf6e1622d5c92c25c15ee6783a9b1fe",
+      "tree_after_sha256": "49211d1f1a6d13b18931d3293e33a7a4caf6e1622d5c92c25c15ee6783a9b1fe",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "merged",
+      "case": "old-active-no-decoy",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "8f2230907a216cb4610d5f61f1c7f515bedd2d184227bf05d06814c8c449b890",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:53.036585+00:00",
+      "end_utc": "2026-10-30T09:27:53.820198+00:00",
+      "wall_seconds": 0.7836367089767009,
+      "tree_before_sha256": "49211d1f1a6d13b18931d3293e33a7a4caf6e1622d5c92c25c15ee6783a9b1fe",
+      "tree_after_sha256": "49211d1f1a6d13b18931d3293e33a7a4caf6e1622d5c92c25c15ee6783a9b1fe",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "merged",
+      "case": "old-markdownlint",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 309,
+        "pass": 306,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "c472d5a9c489b47f2854fbe9e9765461d6bee09b108c9cbe0bb97bf2037a0e48",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:28:11.124130+00:00",
+      "end_utc": "2026-10-30T09:28:17.731332+00:00",
+      "wall_seconds": 6.607204355066642,
+      "tree_before_sha256": "d8f3d365ec86d93f87f0ad9f1f7d0582e5eb32eb0356815e36d78a50d06d96f8",
+      "tree_after_sha256": "d8f3d365ec86d93f87f0ad9f1f7d0582e5eb32eb0356815e36d78a50d06d96f8",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "merged",
+      "case": "old-markdownlint",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "ec6bc2f5f1c6c6d94bdc8550d45c4aadcce599549284f29e6cc34a91cb13dcff",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:28:10.229306+00:00",
+      "end_utc": "2026-10-30T09:28:11.054674+00:00",
+      "wall_seconds": 0.8253675249870867,
+      "tree_before_sha256": "d8f3d365ec86d93f87f0ad9f1f7d0582e5eb32eb0356815e36d78a50d06d96f8",
+      "tree_after_sha256": "d8f3d365ec86d93f87f0ad9f1f7d0582e5eb32eb0356815e36d78a50d06d96f8",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "merged",
+      "case": "requested",
+      "route": "configured-node-discovery",
+      "status": "accept",
+      "counts": {
+        "tests": 309,
+        "pass": 306,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "6e3377616bdc90888520b45307e40ed5e9efdb153115c4a4d10e429f07cfff07",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:48.134643+00:00",
+      "end_utc": "2026-10-30T09:27:52.908620+00:00",
+      "wall_seconds": 4.773978647077456,
+      "tree_before_sha256": "c190a59a21641b74a5ab35f5a85a7e1784781915a63c8aec55c4d863048dabd1",
+      "tree_after_sha256": "c190a59a21641b74a5ab35f5a85a7e1784781915a63c8aec55c4d863048dabd1",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "merged",
+      "case": "requested",
+      "route": "direct",
+      "status": "accept",
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "c3f2d98ebede8ce6366da365ff7a19626f10506a6e3548b4d3b2aa36d422534c",
+      "exit": 0,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:47.271301+00:00",
+      "end_utc": "2026-10-30T09:27:48.071100+00:00",
+      "wall_seconds": 0.7997974259778857,
+      "tree_before_sha256": "c190a59a21641b74a5ab35f5a85a7e1784781915a63c8aec55c4d863048dabd1",
+      "tree_after_sha256": "c190a59a21641b74a5ab35f5a85a7e1784781915a63c8aec55c4d863048dabd1",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "merged",
+      "case": "wrong-inactive-decoy",
+      "route": "configured-node-discovery",
+      "status": "reject",
+      "counts": {
+        "tests": 309,
+        "pass": 305,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 3,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "workflow structure enumerates every job, step, and local action invocation"
+      ],
+      "skipped_tests": [
+        "native Windows PowerShell probe returns one attribute per hostile path",
+        "native Windows standalone SDK registry inventory validates without mutation",
+        "native Windows Visual Studio inventory validates without mutation"
+      ],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/*.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "ed29b1d15adc7ac7d33043dc8a3786b7fc528bbd82eacba42a211863384cbcf1",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:59.552518+00:00",
+      "end_utc": "2026-10-30T09:28:04.306839+00:00",
+      "wall_seconds": 4.7543221628293395,
+      "tree_before_sha256": "8963be461df03053749923cd989c199dfafecf310495b620e57e36019b78d696",
+      "tree_after_sha256": "8963be461df03053749923cd989c199dfafecf310495b620e57e36019b78d696",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    },
+    {
+      "subject": "merged",
+      "case": "wrong-inactive-decoy",
+      "route": "direct",
+      "status": "reject",
+      "counts": {
+        "tests": 18,
+        "pass": 17,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "selected_test_states": [
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "fail",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass",
+        "pass"
+      ],
+      "failed_tests": [
+        "workflow structure enumerates every job, step, and local action invocation"
+      ],
+      "skipped_tests": [],
+      "argv": [
+        "node",
+        "--test",
+        "build/test/metadata.test.js"
+      ],
+      "cwd": "/work",
+      "log_sha256": "fb4f8f07de3ee13d7fcdf82165bece551c3697e1650020ef3d73de7d0b43d142",
+      "exit": 1,
+      "timeout": false,
+      "start_utc": "2026-10-30T09:27:58.658777+00:00",
+      "end_utc": "2026-10-30T09:27:59.482749+00:00",
+      "wall_seconds": 0.8239756859838963,
+      "tree_before_sha256": "8963be461df03053749923cd989c199dfafecf310495b620e57e36019b78d696",
+      "tree_after_sha256": "8963be461df03053749923cd989c199dfafecf310495b620e57e36019b78d696",
+      "image_id": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "image_inspect_sha256": "5f5c5987ea3922521ba4f4a995b31475c67d7dbc2a67c477b18379e5562ef010",
+      "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+      "safety_verified": {
+        "offline": true,
+        "readonly_root": true,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "mounts": "owned source, readonly dependencies, own initially empty evidence and tmp only; no parser or oracle mount"
+      }
+    }
+  ],
+  "interpretation": {
+    "requested_and_harmless": "All five accept both routes; selected tests execute without skips.",
+    "old_active_no_decoy_and_old_hook": "Both Develop sources reject both routes. Pure, base and merged accept.",
+    "wrong_inactive_decoy": "All sources reject via inherited topology. Candidate additionally fails the newly added exact all-action-reference equality assertion; prior newly added whole-file regex passes because the disabled decoy supplies the requested text.",
+    "mechanism_limit": "Candidate asserts the complete repository-discovered setup-python reference list equals exactly the requested singleton; it does not bind that list to the active named owner and rejects extra references. Valid env mapping is accepted. These controls support measured pin discrimination and a narrower assertion than prior whole-file presence, but no general semantic-owner parser, dynamic-condition coverage or distinct treatment causality.",
+    "base_control": "Base source remains original; requested control upgrades only the two configuration pins. Base acceptance is a legacy test baseline, not a production upgrade or false base-positive claim.",
+    "route_limit": "One configured clean/compiler invocation per source, then direct relevant module execution and exact configured Node discovery phase with unchanged compiled output. This is not 50 full npm test invocations, fresh compilation per control, hosted lint, or check-dist."
+  },
+  "cost": {
+    "native_provider_calls_by_assay": 0,
+    "execution_seconds_sum": 160.34116291161627,
+    "hardware_usd": null,
+    "preparation_delegated_model_usd": null,
+    "packaging_model_usd": null,
+    "proposal_and_blind_cost": "Retained separately in sealed-raw-result.json; no diagnostic savings inference."
+  },
+  "registered_outcome": {
+    "strict_goal_win": false,
+    "candidate_complete_usd_estimate": 0.7078911999999999,
+    "pure_complete_usd_estimate": 0.241014,
+    "prior_complete_usd_estimate": 0.33555159999999995,
+    "candidate_checkout_to_proposal_seconds": 1149.0665763940196,
+    "pure_checkout_to_proposal_seconds": 319.48779032588936,
+    "prior_reported_wall_seconds": 506.67712050001137,
+    "prior_soft_pr_quality": null,
+    "unknown_human_cost": null
+  },
+  "independent_reconciliation": {
+    "all_50_raw_log_hashes_verified": true,
+    "all_50_tap_summaries_and_named_test_statuses_verified": true,
+    "all_50_selected_discovery_inclusions_verified": true,
+    "all_50_source_before_after_flags_verified": true,
+    "all_5_materialized_sources_rehashed": true,
+    "all_5_semantics_log_and_input_hashes_verified": true,
+    "all_5_compile_and_toolchain_logs_verified": true,
+    "shared_dependencies": "Execution runner verified full tree at setup and completion; packaging binds the recorded digest without rereading shared cache."
+  },
+  "control_definitions": {
+    "requested": "Upgrade only active pre-commit/Setup Python uses to requested v7.1.0 commit and unique Markdown repository revision to v0.24.0. Keep original test sources.",
+    "old-active-no-decoy": "Requested control with owning Setup Python uses restored to v7.0.0 commit, no extra step.",
+    "wrong-inactive-decoy": "Old active Python plus a new final step in the same owning job: if ${{ false }}, requested setup-python pin and Python3.15.",
+    "harmless-empty-env": "Requested control plus env: {} between owning setup uses and with.",
+    "old-markdownlint": "Requested control with only unique Markdown repository revision reverted to v0.23.3.",
+    "semantic_check": "Separate assessor YAML parser proves pre-commit job and Setup Python owner, no owner condition, Python3.15, unique exact Markdown repository/hook identity, expected difference per control and deep equality of every other parsed property."
+  },
+  "replay_environment": {
+    "dependency_tree_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+    "dependency_digest": "1569eb231fe0417185952682f25b71ad512aae30961e17aa8e9eaf483d3bd6af",
+    "image": "node@sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+    "cpus": [
+      0,
+      1
+    ]
+  }
+}

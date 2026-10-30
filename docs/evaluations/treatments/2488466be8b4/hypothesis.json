@@ -1,0 +1,356 @@
+{
+  "format": "law-config.prospective-hypothesis/v1",
+  "id": "declared-consumer-entry",
+  "status": "captured_private_unregistered",
+  "already_exposed_case": "pytest",
+  "participant_treatment": {
+    "parent_package_sha256": "b73fe2ba8de7f25b9b4fce253bde165d6e8624bff4e3fbd78b6fff1e082ba1cb",
+    "parent_composite": "b62d7b648cee85ddf6c7ea808bedb55582d28cbba5076e37cdd073013fab71f8",
+    "target": "plugins/develop/skills/iterate/references/local-changes.md",
+    "patch": "sentence.patch",
+    "patch_sha256": "e788c497b9dbc32d9352bd40dfcdd1ac9ad0310547ca751a4495134aee7bc7f7",
+    "candidate_source_package_sha256": "2488466be8b48949dbd7291964425eef81c3d50e3b8e4a88f786d6e8bdbdd9e6",
+    "candidate_native_lock": {
+      "label": "declared-consumer-entry",
+      "package_sha256": "2488466be8b48949dbd7291964425eef81c3d50e3b8e4a88f786d6e8bdbdd9e6",
+      "plugin_hook_sha256": "4689e1ee94b88f24ab49116d7dc135192adb365ad34da1d08c7bb085ef2d6d61",
+      "hook_sha256": {
+        "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+        "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+      }
+    },
+    "candidate_composite_id": "f5c1cdefb7795b8ff34fe9ae94b2d39e08468af50700455691849417ce715116",
+    "common_companion": {
+      "source": "https://github.com/openai/plugins",
+      "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+      "source_path": "plugins/superpowers",
+      "version": "6.3.0",
+      "manifest_sha256": "18eb497a5c3c5aade93fe1982db0fbd2ab23d4a428fc552da6ee3cc520c9706d",
+      "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+      "skills": {
+        "brainstorming": "74edf03ea6d24ef53db48677b93558d14a979bdf052ca3f57ecdca0c66791608",
+        "dispatching-parallel-agents": "1968923066f3b707eb01d1992cdf4c42284c3855f70253b9cd5000ff45fca13c",
+        "executing-plans": "c4c3d8b628c51114cd165fb8246fe02744cd8be180032328391252e653028d9b",
+        "finishing-a-development-branch": "8db5a922b242dd4e1bf824cb91c13b3e8d8e8a86d6ceaf7f0774eb9cce909d65",
+        "receiving-code-review": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438",
+        "requesting-code-review": "d71cc01ba56d2325cf8af5f7c11837819b63ecd57de0bfdb812f7f3ff7751df8",
+        "subagent-driven-development": "8dd1b8e698edec3700c6d89517dbe96febd3bacd3f6ea21c1a3569c62ea104b5",
+        "systematic-debugging": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787",
+        "test-driven-development": "bf1b8216e523851a411e91d429a7c1c2a173e79d88957bc78e348218d50edd54",
+        "using-git-worktrees": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd",
+        "using-superpowers": "30f2ab78e20ddc27ee7158ae8d4a2abe161c360981c7cc3548070913142d3dc3",
+        "verification-before-completion": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+        "writing-plans": "48508f44bbfd7d24b029fbf3a314f3cd14c9615599059366e922f47b8dc08cf2",
+        "writing-skills": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b"
+      }
+    },
+    "insert_before": "Check neighboring behavior, update affected docs and run every added or changed test through the repository\u2019s configured test route, with affected caller suites and required checks, before final artifact review.",
+    "added_sentence": "For changed exports or startup, run an affected existing test through the declared public entry in a fresh, normally configured process.",
+    "parent_sentence_verbatim": true,
+    "addition_only": true,
+    "changes_outside_one_added_sentence": false
+  },
+  "study_value": "A real public consumer failure remains possible after normal configured test success. One unchanged test through a different declared public entry distinguishes this failure without adding a broad suite. Six of eighteen already-published role patches exhibit the gap; this is retrospective incidence, not an instruction effect or a causal cost estimate.",
+  "hypothesis": "The generic conditional sentence makes the revised producer discover and exercise the affected declared public entry with an existing affected test, detect and repair the regression, and retain the required original-config authored tests, caller checks and independent review.",
+  "uptake_measurement": {
+    "requires": [
+      "actual declared-entry execution, not a matching phrase in prose",
+      "normal configuration and fresh process without initializing the owner via an alternative first",
+      "same affected existing test really collected and passed on the final artifact",
+      "source/config/dependency/entry metadata and actual command/output bindings",
+      "completed verification evidence included in independent final artifact review"
+    ],
+    "reuse": "A qualifying existing invocation satisfies the check; no duplicate full suite.",
+    "no_distinct_mechanism": "If the matched prior already performs the equivalent replay, record no distinct observed uptake mechanism. Do not infer avoided work.",
+    "portable_evidence_requirement": "Before accepting a result, retain a portable, hash-bound observation of the applicable declared entry and actual command, source/test/config/dependency identities, fresh-process execution, collection and passing result, final artifact identity, and independent review disposition and chronology. Verify it against exported submission and observation receipts; missing evidence is unknown. This is an acceptance requirement for manual review, not an automated grader claim."
+  },
+  "matched_design": {
+    "producer_arms": [
+      "unchanged prior Develop",
+      "one-sentence revised Develop",
+      "stock Codex"
+    ],
+    "prior": {
+      "package_sha256": "b73fe2ba8de7f25b9b4fce253bde165d6e8624bff4e3fbd78b6fff1e082ba1cb",
+      "composite": "b62d7b648cee85ddf6c7ea808bedb55582d28cbba5076e37cdd073013fab71f8"
+    },
+    "stock": "Stock CLI/model and standard stock skills, with no Develop/Superpowers plugins, connectors, apps, MCP servers, custom instructions or special configuration. Preserve standard managed stock settings/hooks already in the frozen stock profile. Do not inject Develop review or workflow requirements into stock.",
+    "companion": "Identical pinned Superpowers in both Develop arms.",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "case_base": "4088e1a84ef1cb8ba80aac4e75449459fc092c12",
+    "case_merge": "0f54d41bedf00505bb1ac2c724abf96ba6dcf48d",
+    "task_prompt_sha256": "95e93418812685c2387b8605ff7aa5ea218a707f34dab09f871ca7b74dd4b449",
+    "runtime_image": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+    "dependencies_sha256": "3943d438ec411c91cbe477975e33cf4846643cd9a896e6f83e099a65e9561e72",
+    "cpu_lease": [
+      2,
+      3
+    ],
+    "proposal_budget_seconds": 1200,
+    "matched_inputs": [
+      "same exposed task and authority",
+      "base/merge",
+      "worker and offline fixture",
+      "resources and deadlines",
+      "model/effort",
+      "registered pricing",
+      "common required repository commands and equal external assessor gates",
+      "prospective scorer and quality protocol"
+    ],
+    "attempts": "One allocation per preregistered producer slot; retain every allocation, including setup failure, timeout, blocked or partial output, in all denominators and cost records. No replacement or exclusion of an unsuccessful slot. Any explicitly preregistered additional attempt remains counted in full.",
+    "blind_assessment": "Three existing blind rotations of revised/stock/actual merged upstream, under the common frozen full-PR rubric and win rule. Three producer arms are prior/revised/stock; merged upstream is the common reference artifact. Prior soft PR quality stays unknown unless separately and prospectively assessed.",
+    "producer_policy": "Both Develop arms follow their own frozen design/review policy; stock follows its stock policy. Equal assessor gates run outside every producer and do not inject Develop instructions or review requirements into stock.",
+    "merged_reference": {
+      "commit": "0f54d41bedf00505bb1ac2c724abf96ba6dcf48d",
+      "git_tree": "d2ab21025cac52250c44e21140d0c468a33ca253",
+      "sealed_source_manifest_sha256": "77c2c7321a8616de365b1995a90a3917970b200e4475ef8758b47285bb5cd561",
+      "artifact": "Reconstruct and bind the actual merged upstream artifact; apply the same prospective assessor checks and frozen full-PR rubric.",
+      "quality": "Assess as a real reference; never assume upstream is ready or the quality winner."
+    }
+  },
+  "success": {
+    "ready": true,
+    "strict_full_pr_quality_greater_than_stock": true,
+    "complete_proposal_price_lte_stock": true,
+    "complete_proposal_price_strictly_below_matched_prior": true,
+    "checkout_to_proposal_wall_strictly_below_matched_prior": true,
+    "all_existing_required_gates_and_reviews_preserved": true,
+    "declared_consumer_hard_preservation_pass": true,
+    "declared_entry_uptake_verified_when_applicable": true
+  },
+  "falsification": [
+    "non-ready revised result or lost prior verified public behavior",
+    "quality tie/loss against stock",
+    "complete proposal price above stock",
+    "failure of either strict complete-price or checkout-wall improvement against matched prior",
+    "missing or weakened configured authored tests, affected caller suites, required command or independent review",
+    "omission of an available applicable existing test/declared entry, or false claim that it executed on final source",
+    "declared public entry fails despite module or smoke-check success"
+  ],
+  "unknown_not_pass": [
+    "absence of an applicable declared public entry or affected existing test",
+    "unavailable authentic route or runtime prerequisite",
+    "absent or partial meters",
+    "unverified source, entry, config or dependency binding",
+    "nonexecuted/deselected/skipped claimed case",
+    "unverifiable independent review or completion chronology"
+  ],
+  "economics": {
+    "price": "Complete root plus all transitive descendants at the same preregistered rates, including every allocated failed, timed-out, blocked or partial attempt. Reconcile response meters and cumulative terminal counters without duplication. Missing meters remain unknown. Keep all attempts and root/child partitions; report assessor costs separately.",
+    "registered_rates_from_original": {
+      "uncached_input": 2,
+      "cached_input": 0.1,
+      "output": 10
+    },
+    "actual_invoice": "Unknown unless actual billed charges are supplied; do not label token-rate estimates as invoices.",
+    "historical_gap_estimated_usd": 0.10087,
+    "forecast_saving": null,
+    "wall": "Checkout-to-proposal, including setup/verification/review as in the matched protocol; no single-command wall proxy."
+  },
+  "scorer_repair": {
+    "owner": "root separate prospective scorer work",
+    "requirement": "Before registration, freeze runnable honest public hard preservation plus every existing gate and an equal-treatment calibration. Apply the same authentic declared entry, unchanged test, normal configuration, source/dependency/entry metadata and collection/pass criteria outside every producer and on actual merged upstream. Bind all scorer/script/config hashes. Keep original scores unchanged.",
+    "scorer_hash": "ba5a1c9a5a44200cc1f32ec6b565354f19d8756a1a8335694c9466ec5f12682c",
+    "equal_treatment_calibration": {
+      "path": "frozen-evaluator/grading-proof.json",
+      "sha256": "8fe82645200e86fe9a71a9900489a793515e08b97717972af936bd7934c99731",
+      "status": "reviewed model-free base/merge and archived positive/negative controls; no producer outcome or paid qualification"
+    },
+    "old_scores_changed": false,
+    "supplements": "Assessor-only; do not add case-specific witnesses or repairs to treatment or participant instructions.",
+    "reference_repair": {
+      "proof_path": "repair-proof.json",
+      "proof_sha256": "166de863bce003f6c13faf3320085124c0ffe2b4c23e104aa2a67fc68385003f",
+      "patch_sha256": "c60e911469293f0cdda2960e5b3d70f8ab4828080b79b7b856f3a1c8c6431c38",
+      "status": "model-free controls retained; matched revised fingerprint has passed sealed native admission"
+    }
+  },
+  "before_any_launch": {
+    "exact_setup_bindings": "Exact package/composite/native metadata and prospective scorer source frozen locally; no provider or paid qualification.",
+    "independent_design_review": "Aligned private intent verdict in frozen-design/intent-addendum.md.",
+    "independent_artifact_review": "pending independent review of these captured artifacts",
+    "prospective_scorer_and_equal_treatment_calibration": "Sealed native admission and fresh cold timing match the revised source and fixture; provider qualification remains pending.",
+    "root_registration_decision": "pending, not registered",
+    "deadline_and_complete_attempt_accounting": "1200s declared; exact existing operator/controller hashes frozen; registration must bind reviewed stop/readiness/clock/accounting disposition before any release"
+  },
+  "limits": "One already-exposed pytest study can measure uptake and a within-task outcome. No transfer, generalized policy or economic win follows automatically. This private design does not activate a package, register/launch a study or change the active Runner. Capture is local private preparation only. Native metadata is not provider qualification; no Runner data, participant outcome, economic benefit, registration or activation is implied.",
+  "applicability": {
+    "condition": "Changed exports or startup with an applicable declared public entry and an affected existing test.",
+    "absence_or_unavailable": "Missing applicable entries/tests or prerequisites is unsupported evidence. Report the gap and continue independent authorized work; it does not justify inventing an entry/test, silently passing or claiming uptake.",
+    "scope": "This clarification is descriptor/assessor guidance only, not an additional participant instruction."
+  },
+  "timing_and_readiness": {
+    "deadline_seconds": 1200,
+    "deadline_start": "The existing native controller records task_start_unix and a monotonic _released timestamp immediately before turn/start; deadline = _released +1200 seconds, identically in all arms.",
+    "deadline_stop": "Record terminal completion or timeout/blocked stop and freeze captured proposal bytes at the same protocol boundary. Do not extend a producer deadline to obtain green.",
+    "checkout_wall": "Record allocation/start, checkout start, turn release, terminal stop and proposal capture timestamps. Checkout-to-proposal follows the existing campaign start-to-capture clock, including setup, checks and reviews; retain producer-wall and setup partitions separately.",
+    "readiness": "Freeze one treatment-independent terminal/readiness/failure/unknown classification before registration. Apply common external assessor checks to the captured final bytes. Develop policy compliance remains evaluated against the relevant frozen Develop package, without imposing it on stock.",
+    "final_byte_review": "Record intent-review disposition/time, first authored and production edits, all final source/test hashes, check completion times, artifact/evidence review inputs and final acceptance time. Required Develop artifact review must cover those final tested bytes and completed outputs. A source/evidence change after review requires the policy-required re-review; incomplete review is unknown, not accepted.",
+    "preregistration": "Bind exact operator code and clock/stop/readiness rules before registration; current template is not a registered deadline record."
+  },
+  "design_review": {
+    "file": "tmp/pr-quality-panel/pytest-entry-design-review/intent.md",
+    "sha256": "1efe03260b7b644e73ac51a55ecad902d33c8e6a81026bcf43dd25ed0d9ff15e",
+    "verdict": "Conditionally aligned as a bounded exposed-case hypothesis, not launch/release signoff.",
+    "reviewed_source_package_sha256": "7861b9a11a228048516a53417021e0c049d72b1289294aa78d57c39fdb359563",
+    "subsequent_refinement": "The parent sentence is restored verbatim; the same mechanism is expressed by one short added sentence. Descriptor-only clarifications address the review notes.",
+    "current_artifact_review": "pending"
+  },
+  "evaluator_binding": {
+    "protocol": "pr-quality-pytest-entry-v1",
+    "source_sha256": "a53ad6e006bebf7b48dd5042fccdd3ca4594cea85c7d6d43f8011a1811be5803",
+    "case": "pytest",
+    "fixture_sha256": "a3d8eddf20c014afaa86a805f97569a0acab2442afe2324851be70ccaef3b790"
+  },
+  "capture_bindings": {
+    "base_commit": "19d448960601a52761c256ac6b47c18375e8e005",
+    "base_tree": "0ec164c3c9aaf9f958a6da9a31a39742606f9b2c",
+    "prospective_patch_sha256": "e75ea4c834208a2f8f000ad930963e9062ffc1ab740e5b98e8b67c5e81832dac",
+    "declaration_sha256": "f51cc8b9a952c016d9bdf98b2a42398957d12823c5f3ffadbbbef8fec46a8b5e",
+    "native_lock_sha256": "6ec4e2a7b551b817d40f925a87b862cfbba2c7f380b653203098a1a9fd7e13f1",
+    "recipe_sha256": "eb79969d1650dd9a0257acdbc7d2df223e65fff4e458820441f8b6c08247f7a3",
+    "composite_lock_sha256": "4d8cd7c7e8133cd8ae7f9d515be113edc26701f6fe854ca75acc1ee5f9468bd0",
+    "profiles": {
+      "control": {
+        "config_path": "inventory-control/profile/config.toml",
+        "config_sha256": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+        "stock_profile": true,
+        "scope": "metadata inventory only, no participant session"
+      },
+      "develop": {
+        "config_path": "inventory-develop/profile/config.toml",
+        "config_sha256": "bbb53ef191a2e02583ce5d167c94ff855494d5a6debd37cd5588cec2474c95a6",
+        "stock_profile": false,
+        "scope": "metadata inventory only, no participant session"
+      },
+      "prior": {
+        "config_path": "inventory-prior/profile/config.toml",
+        "config_sha256": "77ecdfc43ef761c0964aea9397068834ee7259b510d8e121cb2ec40c6cdc549d",
+        "stock_profile": false,
+        "scope": "metadata inventory only, no participant session"
+      }
+    },
+    "inventories": {
+      "control": {
+        "path": "inventory-control/inventory.json",
+        "sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+        "skills": 5,
+        "hooks": 2,
+        "plugins": [],
+        "apps": [],
+        "mcp": [],
+        "repository_instructions": {}
+      },
+      "develop": {
+        "path": "inventory-develop/inventory.json",
+        "sha256": "a1ea4193f4178a3336f0b0e3c714d47e405d7f1386a874cbe69b0bcd7eae4ec8",
+        "skills": 29,
+        "hooks": 4,
+        "plugins": [
+          "develop@law-config",
+          "superpowers@superpowers-local"
+        ],
+        "apps": [],
+        "mcp": [],
+        "repository_instructions": {}
+      },
+      "prior": {
+        "path": "inventory-prior/inventory.json",
+        "sha256": "60c9654682488185450c999dd86cc23337754888b3e2d654a843bc3a3a9cb286",
+        "skills": 29,
+        "hooks": 4,
+        "plugins": [
+          "develop@law-config",
+          "superpowers@superpowers-local"
+        ],
+        "apps": [],
+        "mcp": [],
+        "repository_instructions": {}
+      }
+    },
+    "explicit_only": {
+      "clean": "c17a81705f9c032da906aaa2c51a4c93a9e8fd2645f8a149be950a66d7d96359",
+      "deep-clean": "410b1b31efc7d0282c3bd00c6aa2414bf6d5b8845e604a722af7100380e4bbc2",
+      "upgrade": "1086ad904be8bef9c5cbf2a2fe2b0121c67194c31ca2c860a65e7f21d273070b",
+      "upgrade-codex": "11b88059c94dfaf9e3d135b3a6cc22b3fee9fa368f3ea08e21567c00f163d62c"
+    },
+    "cli_sha256": "c1eecb4b2304cb0e077a673231e30c9d759dec8fea4a6b8818078865e392fa90",
+    "bwrap_sha256": "77360cb751ccedc5971391444ac86a8a33c15b04d6b4a6fe45f5d25496e62c4c",
+    "public_operator_sha256": "def9fa83959aa3256ea554a0d5cd3730354df5ee721b86aca6839f8cff6a50eb",
+    "pilot_operator_sha256": "d8ad5b1f3c6c5a6ef2dc867b7025ec632c1703ed7b2027c74f17f66ed8e872ad",
+    "controller_sha256": "9b4bccaaab287c80df54b922746b48590bb3eb79d521f86d0ba037baddbc5292",
+    "host_sha256": "2e0c4275b28108cbec7f19bda848eea2326c210622421fb26f6cd6ea40b9b4b1",
+    "scorer_grading_sha256": "52239857bc12eb2f1dc77ab0cd04261b3b9f8d39edffe75709b624e30f0711ae",
+    "source_manifest_sha256": "ab0877e535fad54986569a398b8780d71c8466c6a64c447d2712ac74228dd00a",
+    "intent_addendum_sha256": "ed9e7a17613ccd627a312b27b8066e4bfa27f2cfaa6a022a6828c98edb91307c",
+    "design_template_sha256": "0f49983d81a61a328471347905ff4f9dca2b9ade24db01fde36438943473412d",
+    "proposal_deadline_seconds": 1200,
+    "capture_cpus": [
+      6,
+      7
+    ],
+    "producer_cpus": [
+      2,
+      3
+    ],
+    "prior_metadata_receipt_sha256": "d775587f05159185b1a85f071da351605b5ddaf9a5edb3a59b2b8ba5b9cf8726",
+    "public_cli_incidence_sha256": "5db7b6f100b1b8fb5786ca0dac73bbea7f7e0d583a3e0463e4e01bc79a739525",
+    "reference_repair_patch_sha256": "c60e911469293f0cdda2960e5b3d70f8ab4828080b79b7b856f3a1c8c6431c38",
+    "strict_confirmation_patch_sha256": "b8e5795f267e13aa409017d873f5b38c980321c6a9b4bf53cd95a1f680ec2657",
+    "reference_repair_declaration_sha256": "86d4b0ea5a9a4355e9578b0f5a5dd0898501be2f26c95c8f32980e6548c7c000",
+    "previous_descriptor_sha256": "167016a6521ca5808b8af31672c772c1e23f8beb4371014c38cad356e6a18732",
+    "native_admission_receipt_sha256": "993986a7327bddf40a0cb5b1d8125da7892c252a73e9644410b5ce7e12ecda70"
+  },
+  "qualification_status": {
+    "package_capture": "passed normal capture-treatment",
+    "compose": "passed normal compose-treatment; exact common Superpowers",
+    "native_preflight": "passed metadata-only",
+    "native_profile_inventories": "passed metadata-only",
+    "clean_restore": "passed exact 106-file manifest",
+    "prospective_admission": "passed sealed native admission for matched source, fixture, worker and dependencies; provider qualification remains pending",
+    "provider_qualification": "not performed",
+    "registration": "not performed",
+    "participant_release": "not performed",
+    "blind_judges": "not performed",
+    "independent_captured_artifact_review": "pending",
+    "producer_outcomes": "unknown",
+    "economic_success": "unknown",
+    "fresh_confirmation": "not opened; unknown",
+    "promotion": "not authorized",
+    "prior_native_profile_inventory": "passed normal metadata-only path; no thread/turn or provider qualification"
+  },
+  "previous": "b73fe2ba8de7f25b9b4fce253bde165d6e8624bff4e3fbd78b6fff1e082ba1cb",
+  "candidate_package_sha256": "2488466be8b48949dbd7291964425eef81c3d50e3b8e4a88f786d6e8bdbdd9e6",
+  "common_companion": {
+    "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+    "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+  },
+  "composite_identities": {
+    "prior": "b62d7b648cee85ddf6c7ea808bedb55582d28cbba5076e37cdd073013fab71f8",
+    "candidate": "f5c1cdefb7795b8ff34fe9ae94b2d39e08468af50700455691849417ce715116"
+  },
+  "targets": [
+    "plugins/develop/skills/iterate/references/local-changes.md"
+  ],
+  "evidence": [
+    {
+      "case": "pytest",
+      "source": "docs/evaluations/runs/tuning/configured-tests-pytest-01/public-cli-incidence.json",
+      "sha256": "5db7b6f100b1b8fb5786ca0dac73bbea7f7e0d583a3e0463e4e01bc79a739525",
+      "kind": "post_freeze_probe",
+      "repository": "pytest-dev/pytest",
+      "base": "4088e1a84ef1cb8ba80aac4e75449459fc092c12",
+      "merged": "0f54d41bedf00505bb1ac2c724abf96ba6dcf48d",
+      "observed_sources": 18,
+      "observed_public_cli_startup_regressions": 6,
+      "interpretation": "Retrospective public behavior incidence; no instruction-effect, saving or causal cost estimate."
+    }
+  ],
+  "falsifier": "Reject a non-ready candidate, lost prior verified behavior or required tests/review, declared public entry regression, full-PR quality tie/loss against stock, complete proposal price above stock, or failure of either strict complete-price or checkout-to-proposal wall improvement against matched prior. Missing meters, applicable entry/test, authentic prerequisite, source/config/dependency/entry binding, final-byte verification or review remain unestablished; retain every allocation and its full cost.",
+  "descriptor_revision": {
+    "supersedes_sha256": "167016a6521ca5808b8af31672c772c1e23f8beb4371014c38cad356e6a18732",
+    "reason": "Bind the unchanged participant treatment to the staged reference-preservation repair and strict confirmation reporter.",
+    "stage_only": true
+  }
+}

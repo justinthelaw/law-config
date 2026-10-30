@@ -61,6 +61,24 @@ def snapshot(case, revision, parent):
     return work
 
 
+def pytest_entry_reference(case, work, output):
+    import hashlib
+    relative = "testing/test_mark_expression.py"
+    target = work / relative
+    # A missing or linked mount target can make Docker create or follow host paths.
+    if not target.is_file() or target.resolve(strict=True) != target.absolute():
+        raise ValueError("declared test mount target is missing, linked or not regular")
+    data = subprocess.check_output(["git", "--git-dir", E.lab.objects(case), "show",
+                                    case["base"] + ":" + relative], stderr=subprocess.PIPE)
+    if hashlib.sha256(data).hexdigest() != "6efe7b62b6f0231671c445688fd7cdf721f72005a535591d0820bfcc4d121f20":
+        raise ValueError("immutable base test module differs")
+    reference = output / "pytest-entry-reference.py"
+    with reference.open("xb") as stream:
+        stream.write(data)
+    reference.chmod(0o444)
+    return reference, "/work/" + relative
+
+
 def grade(case, revision, output, patch=None, phases=None, target=None):
     output.mkdir(parents=True, exist_ok=False)
     work = snapshot(case, revision, output)
@@ -100,7 +118,20 @@ def grade(case, revision, output, patch=None, phases=None, target=None):
                                  (path, "/oracle/check" + path.suffix))
         else:
             path, dest, cmd = command(case)
-            stages[name] = stage(case, work, output, name, cmd, (path, dest))
+            extra = ()
+            if name == "preserve" and case.get("console_preserve"):
+                try:
+                    reference = pytest_entry_reference(case, work, output)
+                except (OSError, ValueError, subprocess.CalledProcessError) as error:
+                    stages[name] = stage(case, work, output, name, cmd, (path, dest))
+                    stages[name]["entry_reference"] = {"status": "fixture_unavailable", "error": str(error)}
+                    stages[name]["original_exit"] = stages[name]["exit"]
+                    if stages[name]["exit"] == 0:
+                        stages[name]["exit"] = None
+                    continue
+                cmd += " && PYTHONPATH=src:/deps/lib python3 -B /oracle/pytest-entry.py"
+                extra = [(E.HERE / "checks/pytest_entry.py", "/oracle/pytest-entry.py"), reference]
+            stages[name] = stage(case, work, output, name, cmd, (path, dest), extra_mounts=extra)
     E.save(output / "grade.json", record)
     return record
 
@@ -132,6 +163,8 @@ def fixture_hash(case, phases=None):
     import hashlib, json
     paths = [E.HERE / "grading.py", E.HERE / "environment.py",
              E.WORKFLOW/"lab.py",E.WORKFLOW/"guest.py", *E.public_files(case)]
+    if case.get("console_preserve"):
+        paths += [E.HERE / "checks/pytest_entry.py"]
     if case.get("loopback_hosts"):
         paths += [E.WORKFLOW / "vm/loopback.hosts"]
     if phases is None:

@@ -363,6 +363,10 @@ def export(name, destination):
               "submission_span_seconds":result.get("campaign_submission_span_seconds"),
               "observations":observations(root),"submissions":{"path":"submissions.jsonl","rows":len(rows),"sha256":records.digest(blob)},
               "source":source}
+    for case in cases:
+        if "confirmation" in case["comparison"]:
+            case["comparison"]["confirmation"]["strict_quality_win"] = records.confirmation_quality(
+                case, per_role, runtime["treatment"], record["runtime"])
     policy = root / "operator-recovery.json"
     if policy.is_file():
         rule = E.read(policy)

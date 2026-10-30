@@ -8,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/"tools"))
@@ -122,6 +123,92 @@ class PortableRecords(unittest.TestCase):
         self.assertIsNone(records.pilot_quality_signal(record)["blinded_full_pr"]["verdict"])
         develop["effort"]["coverage"] = "lower bound"
         self.assertIsNone(records.pilot_quality_signal(record)["equal_or_lower_complete_cost"])
+
+    def test_confirmation_quality_is_blind_and_requires_complete_evidence(self):
+        runtime = dict(records.CONFIRMATION_MODEL, **records.CONFIRMATION_NATIVE,
+            rates_usd_per_million=dict(records.CONFIRMATION_RATES),
+            package_sha256=HASH, treatment={"package_sha256": HASH, "plugin_hook_sha256": HASH,
+                "hook_sha256": {"pre_tool_use": HASH, "post_tool_use": HASH}},
+            executor={"judge": dict(records.CONFIRMATION_MODEL)})
+        rows = {(r["case_id"], r["role"]): r for r in self.rows}
+        arms = {role: rows["full", role] for role in records.ROLES}
+        profiles = {}
+        for role in ("control", "develop"):
+            arms[role]["receipt_sha256"].update(inventory=HASH, **{"turn-input": HASH})
+            profiles[role] = dict(ephemeral=False, plugins=records.composite.expected_plugins(role, None),
+                apps=[], mcp=[], global_instructions=[], inventory_sha256=HASH, turn_sha256=HASH)
+        control, develop = arms["control"], arms["develop"]
+        control["readiness"] = "failed"
+        case = dict(id="full", repo=next(iter(records.target_repositories())), comparison={
+            "develop_control": {"verdict": "develop"}, "confirmation": dict(win=True, profiles=profiles)})
+        decide = lambda: records.confirmation_quality(case, rows, runtime=runtime)
+        for score, expected in ((3, False), (4, False), (2, True)):
+            for arm, points in ((control, score), (develop, 4 if score == 2 else 3)):
+                for j in arm["quality"]["assessments"]:
+                    j["scores"] = dict(contract=points, tests=points, design=points, proposal=points)
+            self.assertIs(decide(), expected)
+        self.assertTrue(records.strict_win(control, develop, "develop", range(3)))
+        self.assertIsNone(records.confirmation_quality(case, rows))
+        for mutate in (
+            lambda r: r.update(model="other"),
+            lambda r: r.update(effort="high"),
+            lambda r: r["executor"]["judge"].update(model="other"),
+            lambda r: r["executor"]["judge"].update(effort="high"),
+            lambda r: r.update(cli_sha256="b" * 64),
+            lambda r: r.update(bwrap_sha256="b" * 64),
+            lambda r: r.update(package_sha256="b" * 64),
+            lambda r: r["rates_usd_per_million"].update(output=0),
+            lambda r: r["treatment"].update(hook_sha256={}),
+        ):
+            wrong = copy.deepcopy(runtime)
+            mutate(wrong)
+            self.assertIsNone(records.confirmation_quality(case, rows, runtime=wrong))
+        decision = case["comparison"]["confirmation"]
+        decision["strict_quality_win"] = False
+        with self.assertRaises(ValueError): records.verify_confirmation(case, rows, range(3), runtime=runtime)
+        del decision["strict_quality_win"]  # Legacy records remain accepted.
+        records.verify_confirmation(case, rows, range(3), runtime=runtime)
+        summary = lambda cases: records.confirmation_quality_summary(cases, rows, runtime=runtime)
+        self.assertIsNone(summary([case])["all_20_repositories"])
+        cases = []
+        for index, repo in enumerate(records.target_repositories()):
+            item = dict(case, id="full-" + str(index), repo=repo)
+            for role in records.ROLES:
+                rows[item["id"], role] = dict(rows["full", role], case_id=item["id"])
+            cases.append(item)
+        self.assertTrue(summary(cases)["all_20_repositories"])
+        self.assertIsNone(summary([dict(c, id="full") for c in cases])["all_20_repositories"])
+        one = rows[cases[0]["id"], "control"]
+        original_plan = one["plan_sha256"]
+        one["plan_sha256"] = "b" * 64
+        self.assertIsNone(summary(cases)["all_20_repositories"])
+        one["plan_sha256"] = original_plan
+        self.assertIsNone(summary(cases[:-1] + [cases[0]])["all_20_repositories"])
+        self.assertIsNone(summary(cases[:-1] + [dict(cases[-1], repo="foreign/repo")])["all_20_repositories"])
+        roster_path = self.path/"develop-benchmark/panel/panel.json"
+        roster_path.parent.mkdir(parents=True)
+        names = sorted(records.target_repositories())
+        roster_path.write_text(json.dumps({"cases": [{"repo": n} for n in names]}))
+        with patch.object(records, "ROOT", self.path):
+            self.assertTrue(summary(cases)["all_20_repositories"])
+            roster_path.write_text(json.dumps({"cases": [{"repo": n} for n in names[:-1] + ["foreign/repo"]]}))
+            self.assertIsNone(summary(cases)["all_20_repositories"])
+            substituted = cases[:-1] + [dict(cases[-1], repo="foreign/repo")]
+            self.assertIsNone(summary(substituted)["all_20_repositories"])
+        with patch.object(records, "ROOT", self.path/"missing"):
+            self.assertIsNone(summary(cases)["all_20_repositories"])
+        judge = develop["quality"]["assessments"].pop()
+        self.assertIsNone(decide())
+        develop["quality"]["assessments"].append(judge)
+        self.assertIsNone(records.confirmation_quality(case, {}, runtime=runtime))
+        develop["effort"]["estimated_usd"] += 1
+        self.assertFalse(decide())
+        self.assertFalse(summary([case])["all_20_repositories"])
+        develop["effort"]["coverage"] = "lower bound"
+        self.assertIsNone(decide())
+        profiles["control"]["mcp"] = ["unexpected"]
+        self.assertIsNone(decide())
+        with self.assertRaises(ValueError): records.verify_confirmation(case, rows, range(3), runtime=runtime)
 
     def test_control_headroom_respects_rotations_readiness_and_metering(self):
         row = next(r for r in self.rows if r["role"] == "control")

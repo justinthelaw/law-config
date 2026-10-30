@@ -15,6 +15,15 @@ ROLES = ("control", "develop", "upstream")
 CODE_WEIGHTS = {"contract": 35, "tests": 25, "design": 25}
 MINIMUM_PR_LEAD = 5
 STATUS = ("ready", "failed", "pending", "unavailable")
+# SHA-256 of the sorted, newline-separated public historical repository identities.
+TARGET_REPOSITORIES_SHA256 = "7a8bef9ec30fb7ba617a7bc91f30825d776036b753a14b9b05e26d7dbea586de"
+# Frozen native policy for the new strict confirmation claim, not legacy reading.
+CONFIRMATION_MODEL = {"model": "gpt-6.1-sol", "effort": "medium"}
+CONFIRMATION_RATES = {"uncached_input": 2, "cached_input": 0.1, "output": 10}
+CONFIRMATION_NATIVE = {
+    "cli_sha256": "c1eecb4b2304cb0e077a673231e30c9d759dec8fea4a6b8818078865e392fa90",
+    "bwrap_sha256": "77360cb751ccedc5971391444ac86a8a33c15b04d6b4a6fe45f5d25496e62c4c",
+}
 
 
 def interval(samples, statistic):
@@ -148,6 +157,91 @@ def pilot_quality_signal(record):
             "equal_or_lower_complete_cost": at_or_below, "ready_blind_win_at_no_more_cost": joint}
 
 
+def _confirmation_profile(row, profile, treatment):
+    receipts = row.get("receipt_sha256", {})
+    return bool(profile and profile.get("ephemeral") is False
+        and profile.get("plugins") == composite.expected_plugins(row["role"], (treatment or {}).get("companion"))
+        and all(profile.get(k) == [] for k in ("apps", "mcp", "global_instructions"))
+        and receipts.get("inventory") and receipts.get("turn-input")
+        and profile.get("inventory_sha256") == receipts["inventory"]
+        and profile.get("turn_sha256") == receipts["turn-input"])
+
+
+def _confirmation_runtime(runtime, treatment):
+    if not isinstance(runtime, dict) or any(runtime.get(k) != v for k, v in (CONFIRMATION_MODEL | CONFIRMATION_NATIVE).items()):
+        return False
+    if runtime.get("rates_usd_per_million") != CONFIRMATION_RATES:
+        return False
+    lock = runtime.get("treatment")
+    judge = runtime.get("executor", {}).get("judge", {})
+    if not isinstance(lock, dict):
+        return False
+    hooks = lock.get("hook_sha256")
+    if not isinstance(hooks, dict) or set(hooks) != {"pre_tool_use", "post_tool_use"}:
+        return False
+    hashes = [lock.get("plugin_hook_sha256"), *hooks.values()]
+    if any(not isinstance(h, str) or len(h) != 64 or set(h) - set("0123456789abcdef") for h in hashes):
+        return False
+    companion = lock.get("companion")
+    if "companion" in lock and (not isinstance(companion, dict) or companion.get("source_commit") != composite.COMMIT
+                      or companion.get("package_sha256") != composite.PACKAGE_SHA256):
+        return False
+    return bool(lock and lock.get("package_sha256") == runtime.get("package_sha256")
+        and lock.get("package_sha256") and (treatment is None or treatment == lock)
+        and all(judge.get(k) == v for k, v in CONFIRMATION_MODEL.items()))
+
+
+def confirmation_quality(case, rows, treatment=None, runtime=None):
+    """Strict blind-quality goal, independent of the historical readiness-first win."""
+    decision = case["comparison"].get("confirmation")
+    if not _confirmation_runtime(runtime, treatment):
+        return None
+    treatment = runtime["treatment"]
+    if not decision or any(rows.get((case["id"], role)) is None for role in ROLES):
+        return None
+    pair = {role: rows[case["id"], role] for role in ("control", "develop")}
+    if any(not _confirmation_profile(row, decision.get("profiles", {}).get(role), treatment)
+           for role, row in pair.items()):
+        return None
+    return pilot_quality_signal({"submissions": pair, "comparisons": case["comparison"]})[
+        "ready_blind_win_at_no_more_cost"]
+
+
+def target_repositories():
+    # Keep historical reading usable if the optional public roster is unavailable.
+    try:
+        cases = read_json((ROOT / "develop-benchmark/panel/panel.json").read_bytes())["cases"]
+        names = [case["repo"] for case in cases]
+        if len(names) != 20 or len(set(names)) != 20 or any(not isinstance(name, str) for name in names):
+            return None
+        if digest("\n".join(sorted(names)).encode()) != TARGET_REPOSITORIES_SHA256:
+            return None
+        return set(names)
+    except (OSError, ValueError, KeyError, TypeError):
+        return None
+
+
+def confirmation_quality_summary(cases, rows, treatment=None, runtime=None):
+    def all_won(values):
+        if False in values:
+            return False
+        return True if values and None not in values else None
+
+    selected = [rows.get((case["id"], role)) for case in cases for role in ROLES]
+    plans = {row.get("plan_sha256") for row in selected if row}
+    one_plan = len(plans) == 1 and None not in plans
+    values = [confirmation_quality(case, rows, treatment, runtime) if one_plan else None for case in cases]
+    repos = [case.get("repo") for case in cases]
+    roster = target_repositories()
+    target = [value for repo, value in zip(repos, values) if roster is not None and repo in roster]
+    complete = (roster is not None and len(repos) == 20 and set(repos) == roster
+                and len({case["id"] for case in cases}) == 20)
+    all_20 = all_won(target) if complete or False in target else None
+    return {"cases": len(values), "wins": values.count(True), "losses": values.count(False),
+            "unknown": values.count(None), "every_observed_case": all_won(values),
+            "all_20_repositories": all_20}
+
+
 def control_headroom(row):
     votes = {j["rotation"]: proposal_points(j["scores"]) for j in row["quality"]["assessments"]}
     scores = [votes.get(i) for i in range(3)]
@@ -163,7 +257,7 @@ def control_headroom(row):
             "rotation_scores_100": scores, "maximum_median_lead": gain, "strict_win_route": route}
 
 
-def verify_confirmation(case, rows, seats, treatment=None):
+def verify_confirmation(case, rows, seats, treatment=None, runtime=None):
     decision = case["comparison"]["confirmation"]
     pair = [rows[case["id"], role] for role in ("control", "develop")]
     for row in pair:
@@ -171,14 +265,13 @@ def verify_confirmation(case, rows, seats, treatment=None):
         profile = decision["profiles"][role]
         if row["state"] != "completed" and profile is None:
             continue
-        receipts = row["receipt_sha256"]
-        if (not profile or profile["ephemeral"] is not False or profile["plugins"] != composite.expected_plugins(role, (treatment or {}).get("companion"))
-                or any(profile[k] != [] for k in ("apps", "mcp", "global_instructions"))
-                or profile["inventory_sha256"] != receipts["inventory"] or profile["turn_sha256"] != receipts["turn-input"]):
+        if not _confirmation_profile(row, profile, treatment):
             raise ValueError(f"{case['id']}/{role} stock profile differs from the sealed arm")
     win = strict_win(*pair, case["comparison"]["develop_control"]["verdict"], seats)
     if decision["win"] is not win:
         raise ValueError(f"{case['id']} confirmation outcome differs from quality and cost evidence")
+    if "strict_quality_win" in decision and decision["strict_quality_win"] is not confirmation_quality(case, rows, treatment, runtime):
+        raise ValueError(f"{case['id']} strict confirmation outcome differs from blind quality and cost evidence")
 
 
 def within_panel_diff(left, right):
@@ -503,7 +596,7 @@ def read_bundle(path):
             if case["comparison"]["diff_85"][a+"_"+b] != within_panel_diff(rows[case["id"],a],rows[case["id"],b]):
                 raise ValueError(f"{case['id']} within-panel paired diff score differs")
         if confirmation:
-            verify_confirmation(case, rows, seats, manifest["runtime"]["treatment"])
+            verify_confirmation(case, rows, seats, manifest["runtime"]["treatment"], manifest["runtime"])
     attempts = [attempt for case in cases.values() for attempt in case["judge_attempts"]]
     assessor = manifest["evaluator"]
     if (assessor["attempts"] != len(attempts) or assessor["complete_receipts"] != sum(a["coverage"] == "complete" for a in attempts)

@@ -65,6 +65,16 @@
       "unit": "one producer on historical tasks with the opt-in runner-space evaluator"
     },
     {
+      "id": "pr-quality-pytest-entry-v1",
+      "guide": "develop-benchmark/panel/README.md",
+      "environment": "develop-benchmark/panel/environment.py",
+      "cases": "develop-benchmark/panel/panel.json",
+      "rubric": "develop-benchmark/panel/rubric.md",
+      "record_schema": "schemas/panel-v1.json",
+      "results_glob": "runs/pr-quality-pytest-entry-v1/*/run.json",
+      "unit": "one historical producer with fresh declared-console preservation on pytest"
+    },
+    {
       "id": "develop-efficiency-pilot-v1",
       "guide": "develop-benchmark/panel/README.md",
       "environment": "tools/efficiency_pilot.py",

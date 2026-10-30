@@ -27,6 +27,9 @@ if cohort_name == "pr-quality-runner-v3":
     PANEL["protocol"] = cohort_name
     runner = next(c for c in PANEL["cases"] if c["id"] == "runner-space")
     runner.update(check="runner_lint_ledger_v3.mjs", loopback_hosts=True)
+elif cohort_name == "pr-quality-pytest-entry-v1":
+    PANEL["protocol"] = cohort_name
+    next(c for c in PANEL["cases"] if c["id"] == "pytest")["console_preserve"] = True
 elif cohort_name != PANEL["protocol"]:
     sys.path.insert(0, str(HERE.parent))
     from confirmation import cohort as COHORT

@@ -1,0 +1,843 @@
+{
+  "format": "owner-config-native-process/v1",
+  "pilot": "owner-config-runner-space-01",
+  "status": "sealed-producer-and-assessor-bindings-verified",
+  "scope": "Assessor-only interpretation of this exposed tuning case. Sidecar neither alters original runtime, grades, blind scores, goal result nor any holdout. Full traces remain private; hashes bind this compact record.",
+  "source_bindings": {
+    "raw_result_sha256": "97fecf417168c55bfac25f5a3437d8f258ab1cfe9b6a7013a37a9f847093ec8f",
+    "registration_sha256": "d07ad46854f02d4f032bc848cbf07b77b117a2be7568315ae468e5930c4487b3",
+    "producer_audit_sha256": "9bd8e494494276bcffbad92e6b7d0451856301f5b580238df31a1bce0aea9725",
+    "candidate_chronology_audit_sha256": "51dfb47cf95c4b70733b50c0921c1c2f4687ce16598f441b1a58fc6663a1e86f",
+    "registered_evaluator_source_sha256": "0d6c18d4c59b10d4ef17ccb21e666671761718f4f996f1069ddc7bc14bc5b6ac",
+    "registered_fixture_sha256": "502782e97e3bd55c8708331f6ed1617842baa5440a5c7f77af20e6be848092be",
+    "registered_operator_sha256": "d8ad5b1f3c6c5a6ef2dc867b7025ec632c1703ed7b2027c74f17f66ed8e872ad",
+    "registered_hypothesis_sha256": "d433a8249108ee4a727f1a5dbee266cdb8cc8a48d8fc4e918583a6e63bfb8d67",
+    "publication": "Bound directly to sealed raw result. No dependency on the later public export; scores and source are not rewritten.",
+    "producer_and_assessor_audit_sha256": "53ee997a0ea52040a8d567fc2860ab466f895b461d5e35be03f7b2604c69ff43"
+  },
+  "registration": {
+    "case": "runner-space",
+    "protocol": "pr-quality-runner-v3",
+    "hypothesis": "owner-config-check",
+    "order": [
+      [
+        "prior",
+        "develop"
+      ],
+      [
+        "candidate",
+        "control"
+      ],
+      [
+        "candidate",
+        "develop"
+      ]
+    ],
+    "cpus": [
+      4,
+      5
+    ],
+    "plans": {
+      "prior": {
+        "path": "runs/owner-config-runner-space-01-prior/plan.json",
+        "sha256": "8b8cf47b9bde82b4686c5a0c38623a8d46d91b00db4acbd9c8d87fbd7a5c8ccf"
+      },
+      "candidate": {
+        "path": "runs/owner-config-runner-space-01-candidate/plan.json",
+        "sha256": "e8e73b7c121336b93246546d447cd8e7e409e0db7bb4aede5db073bb38114c4f"
+      }
+    }
+  },
+  "rates_usd_per_million": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "producers": {
+    "prior": {
+      "root": "01a18bf7-68fc-7871-9dc1-912af096ece5",
+      "thread_count": 1,
+      "child_count": 0,
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "coverage": "complete",
+      "tokens": {
+        "totalTokens": 1527203,
+        "inputTokens": 1521199,
+        "cachedInputTokens": 1456256,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 6004,
+        "reasoningOutputTokens": 1386
+      },
+      "root_estimated_usd": 0.3355516,
+      "descendant_estimated_usd": 0.0,
+      "complete_estimated_usd": 0.3355516,
+      "actual_invoiced_usd": null,
+      "raw_usage_and_terminal_meter_match": true,
+      "late_delta_observed": false,
+      "last_raw_meter_utc": "2026-10-30T08:48:04.048Z",
+      "own_turn_contexts": [
+        {
+          "line": 10,
+          "turn": "01a18bf7-7dc9-7b50-9024-9fc823fc92f8",
+          "model": "gpt-6.1-sol",
+          "effort": "medium"
+        }
+      ],
+      "matching_server_settings": [
+        {
+          "line": 11,
+          "model": "gpt-6.1-sol",
+          "effort": "medium"
+        }
+      ],
+      "reroutes_observed": false,
+      "native_sha256": "552418ca2444de25f8c11f90b30d1d5eacf5805d58f01b15ccc0ac5dcdc94567",
+      "raw_trace_sha256": "8289380cd7de5cc7f9f66c5c3496399ca9c510a4e9c4fcf1e500009ed694a855",
+      "model_limit": "Verified server-reported alias/effort, not undisclosed provider revision.",
+      "state": "completed",
+      "patch_sha256": "ac72e352ac237a80c15cb2827bffb6a6f133a699949ee993d7bfcb8b65e49de0",
+      "proposal_sha256": "2e226c4b329b34d53baaffb862dffbd3e7605e98d610f559101bf1670f54cfc5",
+      "proposal_bytes": 645,
+      "result_sha256": "70eefad6f8ed1f8b57e60fe575fec96e2356f83076e2d5dee080cdf34ac06371",
+      "submission_receipt_sha256": "c12f885db406c7140210ca0bf9cd6e0779efc8428462ed96e8ec61d33f62907a",
+      "release_sha256": "9c0b8dbd0f5c51f7150588808f74e1821147f607465898417f8be2890c4b9112",
+      "inventory_sha256": "653f32c2806bc6c4849fadff81d4b3d0315612334d5549ef946eb13fc0a1fb51",
+      "turn_input_sha256": "dd3c743aa866cbe8f363a30606e3b1243e8518ddbf77f711c1e946042b614d10",
+      "prompt_sha256": "45306b80a27be37dbb59e776ad3a7732bbe29e15bc39c7a5a6903c4fdcaa7b17",
+      "plan_sha256": "8b8cf47b9bde82b4686c5a0c38623a8d46d91b00db4acbd9c8d87fbd7a5c8ccf",
+      "runtime_source_sha256": "0d6c18d4c59b10d4ef17ccb21e666671761718f4f996f1069ddc7bc14bc5b6ac",
+      "final_profile_config_sha256": "a116feead9fcf1d585ed9ae9ca717090d6705181b4decf8e48c8c19b02c60d28",
+      "clocks": {
+        "start_unix": 1793349578.2064974,
+        "captured_unix": 1793350084.883616,
+        "proposal_wall_seconds": 506.67712050001137,
+        "setup_seconds": 36.53769963700324,
+        "wall_seconds": 469.0404003940057,
+        "grading_seconds": 8.256237915949896,
+        "end_to_end_seconds": 516.4089898439124
+      },
+      "normal_independent_grade": {
+        "sha256": "a19f3e27ab53269dcbbc7492a0f5af3dc3efad18181ba1b750fd9c82d5217e99",
+        "stages": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "70954ea56267cd404959c61d2c8ece7ce65ccbe83646dadafac47ee6692aae8c",
+            "seconds": 1.9667321068700403
+          },
+          "native": {
+            "exit": 0,
+            "log_sha256": "67088238ea91da69650bdeccfc54123471b1ee9e682a8a079af5c72067638f7e",
+            "seconds": 4.693328741006553
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "seconds": 0.7193001280538738
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "seconds": 0.6169542598072439
+          }
+        }
+      },
+      "profile": {
+        "plugins": [
+          "develop@law-config",
+          "superpowers@superpowers-local"
+        ],
+        "system_skills": [
+          "imagegen",
+          "openai-docs",
+          "review-agent",
+          "skill-creator",
+          "skill-installer"
+        ],
+        "apps": [],
+        "mcp": [],
+        "global_instructions": [],
+        "repository_instructions_sha256": {
+          "AGENTS.md": "1afaae2092518e2f35f2c51840157d968707bc296c78d170b05801a292187d00"
+        },
+        "common_managed_hook_digests": [
+          "sha256:a79f6a172423c70427168b961eda5f185d4846935c8187dc51528f46d43f4851",
+          "sha256:97fd1b8e1448bcf5a982080549b7a9fa05cf3dfecbe13ab34ccad635fc2881a2"
+        ],
+        "package": {
+          "installed": {
+            "files": 106,
+            "sha256": "239dccfc0fe4c090a777d8cf46216c99c57bc2bebc08eca013402215b65c7c28"
+          },
+          "companion": {
+            "files": 73,
+            "sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+          },
+          "companion_source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+          "hook_manifest_file_sha256": "8da970a80ff9cbcf353ede933a889d62680f3d82d2b97369ff126146b13d9579",
+          "hook_attested_package_digest": "2820cd4662b8438ba0654c55f9f24577fb8ec13bcc9ad362c598d8777b94ec1b",
+          "hook_attested_definitions": {
+            "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+            "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+          },
+          "all_attested_hook_digests_match_plan": true,
+          "isolated_hook_calls": 55,
+          "native_hook_receipts": 55,
+          "review_policy_sha256": "f8ab46ebc104550de234edba7cef1b08a4a2eb7e468c0553105cd111f4995f86"
+        },
+        "actual_turn_input_bound": true,
+        "final_profile_stock_inventory_matches_raw": true
+      },
+      "producer_required_repository_acceptance_complete": false,
+      "independent_producer_reviewer_observed": false
+    },
+    "stock": {
+      "root": "01a18bff-7944-7103-a85d-3dd69256591d",
+      "thread_count": 1,
+      "child_count": 0,
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "coverage": "complete",
+      "tokens": {
+        "totalTokens": 1074455,
+        "inputTokens": 1069742,
+        "cachedInputTokens": 1024000,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 4713,
+        "reasoningOutputTokens": 722
+      },
+      "root_estimated_usd": 0.241014,
+      "descendant_estimated_usd": 0.0,
+      "complete_estimated_usd": 0.241014,
+      "actual_invoiced_usd": null,
+      "raw_usage_and_terminal_meter_match": true,
+      "late_delta_observed": false,
+      "last_raw_meter_utc": "2026-10-30T08:53:53.760Z",
+      "own_turn_contexts": [
+        {
+          "line": 10,
+          "turn": "01a18bff-8e15-7770-a605-f974c7b67f5f",
+          "model": "gpt-6.1-sol",
+          "effort": "medium"
+        }
+      ],
+      "matching_server_settings": [
+        {
+          "line": 11,
+          "model": "gpt-6.1-sol",
+          "effort": "medium"
+        }
+      ],
+      "reroutes_observed": false,
+      "native_sha256": "3c1a15326d5b2c9cf3c9ee623ddb745196d14f943702d62903548a7d29c84c86",
+      "raw_trace_sha256": "40139267fe8bc41cdc0a0c51146399abf3c067aa5a9124f68f38a56ea69ed209",
+      "model_limit": "Verified server-reported alias/effort, not undisclosed provider revision.",
+      "state": "completed",
+      "patch_sha256": "6bfbd68196b73da873868db52e2043e84867727a366f7a10b5f450d56c651656",
+      "proposal_sha256": "9f29421312e01d378d82d662e3f118316651048432c82cc4a09b490baf5ad490",
+      "proposal_bytes": 677,
+      "result_sha256": "c9a0cd39142f18eed3b177551cf9fb74ad6d20a2272c756baad2341e70ed37e1",
+      "submission_receipt_sha256": "f94a2d05e5e2251fba162ba23df7e788962cdd3ae7d5d3057285ff3ca95e6c3e",
+      "release_sha256": "da9997829176f468a2143ad984238f370f2323d2d00d62c6ce1b800979046bf4",
+      "inventory_sha256": "cd42353fcd0ec0d9f08b09af090e0aaebf40d8f3c5836d95caa02d4f18a56249",
+      "turn_input_sha256": "aee9d7598257f8d06504112c65db9a801d956a58d53448203a19d009e4f89e8d",
+      "prompt_sha256": "45306b80a27be37dbb59e776ad3a7732bbe29e15bc39c7a5a6903c4fdcaa7b17",
+      "plan_sha256": "e8e73b7c121336b93246546d447cd8e7e409e0db7bb4aede5db073bb38114c4f",
+      "runtime_source_sha256": "0d6c18d4c59b10d4ef17ccb21e666671761718f4f996f1069ddc7bc14bc5b6ac",
+      "final_profile_config_sha256": "cb3d77c460913eeab58da8c2b6a3cb007999aef8e93de5b81c2e158e8d154afa",
+      "clocks": {
+        "start_unix": 1793350115.0151005,
+        "captured_unix": 1793350434.502889,
+        "proposal_wall_seconds": 319.48779032588936,
+        "setup_seconds": 28.232418074039742,
+        "wall_seconds": 290.3062602500431,
+        "grading_seconds": 8.08208013791591,
+        "end_to_end_seconds": 329.133437064942
+      },
+      "normal_independent_grade": {
+        "sha256": "ba5e40e398ec3e05cae328cfc90d2208ee426982a70e73d9a96e2320885644d5",
+        "stages": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "70954ea56267cd404959c61d2c8ece7ce65ccbe83646dadafac47ee6692aae8c",
+            "seconds": 2.0305820379871875
+          },
+          "native": {
+            "exit": 0,
+            "log_sha256": "67088238ea91da69650bdeccfc54123471b1ee9e682a8a079af5c72067638f7e",
+            "seconds": 4.3593815609347075
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "seconds": 0.7695909691974521
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "seconds": 0.6667030579410493
+          }
+        }
+      },
+      "profile": {
+        "plugins": [],
+        "system_skills": [
+          "imagegen",
+          "openai-docs",
+          "review-agent",
+          "skill-creator",
+          "skill-installer"
+        ],
+        "apps": [],
+        "mcp": [],
+        "global_instructions": [],
+        "repository_instructions_sha256": {
+          "AGENTS.md": "1afaae2092518e2f35f2c51840157d968707bc296c78d170b05801a292187d00"
+        },
+        "common_managed_hook_digests": [
+          "sha256:a79f6a172423c70427168b961eda5f185d4846935c8187dc51528f46d43f4851",
+          "sha256:97fd1b8e1448bcf5a982080549b7a9fa05cf3dfecbe13ab34ccad635fc2881a2"
+        ],
+        "package": null,
+        "actual_turn_input_bound": true,
+        "final_profile_stock_inventory_matches_raw": true
+      },
+      "producer_required_repository_acceptance_complete": false,
+      "independent_producer_reviewer_observed": false
+    },
+    "candidate": {
+      "root": "01a18c04-ef03-7580-85ef-0f343cb65405",
+      "thread_count": 1,
+      "child_count": 0,
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "coverage": "complete",
+      "tokens": {
+        "totalTokens": 4075476,
+        "inputTokens": 4062273,
+        "cachedInputTokens": 3972992,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 13203,
+        "reasoningOutputTokens": 4774
+      },
+      "root_estimated_usd": 0.7078912,
+      "descendant_estimated_usd": 0.0,
+      "complete_estimated_usd": 0.7078912,
+      "actual_invoiced_usd": null,
+      "raw_usage_and_terminal_meter_match": true,
+      "late_delta_observed": false,
+      "last_raw_meter_utc": "2026-10-30T09:13:32.262Z",
+      "own_turn_contexts": [
+        {
+          "line": 10,
+          "turn": "01a18c05-0456-7ce2-baa2-c87cb26d6f70",
+          "model": "gpt-6.1-sol",
+          "effort": "medium"
+        }
+      ],
+      "matching_server_settings": [
+        {
+          "line": 11,
+          "model": "gpt-6.1-sol",
+          "effort": "medium"
+        }
+      ],
+      "reroutes_observed": false,
+      "native_sha256": "cea41c7b7ce04d1f5f2b1220dce69bc195af86dcdb5cdde91dd8e1b165c66372",
+      "raw_trace_sha256": "e38cbc46223410d585f377d8a70b35a04814acfd7cd2308944e718dce6f41bc0",
+      "model_limit": "Verified server-reported alias/effort, not undisclosed provider revision.",
+      "state": "completed",
+      "patch_sha256": "df725606190417e542230f977c777d5a2ff3c6eb648dc521eb7f5addc4b88e32",
+      "proposal_sha256": "96f1799d08fe91e8aeb59922ca3ec695a99dd791058a504e05b17d2ca1a45bfd",
+      "proposal_bytes": 574,
+      "result_sha256": "00db2b192e9f359f8df4467735cced36329b508ad71a90ed3bf0248cd32fffa5",
+      "submission_receipt_sha256": "2723572edf942ce8a95ee74c7881a8e0f37637599f584b72e445b6b3f0bd7c8c",
+      "release_sha256": "3002a9c3dc9834c4af4d8f0998110737dad170a2adc2431737a5f2d9dfb19611",
+      "inventory_sha256": "284fb47d0e9ac39797764f86ed2cc110bfe2addc4e360f5fa768c4a390806d9c",
+      "turn_input_sha256": "52b8e88db363b891417e03c1d7fb8060e576673c095e40296d9245d597f43371",
+      "prompt_sha256": "45306b80a27be37dbb59e776ad3a7732bbe29e15bc39c7a5a6903c4fdcaa7b17",
+      "plan_sha256": "e8e73b7c121336b93246546d447cd8e7e409e0db7bb4aede5db073bb38114c4f",
+      "runtime_source_sha256": "0d6c18d4c59b10d4ef17ccb21e666671761718f4f996f1069ddc7bc14bc5b6ac",
+      "final_profile_config_sha256": "5223461591e3b3309824421daccc6dd65d4ed589b84076e89f4796cda36595b6",
+      "clocks": {
+        "start_unix": 1793350463.8804207,
+        "captured_unix": 1793351612.9469962,
+        "proposal_wall_seconds": 1149.0665763940196,
+        "setup_seconds": 37.31819755490869,
+        "wall_seconds": 1110.866100100102,
+        "grading_seconds": 8.587095604045317,
+        "end_to_end_seconds": 1159.0848646210507
+      },
+      "normal_independent_grade": {
+        "sha256": "f51ebc08e73dad5a9bebae2a6d349a479da8969292734773b363abb3f76d97c5",
+        "stages": {
+          "build": {
+            "exit": 0,
+            "log_sha256": "70954ea56267cd404959c61d2c8ece7ce65ccbe83646dadafac47ee6692aae8c",
+            "seconds": 1.9712857599370182
+          },
+          "native": {
+            "exit": 0,
+            "log_sha256": "67088238ea91da69650bdeccfc54123471b1ee9e682a8a079af5c72067638f7e",
+            "seconds": 4.766394620994106
+          },
+          "contract": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "seconds": 0.9290652710478753
+          },
+          "preserve": {
+            "exit": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "seconds": 0.6692910119891167
+          }
+        }
+      },
+      "profile": {
+        "plugins": [
+          "develop@law-config",
+          "superpowers@superpowers-local"
+        ],
+        "system_skills": [
+          "imagegen",
+          "openai-docs",
+          "review-agent",
+          "skill-creator",
+          "skill-installer"
+        ],
+        "apps": [],
+        "mcp": [],
+        "global_instructions": [],
+        "repository_instructions_sha256": {
+          "AGENTS.md": "1afaae2092518e2f35f2c51840157d968707bc296c78d170b05801a292187d00"
+        },
+        "common_managed_hook_digests": [
+          "sha256:a79f6a172423c70427168b961eda5f185d4846935c8187dc51528f46d43f4851",
+          "sha256:97fd1b8e1448bcf5a982080549b7a9fa05cf3dfecbe13ab34ccad635fc2881a2"
+        ],
+        "package": {
+          "installed": {
+            "files": 106,
+            "sha256": "46e71b22bec6694338151494e4d96c8e0e723e0eb2a7f3bf7692c73ad5919479"
+          },
+          "companion": {
+            "files": 73,
+            "sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+          },
+          "companion_source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+          "hook_manifest_file_sha256": "8da970a80ff9cbcf353ede933a889d62680f3d82d2b97369ff126146b13d9579",
+          "hook_attested_package_digest": "36ef31653e6084f6ddb7aa776bdbe72cac3752228b3ac0c63a4b4e2609c1b006",
+          "hook_attested_definitions": {
+            "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+            "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+          },
+          "all_attested_hook_digests_match_plan": true,
+          "isolated_hook_calls": 97,
+          "native_hook_receipts": 97,
+          "review_policy_sha256": "f8ab46ebc104550de234edba7cef1b08a4a2eb7e468c0553105cd111f4995f86"
+        },
+        "actual_turn_input_bound": true,
+        "final_profile_stock_inventory_matches_raw": true
+      },
+      "producer_required_repository_acceptance_complete": false,
+      "independent_producer_reviewer_observed": false
+    }
+  },
+  "assessors": [
+    {
+      "root": "01a18c17-8ec0-7ce1-b189-a07e7c99218a",
+      "thread_count": 1,
+      "child_count": 0,
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "coverage": "complete",
+      "tokens": {
+        "totalTokens": 336760,
+        "inputTokens": 332531,
+        "cachedInputTokens": 292352,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 4229,
+        "reasoningOutputTokens": 470
+      },
+      "root_estimated_usd": 0.1518832,
+      "descendant_estimated_usd": 0.0,
+      "complete_estimated_usd": 0.1518832,
+      "actual_invoiced_usd": null,
+      "raw_usage_and_terminal_meter_match": true,
+      "late_delta_observed": false,
+      "last_raw_meter_utc": "2026-10-30T09:18:29.382Z",
+      "own_turn_contexts": [
+        {
+          "line": 10,
+          "turn": "01a18c17-a72d-7901-84d5-66219cc05eed",
+          "model": "gpt-6.1-sol",
+          "effort": "medium"
+        }
+      ],
+      "matching_server_settings": [
+        {
+          "line": 11,
+          "model": "gpt-6.1-sol",
+          "effort": "medium"
+        }
+      ],
+      "reroutes_observed": false,
+      "native_sha256": "fdd2b04753c747e5727facfa2ebcdca8dd47f894f3ca187ef794f5f13bcc5984",
+      "raw_trace_sha256": "e13a5921e44c954985e1e8e17fc11616ab75d35fcb4b13c859266bd39dc91c5d",
+      "model_limit": "Verified server-reported alias/effort, not undisclosed provider revision.",
+      "rotation": 0,
+      "judgment_sha256": "9a9b1bae35d03c2be6caf665b3e8a2c7b8293be64b078d9593e0d2f33de7fc25",
+      "mapping_sha256": "7f8275dc6f1029577a225c5a8531468efcc977dca24aca11340497612ecba445",
+      "packet_sha256": "cdf6507ef3a23ee4975c74fc7120f5170db0e2d1caad3ffb91f7d9a64ec14cf6",
+      "prompt_sha256": "6782b9b69b351ca2104f717502159ac3d7f2cde38385e95c359a2b8ab8f623ce",
+      "labels": {
+        "A": "develop",
+        "B": "control",
+        "C": "upstream"
+      },
+      "task_sha256": "415b1b6dad9b378e114a0e4c3f3130e48ee97d668fbb56ef8612108f282e8d93",
+      "setup_seconds": 77.8654542460572,
+      "active_wall_seconds": 186.63288933085278,
+      "assessment_started_unix": 1793351643.8492568,
+      "assessment_finished_unix": 1793351912.589447,
+      "cost_scope": "Separate assessment model cost; not a producer descendant or proposal price."
+    },
+    {
+      "root": "01a18c17-a745-7201-9124-7567178f2f37",
+      "thread_count": 1,
+      "child_count": 0,
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "coverage": "complete",
+      "tokens": {
+        "totalTokens": 458437,
+        "inputTokens": 453979,
+        "cachedInputTokens": 395904,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 4458,
+        "reasoningOutputTokens": 454
+      },
+      "root_estimated_usd": 0.2003204,
+      "descendant_estimated_usd": 0.0,
+      "complete_estimated_usd": 0.2003204,
+      "actual_invoiced_usd": null,
+      "raw_usage_and_terminal_meter_match": true,
+      "late_delta_observed": false,
+      "last_raw_meter_utc": "2026-10-30T09:18:46.936Z",
+      "own_turn_contexts": [
+        {
+          "line": 10,
+          "turn": "01a18c17-bcd3-77b3-9d61-2672dfbd9f3d",
+          "model": "gpt-6.1-sol",
+          "effort": "medium"
+        }
+      ],
+      "matching_server_settings": [
+        {
+          "line": 11,
+          "model": "gpt-6.1-sol",
+          "effort": "medium"
+        }
+      ],
+      "reroutes_observed": false,
+      "native_sha256": "5ffb04a046f342ad67555cc7ebc07785933ddf0752c7e193259d1a68b2df57c4",
+      "raw_trace_sha256": "bd57dfc0b05fc7cb5395e904d66e0772c020a5b5bfc4ca1aedea32c94cdff792",
+      "model_limit": "Verified server-reported alias/effort, not undisclosed provider revision.",
+      "rotation": 1,
+      "judgment_sha256": "07577285457b6f54a9e19ec1411b74c7d0600c57a69ad5296d689c50850d45b1",
+      "mapping_sha256": "443c5cfdb2e9e98b3703115833d11c03760e21a2380fc227007dc1e433ae3bce",
+      "packet_sha256": "51baa6a6b22a1f91d4b516377f2a04009ad64f2578dd7c90864f36c646a06691",
+      "prompt_sha256": "4005604f08869d8f2a8551f87c1853e1c2d4531c3675cd73cd148d780265faa6",
+      "labels": {
+        "A": "control",
+        "B": "upstream",
+        "C": "develop"
+      },
+      "task_sha256": "be2b07130db061a762c0ed586bf7112fce1eec9fbf40a78448878571c4a4c3a5",
+      "setup_seconds": 83.00045987009071,
+      "active_wall_seconds": 198.70051387907006,
+      "assessment_started_unix": 1793351643.944319,
+      "assessment_finished_unix": 1793351928.3396788,
+      "cost_scope": "Separate assessment model cost; not a producer descendant or proposal price."
+    },
+    {
+      "root": "01a18c17-96ff-7162-9fce-6d4cb0dc5855",
+      "thread_count": 1,
+      "child_count": 0,
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "coverage": "complete",
+      "tokens": {
+        "totalTokens": 422380,
+        "inputTokens": 417839,
+        "cachedInputTokens": 361216,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 4541,
+        "reasoningOutputTokens": 511
+      },
+      "root_estimated_usd": 0.1947776,
+      "descendant_estimated_usd": 0.0,
+      "complete_estimated_usd": 0.1947776,
+      "actual_invoiced_usd": null,
+      "raw_usage_and_terminal_meter_match": true,
+      "late_delta_observed": false,
+      "last_raw_meter_utc": "2026-10-30T09:18:36.499Z",
+      "own_turn_contexts": [
+        {
+          "line": 10,
+          "turn": "01a18c17-b083-7631-b451-8e9f00470c89",
+          "model": "gpt-6.1-sol",
+          "effort": "medium"
+        }
+      ],
+      "matching_server_settings": [
+        {
+          "line": 11,
+          "model": "gpt-6.1-sol",
+          "effort": "medium"
+        }
+      ],
+      "reroutes_observed": false,
+      "native_sha256": "33e267be494b8dd72e61d695b9e169ef4d06fedd2b1f667abc006f1ec924fb00",
+      "raw_trace_sha256": "5b70204a7a87942cb7f874907113efd133462aae2f49d4cf11c4bf3ca14371e3",
+      "model_limit": "Verified server-reported alias/effort, not undisclosed provider revision.",
+      "rotation": 2,
+      "judgment_sha256": "dbcda955a0c4a3f72c9429ca564c2e958e81680a1d8cf71b3d4a8d9809754b00",
+      "mapping_sha256": "1f96648c237ab0e1ce6e387f33a9a16d30713c2476260556bb3e251e351372f7",
+      "packet_sha256": "328f0ab56d9f1b9b3d04d43089a412008884941360721f9df7884017e7cb7add",
+      "prompt_sha256": "eeab4c60cf98bdf10eea3e354860ab3a4e0d6e579b0ff3cbd82e8680f24b094e",
+      "labels": {
+        "A": "upstream",
+        "B": "develop",
+        "C": "control"
+      },
+      "task_sha256": "891de48b015c217b1f0f00996ac5820d10ed4bc9248eeac44229bef0d83dc2e9",
+      "setup_seconds": 80.09597099293023,
+      "active_wall_seconds": 191.3695990331471,
+      "assessment_started_unix": 1793351643.670673,
+      "assessment_finished_unix": 1793351918.0102887,
+      "cost_scope": "Separate assessment model cost; not a producer descendant or proposal price."
+    }
+  ],
+  "cost_separation": {
+    "all_three_complete_proposal_estimated_usd": 1.2844568,
+    "three_assessors_estimated_usd_separate": 0.5469812,
+    "combined_known_model_estimated_usd": 1.9899424,
+    "actual_invoice_usd": null,
+    "human_labor_usd": null,
+    "hardware_usd": null,
+    "setup": "The four native profile qualification probes are separate from proposal and blind-assessment work. Producer and assessor setup wall is recorded. Worker compute and actual provider invoices are unmeasured.",
+    "normal_grade": "Measured grade wall per arm is above. Grade-stage log hashes and exits are independently checked. No command duration is converted to model dollars.",
+    "postscore_probe": {
+      "benchmark_native_model_calls": 0,
+      "benchmark_native_estimated_usd": 0,
+      "coordination_and_manual_assessment_usd": null,
+      "included_in_proposal_or_assessor_estimates": false,
+      "bounded_route_command_seconds_summed": 160.34116291161627,
+      "campaign_elapsed_seconds": null
+    },
+    "wall_limit": "Assessor rotations overlap. Do not add their elapsed durations as serial latency or compare diagnostic time to proposal speed.",
+    "proposal_and_assessment_estimated_usd": 1.831438,
+    "profile_qualification": {
+      "unique_qualifications": 2,
+      "distinct_probes": 4,
+      "model_threads": 8,
+      "tokens": 441593,
+      "estimated_usd": 0.1585044,
+      "receipts": [
+        {
+          "qualification_sha256": "16b935f83fab6232e0a35d4d3983cf4e21842817d11406920652a965a2448c8b",
+          "references": [
+            {
+              "pilot": "owner-config-runner-space-01",
+              "role": "prior",
+              "plan_sha256": "8b8cf47b9bde82b4686c5a0c38623a8d46d91b00db4acbd9c8d87fbd7a5c8ccf"
+            }
+          ],
+          "probes": [
+            {
+              "profile": "control",
+              "probe_sha256": "9e378319182613953ae076428d0e8e386d9d9ec3f56d58341472a309882972b7",
+              "threads": 2,
+              "tokens": {
+                "inputTokens": 86048,
+                "cachedInputTokens": 79616,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 347,
+                "reasoningOutputTokens": 0,
+                "totalTokens": 86395
+              },
+              "estimated_usd": "0.0242956",
+              "billed_usd": null
+            },
+            {
+              "profile": "develop",
+              "probe_sha256": "726de406c7791c6d1f162945197919d75efafa2aaa92c93844fe22b4cba7edbf",
+              "threads": 2,
+              "tokens": {
+                "inputTokens": 133575,
+                "cachedInputTokens": 124288,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 545,
+                "reasoningOutputTokens": 32,
+                "totalTokens": 134120
+              },
+              "estimated_usd": "0.0364528",
+              "billed_usd": null
+            }
+          ]
+        },
+        {
+          "qualification_sha256": "5f424741f461dba106c5ca23e76a40b2b024d57c2cb7ae13c174659bae8474d7",
+          "references": [
+            {
+              "pilot": "owner-config-runner-space-01",
+              "role": "candidate",
+              "plan_sha256": "e8e73b7c121336b93246546d447cd8e7e409e0db7bb4aede5db073bb38114c4f"
+            }
+          ],
+          "probes": [
+            {
+              "profile": "control",
+              "probe_sha256": "9fe8948993cbb2ed76a1aa813fd4c32340ad82d303429d86da6738229df88d57",
+              "threads": 2,
+              "tokens": {
+                "inputTokens": 86064,
+                "cachedInputTokens": 70016,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 306,
+                "reasoningOutputTokens": 0,
+                "totalTokens": 86370
+              },
+              "estimated_usd": "0.0421576",
+              "billed_usd": null
+            },
+            {
+              "profile": "develop",
+              "probe_sha256": "5c4bb8966fa0abaffd442216ea6a841a568a623fd9baffa04353e05b5a4251c8",
+              "threads": 2,
+              "tokens": {
+                "inputTokens": 134136,
+                "cachedInputTokens": 114944,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 572,
+                "reasoningOutputTokens": 17,
+                "totalTokens": 134708
+              },
+              "estimated_usd": "0.0555984",
+              "billed_usd": null
+            }
+          ]
+        }
+      ],
+      "source_sha256": "508d2e866d55f77c032a56eb3132dfaffd558426db53fd0b6f7cb10603aa451c"
+    }
+  },
+  "producer_vs_independent_execution": {
+    "normal_frozen_stages": [
+      "build",
+      "native",
+      "contract",
+      "preserve"
+    ],
+    "all_three_producer_patches_all_normal_stage_exits_zero": true,
+    "normal_grade_commands": "Typecheck, format, mechanical pin/ledger contract and preservation. These do not execute all repository-required tests or certify upstream dependency graphs.",
+    "prior": "Two new direct regex tests passed on the patch before a later formatting edit; final source typechecked/formatted. Existing owner-topology suite, clean install, bundle reproducibility and pre-commit were incomplete.",
+    "stock": "Typecheck/format pass. Added preservation test asserts neither upgraded pin; full tests, install and check-dist were interrupted, pre-commit unavailable.",
+    "candidate": "Recorded full compiled suite: 311 tests, 308 passed, zero failed, three skipped. Existing independent owner-topology test and two new adjacent lint checks passed. Clean install and upstream verification absent; pre-commit unavailable; check-dist built then failed comparison. Original committed bundle restored byte for byte.",
+    "candidate_test_order": {
+      "production_pin_edit_utc": "2026-10-30T08:58:43.183Z",
+      "retrospective_base_control_call_utc": "2026-10-30T09:03:56.771Z",
+      "retrospective_base_control_exit_utc": "2026-10-30T09:04:14.448Z",
+      "recorded_result": "old pin rejected; neighboring preservation check passes",
+      "meets_before_production_red_order": false,
+      "limits": "The same compiled caller was run later on four original Git HEAD config/manifest files. This is executed retrospective base/patch evidence, not pre-edit red. Earlier npm test stopped130 without behavioral output."
+    },
+    "candidate_test_artifact_closure": {
+      "full_suite_recorded": {
+        "pass": 308,
+        "fail": 0,
+        "skip": 3,
+        "tests": 311
+      },
+      "final_test_title_rename_after_compilation": true,
+      "final_title_renamed_utc": "2026-10-30T09:00:42.356Z",
+      "source_assertions_changed_after_compiled_suite_started": false,
+      "limits": "Recorded compiled suite and retrospective base control use reviewed test title; final source uses requested. The only recorded intervening metadata edit changes that title. Final source typechecks and formats, but exact final bytes were not reexecuted. Final ledger edits and distribution restoration occur later; no independent tested-final-artifact reviewer observed."
+    },
+    "candidate_distribution": {
+      "check_dist_exit": 1,
+      "final_committed_bundle_restored": true,
+      "final_sha256": "5a9aafdcb54d39697c79ee9a6b982e04b85f0e381cd24cb295b5368640054c37",
+      "cause_of_rebuild_mismatch": "unverified",
+      "passing_reproducibility_check": false
+    },
+    "review_applicability": {
+      "independent_reviewers": 0,
+      "applicability": "Bounded scoped pins preserve public action/runtime behavior. Prompt waives interactive plan review; installed policy requires independent review only when applicable consequential/public-contract or explicitly required conditions hold. No such changed contract, destructive action or publication is observed. No independent review is claimed."
+    },
+    "assessor_visibility": "Blind packets supplied frozen stage exits, not these native suite/base-control logs. This sidecar substantiates producer process separately and grants no retroactive judge credit."
+  },
+  "owner_selection": {
+    "existing_test": "workflow structure enumerates every job, step, and local action invocation",
+    "existing_test_executed": true,
+    "new_tests_executed": [
+      "lint tooling uses the reviewed upstream versions",
+      "lint tooling preserves its runtime and hook invocation"
+    ],
+    "final_source_first_test_name": "lint tooling uses the requested upstream versions",
+    "new_assertion_source": "Pin test uses existing actionReferences helper across the lint file and narrows hook repo through indentedSection. Preservation narrows Setup Python step and Markdown hook repo; pip/precommit invocation regexes scan the complete lint text. This reuses existing parsing helpers and adds adjacent tests to metadata.test.ts. It does not extend existing assertWorkflowTopology assertions directly.",
+    "distinct_evidence": "The unchanged existing workflow-topology test independently constrains the lint/pre-commit job, step list and local action inventory. Its recorded passing result is distinct from the newly authored pin and preservation checks.",
+    "unestablished": "No normal participant wrapper/decoy/fixture sensitivity run is observed. Static helper reuse alone does not certify arbitrary structured layout variation or unique treatment causality."
+  },
+  "exposed_case_comparison": {
+    "raw_goal_win": false,
+    "frozen_candidate_stock_pair": {
+      "verdict": "develop",
+      "reason": "blinded rubric",
+      "score_delta": 6.25,
+      "votes": [
+        "develop",
+        "develop",
+        "develop"
+      ],
+      "order_sensitive": false
+    },
+    "frozen_candidate_merge_pair": {
+      "verdict": "develop",
+      "reason": "blinded rubric",
+      "score_delta": 28.75,
+      "votes": [
+        "develop",
+        "develop",
+        "develop"
+      ],
+      "order_sensitive": false
+    },
+    "frozen_arm_score_medians": {
+      "stock": 75.0,
+      "candidate": 87.5,
+      "merge": 58.75
+    },
+    "prior_soft_pr_quality": null,
+    "candidate_minus_stock_complete_estimated_usd": 0.4668772,
+    "candidate_minus_prior_complete_estimated_usd": 0.3723396,
+    "candidate_minus_stock_checkout_seconds": 829.5787860681303,
+    "candidate_minus_prior_checkout_seconds": 642.3894558940083,
+    "registered_product_goal": "False: candidate wins the exposed full rubric but exceeds complete stock cost and fails strict prior cost/wall improvement. Median pair delta is the registered pair statistic, not subtraction of separate arm medians.",
+    "independent_source_documentation_finding": {
+      "candidate_ledger_undici": "6.29.0",
+      "unchanged_lockfile_undici": "6.29.1",
+      "ledger_sha256": "88aaa16403c3d00c85ff15325fc850f95e2a9da68608a48240da8052a13819e0",
+      "lockfile_sha256": "e84771dc62928f50fd6ccafd2aefea5672e5d15c4445383252733cb0bdb8f1a5",
+      "status": "Verified source mismatch also identified by all three judges; no repair or score modification performed."
+    },
+    "causal_limit": "One exposed tuning case cannot establish promotion, transfer or a unique causal mechanism. Source-helper reuse and completed tests do not by themselves establish neutral-wrapper/decoy behavior; any later registered sensitivity replay is separate."
+  },
+  "limits": [
+    "All six native roots completed with own server-reported Sol Medium context and matching settings, complete terminal meters and raw sums. No descendants, reroutes or late-meter delta observed; provider invoices remain unavailable.",
+    "Source package comparison changes only skills/iterate/references/local-changes.md among 106 files; companion source and hook inventory remain bound. Managed hooks and five system skills remain in the stock environment.",
+    "The before-production-red rule was not satisfied by the later retrospective base control. Final test-title edit leaves exact final-byte runtime closure unverified although assertions are unchanged and final source typechecks/formats.",
+    "No wait-only accounting partition was added to this case. Historical wait materiality is a separate artifact; elapsed command time and output size never imply dollars."
+  ]
+}

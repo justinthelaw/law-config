@@ -1,0 +1,1006 @@
+{
+  "format": "law-config.eval-pilot/v1",
+  "name": "owner-config-runner-space-01",
+  "case": "runner-space",
+  "repository": "justinthelaw/maximize-github-runner-space",
+  "pr": 69,
+  "evaluator_protocol": "pr-quality-runner-v3",
+  "registration": {
+    "protocol": "develop-efficiency-pilot-v1",
+    "name": "owner-config-runner-space-01",
+    "case": "runner-space",
+    "plans": {
+      "prior": {
+        "path": "runs/owner-config-runner-space-01-prior/plan.json",
+        "sha256": "8b8cf47b9bde82b4686c5a0c38623a8d46d91b00db4acbd9c8d87fbd7a5c8ccf"
+      },
+      "candidate": {
+        "path": "runs/owner-config-runner-space-01-candidate/plan.json",
+        "sha256": "e8e73b7c121336b93246546d447cd8e7e409e0db7bb4aede5db073bb38114c4f"
+      }
+    },
+    "evaluator_protocol": "pr-quality-runner-v3",
+    "operator_sha256": "d8ad5b1f3c6c5a6ef2dc867b7025ec632c1703ed7b2027c74f17f66ed8e872ad",
+    "cpus": [
+      4,
+      5
+    ],
+    "order": [
+      [
+        "prior",
+        "develop"
+      ],
+      [
+        "candidate",
+        "control"
+      ],
+      [
+        "candidate",
+        "develop"
+      ]
+    ],
+    "hypothesis": "owner-config-check",
+    "evaluator_binding": {
+      "protocol": "pr-quality-runner-v3",
+      "source_sha256": "0d6c18d4c59b10d4ef17ccb21e666671761718f4f996f1069ddc7bc14bc5b6ac",
+      "case": "runner-space",
+      "fixture_sha256": "502782e97e3bd55c8708331f6ed1617842baa5440a5c7f77af20e6be848092be"
+    },
+    "tuning_policy_sha256": "589902e5ac1b940405e6f65707f3890987e02e4cc0986132382143fb494cce11",
+    "hypothesis_sha256": "d433a8249108ee4a727f1a5dbee266cdb8cc8a48d8fc4e918583a6e63bfb8d67",
+    "falsifier": "Reject non-ready outcome, omitted unique contract/check/review, wrong-owner or old-pin/hook acceptance, harmless-layout rejection, absent configured discovery, no distinct observed owner-selection mechanism, blind stock tie/loss or insufficient registered margin, complete cost above stock, or lack of strict prior cost AND wall improvement. Incomplete source/meter/review/assay evidence is unestablished, never green. Historical near-parity and the +9/-4 constructive change support no savings projection. One exposed case cannot establish promotion or general transfer. Reject lost prior verified behavior or required review, failure of either strict prior cost or wall improvement, non-ready candidate, or full-PR loss to pure. Missing measures or unverifiable review leave the comparison unestablished.",
+    "quality": "Three blind candidate/pure/merge rotations. Prior Develop soft PR quality is unknown.",
+    "goal": "A ready Develop PR strictly wins the full rubric against a terminal pure proposal at complete cost <= pure.",
+    "attempts": "One proposal per registered slot. All allocations including technical failures remain in the ledger."
+  },
+  "registration_sha256": "d07ad46854f02d4f032bc848cbf07b77b117a2be7568315ae468e5930c4487b3",
+  "result_sha256": "97fecf417168c55bfac25f5a3437d8f258ab1cfe9b6a7013a37a9f847093ec8f",
+  "treatments": {
+    "prior": "7ed91df07062b0a88cab8cd5b5e74ee8a7c7e258afa2a42645b60e793ea68791",
+    "candidate": "9bcccd70ccc2fa1ed506e3c0ac28f62e5b155a8e611a82af575770cdf7fec28a"
+  },
+  "treatment_components": {
+    "prior": {
+      "label": "superpowers-observable-caller",
+      "package_sha256": "239dccfc0fe4c090a777d8cf46216c99c57bc2bebc08eca013402215b65c7c28",
+      "plugin_hook_sha256": "2820cd4662b8438ba0654c55f9f24577fb8ec13bcc9ad362c598d8777b94ec1b",
+      "hook_sha256": {
+        "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+        "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+      },
+      "companion": {
+        "source": "https://github.com/openai/plugins",
+        "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+        "source_path": "plugins/superpowers",
+        "version": "6.3.0",
+        "manifest_sha256": "18eb497a5c3c5aade93fe1982db0fbd2ab23d4a428fc552da6ee3cc520c9706d",
+        "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+        "skills": {
+          "brainstorming": "74edf03ea6d24ef53db48677b93558d14a979bdf052ca3f57ecdca0c66791608",
+          "dispatching-parallel-agents": "1968923066f3b707eb01d1992cdf4c42284c3855f70253b9cd5000ff45fca13c",
+          "executing-plans": "c4c3d8b628c51114cd165fb8246fe02744cd8be180032328391252e653028d9b",
+          "finishing-a-development-branch": "8db5a922b242dd4e1bf824cb91c13b3e8d8e8a86d6ceaf7f0774eb9cce909d65",
+          "receiving-code-review": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438",
+          "requesting-code-review": "d71cc01ba56d2325cf8af5f7c11837819b63ecd57de0bfdb812f7f3ff7751df8",
+          "subagent-driven-development": "8dd1b8e698edec3700c6d89517dbe96febd3bacd3f6ea21c1a3569c62ea104b5",
+          "systematic-debugging": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787",
+          "test-driven-development": "bf1b8216e523851a411e91d429a7c1c2a173e79d88957bc78e348218d50edd54",
+          "using-git-worktrees": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd",
+          "using-superpowers": "30f2ab78e20ddc27ee7158ae8d4a2abe161c360981c7cc3548070913142d3dc3",
+          "verification-before-completion": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+          "writing-plans": "48508f44bbfd7d24b029fbf3a314f3cd14c9615599059366e922f47b8dc08cf2",
+          "writing-skills": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b"
+        }
+      }
+    },
+    "candidate": {
+      "label": "owner-config-check",
+      "package_sha256": "46e71b22bec6694338151494e4d96c8e0e723e0eb2a7f3bf7692c73ad5919479",
+      "plugin_hook_sha256": "36ef31653e6084f6ddb7aa776bdbe72cac3752228b3ac0c63a4b4e2609c1b006",
+      "hook_sha256": {
+        "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+        "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+      },
+      "companion": {
+        "source": "https://github.com/openai/plugins",
+        "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+        "source_path": "plugins/superpowers",
+        "version": "6.3.0",
+        "manifest_sha256": "18eb497a5c3c5aade93fe1982db0fbd2ab23d4a428fc552da6ee3cc520c9706d",
+        "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+        "skills": {
+          "brainstorming": "74edf03ea6d24ef53db48677b93558d14a979bdf052ca3f57ecdca0c66791608",
+          "dispatching-parallel-agents": "1968923066f3b707eb01d1992cdf4c42284c3855f70253b9cd5000ff45fca13c",
+          "executing-plans": "c4c3d8b628c51114cd165fb8246fe02744cd8be180032328391252e653028d9b",
+          "finishing-a-development-branch": "8db5a922b242dd4e1bf824cb91c13b3e8d8e8a86d6ceaf7f0774eb9cce909d65",
+          "receiving-code-review": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438",
+          "requesting-code-review": "d71cc01ba56d2325cf8af5f7c11837819b63ecd57de0bfdb812f7f3ff7751df8",
+          "subagent-driven-development": "8dd1b8e698edec3700c6d89517dbe96febd3bacd3f6ea21c1a3569c62ea104b5",
+          "systematic-debugging": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787",
+          "test-driven-development": "bf1b8216e523851a411e91d429a7c1c2a173e79d88957bc78e348218d50edd54",
+          "using-git-worktrees": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd",
+          "using-superpowers": "30f2ab78e20ddc27ee7158ae8d4a2abe161c360981c7cc3548070913142d3dc3",
+          "verification-before-completion": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+          "writing-plans": "48508f44bbfd7d24b029fbf3a314f3cd14c9615599059366e922f47b8dc08cf2",
+          "writing-skills": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b"
+        }
+      }
+    }
+  },
+  "base": "a2f3ac8c38982d83e3d02e89342d856a7e026268",
+  "merged": "bbaad53e5c844645ef54d9309adf96be46ab159e",
+  "prompt": "Implement the following task in this checkout and add relevant tests. Use your natural local workflow and verification tools. I waive interactive review of the local implementation plan and authorize you to proceed unattended. Follow all applicable repository requirements and complete any required independent review of consequential design or public contracts. Work offline and leave the proposed changes in the checkout. In your final message, put a concise PR title on the first line, followed by a blank line and a PR body explaining the change, motivation, verification actually performed and any material gaps.\n\nUpdate the lint tooling to actions/setup-python v7.1.0 (upstream tag commit 6d4fd22b20465ccc0f7354476588e8df7c9ca0e0) and markdownlint-cli2 v0.24.0. Record both changes and any deferred upgrades in the repository's dependency ledger. Preserve supported runtime versions, action behavior and generated distribution.\n\nAvailable offline verification commands:\nnpm run typecheck\nnpm run format:check",
+  "prompt_sha256": "45306b80a27be37dbb59e776ad3a7732bbe29e15bc39c7a5a6903c4fdcaa7b17",
+  "runtime_sha256": "0d6c18d4c59b10d4ef17ccb21e666671761718f4f996f1069ddc7bc14bc5b6ac",
+  "rubric_sha256": "0bdd8699f00ba1f5266927d7666bc2a117fa4873e113fdfa831da93cd2abbc08",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "rates": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "profiles": {
+    "prior/develop": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "hooks",
+        "marketplaces",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {
+        "AGENTS.md": "1afaae2092518e2f35f2c51840157d968707bc296c78d170b05801a292187d00"
+      },
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [
+        "develop@law-config",
+        "superpowers@superpowers-local"
+      ],
+      "ephemeral": false,
+      "inventory_sha256": "653f32c2806bc6c4849fadff81d4b3d0315612334d5549ef946eb13fc0a1fb51",
+      "input_sha256": "dd3c743aa866cbe8f363a30606e3b1243e8518ddbf77f711c1e946042b614d10",
+      "config_sha256": "a116feead9fcf1d585ed9ae9ca717090d6705181b4decf8e48c8c19b02c60d28"
+    },
+    "candidate/control": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {
+        "AGENTS.md": "1afaae2092518e2f35f2c51840157d968707bc296c78d170b05801a292187d00"
+      },
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [],
+      "ephemeral": false,
+      "inventory_sha256": "cd42353fcd0ec0d9f08b09af090e0aaebf40d8f3c5836d95caa02d4f18a56249",
+      "input_sha256": "aee9d7598257f8d06504112c65db9a801d956a58d53448203a19d009e4f89e8d",
+      "config_sha256": "cb3d77c460913eeab58da8c2b6a3cb007999aef8e93de5b81c2e158e8d154afa"
+    },
+    "candidate/develop": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "hooks",
+        "marketplaces",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {
+        "AGENTS.md": "1afaae2092518e2f35f2c51840157d968707bc296c78d170b05801a292187d00"
+      },
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [
+        "develop@law-config",
+        "superpowers@superpowers-local"
+      ],
+      "ephemeral": false,
+      "inventory_sha256": "284fb47d0e9ac39797764f86ed2cc110bfe2addc4e360f5fa768c4a390806d9c",
+      "input_sha256": "52b8e88db363b891417e03c1d7fb8060e576673c095e40296d9245d597f43371",
+      "config_sha256": "5223461591e3b3309824421daccc6dd65d4ed589b84076e89f4796cda36595b6"
+    }
+  },
+  "comparisons": {
+    "develop_control": {
+      "verdict": "develop",
+      "reason": "blinded rubric",
+      "score_delta": 6.25,
+      "votes": [
+        "develop",
+        "develop",
+        "develop"
+      ],
+      "order_sensitive": false
+    },
+    "develop_upstream": {
+      "verdict": "develop",
+      "reason": "blinded rubric",
+      "score_delta": 28.75,
+      "votes": [
+        "develop",
+        "develop",
+        "develop"
+      ],
+      "order_sensitive": false
+    },
+    "control_upstream": {
+      "verdict": "control",
+      "reason": "blinded rubric",
+      "score_delta": 16.25,
+      "votes": [
+        "control",
+        "control",
+        "control"
+      ],
+      "order_sensitive": false
+    }
+  },
+  "goal_win": false,
+  "submissions": {
+    "control": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "e8e73b7c121336b93246546d447cd8e7e409e0db7bb4aede5db073bb38114c4f",
+      "case_id": "runner-space",
+      "role": "control",
+      "state": "completed",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "70954ea56267cd404959c61d2c8ece7ce65ccbe83646dadafac47ee6692aae8c",
+          "command": "npm run typecheck",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "67088238ea91da69650bdeccfc54123471b1ee9e682a8a079af5c72067638f7e",
+          "command": "npm run format:check",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "node /oracle/check.mjs",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "node /oracle/probe.mjs",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/.github/workflows/lint.yml b/.github/workflows/lint.yml\nindex aeea536..0399d53 100644\n--- a/.github/workflows/lint.yml\n+++ b/.github/workflows/lint.yml\n@@ -29,7 +29,7 @@ jobs:\n           persist-credentials: false\n \n       - name: Setup Python\n-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0\n+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0\n         with:\n           python-version: \"3.15\"\n \ndiff --git a/.pre-commit-config.yaml b/.pre-commit-config.yaml\nindex 1e10c09..ddbaf4f 100644\n--- a/.pre-commit-config.yaml\n+++ b/.pre-commit-config.yaml\n@@ -39,7 +39,7 @@ repos:\n         stages: [pre-commit, pre-push]\n \n   - repo: https://github.com/DavidAnson/markdownlint-cli2\n-    rev: v0.23.3\n+    rev: v0.24.0\n     hooks:\n       - id: markdownlint-cli2\n         name: Markdown Lint\ndiff --git a/docs/dependency-upgrades/2026-10-30.md b/docs/dependency-upgrades/2026-10-30.md\nnew file mode 100644\nindex 0000000..1636a77\n--- /dev/null\n+++ b/docs/dependency-upgrades/2026-10-30.md\n@@ -0,0 +1,45 @@\n+# Lint dependency update - 2026-10-30\n+\n+This scoped update supplements the [previous ledger](2026-10-12.md) and its\n+[action dependency review](2026-10-12-actions.md). It updates the requested lint\n+parents without changing supported runtimes or cleanup behavior.\n+\n+## Dependency ledger\n+\n+| Dependency | Before | Target and final | Outcome and evidence |\n+| --- | --- | --- | --- |\n+| actions/setup-python | v7.0.0 @ 5fda3b95a4ea91299a34e894583c3862153e4b97 | v7.1.0 @ 6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 | Upgraded immutable lint-workflow pin using the upstream tag commit supplied in the task. [Release](https://github.com/actions/setup-python/releases/tag/v7.1.0) |\n+| markdownlint-cli2 | v0.23.3 | v0.24.0 | Upgraded native pre-commit hook; existing arguments, configuration and stages retained. [Release](https://github.com/DavidAnson/markdownlint-cli2/releases/tag/v0.24.0) |\n+\n+## Deferred upgrades and preserved contracts\n+\n+- Retain Python 3.15 for lint, Node.js >=22 for development, Node 22 type\n+  declarations and the Node 24 published action runtime. Runtime and type-major\n+  migrations require a separate support-policy review; this update does not\n+  reassess the earlier ledger's time-dependent Node release status.\n+- Retain the npm lockfile and generated `dist/` unchanged. The toolkit's Undici\n+  major upgrade and a mandatory npm version pin remain deferred for the\n+  compatibility reasons in the previous ledger.\n+- Earlier action-bundle and Markdown-hook transitive deferrals remain pending\n+  revalidation against these new parent releases. Their old resolved versions\n+  and advisory counts are historical evidence, not measurements of the new\n+  parents. Defer forced leaf overrides; retry through supported upstream graph\n+  updates and fresh native hook installation.\n+- Other tooling pins are outside this scoped update. No claim of latest-version\n+  status or advisory remediation is made without upstream verification.\n+\n+## Offline verification scope\n+\n+Release links above identify upstream evidence locations; they were not fetched\n+in this offline update. Fresh upstream action-bundle inspection and installation\n+of markdownlint-cli2 v0.24.0 remain verification gaps for CI or a connected review.\n+The metadata regression covers the retained Python selector, complete pre-push\n+invocation and Markdown-hook options/stages. No public action contract or\n+consequential cleanup design changes require independent design review.\n+\n+Passed `npm run typecheck`, `npm run format:check` and `git diff --check`.\n+Confirmed no diff in runtime source, action metadata, npm manifests or `dist/`.\n+The offline locked install, test suite and distribution rebuild were attempted\n+but stopped after prolonged execution without completion; the new regression\n+has been typechecked but not executed. `pre-commit` is not installed locally,\n+so the full pre-push hook suite could not run. These checks remain required in CI.\ndiff --git a/test/metadata.test.ts b/test/metadata.test.ts\nindex 4023f03..f013184 100644\n--- a/test/metadata.test.ts\n+++ b/test/metadata.test.ts\n@@ -1358,6 +1358,32 @@ test(\"workflow structure enumerates every job, step, and local action invocation\n   assertWorkflowTopology(compatibility, pullRequest, lint, smokeAction);\n });\n \n+test(\"lint tooling retains its runtime and complete pre-push hook invocation\", async () => {\n+  const [workflow, hooks] = await Promise.all([\n+    readFile(\".github/workflows/lint.yml\", \"utf8\"),\n+    readFile(\".pre-commit-config.yaml\", \"utf8\"),\n+  ]);\n+  const steps = stepBlocks(workflowJob(workflow, \"pre-commit\"), 6);\n+  const python = steps.find((step) => stepName(step, 6) === \"Setup Python\");\n+  assert.ok(python);\n+  assert.match(python, /python-version: \"3\\.15\"/);\n+  assert.ok(\n+    steps.some((step) =>\n+      step.includes(\"run: pre-commit run --all-files --hook-stage pre-push\"),\n+    ),\n+  );\n+  const markdownHook = hooks\n+    .split(\"  - repo: https://github.com/DavidAnson/markdownlint-cli2\\n\")[1]\n+    ?.split(\"\\n  - repo:\")[0];\n+  assert.ok(markdownHook);\n+  assert.match(markdownHook, /- id: markdownlint-cli2\\n/);\n+  assert.match(\n+    markdownHook,\n+    /args: \\[\"--fix\", \"--config=\\.markdownlint-cli2\\.jsonc\"\\]/,\n+  );\n+  assert.match(markdownHook, /stages: \\[pre-commit, pre-push\\]/);\n+});\n+\n test(\"the exact-label sweep stays aligned with runner support docs\", async () => {\n   const [workflow, smokeAction] = await Promise.all([\n     readFile(\".github/workflows/compatibility.yml\", \"utf8\"),\n",
+      "patch_sha256": "6bfbd68196b73da873868db52e2043e84867727a366f7a10b5f450d56c651656",
+      "proposal": "chore: update setup-python and markdownlint-cli2 lint tooling\n\nUpdate setup-python to v7.1.0 at `6d4fd22b20465ccc0f7354476588e8df7c9ca0e0` and markdownlint-cli2 to v0.24.0. Record both upgrades and retained deferrals in the dependency ledger.\n\nPreserve supported runtimes, hook options, action behavior, and committed distribution. Add regression coverage for the lint runtime and hook invocation.\n\nVerification: typecheck, format check, and diff checks passed. Offline install, tests, and distribution rebuild were attempted but stopped without completion. Pre-commit is unavailable; the new regression remains unexecuted. Upstream dependency graphs were not verified offline.",
+      "proposal_sha256": "9f29421312e01d378d82d662e3f118316651048432c82cc4a09b490baf5ad490",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "6bfbd68196b73da873868db52e2043e84867727a366f7a10b5f450d56c651656",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "patch_sha256": "6bfbd68196b73da873868db52e2043e84867727a366f7a10b5f450d56c651656",
+            "proposal_sha256": "9f29421312e01d378d82d662e3f118316651048432c82cc4a09b490baf5ad490",
+            "judgment_sha256": "711ec749160118e6599ada6e70af8b6954227527c059a3fd161f1e95d06cab0a",
+            "mapping_sha256": "7f8275dc6f1029577a225c5a8531468efcc977dca24aca11340497612ecba445",
+            "assessor_sha256": "fdd2b04753c747e5727facfa2ebcdca8dd47f894f3ca187ef794f5f13bcc5984",
+            "packet_sha256": "cdf6507ef3a23ee4975c74fc7120f5170db0e2d1caad3ffb91f7d9a64ec14cf6",
+            "prompt_sha256": "6782b9b69b351ca2104f717502159ac3d7f2cde38385e95c359a2b8ab8f623ce"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "patch_sha256": "6bfbd68196b73da873868db52e2043e84867727a366f7a10b5f450d56c651656",
+            "proposal_sha256": "9f29421312e01d378d82d662e3f118316651048432c82cc4a09b490baf5ad490",
+            "judgment_sha256": "f300dc6e0d52d1d3c98df92f0ffdd354cd9dd6fcb6f6d5c6e53cc0fa66cace20",
+            "mapping_sha256": "443c5cfdb2e9e98b3703115833d11c03760e21a2380fc227007dc1e433ae3bce",
+            "assessor_sha256": "5ffb04a046f342ad67555cc7ebc07785933ddf0752c7e193259d1a68b2df57c4",
+            "packet_sha256": "51baa6a6b22a1f91d4b516377f2a04009ad64f2578dd7c90864f36c646a06691",
+            "prompt_sha256": "4005604f08869d8f2a8551f87c1853e1c2d4531c3675cd73cd148d780265faa6"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "patch_sha256": "6bfbd68196b73da873868db52e2043e84867727a366f7a10b5f450d56c651656",
+            "proposal_sha256": "9f29421312e01d378d82d662e3f118316651048432c82cc4a09b490baf5ad490",
+            "judgment_sha256": "a12cd2bb453544d7b4175ec37ccfa56a01332594750ef53da9589153a2d00023",
+            "mapping_sha256": "1f96648c237ab0e1ce6e387f33a9a16d30713c2476260556bb3e251e351372f7",
+            "assessor_sha256": "33e267be494b8dd72e61d695b9e169ef4d06fedd2b1f667abc006f1ec924fb00",
+            "packet_sha256": "328f0ab56d9f1b9b3d04d43089a412008884941360721f9df7884017e7cb7add",
+            "prompt_sha256": "eeab4c60cf98bdf10eea3e354860ab3a4e0d6e579b0ff3cbd82e8680f24b094e"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 4,
+          "tests": 0,
+          "design": 4,
+          "proposal": 4
+        },
+        "proposal_points_100": 75.0,
+        "diff_points_85": 60.0,
+        "rotation_points_85": {
+          "0": 60.0,
+          "1": 66.25,
+          "2": 60.0
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 0,
+              "design": 4,
+              "proposal": 4
+            },
+            "evidence": {
+              "contract": "packet/B.patch makes both exact requested pin changes. Frozen build/native/contract/preserve exits are all 0. docs/dependency-upgrades/2026-10-30.md records both upgrades and carries forward Node declaration, toolkit Undici, npm-pin and upstream graph deferrals by reference, explicitly treating old graph findings as historical. Python 3.15, Node >=22/node24, hook invocation/options, runtime sources, lockfile and dist remain unchanged. No contradictory retained version is introduced.",
+              "tests": "The added test/metadata.test.ts test checks Python 3.15, full pre-push invocation and Markdown hook ID/arguments/stages, but checks neither upgraded pin. It would pass against the original setup-python v7.0.0 and markdownlint-cli2 v0.23.3 configuration, so it misses the primary defect. Existing protections remain intact. Typecheck and format passes are frozen evidence; no completed unit-test execution is supplied.",
+              "design": "Two pin replacements, an additive ledger in the existing directory and a small metadata test fit repository conventions. No action implementation, runtime policy, dependency override, lockfile or generated bundle changes are introduced. Inspection of all deletions finds only the old pins; no applicable protection is weakened.",
+              "proposal": "packet/B.md names both targets and the immutable SHA, explains the ledger and preserved contracts, and accurately describes the limited preservation-test scope. Typecheck and format claims have frozen support. It explicitly reports interrupted install/tests/rebuild, unexecuted regression, unavailable pre-commit and absent upstream verification rather than claiming those checks passed. Diff-check and interruption details remain uncorroborated and receive no additional execution credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 1,
+              "design": 4,
+              "proposal": 4
+            },
+            "evidence": {
+              "contract": "Both requested pins are exact in .github/workflows/lint.yml and .pre-commit-config.yaml. docs/dependency-upgrades/2026-10-30.md records both upgrades and carries forward toolkit/type-major, mandatory npm-pin and upstream-owned transitive deferrals, distinguishing historical findings from unverified new graphs. Runtime selectors, hook arguments/exclusion/stages, source, manifests and dist are unchanged. packet/task.json records zero exits for typecheck, format:check, contract and preserve.",
+              "tests": "The added test/metadata.test.ts case protects Python 3.15, the pre-push command and Markdown hook ID/arguments/stages, but asserts neither requested version. Reverting both pins would leave it satisfied. It also omits the exclusion. Existing tests remain intact. Frozen typecheck and formatting pass; interrupted test execution is unavailable, not a test failure or pass. This is limited preservation coverage without primary-defect discrimination.",
+              "design": "A.patch confines edits to two pins, a linked ledger and one metadata test using existing workflow helpers. No source, dist, safety validation, workflow permission, credential protection or existing assertion is removed or weakened. The ledger avoids claiming new upstream graph measurements.",
+              "proposal": "A.md has a precise title/body explaining both upgrades, preservation and regression scope. Typecheck and formatting agree with frozen exits. It explicitly discloses interrupted install/test/rebuild attempts, unavailable pre-commit and unverified upstream graphs. Those attempts and its additional diff-check claim receive no execution credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 0,
+              "design": 4,
+              "proposal": 4
+            },
+            "evidence": {
+              "contract": "packet/C.patch supplies the exact requested setup-python SHA and markdownlint-cli2 v0.24.0. docs/dependency-upgrades/2026-10-30.md records both upgrades and retains declaration-family, Undici-major, mandatory npm-pin and parent-owned transitive deferrals consistent with the starting 2026-10-12 ledgers. It explicitly qualifies old graph findings as historical and pending revalidation rather than asserting remediation. Python 3.15, Node >=22/node24, hook options, source, manifests, action metadata and dist remain unchanged. Frozen typecheck, format, contract and preservation checks all exit 0.",
+              "tests": "The addition to test/metadata.test.ts protects the Python selector, pre-push command and Markdown hook ID/args/stages but asserts neither requested version. All its assertions also hold with the original pins, so it would pass with the primary defect. Existing tests are not weakened. Typecheck/format passes do not execute this regression; the reported interrupted suite supplies no completed test outcome.",
+              "design": "The complete patch contains two pin changes, one scoped ledger and one metadata test using existing workflow helpers. Hook exclusions/stages, workflow permissions/credentials, runtime source and generated dist remain intact. No existing validation, tests or destructive-cleanup protections are removed or weakened.",
+              "proposal": "packet/C.md gives both exact versions and the SHA, explains preservation and the ledger, and clearly reports unavailable pre-commit and unverified upstream graphs. Its typecheck/format claims are supported. It explicitly identifies installation, tests and rebuild as interrupted and the new regression as unexecuted. The additional diff-check claim has no separate observation and receives no extra credit; the material verification limits remain clear."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 1069742,
+          "cachedInputTokens": 1024000,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 4713,
+          "reasoningOutputTokens": 722,
+          "totalTokens": 1074455
+        },
+        "estimated_usd": 0.241014,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 319.48779032588936,
+        "prompt_to_terminal_seconds": 290.3062602500431,
+        "through_grading_seconds": 329.133437064942,
+        "setup_seconds": 28.232418074039742,
+        "grading_seconds": 8.08208013791591,
+        "thread_count": 1,
+        "child_count": 0,
+        "root_tokens": {
+          "totalTokens": 1074455,
+          "inputTokens": 1069742,
+          "cachedInputTokens": 1024000,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 4713,
+          "reasoningOutputTokens": 722
+        },
+        "descendant_tokens": {
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 0,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 0
+        },
+        "observed_commands": 18,
+        "native_hook_receipts": 0
+      },
+      "receipt_sha256": {
+        "grade": "ba5e40e398ec3e05cae328cfc90d2208ee426982a70e73d9a96e2320885644d5",
+        "release": "da9997829176f468a2143ad984238f370f2323d2d00d62c6ce1b800979046bf4",
+        "native": "3c1a15326d5b2c9cf3c9ee623ddb745196d14f943702d62903548a7d29c84c86",
+        "submission": "f94a2d05e5e2251fba162ba23df7e788962cdd3ae7d5d3057285ff3ca95e6c3e",
+        "result": "c9a0cd39142f18eed3b177551cf9fb74ad6d20a2272c756baad2341e70ed37e1",
+        "inventory": "cd42353fcd0ec0d9f08b09af090e0aaebf40d8f3c5836d95caa02d4f18a56249"
+      }
+    },
+    "develop": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "e8e73b7c121336b93246546d447cd8e7e409e0db7bb4aede5db073bb38114c4f",
+      "case_id": "runner-space",
+      "role": "develop",
+      "state": "completed",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "70954ea56267cd404959c61d2c8ece7ce65ccbe83646dadafac47ee6692aae8c",
+          "command": "npm run typecheck",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "67088238ea91da69650bdeccfc54123471b1ee9e682a8a079af5c72067638f7e",
+          "command": "npm run format:check",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "node /oracle/check.mjs",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "node /oracle/probe.mjs",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/.github/workflows/lint.yml b/.github/workflows/lint.yml\nindex aeea536..0399d53 100644\n--- a/.github/workflows/lint.yml\n+++ b/.github/workflows/lint.yml\n@@ -29,7 +29,7 @@ jobs:\n           persist-credentials: false\n \n       - name: Setup Python\n-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0\n+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0\n         with:\n           python-version: \"3.15\"\n \ndiff --git a/.pre-commit-config.yaml b/.pre-commit-config.yaml\nindex 1e10c09..ddbaf4f 100644\n--- a/.pre-commit-config.yaml\n+++ b/.pre-commit-config.yaml\n@@ -39,7 +39,7 @@ repos:\n         stages: [pre-commit, pre-push]\n \n   - repo: https://github.com/DavidAnson/markdownlint-cli2\n-    rev: v0.23.3\n+    rev: v0.24.0\n     hooks:\n       - id: markdownlint-cli2\n         name: Markdown Lint\ndiff --git a/docs/dependency-upgrades/2026-10-30.md b/docs/dependency-upgrades/2026-10-30.md\nnew file mode 100644\nindex 0000000..d17da78\n--- /dev/null\n+++ b/docs/dependency-upgrades/2026-10-30.md\n@@ -0,0 +1,55 @@\n+# Lint dependency update - 2026-10-30\n+\n+This scoped offline update supersedes the setup-python and markdownlint-cli2\n+parent selections in the [previous ledger](2026-10-12.md). Targets and the\n+setup-python tag commit were supplied in the task; upstream release metadata,\n+bundles and fresh hook resolution were not independently fetched or verified.\n+\n+## Dependency ledger\n+\n+| Dependency | Before | Requested target | Final | Outcome |\n+| --- | --- | --- | --- | --- |\n+| actions/setup-python | v7.0.0 @ 5fda3b95a4ea91299a34e894583c3862153e4b97 | v7.1.0 @ 6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 | v7.1.0 @ 6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 | Upgraded the immutable lint workflow pin; Python stays 3.15. [Release](https://github.com/actions/setup-python/releases/tag/v7.1.0) |\n+| DavidAnson/markdownlint-cli2 | v0.23.3 | v0.24.0 | v0.24.0 | Upgraded the pre-commit hook; ID, arguments, exclusions and stages are unchanged. [Release](https://github.com/DavidAnson/markdownlint-cli2/releases/tag/v0.24.0) |\n+\n+## Retained boundaries and deferred upgrades\n+\n+- Keep the Node development floor at >=22, Node 22 type declarations and\n+  `undici-types` 6.21.0. Newer declaration families require a support-policy\n+  change; this lint update does not authorize one.\n+- Keep the action runtime at `node24`. A runtime migration requires a separate\n+  review of Actions support; the old ledger's time-based Node 26 prerelease/LTS\n+  rationale is not reasserted here.\n+- Keep `undici` 6.29.0 under `@actions/http-client` 4.0.1's supported range.\n+  Defer the previously considered 8.11.2 until the parent supports it; no leaf\n+  overrides or lockfile changes are introduced.\n+- Retain other tooling and transitive upgrade deferrals recorded in the\n+  [previous ledger](2026-10-12.md) and\n+  [action bundle review](2026-10-12-actions.md). Those are historical findings,\n+  not a verified inventory of setup-python v7.1.0 or markdownlint-cli2 v0.24.0.\n+  In particular, the prior setup-python Undici, brace-expansion and XML-parser\n+  findings and Markdown hook braces, smol-toml and KaTeX findings need a fresh\n+  upstream graph/bundle review when online verification is available. This\n+  update claims neither remediation nor continued presence in the new parents.\n+  Do not patch private hook installs or immutable action bundles with project\n+  overrides; retry through supported upstream releases.\n+\n+Python 3.15, pre-commit 4.7.0, action inputs/outputs, cleanup behavior and the\n+committed `dist/` remain unchanged. These lint-only configuration changes do\n+not alter project dependencies or distribution inputs.\n+\n+## Offline verification\n+\n+- `npm run typecheck` and `npm run format:check` passed.\n+- `npm test` passed: 308 tests passed, three platform-specific tests skipped.\n+  The new checks cover both pins, retained runtimes and the Markdown hook\n+  invocation. Against the original configuration in a temporary directory,\n+  the version check failed as expected and the preservation check passed.\n+- `npm run check-dist` built successfully but failed its comparison with the\n+  committed `dist/index.js`. Source, manifests and build configuration are\n+  unchanged by this update; the cause of the local rebuild mismatch remains\n+  unverified. The original committed bundle was restored byte for byte to\n+  preserve the distribution. This is not a passing reproducibility check.\n+- Pre-commit could not run because it is not installed. A clean `npm ci`\n+  installation and fresh upstream hook/bundle verification were not performed;\n+  checks used the dependencies already available in the offline checkout.\ndiff --git a/test/metadata.test.ts b/test/metadata.test.ts\nindex 4023f03..4245f37 100644\n--- a/test/metadata.test.ts\n+++ b/test/metadata.test.ts\n@@ -1358,6 +1358,52 @@ test(\"workflow structure enumerates every job, step, and local action invocation\n   assertWorkflowTopology(compatibility, pullRequest, lint, smokeAction);\n });\n \n+test(\"lint tooling uses the requested upstream versions\", async () => {\n+  const [lint, hooks] = await Promise.all([\n+    readFile(\".github/workflows/lint.yml\", \"utf8\"),\n+    readFile(\".pre-commit-config.yaml\", \"utf8\"),\n+  ]);\n+  assert.deepEqual(\n+    actionReferences(lint).filter((reference) =>\n+      reference.startsWith(\"actions/setup-python@\"),\n+    ),\n+    [\"actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0\"],\n+  );\n+  const markdown = indentedSection(\n+    hooks,\n+    \"- repo: https://github.com/DavidAnson/markdownlint-cli2\",\n+    2,\n+  );\n+  assert.match(markdown, /^    rev: v0\\.24\\.0$/m);\n+});\n+\n+test(\"lint tooling preserves its runtime and hook invocation\", async () => {\n+  const [lint, hooks, manifest, action] = await Promise.all([\n+    readFile(\".github/workflows/lint.yml\", \"utf8\"),\n+    readFile(\".pre-commit-config.yaml\", \"utf8\"),\n+    readFile(\"package.json\", \"utf8\"),\n+    readFile(\"action.yml\", \"utf8\"),\n+  ]);\n+  const python = indentedSection(lint, \"- name: Setup Python\", 6);\n+  assert.match(python, /^          python-version: \"3\\.15\"$/m);\n+  assert.match(lint, /run: python -m pip install pre-commit==4\\.7\\.0$/m);\n+  assert.match(lint, /run: pre-commit run --all-files --hook-stage pre-push$/m);\n+  assert.equal(JSON.parse(manifest).engines.node, \">=22\");\n+  assert.match(action, /^  using: \"node24\"$/m);\n+  const markdown = indentedSection(\n+    hooks,\n+    \"- repo: https://github.com/DavidAnson/markdownlint-cli2\",\n+    2,\n+  );\n+  assert.match(markdown, /^      - id: markdownlint-cli2$/m);\n+  assert.match(\n+    markdown,\n+    /^        args: \\[\"--fix\", \"--config=\\.markdownlint-cli2\\.jsonc\"\\]$/m,\n+  );\n+  assert.match(markdown, /^        exclude: \\^CHANGELOG\\\\\\.md\\$$/m);\n+  assert.match(markdown, /^        stages: \\[pre-commit, pre-push\\]$/m);\n+});\n+\n test(\"the exact-label sweep stays aligned with runner support docs\", async () => {\n   const [workflow, smokeAction] = await Promise.all([\n     readFile(\".github/workflows/compatibility.yml\", \"utf8\"),\n",
+      "patch_sha256": "df725606190417e542230f977c777d5a2ff3c6eb648dc521eb7f5addc4b88e32",
+      "proposal": "Update lint tooling to setup-python v7.1.0 and markdownlint-cli2 v0.24.0\n\nRefresh both lint pins, record upgrades and deferrals in the dependency ledger, and add regression tests. Preserve supported runtimes, action behavior, and committed distribution.\n\nVerification: typechecking, formatting, and 308 tests passed; 3 tests skipped. Base regression control confirmed.\n\nGaps: `check-dist` found a rebuild mismatch; the original bundle was restored byte for byte. Pre-commit was unavailable. Clean installation and upstream dependency verification were not performed offline.",
+      "proposal_sha256": "96f1799d08fe91e8aeb59922ca3ec695a99dd791058a504e05b17d2ca1a45bfd",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "df725606190417e542230f977c777d5a2ff3c6eb648dc521eb7f5addc4b88e32",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "patch_sha256": "df725606190417e542230f977c777d5a2ff3c6eb648dc521eb7f5addc4b88e32",
+            "proposal_sha256": "96f1799d08fe91e8aeb59922ca3ec695a99dd791058a504e05b17d2ca1a45bfd",
+            "judgment_sha256": "711ec749160118e6599ada6e70af8b6954227527c059a3fd161f1e95d06cab0a",
+            "mapping_sha256": "7f8275dc6f1029577a225c5a8531468efcc977dca24aca11340497612ecba445",
+            "assessor_sha256": "fdd2b04753c747e5727facfa2ebcdca8dd47f894f3ca187ef794f5f13bcc5984",
+            "packet_sha256": "cdf6507ef3a23ee4975c74fc7120f5170db0e2d1caad3ffb91f7d9a64ec14cf6",
+            "prompt_sha256": "6782b9b69b351ca2104f717502159ac3d7f2cde38385e95c359a2b8ab8f623ce"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "patch_sha256": "df725606190417e542230f977c777d5a2ff3c6eb648dc521eb7f5addc4b88e32",
+            "proposal_sha256": "96f1799d08fe91e8aeb59922ca3ec695a99dd791058a504e05b17d2ca1a45bfd",
+            "judgment_sha256": "f300dc6e0d52d1d3c98df92f0ffdd354cd9dd6fcb6f6d5c6e53cc0fa66cace20",
+            "mapping_sha256": "443c5cfdb2e9e98b3703115833d11c03760e21a2380fc227007dc1e433ae3bce",
+            "assessor_sha256": "5ffb04a046f342ad67555cc7ebc07785933ddf0752c7e193259d1a68b2df57c4",
+            "packet_sha256": "51baa6a6b22a1f91d4b516377f2a04009ad64f2578dd7c90864f36c646a06691",
+            "prompt_sha256": "4005604f08869d8f2a8551f87c1853e1c2d4531c3675cd73cd148d780265faa6"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "patch_sha256": "df725606190417e542230f977c777d5a2ff3c6eb648dc521eb7f5addc4b88e32",
+            "proposal_sha256": "96f1799d08fe91e8aeb59922ca3ec695a99dd791058a504e05b17d2ca1a45bfd",
+            "judgment_sha256": "a12cd2bb453544d7b4175ec37ccfa56a01332594750ef53da9589153a2d00023",
+            "mapping_sha256": "1f96648c237ab0e1ce6e387f33a9a16d30713c2476260556bb3e251e351372f7",
+            "assessor_sha256": "33e267be494b8dd72e61d695b9e169ef4d06fedd2b1f667abc006f1ec924fb00",
+            "packet_sha256": "328f0ab56d9f1b9b3d04d43089a412008884941360721f9df7884017e7cb7add",
+            "prompt_sha256": "eeab4c60cf98bdf10eea3e354860ab3a4e0d6e579b0ff3cbd82e8680f24b094e"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 3,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        "proposal_points_100": 87.5,
+        "diff_points_85": 76.25,
+        "rotation_points_85": {
+          "0": 76.25,
+          "1": 76.25,
+          "2": 70.0
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "scores": {
+              "contract": 3,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/A.patch sets the exact requested setup-python SHA in .github/workflows/lint.yml and markdownlint-cli2 v0.24.0 in .pre-commit-config.yaml. Frozen build/native/contract/preserve exits are all 0; Python 3.15, hook options, Node >=22/node24, runtime sources and dist are preserved. However docs/dependency-upgrades/2026-10-30.md says to keep project undici 6.29.0, whereas unchanged package-lock.json resolves node_modules/undici to 6.29.1. This is a concrete ledger accuracy defect despite the mechanical pass. Other deferrals are explicitly historical and awaiting revalidation.",
+              "tests": "Added test/metadata.test.ts coverage checks both exact upgraded pins, Python 3.15, pre-commit 4.7.0, full pre-push command, Node >=22/node24, Markdown hook ID, arguments, exclusion and stages. Reverting either pin would fail the version test by inspection. Existing assertions remain intact. This is focused discriminating static coverage; frozen evidence confirms typecheck and formatting, but does not substantiate the claimed 308-test run or base control.",
+              "design": "The implementation changes only the two required pins, adds a dated ledger and adds focused tests using existing metadata helpers. Runtime implementation, public metadata, manifests, lockfile and generated distribution are untouched. Explicit inspection of deletions shows only the superseded pins; no validation or safety protection is removed or weakened.",
+              "proposal": "packet/A.md precisely describes the upgrades, preservation requirements and tests, and discloses the reported check-dist mismatch, unavailable pre-commit and missing clean install/upstream verification. Typecheck and formatting claims match frozen results. The claimed 308-test pass, base control and rebuild account have no supporting execution observations, limiting verification confidence; they are not treated as proven false."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "scores": {
+              "contract": 3,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "Both requested pins are exact; other runtime/configuration values, source, manifests and dist are unchanged. All four frozen gates exit zero. docs/dependency-upgrades/2026-10-30.md records upgrades and carries historical deferrals forward with explicit uncertainty about new upstream graphs. A concrete ledger error remains: its present-tense instruction to keep project Undici 6.29.0 contradicts unchanged package-lock.json:478-480, which resolves 6.29.1. The historical October 12 ledger does not justify the wrong current version.",
+              "tests": "The two added test/metadata.test.ts cases separately assert the requested versions and preservation boundaries. The sole setup-python reference must equal the supplied SHA and the Markdown revision must equal v0.24.0; starting-source inspection shows both reject the old pins. Preservation checks cover Python, pre-commit, the pre-push command, Node development/action runtimes, and Markdown ID/arguments/exclusion/stages using existing helpers. Existing protections remain intact. The score reflects discriminating code coverage; claimed 308-test execution and an executed base control lack frozen output and earn no execution credit.",
+              "design": "C.patch confines functional edits to the requested pins, adds focused tests through established metadata helpers, and records upgrade/defer decisions in a linked ledger. No existing safety, credential, workflow, hook or testing protection is deleted or weakened. No distribution or behavior implementation changes are present. The inaccurate Undici ledger entry is assessed under contract.",
+              "proposal": "C.md supplies a precise title and concise change/preservation description. Frozen results support typechecking and formatting. It clearly discloses a reported check-dist mismatch, missing pre-commit, and lack of clean install/upstream verification. However, its 308-test count, skipped-test count, executed base control and rebuild/restoration history are narrative only; they cannot be credited as observed checks. Frozen preserve and the unchanged distribution patch independently support artifact preservation."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "scores": {
+              "contract": 3,
+              "tests": 3,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/B.patch sets both requested pins exactly and preserves Python 3.15, Node >=22/node24, hook invocation, source, manifests and dist. Frozen typecheck, format, contract and preservation checks all exit 0. docs/dependency-upgrades/2026-10-30.md records both upgrades and retains historical deferrals with explicit upstream-verification limits. However, its instruction to keep Undici 6.29.0 contradicts the unchanged package-lock.json:478-480, which resolves 6.29.1. Comparing that ledger sentence with the lockfile verifies this concrete documentation defect; the mechanical nonempty-ledger gate does not catch it.",
+              "tests": "Two additions to test/metadata.test.ts assert the exact setup-python SHA and markdownlint-cli2 rev, then protect Python, pre-commit version/command, Node development/action runtimes and Markdown hook ID, args, exclusion and stages. Static inspection shows the version assertions reject the starting pins. Existing checks remain intact, but ledger accuracy is untested, as the wrong Undici version demonstrates. Frozen typecheck and format pass; the claimed 308-test run and base control lack execution observations and receive no credit.",
+              "design": "The patch stays within two lint pins, one ledger and focused metadata tests using the existing actionReferences and indentedSection helpers. It adds no leaf overrides, changes no action implementation or distribution, and deletes or weakens no protection. The ledger version defect is assessed under contract.",
+              "proposal": "packet/B.md precisely describes both upgrades, preservation and tests, and explicitly discloses the reported bundle mismatch, unavailable pre-commit and missing clean installation/upstream review. Typecheck and format passes are supported. The claimed 308-test pass and base-control success lack supporting observations and earn no validation credit. The disclosed rebuild mismatch is likewise unverified and does not demonstrate an introduced regression."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 4062273,
+          "cachedInputTokens": 3972992,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 13203,
+          "reasoningOutputTokens": 4774,
+          "totalTokens": 4075476
+        },
+        "estimated_usd": 0.7078911999999999,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 1149.0665763940196,
+        "prompt_to_terminal_seconds": 1110.866100100102,
+        "through_grading_seconds": 1159.0848646210507,
+        "setup_seconds": 37.31819755490869,
+        "grading_seconds": 8.587095604045317,
+        "thread_count": 1,
+        "child_count": 0,
+        "root_tokens": {
+          "totalTokens": 4075476,
+          "inputTokens": 4062273,
+          "cachedInputTokens": 3972992,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 13203,
+          "reasoningOutputTokens": 4774
+        },
+        "descendant_tokens": {
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 0,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 0
+        },
+        "observed_commands": 30,
+        "native_hook_receipts": 97
+      },
+      "receipt_sha256": {
+        "grade": "f51ebc08e73dad5a9bebae2a6d349a479da8969292734773b363abb3f76d97c5",
+        "release": "3002a9c3dc9834c4af4d8f0998110737dad170a2adc2431737a5f2d9dfb19611",
+        "native": "cea41c7b7ce04d1f5f2b1220dce69bc195af86dcdb5cdde91dd8e1b165c66372",
+        "submission": "2723572edf942ce8a95ee74c7881a8e0f37637599f584b72e445b6b3f0bd7c8c",
+        "result": "00db2b192e9f359f8df4467735cced36329b508ad71a90ed3bf0248cd32fffa5",
+        "inventory": "284fb47d0e9ac39797764f86ed2cc110bfe2addc4e360f5fa768c4a390806d9c"
+      }
+    },
+    "upstream": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "e8e73b7c121336b93246546d447cd8e7e409e0db7bb4aede5db073bb38114c4f",
+      "case_id": "runner-space",
+      "role": "upstream",
+      "state": "merged",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "70954ea56267cd404959c61d2c8ece7ce65ccbe83646dadafac47ee6692aae8c",
+          "command": "npm run typecheck",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "67088238ea91da69650bdeccfc54123471b1ee9e682a8a079af5c72067638f7e",
+          "command": "npm run format:check",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "node /oracle/check.mjs",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "node /oracle/probe.mjs",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/.github/workflows/lint.yml b/.github/workflows/lint.yml\nindex aeea536..0399d53 100644\n--- a/.github/workflows/lint.yml\n+++ b/.github/workflows/lint.yml\n@@ -29,7 +29,7 @@ jobs:\n           persist-credentials: false\n \n       - name: Setup Python\n-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0\n+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0\n         with:\n           python-version: \"3.15\"\n \ndiff --git a/.pre-commit-config.yaml b/.pre-commit-config.yaml\nindex 1e10c09..ddbaf4f 100644\n--- a/.pre-commit-config.yaml\n+++ b/.pre-commit-config.yaml\n@@ -39,7 +39,7 @@ repos:\n         stages: [pre-commit, pre-push]\n \n   - repo: https://github.com/DavidAnson/markdownlint-cli2\n-    rev: v0.23.3\n+    rev: v0.24.0\n     hooks:\n       - id: markdownlint-cli2\n         name: Markdown Lint\ndiff --git a/docs/dependency-upgrades/2026-10-25.md b/docs/dependency-upgrades/2026-10-25.md\nnew file mode 100644\nindex 0000000..2456441\n--- /dev/null\n+++ b/docs/dependency-upgrades/2026-10-25.md\n@@ -0,0 +1,53 @@\n+# Dependency upgrade \u2014 2026-10-25\n+\n+This review uses main `a2f3ac8c38982d83e3d02e89342d856a7e026268`.\n+\n+| Group | Before | Target / selected | Decision |\n+| --- | --- | --- | --- |\n+| actions/setup-python | 7.0.0 | 7.1.0 | Upgrade; incorporates Dependabot #67. |\n+| markdownlint-cli2 | 0.23.3 | 0.24.0 | Upgrade; incorporates Dependabot #68. |\n+| Direct npm dependencies and TypeScript optional platform packages | Committed lock | Unchanged | Registry latest within supported families. |\n+| @types/node / undici-types | 22.20.5 / 6.21.0 | Unchanged | Preserve Node 22 development API floor and its declaration range. |\n+| undici | 6.29.1 | 6.29.1 | Latest 6.x; 8.12.3 exceeds the parent contract. |\n+| checkout / setup-node | 7.0.1 / 7.1.0 | Unchanged | Latest official stable releases. |\n+| pre-commit / hooks / texthooks | 4.7.0 / 6.0.0 / 1.0.0 | Unchanged | Latest stable upstream releases. |\n+| yamllint / actionlint | 1.38.0 / 1.7.12 | Unchanged | Latest stable upstream releases. |\n+| Node development / action | >=22 / node24 | Unchanged | Keep supported floor and Actions runtime contract. |\n+| Python lint | 3.15 | Unchanged | Stable Python 3.15.0 used for hook validation. |\n+\n+## Compatibility and existing deferrals\n+\n+[setup-python 7.1.0](https://github.com/actions/setup-python/releases/tag/v7.1.0)\n+resolves to `6d4fd22b20465ccc0f7354476588e8df7c9ca0e0`.\n+Its upstream lock advances Undici to 6.29.0, brace-expansion to 5.0.12,\n+and fast-xml-parser to 5.11.2. These supersede older declarations recorded in\n+the October 12 review; declarations alone do not certify compiled bundle safety.\n+\n+[markdownlint-cli2 0.24.0](https://github.com/DavidAnson/markdownlint-cli2/releases/tag/v0.24.0)\n+requires Node >=22, compatible with this repository. Its published manifest\n+advances smol-toml to 1.9.1, js-yaml to 5.4.3, markdown-it to 15.0.3 and\n+markdownlint to 0.42.0. The old hook's smol-toml deferral is superseded.\n+Upstream-owned graphs remain upstream-owned: no private hook edits or leaf overrides.\n+The unchanged checkout and setup-node pins retain the security deferrals in\n+[the prior action review](2026-10-12-actions.md); retry supported rebuilt parents.\n+Unchanged hook transitive security deferrals from the prior review are not\n+certified resolved by this change.\n+\n+Registry metadata for every package in the committed npm lock was checked on\n+2026-10-25. The only newer major families were Node declarations and Undici;\n+their parent constraints and runtime support justify retention. Official Node\n+release data lists 22.23.4 and 24.22.1 as supported LTS patches; Node 26.12.1 is\n+still Current. No runtime support-policy migration is needed for these pins.\n+\n+## Validation and source intent\n+\n+- Node 22.23.4 and Node 24.19.0: 306 tests passed, 3 platform-specific skips.\n+- Formatting and generated-bundle reproducibility passed; dist is unchanged.\n+- All pre-push hooks passed with Python 3.15.0, pre-commit 4.7.0 and npm 12.2.1.\n+- No rendered UI changes; browser smoke is not applicable.\n+- Required hosted runner CI must pass on the published head before source closure.\n+\n+Source heads assessed: #67 `597920bce0874a8734e4a331f5a66b353ea07920`;\n+and #68 `bfa4ead11ce098082fdd5a105905462f29d5707c`. Both updates were authored by\n+Dependabot. Keep source branches; close only after replacement readiness and\n+another source-head check. No merge or deployment is part of this upgrade.\n",
+      "patch_sha256": "bcec41059a146bbfa3b4c42bfd0bff825b81cc6497c2003e00ddcfb6c92be56a",
+      "proposal": "build(deps): consolidate Python setup and Markdown lint upgrades\n\n## Summary\n\nUpgrade actions/setup-python 7.0.0 \u2192 7.1.0 and markdownlint-cli2 0.23.3 \u2192 0.24.0, incorporating Dependabot #67 and #68 with attribution. Keep supported runtime contracts and the generated action bundle unchanged. The dependency ledger records current pins and remaining upstream-owned deferrals.\n\n## Validation\n\n- [x] `npm ci --ignore-scripts`, `npm test`, `npm run format:check`, `npm run check-dist`\n- [x] Node 22.23.4 and Node 24.19.0: 306 passed; 3 platform-specific skips preserved\n- [x] `pre-commit run --all-files --hook-stage pre-push` (Python 3.15.0, pre-commit 4.7.0, npm 12.2.1)\n- [x] Representative runner smoke definitions remain unchanged\n- [x] Dependency review documented; no public behavior change\n- [x] All 12 current-head hosted checks passed at `368b44ff3f5c2f701b99e4dc29e3cb764b2b38a6`\n\n## Checklist\n\n- [x] Focused scope; no destructive behavior, platform applicability, or group/skip changes\n- [x] Security impact and upstream deferrals reviewed\n- [x] Fresh independent intent and artifact review\n\nDependabot #67 and #68 were closed as fully superseded after all current-head checks passed and unchanged source heads were verified. Their branches are preserved. No merge, deployment, or source-branch deletion.\n\nSource heads: #67 `597920bce0874a8734e4a331f5a66b353ea07920`; #68 `bfa4ead11ce098082fdd5a105905462f29d5707c`.",
+      "proposal_sha256": "84821fc363f48d332c45de7d1212c133b8bc06f3165421166827450f04722cc0",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "bcec41059a146bbfa3b4c42bfd0bff825b81cc6497c2003e00ddcfb6c92be56a",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "patch_sha256": "bcec41059a146bbfa3b4c42bfd0bff825b81cc6497c2003e00ddcfb6c92be56a",
+            "proposal_sha256": "84821fc363f48d332c45de7d1212c133b8bc06f3165421166827450f04722cc0",
+            "judgment_sha256": "711ec749160118e6599ada6e70af8b6954227527c059a3fd161f1e95d06cab0a",
+            "mapping_sha256": "7f8275dc6f1029577a225c5a8531468efcc977dca24aca11340497612ecba445",
+            "assessor_sha256": "fdd2b04753c747e5727facfa2ebcdca8dd47f894f3ca187ef794f5f13bcc5984",
+            "packet_sha256": "cdf6507ef3a23ee4975c74fc7120f5170db0e2d1caad3ffb91f7d9a64ec14cf6",
+            "prompt_sha256": "6782b9b69b351ca2104f717502159ac3d7f2cde38385e95c359a2b8ab8f623ce"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "patch_sha256": "bcec41059a146bbfa3b4c42bfd0bff825b81cc6497c2003e00ddcfb6c92be56a",
+            "proposal_sha256": "84821fc363f48d332c45de7d1212c133b8bc06f3165421166827450f04722cc0",
+            "judgment_sha256": "f300dc6e0d52d1d3c98df92f0ffdd354cd9dd6fcb6f6d5c6e53cc0fa66cace20",
+            "mapping_sha256": "443c5cfdb2e9e98b3703115833d11c03760e21a2380fc227007dc1e433ae3bce",
+            "assessor_sha256": "5ffb04a046f342ad67555cc7ebc07785933ddf0752c7e193259d1a68b2df57c4",
+            "packet_sha256": "51baa6a6b22a1f91d4b516377f2a04009ad64f2578dd7c90864f36c646a06691",
+            "prompt_sha256": "4005604f08869d8f2a8551f87c1853e1c2d4531c3675cd73cd148d780265faa6"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "patch_sha256": "bcec41059a146bbfa3b4c42bfd0bff825b81cc6497c2003e00ddcfb6c92be56a",
+            "proposal_sha256": "84821fc363f48d332c45de7d1212c133b8bc06f3165421166827450f04722cc0",
+            "judgment_sha256": "a12cd2bb453544d7b4175ec37ccfa56a01332594750ef53da9589153a2d00023",
+            "mapping_sha256": "1f96648c237ab0e1ce6e387f33a9a16d30713c2476260556bb3e251e351372f7",
+            "assessor_sha256": "33e267be494b8dd72e61d695b9e169ef4d06fedd2b1f667abc006f1ec924fb00",
+            "packet_sha256": "328f0ab56d9f1b9b3d04d43089a412008884941360721f9df7884017e7cb7add",
+            "prompt_sha256": "eeab4c60cf98bdf10eea3e354860ab3a4e0d6e579b0ff3cbd82e8680f24b094e"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 3,
+          "tests": 0,
+          "design": 4,
+          "proposal": 2
+        },
+        "proposal_points_100": 58.75,
+        "diff_points_85": 51.25,
+        "rotation_points_85": {
+          "0": 51.25,
+          "1": 36.25,
+          "2": 51.25
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "scores": {
+              "contract": 3,
+              "tests": 0,
+              "design": 4,
+              "proposal": 2
+            },
+            "evidence": {
+              "contract": "packet/C.patch updates both requested pins exactly and adds docs/dependency-upgrades/2026-10-25.md. Frozen build/native/contract/preserve exits are all 0; supported runtimes, hook settings, action source, manifests, lockfile and dist are preserved. The ledger correctly records project undici 6.29.1 and retained runtime/type and upstream-owned deferrals. Its new upstream graph versions, superseded smol-toml deferral, latest-release inventory and complete registry review lack supporting observations, leaving the accuracy of its changed deferral inventory less firmly established than the mechanical pins/preservation contract.",
+              "tests": "packet/C.patch adds no regression tests. Starting test/metadata.test.ts provides general topology and safety checks but no assertions for these requested versions; it already permits the old pins. This is an observed omission of discriminating regression coverage. Frozen typecheck/format/contract/preserve passes are available. Claimed dual-Node 306-test, pre-commit and hosted runs are not supplied execution evidence.",
+              "design": "The implementation is a minimal two-pin update plus a ledger in the existing dependency-upgrades directory. It adds no runtime logic, override, policy migration or distribution churn. Explicit inspection of the complete patch finds no removed or weakened tests, validation or safety protections; only the old pins are replaced.",
+              "proposal": "packet/C.md clearly describes the two upgrades and preservation scope. Its checked validation list asserts clean install, tests on two Node versions, check-dist, pre-commit, independent review and 12 hosted checks, while frozen evidence supplies only typecheck/format/contract/preserve results. Those broader claims receive no credit and actual verification limits remain unclear. Source-closure and source-head claims are unavailable historical evidence, not demonstrated integrity violations."
+            },
+            "flags": [],
+            "confidence": "medium"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "scores": {
+              "contract": 2,
+              "tests": 0,
+              "design": 3,
+              "proposal": 1
+            },
+            "evidence": {
+              "contract": "Both requested pins are exact and other runtime/configuration/source/dist files are preserved; all four frozen gates exit zero. docs/dependency-upgrades/2026-10-25.md correctly reports project Undici 6.29.1, matching package-lock.json:478-480. However, it omits the mandatory npm-version-pin deferral from docs/dependency-upgrades/2026-10-12.md and does not link that main ledger to carry it forward. New upstream graph, latest-version and smol-toml-resolution assertions lack supporting frozen observations. The mechanical ledger pass does not establish a complete, evidenced deferral record.",
+              "tests": "B.patch adds or modifies no tests. Existing metadata topology and immutable-reference checks accept the starting setup-python SHA and Markdown revision, so they do not distinguish the requested upgrades. This is an observed omission of regression coverage. Frozen typecheck/format passes are credited; claimed 306-test, two-runtime, pre-commit and hosted-check results have no execution support.",
+              "design": "The implementation is minimal: two pin replacements and a Markdown ledger. No source, generated artifact or existing protection changes. The ledger adds avoidable broad latest-package/runtime inventory and source-PR closure procedure beyond the lint update, increasing verification and maintenance burden.",
+              "proposal": "B.md names both upgrades and preservation intent, but presents checked-off clean installation, tests on two Node versions, check-dist, pre-commit, independent review and twelve hosted checks as completed. Only typecheck, format:check, contract and preserve exits are supplied. Those broader claims cannot establish readiness or earn verification credit. Source-PR closure/head details are also unsupported and distract from the patch; missing records do not prove fabrication."
+            },
+            "flags": [],
+            "confidence": "medium"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "scores": {
+              "contract": 3,
+              "tests": 0,
+              "design": 4,
+              "proposal": 2
+            },
+            "evidence": {
+              "contract": "packet/A.patch updates .github/workflows/lint.yml to the requested SHA and .pre-commit-config.yaml to v0.24.0. Frozen typecheck, format, contract and preservation checks all exit 0. Python 3.15, Node >=22/node24, runtime source, manifests and dist remain unchanged. docs/dependency-upgrades/2026-10-25.md records both upgrades and parent-owned deferrals; its retained Undici 6.29.1 matches package-lock.json:479. However, its newly checked registry inventory, latest-release assertions, upstream graph versions and superseded smol-toml deferral have no supporting observations, limiting affirmative evidence of ledger accuracy.",
+              "tests": "packet/A.patch adds no regression tests. Starting test/metadata.test.ts checks immutable references and workflow topology but accepts the original lint pins. Neither typecheck nor format distinguishes the requested repair. Claimed 306-test and pre-commit runs have no supporting execution observations. The frozen contract gate passes, but no base fail-to-pass observation is supplied.",
+              "design": "Two single-line pin changes and one Markdown ledger fit the task. The full patch leaves hook options, exclusions and stages, workflow permissions and checkout credentials, runtime selectors, source and dist intact. No existing tests, validation or safety protections are deleted or weakened.",
+              "proposal": "packet/A.md clearly names both upgrades and preserved contracts. Its checked-off clean install, dual-Node tests, pre-commit, reproducibility, independent reviews and 12 hosted checks are unsupported by the frozen observations, which cover only typecheck, format, contract and preservation. These claims receive no verification credit, and the proposal does not explain the limits of the available evidence."
+            },
+            "flags": [],
+            "confidence": "medium"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": null,
+      "receipt_sha256": {
+        "grade": "d7609639c6b8cd27c274a58e10f8111a6fc72e89ed3cd59b4fe708b1ab23fdfc"
+      }
+    }
+  },
+  "route_review": "Requires inspection of the recorded independent review events.",
+  "prior_develop": {
+    "state": "completed",
+    "effort": {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 1521199,
+        "cachedInputTokens": 1456256,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 6004,
+        "reasoningOutputTokens": 1386,
+        "totalTokens": 1527203
+      },
+      "estimated_usd": 0.33555159999999995,
+      "billed_usd": null,
+      "checkout_to_proposal_seconds": 506.67712050001137,
+      "prompt_to_terminal_seconds": 469.0404003940057,
+      "through_grading_seconds": 516.4089898439124,
+      "setup_seconds": 36.53769963700324,
+      "grading_seconds": 8.256237915949896,
+      "thread_count": 1,
+      "child_count": 0,
+      "root_tokens": {
+        "totalTokens": 1527203,
+        "inputTokens": 1521199,
+        "cachedInputTokens": 1456256,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 6004,
+        "reasoningOutputTokens": 1386
+      },
+      "descendant_tokens": {
+        "inputTokens": 0,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 0,
+        "reasoningOutputTokens": 0,
+        "totalTokens": 0
+      },
+      "observed_commands": 24,
+      "native_hook_receipts": 55
+    },
+    "stage_exits": {
+      "build": 0,
+      "native": 0,
+      "contract": 0,
+      "preserve": 0
+    },
+    "patch_sha256": "ac72e352ac237a80c15cb2827bffb6a6f133a699949ee993d7bfcb8b65e49de0",
+    "proposal_sha256": "2e226c4b329b34d53baaffb862dffbd3e7605e98d610f559101bf1670f54cfc5",
+    "full_pr_score": null,
+    "patch": "diff --git a/.github/workflows/lint.yml b/.github/workflows/lint.yml\nindex aeea536..0399d53 100644\n--- a/.github/workflows/lint.yml\n+++ b/.github/workflows/lint.yml\n@@ -29,7 +29,7 @@ jobs:\n           persist-credentials: false\n \n       - name: Setup Python\n-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0\n+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0\n         with:\n           python-version: \"3.15\"\n \ndiff --git a/.pre-commit-config.yaml b/.pre-commit-config.yaml\nindex 1e10c09..ddbaf4f 100644\n--- a/.pre-commit-config.yaml\n+++ b/.pre-commit-config.yaml\n@@ -39,7 +39,7 @@ repos:\n         stages: [pre-commit, pre-push]\n \n   - repo: https://github.com/DavidAnson/markdownlint-cli2\n-    rev: v0.23.3\n+    rev: v0.24.0\n     hooks:\n       - id: markdownlint-cli2\n         name: Markdown Lint\ndiff --git a/docs/dependency-upgrades/2026-10-30.md b/docs/dependency-upgrades/2026-10-30.md\nnew file mode 100644\nindex 0000000..3599c91\n--- /dev/null\n+++ b/docs/dependency-upgrades/2026-10-30.md\n@@ -0,0 +1,39 @@\n+# Lint dependency update - 2026-10-30\n+\n+Update only the two requested lint tools. This entry supersedes their\n+\"already current\" dispositions in the [previous ledger](2026-10-12.md).\n+Version targets and the setup-python commit come from the task; upstream\n+release metadata and dependency graphs were not fetched during this offline run.\n+\n+## Tool ledger\n+\n+| Dependency | Before | Final | Outcome and evidence |\n+| --- | --- | --- | --- |\n+| actions/setup-python | v7.0.0 (`5fda3b95a4ea91299a34e894583c3862153e4b97`) | v7.1.0 (`6d4fd22b20465ccc0f7354476588e8df7c9ca0e0`) | Updated immutable workflow pin and version comment. [Requested release](https://github.com/actions/setup-python/releases/tag/v7.1.0). |\n+| markdownlint-cli2 | v0.23.3 | v0.24.0 | Updated pre-commit revision; hook ID, arguments, exclusions and stages stay unchanged. [Requested release](https://github.com/DavidAnson/markdownlint-cli2/releases/tag/v0.24.0). |\n+\n+## Deferred upgrades and preserved boundaries\n+\n+- Retain Node development `>=22`, Node 22 declarations and their undici-types\n+  family. Newer declaration majors require a separate support-policy review.\n+- Retain the action's `node24` runtime. A Node 26 migration is outside this\n+  tooling update; the earlier date-based LTS deferral is not a current blocker.\n+- Retain Python lint selector `3.15`, pre-commit `4.7.0`, and the remaining hook\n+  pins. Other tool upgrades and a mandatory npm pin are outside this scope;\n+  the previous npm engine-floor concern remains relevant to Node `>=22` support.\n+- Retain the npm manifest, lockfile and generated distribution. Undici major\n+  upgrades remain subject to the owning toolkit's supported dependency range.\n+- Upstream hook and action transitive upgrades remain parent-owned. The earlier\n+  [hook advisory deferrals](2026-10-12.md#tooling-security-deferrals) and\n+  [action graph review](2026-10-12-actions.md) describe the old pins only.\n+  Reassess those graphs with the new releases when online verification is\n+  available; this update does not claim to resolve their advisories or preserve\n+  their exact transitive versions. No leaf overrides or private bundle edits.\n+\n+## Verification\n+\n+The regression tests cover the requested pins, preserved Python/pre-commit\n+invocation, Markdown hook configuration, development floor and action runtime.\n+Offline checks and their results are reported with the proposed change.\n+Fresh hook installation, upstream tag verification and hosted-runner lint\n+execution require online follow-up.\ndiff --git a/test/lint-tooling.test.ts b/test/lint-tooling.test.ts\nnew file mode 100644\nindex 0000000..2a00848\n--- /dev/null\n+++ b/test/lint-tooling.test.ts\n@@ -0,0 +1,41 @@\n+import assert from \"node:assert/strict\";\n+import { readFile } from \"node:fs/promises\";\n+import test from \"node:test\";\n+\n+test(\"lint tooling preserves supported runtimes and hook invocation\", async () => {\n+  const [workflow, hooks, manifest, action] = await Promise.all([\n+    readFile(\".github/workflows/lint.yml\", \"utf8\"),\n+    readFile(\".pre-commit-config.yaml\", \"utf8\"),\n+    readFile(\"package.json\", \"utf8\"),\n+    readFile(\"action.yml\", \"utf8\"),\n+  ]);\n+\n+  assert.match(workflow, /python-version: \"3\\.15\"/);\n+  assert.match(workflow, /python -m pip install pre-commit==4\\.7\\.0/);\n+  assert.match(\n+    workflow,\n+    /run: pre-commit run --all-files --hook-stage pre-push/,\n+  );\n+  assert.match(\n+    hooks,\n+    /repo: https:\\/\\/github\\.com\\/DavidAnson\\/markdownlint-cli2\\n    rev: v[\\d.]+\\n    hooks:\\n      - id: markdownlint-cli2\\n        name: Markdown Lint\\n        args: \\[\"--fix\", \"--config=\\.markdownlint-cli2\\.jsonc\"\\]\\n        exclude: \\^CHANGELOG\\\\\\.md\\$\\n        stages: \\[pre-commit, pre-push\\]/,\n+  );\n+  assert.equal(JSON.parse(manifest).engines.node, \">=22\");\n+  assert.match(action, /using: \"node24\"/);\n+});\n+\n+test(\"lint tooling uses the requested upstream releases\", async () => {\n+  const [workflow, hooks] = await Promise.all([\n+    readFile(\".github/workflows/lint.yml\", \"utf8\"),\n+    readFile(\".pre-commit-config.yaml\", \"utf8\"),\n+  ]);\n+\n+  assert.match(\n+    workflow,\n+    /uses: actions\\/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7\\.1\\.0/,\n+  );\n+  assert.match(\n+    hooks,\n+    /repo: https:\\/\\/github\\.com\\/DavidAnson\\/markdownlint-cli2\\n    rev: v0\\.24\\.0\\n/,\n+  );\n+});\n",
+    "proposal": "chore: update lint tooling to setup-python 7.1.0 and markdownlint-cli2 0.24.0\n\nUpdate setup-python to the supplied immutable commit and refresh the Markdown lint hook. Record both upgrades and retained deferrals in the dependency ledger. Add regression coverage for the pins, lint configuration, and supported runtimes.\n\nAction behavior, runtime versions, npm dependencies, and generated distribution remain unchanged.\n\nVerified: typecheck, format check, both new regression tests, and `git diff --check`.\n\nOffline gaps: clean install, full test suite, bundle rebuild, pre-commit hooks, and upstream tag/advisory verification were not performed."
+  },
+  "assessor_costs": [
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 417839,
+        "cachedInputTokens": 361216,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 4541,
+        "reasoningOutputTokens": 511,
+        "totalTokens": 422380
+      },
+      "threads": 1,
+      "usd_estimate": 0.1947776
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 332531,
+        "cachedInputTokens": 292352,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 4229,
+        "reasoningOutputTokens": 470,
+        "totalTokens": 336760
+      },
+      "threads": 1,
+      "usd_estimate": 0.15188320000000002
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 453979,
+        "cachedInputTokens": 395904,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 4458,
+        "reasoningOutputTokens": 454,
+        "totalTokens": 458437
+      },
+      "threads": 1,
+      "usd_estimate": 0.20032039999999998
+    }
+  ],
+  "observations": [
+    {
+      "id": "owner-config-authored-tests",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "receipt_sha256": "1e6aed22eeced4c959c3897e0176c819e80502fae9d156510f04cee455bae68d",
+      "evidence": {
+        "case": "runner-space",
+        "registration_sha256": "d07ad46854f02d4f032bc848cbf07b77b117a2be7568315ae468e5930c4487b3",
+        "hypothesis_sha256": "d433a8249108ee4a727f1a5dbee266cdb8cc8a48d8fc4e918583a6e63bfb8d67",
+        "raw_result_sha256": "97fecf417168c55bfac25f5a3437d8f258ab1cfe9b6a7013a37a9f847093ec8f",
+        "parent_seal_sha256": "4386c5eb708dfc30cc88cea22ef8fd946918ea8c40c8c80002d1f14f34bbb749",
+        "private_assay_receipt_sha256": "15a3d2f8bc00ff23cea3ffab702cd90bb09009ad800de3f0baad966ef267bf3f",
+        "public_artifact": {
+          "path": "runs/tuning/owner-config-runner-space-01/owner-config-authored-tests/supplement.json",
+          "sha256": "60a660863f6e56465fb0cf4d483b3f53b2cafbb861c5273b202bad961067925e"
+        },
+        "public_bundle_manifest": {
+          "path": "runs/tuning/owner-config-runner-space-01/owner-config-authored-tests/manifest.json",
+          "sha256": "a366f7af897743292c6d7abbcabf04eb5ca17b54460ad1156cfa84231924cee8"
+        },
+        "observation": {
+          "all_50_direct_and_configured_routes_independently_reconciled": true,
+          "requested_and_harmless_accept": [
+            "pure",
+            "prior",
+            "candidate",
+            "base",
+            "merged"
+          ],
+          "old_active_without_decoy_and_old_hook_reject": [
+            "prior",
+            "candidate"
+          ],
+          "old_active_without_decoy_and_old_hook_accept": [
+            "pure",
+            "base",
+            "merged"
+          ],
+          "inactive_decoy_inherited_topology_rejects_all": true,
+          "candidate_added_versions_assertion_also_rejects_decoy": true,
+          "prior_added_releases_assertion_passes_decoy": true,
+          "all_selected_tests_execute_without_skips": true,
+          "unrelated_platform_skips_per_configured_route": 3,
+          "new_complete_npm_test_invocations": false,
+          "five_exact_source_reconstructions_verified_from_pinned_git_cache": true,
+          "scope": "Preregistered postscore assay; normal scores/readiness unchanged. Measured controls only; no general semantic parser, causal treatment or promotion claim."
+        },
+        "primary_scores_changed": false,
+        "assay_native_provider_calls": 0,
+        "unknown_preparation_packaging_model_cost": null,
+        "unknown_human_cost": null,
+        "supersedes_unpublished_receipt_sha256": "5f2da2df27c746bf77a9b735f87e3a334f89cc09ff3c9c8e31cd87176f48a5e4",
+        "delivery_wrapper": {
+          "replay_sha256": "4fd8ed994f55f8158951d106b8cab118e27a27fc7f0bee243667f15bacbc385d",
+          "minimum_python": "3.11",
+          "literal_interpreter_required": false,
+          "cpu_leasing": "Real assay execution only",
+          "optimized_validation_checks": 13,
+          "native_assay_reruns": 0,
+          "assay_receipt_unchanged": true
+        }
+      }
+    }
+  ]
+}

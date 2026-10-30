@@ -70,7 +70,7 @@ def operator(name=None):
 
 
 def panel_results():
-    return sorted(p for root in (BUNDLES, BUNDLES.with_name("pr-quality-confirmation-v1"), BUNDLES.with_name("pr-quality-runner-v3"))
+    return sorted(p for root in (BUNDLES, BUNDLES.with_name("pr-quality-confirmation-v1"), BUNDLES.with_name("pr-quality-runner-v3"), BUNDLES.with_name("pr-quality-pytest-entry-v1"))
                   for p in root.glob("*/run.json"))
 
 
@@ -82,7 +82,7 @@ def published(name):
 
 
 def published_summary(name, bundle):
-    from records import read_bundle
+    from records import read_bundle, confirmation_quality_summary
     require_reader()
     manifest, rows = read_bundle(bundle)
     local = STATE / "runs" / name / "plan.json"
@@ -96,12 +96,15 @@ def published_summary(name, bundle):
     def slots(state):
         return [f"{r['case_id']}/{r['role']}" for r in producers if r["state"] == state]
     partial = missing or states["interrupted"] or states["unreleased"]
-    return manifest, {"name": name, "phase": "published-partial" if partial else "published",
+    summary = {"name": name, "phase": "published-partial" if partial else "published",
                       "split": (manifest["selection"] or {}).get("split", "all"),
                       "cases": [c["id"] for c in manifest["cases"]], "plan_sha256": manifest["plan_sha256"],
                       "proposal_states": dict(states), "assessments": assessments,
                       "allocated": slots("interrupted"), "unreleased": slots("unreleased"),
                       "pending_assessments": [], "stranded_assessments": [], "unadjudicated": [], "bundle": str(bundle)}
+    if manifest["protocol"] == "pr-quality-confirmation-v1":
+        summary["strict_confirmation_quality"] = confirmation_quality_summary(manifest["cases"], rows, manifest["runtime"]["treatment"], manifest["runtime"])
+    return manifest, summary
 
 
 def pilot_file(name):
