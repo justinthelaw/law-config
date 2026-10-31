@@ -1,0 +1,35 @@
+{
+  "qualification_sha256": "d57bae4366572083da74d4bfed88a9c2e4458446dfc894d22286d78a1f4da8f8",
+  "rate_usd_per_million": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "probes": {
+    "control": {
+      "probe_sha256": "cb5d33a4cb4840bb11d33e71ad3a3007dc4d5acf08159db73f8a43e0ce54a2f0",
+      "token_coverage": "complete",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "tokens": {
+        "inputTokens": 100587,
+        "cachedInputTokens": 93824,
+        "outputTokens": 327
+      },
+      "estimated_usd": 0.0261784
+    },
+    "develop": {
+      "probe_sha256": "b801021328282c525f3b7a34a013bf5b25e7eaf160307c06c5b68c4a1497cabb",
+      "token_coverage": "complete",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "tokens": {
+        "inputTokens": 120604,
+        "cachedInputTokens": 113152,
+        "outputTokens": 546
+      },
+      "estimated_usd": 0.0316792
+    }
+  },
+  "estimated_usd": 0.057857599999999995
+}

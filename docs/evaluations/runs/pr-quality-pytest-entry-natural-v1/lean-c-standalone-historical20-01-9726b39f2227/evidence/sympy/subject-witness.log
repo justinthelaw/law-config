@@ -1,0 +1,1 @@
+{"point_off_plane": {"expected": 8, "pass": true, "value": "8"}, "point_on_plane": {"expected": 0, "pass": true, "value": "0"}, "tuple_on_plane": {"exception": "NotImplementedError", "expected": 0, "message": "Distance to <class 'tuple'> is not implemented", "pass": false}}

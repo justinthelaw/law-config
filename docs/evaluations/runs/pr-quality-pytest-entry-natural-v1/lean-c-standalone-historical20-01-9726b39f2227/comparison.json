@@ -1,0 +1,371 @@
+{
+  "arms": {
+    "control": {
+      "quality": 85.4375,
+      "ready": 18,
+      "mean_time": 916.3063148620422,
+      "timed": 20,
+      "cost": null,
+      "observed_cost": 9.1133892,
+      "priced": 19
+    },
+    "develop": {
+      "quality": 78.6875,
+      "ready": 17,
+      "mean_time": 1385.8101411101875,
+      "timed": 20,
+      "cost": null,
+      "observed_cost": 13.9855672,
+      "priced": 19
+    },
+    "upstream": {
+      "quality": 62.6875,
+      "ready": 17
+    }
+  },
+  "completed_pairs": {
+    "usd": {
+      "pairs": 19,
+      "stock": 9.1133892,
+      "develop": 13.9855672
+    },
+    "tokens": {
+      "pairs": 19,
+      "stock": 48658325,
+      "develop": 81750146
+    },
+    "checkout_s": {
+      "pairs": 19,
+      "stock": 17097.27342873579,
+      "develop": 26482.960614091717
+    }
+  },
+  "meets_10_percent": {
+    "quality": false,
+    "time": false,
+    "cost": null
+  },
+  "verified_two_of_three": false,
+  "repositories": {
+    "BurntSushi/ripgrep": {
+      "quality": {
+        "control": 100.0,
+        "develop": 100.0,
+        "upstream": 83.75
+      },
+      "time": {
+        "control": 624.2213892040309,
+        "develop": 733.7541650389321
+      },
+      "cost": {
+        "control": 0.3533584,
+        "develop": 0.3132716
+      },
+      "blind": "tie"
+    },
+    "CLIUtils/CLI11": {
+      "quality": {
+        "control": 96.25,
+        "develop": 96.25,
+        "upstream": 80.0
+      },
+      "time": {
+        "control": 372.2145302470308,
+        "develop": 532.2471066708677
+      },
+      "cost": {
+        "control": 0.258798,
+        "develop": 0.29992
+      },
+      "blind": "tie"
+    },
+    "apache/commons-lang": {
+      "quality": {
+        "control": 90.0,
+        "develop": 75.0,
+        "upstream": 56.25
+      },
+      "time": {
+        "control": 627.6171305878088,
+        "develop": 459.39905653195456
+      },
+      "cost": {
+        "control": 0.4448916,
+        "develop": 0.2914848
+      },
+      "blind": "control"
+    },
+    "django/django": {
+      "quality": {
+        "control": 53.75,
+        "develop": 96.25,
+        "upstream": 50.0
+      },
+      "time": {
+        "control": 755.9389846038539,
+        "develop": 877.5318490290083
+      },
+      "cost": {
+        "control": 0.38251280000000004,
+        "develop": 0.45916680000000004
+      },
+      "blind": "develop"
+    },
+    "fmtlib/fmt": {
+      "quality": {
+        "control": 100.0,
+        "develop": 100.0,
+        "upstream": 78.75
+      },
+      "time": {
+        "control": 1004.7972337019164,
+        "develop": 1407.9344357249793
+      },
+      "cost": {
+        "control": 0.4133144,
+        "develop": 0.6480504
+      },
+      "blind": "tie"
+    },
+    "go-git/go-git": {
+      "quality": {
+        "control": 100.0,
+        "develop": 100.0,
+        "upstream": 96.25
+      },
+      "time": {
+        "control": 2342.616563944146,
+        "develop": 2294.2402673459146
+      },
+      "cost": {
+        "control": 1.232998,
+        "develop": 1.706414
+      },
+      "blind": "tie"
+    },
+    "jqlang/jq": {
+      "quality": {
+        "control": 100.0,
+        "develop": 100.0,
+        "upstream": 86.25
+      },
+      "time": {
+        "control": 3987.7310845360626,
+        "develop": 3932.6557391050737
+      },
+      "cost": {
+        "control": 1.7261268,
+        "develop": 1.0740848
+      },
+      "blind": "tie"
+    },
+    "justinthelaw/maximize-github-runner-space": {
+      "quality": {
+        "control": 100.0,
+        "develop": 91.25,
+        "upstream": 58.75
+      },
+      "time": {
+        "control": 531.0195573510136,
+        "develop": 372.9490044959821
+      },
+      "cost": {
+        "control": 0.31932920000000004,
+        "develop": 0.31319640000000004
+      },
+      "blind": "control"
+    },
+    "libarchive/libarchive": {
+      "quality": {
+        "control": 96.25,
+        "develop": 0,
+        "upstream": 96.25
+      },
+      "time": {
+        "control": 1143.164518125821,
+        "develop": 5465.235840196954
+      },
+      "cost": {
+        "control": 0.4780696,
+        "develop": 3.8323132
+      },
+      "blind": "control"
+    },
+    "libexpat/libexpat": {
+      "quality": {
+        "control": 100.0,
+        "develop": 85.0,
+        "upstream": 52.5
+      },
+      "time": {
+        "control": 1280.6144927931018,
+        "develop": 1346.7180616289843
+      },
+      "cost": {
+        "control": 0.8792384,
+        "develop": 0.7943688000000001
+      },
+      "blind": "control"
+    },
+    "markedjs/marked": {
+      "quality": {
+        "control": 0,
+        "develop": 0,
+        "upstream": 0
+      },
+      "time": {
+        "control": 1228.852868505055,
+        "develop": 1233.2422081120312
+      },
+      "cost": {
+        "control": null,
+        "develop": null
+      },
+      "blind": "unresolved"
+    },
+    "pallets/werkzeug": {
+      "quality": {
+        "control": 100.0,
+        "develop": 85.0,
+        "upstream": 43.75
+      },
+      "time": {
+        "control": 277.9216284349095,
+        "develop": 343.41717490390874
+      },
+      "cost": {
+        "control": 0.25159,
+        "develop": 0.25888079999999997
+      },
+      "blind": "control"
+    },
+    "prometheus/client_golang": {
+      "quality": {
+        "control": 100.0,
+        "develop": 100.0,
+        "upstream": 90.0
+      },
+      "time": {
+        "control": 1861.5767107878346,
+        "develop": 1970.3368666919414
+      },
+      "cost": {
+        "control": 0.7976536000000001,
+        "develop": 0.6916316000000001
+      },
+      "blind": "tie"
+    },
+    "psf/black": {
+      "quality": {
+        "control": 0,
+        "develop": 60.0,
+        "upstream": 96.25
+      },
+      "time": {
+        "control": 472.09617289714515,
+        "develop": 580.2020528640132
+      },
+      "cost": {
+        "control": 0.3041932,
+        "develop": 0.3775476
+      },
+      "blind": "develop"
+    },
+    "pypa/packaging": {
+      "quality": {
+        "control": 96.25,
+        "develop": 96.25,
+        "upstream": 0
+      },
+      "time": {
+        "control": 208.59191700909287,
+        "develop": 357.7829053848982
+      },
+      "cost": {
+        "control": 0.20909,
+        "develop": 0.2609668
+      },
+      "blind": "tie"
+    },
+    "pytest-dev/pytest": {
+      "quality": {
+        "control": 96.25,
+        "develop": 96.25,
+        "upstream": 0
+      },
+      "time": {
+        "control": 356.37214057310484,
+        "develop": 440.04834579117596
+      },
+      "cost": {
+        "control": 0.24577240000000003,
+        "develop": 0.246332
+      },
+      "blind": "tie"
+    },
+    "rspec/rspec": {
+      "quality": {
+        "control": 96.25,
+        "develop": 96.25,
+        "upstream": 83.75
+      },
+      "time": {
+        "control": 289.31168153788894,
+        "develop": 295.2213683940936
+      },
+      "cost": {
+        "control": 0.1806596,
+        "develop": 0.195128
+      },
+      "blind": "tie"
+    },
+    "sharkdp/fd": {
+      "quality": {
+        "control": 87.5,
+        "develop": 96.25,
+        "upstream": 90.0
+      },
+      "time": {
+        "control": 140.04291584901512,
+        "develop": 3969.7612528759055
+      },
+      "cost": {
+        "control": 0.1015332,
+        "develop": 1.7106068
+      },
+      "blind": "develop"
+    },
+    "sympy/sympy": {
+      "quality": {
+        "control": 96.25,
+        "develop": 0,
+        "upstream": 55.0
+      },
+      "time": {
+        "control": 675.0550752868876,
+        "develop": 964.3115809871815
+      },
+      "cost": {
+        "control": 0.46467880000000006,
+        "develop": 0.4295872
+      },
+      "blind": "control"
+    },
+    "tj/commander.js": {
+      "quality": {
+        "control": 100.0,
+        "develop": 100.0,
+        "upstream": 56.25
+      },
+      "time": {
+        "control": 146.3697012651246,
+        "develop": 139.2135404299479
+      },
+      "cost": {
+        "control": 0.0695812,
+        "develop": 0.08261560000000001
+      },
+      "blind": "tie"
+    }
+  }
+}

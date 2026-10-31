@@ -17,6 +17,7 @@ repos:
               fdc34c55ece9|6f23f7f98c26|a4465fb13180|a826a2341b6c|5b59b578a1bc
             )/package[.]patch
             |runs/pr-quality-panel-v2/baseline-53a8bd549c93/submissions[.]jsonl
+            |runs/pr-quality-pytest-entry-natural-v1/lean-c-standalone-historical20-01-9726b39f2227/submissions[.]jsonl
           )$
         stages: [pre-push]
 

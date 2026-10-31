@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/evidence/preserve-probe.py", line 5, in <module>
+    ok = plane.distance(Point3D(1, 1, -8)) == 8 and plane.distance((1, 1, 0)) == 0
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/src/sympy/geometry/plane.py", line 298, in distance
+    raise NotImplementedError('Distance to %s is not implemented' % type(o))
+NotImplementedError: Distance to <class 'tuple'> is not implemented

@@ -19,6 +19,8 @@ ARCHIVES = {
         '8c08f7665b95f2e180027dd98d203564da6bd8d9053c8ff1cb24218c1165dc69',
     'docs/evaluations/runs/pr-quality-panel-v2/baseline-53a8bd549c93/submissions.jsonl':
         'a3b37b03a7ce07ebe6a72bd3aa33b96284b6708d15b6957eddc158452b25a136',
+    'docs/evaluations/runs/pr-quality-pytest-entry-natural-v1/lean-c-standalone-historical20-01-9726b39f2227/submissions.jsonl':
+        '9ae49b1dcdf62719f2cbfa7d7aaddf0c7f0bb1d64f2a664e730739eca65fe4d7',
 }
 
 
