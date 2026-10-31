@@ -3,7 +3,6 @@
 Develop's synchronous [hooks](../hooks/hooks.json) use a small
 [handler](../hooks/context_guard.py) and [response store](../hooks/response_store.py).
 
-
 | Event | Behavior |
 | --- | --- |
 | `PreToolUse` | Denies recognizable whole-file reads above 20,000 bytes using file metadata: literal `cat` and supported read-file calls without ranges. Large edits/arguments are allowed; commands are never rewritten or evaluated. |

@@ -8,7 +8,7 @@
 
 ## Retrieval and claims
 
-Apply the budget across selected sources, including malformed, duplicate and rejected reads. Samples stop once complete evidence suffices; “every session” requires every accessible page in selected sources. Count distinct sessions separately from deduplicated episodes. Record unfinished pages, inaccessible sources and a private resume point at limits. Retain minimal private evidence; reviewers receive sanitized causal summaries/permitted locators.
+Apply the budget across selected sources, including malformed, duplicate and rejected reads. Samples stop once complete evidence suffices; "every session" requires every accessible page in selected sources. Count distinct sessions separately from deduplicated episodes. Record unfinished pages, inaccessible sources and a private resume point at limits. Retain minimal private evidence; reviewers receive sanitized causal summaries/permitted locators.
 
 Report selected/readable sources, relevant episodes, observed outcomes, omissions, limits, sampling/order bias and inaccessible/in-progress episodes. Partial coverage cannot prove absence across the selection; one defect can justify a narrow correction without proving recurrence.
 
