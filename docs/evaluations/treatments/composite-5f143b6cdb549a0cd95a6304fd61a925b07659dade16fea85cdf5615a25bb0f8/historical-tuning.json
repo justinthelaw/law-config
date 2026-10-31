@@ -1,0 +1,14 @@
+{
+  "registered_utc": "2026-10-31T04:28:33+00:00",
+  "source_commit": "bd539efb33343ec216e43d4e25c6127acd7a64de",
+  "cohort": "pr-quality-pytest-entry-natural-v1",
+  "cases": "All 20 previously exposed repositories, one fresh attempt per arm. Compare against stock GPT-6.1 Sol Medium with identical tasks, resources, deadlines and existing graders. Review both proposals and the actual merge in three blind rotations.",
+  "hypothesis": "Removing routine planning and review steps frees time for checking the actual caller. Loading specialized instructions on demand reduces default context.",
+  "metrics": {
+    "quality": "Unweighted mean functional full-PR score over all 20. A missing PR, failed mandatory gate or confirmed critical defect scores zero.",
+    "time": "Mean checkout-to-submission or timeout over all 20 per arm. Report completed-pair times separately.",
+    "cost": "Total proposal cost across all attempts, including descendant usage under frozen rates. Report incomplete meters and known bounds, with judge and qualification costs separate."
+  },
+  "stop_rule": "At least two of quality >= 1.10 times stock, time <= 0.90 times stock, or cost <= 0.90 times stock. Count a metric only when measured or established by conservative bounds. Report all three outcomes. This historical comparison does not measure generalization.",
+  "selection": "Run the predeclared Commander and Black pilots first. Freeze any subsequent change under a new treatment identity before allocation. Retain every result."
+}

@@ -1,0 +1,11 @@
+{
+  "format": "law-config.treatment-recipe/v2",
+  "git_base": "bd539efb33343ec216e43d4e25c6127acd7a64de",
+  "scope": "plugins/develop",
+  "omit": [],
+  "patch": "package.patch",
+  "patch_sha256": "7866642e90e06bd4abba6510081b6d2e149ad0d28566a0fcc610ea661d03acd9",
+  "package_sha256": "2685e7c5c726d941046005816e1d4bcc7162994a74e73eae6b1acbe65b32f35a",
+  "files": 84,
+  "treatment_lock": "treatment.json"
+}
