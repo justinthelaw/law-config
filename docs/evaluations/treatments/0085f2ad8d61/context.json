@@ -1,0 +1,59 @@
+{
+  "method": "Codex CLI 0.166.0-alpha.6 installed each exact package into an isolated local profile. A loopback mock captured the first Responses request for a fixed unrelated task and one selecting Develop. The explicit-only check selected each maintenance skill in a fresh session. The mock performed no inference.",
+  "counts": "o200k_base local estimates. Packaged content sums Markdown skill bodies and owned references. Initial request counts include input text and exclude tools and serialization. Billing and cache behavior require native model usage receipts.",
+  "package_sha256": {
+    "baseline": "1d6bdd9189ab5c076d825051201c17dda0627ad472ce11872f1c997cb257677c",
+    "final": "0085f2ad8d61c0b153d7909f12b2e80f320676494e2bbe2fe83d1e6f07a7bd04"
+  },
+  "packaged_markdown": {
+    "baseline": {
+      "files": 32,
+      "bytes": 129668,
+      "o200k_base_tokens": 23819
+    },
+    "final": {
+      "files": 23,
+      "bytes": 30551,
+      "o200k_base_tokens": 5773
+    },
+    "delta": {
+      "files": -9,
+      "bytes": -99117,
+      "o200k_base_tokens": -18046
+    }
+  },
+  "request_text_tokens": {
+    "unrelated": {
+      "baseline": 8002,
+      "final": 7782,
+      "delta": -220
+    },
+    "develop": {
+      "baseline": 8551,
+      "final": 8010,
+      "delta": -541
+    }
+  },
+  "passively_listed_develop_skills": {
+    "baseline": [
+      "develop:adversarial-loop",
+      "develop:develop",
+      "develop:engineering-design",
+      "develop:interface-design",
+      "develop:iterate",
+      "develop:kaizen"
+    ],
+    "final": [
+      "develop:develop",
+      "develop:iterate"
+    ]
+  },
+  "explicit_develop_body_matches_installed_file": true,
+  "explicit_maintenance_bodies_match_installed_files": [
+    "clean",
+    "deep-clean",
+    "kaizen",
+    "upgrade",
+    "upgrade-codex"
+  ]
+}
