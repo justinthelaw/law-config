@@ -1,0 +1,207 @@
+{
+  "format": "law-config.native-public-caller-fixture/v1",
+  "status": "PASS",
+  "scope": "Zero-inference mechanism fixture, not a participant trial or an end-to-end savings measurement.",
+  "provenance": {
+    "public_fmt_base": "a8293b774e5c4bed720391d0453d5ad0239f66a5",
+    "sealed_D_patch_sha256": "43e769e5288f305e7e5dc210d139804eeb7f70f1749384f73bbb97a59c572089",
+    "sealed_D_result_sha256": "589ef36debcfed25f462cab664e4cba6f32a33cdf4046936b1663e7d3be59648",
+    "literal_base_files": 145,
+    "literal_base_manifest_sha256": "3c96dbd21db3a7b65c82bcc67fc8f694153e936e48f48fdc84814691c9204798",
+    "source_content_digests_before": {
+      "base": "d1b82936da3ab802ca5759098289a3eb88aebd2ee20ae967934ab7f5047c7b41",
+      "patched": "d6a6094ce8ea5cdf8f135e4b8e8e909da8bbb48987e6d6c4820b1d3446a9886e"
+    },
+    "source_content_digests_after": {
+      "base": "d1b82936da3ab802ca5759098289a3eb88aebd2ee20ae967934ab7f5047c7b41",
+      "patched": "d6a6094ce8ea5cdf8f135e4b8e8e909da8bbb48987e6d6c4820b1d3446a9886e"
+    },
+    "caller_fixture": {
+      "path": "caller.cc",
+      "sha256": "7e6f2340bd5f95cca729ece1f42199729ca2af0ae0d386ee522702c87591a3fd"
+    },
+    "generic_helper_sha256": "05cd0d5e3cdc9490217ed68487ae0079b7e55b7d394893ac808e32c0cff10846",
+    "generic_helper_matches_tested_source": true
+  },
+  "runtime": {
+    "original_native_sandbox": true,
+    "cli_sha256": "c1eecb4b2304cb0e077a673231e30c9d759dec8fea4a6b8818078865e392fa90",
+    "bwrap_sha256": "77360cb751ccedc5971391444ac86a8a33c15b04d6b4a6fe45f5d25496e62c4c",
+    "worker_image_sha256": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3",
+    "toolchain_image_sha256": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+    "compiler": "g++ (Debian 12.2.0-14+deb12u1) 12.2.0",
+    "cpus": 2,
+    "memory": "4g",
+    "network": "none",
+    "inference_calls": 0,
+    "paid_trials": 0
+  },
+  "setup_seconds": {
+    "literal_source_materialization": 0.21,
+    "controller_initialize": 4.367,
+    "guest_environment_initialize": 21.278
+  },
+  "manual_fresh_compile_and_run": {
+    "configuration": "Project-supported header-only fmt with C++11; g++ -std=c++11 -O0 -I <current-source>/include caller.cc -o <scratch>/caller.",
+    "base_compile": {
+      "seconds": 60.199,
+      "exit": 0,
+      "timed_out": false
+    },
+    "base_run": {
+      "seconds": 0.358,
+      "exit": 42,
+      "timed_out": false,
+      "stdout": "-01.250000 -01.250000\ninf inf\n",
+      "stderr": ""
+    },
+    "candidate_compile": {
+      "seconds": 58.866,
+      "exit": 0,
+      "timed_out": false
+    },
+    "candidate_run": {
+      "seconds": 0.704,
+      "exit": 0,
+      "timed_out": false,
+      "stdout": "-01.250000 01.250000\n-inf inf\n",
+      "stderr": ""
+    }
+  },
+  "stale_binary_control": {
+    "source_edit": "Replace the actual same include-path chrono.h with the sealed patched header after compiling baseline; do not rebuild or modify its binary.",
+    "result": {
+      "seconds": 0.353,
+      "exit": 42,
+      "timed_out": false,
+      "stdout": "-01.250000 -01.250000\ninf inf\n",
+      "stderr": ""
+    },
+    "binary_content_unchanged": true,
+    "conclusion": "Existing binaries do not verify subsequently edited source."
+  },
+  "generic_F_helper": {
+    "invocation": "python3 probe.py --scratch <existing-task-scratch> -- g++ -std=c++11 -O0 -I <current-source>/include caller.cc -o {exe}",
+    "base": {
+      "seconds": 67.222,
+      "exit": 1,
+      "timed_out": false,
+      "stdout": "-01.250000 -01.250000\ninf inf\n",
+      "stderr": "behavior failed: status 42\n"
+    },
+    "candidate": {
+      "seconds": 69.265,
+      "exit": 0,
+      "timed_out": false,
+      "stdout": "-01.250000 01.250000\n-inf inf\nbehavior passed\n",
+      "stderr": ""
+    },
+    "invalid_compiler_option": {
+      "seconds": 5.176,
+      "exit": 2,
+      "timed_out": false,
+      "stdout": "",
+      "stderr": "g++: error: unrecognized command-line option \u2018--invalid-probe-option\u2019\ncompile failed: status 1\n"
+    },
+    "exit_contract": {
+      "0": "behavior passed",
+      "1": "compiled caller returned nonzero",
+      "2": "compile or setup failed"
+    },
+    "private_scratch_empty_after_all_calls": true,
+    "timing_scope": "Helper totals include Python startup, compilation, execution and cleanup; separate compiler/run timings are measured by the manual operations above."
+  },
+  "supported_default_mode_spot_check": {
+    "configuration": "CMake normal fmt static library, FMT_DOC=OFF, FMT_TEST=OFF, FMT_INSTALL=OFF, CMAKE_CXX_STANDARD=11; build target fmt with -j2. Tests are off solely for this separate library-mode spot check.",
+    "configure": {
+      "seconds": 31.325,
+      "exit": 0,
+      "timed_out": false
+    },
+    "library_build": {
+      "seconds": 82.452,
+      "exit": 0,
+      "timed_out": false
+    },
+    "caller_compile": {
+      "seconds": 53.719,
+      "exit": 0,
+      "timed_out": false
+    },
+    "caller_run": {
+      "seconds": 0.66,
+      "exit": 0,
+      "timed_out": false,
+      "stdout": "-01.250000 01.250000\n-inf inf\n",
+      "stderr": ""
+    },
+    "stdout_matches_header_only": true
+  },
+  "required_final_coverage_separate": {
+    "rerun_in_this_fixture": false,
+    "owning_sealed_artifact": "runs/tuning/lean-d-fmt-01/result.json",
+    "role": "develop",
+    "patch_sha256": "43e769e5288f305e7e5dc210d139804eeb7f70f1749384f73bbb97a59c572089",
+    "frozen_stages": {
+      "build": {
+        "exit": 0,
+        "log_sha256": "e5d9a81045315f705a0d14a4c378a0638bd94d291460b2f61cb9d1c83c010f5f"
+      },
+      "native": {
+        "exit": 0,
+        "log_sha256": "0a4a639177e8a3e5bcf9c896c6d80b181ad8d42f1ba53cb877514869f6802948"
+      },
+      "contract": {
+        "exit": 0,
+        "log_sha256": "85b597c89c2b4db57e587b11a856e695b11f59984def8002bdb112988474198e"
+      },
+      "preserve": {
+        "exit": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "producer_final_chrono_slice": {
+      "tests": 41,
+      "command": "./build/bin/chrono-test --gtest_filter=chrono_test.*",
+      "command_wall_seconds": 178.267,
+      "reported_test_seconds": 175.314,
+      "exit": 0
+    },
+    "limit": "The focused caller and default-library spot check do not replace the required configured chrono suite or establish the full CI platform/sanitizer matrix."
+  },
+  "noncausal_comparison_with_sealed_D_commands": {
+    "initial_chrono_target_build_seconds": [
+      744.948,
+      721.707,
+      728.446
+    ],
+    "post_edit_target_rebuild_seconds": [
+      372.886,
+      374.632,
+      379.722
+    ],
+    "final_41_test_slice_seconds": [
+      179.578,
+      173.406,
+      178.267
+    ],
+    "interpretation": "Different translation units, source-edit histories and compilation states. These observations establish executable feedback granularity; they are not an estimate of end-to-end wall, proposal-cost or quality improvement."
+  },
+  "checks": {
+    "base_behavioral_red": true,
+    "candidate_behavioral_green": true,
+    "old_binary_stays_red_after_actual_source_edit": true,
+    "source_include_projection_matches": true,
+    "helper_red_green_setup_codes": true,
+    "helper_private_scratch_clean": true,
+    "sealed_source_inputs_unchanged": true,
+    "default_library_equivalence": true
+  },
+  "limitations": [
+    "Only two supplied fmt public-caller behaviors are exercised; assertions are evaluation fixtures and are not shipped in the plugin.",
+    "No production source, grader, original sealed artifact or required check was changed.",
+    "No inference or paid participant allocation occurred; deterministic local responses only drove native tool calls.",
+    "Cross-language selection, agent adoption and full-panel gains remain untested.",
+    "Controller total includes repeated controls, fingerprinting and protocol overhead and is not a producer timing."
+  ]
+}

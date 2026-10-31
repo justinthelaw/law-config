@@ -1,0 +1,41 @@
+{
+  "registered_utc": "2026-10-31T15:25:45+00:00",
+  "source_commit": "4ec32a195a29c65b8937ce72128cbd8de784acd8",
+  "package_sha256": "6ea0b73a27085198c207f67d3fa934490a05891cd0778c44dda06c38c4b3252e",
+  "inherits": {
+    "path": "../0085f2ad8d61/historical-tuning.json",
+    "sha256": "87cb05429aab0ea991a5775d6e557171fe39cc50499cf0a4a349a6983a78fcad",
+    "fields": [
+      "cohort",
+      "cases",
+      "metrics",
+      "stop_rule"
+    ]
+  },
+  "comparison": {
+    "path_from_evaluations": "runs/pr-quality-pytest-entry-natural-v1/lean-c-standalone-historical20-01-9726b39f2227/compare.py",
+    "sha256": "0bfb1cfb473f1fb3c470ccbc62a7a667d4c79525f3668f8e1e698007956da7b1"
+  },
+  "hypothesis": "A small supported caller can establish the baseline before a cold framework build. Rebuilding only the caller for that baseline leaves the configured final check to run after the edit. This may reduce elapsed time and proposal cost while retaining verification.",
+  "reason": "In the exposed fmt tuning pilot, Develop ran a cold framework build before editing and compiled the configured target again afterward. The F helper compiles and runs a fresh caller in task scratch. The previous wait instructions did not lower paid waiting in two registered screens.",
+  "arms": "One fresh stock and one fresh standalone F proposal per repository, both starting on GPT-6.1 Sol Medium. Keep the existing tasks, worker allocation, deadline and grading rules. Score the actual merged PR in the same blind rotations.",
+  "batches": [
+    {
+      "name": "lean-f-historical-tuning-01",
+      "split": "tuning",
+      "repositories": 12
+    },
+    {
+      "name": "lean-f-historical-confirmation-01",
+      "split": "confirmation",
+      "repositories": 8
+    }
+  ],
+  "allocation": "Authorize both batches as a single full comparison after package preflight, successful mechanism controls and a capacity check. Run the second with the same treatment regardless of the first results. Retain failures, timeouts, missing meters and empty submissions. Keep earlier runs separate.",
+  "capacity": "Use the native scheduler with three two-CPU lanes. Check capacity before each batch, including a 20 GiB reserve. Pause for capacity if required. Retire only verified disposable storage outside active proposal clocks.",
+  "report": "Combine the verified disjoint bundles using the inherited comparison method. Report all three outcomes, their denominators, per-repository scores and costs, and separate assessor costs. Count a missing or nonfunctional proposal as zero. These repositories have been exposed.",
+  "mechanism_control": {
+    "path": "fmt-probe/receipt.json",
+    "sha256": "1687a133b264d41093897d00deebf55f9c12c4a6d6f6e4494516eca3eba55e2b"
+  }
+}

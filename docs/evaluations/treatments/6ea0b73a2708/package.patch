@@ -1,0 +1,160 @@
+diff --git a/plugins/develop/skills/develop/SKILL.md b/plugins/develop/skills/develop/SKILL.md
+index 8cd6754..e5b0dc7 100644
+--- a/plugins/develop/skills/develop/SKILL.md
++++ b/plugins/develop/skills/develop/SKILL.md
+@@ -7,8 +7,6 @@ description: Implement and verify repository changes through their callers.
+ 
+ Reproduce bugs through a real caller. Change the smallest owner and retain existing conversions and fallbacks. Check alternate definitions of dependencies you introduce. Verify the result or written state for the new case and an old input the edit could break.
+ 
+-Start with the cheapest check that executes the changed code. Reuse the project's toolchain, build tree and results. If setup fails, try the documented entry point and a focused executable equivalent. Run required checks and report material gaps.
+-
+-For long builds and tests, [wait on the running command](references/long-checks.md). Do independent work while it runs. Otherwise let one tool call wait for its exit and diagnostics.
++Before a cold framework build, prove the bug with a tiny supported public caller on current source where feasible. For compiled callers, run `python3 <skill-dir>/scripts/probe.py --help` to compile and run a fresh executable with the project toolchain and task scratch directory. Update code and tests, then run the required final target once in the supported configuration and report material coverage gaps.
+ 
+ Handle verifiable changes directly. Use [design or review](references/planning-and-review.md) when requested, required, or needed to settle consequential uncertainty. [Iterate](../iterate/SKILL.md) covers delivery.
+diff --git a/plugins/develop/skills/develop/references/long-checks.md b/plugins/develop/skills/develop/references/long-checks.md
+deleted file mode 100644
+index b1be459..0000000
+--- a/plugins/develop/skills/develop/references/long-checks.md
++++ /dev/null
+@@ -1,18 +0,0 @@
+-# Run a long check
+-
+-Start a noninteractive check once. In Codex code mode, keep the terminal waits inside one cell. Replace the example command with the project check.
+-
+-```js
+-// @exec: {"yield_time_ms": 300000}
+-let result = await tools.exec_command({cmd: "make test", yield_time_ms: 1000});
+-let output = result.output.slice(-6000);
+-while (result.exit_code == null && result.session_id != null) {
+-  result = await tools.write_stdin({
+-    session_id: result.session_id, chars: "", yield_time_ms: 300000
+-  });
+-  output = (output + result.output).slice(-6000);
+-}
+-text({exit_code: result.exit_code, output});
+-```
+-
+-Use a short initial cell yield if independent work is ready. If the cell yields, use `functions.wait` with its cell ID and a long wait. For a command already running, use its existing terminal handle. With direct shell tools, wait on that handle. Keep full logs in the task's scratch directory when needed. Treat a lost handle or missing exit status as incomplete.
+diff --git a/plugins/develop/skills/develop/scripts/probe.py b/plugins/develop/skills/develop/scripts/probe.py
+new file mode 100644
+index 0000000..39bd302
+--- /dev/null
++++ b/plugins/develop/skills/develop/scripts/probe.py
+@@ -0,0 +1,46 @@
++#!/usr/bin/env python3
++"""Compile and run a caller in a fresh private directory under supplied scratch."""
++import argparse
++import os
++from pathlib import Path
++import subprocess
++import sys
++import tempfile
++
++
++def main():
++    parser = argparse.ArgumentParser(
++        description=__doc__,
++        epilog='Example: --scratch tmp/task -- cc caller.c -o "{exe}". '
++               'Use the project toolchain and flags. Exit 0: pass, 1: behavioral failure, 2: compile or setup failure.',
++    )
++    parser.add_argument("--scratch", required=True, type=Path)
++    parser.add_argument("build", nargs=argparse.REMAINDER, help="compiler argv after --, with {exe} output path")
++    args = parser.parse_args()
++    build = args.build[1:] if args.build[:1] == ["--"] else args.build
++    if not build or not any("{exe}" in arg for arg in build):
++        parser.error("compiler argv must contain {exe}")
++    try:
++        with tempfile.TemporaryDirectory(prefix="develop-probe-", dir=args.scratch.resolve()) as temp:
++            exe = str(Path(temp) / ("probe.exe" if os.name == "nt" else "probe"))
++            env = dict(os.environ, TMPDIR=temp, TMP=temp, TEMP=temp)
++            result = subprocess.run([arg.replace("{exe}", exe) for arg in build], env=env)
++            if result.returncode:
++                print(f"compile failed: status {result.returncode}", file=sys.stderr)
++                return 2
++            if not Path(exe).is_file():
++                print("compile failed: executable not produced", file=sys.stderr)
++                return 2
++            result = subprocess.run([exe], env=env)
++            if result.returncode:
++                print(f"behavior failed: status {result.returncode}", file=sys.stderr)
++                return 1
++            print("behavior passed")
++            return 0
++    except OSError as error:
++        print(f"probe failed: {error}", file=sys.stderr)
++        return 2
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+diff --git a/plugins/develop/tests/test_probe.py b/plugins/develop/tests/test_probe.py
+new file mode 100644
+index 0000000..1a8aa5b
+--- /dev/null
++++ b/plugins/develop/tests/test_probe.py
+@@ -0,0 +1,64 @@
++from pathlib import Path
++import shutil
++import subprocess
++import sys
++import tempfile
++import unittest
++
++SCRIPT = Path(__file__).resolve().parents[1] / "skills/develop/scripts/probe.py"
++
++
++class ProbeTest(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory()
++        self.addCleanup(self.temp.cleanup)
++        self.root = Path(self.temp.name)
++        self.scratch = self.root / "scratch"
++        self.scratch.mkdir()
++
++    def probe(self, build):
++        return subprocess.run([sys.executable, str(SCRIPT), "--scratch", str(self.scratch), "--", *build],
++                              cwd=self.root, text=True, capture_output=True)
++
++    def test_help_shows_example(self):
++        result = subprocess.run([sys.executable, str(SCRIPT), "--help"], text=True, capture_output=True)
++        self.assertEqual(result.returncode, 0)
++        self.assertIn('--scratch tmp/task -- cc caller.c -o "{exe}"', result.stdout)
++
++    def test_compile_failure_never_runs_stale_executable(self):
++        stale = self.scratch / "probe"
++        stale.write_text("stale")
++        result = self.probe([sys.executable, "-c", "import sys; print('compiler error'); sys.exit(7)", "{exe}"])
++        self.assertEqual(result.returncode, 2)
++        self.assertIn("compiler error", result.stdout)
++        self.assertIn("status 7", result.stderr)
++        self.assertEqual(stale.read_text(), "stale")
++        self.assertEqual(list(self.scratch.iterdir()), [stale])
++
++    def test_compile_success_without_executable_is_failure(self):
++        result = self.probe([sys.executable, "-c", "pass", "{exe}"])
++        self.assertEqual(result.returncode, 2)
++        self.assertIn("executable not produced", result.stderr)
++        self.assertEqual(list(self.scratch.iterdir()), [])
++
++    def test_missing_scratch_reports_setup_failure(self):
++        self.scratch = self.root / "missing"
++        result = self.probe([sys.executable, "-c", "pass", "{exe}"])
++        self.assertEqual(result.returncode, 2)
++        self.assertIn("probe failed", result.stderr)
++        self.assertNotIn("Traceback", result.stderr)
++
++    @unittest.skipUnless(shutil.which("cc"), "C compiler unavailable")
++    def test_real_compiler_and_caller_behavior(self):
++        source = self.root / "caller.c"
++        source.write_text('#include <stdio.h>\nint main(void) { puts("caller output"); return RESULT; }\n')
++        for code, expected in [(0, 0), (3, 1)]:
++            result = self.probe(["cc", f"-DRESULT={code}", "caller.c", "-o", "{exe}"])
++            self.assertEqual(result.returncode, expected, result.stderr)
++            self.assertIn("caller output", result.stdout)
++            self.assertIn("behavior passed" if not code else "status 3", result.stdout + result.stderr)
++            self.assertEqual(list(self.scratch.iterdir()), [])
++
++
++if __name__ == "__main__":
++    unittest.main()
