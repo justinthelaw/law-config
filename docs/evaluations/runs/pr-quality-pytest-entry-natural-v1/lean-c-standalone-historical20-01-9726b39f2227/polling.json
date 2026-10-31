@@ -1,0 +1,398 @@
+{
+  "format": "law-config.sealed-poll-analysis/v1",
+  "binding": {
+    "run": "lean-c-standalone-historical20-01",
+    "plan_sha256": "9726b39f2227cef8d1787e2c5e578f31f2c3d636ad118572d14eb7e950c5b14d",
+    "evaluator_source_sha256": "51a4740fa2bc38f96e006d6c904b3ab9037f4151e3295c42a2293237b3c67691",
+    "package_sha256": "0085f2ad8d61c0b153d7909f12b2e80f320676494e2bbe2fe83d1e6f07a7bd04",
+    "cli_sha256": "c1eecb4b2304cb0e077a673231e30c9d759dec8fea4a6b8818078865e392fa90",
+    "protocol": "pr-quality-pytest-entry-natural-v1"
+  },
+  "denominator": {
+    "cases": 20,
+    "producer_roles": 40,
+    "fully_priced_matched_pairs": 19,
+    "partial_pair": [
+      "marked"
+    ],
+    "matched_rollout_meters": 40,
+    "root_threads": 40,
+    "child_threads": 0
+  },
+  "pricing": {
+    "policy": "frozen natural-standard-v2",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "usd_per_million": {
+      "uncached_input": 2,
+      "cached_input": 0.1,
+      "output": 10
+    },
+    "formula": "((input-cached)*2+cached*0.1+output*10)/1e6; reasoning is INCLUDED in output",
+    "billed_usd": null,
+    "partial_pair_cost": "unknown; excluded from USD and elapsed comparison totals"
+  },
+  "classifier": {
+    "unit": "one response_id from token_usage_record; emitted response_item tool calls accumulated since previous usage record",
+    "sleep_only": "all emitted calls are sleep",
+    "write_stdin_only": "all calls are custom exec, all literal tools.* invocations are write_stdin, chars omitted or all proven empty string literals; stdin mutations or unproven chars excluded",
+    "functions_wait_only": "all calls are wait on an existing yielded code cell",
+    "mixed_poll_only": "only the preceding three polling primitives, with more than one kind",
+    "mixed_poll_with_work": "poll primitive and other work in same response; excluded from poll-only totals",
+    "no_tool_call": "no emitted tool call; excluded",
+    "meter_attribution": "Entire response usage, including any commentary/reasoning, assigned to its emitted-action category. No private reasoning read. These are observed costs of responses choosing polling, not causal measured savings."
+  },
+  "totals": {
+    "control": {
+      "model_responses": 1207,
+      "poll_responses": 758,
+      "complete_pair_usd": 9.1133892,
+      "complete_pair_poll_usd": 5.1964824,
+      "hook_receipts": 0
+    },
+    "develop": {
+      "model_responses": 1544,
+      "poll_responses": 1010,
+      "complete_pair_usd": 13.9855672,
+      "complete_pair_poll_usd": 8.7617408,
+      "hook_receipts": 1489
+    }
+  },
+  "cases": {
+    "black": {
+      "control": {
+        "responses": 40,
+        "poll_only_responses": 20,
+        "poll_only_usd_estimate": 0.1316888
+      },
+      "develop": {
+        "responses": 39,
+        "poll_only_responses": 13,
+        "poll_only_usd_estimate": 0.11144
+      }
+    },
+    "cli11": {
+      "control": {
+        "responses": 32,
+        "poll_only_responses": 16,
+        "poll_only_usd_estimate": 0.0979044
+      },
+      "develop": {
+        "responses": 37,
+        "poll_only_responses": 17,
+        "poll_only_usd_estimate": 0.1111832
+      }
+    },
+    "commander": {
+      "control": {
+        "responses": 10,
+        "poll_only_responses": 2,
+        "poll_only_usd_estimate": 0.0106204
+      },
+      "develop": {
+        "responses": 11,
+        "poll_only_responses": 4,
+        "poll_only_usd_estimate": 0.0213544
+      }
+    },
+    "commons-lang": {
+      "control": {
+        "responses": 46,
+        "poll_only_responses": 17,
+        "poll_only_usd_estimate": 0.1500112
+      },
+      "develop": {
+        "responses": 27,
+        "poll_only_responses": 6,
+        "poll_only_usd_estimate": 0.0501944
+      }
+    },
+    "django": {
+      "control": {
+        "responses": 58,
+        "poll_only_responses": 33,
+        "poll_only_usd_estimate": 0.1867256
+      },
+      "develop": {
+        "responses": 52,
+        "poll_only_responses": 25,
+        "poll_only_usd_estimate": 0.1845864
+      }
+    },
+    "expat": {
+      "control": {
+        "responses": 81,
+        "poll_only_responses": 44,
+        "poll_only_usd_estimate": 0.4495252
+      },
+      "develop": {
+        "responses": 79,
+        "poll_only_responses": 51,
+        "poll_only_usd_estimate": 0.5049304
+      }
+    },
+    "fd": {
+      "control": {
+        "responses": 12,
+        "poll_only_responses": 0,
+        "poll_only_usd_estimate": 0
+      },
+      "develop": {
+        "responses": 246,
+        "poll_only_responses": 207,
+        "poll_only_usd_estimate": 1.3592796
+      }
+    },
+    "fmt": {
+      "control": {
+        "responses": 55,
+        "poll_only_responses": 37,
+        "poll_only_usd_estimate": 0.2377468
+      },
+      "develop": {
+        "responses": 110,
+        "poll_only_responses": 91,
+        "poll_only_usd_estimate": 0.5029972
+      }
+    },
+    "go-git": {
+      "control": {
+        "responses": 98,
+        "poll_only_responses": 60,
+        "poll_only_usd_estimate": 0.7644916
+      },
+      "develop": {
+        "responses": 122,
+        "poll_only_responses": 79,
+        "poll_only_usd_estimate": 0.9875108
+      }
+    },
+    "jq": {
+      "control": {
+        "responses": 288,
+        "poll_only_responses": 262,
+        "poll_only_usd_estimate": 1.53305
+      },
+      "develop": {
+        "responses": 159,
+        "poll_only_responses": 137,
+        "poll_only_usd_estimate": 0.8944372
+      }
+    },
+    "libarchive": {
+      "control": {
+        "responses": 57,
+        "poll_only_responses": 37,
+        "poll_only_usd_estimate": 0.2809572
+      },
+      "develop": {
+        "responses": 259,
+        "poll_only_responses": 186,
+        "poll_only_usd_estimate": 2.7981856
+      }
+    },
+    "marked": {
+      "control": {
+        "responses": 67,
+        "poll_only_responses": 17,
+        "poll_only_usd_estimate": null
+      },
+      "develop": {
+        "responses": 62,
+        "poll_only_responses": 5,
+        "poll_only_usd_estimate": null
+      }
+    },
+    "packaging": {
+      "control": {
+        "responses": 18,
+        "poll_only_responses": 5,
+        "poll_only_usd_estimate": 0.032232
+      },
+      "develop": {
+        "responses": 24,
+        "poll_only_responses": 9,
+        "poll_only_usd_estimate": 0.0693444
+      }
+    },
+    "prometheus": {
+      "control": {
+        "responses": 115,
+        "poll_only_responses": 90,
+        "poll_only_usd_estimate": 0.585754
+      },
+      "develop": {
+        "responses": 104,
+        "poll_only_responses": 75,
+        "poll_only_usd_estimate": 0.467474
+      }
+    },
+    "pytest": {
+      "control": {
+        "responses": 32,
+        "poll_only_responses": 12,
+        "poll_only_usd_estimate": 0.0755664
+      },
+      "develop": {
+        "responses": 27,
+        "poll_only_responses": 11,
+        "poll_only_usd_estimate": 0.0748816
+      }
+    },
+    "ripgrep": {
+      "control": {
+        "responses": 56,
+        "poll_only_responses": 38,
+        "poll_only_usd_estimate": 0.2041668
+      },
+      "develop": {
+        "responses": 56,
+        "poll_only_responses": 36,
+        "poll_only_usd_estimate": 0.1744812
+      }
+    },
+    "rspec": {
+      "control": {
+        "responses": 31,
+        "poll_only_responses": 14,
+        "poll_only_usd_estimate": 0.0635304
+      },
+      "develop": {
+        "responses": 26,
+        "poll_only_responses": 10,
+        "poll_only_usd_estimate": 0.0523276
+      }
+    },
+    "runner-space": {
+      "control": {
+        "responses": 44,
+        "poll_only_responses": 25,
+        "poll_only_usd_estimate": 0.1514192
+      },
+      "develop": {
+        "responses": 35,
+        "poll_only_responses": 16,
+        "poll_only_usd_estimate": 0.1133856
+      }
+    },
+    "sympy": {
+      "control": {
+        "responses": 42,
+        "poll_only_responses": 21,
+        "poll_only_usd_estimate": 0.1929204
+      },
+      "develop": {
+        "responses": 45,
+        "poll_only_responses": 26,
+        "poll_only_usd_estimate": 0.2379032
+      }
+    },
+    "werkzeug": {
+      "control": {
+        "responses": 25,
+        "poll_only_responses": 8,
+        "poll_only_usd_estimate": 0.048172
+      },
+      "develop": {
+        "responses": 24,
+        "poll_only_responses": 6,
+        "poll_only_usd_estimate": 0.045844
+      }
+    }
+  },
+  "command_intervals": {
+    "fd": {
+      "case": "fd",
+      "command_union_seconds": 3904.881,
+      "command_sum_seconds": 9921.78,
+      "longest_observed_commands": [
+        {
+          "label": "default cargo build, cancelled",
+          "seconds": 3873.491,
+          "exit_code": 130
+        },
+        {
+          "label": "default cargo test command, cancelled",
+          "seconds": 3829.495,
+          "exit_code": 130
+        },
+        {
+          "label": "focused no-default-features unit tests",
+          "seconds": 557.641,
+          "exit_code": 0
+        }
+      ]
+    },
+    "libarchive": {
+      "case": "libarchive",
+      "command_union_seconds": 5262.002,
+      "command_sum_seconds": 10966.153,
+      "longest_observed_commands": [
+        {
+          "label": "copied-local toolchain configure/full multi-target build",
+          "seconds": 4455.752,
+          "exit_code": 0
+        },
+        {
+          "label": "tail -F log follower",
+          "seconds": 4293.74,
+          "exit_code": 1
+        },
+        {
+          "label": "copy system compiler headers",
+          "seconds": 391.493,
+          "exit_code": 0
+        }
+      ]
+    },
+    "fmt": {
+      "case": "fmt",
+      "command_union_seconds": 1324.162,
+      "command_sum_seconds": 1409.717,
+      "longest_observed_commands": [
+        {
+          "label": "modify tests and build chrono target",
+          "seconds": 741.341,
+          "exit_code": 0
+        },
+        {
+          "label": "rebuild target and run chrono tests",
+          "seconds": 552.034,
+          "exit_code": 0
+        },
+        {
+          "label": "source/check inspection",
+          "seconds": 15.787,
+          "exit_code": 0
+        }
+      ]
+    },
+    "go-git": {
+      "case": "go-git",
+      "command_union_seconds": 2178.189,
+      "command_sum_seconds": 4769.376,
+      "longest_observed_commands": [
+        {
+          "label": "baseline focused Go test",
+          "seconds": 1590.72,
+          "exit_code": 1
+        },
+        {
+          "label": "full affected-package Go test",
+          "seconds": 1303.655,
+          "exit_code": 0
+        },
+        {
+          "label": "edit plus concurrent verification",
+          "seconds": 824.771,
+          "exit_code": 0
+        }
+      ]
+    }
+  },
+  "limitations": [
+    "The counts include all 40 attempts. The price totals cover the 19 fully metered pairs.",
+    "Model-turn costs include reasoning and commentary in that turn. Most waits overlapped executing commands. Command durations overlap, so only their union measures elapsed time.",
+    "These observations do not measure the cost or elapsed time a change would save."
+  ]
+}

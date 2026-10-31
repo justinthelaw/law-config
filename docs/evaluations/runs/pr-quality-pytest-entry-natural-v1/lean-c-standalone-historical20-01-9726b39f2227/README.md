@@ -12,6 +12,8 @@ Standalone Develop scored **78.69/100**, versus **85.44/100** for fresh stock Co
 
 Develop's all-20 quality was 7.9% lower than stock and its mean elapsed time was 51.2% longer. On 19 fully metered completed pairs, Develop cost 53.5% more and took 1.55× as long. Those pairs used 48.66 million stock tokens and 81.75 million Develop tokens. The measured proposal costs establish lower bounds on all-attempt spend. The 20-case total-cost comparison remains unresolved. The 60 blind judge receipts total $7.41. Two [qualification probes](qualification.json) total an estimated $0.058. These are separate from proposal spend. Estimates use the frozen Standard rate card and differ from invoices. Human labor is unknown.
 
+In the 19 priced pairs, model turns that only waited on running work cost $8.76 for Develop and $5.20 for stock. Most of that waiting overlapped commands already executing. On fd, Develop started two long Cargo commands that it later cancelled. On libarchive, it copied a toolchain and built multiple targets. Together those two repositories added 136 minutes and $4.96 versus stock. [Per-repository wait counts, costs and method](polling.json)
+
 The three-rotation blind comparison favored Develop in 3 cases, stock in 6, tied in 10 and left one unresolved. Scores combine diff quality and PR communication. Executable gates and confirmed critical defects take precedence. The actual merged PRs averaged **62.69/100**, with 17 functional changes.
 
 | Repository | Stock /100 | Develop /100 | Merge /100 | Time, stock / Develop | Cost, stock / Develop |
