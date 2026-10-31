@@ -8,7 +8,6 @@ permissions:
   pull_request:
     branches:
       - main
-      - "develop/eval-*"
   push:
     branches:
       - main

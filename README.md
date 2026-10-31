@@ -1,22 +1,12 @@
 # Law-Config
 
-Shell, Git, and GPG configuration for `law-*` machines, plus the Develop plugin.
+Shell, Git, and GPG configuration for `law-*` machines.
 Start with [Linux setup](docs/setup-linux.md) or [macOS setup](docs/setup-macos.md).
 
 | Goal | Start here |
 | --- | --- |
 | Configure a machine | [Linux](docs/setup-linux.md) · [macOS](docs/setup-macos.md) |
-| Use Develop | [Workflow diagram](plugins/develop/docs/develop-overview.png) · [Plugin guide](plugins/develop/README.md) · [Install and sync](plugins/develop/INSTALL.md) |
 | Contribute changes | [Required checks](docs/CONTRIBUTING.md#validation) · [Repository instructions](AGENTS.md) |
-
-## Plugins
-
-The `law-config` Git marketplace distributes [Develop](plugins/develop/README.md):
-ten skills for engineering/interface planning, development, upgrades, review, cleanup, and workflow improvement.
-Its [Codex context guard](plugins/develop/docs/context-guard.md) guides bounded
-reads and optionally preserves oversized received results before replacement. The guard requires
-supported local Codex sessions, Python 3.10+, and hook trust; see the
-[installation guide](plugins/develop/INSTALL.md).
 
 ## Machine Setup
 
@@ -75,7 +65,5 @@ chmod 700 ~/.gnupg
 - [Security and private reporting](docs/SECURITY.md)
 - [Support](docs/SUPPORT.md)
 - [MIT License](LICENSE)
-- [Develop Apache-2.0 License](plugins/develop/LICENSE)
 
-The configuration and helper scripts use the repository's MIT license. The
-Develop package under `plugins/develop/` retains its Apache-2.0 license.
+The configuration and helper scripts use the repository's MIT license.
