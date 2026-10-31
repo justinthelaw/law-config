@@ -4,6 +4,6 @@ interface:
   icon_large: "./assets/icon.png"
   display_name: "Develop: Deep Clean"
   short_description: "Explicitly scope a deep machine cleanup"
-  default_prompt: "Use $deep-clean to inspect my explicitly selected wider filesystem scope, explain candidate risks and use the host's system Trash for authorized disposable files."
+  default_prompt: "Use $deep-clean to inspect my selected filesystem scope and clean only authorized disposable resources."
 policy:
   allow_implicit_invocation: false

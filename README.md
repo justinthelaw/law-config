@@ -6,14 +6,14 @@ Start with [Linux setup](docs/setup-linux.md) or [macOS setup](docs/setup-macos.
 | Goal | Start here |
 | --- | --- |
 | Configure a machine | [Linux](docs/setup-linux.md) · [macOS](docs/setup-macos.md) |
-| Use Develop | [Workflow diagram](plugins/develop/docs/develop-overview.png) · [Plugin guide](plugins/develop/README.md) · [Install and sync](plugins/develop/INSTALL.md) |
+| Use Develop | [Plugin guide](plugins/develop/README.md) · [Install and sync](plugins/develop/INSTALL.md) |
 | Run or compare Develop evaluations | [Environments, quality rubric and benchmark records](docs/evaluations/README.md) |
 | Contribute changes | [Required checks](docs/CONTRIBUTING.md#validation) · [Repository instructions](AGENTS.md) |
 
 ## Plugins
 
 The `law-config` Git marketplace distributes [Develop](plugins/develop/README.md):
-ten skills for engineering/interface planning, development, upgrades, review, cleanup, and workflow improvement.
+two development entries and five explicitly selected maintenance skills.
 Its [Codex context guard](plugins/develop/docs/context-guard.md) guides bounded
 reads and optionally preserves oversized received results before replacement. The guard requires
 supported local Codex sessions, Python 3.10+, and hook trust; see the

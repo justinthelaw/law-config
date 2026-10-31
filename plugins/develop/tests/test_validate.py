@@ -65,16 +65,6 @@ class PackageValidation(unittest.TestCase):
         result = self.validate()
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
-    def test_design_skills_are_discoverable_with_packaged_icons(self):
-        for name in ("engineering-design", "interface-design"):
-            with self.subTest(skill=name):
-                skill = self.package / "skills" / name
-                self.assertTrue((skill / "SKILL.md").is_file(), name)
-                self.assertTrue((skill / "agents/openai.yaml").is_file(), name)
-                self.assertTrue((skill / "assets/icon.png").is_file(), name)
-        result = self.validate()
-        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
-
     def test_root_manifest_cannot_shadow_native_hooks(self):
         # A root Agent Plugin manifest wins discovery but skips bundled hooks.
         shadow = self.package / 'plugin.json'
@@ -488,19 +478,19 @@ class PackageValidation(unittest.TestCase):
         (self.package / "skills/kaizen/SKILL.md").unlink()
         result = self.validate()
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("ten entry points", result.stdout + result.stderr)
+        self.assertIn("skills: expected", result.stdout + result.stderr)
 
     def test_missing_upgrade_codex_entrypoint_fails(self):
         (self.package / "skills/upgrade-codex/SKILL.md").unlink()
         result = self.validate()
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("ten entry points", result.stdout + result.stderr)
+        self.assertIn("skills: expected", result.stdout + result.stderr)
 
     def test_unregistered_skill_directory_fails(self):
         (self.package / "skills/unregistered").mkdir()
         result = self.validate()
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("ten entry points", result.stdout + result.stderr)
+        self.assertIn("skills: expected", result.stdout + result.stderr)
 
     def write_upgrade_codex_policy(self, policy):
         path = self.package / "skills/upgrade-codex/agents/openai.yaml"
@@ -555,7 +545,7 @@ class PackageValidation(unittest.TestCase):
                 self.assertIn("allow_implicit_invocation", result.stdout + result.stderr)
 
     def test_each_maintenance_skill_requires_explicit_policy(self):
-        for skill in ("clean", "deep-clean", "upgrade", "upgrade-codex"):
+        for skill in ("clean", "deep-clean", "kaizen", "upgrade", "upgrade-codex"):
             path = self.package / "skills" / skill / "agents/openai.yaml"
             original = path.read_text(encoding="utf-8")
             for policy in ("true", None):
@@ -574,7 +564,7 @@ class PackageValidation(unittest.TestCase):
         (self.package / "skills/deep-clean/SKILL.md").unlink()
         result = self.validate()
         self.assertNotEqual(result.returncode, 0)
-        self.assertIn("ten entry points", result.stdout + result.stderr)
+        self.assertIn("skills: expected", result.stdout + result.stderr)
 
     def test_missing_icon_fails(self):
         (self.package / "skills/clean/assets/icon.png").unlink()

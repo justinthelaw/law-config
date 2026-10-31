@@ -1,29 +1,22 @@
 # Dependency assessment
 
-Use this before upgrading or consolidating dependency changes, and as the full workflow for a review-only request.
+## Baseline and scope
 
-## Establish the comparison
+- Resolve selected checkouts/aliases once and maintained owners. Read owner instructions, manifests, locks, runtime/toolchain pins, build recipes and CI; use their package manager and validation commands.
+- Record revision, comparison baseline and exact candidate. Unknown stays unknown. Separate pre-existing failures/unavailable prerequisites from regressions. Read-only assessment uses existing evidence or verified non-mutating queries; no installers, environment preparation or lock-writing resolvers.
+- Cover runtime, development/test, optional/peer, build, package-manager, automation, container and transitive constraints; include additions, removals, downgrades and majors. Compare native resolver/lock graphs for fan-out and interacting constraints. Direct manifests do not establish the effective set.
+- Evidence relevant security, provenance, license, platform/runtime and support changes; version numbers alone prove none.
 
-Resolve selected checkouts and their maintained owners. Read applicable repository instructions, manifests, lockfiles, runtime/toolchain pins, build recipes and CI. Discover the actual package manager and owner-defined validation commands; do not substitute familiar tooling. Resolve aliases without reviewing the same source twice.
+## Targets and compatibility
 
-Record the current revision, requested comparison baseline and exact candidate. A baseline may be a release, commit or existing pin; an unknown baseline stays unknown. Separate existing failures and unavailable prerequisites from regressions. Read-only review can inspect existing evidence and use verified non-mutating queries; do not run installers or resolvers that rewrite locks or prepare environments. Report missing evidence instead.
+- Verify official upstream/registry releases, support dates, migrations and security/deprecation notices over the baseline's release interval. Freeze exact versions/commits, channels, evidence URLs and dates.
+- Preserve explicit targets and deliberate prerelease/LTS channels. Otherwise prefer supported stable or suitable LTS. Unavailable targets or unverifiable compatibility are `Blocked/unverified`; do not silently substitute.
+- Use the owning manager for authorized changes. Verify supported runtimes before removing dependencies (e.g. `tomllib` requires Python 3.11; retain a compatible reader for 3.10). Exercise changed framework syntax with representative inputs.
+- Group compatible families, intermediate migrations, call sites, peers, runtime floors and platform/CI checks. Prove constraints before overriding transitive leaves; supporting dependencies are candidates, not automatic bumps.
+- For material risks record evidence, applicability, smallest change and acceptance check. Separate required work, optional improvements and hypotheses. Inventory, matching pins or narrow passing checks do not prove full compatibility; retain justified unchanged decisions and gaps.
 
-Within selected scope, include runtime, development/test, optional/peer, build, package-manager, automation, container and transitive constraints. Review additions, removals, downgrades and majors as well as version increases. Compare native resolver output or lockfile graphs for transitive fan-out and interacting constraints; direct manifests alone do not establish the effective dependency set. Flag relevant security, provenance, license, runtime/platform and support changes with evidence, not version-number assumptions.
+## Consolidating PRs
 
-## Choose and evaluate targets
+Capture requested source PR URLs, head/base revisions, intent, dependencies and review state, including draft/human work. Exclude unrelated features. Integrate in dependency order without duplication or lost attribution; map every intent to incorporation, unchanged decision or blocker.
 
-Verify releases, support dates, migration guides and security/deprecation notices against official upstream or registry sources. Freeze exact versions/commits, channels, evidence URLs and check dates for the assessment; compare each baseline over its relevant release interval.
-
-Preserve explicit targets and deliberate prerelease or long-term-support channels. Without a selected channel, prefer supported stable releases or an appropriate supported long-term-support line. Do not silently downgrade a deliberate prerelease to stable. Mark unavailable targets or unverifiable compatibility as `Blocked/unverified` rather than substituting another target.
-
-Use the repository's package manager for authorized changes. Check the supported runtime before removing a dependency. For example, [Python's TOML reader](https://docs.python.org/3/library/tomllib.html) requires 3.11 or newer. Keep a compatible reader if 3.10 remains supported. Exercise changed framework syntax with representative inputs.
-
-Group compatible dependency families and identify required intermediate migrations. Evaluate affected call sites, peers, runtime floors and platform/CI coverage. Avoid overriding transitive leaves without proving constraints remain compatible. A supporting dependency is a candidate, not an automatic bump.
-
-For each material risk, record evidence, applicability, smallest sufficient change and acceptance check. Distinguish required compatibility work, optional improvement and unresolved hypothesis. Inventory, a matching pin or a passing narrow check does not establish full compatibility; retain justified unchanged decisions and coverage gaps.
-
-## Consolidating dependency PRs
-
-When requested, capture each in-scope source PR's URL, head/base revisions, intent, dependencies and review state, including draft or human-authored work. Keep unrelated feature work outside scope. Plan integration in dependency order, without duplicate changes or lost attribution; map each intent to incorporation, unchanged decision or blocker.
-
-Implementation and publication use iterate. Close source PRs only with explicit closure authority or a request for one remaining consolidated PR, after iterate's incorporation and readiness checks. Preserve incomplete sources and branches; report blocked repositories while continuing independent authorized work.
+Use Iterate for implementation/publication. Close sources only with explicit closure authority or a request for one remaining consolidated PR, after Iterate's incorporation/readiness checks. Preserve incomplete sources/branches; report blockers while continuing independent authorized work.

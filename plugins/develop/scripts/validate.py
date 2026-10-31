@@ -22,8 +22,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from generate_codex_manifest import codex_manifest, load_json, openai_extension
 from validate_context_hooks import HOOK_PATH, validate_context_hooks
 
-EXPLICIT_SKILLS = {"clean", "deep-clean", "upgrade", "upgrade-codex"}
-SKILLS = {"develop", "iterate", "upgrade", "upgrade-codex", "clean", "deep-clean", "adversarial-loop", "kaizen", "engineering-design", "interface-design"}
+EXPLICIT_SKILLS = {"clean", "deep-clean", "kaizen", "upgrade", "upgrade-codex"}
+SKILLS = EXPLICIT_SKILLS | {"develop", "iterate"}
 SCHEMA = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
 MAX_ICON_BYTES = 1024 * 1024
 MAX_SCANLINE_BYTES = 64 * 1024 * 1024
@@ -202,13 +202,13 @@ def validate(root, marketplace_root=None):
     check(bool(re.fullmatch(r"\d+\.\d+\.\d+", str(manifest.get("version", "")))), "plugin-source.json: use a release version")
     check(manifest.get("repository") == "https://github.com/justinthelaw/law-config.git", "plugin-source.json: unexpected source repository")
     check(not any(key in manifest for key in ("dependencies", "mcpServers", "hooks")),
-          "plugin-source.json: ten skills plus the native context guard only; no root hooks, dependencies or MCP")
+          "plugin-source.json: skills plus the native context guard only; no root hooks, dependencies or MCP")
     # Both discovery formats remain forbidden; the native guard adds no server
     # or service dependency and is registered only through the OpenAI adapter.
     for relative in ("mcp.json", ".mcp.json"):
         component = root / relative
         check(not component.exists() and not component.is_symlink(),
-              f"{relative}: ten skills plus the native context guard only; unexpected MCP declaration")
+              f"{relative}: skills plus the native context guard only; unexpected MCP declaration")
     try:
         extension = openai_extension(manifest)
     except ValueError as exc:
@@ -251,7 +251,7 @@ def validate(root, marketplace_root=None):
     skill_paths = sorted((root / "skills").glob("*/SKILL.md"))
     skill_directories = {p.name for p in (root / "skills").iterdir() if p.is_dir()}
     check({p.parent.name for p in skill_paths} == skill_directories == SKILLS,
-          "skills: expected exactly ten entry points")
+          f"skills: expected {sorted(SKILLS)}")
     for path in skill_paths:
         try:
             text = contained_text(path)
@@ -347,7 +347,7 @@ def main():
         print("FAIL:", error, file=sys.stderr)
     if errors:
         return 1
-    print("PASS: package structure, ten skills, native context guard, references, and contextual marketplace checks")
+    print("PASS: package structure, skills, native context guard, references, and contextual marketplace checks")
     return 0
 
 

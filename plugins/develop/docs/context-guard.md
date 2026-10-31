@@ -2,7 +2,7 @@
 
 Develop's synchronous [hooks](../hooks/hooks.json) use a small
 [handler](../hooks/context_guard.py) and [response store](../hooks/response_store.py).
-This shared guard is not a ninth skill or a security boundary.
+
 
 | Event | Behavior |
 | --- | --- |

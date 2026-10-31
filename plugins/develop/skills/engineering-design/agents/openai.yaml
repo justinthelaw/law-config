@@ -1,7 +1,0 @@
----
-interface:
-  icon_small: "./assets/icon.png"
-  icon_large: "./assets/icon.png"
-  display_name: "Develop: Engineering Design"
-  short_description: "Plan engineering changes with clear ownership"
-  default_prompt: "Use $engineering-design for a proportionate engineering plan. Reuse current accepted decisions and combine applicable interface planning under the existing owner and shared review path."

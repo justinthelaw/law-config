@@ -1,17 +1,14 @@
-# Platform inspection
+# Native cleanup operations
 
-These are read-only starting points, not a deletion script. Check command availability and permissions. Do not elevate or change global host configuration for cleanup.
+Check availability/permissions; no elevation or global configuration changes. These are inspection commands, not deletion scripts.
 
-| Host | Memory | Disk | Processes and boundaries |
+| Host | Memory | Disk | Processes/boundaries |
 | --- | --- | --- | --- |
-| Linux | `free -b` (available memory) | `df -B1` for affected mounts; `du -x` on scoped candidates | `ps -eo pid,ppid,state,rss,comm --sort=-rss`; `findmnt` and `/proc/self/mountinfo` |
-| macOS | `vm_stat` and `sysctl hw.memsize`; pressure interpretation differs from Linux | `df -k` and `du -k` with explicit unit conversion | `ps -axo pid,ppid,state,rss,command`; `mount`; inspect symlinks and active handles |
-| Windows PowerShell | `Get-CimInstance Win32_OperatingSystem` (FreePhysicalMemory/TotalVisibleMemorySize are KiB) | `Get-PSDrive -PSProvider FileSystem` or `Get-Volume`; `Get-Item -LiteralPath` for candidates | `Get-CimInstance Win32_Process`, `Get-Process`, `Get-Service`; inspect Attributes/LinkType/Target and volume mountpoints |
+| Linux | `free -b` | `df -B1`; scoped `du -x` | `ps -eo pid,ppid,state,rss,comm --sort=-rss`; `findmnt`, `/proc/self/mountinfo` |
+| macOS | `vm_stat`, `sysctl hw.memsize` | `df -k`, scoped `du -k`; convert units | `ps -axo pid,ppid,state,rss,command`; `mount`, links/handles |
+| Windows PowerShell | `Get-CimInstance Win32_OperatingSystem` (physical memory KiB) | `Get-PSDrive -PSProvider FileSystem` / `Get-Volume`; `Get-Item -LiteralPath` | `Get-CimInstance Win32_Process`, `Get-Process`, `Get-Service`; Attributes/LinkType/Target/mountpoints |
 
-For recoverable moves use the available system operation, such as Finder or FileManager Trash on macOS, a freedesktop-compatible Trash on Linux, or the Windows Recycle Bin. Check support for the selected volume and exact path, including a way to confirm the item reached its destination.
-
-Discover actual scratch roots from the host's environment and workspace metadata; never hard-code `/tmp`, `/workspace` or `C:\workspace` as authorized removal scope. Optional paths may not exist. Do not scan entire user profiles by default.
-
-On Windows, directory logical `Length` sums do not prove allocated bytes. Reparse-point descendants require explicit inspection before recursive traversal. On POSIX, check same-device bind mounts in addition to device boundaries. If safe descendant traversal, ownership or active-use checks are unavailable, mark the candidate protected/blocked and proceed with other targets.
-
-Keep raw readings and units consistent. Do not write Linux `drop_caches`, run macOS `purge`, or force process working-set trimming just to improve a displayed RAM number. If comparable memory accounting is unavailable, report it as unavailable rather than inventing a reclaimed value.
+- Use Finder/FileManager Trash, freedesktop Trash or Windows Recycle Bin; verify selected volume/path support and actual destination. Never substitute deletion without explicit authority.
+- Discover scratch from actual environment/workspace metadata; no hardcoded temporary/workspace roots or default whole-profile scans. Missing optional paths are normal.
+- Check reparse descendants on Windows, including logical-versus-allocated size; check same-device bind mounts on POSIX, not merely device boundaries. Unverifiable traversal/ownership/use means protected/blocked; continue other targets.
+- Keep raw units consistent. Memory pressure/accounting differs by OS; unavailable comparisons stay unknown. Never use Linux `drop_caches`, macOS `purge` or forced working-set trimming to improve reported RAM.
