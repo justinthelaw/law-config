@@ -1,0 +1,88 @@
+{
+  "base_sha": "c807ce933836d0d99719bac82ee477f3d7eb4268",
+  "merge_sha": "1536d5bb9da38d1d94926aedfa31c8ece1f7dce5",
+  "node_version": "v22.23.3",
+  "witness_sha256": "31090a1326bd61ad975eaada78c07827d2adb947aaf456a7187cae2ff92478bc",
+  "outcomes": {
+    "base": {
+      "source_commit": "c807ce933836d0d99719bac82ee477f3d7eb4268",
+      "patch_sha256": null,
+      "result": {
+        "undeclared": {
+          "source": "config",
+          "source_is_undefined": false,
+          "value": null
+        },
+        "declared_control": {
+          "source": "config",
+          "source_is_undefined": false,
+          "value": "parent"
+        }
+      }
+    },
+    "stock": {
+      "source_commit": "c807ce933836d0d99719bac82ee477f3d7eb4268",
+      "patch_sha256": "8ea19728479032cb0939ff0dcec67661419f4050967cd31704e862568de523ff",
+      "result": {
+        "undeclared": {
+          "source": "config",
+          "source_is_undefined": false,
+          "value": null
+        },
+        "declared_control": {
+          "source": "config",
+          "source_is_undefined": false,
+          "value": "parent"
+        }
+      }
+    },
+    "lean_a": {
+      "source_commit": "c807ce933836d0d99719bac82ee477f3d7eb4268",
+      "patch_sha256": "6ed6f8cb586d0e9f5336ed24f66aa25be0d8dcc48a18b987e7539f87e25c167b",
+      "result": {
+        "undeclared": {
+          "source": null,
+          "source_is_undefined": true,
+          "value": null
+        },
+        "declared_control": {
+          "source": "config",
+          "source_is_undefined": false,
+          "value": "parent"
+        }
+      }
+    },
+    "prior": {
+      "source_commit": "c807ce933836d0d99719bac82ee477f3d7eb4268",
+      "patch_sha256": "08e1c98f2ef8fa3c352547301afeb6f03153f0cd3ace22dd51932a91edad06c7",
+      "result": {
+        "undeclared": {
+          "source": "config",
+          "source_is_undefined": false,
+          "value": null
+        },
+        "declared_control": {
+          "source": "config",
+          "source_is_undefined": false,
+          "value": "parent"
+        }
+      }
+    },
+    "merge": {
+      "source_commit": "1536d5bb9da38d1d94926aedfa31c8ece1f7dce5",
+      "patch_sha256": null,
+      "result": {
+        "undeclared": {
+          "source": "config",
+          "source_is_undefined": false,
+          "value": null
+        },
+        "declared_control": {
+          "source": "config",
+          "source_is_undefined": false,
+          "value": "parent"
+        }
+      }
+    }
+  }
+}

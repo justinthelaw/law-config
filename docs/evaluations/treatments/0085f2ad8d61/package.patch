@@ -1,0 +1,18 @@
+diff --git a/plugins/develop/skills/develop/SKILL.md b/plugins/develop/skills/develop/SKILL.md
+index d8c6f2d..d1f5657 100644
+--- a/plugins/develop/skills/develop/SKILL.md
++++ b/plugins/develop/skills/develop/SKILL.md
+@@ -5,10 +5,8 @@ description: Implement and verify repository changes through their callers.
+ 
+ # Develop
+ 
+-Find the caller that observes the requested change. Reuse its existing representation and change the smallest owner that satisfies the contract.
++Trace the requested behavior to its smallest owner. Reproduce bugs through a real caller. When extending a condition or replacing a representation, preserve an input the old path accepted that the new one might lose.
+ 
+-For a bug, reproduce it through that caller, then rerun the same example after the fix. Check one nearby behavior the change could break. For data or resource operations, verify the resulting state, error or cleanup. Exercise changed public entry points as users invoke them. Run added tests under the project's configuration and finish required checks.
++Make the change and run the focused regression with the project's configuration. Exercise changed entry points as users invoke them. For writes and cleanup, check the resulting state. Complete required checks and report what ran.
+ 
+-Work directly on clear tasks. Use [design or independent review](references/planning-and-review.md) for a consequential decision, identified risk or explicit request. Give reviewers the actual diff and completed evidence. Use [Iterate](../iterate/SKILL.md) for delivery tools. Report the result and material gaps.
+-
+-Invoke Upgrade, Upgrade Codex, Kaizen, Clean or Deep Clean only by explicit user selection.
++Handle a local, verifiable change directly. Use [design or review](references/planning-and-review.md) for a requested review, repository requirement, or consequential uncertainty the checks cannot settle. [Iterate](../iterate/SKILL.md) covers delivery.

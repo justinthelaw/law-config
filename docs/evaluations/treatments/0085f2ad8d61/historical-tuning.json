@@ -1,0 +1,14 @@
+{
+  "registered_utc": "2026-10-31T04:41:45+00:00",
+  "source_commit": "72c2fda9e7e343e5d5ed73b474ad5f82e4dc5793",
+  "cohort": "pr-quality-pytest-entry-natural-v1",
+  "cases": "All 20 previously exposed repositories, one fresh attempt per arm. Compare against stock GPT-6.1 Sol Medium with identical tasks, resources, deadlines and existing graders. Review both proposals and the actual merge in three blind rotations.",
+  "hypothesis": "A direct workflow for locally verifiable changes will reduce effort. Checking a previously accepted input when extending a condition will preserve more public behavior. Develop runs standalone. Both arms may plan or delegate.",
+  "metrics": {
+    "quality": "Unweighted mean functional full-PR score over all 20. A missing PR, failed mandatory gate or confirmed critical defect scores zero.",
+    "time": "Mean checkout-to-submission or timeout over all 20 per arm. Report completed-pair times separately.",
+    "cost": "Total proposal cost across all attempts, including descendant usage under frozen rates. Report incomplete meters and known bounds, with judge and qualification costs separate."
+  },
+  "stop_rule": "At least two of quality >= 1.10 times stock, time <= 0.90 times stock, or cost <= 0.90 times stock. Count a metric only when measured or established by conservative bounds. Report all three outcomes. This historical comparison does not measure generalization.",
+  "selection": "One full run on the exposed historical roster. A separate Commander pilot compares this identical Develop package with and without Superpowers. Keep its results separate."
+}
