@@ -1,0 +1,59 @@
+{
+  "run": "lean-commander-01",
+  "companion_read_files": [
+    {
+      "relative": "skills/using-superpowers/SKILL.md",
+      "bytes": 3108,
+      "o200k_base_tokens": 712
+    },
+    {
+      "relative": "skills/systematic-debugging/SKILL.md",
+      "bytes": 9465,
+      "o200k_base_tokens": 2183
+    },
+    {
+      "relative": "skills/test-driven-development/SKILL.md",
+      "bytes": 9015,
+      "o200k_base_tokens": 2211
+    },
+    {
+      "relative": "skills/verification-before-completion/SKILL.md",
+      "bytes": 3646,
+      "o200k_base_tokens": 854
+    },
+    {
+      "relative": "skills/using-superpowers/references/codex-tools.md",
+      "bytes": 4762,
+      "o200k_base_tokens": 1145
+    },
+    {
+      "relative": "skills/test-driven-development/writing-good-tests.md",
+      "bytes": 8268,
+      "o200k_base_tokens": 1779
+    },
+    {
+      "relative": "skills/requesting-code-review/SKILL.md",
+      "bytes": 2956,
+      "o200k_base_tokens": 680
+    },
+    {
+      "relative": "skills/brainstorming/SKILL.md",
+      "bytes": 15456,
+      "o200k_base_tokens": 3404
+    }
+  ],
+  "unique_read_bytes": 56676,
+  "unique_read_o200k_base_tokens": 12968,
+  "review_child_token_counters": {
+    "inputTokens": 250073,
+    "cachedInputTokens": 226176,
+    "cacheWriteInputTokens": 0,
+    "outputTokens": 941,
+    "reasoningOutputTokens": 66,
+    "totalTokens": 251014
+  },
+  "review_child_frozen_rate_estimate_usd": 0.0798216,
+  "candidate_total_estimate_usd": 0.34034559999999997,
+  "pure_total_estimate_usd": 0.10880039999999999,
+  "caveat": "Read-file payload estimates are not model token meters; read costs repeat/cache across turns. Review child cost is observed but cannot all be causally assigned to companion; prompt/public-contract requirements and optional review choice must be considered."
+}

@@ -1,0 +1,27 @@
+{
+  "format": "condition-scope-portable-addendum/v1",
+  "destination": "docs/evaluations/treatments/composite-acb1e02b18a075d68b2ecaad2dd25503948afc9647b94114260458accfc6bfab/condition-scope",
+  "files": {
+    "README.md": "553b06509b90b1403b96cc4580754106ca20b5afb842401ba18f13bb6e64a993",
+    "checker/decision-policy-bound.json": "8de371262858ea1c40062c6d7a520cb60c38d17d66441a986c25b2ae0065ad9a",
+    "checker/decision_check.py": "5234803f3e13a4e5552fa6c77f911497dc22b4ca22121621834333d69b1429b8",
+    "checker/historical-decision-expect.json": "91f03b8c05912ccbddf1bd242b070ca98d9f18c0c9015fc3a3874985f79f3405",
+    "fixtures/assess_v2.py": "955fab47071de2d02665e15fdc09caa160aea09af3cc1ba8e7dbc1b11f84e5b4",
+    "fixtures/body_probe.py": "10a00577e48b91d2783a3b8124692d7b0d930985c80f2cd87caa76d05bdc15b6",
+    "fixtures/consumer-fixture/capture.py": "a3e1ac6a4fbd98eaaba1c7b2a53bc524d378ec6e9b91f3f3ad7974f1efc5eb01",
+    "fixtures/manifest.json": "b8ba5958e5862551a0e0347529b6e96c67d3947c4cb80074eae30afa3c21eade",
+    "fixtures/measure.py": "4c7e1b8b52ad72d3155d02ee60a4353a0a77056c328695058ed1dd7c165d9b89",
+    "fixtures/modules-capture.py": "5e48c2dcb64be3e1d5f6f1df5b55afe88808b7e8d20d92411c09649470ed0f7d",
+    "fixtures/modules.py": "ed260218d3bff8a6b4a57a786994907dc4ff0630438dd25e381dd25c56724d82",
+    "fixtures/positive.patch": "de69e522f591bd630079935034f65958fce803e472f4f85f9ec94c47033c2468",
+    "fixtures/registration-modules.json": "3db06880dc606f03b9364d48620dc75b66e16d01836173837586c91c54de33dd",
+    "fixtures/registration-v2.json": "3b4001383a684833879a78dc91eaaca48ace3fa7e64522cff1251b3867f9d46d",
+    "fixtures/registration.json": "c7452c2198d8bb41db3334fc65129a9259c4142081a85453c38085c5d9ff32ab",
+    "fixtures/warning-supplement.json": "779a3572d6313a6ec0d8f670cf28397557c4062a426d502e66d1aa3d3b5e9dbb",
+    "replay.py": "962f577ab30585ea4d9744497f2b00d2c2453ed4c67b5865e74760fc31cd1b8b"
+  },
+  "scope": "Frozen case-specific assessor fixtures and reconstruction. No participant access.",
+  "checker_sha256": "5234803f3e13a4e5552fa6c77f911497dc22b4ca22121621834333d69b1429b8",
+  "policy_sha256": "8de371262858ea1c40062c6d7a520cb60c38d17d66441a986c25b2ae0065ad9a",
+  "test": "Separate simulated Git checkout with copied evaluator and prepared cache; exact README replay and checker commands; 74 collected per role and original consumer outputs matched historical evidence. Upstream tests materialized from pinned Git blobs."
+}

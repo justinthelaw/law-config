@@ -1,0 +1,881 @@
+{
+  "format": "law-config.condition-scope-process-pair/v1",
+  "pilot": "condition-scope-werkzeug-01",
+  "scope": "Post-score process diagnostic of the two officially sealed Develop producers only; not a new grade, prospective result, promotion, token-savings claim or stock comparison.",
+  "registration_sha256": "38ffb3daef0d8d75f83a9a9a2391b389e2c3b49d7a42512c1e4cf93834002696",
+  "descriptor_sha256": "f4ad51813101a6e1555b929c8793a4aa217628f0526e4705e019da54d42cdddc",
+  "mechanism": "Before first production edit, existing brief states the condition unit over the response iterable and outside-scope homogeneous caller behavior; existing intent review accepts or corrects that actual mapping. No added reviewer or duplicate execution to score. Absence, wrong, late or equivalent parent with no decision difference fails mechanism.",
+  "source_receipts_sha256": {
+    "candidate": "b43178301e60af9451980886542fd1fa8194bd45b57b12262ea49f37e76eefd3",
+    "prior": "2b90660d5a0a8d8758d2eef25d9bea7231d440af35a9ec8e771473ad55bc0471"
+  },
+  "participants": {
+    "candidate": {
+      "bindings": {
+        "allocation_expectation_sha256": "206748f2cd098717b0b1a8a5270625813fbc26ad54eff997c57c311e23ae63c4",
+        "registration_sha256": "38ffb3daef0d8d75f83a9a9a2391b389e2c3b49d7a42512c1e4cf93834002696",
+        "descriptor_sha256": "f4ad51813101a6e1555b929c8793a4aa217628f0526e4705e019da54d42cdddc",
+        "candidate_composite": "acb1e02b18a075d68b2ecaad2dd25503948afc9647b94114260458accfc6bfab",
+        "candidate_package_sha256": "a86479bd1141b6936fd11a06cab5d93d9804bfa4c2809283adba1eea5ec84318",
+        "companion_package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+        "result_sha256": "36dc031da3497fcf918ce171caf541a961425042e27d101dce2b87ad42585bb3",
+        "native_sha256": "d67200009a25704f25fb9c1ed1bc1a24b170ed14752d5d8361cce655760d6f9d",
+        "inventory_sha256": "ec10625cdca6ce33be8bf0226bc52e79b320867acb2a0f068b1270b66f82f3aa",
+        "review_events_sha256": "d82614d97f403878e2d059da5cc76df4939b5a2e79d2153b8de8e0fb210b0c25",
+        "release_sha256": "0677e3c6619be391f8d1fac2e276eb0e936d68078226b7ec6c865b17e65a4c92",
+        "grade_sha256": "ec40790d469c35c342730c3c5cfd74e3e08842f52e5c351845474cf976b179e5",
+        "patch_sha256": "b73587c3eb020ca6f3f56fc0238137c16a2cf0cfbc6d130b2412472aae00f2b1",
+        "proposal_sha256": "17f88d7592db79e315efb55aa0855335d293d826e923792b8eac0fa26c0128b2"
+      },
+      "trace_hashes": {
+        "01a18b39-231a-7710-ae47-5e89d7c21382": {
+          "sha256": "e71371ba180556905d9a6199e5b0bacff58c189ebb1312d8aaa4a27adb92ded7",
+          "lines": 340
+        },
+        "01a18b3a-7048-7f80-9133-48fa218a6c47": {
+          "sha256": "0241c672342b1eda91beb3de3b8c84229e8b5adfe889e9c082fa1f3dd5fe858a",
+          "lines": 35
+        },
+        "01a18b3e-d995-7781-9e38-6f37503bdcdc": {
+          "sha256": "36e44e58935e5139d76dc885d696f3c14fd0af36654949dd7c45405bca1b5da5",
+          "lines": 188
+        }
+      },
+      "threads": [
+        {
+          "id": "01a18b39-231a-7710-ae47-5e89d7c21382",
+          "parent": null,
+          "role": "/root",
+          "model": "gpt-6.1-sol",
+          "effort": "medium",
+          "settings_event": "E13"
+        },
+        {
+          "id": "01a18b3a-7048-7f80-9133-48fa218a6c47",
+          "parent": "01a18b39-231a-7710-ae47-5e89d7c21382",
+          "role": "/root/intent_review",
+          "model": "gpt-6.1-sol",
+          "effort": "medium",
+          "settings_event": "E14"
+        },
+        {
+          "id": "01a18b3e-d995-7781-9e38-6f37503bdcdc",
+          "parent": "01a18b39-231a-7710-ae47-5e89d7c21382",
+          "role": "/root/artifact_review",
+          "model": "gpt-6.1-sol",
+          "effort": "medium",
+          "settings_event": "E15"
+        }
+      ],
+      "spawns": [
+        {
+          "task_name": "intent_review",
+          "event": "E16",
+          "fork_turns": "none",
+          "model_override": null,
+          "effort_override": null,
+          "payload_encrypted": true
+        },
+        {
+          "task_name": "artifact_review",
+          "event": "E17",
+          "fork_turns": "none",
+          "model_override": null,
+          "effort_override": null,
+          "payload_encrypted": true
+        }
+      ],
+      "skill_exposure": {
+        "inventory_plugins": [
+          "develop@law-config",
+          "superpowers@superpowers-local"
+        ],
+        "inventory_is_not_invocation": true,
+        "guides": {
+          "local-changes": {
+            "sha256": "8c14f871da4f3abe916291431b26d86f8c60a5ccfcb82f781d6516f2d0acec34",
+            "whole_text_visible": true,
+            "delivery_event": "E11"
+          },
+          "superpowers-using": {
+            "sha256": "30f2ab78e20ddc27ee7158ae8d4a2abe161c360981c7cc3548070913142d3dc3",
+            "whole_text_visible": true,
+            "delivery_event": "E11"
+          },
+          "superpowers-verification": {
+            "sha256": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+            "whole_text_visible": true,
+            "delivery_event": "E12"
+          }
+        },
+        "failed_compound_cat": "Complete target text delivered before edit even though second nonexistent path made shell exit1.",
+        "companion_limit": "Actual source exposure beyond inventory; no cognitive/causal attribution."
+      },
+      "timeline": [
+        {
+          "phase": "visible brief",
+          "event": "E1",
+          "observation": "Use collections.abc.Sequence for classification, close iterables when buffering finishes, and add deprecation warnings while preserving byte response behavior."
+        },
+        {
+          "phase": "intent acceptance",
+          "event": "E2",
+          "observation": "Aligned before first production edit; corrections address cleanup paths and ordinary byte behavior, not whole-iterable mixedness or homogeneous-string caller."
+        },
+        {
+          "phase": "baseline",
+          "event": "E3",
+          "observation": "82 original wrapper tests passed."
+        },
+        {
+          "phase": "base behavioral red",
+          "event": "E4",
+          "observation": "15 failed,2 passed,82 deselected; meaningful assertions/missing warnings, before first production edit."
+        },
+        {
+          "phase": "first production edit",
+          "event": "E5",
+          "observation": "Warn per nonbytes iterable item; homogeneous string chunks also warn. Whole-iterable condition unit is not implemented."
+        },
+        {
+          "phase": "adapted wrapper green",
+          "event": "E6",
+          "observation": "109 wrapper tests pass, including adapted string-to-byte fixtures."
+        },
+        {
+          "phase": "original neighboring caller fails",
+          "event": "E7",
+          "observation": "114 passed,1 failed; original homogeneous string test-client fixture raises DeprecationWarning."
+        },
+        {
+          "phase": "fixture change and green",
+          "event": "E8",
+          "observation": "Encode original test-client fixture string;115 adjacent tests pass. Changed input, not unchanged caller preservation."
+        },
+        {
+          "phase": "final artifact delta read",
+          "event": "E9",
+          "observation": "Reviewer reads added fixture delta and observes final five-file patch hash."
+        },
+        {
+          "phase": "final artifact acceptance",
+          "event": "E10",
+          "observation": "Aligned; final reviewed full patch hash matches sealed submission. No condition-scope correction. Reviewer reproduced old fixture warning; final corrected adjacent pass is parent evidence."
+        }
+      ],
+      "final_file_sha256": {
+        "src/werkzeug/wrappers/response.py": "9439403e0546825fb49942ee039200bf074f4007a3ec1c7c89633421f4250f54",
+        "tests/test_wrappers.py": "3e14ef55b39a3615684f62692042215a7c870fef6dd5c66376c9fb61e60f811f",
+        "tests/test_test.py": "927e587e7655ae0bca369395ec2c083274738514e5c4b4d5efe8081da4aa3084",
+        "docs/wrappers.rst": "5ad75dd89844b56ccebe02fb9188b53fb360a3fd32747b169c1dedd49bc0a894",
+        "CHANGES.rst": "ac77550de732c3a81cc25f6d7983d7dc4f15b4156ed5a4758bd9ac654b0bc08f"
+      },
+      "base_plus_exact_sealed_patch_verified": true,
+      "official_gate_exits": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0
+      },
+      "metering": {
+        "coverage": "complete",
+        "threads": 3,
+        "root_and_transitive_tokens": {
+          "inputTokens": 2967307,
+          "cachedInputTokens": 2815104,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 20183,
+          "reasoningOutputTokens": 5917,
+          "totalTokens": 2987490
+        },
+        "estimated_usd": 0.7877464000000001,
+        "proposal_wall_seconds": 673.8671017920133,
+        "native_complete_turn_meters": true,
+        "comparison": "Candidate-only descriptive cost; no comparison with still-running or unreleased producers, and no savings conclusion."
+      },
+      "events": {
+        "E1": {
+          "thread": "01a18b39-231a-7710-ae47-5e89d7c21382",
+          "line": 45,
+          "ordinal": 44,
+          "timestamp": "2026-10-30T05:13:37.327Z",
+          "id": "msg_0c1f8a69e9fb9462016ae4277fccc887d1a4c7aabc1673f4f3",
+          "call_id": null,
+          "raw_event_sha256": "f975c1f417cc2cbd4e3d31d912279a12f993e764cc80466d274779e778f6ca84"
+        },
+        "E2": {
+          "thread": "01a18b3a-7048-7f80-9133-48fa218a6c47",
+          "line": 32,
+          "ordinal": 31,
+          "timestamp": "2026-10-30T05:14:11.911Z",
+          "id": "msg_029ae568555ec6ca016ae427a2ba6c87d18b7e44679147186b",
+          "call_id": null,
+          "raw_event_sha256": "4cb8001db075706699c95947546daf3316326ac8aa3639366d7ccb08efa84052"
+        },
+        "E3": {
+          "thread": "01a18b39-231a-7710-ae47-5e89d7c21382",
+          "line": 74,
+          "ordinal": 73,
+          "timestamp": "2026-10-30T05:14:31.178Z",
+          "id": "exec-0cb35092-e9aa-4079-8dc7-a748c432caf5",
+          "call_id": null,
+          "raw_event_sha256": "2077612b87c7fc00ebda8ff188cfc90188c3ad3937c2bdf1d37318f72ed5337e",
+          "command_sha256": "cc29f5f8f26f138d848d3502e1f3b3cf01cc35995ab23bde431b74aca3513320",
+          "exit": 0,
+          "output_sha256": "fc1786f4c2757d9bcb95a0570c96116fe26524adeeae252154f41f3840877df6"
+        },
+        "E4": {
+          "thread": "01a18b39-231a-7710-ae47-5e89d7c21382",
+          "line": 100,
+          "ordinal": 99,
+          "timestamp": "2026-10-30T05:15:06.139Z",
+          "id": "exec-2e920d2d-b74c-40e7-a075-130a578d0472",
+          "call_id": null,
+          "raw_event_sha256": "b3db4905343b2385b2625421ad056b1a912b558759f7653531cb77d522ed330a",
+          "command_sha256": "0a57428b9bd49d39fc2d2b4b234cb93d9c35c11f3b91f0b1f96760a13d41aa5f",
+          "exit": 1,
+          "output_sha256": "33ffc1973bc29c5db6459414f371c45a16ffdcd1e79c791a492f86e21a55a031"
+        },
+        "E5": {
+          "thread": "01a18b39-231a-7710-ae47-5e89d7c21382",
+          "line": 101,
+          "ordinal": 100,
+          "timestamp": "2026-10-30T05:15:14.593Z",
+          "id": "ctc_0c1f8a69e9fb9462016ae427d7025c87d1b6e47bc794eae416",
+          "call_id": "call_AbGKT8QHlZyzUDw8CcerXetG",
+          "raw_event_sha256": "8d3f3dec882b255e481aac791c9cec1b5dad8af8fb36bb65e3342260f2e64bfa"
+        },
+        "E6": {
+          "thread": "01a18b39-231a-7710-ae47-5e89d7c21382",
+          "line": 246,
+          "ordinal": 245,
+          "timestamp": "2026-10-30T05:20:06.665Z",
+          "id": "exec-6f6f4af1-360a-4b99-8d57-7c9ee6c915c0",
+          "call_id": null,
+          "raw_event_sha256": "af6b2b8a5d0e078d797da6194e25348cc94677d85901057e353111323a5ebe7f",
+          "command_sha256": "2e2df9f20bb0ba97f884a1fe6e77d057727617e9b2f05faf9707c518e550b2ad",
+          "exit": 0,
+          "output_sha256": "2161d02e8b062a1415c7ad513883c433a705b6217d9b5236ff737d587b2ad28f"
+        },
+        "E7": {
+          "thread": "01a18b39-231a-7710-ae47-5e89d7c21382",
+          "line": 271,
+          "ordinal": 270,
+          "timestamp": "2026-10-30T05:20:55.678Z",
+          "id": "exec-3e15c7ef-b71b-4e48-be9e-7a458592c722",
+          "call_id": null,
+          "raw_event_sha256": "2090ec02bfd0448eeb8d9b9a00a040d0f60d5c90e03f99ad0b2efdce2f34ddaa",
+          "command_sha256": "8342b926198aeee1f1a10e4e9a31bc397dd4eda0a594cee38b466d172ba7700a",
+          "exit": 1,
+          "output_sha256": "1f2a63d9a0881bed2fb97ba6d3a4b2671c9ee8b59c6bbf2b5ae82448a2749483"
+        },
+        "E8": {
+          "thread": "01a18b39-231a-7710-ae47-5e89d7c21382",
+          "line": 316,
+          "ordinal": 315,
+          "timestamp": "2026-10-30T05:22:21.206Z",
+          "id": "exec-8d40f7e9-367b-4e10-91aa-50e4cd83765d",
+          "call_id": null,
+          "raw_event_sha256": "3e122ad0780598381ffd3e6f465cf22aa1f464281b20cc0058d103eb77fca5de",
+          "command_sha256": "4d2fe4cc51f4a3d823357ef22be0296939d92cf6e6153ce5afacc8f53cbbd5a0",
+          "exit": 0,
+          "output_sha256": "810edd2f6da4b845a44e524b687e4be8734190e686ca4ca740be0b4398ac2b46"
+        },
+        "E9": {
+          "thread": "01a18b3e-d995-7781-9e38-6f37503bdcdc",
+          "line": 171,
+          "ordinal": 170,
+          "timestamp": "2026-10-30T05:22:08.698Z",
+          "id": "exec-371b380c-d59d-4114-824a-8fb78e3e1231",
+          "call_id": null,
+          "raw_event_sha256": "ba74614d9eb294b4a9b0bee8d29e66595a2d62512dc40451d8f9fd9f8feb8d96",
+          "command_sha256": "eecd43efae5fb9439663cf30c60a372087e38e928158584411f15d827ea3d90b",
+          "exit": 0,
+          "output_sha256": "a65d06545362f639487fd09b2fa0891532f8008cb4d946706ac137e4502c90ab"
+        },
+        "E10": {
+          "thread": "01a18b3e-d995-7781-9e38-6f37503bdcdc",
+          "line": 185,
+          "ordinal": 184,
+          "timestamp": "2026-10-30T05:22:28.105Z",
+          "id": "msg_07a7a93214f6e923016ae42991817487d2be157466ce5ffcf4",
+          "call_id": null,
+          "raw_event_sha256": "e882bfcc622e74f3056caf4ac29f1521d5d84cae633409991047dc4098dbfc9b"
+        },
+        "E11": {
+          "thread": "01a18b39-231a-7710-ae47-5e89d7c21382",
+          "line": 22,
+          "ordinal": 21,
+          "timestamp": "2026-10-30T05:12:51.627Z",
+          "id": "ctco_01a18b39-9eab-7d20-8048-68851047adb4",
+          "call_id": "call_0MCbAgy96x9O3wf1B9mfkUm7",
+          "raw_event_sha256": "adc06aa2925518134b94ef23a072e69d1029f9dc4c822576b55c92c54f590a56"
+        },
+        "E12": {
+          "thread": "01a18b39-231a-7710-ae47-5e89d7c21382",
+          "line": 225,
+          "ordinal": 224,
+          "timestamp": "2026-10-30T05:19:39.570Z",
+          "id": "ctco_01a18b3f-d832-78a0-b2d6-2da52ce89359",
+          "call_id": "call_TvscthbpR6pJAAF4Ql1s6v75",
+          "raw_event_sha256": "abe4bd49b5fdabe8fcc9a7c7a7df0b2d2d466c4e78378cc38ff289c893e1aeba"
+        },
+        "E13": {
+          "thread": "01a18b39-231a-7710-ae47-5e89d7c21382",
+          "line": 10,
+          "ordinal": 9,
+          "timestamp": "2026-10-30T05:12:26.621Z",
+          "id": null,
+          "call_id": null,
+          "raw_event_sha256": "43c61a806eedca442cf92241772055fcda5e09c1f7d962d5ac5a0c7f41714b1d"
+        },
+        "E14": {
+          "thread": "01a18b3a-7048-7f80-9133-48fa218a6c47",
+          "line": 10,
+          "ordinal": 9,
+          "timestamp": "2026-10-30T05:13:46.916Z",
+          "id": null,
+          "call_id": null,
+          "raw_event_sha256": "bd54f85fefcdf9b88690b73120652b147ee729f69758a5224ec098df4e7a4a3c"
+        },
+        "E15": {
+          "thread": "01a18b3e-d995-7781-9e38-6f37503bdcdc",
+          "line": 10,
+          "ordinal": 9,
+          "timestamp": "2026-10-30T05:18:36.551Z",
+          "id": null,
+          "call_id": null,
+          "raw_event_sha256": "55ccb97813be59113ac73bd02754af457bc6f2a49c75e769055c50bcd4345c58"
+        },
+        "E16": {
+          "thread": "01a18b39-231a-7710-ae47-5e89d7c21382",
+          "line": 46,
+          "ordinal": 45,
+          "timestamp": "2026-10-30T05:13:43.663Z",
+          "id": "fc_0c1f8a69e9fb9462016ae42781484087d191f10345384c9995",
+          "call_id": "call_DkmdmHjjcYqh5nQO8z2m4jWw",
+          "raw_event_sha256": "0f50f3f5631feeacc50f98bc8fbab8a0bdaf8b1daccffa777a42a794dc5c2fac"
+        },
+        "E17": {
+          "thread": "01a18b39-231a-7710-ae47-5e89d7c21382",
+          "line": 195,
+          "ordinal": 194,
+          "timestamp": "2026-10-30T05:18:32.586Z",
+          "id": "fc_0c1f8a69e9fb9462016ae428a3945087d1a89a89b81300c4ed",
+          "call_id": "call_DS7n7viAwLdYHccr9Ipqdm7z",
+          "raw_event_sha256": "c655b90885e142d3a018eccc836f2be67fe4d110397a393efeb515e220a5f075"
+        }
+      }
+    },
+    "prior": {
+      "bindings": {
+        "allocation_expectation_sha256": "206748f2cd098717b0b1a8a5270625813fbc26ad54eff997c57c311e23ae63c4",
+        "registration_sha256": "38ffb3daef0d8d75f83a9a9a2391b389e2c3b49d7a42512c1e4cf93834002696",
+        "descriptor_sha256": "f4ad51813101a6e1555b929c8793a4aa217628f0526e4705e019da54d42cdddc",
+        "prior_composite": "7ed91df07062b0a88cab8cd5b5e74ee8a7c7e258afa2a42645b60e793ea68791",
+        "prior_package_sha256": "239dccfc0fe4c090a777d8cf46216c99c57bc2bebc08eca013402215b65c7c28",
+        "companion_package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+        "result_sha256": "7a9c96e809fc809c5bef29d1d6676e65059e5a8c6832d6eedffb1443810d2070",
+        "native_sha256": "c2bd7613b1ad90e23e733357daa30d6c73f29095a77269b1a32b3bdbb9449848",
+        "inventory_sha256": "97f992b2b386d0d9f55452d2dcf830e2e63e8ccb4258e74efd7194637b3db761",
+        "review_events_sha256": "333941dd9b956f52ee4e0ede622b7a57e52c80f07f5ad7e0a829988c4890e0f3",
+        "release_sha256": "44b61e37ec67070ee64d542b77193f14955c3b814f2ddec696a0629ec9140081",
+        "grade_sha256": "2650d5d3ecbc52b9a1254c69d45b09a5c814930f73fadf964c8d2d587140486a",
+        "patch_sha256": "7876defa9000204d9428c6524f7348fb3359e613ff1376f6ae88f1aa9112fcc3",
+        "proposal_sha256": "144659b59234af48bccd2d2ff03791c2ba467da4b75c153ca172bf49670f9762"
+      },
+      "trace_hashes": {
+        "01a18b43-e54e-7831-8a71-1ca4f875ab64": {
+          "sha256": "efcf2e71167810e4b77ae56faa0f98686461c6e8be1f3084733f3b87e33215b8",
+          "lines": 339
+        },
+        "01a18b45-0844-7e80-a870-ce9731bd17a2": {
+          "sha256": "9ce6ff7565444377cbef3dc6b7840efa134b20a8fdbc0cc368f96f63a53c1945",
+          "lines": 51
+        },
+        "01a18b49-65bd-7593-a0e8-a7e809673741": {
+          "sha256": "b4e7a5e68de2c4004a9830c2827443862835e30da4ba3f2a43bec28c8d42faf0",
+          "lines": 120
+        },
+        "01a18b4b-aa5f-7a12-875c-53066ab1b7be": {
+          "sha256": "ee98fc2bfecab22f804bab2fc2a01200389da495960525eab1451f0a1b1584c9",
+          "lines": 104
+        }
+      },
+      "threads": [
+        {
+          "id": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "parent": null,
+          "role": "/root",
+          "model": "gpt-6.1-sol",
+          "effort": "medium",
+          "settings_event": "E17"
+        },
+        {
+          "id": "01a18b45-0844-7e80-a870-ce9731bd17a2",
+          "parent": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "role": "/root/intent_review",
+          "model": "gpt-6.1-sol",
+          "effort": "medium",
+          "settings_event": "E18"
+        },
+        {
+          "id": "01a18b49-65bd-7593-a0e8-a7e809673741",
+          "parent": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "role": "/root/artifact_review",
+          "model": "gpt-6.1-sol",
+          "effort": "medium",
+          "settings_event": "E19"
+        },
+        {
+          "id": "01a18b4b-aa5f-7a12-875c-53066ab1b7be",
+          "parent": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "role": "/root/final_review",
+          "model": "gpt-6.1-sol",
+          "effort": "medium",
+          "settings_event": "E20"
+        }
+      ],
+      "spawns": [
+        {
+          "task_name": "intent_review",
+          "event": "E21",
+          "fork_turns": "none",
+          "model_override": null,
+          "effort_override": null,
+          "payload_encrypted": true
+        },
+        {
+          "task_name": "artifact_review",
+          "event": "E22",
+          "fork_turns": "none",
+          "model_override": null,
+          "effort_override": null,
+          "payload_encrypted": true
+        },
+        {
+          "task_name": "final_review",
+          "event": "E23",
+          "fork_turns": "none",
+          "model_override": null,
+          "effort_override": null,
+          "payload_encrypted": true
+        }
+      ],
+      "skill_exposure": {
+        "inventory_plugins": [
+          "develop@law-config",
+          "superpowers@superpowers-local"
+        ],
+        "inventory_is_not_invocation": true,
+        "guides": {
+          "local-changes": {
+            "sha256": "88a2485726770349d61fd7c14322c9e5d81f9ce300fe82a0c9760b7d492313a9",
+            "whole_text_visible": true,
+            "delivery_event": "E15"
+          },
+          "superpowers-using": {
+            "sha256": "30f2ab78e20ddc27ee7158ae8d4a2abe161c360981c7cc3548070913142d3dc3",
+            "whole_text_visible": true,
+            "delivery_event": "E15"
+          },
+          "superpowers-verification": {
+            "sha256": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+            "whole_text_visible": true,
+            "delivery_event": "E16"
+          }
+        },
+        "failed_compound_cat": "Complete target text delivered before edit even though second nonexistent path made shell exit1.",
+        "companion_limit": "Actual source exposure beyond inventory; no cognitive/causal attribution."
+      },
+      "timeline": [
+        {
+          "phase": "visible brief",
+          "event": "E1",
+          "observation": "Use Sequence classification and close iterables when buffering finishes; deprecated APIs keep working with warnings; ordinary byte responses warning-free."
+        },
+        {
+          "phase": "intent acceptance",
+          "event": "E2",
+          "observation": "Aligned before first production edit; corrections address cleanup paths and ordinary byte behavior, not whole-iterable mixedness or homogeneous-string caller."
+        },
+        {
+          "phase": "baseline",
+          "event": "E3",
+          "observation": "82 original wrapper tests passed."
+        },
+        {
+          "phase": "base behavioral red",
+          "event": "E4",
+          "observation": "12 failed,2 passed,82 deselected; meaningful assertions/missing warnings, before first production edit."
+        },
+        {
+          "phase": "first production edit",
+          "event": "E5",
+          "observation": "Warn per nonbytes iterable item; homogeneous string chunks also warn. Whole-iterable condition unit is not implemented."
+        },
+        {
+          "phase": "original internal consumer adapted",
+          "event": "E6",
+          "observation": "Original homogeneous-string internal consumer now permits DeprecationWarning via pytest.warns."
+        },
+        {
+          "phase": "adapted wrapper/internal green",
+          "event": "E7",
+          "observation": "126 adapted wrapper/internal tests pass."
+        },
+        {
+          "phase": "original neighboring caller fails",
+          "event": "E8",
+          "observation": "271 passed,1 failed; same original homogeneous-string test-client fixture raises DeprecationWarning."
+        },
+        {
+          "phase": "first artifact acceptance",
+          "event": "E9",
+          "observation": "Aligned on five-file 60f1b2d550f5fead1c464f010ef99c17d8cc3ddd040f23c70ce8c70388244b53. Final bytearray/fixture revision deferred."
+        },
+        {
+          "phase": "material revision and green",
+          "event": "E10",
+          "observation": "Normalize scalar bytearray to bytes; encode original test-client fixture;273 adapted tests across six modules pass."
+        },
+        {
+          "phase": "final artifact hash",
+          "event": "E11",
+          "observation": "Fresh final reviewer observes exact final six-file patch hash."
+        },
+        {
+          "phase": "independent probe setup failure",
+          "event": "E12",
+          "observation": "Omitted prepared dependency path; ModuleNotFoundError markupsafe. Setup failure, not behavioral red."
+        },
+        {
+          "phase": "independent probe recovered",
+          "event": "E13",
+          "observation": "Same edge probe with src:/deps/lib passes: ordinary scalar bytes/string/bytearray and byte Sequence silence, failed mutable Sequence cleanup. No homogeneous string-chunk iterable tested."
+        },
+        {
+          "phase": "final artifact acceptance",
+          "event": "E14",
+          "observation": "Aligned on exact sealed six-file patch; no condition-unit or homogeneous-caller correction."
+        }
+      ],
+      "final_file_sha256": {
+        "src/werkzeug/wrappers/response.py": "b9ee5b261c9b8ad91e82f40f20343781b826d74595c765b8e7ff0265da0d21a2",
+        "tests/test_wrappers.py": "18d47fc0c570a09c52f8735929a888e896e59564d46bab75aa4e2c7bc4812ffd",
+        "tests/test_internal.py": "3b24263e96ce0e143bf5ee179928126edd834a362bf197dcffc29337224f951e",
+        "tests/test_test.py": "927e587e7655ae0bca369395ec2c083274738514e5c4b4d5efe8081da4aa3084",
+        "docs/wrappers.rst": "6acd0f57c7b1be8b3748d883c52b379bdc505b2cd628baafbc23a8caaf9ba51d",
+        "CHANGES.rst": "c42d31e8503da47c36eb1d2d065fab4a76474b32c5242c4da9b1a9f46dd54f77"
+      },
+      "base_plus_exact_sealed_patch_verified": true,
+      "official_gate_exits": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0
+      },
+      "metering": {
+        "coverage": "complete",
+        "threads": 4,
+        "root_and_transitive_tokens": {
+          "inputTokens": 3322993,
+          "cachedInputTokens": 3160192,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 24848,
+          "reasoningOutputTokens": 7098,
+          "totalTokens": 3347841
+        },
+        "estimated_usd": 0.8901012,
+        "proposal_wall_seconds": 674.6528293709271,
+        "prices_usd_per_million": {
+          "uncached_input": 2,
+          "cached_input": 0.1,
+          "output": 10
+        },
+        "formula": "((inputTokens-cachedInputTokens)*2 + cachedInputTokens*0.1 + outputTokens*10)/1000000; complete root and all descendants; reasoning output already included in outputTokens.",
+        "complete_terminal_turn_meters": true
+      },
+      "events": {
+        "E1": {
+          "thread": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "line": 41,
+          "ordinal": 40,
+          "timestamp": "2026-10-30T05:25:12.252Z",
+          "id": "msg_0a3efabfd144d756016ae42a37713c87d1bbb31b855aac2b24",
+          "call_id": null,
+          "raw_event_sha256": "975977b1fba28d04bc92ef69565979500bb388eb9c97b711e51af56d9bbb2b54"
+        },
+        "E2": {
+          "thread": "01a18b45-0844-7e80-a870-ce9731bd17a2",
+          "line": 48,
+          "ordinal": 47,
+          "timestamp": "2026-10-30T05:26:26.100Z",
+          "id": "msg_026ba12926f55bbc016ae42a7ed9d887d29733437e9f6c4d72",
+          "call_id": null,
+          "raw_event_sha256": "d131a7d065b5265042124406670c69c2b904104a0585d0cb0fbff4f5ef27a6c9"
+        },
+        "E3": {
+          "thread": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "line": 71,
+          "ordinal": 70,
+          "timestamp": "2026-10-30T05:26:19.768Z",
+          "id": "exec-db9e6784-fd29-4d9c-8f38-b42272c4f843",
+          "call_id": null,
+          "raw_event_sha256": "c6d8b0f1004c0302ae1f71bf6dcf93587f52b7121c3ae17abe5693660d27ca3e",
+          "command_sha256": "01d6d84617f0d1b02b58ef7c0aacded567f3e976c6054621f7b9802135daae4b",
+          "exit": 0,
+          "output_sha256": "12521ecc96d06c89e8a922cf34706d4609a2f1e688ef325d4b716f007e7edfac"
+        },
+        "E4": {
+          "thread": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "line": 96,
+          "ordinal": 95,
+          "timestamp": "2026-10-30T05:27:03.428Z",
+          "id": "exec-1f2c3d1c-0207-4c26-95ac-2fb74e3a0fa7",
+          "call_id": null,
+          "raw_event_sha256": "efe1d544ba7b67c0f229618607c08dfb95d716aca123075e7c57be3cbb862ae3",
+          "command_sha256": "9e96041e6b963f0097169701007366a91713a2340152d773be552b85057241e9",
+          "exit": 1,
+          "output_sha256": "c7a779b621af86e3ef65f449b927c702698ddcff09fdcb94f65afaa9d9372adf"
+        },
+        "E5": {
+          "thread": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "line": 99,
+          "ordinal": 98,
+          "timestamp": "2026-10-30T05:27:19.387Z",
+          "id": "ctc_0a3efabfd144d756016ae42aaa0c7c87d1b0d91cf55b4c359e",
+          "call_id": "call_Dvgve7fG61ZtKpySp7pwJS81",
+          "raw_event_sha256": "a83974e4f112a37639528fa847111f0e19cb1046b417640eb0b85f0a5916d2db"
+        },
+        "E6": {
+          "thread": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "line": 130,
+          "ordinal": 129,
+          "timestamp": "2026-10-30T05:28:56.506Z",
+          "id": "exec-258147cb-b1ed-4611-a0b0-e96d2962010f",
+          "call_id": null,
+          "raw_event_sha256": "0d640db5a663da6dab355cc2eb0cc0687bde1f37f1fe7ec1b53926496195f2c8",
+          "command_sha256": "083168e03d45180695b7631ee4120799ba7e0f7296b36121d67a0a97ac1ee4a0",
+          "exit": 0,
+          "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "E7": {
+          "thread": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "line": 141,
+          "ordinal": 140,
+          "timestamp": "2026-10-30T05:29:28.481Z",
+          "id": "exec-9d8ba1ea-6899-4946-bb3d-23c29f0bfc4c",
+          "call_id": null,
+          "raw_event_sha256": "38d0d3d1ff07846480c41c8cf3c0474143bf5a6a564993189e3215903cd88863",
+          "command_sha256": "1103070b580fc126de5dd4a36a51f66851aab46c59d315080f1db1dc6a67b209",
+          "exit": 0,
+          "output_sha256": "c8151a94593033be23a195c9723465e0bf9b042ebb7cdf36f48099ef97c5eb2e"
+        },
+        "E8": {
+          "thread": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "line": 197,
+          "ordinal": 196,
+          "timestamp": "2026-10-30T05:31:17.052Z",
+          "id": "exec-a4116416-e6db-4671-bb24-88dbf323f7cc",
+          "call_id": null,
+          "raw_event_sha256": "fdcc827113f4570849e7c7125052cb6f653fc2c4db1121fa80d9009523e5fc39",
+          "command_sha256": "6efe222003d02b669b60552b57c4c37d833d8289637511dd66377fc99d3e4a1b",
+          "exit": 1,
+          "output_sha256": "af8d6484ba805c56afff8dacebe6c4a63389b459aa1c5e088e4d6ec28c931739"
+        },
+        "E9": {
+          "thread": "01a18b49-65bd-7593-a0e8-a7e809673741",
+          "line": 116,
+          "ordinal": 115,
+          "timestamp": "2026-10-30T05:32:05.141Z",
+          "id": "msg_033ef8353e0e00aa016ae42bd2dc0c87d1a3c94c50db4e69ae",
+          "call_id": null,
+          "raw_event_sha256": "6ade8c64089a06af4cb3bc0640eddec8e355983e25670035872dc1ce50fd1459"
+        },
+        "E10": {
+          "thread": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "line": 269,
+          "ordinal": 268,
+          "timestamp": "2026-10-30T05:33:11.029Z",
+          "id": "exec-ba5459fe-f0a5-483a-b343-4851c8228122",
+          "call_id": null,
+          "raw_event_sha256": "2cc52db4c869371db8fab9a9911ea2669cb99f05eb3545e10fd3ce1987f19333",
+          "command_sha256": "5d560429f8d39397fd09c64333e54e60653a70b6546866209a9ff23fb0b3f455",
+          "exit": 0,
+          "output_sha256": "e76ebe265297ed70bc1c7888dc74abba48d58a9a5fd93ad65d0029482051e6da"
+        },
+        "E11": {
+          "thread": "01a18b4b-aa5f-7a12-875c-53066ab1b7be",
+          "line": 33,
+          "ordinal": 32,
+          "timestamp": "2026-10-30T05:33:18.537Z",
+          "id": "exec-bec68ab6-ec9e-43fe-9735-8e9fc188bed4",
+          "call_id": null,
+          "raw_event_sha256": "87effbe73b7b6237b1a2cd29584e2d19e66d461531477432785809ed7b0dd423",
+          "command_sha256": "6777229a48df7d8af8d1ce9e75ea8df8d929aaaaad92ce3dade5b42ea1b40a30",
+          "exit": 0,
+          "output_sha256": "304d14742940598286b2e341b6a6a9a25f4d3045baccd79f7d62c466d9b64552"
+        },
+        "E12": {
+          "thread": "01a18b4b-aa5f-7a12-875c-53066ab1b7be",
+          "line": 56,
+          "ordinal": 55,
+          "timestamp": "2026-10-30T05:33:50.422Z",
+          "id": "exec-506f1ab1-478c-481d-8f97-df4ae2151e80",
+          "call_id": null,
+          "raw_event_sha256": "ad23c4a642610636e2583463102a2dadb77c3d7536821a28db1227ba60f9cf64",
+          "command_sha256": "9cc1e1801e4557f90b092412c5860776ac772545475f45169ceeccdc10a35cb8",
+          "exit": 1,
+          "output_sha256": "4047626097b353d7cadf45515eeffaa62540b71485376c9ceb31c5c8eb050c33"
+        },
+        "E13": {
+          "thread": "01a18b4b-aa5f-7a12-875c-53066ab1b7be",
+          "line": 97,
+          "ordinal": 96,
+          "timestamp": "2026-10-30T05:34:23.667Z",
+          "id": "exec-c8197e6a-e2f0-462b-bcc7-521e4ee169c3",
+          "call_id": null,
+          "raw_event_sha256": "1b3392d98cc5ffe6c6dc70277345d243c80dc750bf9d0238ecb8fba81795a6a8",
+          "command_sha256": "31b06606570e4361f335af9aabf0d73b130e7dff20f8f97e2d1c80047c9a985f",
+          "exit": 0,
+          "output_sha256": "f820375dab4ba0840fa2632d190fa6ebf7076c305b0b4dfa9271947e68d5705e"
+        },
+        "E14": {
+          "thread": "01a18b4b-aa5f-7a12-875c-53066ab1b7be",
+          "line": 101,
+          "ordinal": 100,
+          "timestamp": "2026-10-30T05:34:29.341Z",
+          "id": "msg_0f6079ef0f5b7493016ae42c63652487d29973036d34debe52",
+          "call_id": null,
+          "raw_event_sha256": "9e8fa4df0aae9e507e97ef880b7533429768151accbd2857acfbed3e1c6f8787"
+        },
+        "E15": {
+          "thread": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "line": 22,
+          "ordinal": 21,
+          "timestamp": "2026-10-30T05:24:30.850Z",
+          "id": "ctco_01a18b44-4a01-75b1-8be7-c15331e392eb",
+          "call_id": "call_ZulrWHKd0hSpjiibldL6XeWf",
+          "raw_event_sha256": "f71568b9a381caf6e34dcb46b8c958f19e0e779aee40dff6fc71b24313e759c8"
+        },
+        "E16": {
+          "thread": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "line": 270,
+          "ordinal": 269,
+          "timestamp": "2026-10-30T05:33:16.286Z",
+          "id": "ctco_01a18b4c-4e7e-7461-af64-a77f1a47edeb",
+          "call_id": "call_Hv0reKcvqn6biqjvfb1AKMZA",
+          "raw_event_sha256": "307dbc06c8279babf5d637caa82d0311bb5ef91e37000b64000bfff14931800d"
+        },
+        "E17": {
+          "thread": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "line": 10,
+          "ordinal": 9,
+          "timestamp": "2026-10-30T05:24:11.904Z",
+          "id": null,
+          "call_id": null,
+          "raw_event_sha256": "d6828325da46dea499be0db103192af3b649557c3fa95b81f9acd42157458bbf"
+        },
+        "E18": {
+          "thread": "01a18b45-0844-7e80-a870-ce9731bd17a2",
+          "line": 10,
+          "ordinal": 9,
+          "timestamp": "2026-10-30T05:25:21.127Z",
+          "id": null,
+          "call_id": null,
+          "raw_event_sha256": "1108aab9743fa28c6304302bb09ad642ef76389c0d6be607513f52d937b4156b"
+        },
+        "E19": {
+          "thread": "01a18b49-65bd-7593-a0e8-a7e809673741",
+          "line": 10,
+          "ordinal": 9,
+          "timestamp": "2026-10-30T05:30:07.752Z",
+          "id": null,
+          "call_id": null,
+          "raw_event_sha256": "eba24bca76bdc13338d42f26d2a1ec0604f6251153b78c80c85fa87c11309eea"
+        },
+        "E20": {
+          "thread": "01a18b4b-aa5f-7a12-875c-53066ab1b7be",
+          "line": 10,
+          "ordinal": 9,
+          "timestamp": "2026-10-30T05:32:36.146Z",
+          "id": null,
+          "call_id": null,
+          "raw_event_sha256": "3dacfd4be8a9ce073cc540ecb1ca63b7f1a304346795c0c78dfd5673b8c14537"
+        },
+        "E21": {
+          "thread": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "line": 42,
+          "ordinal": 41,
+          "timestamp": "2026-10-30T05:25:17.920Z",
+          "id": "fc_0a3efabfd144d756016ae42a3832c487d193de2ec1bdaab29c",
+          "call_id": "call_0zMDCsxcQLEoNqHsHfMbVtqy",
+          "raw_event_sha256": "f20bc630a8901b7afd389a9e86fb5fac999ae3f9fce11e0821bf1b5ac8b12604"
+        },
+        "E22": {
+          "thread": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "line": 159,
+          "ordinal": 158,
+          "timestamp": "2026-10-30T05:30:03.905Z",
+          "id": "fc_0a3efabfd144d756016ae42b55822c87d190be4d11940ee203",
+          "call_id": "call_ty32HzSmzCESvnA5nsdw64wc",
+          "raw_event_sha256": "c4f86aa0ebbc309bc50a413b57fadbd1945f03029b2523278ea9d4c4dafc3974"
+        },
+        "E23": {
+          "thread": "01a18b43-e54e-7831-8a71-1ca4f875ab64",
+          "line": 248,
+          "ordinal": 247,
+          "timestamp": "2026-10-30T05:32:32.658Z",
+          "id": "fc_0a3efabfd144d756016ae42beba2c087d18538896b1799ca64",
+          "call_id": "call_YQtHV3mZahEF24DwZdu7QjQI",
+          "raw_event_sha256": "2e06f1f3fdc970bd9697822ef22dbca304bbe129d1cf4483b9c7e371dc65354e"
+        }
+      }
+    }
+  },
+  "paired_findings": {
+    "delivery": "Candidate received exact changed instruction before first production edit; prior received its original instruction. Both also actually read optional companion entry/verification skills, beyond inventory availability.",
+    "chronology": "Both intent reviews precede genuine behavior-red test results and first production edit.",
+    "decision_difference": "No demonstrated condition-scope decision difference: both first patches warn per nonbytes item and both adapt homogeneous-string consumers rather than preserving their warning behavior.",
+    "review_corrections": "Both intent reviews correct additional cleanup paths; prior additionally refines sentinel/default length-policy preservation. Artifact reviews align with broadened warning contract. Prior final review independently validates scalar bytearray preservation and cleanup after resolving an import setup error; no reviewer visibly catches whole-iterable vs per-item or homogeneous-string scope.",
+    "encrypted_handoff_limit": "Exact full briefs and messages are encrypted; cannot assert they never named a mapping, or infer cognition. The required accepted/corrected before-first-edit mapping remains unverified from readable evidence, while actual implementation contradicts intended unit.",
+    "preregistered_mechanism_disposition": "Not supported. Instruction delivery occurred, but the intended condition-unit/outside-scope decision was not demonstrated; both actual implementations select the same broader predicate. Missing evidence and equivalent wrong decision cannot count as mechanism success.",
+    "cost_and_time": {
+      "candidate_usd": 0.7877464000000001,
+      "prior_usd": 0.8901012,
+      "candidate_tokens": 2987490,
+      "prior_tokens": 3347841,
+      "candidate_seconds": 673.8671017920133,
+      "prior_seconds": 674.6528293709271,
+      "interpretation": "Both complete native proposal meters. Descriptive difference only; no causal attribution, efficiency win or savings conclusion when mechanism/behavior criteria are unmet. Different selected suite counts and artifact-review checkpoints limit attribution."
+    },
+    "official_scores_changed": false
+  },
+  "limits": [
+    "Only the two sealed Develop proposals, one already exposed Werkzeug task; live stock and fresh cohort were not read.",
+    "273 prior vs 109 wrappers plus115 adjacent candidate are different selected/adapted suites, not comparable unchanged-test denominators.",
+    "No new assessor or scanner, provider/model calls, producer edits, frozen-test reruns or rubric changes. Existing guide-exposure logic and bounded saved-event inspection reused.",
+    "Public behavior screen and untouched-original module replay remain separate owning assessor evidence; this receipt reports observed process and existing participant test events.",
+    "Full reviewer handoffs and reasoning are encrypted. The entire before-edit brief cannot be reconstructed; conclusions restrict absence to readable evidence and use actual warning predicates and subsequent fixture edits.",
+    "Event times are saved recording/receipt times. Raw event SHA-256 covers the exact JSONL line including its newline. Prices are USD per million tokens:2 uncached input,0.1 cached input,10 output.",
+    "Different review checkpoints and test selections prevent attribution of observed cost/time differences to the changed condition-scope instruction."
+  ],
+  "prices_usd_per_million": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "cost_formula": "((inputTokens-cachedInputTokens)*2 + cachedInputTokens*0.1 + outputTokens*10)/1000000; complete root and transitive descendants; reasoning output is already included in outputTokens.",
+  "publication_scope": "Distinct post-score supplement; process audits used individually sealed producer records before final grading, were not grader inputs, and did not modify scores.",
+  "target": {
+    "path": "result.json",
+    "sha256": "a52bc9e4843444439451f8b2a345727341427717d04a44c4733032e58a2ecc66",
+    "raw_collector_sha256": "b72133786209402a67b744bad6c7eeeb9396dd13b251a6fd47b8cc367a837997"
+  },
+  "source_pair_receipt_sha256": "3dfebe2390d35d972570abcbad697b3bffa4e316c912c393ac87f60c07954d62",
+  "prompt_scope_note": {
+    "participant_wording": "Deprecate mixed nonbytes chunks, Response.stream and automatically_set_content_length while preserving ordinary byte responses.",
+    "limitation": "The participant prompt did not explicitly require silent homogeneous-string iterables. Homogeneous-body silence is the preregistered preservation contract, grounded in earlier unchanged base consumers and the merged implementation. The registered assay failure is retained without retrospectively changing the prompt or scores. This limits interpretation of the process mechanism: readable evidence cannot establish the intended mapping, and encrypted handoffs remain unknown."
+  }
+}

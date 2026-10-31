@@ -1,0 +1,937 @@
+{
+  "fmt": {
+    "control": {
+      "status": "graded",
+      "implementation_pass": false,
+      "behavior_passes": 7,
+      "behaviors": {
+        "compiled_null": "pass",
+        "cstring_preserved": "pass",
+        "format_to_n_full": "fail",
+        "format_to_n_truncated": "fail",
+        "format_to_n_zero": "fail",
+        "format_to_null": "fail",
+        "formatted_size_null": "fail",
+        "nonnull_void_pointer_preserved": "pass",
+        "null_void_pointer_preserved": "pass",
+        "runtime_null_pointer_equivalence": "pass",
+        "string_preserved": "pass",
+        "surrounding_literals": "fail",
+        "to_string_null": "pass"
+      },
+      "native_suites": {
+        "compile-test": "failed_or_incomplete",
+        "format-test": "pass"
+      },
+      "post_blind_native_log": {
+        "native_test_log_sha256": "61bb4a784f76aeaffbe4d6adbec6e6c6dc6989c4f5bc9268efa8de8e2ce8bd59",
+        "compile-test": "failed: segmentation fault",
+        "format-test": "passed",
+        "native_suites_passed": 1,
+        "native_suites_run": 2,
+        "collected_after_blind_judgments": true
+      }
+    },
+    "develop": {
+      "status": "graded",
+      "implementation_pass": false,
+      "behavior_passes": 7,
+      "behaviors": {
+        "compiled_null": "pass",
+        "cstring_preserved": "pass",
+        "format_to_n_full": "fail",
+        "format_to_n_truncated": "fail",
+        "format_to_n_zero": "fail",
+        "format_to_null": "fail",
+        "formatted_size_null": "fail",
+        "nonnull_void_pointer_preserved": "pass",
+        "null_void_pointer_preserved": "pass",
+        "runtime_null_pointer_equivalence": "pass",
+        "string_preserved": "pass",
+        "surrounding_literals": "fail",
+        "to_string_null": "pass"
+      },
+      "native_suites": {
+        "compile-test": "failed_or_incomplete",
+        "format-test": "pass"
+      },
+      "post_blind_native_log": {
+        "native_test_log_sha256": "54cefb8335519ca95c434193f32ea91bd76a3a5af93b9100b9e517a2a9b3b763",
+        "compile-test": "failed: segmentation fault",
+        "format-test": "passed",
+        "native_suites_passed": 1,
+        "native_suites_run": 2,
+        "collected_after_blind_judgments": true
+      }
+    }
+  },
+  "svelte": {
+    "control": {
+      "status": "graded",
+      "implementation_pass": true,
+      "authored_unexecuted_paths": [],
+      "scope_review_required": [],
+      "syntax": {
+        "packages/svelte/src/internal/client/reactivity/sources.js": {
+          "status": "pass"
+        },
+        "packages/svelte/tests/runtime-runes/samples/async-fork-discard-revalidation/_config.js": {
+          "status": "pass"
+        },
+        "packages/svelte/tests/runtime-runes/samples/async-fork-discard-revalidation/main.svelte": {
+          "status": "pass"
+        }
+      },
+      "suites": {
+        "authored": {
+          "status": "complete",
+          "passed": 1,
+          "failed": 0,
+          "outcomes": {
+            "async-fork-discard-revalidation (dom)": "passed"
+          }
+        },
+        "gold-derived": {
+          "status": "complete",
+          "passed": 2,
+          "failed": 0,
+          "outcomes": {
+            "inspect-fork-discarded (dom)": "passed",
+            "inspect-fork-discarded (hydrate)": "passed"
+          }
+        },
+        "independent": {
+          "status": "complete",
+          "passed": 8,
+          "failed": 0,
+          "outcomes": {
+            "benchmark-fork-eager-async-pending-commit (dom)": "passed",
+            "benchmark-fork-eager-async-pending-discard (dom)": "passed",
+            "benchmark-fork-eager-pending-commit (dom)": "passed",
+            "benchmark-fork-eager-pending-discard (dom)": "passed",
+            "benchmark-fork-inspect-async-pending-commit (dom)": "passed",
+            "benchmark-fork-inspect-async-pending-discard (dom)": "passed",
+            "benchmark-fork-inspect-pending-commit (dom)": "passed",
+            "benchmark-fork-inspect-pending-discard (dom)": "passed"
+          }
+        },
+        "native": {
+          "status": "complete",
+          "passed": 5,
+          "failed": 0,
+          "outcomes": {
+            "async-fork-async-effect-replay (dom)": "passed",
+            "async-fork-async-effect-replay (hydrate)": "passed",
+            "async-fork-attributes (dom)": "passed",
+            "async-fork-attributes (hydrate)": "passed",
+            "async-fork-await-block-static (dom)": "passed"
+          }
+        }
+      },
+      "build": {
+        "exit": 0,
+        "stop_reason": null
+      }
+    },
+    "develop": {
+      "status": "graded",
+      "implementation_pass": true,
+      "authored_unexecuted_paths": [],
+      "scope_review_required": [],
+      "syntax": {
+        "packages/svelte/src/internal/client/reactivity/sources.js": {
+          "status": "pass"
+        },
+        "packages/svelte/tests/runtime-runes/samples/async-fork-discard-revalidation/_config.js": {
+          "status": "pass"
+        },
+        "packages/svelte/tests/runtime-runes/samples/async-fork-discard-revalidation/main.svelte": {
+          "status": "pass"
+        }
+      },
+      "suites": {
+        "authored": {
+          "status": "complete",
+          "passed": 1,
+          "failed": 0,
+          "outcomes": {
+            "async-fork-discard-revalidation (dom)": "passed"
+          }
+        },
+        "gold-derived": {
+          "status": "complete",
+          "passed": 2,
+          "failed": 0,
+          "outcomes": {
+            "inspect-fork-discarded (dom)": "passed",
+            "inspect-fork-discarded (hydrate)": "passed"
+          }
+        },
+        "independent": {
+          "status": "complete",
+          "passed": 8,
+          "failed": 0,
+          "outcomes": {
+            "benchmark-fork-eager-async-pending-commit (dom)": "passed",
+            "benchmark-fork-eager-async-pending-discard (dom)": "passed",
+            "benchmark-fork-eager-pending-commit (dom)": "passed",
+            "benchmark-fork-eager-pending-discard (dom)": "passed",
+            "benchmark-fork-inspect-async-pending-commit (dom)": "passed",
+            "benchmark-fork-inspect-async-pending-discard (dom)": "passed",
+            "benchmark-fork-inspect-pending-commit (dom)": "passed",
+            "benchmark-fork-inspect-pending-discard (dom)": "passed"
+          }
+        },
+        "native": {
+          "status": "complete",
+          "passed": 5,
+          "failed": 0,
+          "outcomes": {
+            "async-fork-async-effect-replay (dom)": "passed",
+            "async-fork-async-effect-replay (hydrate)": "passed",
+            "async-fork-attributes (dom)": "passed",
+            "async-fork-attributes (hydrate)": "passed",
+            "async-fork-await-block-static (dom)": "passed"
+          }
+        }
+      },
+      "build": {
+        "exit": 0,
+        "stop_reason": null
+      }
+    }
+  },
+  "law": {
+    "control": {
+      "status": "graded",
+      "implementation_pass": true,
+      "behavior_passes": 7,
+      "interface_basis": "candidate_documentation",
+      "behaviors": {
+        "default_retry_bound": {
+          "status": "pass",
+          "assertions": {}
+        },
+        "default_timeout": {
+          "status": "pass",
+          "assertions": {}
+        },
+        "exhaustion_two": {
+          "status": "pass",
+          "assertions": {}
+        },
+        "exhaustion_zero": {
+          "status": "pass",
+          "assertions": {}
+        },
+        "nonlock_error": {
+          "status": "pass",
+          "assertions": {}
+        },
+        "release_after_first_failure": {
+          "status": "pass",
+          "assertions": {}
+        },
+        "uncontended": {
+          "status": "pass",
+          "assertions": {}
+        }
+      },
+      "syntax": {
+        "scripts/clean-codex": {
+          "exit": 0,
+          "timeout": false
+        },
+        "scripts/sanitize-shell-hist": {
+          "exit": 0,
+          "timeout": false
+        }
+      }
+    },
+    "develop": {
+      "status": "graded",
+      "implementation_pass": true,
+      "behavior_passes": 7,
+      "interface_basis": "candidate_documentation",
+      "behaviors": {
+        "default_retry_bound": {
+          "status": "pass",
+          "assertions": {}
+        },
+        "default_timeout": {
+          "status": "pass",
+          "assertions": {}
+        },
+        "exhaustion_two": {
+          "status": "pass",
+          "assertions": {}
+        },
+        "exhaustion_zero": {
+          "status": "pass",
+          "assertions": {}
+        },
+        "nonlock_error": {
+          "status": "pass",
+          "assertions": {}
+        },
+        "release_after_first_failure": {
+          "status": "pass",
+          "assertions": {}
+        },
+        "uncontended": {
+          "status": "pass",
+          "assertions": {}
+        }
+      },
+      "syntax": {
+        "scripts/clean-codex": {
+          "exit": 0,
+          "timeout": false
+        },
+        "scripts/sanitize-shell-hist": {
+          "exit": 0,
+          "timeout": false
+        }
+      }
+    }
+  },
+  "site": {
+    "control": {
+      "status": "environment_failure",
+      "reason": "deadline",
+      "implementation_pass": null,
+      "primary": {
+        "status": "complete",
+        "passed": 13,
+        "failed": 2,
+        "inconclusive": 0,
+        "outcomes": {
+          "Mobile Chrome | admitted document survives repeated foreign-origin navigation and reconnects": {
+            "project": "Mobile Chrome",
+            "title": "admitted document survives repeated foreign-origin navigation and reconnects",
+            "kind": "pass",
+            "line": null
+          },
+          "Mobile Chrome | should focus the game when showing controls and deliver focused bridge input": {
+            "project": "Mobile Chrome",
+            "title": "should focus the game when showing controls and deliver focused bridge input",
+            "kind": "pass",
+            "line": null
+          },
+          "Mobile Chrome | should publish actual overlay visibility after toggles and frame loads": {
+            "project": "Mobile Chrome",
+            "title": "should publish actual overlay visibility after toggles and frame loads",
+            "kind": "pass",
+            "line": null
+          },
+          "Mobile Safari | admitted document survives repeated foreign-origin navigation and reconnects": {
+            "project": "Mobile Safari",
+            "title": "admitted document survives repeated foreign-origin navigation and reconnects",
+            "kind": "assertion_failure",
+            "line": 56
+          },
+          "Mobile Safari | should focus the game when showing controls and deliver focused bridge input": {
+            "project": "Mobile Safari",
+            "title": "should focus the game when showing controls and deliver focused bridge input",
+            "kind": "pass",
+            "line": null
+          },
+          "Mobile Safari | should publish actual overlay visibility after toggles and frame loads": {
+            "project": "Mobile Safari",
+            "title": "should publish actual overlay visibility after toggles and frame loads",
+            "kind": "pass",
+            "line": null
+          },
+          "chromium | admitted document survives repeated foreign-origin navigation and reconnects": {
+            "project": "chromium",
+            "title": "admitted document survives repeated foreign-origin navigation and reconnects",
+            "kind": "pass",
+            "line": null
+          },
+          "chromium | should focus the game when showing controls and deliver focused bridge input": {
+            "project": "chromium",
+            "title": "should focus the game when showing controls and deliver focused bridge input",
+            "kind": "pass",
+            "line": null
+          },
+          "chromium | should publish actual overlay visibility after toggles and frame loads": {
+            "project": "chromium",
+            "title": "should publish actual overlay visibility after toggles and frame loads",
+            "kind": "pass",
+            "line": null
+          },
+          "firefox | admitted document survives repeated foreign-origin navigation and reconnects": {
+            "project": "firefox",
+            "title": "admitted document survives repeated foreign-origin navigation and reconnects",
+            "kind": "pass",
+            "line": null
+          },
+          "firefox | should focus the game when showing controls and deliver focused bridge input": {
+            "project": "firefox",
+            "title": "should focus the game when showing controls and deliver focused bridge input",
+            "kind": "pass",
+            "line": null
+          },
+          "firefox | should publish actual overlay visibility after toggles and frame loads": {
+            "project": "firefox",
+            "title": "should publish actual overlay visibility after toggles and frame loads",
+            "kind": "pass",
+            "line": null
+          },
+          "webkit | admitted document survives repeated foreign-origin navigation and reconnects": {
+            "project": "webkit",
+            "title": "admitted document survives repeated foreign-origin navigation and reconnects",
+            "kind": "assertion_failure",
+            "line": 56
+          },
+          "webkit | should focus the game when showing controls and deliver focused bridge input": {
+            "project": "webkit",
+            "title": "should focus the game when showing controls and deliver focused bridge input",
+            "kind": "pass",
+            "line": null
+          },
+          "webkit | should publish actual overlay visibility after toggles and frame loads": {
+            "project": "webkit",
+            "title": "should publish actual overlay visibility after toggles and frame loads",
+            "kind": "pass",
+            "line": null
+          }
+        }
+      },
+      "heldout_projects": {},
+      "matches_or_improves_gold": null,
+      "known_reference_failures": "WebKit and Mobile Safari reached the strict cross-origin assertion and failed on gold. Chromium, Firefox and Mobile Chrome passed on gold.",
+      "gold_comparison": {},
+      "scope_review": [],
+      "authored": {},
+      "build": {
+        "authenticated_stage": true,
+        "exit": 0,
+        "stop": null
+      },
+      "observed_heldout_from_primary": {
+        "Mobile Chrome": "pass",
+        "Mobile Safari": "assertion_failure",
+        "chromium": "pass",
+        "firefox": "pass",
+        "webkit": "assertion_failure"
+      },
+      "post_blind_primary_gold_comparison": {
+        "Mobile Chrome | admitted document survives repeated foreign-origin navigation and reconnects": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "Mobile Chrome | should focus the game when showing controls and deliver focused bridge input": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "Mobile Chrome | should publish actual overlay visibility after toggles and frame loads": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "Mobile Safari | admitted document survives repeated foreign-origin navigation and reconnects": {
+          "matches_signature": true,
+          "candidate_error_sha256": "4fd0d81228f1f7f8e7d195f748a7b0cf21a47e1b4a9e18a01ecf420e0b82665b",
+          "gold_error_sha256": "4fd0d81228f1f7f8e7d195f748a7b0cf21a47e1b4a9e18a01ecf420e0b82665b"
+        },
+        "Mobile Safari | should focus the game when showing controls and deliver focused bridge input": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "Mobile Safari | should publish actual overlay visibility after toggles and frame loads": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "chromium | admitted document survives repeated foreign-origin navigation and reconnects": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "chromium | should focus the game when showing controls and deliver focused bridge input": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "chromium | should publish actual overlay visibility after toggles and frame loads": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "firefox | admitted document survives repeated foreign-origin navigation and reconnects": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "firefox | should focus the game when showing controls and deliver focused bridge input": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "firefox | should publish actual overlay visibility after toggles and frame loads": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "webkit | admitted document survives repeated foreign-origin navigation and reconnects": {
+          "matches_signature": true,
+          "candidate_error_sha256": "a4c21b13b7a0dfeeca0bfbbd8028300079a833250c4a074cb3cc26d789bf311f",
+          "gold_error_sha256": "a4c21b13b7a0dfeeca0bfbbd8028300079a833250c4a074cb3cc26d789bf311f"
+        },
+        "webkit | should focus the game when showing controls and deliver focused bridge input": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "webkit | should publish actual overlay visibility after toggles and frame loads": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        }
+      }
+    },
+    "develop": {
+      "status": "environment_failure",
+      "reason": "deadline",
+      "implementation_pass": null,
+      "primary": {
+        "status": "complete",
+        "passed": 13,
+        "failed": 2,
+        "inconclusive": 0,
+        "outcomes": {
+          "Mobile Chrome | admitted document survives repeated foreign-origin navigation and reconnects": {
+            "project": "Mobile Chrome",
+            "title": "admitted document survives repeated foreign-origin navigation and reconnects",
+            "kind": "pass",
+            "line": null
+          },
+          "Mobile Chrome | should focus the game when showing controls and deliver focused bridge input": {
+            "project": "Mobile Chrome",
+            "title": "should focus the game when showing controls and deliver focused bridge input",
+            "kind": "pass",
+            "line": null
+          },
+          "Mobile Chrome | should publish actual overlay visibility after toggles and frame loads": {
+            "project": "Mobile Chrome",
+            "title": "should publish actual overlay visibility after toggles and frame loads",
+            "kind": "pass",
+            "line": null
+          },
+          "Mobile Safari | admitted document survives repeated foreign-origin navigation and reconnects": {
+            "project": "Mobile Safari",
+            "title": "admitted document survives repeated foreign-origin navigation and reconnects",
+            "kind": "assertion_failure",
+            "line": 56
+          },
+          "Mobile Safari | should focus the game when showing controls and deliver focused bridge input": {
+            "project": "Mobile Safari",
+            "title": "should focus the game when showing controls and deliver focused bridge input",
+            "kind": "pass",
+            "line": null
+          },
+          "Mobile Safari | should publish actual overlay visibility after toggles and frame loads": {
+            "project": "Mobile Safari",
+            "title": "should publish actual overlay visibility after toggles and frame loads",
+            "kind": "pass",
+            "line": null
+          },
+          "chromium | admitted document survives repeated foreign-origin navigation and reconnects": {
+            "project": "chromium",
+            "title": "admitted document survives repeated foreign-origin navigation and reconnects",
+            "kind": "pass",
+            "line": null
+          },
+          "chromium | should focus the game when showing controls and deliver focused bridge input": {
+            "project": "chromium",
+            "title": "should focus the game when showing controls and deliver focused bridge input",
+            "kind": "pass",
+            "line": null
+          },
+          "chromium | should publish actual overlay visibility after toggles and frame loads": {
+            "project": "chromium",
+            "title": "should publish actual overlay visibility after toggles and frame loads",
+            "kind": "pass",
+            "line": null
+          },
+          "firefox | admitted document survives repeated foreign-origin navigation and reconnects": {
+            "project": "firefox",
+            "title": "admitted document survives repeated foreign-origin navigation and reconnects",
+            "kind": "pass",
+            "line": null
+          },
+          "firefox | should focus the game when showing controls and deliver focused bridge input": {
+            "project": "firefox",
+            "title": "should focus the game when showing controls and deliver focused bridge input",
+            "kind": "pass",
+            "line": null
+          },
+          "firefox | should publish actual overlay visibility after toggles and frame loads": {
+            "project": "firefox",
+            "title": "should publish actual overlay visibility after toggles and frame loads",
+            "kind": "pass",
+            "line": null
+          },
+          "webkit | admitted document survives repeated foreign-origin navigation and reconnects": {
+            "project": "webkit",
+            "title": "admitted document survives repeated foreign-origin navigation and reconnects",
+            "kind": "assertion_failure",
+            "line": 56
+          },
+          "webkit | should focus the game when showing controls and deliver focused bridge input": {
+            "project": "webkit",
+            "title": "should focus the game when showing controls and deliver focused bridge input",
+            "kind": "pass",
+            "line": null
+          },
+          "webkit | should publish actual overlay visibility after toggles and frame loads": {
+            "project": "webkit",
+            "title": "should publish actual overlay visibility after toggles and frame loads",
+            "kind": "pass",
+            "line": null
+          }
+        }
+      },
+      "heldout_projects": {},
+      "matches_or_improves_gold": null,
+      "known_reference_failures": "WebKit and Mobile Safari reached the strict cross-origin assertion and failed on gold. Chromium, Firefox and Mobile Chrome passed on gold.",
+      "gold_comparison": {},
+      "scope_review": [],
+      "authored": {},
+      "build": {
+        "authenticated_stage": true,
+        "exit": 0,
+        "stop": null
+      },
+      "observed_heldout_from_primary": {
+        "Mobile Chrome": "pass",
+        "Mobile Safari": "assertion_failure",
+        "chromium": "pass",
+        "firefox": "pass",
+        "webkit": "assertion_failure"
+      },
+      "post_blind_primary_gold_comparison": {
+        "Mobile Chrome | admitted document survives repeated foreign-origin navigation and reconnects": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "Mobile Chrome | should focus the game when showing controls and deliver focused bridge input": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "Mobile Chrome | should publish actual overlay visibility after toggles and frame loads": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "Mobile Safari | admitted document survives repeated foreign-origin navigation and reconnects": {
+          "matches_signature": true,
+          "candidate_error_sha256": "4fd0d81228f1f7f8e7d195f748a7b0cf21a47e1b4a9e18a01ecf420e0b82665b",
+          "gold_error_sha256": "4fd0d81228f1f7f8e7d195f748a7b0cf21a47e1b4a9e18a01ecf420e0b82665b"
+        },
+        "Mobile Safari | should focus the game when showing controls and deliver focused bridge input": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "Mobile Safari | should publish actual overlay visibility after toggles and frame loads": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "chromium | admitted document survives repeated foreign-origin navigation and reconnects": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "chromium | should focus the game when showing controls and deliver focused bridge input": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "chromium | should publish actual overlay visibility after toggles and frame loads": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "firefox | admitted document survives repeated foreign-origin navigation and reconnects": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "firefox | should focus the game when showing controls and deliver focused bridge input": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "firefox | should publish actual overlay visibility after toggles and frame loads": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "webkit | admitted document survives repeated foreign-origin navigation and reconnects": {
+          "matches_signature": true,
+          "candidate_error_sha256": "a4c21b13b7a0dfeeca0bfbbd8028300079a833250c4a074cb3cc26d789bf311f",
+          "gold_error_sha256": "a4c21b13b7a0dfeeca0bfbbd8028300079a833250c4a074cb3cc26d789bf311f"
+        },
+        "webkit | should focus the game when showing controls and deliver focused bridge input": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        },
+        "webkit | should publish actual overlay visibility after toggles and frame loads": {
+          "matches_signature": true,
+          "candidate_error_sha256": null,
+          "gold_error_sha256": null
+        }
+      }
+    }
+  },
+  "tokio": {
+    "control": {
+      "status": "scored",
+      "implementation_pass": true,
+      "stages": {
+        "authored_supplemental": {
+          "exit": 0,
+          "stop_reason": null
+        },
+        "baseline": {
+          "compiler_errors": [],
+          "exit": 0,
+          "outcomes": {
+            "sync_once_cell": {
+              "drop_cell": "ok",
+              "drop_cell_new_with": "ok",
+              "drop_into_inner": "ok",
+              "drop_into_inner_new_with": "ok",
+              "from": "ok",
+              "get_or_init": "ok",
+              "get_or_init_panic": "ok",
+              "get_or_try_init": "ok",
+              "get_uninit": "ok",
+              "set_and_get": "ok",
+              "set_twice": "ok",
+              "set_while_initializing": "ok"
+            },
+            "sync_set_once": {
+              "drop_cell": "ok",
+              "drop_cell_new_with": "ok",
+              "drop_into_inner": "ok",
+              "drop_into_inner_new_with": "ok",
+              "from": "ok",
+              "get_uninit": "ok",
+              "into_inner_int_empty_setonce": "ok",
+              "is_none_initializing": "ok",
+              "is_some_initializing": "ok",
+              "set_and_get": "ok",
+              "set_and_wait": "ok",
+              "set_and_wait_multiple_threads": "ok",
+              "set_and_wait_threads": "ok",
+              "set_twice": "ok"
+            }
+          },
+          "status": "pass",
+          "stop_reason": null
+        },
+        "behavioral": {
+          "compiler_errors": [],
+          "exit": 0,
+          "missing_method_compile_negative": false,
+          "outcomes": {
+            "set_once_mut_v1": {
+              "empty_mutable_borrow_does_not_initialize": "ok",
+              "existing_wait_observes_preinitialized_mutation": "ok",
+              "mutations_are_visible_and_the_value_is_still_set_once": "ok",
+              "non_clone_non_send_value_is_owned_and_dropped_once": "ok"
+            }
+          },
+          "status": "pass",
+          "stop_reason": null
+        },
+        "exclusive": {
+          "compiler_errors": [
+            {
+              "code": "E0596",
+              "message": "cannot borrow `*shared` as mutable, as it is behind a `&` reference",
+              "primary": [
+                [
+                  "tokio/tests/shared_owner_v1.rs",
+                  7
+                ]
+              ]
+            }
+          ],
+          "exit": 101,
+          "missing_method_compile_negative": false,
+          "outcomes": null,
+          "shared_borrow_rejected": true,
+          "status": "compile_failure",
+          "stop_reason": null
+        }
+      }
+    },
+    "develop": {
+      "status": "scored",
+      "implementation_pass": true,
+      "stages": {
+        "authored_supplemental": {
+          "exit": 0,
+          "stop_reason": null
+        },
+        "baseline": {
+          "compiler_errors": [],
+          "exit": 0,
+          "outcomes": {
+            "sync_once_cell": {
+              "drop_cell": "ok",
+              "drop_cell_new_with": "ok",
+              "drop_into_inner": "ok",
+              "drop_into_inner_new_with": "ok",
+              "from": "ok",
+              "get_or_init": "ok",
+              "get_or_init_panic": "ok",
+              "get_or_try_init": "ok",
+              "get_uninit": "ok",
+              "set_and_get": "ok",
+              "set_twice": "ok",
+              "set_while_initializing": "ok"
+            },
+            "sync_set_once": {
+              "drop_cell": "ok",
+              "drop_cell_new_with": "ok",
+              "drop_into_inner": "ok",
+              "drop_into_inner_new_with": "ok",
+              "from": "ok",
+              "get_uninit": "ok",
+              "into_inner_int_empty_setonce": "ok",
+              "is_none_initializing": "ok",
+              "is_some_initializing": "ok",
+              "set_and_get": "ok",
+              "set_and_wait": "ok",
+              "set_and_wait_multiple_threads": "ok",
+              "set_and_wait_threads": "ok",
+              "set_twice": "ok"
+            }
+          },
+          "status": "pass",
+          "stop_reason": null
+        },
+        "behavioral": {
+          "compiler_errors": [],
+          "exit": 0,
+          "missing_method_compile_negative": false,
+          "outcomes": {
+            "set_once_mut_v1": {
+              "empty_mutable_borrow_does_not_initialize": "ok",
+              "existing_wait_observes_preinitialized_mutation": "ok",
+              "mutations_are_visible_and_the_value_is_still_set_once": "ok",
+              "non_clone_non_send_value_is_owned_and_dropped_once": "ok"
+            }
+          },
+          "status": "pass",
+          "stop_reason": null
+        },
+        "exclusive": {
+          "compiler_errors": [
+            {
+              "code": "E0596",
+              "message": "cannot borrow `*shared` as mutable, as it is behind a `&` reference",
+              "primary": [
+                [
+                  "tokio/tests/shared_owner_v1.rs",
+                  7
+                ]
+              ]
+            }
+          ],
+          "exit": 101,
+          "missing_method_compile_negative": false,
+          "outcomes": null,
+          "shared_borrow_rejected": true,
+          "status": "compile_failure",
+          "stop_reason": null
+        }
+      }
+    }
+  },
+  "runner": {
+    "control": {
+      "status": "graded",
+      "implementation_pass": false,
+      "build": {
+        "exit": 2,
+        "stop_reason": null
+      },
+      "suites": {},
+      "known_environment": "Six protected-home EACCES failures were shared by both reference commits; all primary native tests passed on both.",
+      "authored": {
+        "status": "authored_compile_failure",
+        "paths": [
+          "test/adapters.test.ts",
+          "test/safety.test.ts"
+        ]
+      },
+      "manual_scope_paths": [],
+      "post_blind_compiler_diagnostics": {
+        "primary": {
+          "log_sha256": "1cf49bf051e65847bc525fa2367e341aa85bd6ebe839dea125d7ee147e9db26c",
+          "exit": 2,
+          "diagnostics": [
+            "src/operations.ts(8,3): error TS6133: 'inspectTarget' is declared but its value is never read."
+          ]
+        },
+        "authored": {
+          "log_sha256": "1cf49bf051e65847bc525fa2367e341aa85bd6ebe839dea125d7ee147e9db26c",
+          "exit": 2,
+          "diagnostics": [
+            "src/operations.ts(8,3): error TS6133: 'inspectTarget' is declared but its value is never read."
+          ]
+        }
+      }
+    },
+    "develop": {
+      "status": "graded",
+      "implementation_pass": false,
+      "build": {
+        "exit": 2,
+        "stop_reason": null
+      },
+      "suites": {},
+      "known_environment": "Six protected-home EACCES failures were shared by both reference commits; all primary native tests passed on both.",
+      "authored": {
+        "status": "authored_compile_failure",
+        "paths": [
+          "test/safety.test.ts"
+        ]
+      },
+      "manual_scope_paths": [],
+      "post_blind_compiler_diagnostics": {
+        "primary": {
+          "log_sha256": "1cf49bf051e65847bc525fa2367e341aa85bd6ebe839dea125d7ee147e9db26c",
+          "exit": 2,
+          "diagnostics": [
+            "src/operations.ts(8,3): error TS6133: 'inspectTarget' is declared but its value is never read."
+          ]
+        },
+        "authored": {
+          "log_sha256": "78bdf1dededaac472238b1b7ff0a70209abdee7a915a0766e306a7557845b433",
+          "exit": 2,
+          "diagnostics": [
+            "src/operations.ts(8,3): error TS6133: 'inspectTarget' is declared but its value is never read.",
+            "test/safety.test.ts(363,50): error TS7006: Parameter '_context' implicitly has an 'any' type.",
+            "test/safety.test.ts(363,60): error TS7006: Parameter 'executable' implicitly has an 'any' type.",
+            "test/safety.test.ts(363,72): error TS7006: Parameter 'args' implicitly has an 'any' type.",
+            "test/safety.test.ts(363,78): error TS7006: Parameter 'options' implicitly has an 'any' type."
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "verdict": "confirmed",
+  "claim": "Native Windows preprocessing of archive_read_data_into_fd.c rejects the new two-argument fcntl call.",
+  "method": "Clang dependency preprocessing (-M -MG -nostdinc) on the exact two source trees, repository Windows host configuration and target-provided int size. Missing SDK header bodies are skipped. No full Windows compile or link was performed.",
+  "compiler": "Ubuntu clang version 18.1.3 (1ubuntu1)",
+  "command_script_sha256": "68810c5b5cc72dd214b9bce25535d7ae8320246f66454af5694277266978105a",
+  "subject_patch_sha256": "bcc2a3ac294c125d21e344093dab03c72550bbda96bd04c627e4ac9e4c17db86",
+  "sources": {
+    "baseline": "cd2d73e2bef966e286c5b7dcf2e79a72eec68d0a65003dd79c69a436d5e5b901",
+    "subject": "2a2fdeb18769e7326f8b042b49dd3bb80ce2e53e153d2a27b0edfe24e1923022"
+  },
+  "outcomes": {
+    "i686-w64-windows-gnu": {
+      "baseline": {
+        "exit": 0,
+        "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "subject": {
+        "exit": 1,
+        "diagnostic_sha256": "b52a4297abdd01e13cdd74e626ab0ddbe97259ad3d17496cf05ac5ae28386799"
+      }
+    },
+    "x86_64-w64-windows-gnu": {
+      "baseline": {
+        "exit": 0,
+        "diagnostic_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "subject": {
+        "exit": 1,
+        "diagnostic_sha256": "b52a4297abdd01e13cdd74e626ab0ddbe97259ad3d17496cf05ac5ae28386799"
+      }
+    }
+  },
+  "diagnostic": "archive_read_data_into_fd.c:119 calls fcntl(fd, F_GETFL); archive_windows.h:92 defines fcntl(fd, cmd, flg). Both macros come from the real selected libarchive header. Both baselines passed and both subjects failed exclusively at this invocation."
+}

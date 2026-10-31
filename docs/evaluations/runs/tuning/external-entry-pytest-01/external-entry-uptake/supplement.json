@@ -1,0 +1,988 @@
+{
+  "format": "law-config.external-entry-uptake/v1",
+  "case": "pytest",
+  "registration_sha256": "d439c94b0ac32d686ef1a357a93182ebb4795d6d36589b25658a54337c373ec7",
+  "raw_result_sha256": "c34e40fed7d75cde1ff723dd931b4a92228a0523a123be964f4914cc33fa5e7f",
+  "normal_export_sha256": "2061b62f1b2b228637792e775348ec630aead38428dcf5d10abd39683e362d4b",
+  "uptake_plan_sha256": "c75352deefe8c08181921bacbc811c225c4e0a68c2e73eff4a7134188f316c89",
+  "hypothesis_sha256": "c3d6549ba718ed9a01451884e9960f1b0a48a2b368b0641bcfb9f7fcf7ee401d",
+  "plan_sha256": {
+    "prior": "cbbf6e566e56caa18b4eecb669690dca03c35b8044c48dca54dbfcf4a80248f0",
+    "candidate": "d4ae02e9b5da2dfbe7556500d76bb12053ec0c536505289862ade9882a24a54c"
+  },
+  "frozen_protocol": "pr-quality-pytest-entry-v1",
+  "prospective_identity_supersession": {
+    "plan_draft_hypothesis_sha256": "13ec403493e2786b79eb7f552c94bb5a0b7fda347aec095c7d119d9c5eb87ab5",
+    "registered_hypothesis_sha256": "c3d6549ba718ed9a01451884e9960f1b0a48a2b368b0641bcfb9f7fcf7ee401d",
+    "authority": "Final prerelease registration and frozen plan receipts supersede draft descriptor identity; original uptake PLAN bytes remain unchanged."
+  },
+  "base": "4088e1a84ef1cb8ba80aac4e75449459fc092c12",
+  "private_uptake_sha256": "8805281644f73c23401031e5a45b3b6b1cd02487d7c1d09082a7fbd8fc2a12f5",
+  "roles": {
+    "stock": {
+      "bindings": {
+        "native_sha256": "8c05f6cf9b6fa4798a9a2b78641dde0c7635ca7579070ccf497166604f7fe2b1",
+        "result_sha256": "8e044fafecb12c221ce7a975e9e18bfb721d7e41e85a3b4297aaa5de356e4ff0",
+        "submission_sha256": "3697c06ef7ddbad56a1872bd6f5888f7cde3c32760db6f2e3e5d740987ea9131",
+        "patch_sha256": "9199ec6321e8d0a4513974c89e82d0775e76fc785040749b20e48b487017770c",
+        "proposal_sha256": "8bfb067c5590412f909464c5f2845c4976dd13acff82173e544333772dfc7b25"
+      },
+      "root": "01a18c80-9fa5-7991-979c-5e641debd585",
+      "effective_threads": {
+        "01a18c80-9fa5-7991-979c-5e641debd585": {
+          "trace_sha256": "02a858e124a7f7620183582c56d318c08132a1ae7e5caba5e0bbdf05736aeb30",
+          "native_turns": {
+            "01a18c80-b472-7d21-842c-fc7ad0592888": {
+              "model": "gpt-6.1-sol",
+              "effort": "medium",
+              "cwd_sha256": "fe406838c15f8f5aed1f826d26c6c610b184b30b9d4cb80a9004584b99f695b6"
+            }
+          },
+          "parent": null
+        },
+        "01a18c82-5d20-7802-a6e5-0fbf48a4b3fd": {
+          "trace_sha256": "3b02074132042241d3f71edd3de6175ed10ca5f1cd63094d60922c30b172fc36",
+          "native_turns": {
+            "01a18c82-5e43-7a11-971a-24fb0190a191": {
+              "model": "gpt-6.1-sol",
+              "effort": "medium",
+              "cwd_sha256": "fe406838c15f8f5aed1f826d26c6c610b184b30b9d4cb80a9004584b99f695b6"
+            }
+          },
+          "parent": "01a18c80-9fa5-7991-979c-5e641debd585"
+        }
+      },
+      "native_commands_reconciled": true,
+      "command_count": 27,
+      "final_changed_file_sha256": {
+        "AUTHORS": "478398a490a6742aa9eba9c8e7961abcaa568a8a6b842c90ab8e99dab22bd168",
+        "changelog/parameter-set.feature.rst": "77f70e647e6cf00d089889dd914652865f487f65c5395d5ec6d7ec939bcd0370",
+        "doc/en/reference/reference.rst": "fd3089fe75cd2d123aefbe93208509c31106595cbff337b2e0c7be4ab2ad8863",
+        "src/_pytest/mark/__init__.py": "1bb67bb418c31645ab163af0491d5809fa99ce6af71c243c9d5426aed71ce825",
+        "src/_pytest/mark/structures.py": "8d66ec682b5e09457da5fc3d6cd8b09f3e5d727c83515f2e06faf181da51fd0c",
+        "src/pytest/__init__.py": "df9445a69f8fa85f8f0569c3b166fcd681117cf23ea0924752b1bb314c5d7326",
+        "testing/test_mark.py": "f8857bd1cd335a6d3d817bf0d7626d19c6c5a16e3b3b0e203b72783c935da276"
+      },
+      "criteria": {
+        "retain_before_edit": false,
+        "inspect_before_replace": false,
+        "outward_final_pass": null,
+        "declared_entry_final_pass": null,
+        "final_review_closed": null
+      },
+      "criteria_scope": "Retention/inspection are sourced decisions and chronology with linked external base/final behavior; final-pass and closure fields require producer-tree execution on final bytes. External behavior remains separate.",
+      "criterion_reasons": {
+        "retain_before_edit": "Recorded replacement of base NamedTuple by dataclass; final public tuple/unpacking operation is broken.",
+        "inspect_before_replace": "For the selected tuple/unpacking caller path, complete recorded native command history places representation replacement before any qualifying public tuple-operation check. Earlier reads/module checks do not exercise that outward operation.",
+        "outward_final_pass": "Producer exact-final tuple/unpacking/copy/pickle coverage unestablished. External source-bound behavior is separately recorded and never credited as a producer invocation.",
+        "declared_entry_final_pass": "Only module-route producer tests recorded; no qualifying fresh metadata-declared launcher invocation is established.",
+        "final_review_closed": "No later evidence-closing reviewer turn is recorded. Final reviewer precedes actual final configured output and does not cover qualifying declared-entry evidence. Missing closure remains null under PLAN."
+      },
+      "instruction_exposure": null,
+      "test_commands": [
+        {
+          "event_id": "exec-65339e8e-b00d-4595-882c-f5d8212e6ae6",
+          "thread": "01a18c80-9fa5-7991-979c-5e641debd585",
+          "turn": "01a18c80-b472-7d21-842c-fc7ad0592888",
+          "trace_line": 173,
+          "trace_sha256": "02a858e124a7f7620183582c56d318c08132a1ae7e5caba5e0bbdf05736aeb30",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:12:21.942Z",
+          "completed": "2026-10-30T11:15:47.841Z",
+          "capture_time": "2026-10-30T11:15:47.841Z",
+          "exit": 1,
+          "argv_sha256": "a4e7f01ce413cd02338e46549883d68ff7bf45ac90df31224fe0fc54fad8d049",
+          "output_sha256": "aa0192f2ed40c05071a493d01f4bd11b2d9e5d0aa838fb8337143e1dbfc072e6",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q -c /dev/null -p pytester testing/test_mark_expression.py testing/test_mark.py",
+          "summary": [
+            "=================== 2 passed, 1 skipped, 1 xfailed in 7.36s ====================",
+            "2 failed, 291 passed, 1 xfailed, 18 warnings in 160.95s (0:02:40)"
+          ]
+        },
+        {
+          "event_id": "exec-f8b638fb-5d18-4f0c-8c72-af82520775b1",
+          "thread": "01a18c80-9fa5-7991-979c-5e641debd585",
+          "turn": "01a18c80-b472-7d21-842c-fc7ad0592888",
+          "trace_line": 174,
+          "trace_sha256": "02a858e124a7f7620183582c56d318c08132a1ae7e5caba5e0bbdf05736aeb30",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:14:15.489Z",
+          "completed": "2026-10-30T11:15:49.770Z",
+          "capture_time": "2026-10-30T11:15:49.770Z",
+          "exit": 1,
+          "argv_sha256": "1434de850d4cfeb6995d14dad0a5669a1555c85807511b51aa37e710b4dc926b",
+          "output_sha256": "b358aed9a00497b46d6e0946ddfa8570d87fdd4c05f4e7543f72a570d4434f3f",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q -c /dev/null -p pytester testing/test_mark.py::TestParameterSet -x",
+          "summary": [
+            "=================== 2 passed, 1 skipped, 1 xfailed in 8.90s ====================",
+            "1 failed, 14 passed, 6 warnings in 38.16s"
+          ]
+        },
+        {
+          "event_id": "exec-1f679cd2-9ab2-4d52-be5f-f108932fa94e",
+          "thread": "01a18c80-9fa5-7991-979c-5e641debd585",
+          "turn": "01a18c80-b472-7d21-842c-fc7ad0592888",
+          "trace_line": 235,
+          "trace_sha256": "02a858e124a7f7620183582c56d318c08132a1ae7e5caba5e0bbdf05736aeb30",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:15:51.748Z",
+          "completed": "2026-10-30T11:18:23.152Z",
+          "capture_time": "2026-10-30T11:18:23.154Z",
+          "exit": 0,
+          "argv_sha256": "c8ce20b1b53c915a6b157b4f3f2d88bef4424c5a6014911e36fdec5c83df1cb5",
+          "output_sha256": "03e78251c85965e34cc1e62b34e2d402e27cf74b3dd747b9bbf21a3e1e71d633",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q -c /dev/null -p pytester -o pytester_example_dir=\"$PWD/testing/example_scripts\" testing/test_mark_expression.py testing/test_mark.py",
+          "summary": [
+            "293 passed, 1 xfailed, 18 warnings in 105.18s (0:01:45)"
+          ]
+        }
+      ],
+      "producer_declared_launcher_execution": null,
+      "external_behavior": {
+        "actor": "external-assessor",
+        "tuple_unpacking": {
+          "value": false,
+          "probe_sha256": "a12d0ac72aabddf69ecea8e9314fb442f14a4d1bb10f604d2b74ac4961b8cc75",
+          "receipt_sha256": "bc87cda27f40bf3bfb0d98dc85b593630f2a51549d2164f63988734697f4d2af",
+          "patch_sha256": "9199ec6321e8d0a4513974c89e82d0775e76fc785040749b20e48b487017770c",
+          "output_sha256": "0da4215cfd4b298c05c76d4fd4a8f6822b86d5d2596a6dcc661a8dc2dabe2c26",
+          "diagnostic_exit": 0,
+          "diagnostic": {
+            "values": [
+              7
+            ],
+            "marks": [],
+            "id": "example",
+            "tuple_instance": false,
+            "unpack_error": "TypeError"
+          },
+          "scope": "Only pytest.param field/tuple/unpacking operation. Diagnostic exit0 alone is not a behavioral pass."
+        },
+        "declared_launcher": {
+          "value": false,
+          "grade_sha256": "fb2389d93d349145b8423fec1794b3cb1f8b2cc3dbdbdaaac9261ce61049c42b",
+          "exit": 42,
+          "log_sha256": "3045a5f99472e55a48e2d190bb0fdbac1ff82f194d392dc53c9b82d696e73bb7",
+          "command_sha256": "4f9820903156c4560505091d00e14aca5fbe8ead73b5bad94d18eaedaaa54245",
+          "entry": "_pytest.config:_console_main",
+          "existing_node": "testing/test_mark_expression.py::test_empty_is_false",
+          "launcher_sha256": "551fe571cabee67851cf9ac698511e7d2d3dea7eb3095d484ba0c7d9b10c422e",
+          "scope": "Frozen grader output; behavior only, not producer execution, review closure or intent."
+        }
+      },
+      "review": {
+        "final": {
+          "event_id": "msg_09befe1b3fdc1448016ae47bc3f4d087d1909fa1de5ef22e8a",
+          "thread": "01a18c82-5d20-7802-a6e5-0fbf48a4b3fd",
+          "turn": "01a18c82-5e43-7a11-971a-24fb0190a191",
+          "trace_line": 80,
+          "trace_sha256": "3b02074132042241d3f71edd3de6175ed10ca5f1cd63094d60922c30b172fc36",
+          "observed": "2026-10-30T11:13:09.675Z",
+          "completed": "2026-10-30T11:13:09.675Z",
+          "text_sha256": "b0239aae4e2396519c5b566bff6761c71607cfbcc9529cbe7699741020ff7a83"
+        },
+        "final_bytes": null,
+        "final_configured_completion": {
+          "event_id": "exec-1f679cd2-9ab2-4d52-be5f-f108932fa94e",
+          "thread": "01a18c80-9fa5-7991-979c-5e641debd585",
+          "turn": "01a18c80-b472-7d21-842c-fc7ad0592888",
+          "trace_line": 235,
+          "trace_sha256": "02a858e124a7f7620183582c56d318c08132a1ae7e5caba5e0bbdf05736aeb30",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:15:51.748Z",
+          "completed": "2026-10-30T11:18:23.152Z",
+          "capture_time": "2026-10-30T11:18:23.154Z",
+          "exit": 0,
+          "argv_sha256": "c8ce20b1b53c915a6b157b4f3f2d88bef4424c5a6014911e36fdec5c83df1cb5",
+          "output_sha256": "03e78251c85965e34cc1e62b34e2d402e27cf74b3dd747b9bbf21a3e1e71d633"
+        },
+        "after_final_configured_completion": false,
+        "later_closure": null,
+        "scope": "Stock has no Develop review obligation; its review facts are descriptive only."
+      },
+      "preserved_failures": [
+        {
+          "event_id": "exec-d2b4887c-a213-41fb-9876-6316d2e9dcde",
+          "exit": 127,
+          "output_sha256": "7dea013dd364788dc7ab3cb06a9a387eb108e512ac21bce52360dfc4de9cef22"
+        },
+        {
+          "event_id": "exec-4d807e27-1d48-489b-80b4-41cb30ec927e",
+          "exit": 135,
+          "output_sha256": "8ce9d75e0cc9739b57794204a82251a21884eb7d3cda19639c1667654f1bd29e"
+        },
+        {
+          "event_id": "exec-65339e8e-b00d-4595-882c-f5d8212e6ae6",
+          "exit": 1,
+          "output_sha256": "aa0192f2ed40c05071a493d01f4bd11b2d9e5d0aa838fb8337143e1dbfc072e6"
+        },
+        {
+          "event_id": "exec-f8b638fb-5d18-4f0c-8c72-af82520775b1",
+          "exit": 1,
+          "output_sha256": "b358aed9a00497b46d6e0946ddfa8570d87fdd4c05f4e7543f72a570d4434f3f"
+        }
+      ],
+      "first_representation_replacement": {
+        "event_id": "exec-66167044-977a-4c8a-a46b-31f92b06f4c1",
+        "thread": "01a18c80-9fa5-7991-979c-5e641debd585",
+        "turn": "01a18c80-b472-7d21-842c-fc7ad0592888",
+        "trace_line": 59,
+        "trace_sha256": "02a858e124a7f7620183582c56d318c08132a1ae7e5caba5e0bbdf05736aeb30",
+        "actor": "producer-root",
+        "started": "2026-10-30T11:11:46.683Z",
+        "completed": "2026-10-30T11:11:53.422Z",
+        "capture_time": "2026-10-30T11:11:53.425Z",
+        "exit": 0,
+        "argv_sha256": "2245485680c958d9d7fedfb232b7029115f2100a6b10ce1c64de416bf0552f8a",
+        "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "prior": {
+      "bindings": {
+        "native_sha256": "aaa2bcfa877fd54bab4e1efd12e1facd0780a8dc7ab296b446eb5fec0cb3fcd9",
+        "result_sha256": "22f899d21f185d10fdfb77e7311dd5ae786efa6adf475a7c06e61e7bff6b417e",
+        "submission_sha256": "0e8cd35ebfc244b61d3f656fa2c17afec1bd12ec2a64735cac2b5e56b66b68f5",
+        "patch_sha256": "912649672caf919903043d8a4925bb4889120288ce461df1e17866f8b6a2e6c0",
+        "proposal_sha256": "20f1804edc366978278f0f8f4eae15e450f3b96474f0abc744abff1f42847e95"
+      },
+      "root": "01a18c89-6a83-73d0-95a8-fb349cbe5a1a",
+      "effective_threads": {
+        "01a18c89-6a83-73d0-95a8-fb349cbe5a1a": {
+          "trace_sha256": "a5dcaba501913f020b9255735714f6d1060996310897b616f150e665d89763f6",
+          "native_turns": {
+            "01a18c89-7f3d-7122-999a-c7ded4ab3cd0": {
+              "model": "gpt-6.1-sol",
+              "effort": "medium",
+              "cwd_sha256": "45345736251434df987c2fda8bd9b2b2fadf64a3e51c3997f5b960082b6a87e5"
+            }
+          },
+          "parent": null
+        },
+        "01a18c8a-de6b-7fc3-b4a0-e5772ce2986e": {
+          "trace_sha256": "b5cca9044539f9554dd69e491376cbc1c574e9f67d8eb2c199470de84c0a2233",
+          "native_turns": {
+            "01a18c8a-df39-7121-95f0-c29476593214": {
+              "model": "gpt-6.1-sol",
+              "effort": "medium",
+              "cwd_sha256": "45345736251434df987c2fda8bd9b2b2fadf64a3e51c3997f5b960082b6a87e5"
+            }
+          },
+          "parent": "01a18c89-6a83-73d0-95a8-fb349cbe5a1a"
+        },
+        "01a18c90-fd38-7260-8a82-aca6940516dd": {
+          "trace_sha256": "d13e96d06f3363802a3e86331a44e34bab10c8c2c9c32e8586e432df72134539",
+          "native_turns": {
+            "01a18c90-fe46-7ea3-9f41-f32081f11376": {
+              "model": "gpt-6.1-sol",
+              "effort": "medium",
+              "cwd_sha256": "45345736251434df987c2fda8bd9b2b2fadf64a3e51c3997f5b960082b6a87e5"
+            }
+          },
+          "parent": "01a18c89-6a83-73d0-95a8-fb349cbe5a1a"
+        }
+      },
+      "native_commands_reconciled": true,
+      "command_count": 40,
+      "final_changed_file_sha256": {
+        "changelog/parameter-set-public.improvement.rst": "a85a39901c43c1b4b2c7fd2338c67d1b4854c9852b6530665e0b864eb10277c1",
+        "doc/en/reference/reference.rst": "df4f8301dffe88053870725ee5f46c136c9cb3ddcb0bc47b7ffaec287f6e03dc",
+        "src/_pytest/mark/__init__.py": "1bb67bb418c31645ab163af0491d5809fa99ce6af71c243c9d5426aed71ce825",
+        "src/_pytest/mark/structures.py": "1efaa64412e47ba03253738f94224058ecee60d2cbbeb1e370902c4cb64b68ef",
+        "src/pytest/__init__.py": "df9445a69f8fa85f8f0569c3b166fcd681117cf23ea0924752b1bb314c5d7326",
+        "testing/test_mark.py": "579cf90a0e30013db79aad7afbaaffbcc2bd98f290004aeaceb6ff6b31fdf1be",
+        "testing/typing_checks.py": "aa8f060805e3f16f833e340bb58005b7f972a042ca5bafbd36b0e0d940eea5a2"
+      },
+      "criteria": {
+        "retain_before_edit": false,
+        "inspect_before_replace": false,
+        "outward_final_pass": null,
+        "declared_entry_final_pass": null,
+        "final_review_closed": null
+      },
+      "criteria_scope": "Retention/inspection are sourced decisions and chronology with linked external base/final behavior; final-pass and closure fields require producer-tree execution on final bytes. External behavior remains separate.",
+      "criterion_reasons": {
+        "retain_before_edit": "Recorded replacement of base NamedTuple by dataclass; final public tuple/unpacking operation is broken.",
+        "inspect_before_replace": "For the selected tuple/unpacking caller path, complete recorded native command history places representation replacement before any qualifying public tuple-operation check. Earlier reads/module checks do not exercise that outward operation.",
+        "outward_final_pass": "Producer exact-final tuple/unpacking/copy/pickle coverage unestablished. External source-bound behavior is separately recorded and never credited as a producer invocation.",
+        "declared_entry_final_pass": "Only module-route producer tests recorded; no qualifying fresh metadata-declared launcher invocation is established.",
+        "final_review_closed": "No later evidence-closing reviewer turn is recorded. Final reviewer precedes actual final configured output and does not cover qualifying declared-entry evidence. Missing closure remains null under PLAN."
+      },
+      "instruction_exposure": {
+        "injected_skill_sha256": "4d7c13d5ecd8333ae5011d3457cebd864bb71dedf3eeec2aaf283e3785a7cfb4",
+        "turn_input_sha256": "19746ba09ddb9ecc6ff4dec919d376b22f62b9eb76095758ab471729de7891e3",
+        "trace_line": 14,
+        "time": "2026-10-30T11:19:45.315Z",
+        "payload_sha256": "75539807b215f37a6b044b3f54adb08a8fe513c7aa04c8ec0f44ab6530ea5b56",
+        "revised_entry_paragraph_exposed": false,
+        "scope": "Instruction exposure only; behavior judged separately."
+      },
+      "test_commands": [
+        {
+          "event_id": "exec-072b5f9b-7c30-4621-83d2-f59c368b79b1",
+          "thread": "01a18c89-6a83-73d0-95a8-fb349cbe5a1a",
+          "turn": "01a18c89-7f3d-7122-999a-c7ded4ab3cd0",
+          "trace_line": 102,
+          "trace_sha256": "a5dcaba501913f020b9255735714f6d1060996310897b616f150e665d89763f6",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:21:20.113Z",
+          "completed": "2026-10-30T11:22:38.553Z",
+          "capture_time": "2026-10-30T11:22:38.553Z",
+          "exit": 0,
+          "argv_sha256": "1ea0c7fe41ed1d9583887aab69414a877b5f5ba41149f810c3c40b1225180f4a",
+          "output_sha256": "a2e3045e47fc65f390051d2471c91536a24ab5c385053ab063d3d25e7c89aca5",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q -c /dev/null -p pytester testing/test_mark_expression.py",
+          "summary": [
+            "149 passed, 3 warnings in 30.80s"
+          ]
+        },
+        {
+          "event_id": "exec-76e9f26e-fc43-4941-acaf-45cf4cdfb6d6",
+          "thread": "01a18c89-6a83-73d0-95a8-fb349cbe5a1a",
+          "turn": "01a18c89-7f3d-7122-999a-c7ded4ab3cd0",
+          "trace_line": 149,
+          "trace_sha256": "a5dcaba501913f020b9255735714f6d1060996310897b616f150e665d89763f6",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:22:53.428Z",
+          "completed": "2026-10-30T11:24:36.201Z",
+          "capture_time": "2026-10-30T11:24:36.202Z",
+          "exit": 0,
+          "argv_sha256": "f0b6d9dc33e4feb10d382b507c47cbe64142da3471ff641cd3acdc7cd2f48edd",
+          "output_sha256": "b00d23ce79db21c446b34acff87bd9744c7e39a6760e01409fdb29799cc14bec",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q testing/test_mark.py -k 'pytest_param_id'",
+          "summary": [
+            "3 passed, 135 deselected in 57.17s"
+          ]
+        },
+        {
+          "event_id": "exec-8d975536-39e6-40bc-8bde-17bef0eeada7",
+          "thread": "01a18c89-6a83-73d0-95a8-fb349cbe5a1a",
+          "turn": "01a18c89-7f3d-7122-999a-c7ded4ab3cd0",
+          "trace_line": 154,
+          "trace_sha256": "a5dcaba501913f020b9255735714f6d1060996310897b616f150e665d89763f6",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:22:44.194Z",
+          "completed": "2026-10-30T11:24:40.537Z",
+          "capture_time": "2026-10-30T11:24:40.537Z",
+          "exit": 1,
+          "argv_sha256": "63d0d2d9fcfa7a8c1ae2a1bc05834c969dccb66ab5b26a5f0ddb64b305821665",
+          "output_sha256": "b0a2f3e1865739b22232094ca4255ff74743de9af72ec0d5b0b98b30be5e0f35",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q -c /dev/null -p pytester testing/test_mark.py::TestParameterSet testing/test_mark.py::TestMark::test_pytest_exists_in_namespace_all",
+          "summary": [
+            "8 failed, 3 passed, 6 warnings in 75.63s (0:01:15)"
+          ]
+        },
+        {
+          "event_id": "exec-60d745ca-84b0-4ce7-bd45-54ab9a468303",
+          "thread": "01a18c89-6a83-73d0-95a8-fb349cbe5a1a",
+          "turn": "01a18c89-7f3d-7122-999a-c7ded4ab3cd0",
+          "trace_line": 160,
+          "trace_sha256": "a5dcaba501913f020b9255735714f6d1060996310897b616f150e665d89763f6",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:21:39.938Z",
+          "completed": "2026-10-30T11:24:57.148Z",
+          "capture_time": "2026-10-30T11:24:57.149Z",
+          "exit": 1,
+          "argv_sha256": "6959b561bb7c8e107af7d5ef450e3ce0073659be9c26a6235f7cfdd1b9311ce7",
+          "output_sha256": "d53d7698f69acd7ee362d746e40e264e027a505757dccd06b40119a9f3aebac5",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q -c /dev/null -p pytester testing/test_mark.py",
+          "summary": [
+            "1 failed, 127 passed, 1 xfailed, 15 warnings in 158.23s (0:02:38)"
+          ]
+        },
+        {
+          "event_id": "exec-317d4e38-9c33-4af5-947b-62b02ff83906",
+          "thread": "01a18c89-6a83-73d0-95a8-fb349cbe5a1a",
+          "turn": "01a18c89-7f3d-7122-999a-c7ded4ab3cd0",
+          "trace_line": 230,
+          "trace_sha256": "a5dcaba501913f020b9255735714f6d1060996310897b616f150e665d89763f6",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:25:21.690Z",
+          "completed": "2026-10-30T11:27:37.729Z",
+          "capture_time": "2026-10-30T11:27:37.729Z",
+          "exit": 0,
+          "argv_sha256": "1ea0c7fe41ed1d9583887aab69414a877b5f5ba41149f810c3c40b1225180f4a",
+          "output_sha256": "911ee7422baa2bd500d0dcc791bb5a52b662382b979c08febd924dc5e1110cfa",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q -c /dev/null -p pytester testing/test_mark_expression.py",
+          "summary": [
+            "149 passed, 3 warnings in 69.54s (0:01:09)"
+          ]
+        },
+        {
+          "event_id": "exec-1ab95604-4d48-48d5-a991-212b46361278",
+          "thread": "01a18c89-6a83-73d0-95a8-fb349cbe5a1a",
+          "turn": "01a18c89-7f3d-7122-999a-c7ded4ab3cd0",
+          "trace_line": 237,
+          "trace_sha256": "a5dcaba501913f020b9255735714f6d1060996310897b616f150e665d89763f6",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:25:20.900Z",
+          "completed": "2026-10-30T11:27:47.134Z",
+          "capture_time": "2026-10-30T11:27:47.134Z",
+          "exit": 1,
+          "argv_sha256": "045c75c65de1daa81aeb154d60515f578a1241fd65f68470fca5c34542089481",
+          "output_sha256": "fd4d1f3bf4ee58107c924b3ba4199b63eb7d1e7409235f12639caefc74f84f6a",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q testing/test_mark.py::TestParameterSet",
+          "summary": [
+            "=================== 5 passed, 1 skipped, 1 xfailed in 13.92s ===================",
+            "1 failed, 7 passed in 82.69s (0:01:22)"
+          ]
+        },
+        {
+          "event_id": "exec-2f6220a6-6953-412e-8ce6-2ea22bb7ecf8",
+          "thread": "01a18c89-6a83-73d0-95a8-fb349cbe5a1a",
+          "turn": "01a18c89-7f3d-7122-999a-c7ded4ab3cd0",
+          "trace_line": 327,
+          "trace_sha256": "a5dcaba501913f020b9255735714f6d1060996310897b616f150e665d89763f6",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:25:08.239Z",
+          "completed": "2026-10-30T11:30:21.519Z",
+          "capture_time": "2026-10-30T11:30:21.522Z",
+          "exit": 1,
+          "argv_sha256": "573a9719b3067c3cddab8ac0463622d75c4a187fcb5207dee1bd3c570c28f05b",
+          "output_sha256": "b101942cfec997bed7fa5c006e3d57c022df7a6f007ff42bb8d9168e17a2f9c8",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q testing/test_mark.py testing/test_mark_expression.py",
+          "summary": [
+            "=================== 5 passed, 1 skipped, 1 xfailed in 0.91s ====================",
+            "1 failed, 285 passed, 1 xfailed in 246.70s (0:04:06)"
+          ]
+        },
+        {
+          "event_id": "exec-24bf128d-2d0c-4ff7-b622-c69f257b8b98",
+          "thread": "01a18c89-6a83-73d0-95a8-fb349cbe5a1a",
+          "turn": "01a18c89-7f3d-7122-999a-c7ded4ab3cd0",
+          "trace_line": 350,
+          "trace_sha256": "a5dcaba501913f020b9255735714f6d1060996310897b616f150e665d89763f6",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:26:53.232Z",
+          "completed": "2026-10-30T11:30:55.280Z",
+          "capture_time": "2026-10-30T11:30:55.285Z",
+          "exit": 0,
+          "argv_sha256": "398778aa196e30ea2cb0f207dba861cd0347d040e414647adff95042c20587a0",
+          "output_sha256": "a7dcb96b0844f52544edc8ca1dd02e08d198c446abd7ea25ee2641d96a83aa20",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q testing/test_mark.py::TestParameterSet; git diff --check",
+          "summary": [
+            "8 passed in 64.38s (0:01:04)"
+          ]
+        },
+        {
+          "event_id": "exec-bd423fc6-996c-483b-ba19-44fd282072aa",
+          "thread": "01a18c89-6a83-73d0-95a8-fb349cbe5a1a",
+          "turn": "01a18c89-7f3d-7122-999a-c7ded4ab3cd0",
+          "trace_line": 360,
+          "trace_sha256": "a5dcaba501913f020b9255735714f6d1060996310897b616f150e665d89763f6",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:28:22.622Z",
+          "completed": "2026-10-30T11:31:57.628Z",
+          "capture_time": "2026-10-30T11:31:57.628Z",
+          "exit": 0,
+          "argv_sha256": "263abd5e03ed4794d674c99eb94cb154a2f9c6ef77be8c668d74f7407fa30a07",
+          "output_sha256": "8c4400c39bc392f332fc94ca4c7b4e43dd76fccf090ed30946284c2da03bdc61",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q testing/test_mark.py",
+          "summary": [
+            "137 passed, 1 xfailed in 135.11s (0:02:15)"
+          ]
+        }
+      ],
+      "producer_declared_launcher_execution": null,
+      "external_behavior": {
+        "actor": "external-assessor",
+        "tuple_unpacking": {
+          "value": false,
+          "probe_sha256": "a12d0ac72aabddf69ecea8e9314fb442f14a4d1bb10f604d2b74ac4961b8cc75",
+          "receipt_sha256": "bc87cda27f40bf3bfb0d98dc85b593630f2a51549d2164f63988734697f4d2af",
+          "patch_sha256": "912649672caf919903043d8a4925bb4889120288ce461df1e17866f8b6a2e6c0",
+          "output_sha256": "0da4215cfd4b298c05c76d4fd4a8f6822b86d5d2596a6dcc661a8dc2dabe2c26",
+          "diagnostic_exit": 0,
+          "diagnostic": {
+            "values": [
+              7
+            ],
+            "marks": [],
+            "id": "example",
+            "tuple_instance": false,
+            "unpack_error": "TypeError"
+          },
+          "scope": "Only pytest.param field/tuple/unpacking operation. Diagnostic exit0 alone is not a behavioral pass."
+        },
+        "declared_launcher": {
+          "value": false,
+          "grade_sha256": "bbc1253d9ee64bc282aab01286000fff8496195613d750d3d45586191bd9eb19",
+          "exit": 42,
+          "log_sha256": "319d89d8e3cc32b5748bff64c381bf2fb8e7dbcf7ef1715a71258bfec8486bc4",
+          "command_sha256": "4f9820903156c4560505091d00e14aca5fbe8ead73b5bad94d18eaedaaa54245",
+          "entry": "_pytest.config:_console_main",
+          "existing_node": "testing/test_mark_expression.py::test_empty_is_false",
+          "launcher_sha256": "551fe571cabee67851cf9ac698511e7d2d3dea7eb3095d484ba0c7d9b10c422e",
+          "scope": "Frozen grader output; behavior only, not producer execution, review closure or intent."
+        }
+      },
+      "review": {
+        "final": {
+          "event_id": "msg_0d61e1a59db3ee04016ae47fc5cf0487d19c9d9985ec2de6ab",
+          "thread": "01a18c90-fd38-7260-8a82-aca6940516dd",
+          "turn": "01a18c90-fe46-7ea3-9f41-f32081f11376",
+          "trace_line": 86,
+          "trace_sha256": "d13e96d06f3363802a3e86331a44e34bab10c8c2c9c32e8586e432df72134539",
+          "observed": "2026-10-30T11:30:18.644Z",
+          "completed": "2026-10-30T11:30:18.643Z",
+          "text_sha256": "2d5af67777e874cf87d5b83d93fa2ab40ca7482ae9f492963d7087408dac977e"
+        },
+        "final_bytes": true,
+        "final_configured_completion": {
+          "event_id": "exec-bd423fc6-996c-483b-ba19-44fd282072aa",
+          "thread": "01a18c89-6a83-73d0-95a8-fb349cbe5a1a",
+          "turn": "01a18c89-7f3d-7122-999a-c7ded4ab3cd0",
+          "trace_line": 360,
+          "trace_sha256": "a5dcaba501913f020b9255735714f6d1060996310897b616f150e665d89763f6",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:28:22.622Z",
+          "completed": "2026-10-30T11:31:57.628Z",
+          "capture_time": "2026-10-30T11:31:57.628Z",
+          "exit": 0,
+          "argv_sha256": "263abd5e03ed4794d674c99eb94cb154a2f9c6ef77be8c668d74f7407fa30a07",
+          "output_sha256": "8c4400c39bc392f332fc94ca4c7b4e43dd76fccf090ed30946284c2da03bdc61"
+        },
+        "after_final_configured_completion": false,
+        "later_closure": null,
+        "scope": "Independent final source review exists; pending required outputs are not closed."
+      },
+      "preserved_failures": [
+        {
+          "event_id": "exec-e3e57adf-f566-4853-9464-9d1f30a610b0",
+          "exit": 1,
+          "output_sha256": "6abe335e16db773ed434eda1c13565a361845013c24fefd08c3ba69b1d641242"
+        },
+        {
+          "event_id": "exec-8d975536-39e6-40bc-8bde-17bef0eeada7",
+          "exit": 1,
+          "output_sha256": "b0a2f3e1865739b22232094ca4255ff74743de9af72ec0d5b0b98b30be5e0f35"
+        },
+        {
+          "event_id": "exec-60d745ca-84b0-4ce7-bd45-54ab9a468303",
+          "exit": 1,
+          "output_sha256": "d53d7698f69acd7ee362d746e40e264e027a505757dccd06b40119a9f3aebac5"
+        },
+        {
+          "event_id": "exec-d428d34a-5adc-4e4f-874a-dc8b77782e4b",
+          "exit": 1,
+          "output_sha256": "2ced987dad4029cab6df102c7a5a71733968fec1c359f021f083bd28c6bbfd02"
+        },
+        {
+          "event_id": "exec-b8045a3c-f691-4c86-a1a4-741aa406cd58",
+          "exit": 1,
+          "output_sha256": "1f56f75632abec13cba6f992b7c7a1cf96939bce6f3600961f8da20aa9a4e595"
+        },
+        {
+          "event_id": "exec-1ab95604-4d48-48d5-a991-212b46361278",
+          "exit": 1,
+          "output_sha256": "fd4d1f3bf4ee58107c924b3ba4199b63eb7d1e7409235f12639caefc74f84f6a"
+        },
+        {
+          "event_id": "exec-2f6220a6-6953-412e-8ce6-2ea22bb7ecf8",
+          "exit": 1,
+          "output_sha256": "b101942cfec997bed7fa5c006e3d57c022df7a6f007ff42bb8d9168e17a2f9c8"
+        },
+        {
+          "event_id": "exec-37786346-72b4-4aeb-a11b-836441e759fe",
+          "exit": 127,
+          "output_sha256": "7dea013dd364788dc7ab3cb06a9a387eb108e512ac21bce52360dfc4de9cef22"
+        }
+      ],
+      "first_representation_replacement": {
+        "event_id": "exec-a22ebde6-e79a-40a1-8895-2f59b2eaa2a5",
+        "thread": "01a18c89-6a83-73d0-95a8-fb349cbe5a1a",
+        "turn": "01a18c89-7f3d-7122-999a-c7ded4ab3cd0",
+        "trace_line": 159,
+        "trace_sha256": "a5dcaba501913f020b9255735714f6d1060996310897b616f150e665d89763f6",
+        "actor": "producer-root",
+        "started": "2026-10-30T11:24:39.375Z",
+        "completed": "2026-10-30T11:24:55.195Z",
+        "capture_time": "2026-10-30T11:24:55.198Z",
+        "exit": 0,
+        "argv_sha256": "3ce6d706a2eb48abfe39cf901ce43c5ef17168da6483d5304d3166290b7565f5",
+        "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "candidate": {
+      "bindings": {
+        "native_sha256": "cd4cec2fa2cd4e3b91bedeff86b0acc8d2306563ac6133c517a8811cdf925bba",
+        "result_sha256": "4862a1619528d61d276917ff5e2e5ff678308b87e063f9e45bcad302f1a90c24",
+        "submission_sha256": "3ba85f77d8688d15e65a73a1e6ade5419db7097ddb15495442b1f00a0378b400",
+        "patch_sha256": "765cca1151351741bdb356bf0a691435c44fd078228f1e091cc35d0ad103bc4e",
+        "proposal_sha256": "2daf5a508a21c231d5a2a17dee1818f0d09394a090fdc94e22faab72718963c2"
+      },
+      "root": "01a18c95-ef21-7362-b1be-f201834ab5e7",
+      "effective_threads": {
+        "01a18c95-ef21-7362-b1be-f201834ab5e7": {
+          "trace_sha256": "47ac94f89b6eb7ac0863fdedcdcbd3ea92c1971807c03bf4fa848496cbf56921",
+          "native_turns": {
+            "01a18c96-03d3-7d50-b6cd-bc47af9e2890": {
+              "model": "gpt-6.1-sol",
+              "effort": "medium",
+              "cwd_sha256": "780e437edd7453854be24f8d507a76e255f426e8afb33124e743deca79254950"
+            }
+          },
+          "parent": null
+        },
+        "01a18c97-7bf1-7f52-b31f-7827c7c21bc5": {
+          "trace_sha256": "4fa82e8d092299b0d7453ff0566f3080a6a7e1965b7cff3783f8a4ac087ccb8f",
+          "native_turns": {
+            "01a18c97-7cb4-7631-a803-3b14d07ca040": {
+              "model": "gpt-6.1-sol",
+              "effort": "medium",
+              "cwd_sha256": "780e437edd7453854be24f8d507a76e255f426e8afb33124e743deca79254950"
+            }
+          },
+          "parent": "01a18c95-ef21-7362-b1be-f201834ab5e7"
+        },
+        "01a18c9b-35be-7df2-a28d-5126d4f7557f": {
+          "trace_sha256": "afd022897a790a812d80ac935201f0cd2e8c8d507df3c80901e18db75368743b",
+          "native_turns": {
+            "01a18c9b-3729-7963-986a-72bd824c7dae": {
+              "model": "gpt-6.1-sol",
+              "effort": "medium",
+              "cwd_sha256": "780e437edd7453854be24f8d507a76e255f426e8afb33124e743deca79254950"
+            }
+          },
+          "parent": "01a18c95-ef21-7362-b1be-f201834ab5e7"
+        }
+      },
+      "native_commands_reconciled": true,
+      "command_count": 33,
+      "final_changed_file_sha256": {
+        "AUTHORS": "478398a490a6742aa9eba9c8e7961abcaa568a8a6b842c90ab8e99dab22bd168",
+        "changelog/parameterset.improvement.rst": "3637c4e1459231af362da5ab63779caf6148dff434e975b0735ce1f2d867307b",
+        "doc/en/reference/reference.rst": "6543267e4964b7274473754fe2a0e7bdfe535c9b3ef72357d8ba600e890abab2",
+        "src/_pytest/mark/structures.py": "2af4e7d75b72e33b0ca1d777da299407196f2aa98ad8c73fd916e511b9af9e63",
+        "src/pytest/__init__.py": "df9445a69f8fa85f8f0569c3b166fcd681117cf23ea0924752b1bb314c5d7326",
+        "testing/test_parameterset.py": "4f05923efbea7ddbbef8b189f61e37048f715a26a2f9579e281c23dead1fa9ba"
+      },
+      "criteria": {
+        "retain_before_edit": true,
+        "inspect_before_replace": null,
+        "outward_final_pass": null,
+        "declared_entry_final_pass": null,
+        "final_review_closed": null
+      },
+      "criteria_scope": "Retention/inspection are sourced decisions and chronology with linked external base/final behavior; final-pass and closure fields require producer-tree execution on final bytes. External behavior remains separate.",
+      "criterion_reasons": {
+        "retain_before_edit": "Candidate sourced pre-edit tuple-retention decision; retained tuple representation confirmed on final patch and exact external base/final tuple operation.",
+        "inspect_before_replace": "no representation replacement",
+        "outward_final_pass": "Producer exact-final tuple/unpacking/copy/pickle coverage unestablished. External source-bound behavior is separately recorded and never credited as a producer invocation.",
+        "declared_entry_final_pass": "Only module-route producer tests recorded; no qualifying fresh metadata-declared launcher invocation is established.",
+        "final_review_closed": "No later evidence-closing reviewer turn is recorded. Final reviewer precedes actual final configured output and does not cover qualifying declared-entry evidence. Missing closure remains null under PLAN."
+      },
+      "instruction_exposure": {
+        "injected_skill_sha256": "4347e77f5730d74f750b7bde860e5b9e996af7e6b3f0893b5947de7810a66a72",
+        "turn_input_sha256": "1a5624c9fb13be87933bac1123c2f477e78d5cea646b1371c874983b8c0501ff",
+        "trace_line": 14,
+        "time": "2026-10-30T11:33:25.504Z",
+        "payload_sha256": "e20313a4ab9ad5cb93db8e38b7573d11011bc2d3d137193d510dfa6ebe5c5f26",
+        "revised_entry_paragraph_exposed": true,
+        "scope": "Instruction exposure only; behavior judged separately."
+      },
+      "test_commands": [
+        {
+          "event_id": "exec-bc5d76cf-b302-4361-92ab-d6ea4cd49b11",
+          "thread": "01a18c95-ef21-7362-b1be-f201834ab5e7",
+          "turn": "01a18c96-03d3-7d50-b6cd-bc47af9e2890",
+          "trace_line": 80,
+          "trace_sha256": "47ac94f89b6eb7ac0863fdedcdcbd3ea92c1971807c03bf4fa848496cbf56921",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:35:12.091Z",
+          "completed": "2026-10-30T11:36:12.162Z",
+          "capture_time": "2026-10-30T11:36:12.162Z",
+          "exit": 0,
+          "argv_sha256": "0a3084b3bbd6660c8d41dfc179dc4e56b0cbf2c90f74abb894b6d0b8ec67eea0",
+          "output_sha256": "649a39c73b82aaad2d9d2ecc8a3bba446880c2c1db4ab6dc482e71e7cb4d3f35",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q -c /dev/null -p pytester testing/test_mark_expression.py",
+          "summary": [
+            "149 passed, 3 warnings in 26.53s"
+          ]
+        },
+        {
+          "event_id": "exec-53215b44-d388-4b1d-9c73-a269131dc874",
+          "thread": "01a18c95-ef21-7362-b1be-f201834ab5e7",
+          "turn": "01a18c96-03d3-7d50-b6cd-bc47af9e2890",
+          "trace_line": 116,
+          "trace_sha256": "47ac94f89b6eb7ac0863fdedcdcbd3ea92c1971807c03bf4fa848496cbf56921",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:36:16.394Z",
+          "completed": "2026-10-30T11:37:27.236Z",
+          "capture_time": "2026-10-30T11:37:27.236Z",
+          "exit": 1,
+          "argv_sha256": "5d7913a930bcf14bde902996fac260902f13bc0b864bcb4d37bd2d9fdf657708",
+          "output_sha256": "2861c882b0a75b0afdfaafaefcf2ea23fce7199d0bfd3394e451b52b24e7032d",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q -c /dev/null -p pytester testing/test_parameterset.py",
+          "summary": [
+            "7 failed, 1 warning in 36.35s"
+          ]
+        },
+        {
+          "event_id": "exec-36dbac25-0980-40d1-9e67-e52a9ecfaaac",
+          "thread": "01a18c95-ef21-7362-b1be-f201834ab5e7",
+          "turn": "01a18c96-03d3-7d50-b6cd-bc47af9e2890",
+          "trace_line": 166,
+          "trace_sha256": "47ac94f89b6eb7ac0863fdedcdcbd3ea92c1971807c03bf4fa848496cbf56921",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:37:39.025Z",
+          "completed": "2026-10-30T11:39:11.926Z",
+          "capture_time": "2026-10-30T11:39:11.934Z",
+          "exit": 0,
+          "argv_sha256": "d6790b104d862a69637f87b05aae0bbe460bb6f130451cc2bbc165a251173079",
+          "output_sha256": "250847157f1f41936513ace9843a8d88b2031aed365450749982c3b33d3ddd99",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q testing/test_parameterset.py",
+          "summary": [
+            "7 passed in 45.45s"
+          ]
+        },
+        {
+          "event_id": "exec-8380c07a-6576-40b9-920a-e7e2f4379a83",
+          "thread": "01a18c95-ef21-7362-b1be-f201834ab5e7",
+          "turn": "01a18c96-03d3-7d50-b6cd-bc47af9e2890",
+          "trace_line": 289,
+          "trace_sha256": "47ac94f89b6eb7ac0863fdedcdcbd3ea92c1971807c03bf4fa848496cbf56921",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:37:18.142Z",
+          "completed": "2026-10-30T11:41:45.191Z",
+          "capture_time": "2026-10-30T11:41:45.192Z",
+          "exit": 1,
+          "argv_sha256": "71652f10cebb73e17ed784dd7a80471d5bc21cc8c696726cc0f9f7693edcc13e",
+          "output_sha256": "217505df85f96ca3c5728e807dded631f1475184155b2c968aa671338603ee8b",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q -c /dev/null -p pytester testing/test_parameterset.py testing/test_mark_expression.py testing/test_mark.py",
+          "summary": [
+            "1 failed, 283 passed, 1 xfailed, 18 warnings in 222.80s (0:03:42)"
+          ]
+        },
+        {
+          "event_id": "exec-7b17aa13-14dd-4b79-87f1-c34b64312bae",
+          "thread": "01a18c95-ef21-7362-b1be-f201834ab5e7",
+          "turn": "01a18c96-03d3-7d50-b6cd-bc47af9e2890",
+          "trace_line": 317,
+          "trace_sha256": "47ac94f89b6eb7ac0863fdedcdcbd3ea92c1971807c03bf4fa848496cbf56921",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:39:33.179Z",
+          "completed": "2026-10-30T11:43:07.239Z",
+          "capture_time": "2026-10-30T11:43:07.239Z",
+          "exit": 0,
+          "argv_sha256": "263abd5e03ed4794d674c99eb94cb154a2f9c6ef77be8c668d74f7407fa30a07",
+          "output_sha256": "98720169565fb9bf5f4c39d5d1dbf37d6d70ef4c00bf28d9cffdab070b358493",
+          "route": "python-module",
+          "test_portion": "PYTHONPATH=src:/deps/lib python -m pytest -q testing/test_mark.py",
+          "summary": [
+            "128 passed, 1 xfailed in 129.80s (0:02:09)"
+          ]
+        }
+      ],
+      "producer_declared_launcher_execution": null,
+      "external_behavior": {
+        "actor": "external-assessor",
+        "tuple_unpacking": {
+          "value": true,
+          "probe_sha256": "a12d0ac72aabddf69ecea8e9314fb442f14a4d1bb10f604d2b74ac4961b8cc75",
+          "receipt_sha256": "bc87cda27f40bf3bfb0d98dc85b593630f2a51549d2164f63988734697f4d2af",
+          "patch_sha256": "765cca1151351741bdb356bf0a691435c44fd078228f1e091cc35d0ad103bc4e",
+          "output_sha256": "8276242bda72930412c7dc656ed33d975602af473eed52ef2725a786f40fe120",
+          "diagnostic_exit": 0,
+          "diagnostic": {
+            "values": [
+              7
+            ],
+            "marks": [],
+            "id": "example",
+            "tuple_instance": true,
+            "unpacked": [
+              [
+                7
+              ],
+              [],
+              "example"
+            ]
+          },
+          "scope": "Only pytest.param field/tuple/unpacking operation. Diagnostic exit0 alone is not a behavioral pass."
+        },
+        "declared_launcher": {
+          "value": true,
+          "grade_sha256": "ef31125c90ab887a9a2e98a4064291747d26338ce33489ee1b0ba9a993158742",
+          "exit": 0,
+          "log_sha256": "0387c66022ba21ce1d35157e585edc31892c5afbf4061416d375cc2caac0e5ff",
+          "command_sha256": "4f9820903156c4560505091d00e14aca5fbe8ead73b5bad94d18eaedaaa54245",
+          "entry": "_pytest.config:_console_main",
+          "existing_node": "testing/test_mark_expression.py::test_empty_is_false",
+          "launcher_sha256": "551fe571cabee67851cf9ac698511e7d2d3dea7eb3095d484ba0c7d9b10c422e",
+          "scope": "Frozen grader output; behavior only, not producer execution, review closure or intent."
+        }
+      },
+      "review": {
+        "final": {
+          "event_id": "msg_060d1dbbee5b2c15016ae4826a3a5887d2b2d745aa11e921ed",
+          "thread": "01a18c9b-35be-7df2-a28d-5126d4f7557f",
+          "turn": "01a18c9b-3729-7963-986a-72bd824c7dae",
+          "trace_line": 106,
+          "trace_sha256": "afd022897a790a812d80ac935201f0cd2e8c8d507df3c80901e18db75368743b",
+          "observed": "2026-10-30T11:41:33.485Z",
+          "completed": "2026-10-30T11:41:33.485Z",
+          "text_sha256": "10c3cff7c735318621496bcc20cf7985a015640d1e28f5833474d21a7fd5ce1c"
+        },
+        "final_bytes": true,
+        "final_configured_completion": {
+          "event_id": "exec-7b17aa13-14dd-4b79-87f1-c34b64312bae",
+          "thread": "01a18c95-ef21-7362-b1be-f201834ab5e7",
+          "turn": "01a18c96-03d3-7d50-b6cd-bc47af9e2890",
+          "trace_line": 317,
+          "trace_sha256": "47ac94f89b6eb7ac0863fdedcdcbd3ea92c1971807c03bf4fa848496cbf56921",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:39:33.179Z",
+          "completed": "2026-10-30T11:43:07.239Z",
+          "capture_time": "2026-10-30T11:43:07.239Z",
+          "exit": 0,
+          "argv_sha256": "263abd5e03ed4794d674c99eb94cb154a2f9c6ef77be8c668d74f7407fa30a07",
+          "output_sha256": "98720169565fb9bf5f4c39d5d1dbf37d6d70ef4c00bf28d9cffdab070b358493"
+        },
+        "after_final_configured_completion": false,
+        "later_closure": null,
+        "scope": "Independent final source review exists; pending required outputs are not closed."
+      },
+      "preserved_failures": [
+        {
+          "event_id": "exec-c5b05b31-1a25-4485-8810-1f1617941ed7",
+          "exit": 1,
+          "output_sha256": "94f1cc1521a25a0af8e194c18b98b3c3aace9816b663a7a43525c32ebe0df5f3"
+        },
+        {
+          "event_id": "exec-53215b44-d388-4b1d-9c73-a269131dc874",
+          "exit": 1,
+          "output_sha256": "2861c882b0a75b0afdfaafaefcf2ea23fce7199d0bfd3394e451b52b24e7032d"
+        },
+        {
+          "event_id": "exec-c885222d-caf6-4f65-ab80-040a38df580b",
+          "exit": 1,
+          "output_sha256": "a308cdbffabc40624ae1c2c93317ce3ccd3c33e3210d4b374d335b8d744685ea"
+        },
+        {
+          "event_id": "exec-8380c07a-6576-40b9-920a-e7e2f4379a83",
+          "exit": 1,
+          "output_sha256": "217505df85f96ca3c5728e807dded631f1475184155b2c968aa671338603ee8b"
+        },
+        {
+          "event_id": "exec-b85e7f14-d17b-4902-8c32-cb0f5c2363b5",
+          "exit": 127,
+          "output_sha256": "56e82d03c3ed16f0c57a6eb816330fc89de066e6f9e1cda24d60023a0adb4fef"
+        }
+      ],
+      "retention_decision": {
+        "event_id": "msg_0544d3dbf1d85f63016ae480db1e7887d1982cf255ec0760a5",
+        "thread": "01a18c95-ef21-7362-b1be-f201834ab5e7",
+        "turn": "01a18c96-03d3-7d50-b6cd-bc47af9e2890",
+        "trace_line": 48,
+        "trace_sha256": "47ac94f89b6eb7ac0863fdedcdcbd3ea92c1971807c03bf4fa848496cbf56921",
+        "observed": "2026-10-30T11:34:52.205Z",
+        "completed": "2026-10-30T11:34:52.204Z",
+        "text_sha256": "ef4016ea7a856c730841ba96e8f18b21091329bea0326bcd6d03394d6a71a364",
+        "excerpt": "preserve its fields and tuple operations"
+      },
+      "pre_edit_inspection": {
+        "event_id": "exec-c5b05b31-1a25-4485-8810-1f1617941ed7",
+        "thread": "01a18c95-ef21-7362-b1be-f201834ab5e7",
+        "turn": "01a18c96-03d3-7d50-b6cd-bc47af9e2890",
+        "trace_line": 65,
+        "trace_sha256": "47ac94f89b6eb7ac0863fdedcdcbd3ea92c1971807c03bf4fa848496cbf56921",
+        "actor": "producer-root",
+        "started": "2026-10-30T11:35:16.869Z",
+        "completed": "2026-10-30T11:35:38.250Z",
+        "capture_time": "2026-10-30T11:35:38.251Z",
+        "exit": 1,
+        "argv_sha256": "3fb3bcd3745f909fec2c79d9e7d90633a0890d0c613ef91fa6e43d10a42cb280",
+        "output_sha256": "94f1cc1521a25a0af8e194c18b98b3c3aace9816b663a7a43525c32ebe0df5f3",
+        "operation_assertions_passed": true,
+        "terminal_missing_export_failure": true,
+        "scope": "Public pytest.param tuple/_make/_replace/pickle assertions completed before first source edit; overall exit1 is retained for subsequent missing-public-export assertion."
+      },
+      "first_source_edit": {
+        "event_id": "exec-a0f83586-c16e-4b77-9aad-8d597bb64486",
+        "thread": "01a18c95-ef21-7362-b1be-f201834ab5e7",
+        "turn": "01a18c96-03d3-7d50-b6cd-bc47af9e2890",
+        "trace_line": 113,
+        "trace_sha256": "47ac94f89b6eb7ac0863fdedcdcbd3ea92c1971807c03bf4fa848496cbf56921",
+        "actor": "producer-root",
+        "started": "2026-10-30T11:37:04.208Z",
+        "completed": "2026-10-30T11:37:15.561Z",
+        "capture_time": "2026-10-30T11:37:15.562Z",
+        "exit": 0,
+        "argv_sha256": "32274a70e747ea991e7609d52d188796a2bcce0dbde8a669935577ba1902f8cf",
+        "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "producer_seven_test_final_binding": {
+        "value": null,
+        "test": {
+          "event_id": "exec-36dbac25-0980-40d1-9e67-e52a9ecfaaac",
+          "thread": "01a18c95-ef21-7362-b1be-f201834ab5e7",
+          "turn": "01a18c96-03d3-7d50-b6cd-bc47af9e2890",
+          "trace_line": 166,
+          "trace_sha256": "47ac94f89b6eb7ac0863fdedcdcbd3ea92c1971807c03bf4fa848496cbf56921",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:37:39.025Z",
+          "completed": "2026-10-30T11:39:11.926Z",
+          "capture_time": "2026-10-30T11:39:11.934Z",
+          "exit": 0,
+          "argv_sha256": "d6790b104d862a69637f87b05aae0bbe460bb6f130451cc2bbc165a251173079",
+          "output_sha256": "250847157f1f41936513ace9843a8d88b2031aed365450749982c3b33d3ddd99"
+        },
+        "later_relevant_source_edit": {
+          "event_id": "exec-c885222d-caf6-4f65-ab80-040a38df580b",
+          "thread": "01a18c95-ef21-7362-b1be-f201834ab5e7",
+          "turn": "01a18c96-03d3-7d50-b6cd-bc47af9e2890",
+          "trace_line": 129,
+          "trace_sha256": "47ac94f89b6eb7ac0863fdedcdcbd3ea92c1971807c03bf4fa848496cbf56921",
+          "actor": "producer-root",
+          "started": "2026-10-30T11:37:55.334Z",
+          "completed": "2026-10-30T11:38:06.452Z",
+          "capture_time": "2026-10-30T11:38:06.452Z",
+          "exit": 1,
+          "argv_sha256": "e9c1c0b13a94a18bf160d90e1ccb005e8b61a8962526fb69cf63b66a2861a319",
+          "output_sha256": "a308cdbffabc40624ae1c2c93317ce3ccd3c33e3210d4b374d335b8d744685ea"
+        },
+        "support_only_ast_equivalence": true,
+        "support_sha256": "9cde6ed07323afe4cadaf9ce4d0491ede133c447a3c5db12835d2aa20fe1c12b",
+        "reason": "Test starts before later relevant source edit. Supporting AST equality is not exact-byte credit."
+      }
+    }
+  },
+  "shared_inputs": {
+    "pyproject.toml": "9f7f69ac0a2a77f329e0689306ab1b904059acc67ddaaecec18ee0582cc7f2e9",
+    "tox.ini": "14aaa094ae0306cfc7a35efc5df0ede9afc3acd2f19dc2b8c98da990203a7c3e",
+    "existing_test": "6efe7b62b6f0231671c445688fd7cdf721f72005a535591d0820bfcc4d121f20",
+    "dependencies_sha256": "3943d438ec411c91cbe477975e33cf4846643cd9a896e6f83e099a65e9561e72"
+  },
+  "prior_equivalent_path": false,
+  "distinct_positive_mechanism": null,
+  "complete_preregistered_uptake": null,
+  "interpretation": "Visible candidate retention and a pre-edit public check contrast with matched prior replacement. No complete mechanism claim: producer exact-final selected-operation coverage, declared-entry execution and final evidence-closing review are unestablished. External behavior verifies only tested operations and does not reconstruct producer intent or causal savings.",
+  "bounded_audit_correction": {
+    "preparation_boundary_incident_sha256": "5d18697c1cb9716931db09df0dc39dbab1e888326ace2dd1ae4e4c0a55c7233b",
+    "disclosure": "An overbroad read-only preparation search was stopped. No #19 content or matches were returned; file-open scope is unknown. No hints were transmitted to actors/judges and no scores changed. Deliberate #19 history inspection began only after explicit seal confirmation.",
+    "interpretation_correction": "No-replacement candidate inspect_before_replace is null, not true; its actual pre-edit inspection is a separate sourced fact. Formatting-equivalent source edits do not earn exact-final-byte producer credit."
+  },
+  "limits": [
+    "All100 native commands across8ownthreads reconcile to authenticated own turns and first sidecar identities. Encrypted communications are not interpreted.",
+    "All producer tests in the recorded test inventory use python -m pytest. Absence of a qualifying producer launcher stays null.",
+    "Stock free workflow is described without imposing Develop review obligations.",
+    "No new actor, model, test, caller replay, provider or grading run was performed by this uptake audit. No scores/registration/PLAN/raw history changed.",
+    "Observed blind quality, readiness and complete economics remain separate normal record fields. This exposed draw establishes no causal savings, transfer or promotion."
+  ]
+}

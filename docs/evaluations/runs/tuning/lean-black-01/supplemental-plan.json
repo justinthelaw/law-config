@@ -1,0 +1,9 @@
+{
+  "name": "black-blocked-candidate-postseal-functional-check",
+  "trigger": "Canonical candidate native hook timeout rejected the slot before executable grading.",
+  "timing": "Declared before inspecting participant patches or reviewer content. Run only after all Black participant and judge slots seal.",
+  "input": "Exact sealed candidate.patch whose hash is recorded in black-hook-technical-receipt.json.",
+  "check": "Unmodified canonical grading.grade on the frozen Black base, dependencies and four mandatory stages in a fresh snapshot.",
+  "output": "supplemental/black-blocked-candidate/grade.json under the existing isolated pilot state.",
+  "interpretation": "Supplemental functional evidence only. Never overwrite canonical attempt grade, state, attestation or pricing. The original blocked slot remains unavailable and cannot count as a ready submission, a complete-cost pair or a strict win."
+}

@@ -1,7 +1,0 @@
----
-interface:
-  icon_small: "./assets/icon.png"
-  icon_large: "./assets/icon.png"
-  display_name: "Develop: Interface Design"
-  short_description: "Plan interface flows, states and accessibility"
-  default_prompt: "Use $interface-design for the selected interface work, reusing existing components and tokens. Combine engineering decisions into one brief and review under the current execution owner."

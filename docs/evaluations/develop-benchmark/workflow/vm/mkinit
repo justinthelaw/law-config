@@ -1,0 +1,16 @@
+#!/bin/sh
+set -eu
+k=$(ls /lib/modules)
+d=/tmp/init-builder
+mkdir -p "$d"/bin "$d"/sys "$d"/proc "$d"/dev "$d"/guest
+cp /bin/busybox "$d"/bin/
+cp /worker-init "$d"/init
+chmod +x "$d"/init
+for m in virtio_pci virtio_console 9pnet_virtio 9p; do
+ for path in $(modprobe -S "$k" --show-depends "$m" | awk '{print $2}'); do
+  cp --parents "$path" "$d"
+ done
+done
+depmod -b "$d" "$k"
+(cd "$d"; find . -print0 | cpio --null -o -H newc | gzip -1 > /worker.initrd)
+cp "/boot/vmlinuz-$k" /worker.kernel

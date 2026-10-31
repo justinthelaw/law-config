@@ -1,0 +1,68 @@
+{
+  "case_id": "django",
+  "plan_sha256": "10864a78108003f2b2616a695a00013dbbb3ac1bb4e7b0ffaca5b714041511af",
+  "kind": "post-publication reproduction",
+  "scope": "Post-publication replay of the assessors’ missing-related-row example. The frozen panel measured different XOR predicates.",
+  "toolchain": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+  "dependencies_sha256": "75bdf98b64728fd7a8ec109f93848c669b8ba2bea23f1ba2b3c9b5a3007e45a4",
+  "probe": "\"\"\"Exercise the nullable relationship used by Django's own query tests.\"\"\"\nimport json\nimport sys\nfrom pathlib import Path\n\nsys.path[:0] = [str(Path.cwd()), str(Path.cwd() / \"tests\"), \"/deps/lib\"]\nfrom django.conf import settings\nsettings.configure(INSTALLED_APPS=[\"queries\"], DATABASES={\n    \"default\": {\"ENGINE\": \"django.db.backends.sqlite3\", \"NAME\": \":memory:\"}})\nimport django\ndjango.setup()\nfrom django.db import connection\nfrom django.db.models import Q\nfrom queries.models import BaseA, FK1, FK2, FK3\n\nwith connection.schema_editor() as schema:\n    for model in (FK1, FK2, FK3, BaseA):\n        schema.create_model(model)\nrow = BaseA.objects.create()\nquery = BaseA.objects.filter(~(Q(a__f1__isnull=True) ^ Q(a__f2__isnull=True)))\nprint(json.dumps({\"inserted\": row.pk, \"returned\": list(query.values_list(\"pk\", flat=True)),\n                  \"expected\": [row.pk], \"sql\": str(query.query)}))\n\n",
+  "probe_sha256": "1c8ddd92799b2d36f6a11a86ddac8fb323065e643c16c17f0b6df480c9d852c2",
+  "results": {
+    "base": {
+      "starting_revision": "e9414948e9660ee4c167eebb187710ee3031d9d8",
+      "patch_sha256": null,
+      "grade_sha256": "b792eb48cf15279bb7da65977dd791fde9f5fb0ca2d6e05b33b54d72668d356c",
+      "observation": {
+        "inserted": 1,
+        "returned": [],
+        "expected": [
+          1
+        ],
+        "sql": "SELECT \"queries_basea\".\"id\", \"queries_basea\".\"a_id\", \"queries_basea\".\"b_id\", \"queries_basea\".\"c_id\" FROM \"queries_basea\" INNER JOIN \"queries_fk1\" ON (\"queries_basea\".\"a_id\" = \"queries_fk1\".\"id\") WHERE NOT ((\"queries_fk1\".\"f1\" IS NULL OR \"queries_fk1\".\"f2\" IS NULL) AND 1 = (CASE WHEN \"queries_fk1\".\"f1\" IS NULL THEN 1 ELSE 0 END + CASE WHEN \"queries_fk1\".\"f2\" IS NULL THEN 1 ELSE 0 END))"
+      }
+    },
+    "upstream": {
+      "starting_revision": "77eea99b455396145188305c31284720751df6f5",
+      "patch_sha256": "6b92439cf9edeefdee82d813f27b648238b83278f6593a343130bc1e1326b68c",
+      "grade_sha256": "9fd304b911e7ea427da265514ea0a354e81cf0fe55dac78f0f3a6f9b441ac07a",
+      "observation": {
+        "inserted": 1,
+        "returned": [
+          1
+        ],
+        "expected": [
+          1
+        ],
+        "sql": "SELECT \"queries_basea\".\"id\", \"queries_basea\".\"a_id\", \"queries_basea\".\"b_id\", \"queries_basea\".\"c_id\" FROM \"queries_basea\" LEFT OUTER JOIN \"queries_fk1\" ON (\"queries_basea\".\"a_id\" = \"queries_fk1\".\"id\") WHERE NOT ((\"queries_fk1\".\"f1\" IS NULL OR \"queries_fk1\".\"f2\" IS NULL) AND 1 = (CASE WHEN \"queries_fk1\".\"f1\" IS NULL THEN 1 ELSE 0 END + CASE WHEN \"queries_fk1\".\"f2\" IS NULL THEN 1 ELSE 0 END))"
+      }
+    },
+    "control": {
+      "starting_revision": "e9414948e9660ee4c167eebb187710ee3031d9d8",
+      "patch_sha256": "e940481738225002fac2c2ea1235422db745bcc7a3e399113e7f36c1a083e9ed",
+      "grade_sha256": "49e6d7b5c5fb51dbfe80272ab92fb54a6e2b860025ca7f4e12398c46467f1f43",
+      "observation": {
+        "inserted": 1,
+        "returned": [],
+        "expected": [
+          1
+        ],
+        "sql": "SELECT \"queries_basea\".\"id\", \"queries_basea\".\"a_id\", \"queries_basea\".\"b_id\", \"queries_basea\".\"c_id\" FROM \"queries_basea\" INNER JOIN \"queries_fk1\" ON (\"queries_basea\".\"a_id\" = \"queries_fk1\".\"id\") WHERE NOT ((\"queries_fk1\".\"f1\" IS NULL OR \"queries_fk1\".\"f2\" IS NULL) AND 1 = (CASE WHEN \"queries_fk1\".\"f1\" IS NULL THEN 1 ELSE 0 END + CASE WHEN \"queries_fk1\".\"f2\" IS NULL THEN 1 ELSE 0 END))"
+      }
+    },
+    "develop": {
+      "starting_revision": "e9414948e9660ee4c167eebb187710ee3031d9d8",
+      "patch_sha256": "e2492af4cc13bcf823a47609db6d5a128d6dddc15693c6329de4f28bc2622479",
+      "grade_sha256": "e0c5ed2b5c92dd180436522260d08fca128b2aa29a4eca2783f5e9facda81bcb",
+      "observation": {
+        "inserted": 1,
+        "returned": [],
+        "expected": [
+          1
+        ],
+        "sql": "SELECT \"queries_basea\".\"id\", \"queries_basea\".\"a_id\", \"queries_basea\".\"b_id\", \"queries_basea\".\"c_id\" FROM \"queries_basea\" INNER JOIN \"queries_fk1\" ON (\"queries_basea\".\"a_id\" = \"queries_fk1\".\"id\") WHERE NOT ((\"queries_fk1\".\"f1\" IS NULL OR \"queries_fk1\".\"f2\" IS NULL) AND 1 = (CASE WHEN \"queries_fk1\".\"f1\" IS NULL THEN 1 ELSE 0 END + CASE WHEN \"queries_fk1\".\"f2\" IS NULL THEN 1 ELSE 0 END))"
+      }
+    }
+  },
+  "bundle": "capacity-recovery-10864a781080/run.json",
+  "submissions_sha256": "8be1aa6e76203f96f3f1acccdd45233d9f14f1d48f377a982a624c508a5464c6"
+}

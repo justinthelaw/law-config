@@ -1,0 +1,9 @@
+{
+  "label": "owner-config-check",
+  "package_sha256": "46e71b22bec6694338151494e4d96c8e0e723e0eb2a7f3bf7692c73ad5919479",
+  "plugin_hook_sha256": "36ef31653e6084f6ddb7aa776bdbe72cac3752228b3ac0c63a4b4e2609c1b006",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}

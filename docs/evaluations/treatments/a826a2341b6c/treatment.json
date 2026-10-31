@@ -1,0 +1,9 @@
+{
+  "label": "verify-caller-boundary",
+  "package_sha256": "a826a2341b6c2e360099ceb56981fd5adce3b92af160bbb7db3f2ac48467f3ff",
+  "plugin_hook_sha256": "6e688ee238bf04de4bb7f2e5b60e0ba849fa3ff9cfd1f1e78df53555dc37affd",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}

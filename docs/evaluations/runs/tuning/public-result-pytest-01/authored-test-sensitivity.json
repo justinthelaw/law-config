@@ -1,0 +1,714 @@
+{
+  "format": "law-config.authored-test-sensitivity/v1",
+  "case": "public-result-pytest-01",
+  "scope": "Post-score, evaluator-only, one exposed sealed pytest task; official gates, scores, producer state and result remain unchanged.",
+  "source_result": {
+    "path": "docs/evaluations/runs/tuning/public-result-pytest-01/result.json",
+    "sha256": "2877f04236ade4d162b9645cc3697174852098bfd5afae551198b683df5c21cb",
+    "base_commit": "4088e1a84ef1cb8ba80aac4e75449459fc092c12",
+    "merged_commit": "0f54d41bedf00505bb1ac2c724abf96ba6dcf48d",
+    "registration_sha256": "a3d287d45834d80373e87e66808b8903102e0f52ec4352722dc8554954122e8f",
+    "official_runtime_sha256": "a9cc8fbcb356eeb34cb4bc365a7b0ec9fbd871d00c13e1ebbb325c916ccbd01d",
+    "rubric_sha256": "0bdd8699f00ba1f5266927d7666bc2a117fa4873e113fdfa831da93cd2abbc08"
+  },
+  "official_quality": {
+    "control": {
+      "full_pr_points_100": 60.0,
+      "testing_axis_median_4": 3,
+      "testing_axis_rotations": [
+        3,
+        2,
+        3
+      ]
+    },
+    "develop": {
+      "full_pr_points_100": 96.25,
+      "testing_axis_median_4": 4,
+      "testing_axis_rotations": [
+        4,
+        4,
+        4
+      ]
+    }
+  },
+  "runtime": {
+    "image": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+    "python": "3.13.18",
+    "dependency_sha256": "3943d438ec411c91cbe477975e33cf4846643cd9a896e6f83e099a65e9561e72",
+    "cpus": [
+      0,
+      1
+    ],
+    "native_physical_cpu_lease": true,
+    "network": "none",
+    "production_and_test_mounts": "read-only",
+    "plugin_autoload": false,
+    "source_identity": "pytest and structures __file__ asserted under /work/src, guest hashes match sealed files; every tracked src file plus configs and selected tests independently matches pinned commit/exact published patch using private Git index; same generated _version.py across roles",
+    "test_overlay": "unchanged base testing tree and conftest, exact authored test modules, selected genuine added nodes; raw checkouts unmodified",
+    "temporary_storage": "task-local ignored scratch, guest /evidence paths; Docker helper also supplies unused /tmp tmpfs and HOME=/tmp"
+  },
+  "identities": {
+    "base": {
+      "grade_sha256": "915e2b2a63df1fa038e29ca85747e6e2bcc42750bba4d64bab8af94d8acb51c7",
+      "patch_sha256": null,
+      "expected_tree": "5672c2c4bcece9d1136230efe62c12208b03c38a",
+      "verified_source_and_config_files": 88,
+      "selected_files": {
+        "pyproject.toml": "9f7f69ac0a2a77f329e0689306ab1b904059acc67ddaaecec18ee0582cc7f2e9",
+        "src/_pytest/mark/__init__.py": "c565911e9fbd1c5930220e91dbe1bea5f5bb153c0f4252d4e9b4e26d255f6104",
+        "src/_pytest/mark/structures.py": "e4cb4b1fdd5f7f622918f5ccabf35c1287dc394edbe726928c03614e6aecd10c",
+        "src/pytest/__init__.py": "8b19f64ea65bc944535c29f01e832eb3aab30525b035fad583c36a7aa7231132",
+        "testing/conftest.py": "595b9deba2ba383523ce794edab22ef1fc42222f7b42b63d0d26b6baf8b86211",
+        "testing/test_mark.py": "d656827c8f53ae6bdd91c82ccc2b45993364c64ae6a5259689c815f3c1910331",
+        "tox.ini": "14aaa094ae0306cfc7a35efc5df0ede9afc3acd2f19dc2b8c98da990203a7c3e",
+        "src/_pytest/_version.py": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e"
+      }
+    },
+    "merged": {
+      "grade_sha256": "7bc93d9d71342e190b3cef0eb7545b71188804df9918aea76f5c954311fc8da2",
+      "patch_sha256": "a99a7d0fb3b9ce80997a2236170e14e4d27161acdd1a897651bce1e630c6cce7",
+      "expected_tree": "d2ab21025cac52250c44e21140d0c468a33ca253",
+      "verified_source_and_config_files": 88,
+      "selected_files": {
+        "pyproject.toml": "9f7f69ac0a2a77f329e0689306ab1b904059acc67ddaaecec18ee0582cc7f2e9",
+        "src/_pytest/mark/__init__.py": "c565911e9fbd1c5930220e91dbe1bea5f5bb153c0f4252d4e9b4e26d255f6104",
+        "src/_pytest/mark/structures.py": "e8322e0b57aa8c8bb8150a563a3bc8b85983b3f30645773dcc7488b1db6e9755",
+        "src/pytest/__init__.py": "df9445a69f8fa85f8f0569c3b166fcd681117cf23ea0924752b1bb314c5d7326",
+        "testing/conftest.py": "595b9deba2ba383523ce794edab22ef1fc42222f7b42b63d0d26b6baf8b86211",
+        "testing/test_mark.py": "d656827c8f53ae6bdd91c82ccc2b45993364c64ae6a5259689c815f3c1910331",
+        "tox.ini": "14aaa094ae0306cfc7a35efc5df0ede9afc3acd2f19dc2b8c98da990203a7c3e",
+        "src/_pytest/_version.py": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e"
+      }
+    },
+    "stock": {
+      "grade_sha256": "15007f1b323cb7b5075b124d50af2a1929c2dfd5f0f2020e51e1fb709503dcf4",
+      "patch_sha256": "da9659ab93ccd3c834d22aaafbf8cd8aeacdbdd01b55daaf7c9033cfa819a538",
+      "expected_tree": "19b4814f9e2ba8e2fa404931d5ef9e5d3c39eeca",
+      "verified_source_and_config_files": 88,
+      "selected_files": {
+        "pyproject.toml": "9f7f69ac0a2a77f329e0689306ab1b904059acc67ddaaecec18ee0582cc7f2e9",
+        "src/_pytest/mark/__init__.py": "1bb67bb418c31645ab163af0491d5809fa99ce6af71c243c9d5426aed71ce825",
+        "src/_pytest/mark/structures.py": "15731a40ab4f12079ad510825767f5b63027e6c615df8a8a5eaee775cdf610be",
+        "src/pytest/__init__.py": "df9445a69f8fa85f8f0569c3b166fcd681117cf23ea0924752b1bb314c5d7326",
+        "testing/conftest.py": "595b9deba2ba383523ce794edab22ef1fc42222f7b42b63d0d26b6baf8b86211",
+        "testing/test_mark.py": "457007dceecf938ef026537b42dd0ada73241eb6b3850f2c5c145ddd03c5724a",
+        "tox.ini": "14aaa094ae0306cfc7a35efc5df0ede9afc3acd2f19dc2b8c98da990203a7c3e",
+        "src/_pytest/_version.py": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e"
+      }
+    },
+    "develop": {
+      "grade_sha256": "e1d3710550ce30f5102569b16f15f837f544e086a3d23c6bf5cdd745f95eecb3",
+      "patch_sha256": "e38185b72060140d23990b6750979ba75ac5b472ba52fc49a3f4a10ca69e50ad",
+      "expected_tree": "0588a950f7821b7fd4f60b85b4962cb6ecd6136e",
+      "verified_source_and_config_files": 89,
+      "selected_files": {
+        "pyproject.toml": "9f7f69ac0a2a77f329e0689306ab1b904059acc67ddaaecec18ee0582cc7f2e9",
+        "src/_pytest/mark/__init__.py": "9c0fc473a8e4e491d84c49286522a822b051c427790071814aa7b111c3ce7b65",
+        "src/_pytest/mark/structures.py": "c046a949b68addf59ff0e3779b7e09688590561d37b81ad69d24e7a6c8502027",
+        "src/pytest/__init__.py": "df9445a69f8fa85f8f0569c3b166fcd681117cf23ea0924752b1bb314c5d7326",
+        "testing/conftest.py": "595b9deba2ba383523ce794edab22ef1fc42222f7b42b63d0d26b6baf8b86211",
+        "testing/test_mark.py": "d656827c8f53ae6bdd91c82ccc2b45993364c64ae6a5259689c815f3c1910331",
+        "testing/test_parameter_set.py": "50d222f8d33a4cd89673903fc7afdf4974edc2c34189e5003c66df3e24bac923",
+        "tox.ini": "14aaa094ae0306cfc7a35efc5df0ede9afc3acd2f19dc2b8c98da990203a7c3e",
+        "src/_pytest/_version.py": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e"
+      }
+    }
+  },
+  "stock_selection": {
+    "test_module": "testing/test_mark.py",
+    "new_test_methods": 6,
+    "new_namespace_parametrization_cases": 1,
+    "expanded_cases": 10,
+    "node_selection": [
+      "testing/test_mark.py::TestParameterSet::test_public_type",
+      "testing/test_mark.py::TestParameterSet::test_factory_preserves_marks",
+      "testing/test_mark.py::TestParameterSet::test_direct_construction_warns",
+      "testing/test_mark.py::TestParameterSet::test_immutable",
+      "testing/test_mark.py::TestParameterSet::test_extract_from",
+      "testing/test_mark.py::TestParameterSet::test_parametrize",
+      "testing/test_mark.py::TestMark::test_pytest_exists_in_namespace_all[ParameterSet]"
+    ],
+    "excluded": "existing namespace cases mark/param, all other unchanged tests; added typing_checks.py::check_parameter_set is not a pytest test and no static checker ran"
+  },
+  "develop_selection": {
+    "test_module": "testing/test_parameter_set.py",
+    "new_test_functions": 7,
+    "intended_expanded_cases": 15,
+    "node_selection": [
+      "testing/test_parameter_set.py::test_public_parameter_set",
+      "testing/test_parameter_set.py::test_parameter_set_factories",
+      "testing/test_parameter_set.py::test_parameter_set_mark_collection",
+      "testing/test_parameter_set.py::test_parameter_set_direct_construction",
+      "testing/test_parameter_set.py::test_parameter_set_extraction",
+      "testing/test_parameter_set.py::test_parameter_set_tuple_compatibility",
+      "testing/test_parameter_set.py::test_parameter_set_parametrization"
+    ],
+    "factory_product": "2 factories times 4 IDs = 8 cases; both factories auto-name param, conflicting under strict configuration"
+  },
+  "native_config_matrix": {
+    "pytest_arguments": [
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp=/evidence/<condition>-temp/pytest",
+      "--junitxml=/evidence/<condition>.xml",
+      "<selected nodes>"
+    ],
+    "stock": {
+      "base": {
+        "exit": 1,
+        "collected": 10,
+        "executed_call_cases": 10,
+        "passed": 1,
+        "test_failures": 9,
+        "skipped": 0,
+        "failures": [
+          {
+            "node": "testing/test_mark.py::TestParameterSet::test_public_type[None]",
+            "phase": "call",
+            "reason": "missing public export on task base"
+          },
+          {
+            "node": "testing/test_mark.py::TestParameterSet::test_public_type[case]",
+            "phase": "call",
+            "reason": "missing public export on task base"
+          },
+          {
+            "node": "testing/test_mark.py::TestParameterSet::test_public_type[_HiddenParam.token]",
+            "phase": "call",
+            "reason": "missing public export on task base"
+          },
+          {
+            "node": "testing/test_mark.py::TestParameterSet::test_direct_construction_warns[False]",
+            "phase": "call",
+            "reason": "missing public export on task base"
+          },
+          {
+            "node": "testing/test_mark.py::TestParameterSet::test_direct_construction_warns[True]",
+            "phase": "call",
+            "reason": "missing public export on task base"
+          },
+          {
+            "node": "testing/test_mark.py::TestParameterSet::test_immutable",
+            "phase": "call",
+            "reason": "representation-specific expectation: FrozenInstanceError required, tuple correctly raises AttributeError on assignment"
+          },
+          {
+            "node": "testing/test_mark.py::TestParameterSet::test_extract_from",
+            "phase": "call",
+            "reason": "missing public export on task base"
+          },
+          {
+            "node": "testing/test_mark.py::TestMark::test_pytest_exists_in_namespace_all[ParameterSet]",
+            "phase": "call",
+            "reason": "missing public export on task base"
+          },
+          {
+            "node": "testing/test_mark.py::TestParameterSet::test_parametrize",
+            "phase": "call",
+            "reason": "missing public export on task base"
+          }
+        ],
+        "log_sha256": "6460d83e8203f52071ea2a4a271478b3b6563007a44488d4d04b36e930dbcd1b",
+        "driver_log_sha256": "4747f7ef4bcb4f40f5053d06cfc534b9ee7fd95dd19e0b6a5db5913b240718da",
+        "xml_sha256": "a7c6bdd8943a04289162253aa2c95dadbf3a4348ea03030b1d670fb1ebfc5f86"
+      },
+      "merged": {
+        "exit": 1,
+        "collected": 10,
+        "executed_call_cases": 10,
+        "passed": 7,
+        "test_failures": 3,
+        "skipped": 0,
+        "failures": [
+          {
+            "node": "testing/test_mark.py::TestParameterSet::test_direct_construction_warns[False]",
+            "phase": "call",
+            "reason": "merged implementation does not emit requested direct-construction deprecation"
+          },
+          {
+            "node": "testing/test_mark.py::TestParameterSet::test_direct_construction_warns[True]",
+            "phase": "call",
+            "reason": "merged implementation does not emit requested direct-construction deprecation"
+          },
+          {
+            "node": "testing/test_mark.py::TestParameterSet::test_immutable",
+            "phase": "call",
+            "reason": "representation-specific expectation: FrozenInstanceError required, tuple correctly raises AttributeError on assignment"
+          }
+        ],
+        "log_sha256": "b77f691968339e310305dbc3b08056ba8276b1b5fb85682d1f775b5e5b4fce0a",
+        "driver_log_sha256": "b2d2b7352bf17558962e5362de11c7b13e43b112cd3102392e9c344c0271d67e",
+        "xml_sha256": "81cb5812c2ff0411a442610d974e73517f89935bf9d0394bfbc5495b0e9e9b87"
+      },
+      "stock": {
+        "exit": 0,
+        "collected": 10,
+        "executed_call_cases": 10,
+        "passed": 10,
+        "test_failures": 0,
+        "skipped": 0,
+        "failures": [],
+        "log_sha256": "810ca1e58c25d5e0eb8205829407dd480e99f1ceea99699f6ac1a09a9b1b1010",
+        "driver_log_sha256": "fbbe761f2109ddade3330b6f0489f9b96b4ae232f288942560c4bdb82c33e142",
+        "xml_sha256": "7951a6455dffd47aa996bd26a951c2a6ff3bf2793bd8564d747f15c8b4cdc05a"
+      },
+      "develop": {
+        "exit": 1,
+        "collected": 10,
+        "executed_call_cases": 10,
+        "passed": 9,
+        "test_failures": 1,
+        "skipped": 0,
+        "failures": [
+          {
+            "node": "testing/test_mark.py::TestParameterSet::test_immutable",
+            "phase": "call",
+            "reason": "representation-specific expectation: FrozenInstanceError required, tuple correctly raises AttributeError on assignment"
+          }
+        ],
+        "log_sha256": "d6bc4f4a1b6aa6df950c12865bf9209ba3a9794d1d392fe355dd0ad4b031efec",
+        "driver_log_sha256": "2de4921b028b1fae82f475e2dab60a39a40607ed87145c24fb5ab151fd3069d1",
+        "xml_sha256": "cb3e5d14bfb5ad1599ff3c20910a61af30418c9f9dd75111c46345ed20ed876f"
+      }
+    },
+    "develop_full": {
+      "base": {
+        "exit": 4,
+        "collected": 0,
+        "executed_call_cases": 0,
+        "passed": 0,
+        "test_failures": 0,
+        "skipped": 0,
+        "failures": [],
+        "log_sha256": "9cba97e3f692323161c480c7cedd28320ffc3b09f497a29ced3a619edecc1bd0",
+        "driver_log_sha256": "da660142c783bd3a320db3de59270e0b2c12608071e718ff0dd3c8961c544a53",
+        "xml_sha256": "580af1c2b2908c7814c239eafcc53eb0380ddf88cec8bbb910de446aaf7ad98c",
+        "collection_error": "strict project configuration rejects duplicate parametrization IDs param,param for factory arguments; 15 intended cases uncollected, zero test failures"
+      },
+      "merged": {
+        "exit": 4,
+        "collected": 0,
+        "executed_call_cases": 0,
+        "passed": 0,
+        "test_failures": 0,
+        "skipped": 0,
+        "failures": [],
+        "log_sha256": "b5f5497be82d41bd860e5fb941a84221fdff542fdcca8463c2da560ec94b0e5c",
+        "driver_log_sha256": "8e89e0a2de37d2e853b4525c943904abdf69de1ae955eea6a7be4bb3a518457b",
+        "xml_sha256": "85d18b22bbc2537ca5f767788bf908128d95f62d11e1c5a272bafa439f2a344f",
+        "collection_error": "strict project configuration rejects duplicate parametrization IDs param,param for factory arguments; 15 intended cases uncollected, zero test failures"
+      },
+      "stock": {
+        "exit": 4,
+        "collected": 0,
+        "executed_call_cases": 0,
+        "passed": 0,
+        "test_failures": 0,
+        "skipped": 0,
+        "failures": [],
+        "log_sha256": "b9a02e0ee08c6017f6869025e65bc2d615c1ceb5ce24452a9f0bbd91c9aee491",
+        "driver_log_sha256": "dd998c14cba1ea5fad0e4330f5e8fcb812dc851a831c1d4cacb43ef154b8d405",
+        "xml_sha256": "61ee109842ca54e6502eb5d26eb22d9a9294ea9a776ed91bbcbf3c01419f1faa",
+        "collection_error": "strict project configuration rejects duplicate parametrization IDs param,param for factory arguments; 15 intended cases uncollected, zero test failures"
+      },
+      "develop": {
+        "exit": 4,
+        "collected": 0,
+        "executed_call_cases": 0,
+        "passed": 0,
+        "test_failures": 0,
+        "skipped": 0,
+        "failures": [],
+        "log_sha256": "65c08f19d4213b0ee1dd1943948bead07884f46bb2179903ccac85b29946e34b",
+        "driver_log_sha256": "a00049bb27d2ac1b1e76f57e4a7854198b02d0a9f03be6c3ff860462b45c011b",
+        "xml_sha256": "b5db6812d62a73a9e256ace55ace40d8a2a3360a773a5d68ea325836ff3ffc82",
+        "collection_error": "strict project configuration rejects duplicate parametrization IDs param,param for factory arguments; 15 intended cases uncollected, zero test failures"
+      }
+    }
+  },
+  "nonfactory_projection": {
+    "scope": "Diagnostic subset, not a full-suite pass: collection hook ignores only test_parameter_set_factories before generating its duplicate IDs; source tests/config unchanged",
+    "excluded_cases": 8,
+    "test_functions": 6,
+    "expanded_cases": 7,
+    "node_selection": [
+      "testing/test_parameter_set.py::test_public_parameter_set",
+      "testing/test_parameter_set.py::test_parameter_set_mark_collection",
+      "testing/test_parameter_set.py::test_parameter_set_direct_construction",
+      "testing/test_parameter_set.py::test_parameter_set_extraction",
+      "testing/test_parameter_set.py::test_parameter_set_tuple_compatibility",
+      "testing/test_parameter_set.py::test_parameter_set_parametrization"
+    ],
+    "rows": {
+      "base": {
+        "exit": 1,
+        "collected": 7,
+        "executed_call_cases": 7,
+        "passed": 2,
+        "test_failures": 5,
+        "skipped": 0,
+        "failures": [
+          {
+            "node": "testing/test_parameter_set.py::test_public_parameter_set",
+            "phase": "call",
+            "reason": "missing public export on task base"
+          },
+          {
+            "node": "testing/test_parameter_set.py::test_parameter_set_direct_construction[False]",
+            "phase": "call",
+            "reason": "missing public export on task base"
+          },
+          {
+            "node": "testing/test_parameter_set.py::test_parameter_set_direct_construction[True]",
+            "phase": "call",
+            "reason": "missing public export on task base"
+          },
+          {
+            "node": "testing/test_parameter_set.py::test_parameter_set_tuple_compatibility",
+            "phase": "call",
+            "reason": "missing public export on task base"
+          },
+          {
+            "node": "testing/test_parameter_set.py::test_parameter_set_parametrization",
+            "phase": "call",
+            "reason": "missing public export on task base"
+          }
+        ],
+        "log_sha256": "1fd5b9a3d907c2a4bfdadd199d0e2c0937f85630576358346b28106e2643b20c",
+        "driver_log_sha256": "fbc8c26b7ba6691d9cd02172cdfb89fd8c0e95cab6aa0bf69835a2be7cbc5b99",
+        "xml_sha256": "9b8db0f589070421eadf1df5a158806e8875fe2ca240d047d392b6a19c514b5d"
+      },
+      "merged": {
+        "exit": 1,
+        "collected": 7,
+        "executed_call_cases": 7,
+        "passed": 5,
+        "test_failures": 2,
+        "skipped": 0,
+        "failures": [
+          {
+            "node": "testing/test_parameter_set.py::test_parameter_set_direct_construction[False]",
+            "phase": "call",
+            "reason": "merged implementation does not emit requested direct-construction deprecation"
+          },
+          {
+            "node": "testing/test_parameter_set.py::test_parameter_set_direct_construction[True]",
+            "phase": "call",
+            "reason": "merged implementation does not emit requested direct-construction deprecation"
+          }
+        ],
+        "log_sha256": "73ad162274c57d6ffbdde4514a507d0a47ada1633fa150675607eab7b8cc4d66",
+        "driver_log_sha256": "67fed6d15c0a6b4a1e6108a2311145922b15d47ae7a4ebf5d7b5484471bbe49e",
+        "xml_sha256": "5dcb33fcac96596a66a137653a8cad0e3e9f8c7b9bfd7c9b344da04455dfa8d8"
+      },
+      "stock": {
+        "exit": 1,
+        "collected": 7,
+        "executed_call_cases": 7,
+        "passed": 6,
+        "test_failures": 1,
+        "skipped": 0,
+        "failures": [
+          {
+            "node": "testing/test_parameter_set.py::test_parameter_set_tuple_compatibility",
+            "phase": "call",
+            "reason": "known tuple regression: TypeError cannot unpack non-iterable ParameterSet"
+          }
+        ],
+        "log_sha256": "301b5f7d2f4d3012594e7dffd2e23f8ec07db0d249f5f35f0b02a530c6391d87",
+        "driver_log_sha256": "ff07d5593ea929a59bea1a6dcd0cde6bfa77d2fb5d05281ff347d1f25c783297",
+        "xml_sha256": "cb5ff69b05153036dd3e5cb445045e86db643588e42531d8b0849bb0275f112d"
+      },
+      "develop": {
+        "exit": 0,
+        "collected": 7,
+        "executed_call_cases": 7,
+        "passed": 7,
+        "test_failures": 0,
+        "skipped": 0,
+        "failures": [],
+        "log_sha256": "eba750768810cdb50c7c923ac3d0cd6946d422ac71b754504f0645d1744edd6f",
+        "driver_log_sha256": "7fa4e50efe54bb34d495d6a4d41f1efcfa9c0aac2f3cc8a522dad331bc163a82",
+        "xml_sha256": "8f1e19036d6d8a915864aecdca10d15b3cb9ff5f9e02d1f8acf8d20f64d3d5b2"
+      }
+    }
+  },
+  "config_pair": {
+    "scope": "Exact full Develop module on exact sealed Develop production, no overlay or unique-ID edit. Same interpreter, import identity, explicit pytester plugin, root, environment and all pytest arguments; only -c target differs.",
+    "common_pytest_arguments": [
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp=/evidence/<condition>-temp/pytest",
+      "--junitxml=/evidence/<condition>.xml",
+      "--rootdir=/work",
+      "-p",
+      "pytester",
+      "-c",
+      "<config-target>",
+      "testing/test_parameter_set.py"
+    ],
+    "rows": {
+      "native": {
+        "config_target": "/work/pyproject.toml",
+        "root": "/work",
+        "strict": true,
+        "strict_parametrization_ids_explicit": null,
+        "pytester_plugin_loaded": true,
+        "addopts": [
+          "-rfEX",
+          "-p",
+          "pytester"
+        ],
+        "exit": 2,
+        "collected": 0,
+        "executed": 0,
+        "passed": 0,
+        "test_failures": 0,
+        "uncollected_expected": 15,
+        "log_sha256": "5237347f4bd08faaf9010317bee6dfbe5b0f0bbb3030574f8fe7a2bbb4c9fb6b",
+        "driver_log_sha256": "d8a4e64b3056081df9a09ddeb6994ec08740b3f24e208173a729584a9fb674df"
+      },
+      "null": {
+        "config_target": "/dev/null",
+        "root": "/work",
+        "strict": false,
+        "strict_parametrization_ids_explicit": null,
+        "pytester_plugin_loaded": true,
+        "addopts": [],
+        "exit": 0,
+        "collected": 15,
+        "executed": 15,
+        "passed": 15,
+        "test_failures": 0,
+        "uncollected_expected": 0,
+        "log_sha256": "d6fa60298389f59deb0f9a56fa98a2df7daa4bfec16c56e3e089059bc9851334",
+        "driver_log_sha256": "199804f46f950c0fb98d93873e3f0d1f8e879ce5b730589f3cb537b8c4f30cfd"
+      }
+    },
+    "native_collection_cause": "strict=true makes implicit strict_parametrization_ids effective; the unchanged test module assigns duplicate generated IDs param,param to its two factory arguments",
+    "participant_command": {
+      "successful_tail": "PYTHONPATH=src:/deps/lib python -m pytest -q -c /dev/null -p pytester testing/test_parameter_set.py --tb=short",
+      "exit": 0,
+      "interpretation": "The participant did use -c /dev/null for the claimed 15 passing tests; reproduces only with that configuration override."
+    },
+    "default_project_entry": {
+      "tox.ini_lines_65_67": "pytest {posargs:{env:_PYTEST_TOX_DEFAULT_POSARGS:}}",
+      "ci_test_workflow_lines_301_308": "tox run -e <matrix.tox_env> [or coverage variant] --installpkg <distribution>",
+      "pyproject_lines_424_448": "addopts includes -p pytester; strict=true; warnings error",
+      "tox_ini_sha256": "14aaa094ae0306cfc7a35efc5df0ede9afc3acd2f19dc2b8c98da990203a7c3e",
+      "ci_workflow_sha256": "b880bb9f2beb5c896b04ede7f42895bd17641e767b9ca2bb3eeee44941f35561",
+      "qualification": "Static owning-source inspection; full tox/CI matrix not run."
+    }
+  },
+  "contract_analysis": {
+    "tuple": "Develop subset fails only the exact sealed stock tuple-unpacking regression and passes Develop; stock tests do not exercise tuple protocol. No fabricated negative variant needed.",
+    "annotations": "Both authored suites assert helper get_type_hints(...)->pytest.ParameterSet. That helper works on stock, merged and Develop, so it cannot distinguish their adjacent class-field annotation discrepancy. Neither authored suite calls get_type_hints(ParameterSet) or checks fresh internal-first import.",
+    "prior_known_observations": {
+      "copy-pickle-compatibility": {
+        "receipt_sha256": "2cb36fe5d7404a47842ad3d52fee686611af85f97bf0f36b2d56e4d5c551c0af",
+        "probe_sha256": "4f1500a1c478504f17effc4e92dfbcdc8cd514251aadd23b4569362fb4742e64"
+      },
+      "import-order": {
+        "receipt_sha256": "3f76b1e55c3e6da16a6dcf737e1a8f6603b2246ab962e21ba77b00eda1b02335",
+        "probe_sha256": "e8a431ce1c37694ae44467334289378cb15e76b83950df2babdb84023fb45d07"
+      },
+      "pytest-param-tuple": {
+        "receipt_sha256": "a4963020ad332309aca3b0afcd0ab9e0a67aa8b33f03a720e0849639606078e6",
+        "probe_sha256": "a12d0ac72aabddf69ecea8e9314fb442f14a4d1bb10f604d2b74ac4961b8cc75"
+      },
+      "runtime-type-hints": {
+        "receipt_sha256": "b0a10523f5204cd0974dec96f6d617df9072bc79b49baf48e9f7f49da7c7a5f2",
+        "probe_sha256": "719079adb57b7ffe2d7f7763f57804d6f0eeb7446fe5db7fd864523361ca465f"
+      }
+    },
+    "duplicate_vs_contracts": [
+      "Stock added namespace membership case repeats an assertion in its three public_type cases; those three also test distinct None/string/HIDDEN_PARAM ID inputs.",
+      "Develop 2x4 factory combinations are distinct entry point/ID inputs, not exact duplicate executions; their generated names conflict.",
+      "Develop tuple test overlaps the existing tuple-unpack probe on the known failure, while equality, _replace/_asdict, repr, copy and pickle are separate operation contracts bundled in that single test. A first failing unpack prevents later assertions on stock.",
+      "Cross-suite common export/helper-annotation, mark identity, constructor warnings and integration cases cover overlapping contracts; 15 vs 10 expanded cases is not a count of independent protections."
+    ],
+    "rubric": "Relative testing-axis preference agrees with broader tuple-consumer coverage in executable projection. Maximum 4/4 executable confidence is unsupported under native configuration: full Develop module fails collection. Stock also overfits immutability to dataclass representation. Official historical scores are preserved."
+  },
+  "formula": "Counts are collected node IDs and per-call reports. A collection error has zero test failures, not 15 failed tests. Intended denominator 15 comes from exact full module collecting under the paired null-config run; excluded factory product is 8, remaining projection is 7. Nested pytester tests are assertions inside outer cases, not added to outer denominator.",
+  "falsifier": "The claim that the complete authored Develop suite validates this implementation under normal project configuration is rejected if it cannot collect; the paired native run observes that falsifier.",
+  "prospective_implication": "A smaller prospective treatment can require running exact added regression nodes under the repository normal configuration and disclosing overrides. Here, explicitly naming two distinct factory IDs suffices to make all 15 original semantic tests run under strict policy. Existing tuple/public-behavior probes already cover the known discrepancy; no additional caller fixture, framework or paid run is justified.",
+  "limits": [
+    "One already exposed sealed task, post-score and non-prospective; no promotion or general quality conclusion.",
+    "Full authored Develop suite is inapplicable under native strict config; seven-case projection is explicitly separate.",
+    "Base lacks requested export, and merged lacks requested construction warning; those expected task failures are not setup/import defects.",
+    "The stock immutability failure on tuple implementations is a test expectation mismatch, not evidence that immutable tuple production is wrong.",
+    "No new public-class annotation regression was invented; merged also fails adjacent class introspection in existing evidence.",
+    "No full repository/static/docs/CI run; auto plugins disabled and prepared offline dependencies retained.",
+    "No canonical edits, native paid calls, new variants, token-saving claim or official score changes.",
+    "The unique-ID test overlay is a model-free post-score diagnostic only. The official participant submission retains its duplicate-ID defect; neither the test module nor production code was edited there."
+  ],
+  "evidence_hashes": {
+    "receipts": {
+      "receipt.json": "940c5d96d7b0f4702974310211dc58ba47d0f62ba261a9d40f88032fee2db049",
+      "nonfactory-receipt.json": "0da36a2174af0545f625f62cb80c1f6840dbe41976c4e735aa0666b4c1b2aadd",
+      "config-pair-receipt.json": "4da364b94d2c93c42acd4812d0c22514882459de631ba1166c21b60de7688af7",
+      "verification.json": "073bb04c22ad9741ddcdd1b7d649139fdfce3d4751aa86a17dcd2bf1c42a0991",
+      "id-controls-receipt.json": "923886ec8de698d7f66526c7a0ae3062f2bffad6e5e1848b8adf6e6f04042db7"
+    },
+    "raw_native_log_names": "<suite>-on-<base|merge|control|develop>.log",
+    "reproduction_scripts_current": {
+      "guest.py": "c9dd45f48271cc25f3d5492134e19f802a1e1bd985cd9d78b3e6643920690f9a",
+      "config-pair.py": "d2f8c29d5288366d5c52d9870154462a8c9c667e8e40e076e49156c20290dff6",
+      "verify.py": "da1a36b45a81b93b0e8396a8b91f720733eb1fa13388504bf5807002f56a4eb1",
+      "run.py": "d84b19856c5e4b11310ca91cdf60819e2c045832e1ce168e26191204764fe761"
+    },
+    "script_note": "Current reproduction scripts include successive configuration-capture additions; raw row outcomes are bound by saved receipt and log hashes, not an assertion that one script version produced every row.",
+    "prior_staged_diagnostic_sha256": "8e24ebf84cdb9438be940466934d2328c2471b98c35412d3f76e968f0b19573a"
+  },
+  "id_naming_controls": {
+    "scope": "Model-free post-score naming-only controls; no participant or official tree modified.",
+    "original_test_sha256": "50d222f8d33a4cd89673903fc7afdf4974edc2c34189e5003c66df3e24bac923",
+    "production_patch_sha256": "e38185b72060140d23990b6750979ba75ac5b472ba52fc49a3f4a10ca69e50ad",
+    "grade_sha256": "e1d3710550ce30f5102569b16f15f837f544e086a3d23c6bf5cdd745f95eecb3",
+    "original_file_hashes": {
+      "src/pytest/__init__.py": "df9445a69f8fa85f8f0569c3b166fcd681117cf23ea0924752b1bb314c5d7326",
+      "src/_pytest/mark/__init__.py": "9c0fc473a8e4e491d84c49286522a822b051c427790071814aa7b111c3ce7b65",
+      "src/_pytest/mark/structures.py": "c046a949b68addf59ff0e3779b7e09688590561d37b81ad69d24e7a6c8502027",
+      "pyproject.toml": "9f7f69ac0a2a77f329e0689306ab1b904059acc67ddaaecec18ee0582cc7f2e9",
+      "tox.ini": "14aaa094ae0306cfc7a35efc5df0ede9afc3acd2f19dc2b8c98da990203a7c3e",
+      "testing/conftest.py": "595b9deba2ba383523ce794edab22ef1fc42222f7b42b63d0d26b6baf8b86211",
+      "testing/test_parameter_set.py": "50d222f8d33a4cd89673903fc7afdf4974edc2c34189e5003c66df3e24bac923"
+    },
+    "original_files_unchanged_after": true,
+    "common_pytest_arguments": [
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp=/evidence/<condition>-temp/pytest",
+      "--junitxml=/evidence/<condition>.xml",
+      "--rootdir=/work",
+      "-p",
+      "pytester",
+      "-c",
+      "/work/pyproject.toml",
+      "testing/test_parameter_set.py"
+    ],
+    "semantic_identity": "Python ASTs are identical after removing only the ids keyword from the single modified factory parametrization decorator; no assertion, input argument, production file or project configuration changed.",
+    "earlier_unchanged_genuine_run": {
+      "reference": "config_pair.rows.native",
+      "test_sha256": "50d222f8d33a4cd89673903fc7afdf4974edc2c34189e5003c66df3e24bac923",
+      "expected_cases": 15,
+      "collected": 0,
+      "executed": 0,
+      "exit": 2,
+      "log_sha256": "5237347f4bd08faaf9010317bee6dfbe5b0f0bbb3030574f8fe7a2bbb4c9fb6b"
+    },
+    "controls": {
+      "unique": {
+        "parameter_ids": [
+          "public",
+          "classmethod"
+        ],
+        "modified_test_sha256": "9636f95d344a57d0c8dd0f94364c6c8add5017f2b6d205a404582d31c5476dfd",
+        "diff": "--- original/testing/test_parameter_set.py\n+++ unique/testing/test_parameter_set.py\n@@ -25,7 +25,7 @@\n @pytest.mark.parametrize(\n     \"id\", [None, \"case\", \"caf\\N{LATIN SMALL LETTER E WITH ACUTE}\", pytest.HIDDEN_PARAM]\n )\n-@pytest.mark.parametrize(\"factory\", [pytest.param, ParameterSet.param])\n+@pytest.mark.parametrize(\"factory\", [pytest.param, ParameterSet.param], ids=['public', 'classmethod'])\n def test_parameter_set_factories(factory, id) -> None:\n     value = object()\n     mark = pytest.mark.skip(reason=\"example\")\n",
+        "diff_sha256": "68355b37ba782d5b07c10dca46305931c38675c3b988986e7c545ebe24427d26",
+        "config": {
+          "rootpath": "/work",
+          "inipath": "/work/pyproject.toml",
+          "strict": true,
+          "strict_parametrization_ids": null,
+          "addopts": [
+            "-rfEX",
+            "-p",
+            "pytester"
+          ],
+          "pytester_plugin": true
+        },
+        "source_file_hashes_in_guest": {
+          "src/pytest/__init__.py": "df9445a69f8fa85f8f0569c3b166fcd681117cf23ea0924752b1bb314c5d7326",
+          "src/_pytest/mark/__init__.py": "9c0fc473a8e4e491d84c49286522a822b051c427790071814aa7b111c3ce7b65",
+          "src/_pytest/mark/structures.py": "c046a949b68addf59ff0e3779b7e09688590561d37b81ad69d24e7a6c8502027",
+          "pyproject.toml": "9f7f69ac0a2a77f329e0689306ab1b904059acc67ddaaecec18ee0582cc7f2e9",
+          "tox.ini": "14aaa094ae0306cfc7a35efc5df0ede9afc3acd2f19dc2b8c98da990203a7c3e",
+          "testing/conftest.py": "595b9deba2ba383523ce794edab22ef1fc42222f7b42b63d0d26b6baf8b86211",
+          "testing/test_parameter_set.py": "9636f95d344a57d0c8dd0f94364c6c8add5017f2b6d205a404582d31c5476dfd"
+        },
+        "pytest_import": "/work/src/pytest/__init__.py",
+        "structures_import": "/work/src/_pytest/mark/structures.py",
+        "exit": 0,
+        "collected": 15,
+        "executed": 15,
+        "counts": {
+          "passed": 15,
+          "failed": 0,
+          "skipped": 0
+        },
+        "exact_node_ids": [
+          "testing/test_parameter_set.py::test_public_parameter_set",
+          "testing/test_parameter_set.py::test_parameter_set_factories[public-None]",
+          "testing/test_parameter_set.py::test_parameter_set_factories[public-case]",
+          "testing/test_parameter_set.py::test_parameter_set_factories[public-caf\\xe9]",
+          "testing/test_parameter_set.py::test_parameter_set_factories[public-_HiddenParam.token]",
+          "testing/test_parameter_set.py::test_parameter_set_factories[classmethod-None]",
+          "testing/test_parameter_set.py::test_parameter_set_factories[classmethod-case]",
+          "testing/test_parameter_set.py::test_parameter_set_factories[classmethod-caf\\xe9]",
+          "testing/test_parameter_set.py::test_parameter_set_factories[classmethod-_HiddenParam.token]",
+          "testing/test_parameter_set.py::test_parameter_set_mark_collection",
+          "testing/test_parameter_set.py::test_parameter_set_direct_construction[False]",
+          "testing/test_parameter_set.py::test_parameter_set_direct_construction[True]",
+          "testing/test_parameter_set.py::test_parameter_set_extraction",
+          "testing/test_parameter_set.py::test_parameter_set_tuple_compatibility",
+          "testing/test_parameter_set.py::test_parameter_set_parametrization"
+        ],
+        "log_sha256": "64c5b6193505bb9c57ec66aee092bae206d5b02e559a456546311d9e60e7d43d",
+        "xml_sha256": "c7eb8135a80d3e4d0f789300e3b517c1ac70d66f7def04365999838535e54ed2",
+        "driver_log_sha256": "70c2df15fe9cd7e990df0b8d292754d2fd1b75530f2b307c92173da5f0057a20",
+        "meaning": "All 15 original semantic cases pass under original configured strict policy."
+      },
+      "still-bad": {
+        "parameter_ids": [
+          "duplicate",
+          "duplicate"
+        ],
+        "modified_test_sha256": "b126711fa31eb3fb8d524f23aa4b164c04048a94fa10594d14e954193f79c391",
+        "diff": "--- original/testing/test_parameter_set.py\n+++ still-bad/testing/test_parameter_set.py\n@@ -25,7 +25,7 @@\n @pytest.mark.parametrize(\n     \"id\", [None, \"case\", \"caf\\N{LATIN SMALL LETTER E WITH ACUTE}\", pytest.HIDDEN_PARAM]\n )\n-@pytest.mark.parametrize(\"factory\", [pytest.param, ParameterSet.param])\n+@pytest.mark.parametrize(\"factory\", [pytest.param, ParameterSet.param], ids=['duplicate', 'duplicate'])\n def test_parameter_set_factories(factory, id) -> None:\n     value = object()\n     mark = pytest.mark.skip(reason=\"example\")\n",
+        "diff_sha256": "ebb41da713e494fd9b7d2d04cf7e53b520649973fd8b8f6558beef3c083e59cc",
+        "config": {
+          "rootpath": "/work",
+          "inipath": "/work/pyproject.toml",
+          "strict": true,
+          "strict_parametrization_ids": null,
+          "addopts": [
+            "-rfEX",
+            "-p",
+            "pytester"
+          ],
+          "pytester_plugin": true
+        },
+        "source_file_hashes_in_guest": {
+          "src/pytest/__init__.py": "df9445a69f8fa85f8f0569c3b166fcd681117cf23ea0924752b1bb314c5d7326",
+          "src/_pytest/mark/__init__.py": "9c0fc473a8e4e491d84c49286522a822b051c427790071814aa7b111c3ce7b65",
+          "src/_pytest/mark/structures.py": "c046a949b68addf59ff0e3779b7e09688590561d37b81ad69d24e7a6c8502027",
+          "pyproject.toml": "9f7f69ac0a2a77f329e0689306ab1b904059acc67ddaaecec18ee0582cc7f2e9",
+          "tox.ini": "14aaa094ae0306cfc7a35efc5df0ede9afc3acd2f19dc2b8c98da990203a7c3e",
+          "testing/conftest.py": "595b9deba2ba383523ce794edab22ef1fc42222f7b42b63d0d26b6baf8b86211",
+          "testing/test_parameter_set.py": "b126711fa31eb3fb8d524f23aa4b164c04048a94fa10594d14e954193f79c391"
+        },
+        "pytest_import": "/work/src/pytest/__init__.py",
+        "structures_import": "/work/src/_pytest/mark/structures.py",
+        "exit": 2,
+        "collected": 0,
+        "executed": 0,
+        "counts": {
+          "passed": 0,
+          "failed": 0,
+          "skipped": 0
+        },
+        "exact_node_ids": [],
+        "log_sha256": "469ef37e95f72e78f3868deaaf6b92873b4a120b1b485f9e3bfe37f712f03001",
+        "xml_sha256": "1a01e267de29d1db7f3303b9b5a3562682e61190b1153fcfb443123fc0cde091",
+        "driver_log_sha256": "6cf3c9cb9aac205e45ab8467bb19a3147eee54d8cf358f86d068a1061d9b3154",
+        "meaning": "Intentionally repeated explicit IDs still fail collection; zero executed tests and zero behavioral test failures."
+      }
+    },
+    "receipt_sha256": "923886ec8de698d7f66526c7a0ae3062f2bffad6e5e1848b8adf6e6f04042db7",
+    "conclusion": "The original full-suite failure is an ID-collection defect, not a production failure. Unique IDs resolve it without weakening strict policy or changing semantic cases. This is an evaluator-only positive control, not a repair to the historical submitted patch."
+  }
+}

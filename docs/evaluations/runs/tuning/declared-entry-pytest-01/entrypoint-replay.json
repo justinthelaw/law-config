@@ -1,0 +1,370 @@
+{
+  "format": "law-config.pytest-entry-replay-summary/v1",
+  "case": "pytest",
+  "pilot": "declared-entry-pytest-01",
+  "observation_kind": "post_freeze_probe",
+  "primary_scores_changed": false,
+  "decision": {
+    "admit": "One-for-one fresh execution of the source-declared target is feasible without installation and catches the prior startup defect while preserving healthy selected suites.",
+    "not_established": [
+      "actor uptake",
+      "redundant equivalent entire commands on the same verified bytes/config",
+      "attributable dollar savings",
+      "expected timing/cost range",
+      "new treatment promotion or fresh-task transfer"
+    ]
+  },
+  "bindings": {
+    "source_receipt_sha256": {
+      "launcher_parity": "2b5851e7be7a5d5ea66c4083df8c5e957bfa9f669d9861946f18e6688df143f9",
+      "suite_substitution": "48ab1944262275508c948454efd1459388d2d4016ec57befe8fdaaa9ca446b44"
+    },
+    "runtime_sha256": "a53ad6e006bebf7b48dd5042fccdd3ca4594cea85c7d6d43f8011a1811be5803",
+    "fixture_sha256": "a3d8eddf20c014afaa86a805f97569a0acab2442afe2324851be70ccaef3b790",
+    "assessor_helper": {
+      "path": "docs/evaluations/develop-benchmark/panel/checks/pytest_entry.py",
+      "sha256": "ba5a1c9a5a44200cc1f32ec6b565354f19d8756a1a8335694c9466ec5f12682c"
+    },
+    "worker_image": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3",
+    "toolchain_image": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+    "executed_image": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+    "dependencies_sha256": "3943d438ec411c91cbe477975e33cf4846643cd9a896e6f83e099a65e9561e72",
+    "unchanged_existing_test_sha256": "6efe7b62b6f0231671c445688fd7cdf721f72005a535591d0820bfcc4d121f20",
+    "source_artifacts": {
+      "base": {
+        "patch_sha256": null,
+        "terminal_result_sha256": null,
+        "file_sha256": {
+          "src/pytest/__init__.py": "8b19f64ea65bc944535c29f01e832eb3aab30525b035fad583c36a7aa7231132",
+          "src/_pytest/config/__init__.py": "d297eaeba8f6ecfeb73acaa8eef2092203aa49343eb7c77ffedb8ef95b5717ab",
+          "src/_pytest/mark/structures.py": "e4cb4b1fdd5f7f622918f5ccabf35c1287dc394edbe726928c03614e6aecd10c",
+          "testing/test_mark.py": "d656827c8f53ae6bdd91c82ccc2b45993364c64ae6a5259689c815f3c1910331",
+          "testing/test_mark_expression.py": "6efe7b62b6f0231671c445688fd7cdf721f72005a535591d0820bfcc4d121f20",
+          "pyproject.toml": "9f7f69ac0a2a77f329e0689306ab1b904059acc67ddaaecec18ee0582cc7f2e9"
+        }
+      },
+      "prior_develop": {
+        "patch_sha256": "b1616653e2ae62eb08d038b68310cf93d272880209da4344096175627b57a334",
+        "terminal_result_sha256": "8009f4e23095ff625ef6b165e36d9cf040408c06b38ccbd111625b6edba07aae",
+        "file_sha256": {
+          "src/pytest/__init__.py": "df9445a69f8fa85f8f0569c3b166fcd681117cf23ea0924752b1bb314c5d7326",
+          "src/_pytest/config/__init__.py": "d297eaeba8f6ecfeb73acaa8eef2092203aa49343eb7c77ffedb8ef95b5717ab",
+          "src/_pytest/mark/structures.py": "4c70c43726726b34b3ea2a2574ace7416469602c1ee6994adc176ab7cb86a62e",
+          "testing/test_mark.py": "413d361343d89bf95621b4e0cec314ffe49fe80b2bebceff4027c54c2ad97bb5",
+          "testing/test_mark_expression.py": "6efe7b62b6f0231671c445688fd7cdf721f72005a535591d0820bfcc4d121f20",
+          "pyproject.toml": "9f7f69ac0a2a77f329e0689306ab1b904059acc67ddaaecec18ee0582cc7f2e9"
+        }
+      },
+      "revised_develop": {
+        "patch_sha256": "4e8ad8f81d784dba5af0de702611126b9dc6746bf69a06bee6c397aa31f3cfec",
+        "terminal_result_sha256": "e175225e01e0f36a8bf37b0ccf8985facc705499d01b5f3335e7e453a99e3988",
+        "file_sha256": {
+          "src/pytest/__init__.py": "df9445a69f8fa85f8f0569c3b166fcd681117cf23ea0924752b1bb314c5d7326",
+          "src/_pytest/config/__init__.py": "d297eaeba8f6ecfeb73acaa8eef2092203aa49343eb7c77ffedb8ef95b5717ab",
+          "src/_pytest/mark/structures.py": "c681e8c9654d154cd3dda8737737967022e3de3f05dd214b37b39f8185b39b99",
+          "testing/test_mark.py": "66d9b1b85141dd06e5c0861ba36b249c15c034167e8be2b40e8389214912f3ca",
+          "testing/test_mark_expression.py": "6efe7b62b6f0231671c445688fd7cdf721f72005a535591d0820bfcc4d121f20",
+          "pyproject.toml": "9f7f69ac0a2a77f329e0689306ab1b904059acc67ddaaecec18ee0582cc7f2e9"
+        }
+      },
+      "stock": {
+        "patch_sha256": "1ee6bbe72c8abe2a5a6b02cdd53b573efbab2344467fbd313e4c0bae51f72f05",
+        "terminal_result_sha256": "2de0162a2df133542739b7a498888716538bfdc850f20508df777a76f66c00c7",
+        "file_sha256": {
+          "src/pytest/__init__.py": "7f54727cc32e10b4a9badaed2eb86d091853b237a8581e38b555f2766fde7e0a",
+          "src/_pytest/config/__init__.py": "d297eaeba8f6ecfeb73acaa8eef2092203aa49343eb7c77ffedb8ef95b5717ab",
+          "src/_pytest/mark/structures.py": "c420b8114175a74ff063144534df44b9ac9cf3bab2a516c3719f9bc874b5e92d",
+          "testing/test_mark.py": "af8b5bd6710a23d31bbf7dbd48ba7cb867ddbc039b3acbaace8e3a0f7a2d1045",
+          "testing/test_mark_expression.py": "6efe7b62b6f0231671c445688fd7cdf721f72005a535591d0820bfcc4d121f20",
+          "pyproject.toml": "9f7f69ac0a2a77f329e0689306ab1b904059acc67ddaaecec18ee0582cc7f2e9"
+        }
+      }
+    },
+    "private_probe_sha256": {
+      "launcher_execution": "2899251f1844d63a1e51ddaafb9a567a65f56609b8f2c63a7154a3c244737cb3",
+      "launcher_metadata": "d6d60f3e782fee1a65a7961e183f23410949a8bbc7802e84524aa561026d6067",
+      "launcher_image_scan": "51e151d35a80813ca2ad4ffa264adf153ecf313f42aa2b53fe8f5d49a433dc20",
+      "suite_execution": "1b1f4304ffa0d951f9fbbed3e71ba277fce7580ae1d536e22548fe4de58a004e"
+    },
+    "private_machine_evidence_sha256": {
+      "launcher_execution": "6f36fbea1c8cfc91da53547481a0cb21bbacfd576085994b60ace8adec75df62",
+      "launcher_metadata": "927165d6e047f932edcb1a030a1bf3923862bbd00aa50d39bbc6446b1cc62e46",
+      "suite_execution": "baacf570de081d2d15b64011d8c09564b41233b848da80eb5028aead2b1219cf",
+      "original_command_identities": "bdc5724142f16345564e9005ff01f73a2cffe90f00dfc112e600d0b678c7fb3e"
+    }
+  },
+  "entry_distinction": {
+    "on_PATH": {
+      "pytest": false,
+      "py.test": false
+    },
+    "source_metadata": {
+      "pytest": "_pytest.config:_console_main",
+      "py.test": "_pytest.config:_console_main"
+    },
+    "module_prefix": [
+      "python",
+      "-m",
+      "pytest"
+    ],
+    "direct_declared_prefix": [
+      "python",
+      "-c",
+      "from _pytest.config import _console_main; raise SystemExit(_console_main())"
+    ],
+    "supplied_legacy": {
+      "paths": [
+        "/deps/lib/bin/pytest",
+        "/deps/lib/bin/py.test"
+      ],
+      "on_PATH": false,
+      "target": "pytest:console_main",
+      "script_sha256": "3893df498cf453319f3a56db5bfdcb4c998b2249d58940c5ff48f431d2f799f2",
+      "difference": "Imports pytest first; source-declared target imports _pytest.config first. Legacy and module routes mask the observed fresh-import defect."
+    },
+    "assessor_launcher": "Generated privately with already-present pip/distlib from the source mapping; it was not a preinstalled producer command. A producer can invoke the declared source callable without generating it.",
+    "build_install": "Standard offline PEP517 build requirements setuptools>=77 and setuptools-scm>=10.1 were absent. No build/install was attempted; direct invocation needs neither."
+  },
+  "existing_node_replay": {
+    "node": "testing/test_mark_expression.py::test_empty_is_false",
+    "rows": [
+      {
+        "state": "base",
+        "exits": {
+          "source_declared": 0,
+          "legacy_supplied": 0,
+          "module": 0
+        },
+        "successful_existing_test_count": {
+          "source_declared": 1,
+          "legacy_supplied": 1,
+          "module": 1
+        },
+        "declared_startup_failed_before_collection": false
+      },
+      {
+        "state": "prior_develop",
+        "exits": {
+          "source_declared": 1,
+          "legacy_supplied": 0,
+          "module": 0
+        },
+        "successful_existing_test_count": {
+          "source_declared": 0,
+          "legacy_supplied": 1,
+          "module": 1
+        },
+        "declared_startup_failed_before_collection": true
+      },
+      {
+        "state": "revised_develop",
+        "exits": {
+          "source_declared": 0,
+          "legacy_supplied": 0,
+          "module": 0
+        },
+        "successful_existing_test_count": {
+          "source_declared": 1,
+          "legacy_supplied": 1,
+          "module": 1
+        },
+        "declared_startup_failed_before_collection": false
+      },
+      {
+        "state": "stock",
+        "exits": {
+          "source_declared": 0,
+          "legacy_supplied": 0,
+          "module": 0
+        },
+        "successful_existing_test_count": {
+          "source_declared": 1,
+          "legacy_supplied": 1,
+          "module": 1
+        },
+        "declared_startup_failed_before_collection": false
+      }
+    ]
+  },
+  "suite_substitution": {
+    "invocations_per_selected_suite": {
+      "module": 1,
+      "direct_declared": 1
+    },
+    "only_test_command_change": "Replace module prefix with direct source-declared prefix; preserve every selected test argument/file/selector/config option.",
+    "pairs": [
+      {
+        "state": "base",
+        "input": {
+          "args": [
+            "-q",
+            "testing/test_mark_expression.py"
+          ],
+          "environment": {
+            "PYTHONPATH": "src:/deps/lib"
+          },
+          "repository_configuration_active": true,
+          "authored_original_command_id": null,
+          "authored_native_command_index": null,
+          "control": true
+        },
+        "module": {
+          "exit": 0,
+          "selected_nodes": 149,
+          "nodeids_sha256": "43674a55dc3e36156e83b2b4e1b98fc44788b54156a7378dd5188b088739dc2b",
+          "summary": [
+            "149 passed in 1.05s"
+          ]
+        },
+        "direct_declared": {
+          "exit": 0,
+          "selected_nodes": 149,
+          "nodeids_sha256": "43674a55dc3e36156e83b2b4e1b98fc44788b54156a7378dd5188b088739dc2b",
+          "summary": [
+            "149 passed in 1.06s"
+          ]
+        },
+        "identical_selected_nodeids": true
+      },
+      {
+        "state": "prior_develop",
+        "input": {
+          "args": [
+            "-q",
+            "testing/test_mark.py",
+            "-k",
+            "parameterset_public_type or parameterset_direct_construction_warns or parameterset_factories or pytest_exists_in_namespace_all"
+          ],
+          "environment": {
+            "PYTHONPATH": "src:/deps/lib"
+          },
+          "repository_configuration_active": true,
+          "authored_original_command_id": "exec-843dfd9e-561d-4073-8cbc-5e0ed4417e4b",
+          "authored_native_command_index": 45,
+          "control": false
+        },
+        "module": {
+          "exit": 0,
+          "selected_nodes": 9,
+          "nodeids_sha256": "4dbcac53f8cc10ccf0cd525376d2d4fe0b459d62db981ff17b6c6e012b263423",
+          "summary": [
+            "9 passed, 127 deselected in 1.03s"
+          ]
+        },
+        "direct_declared": {
+          "exit": 1,
+          "selected_nodes": 0,
+          "nodeids_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "summary": [
+            "dataclass import AttributeError before test collection"
+          ]
+        },
+        "identical_selected_nodeids": false
+      },
+      {
+        "state": "revised_develop",
+        "input": {
+          "args": [
+            "-q",
+            "testing/test_mark.py",
+            "testing/test_mark_expression.py"
+          ],
+          "environment": {
+            "PYTHONPATH": "src:/deps/lib"
+          },
+          "repository_configuration_active": true,
+          "authored_original_command_id": "exec-f46dbe69-cc70-4ad8-a36a-406cddfe1778",
+          "authored_native_command_index": 46,
+          "control": false
+        },
+        "module": {
+          "exit": 0,
+          "selected_nodes": 298,
+          "nodeids_sha256": "310184dab4705194b3b3978dc642122fdf09ddd731fe752e947d214e15292b8d",
+          "summary": [
+            "297 passed, 1 xfailed in 5.09s"
+          ]
+        },
+        "direct_declared": {
+          "exit": 0,
+          "selected_nodes": 298,
+          "nodeids_sha256": "310184dab4705194b3b3978dc642122fdf09ddd731fe752e947d214e15292b8d",
+          "summary": [
+            "297 passed, 1 xfailed in 5.00s"
+          ]
+        },
+        "identical_selected_nodeids": true
+      },
+      {
+        "state": "stock",
+        "input": {
+          "args": [
+            "-x",
+            "-q",
+            "-c",
+            "/dev/null",
+            "-p",
+            "pytester",
+            "testing/test_mark.py::TestParameterSet"
+          ],
+          "environment": {
+            "PYTHONPATH": "src:/deps/lib"
+          },
+          "repository_configuration_active": false,
+          "authored_original_command_id": "exec-740a58b7-91bf-4325-abd6-ded5b3f0271c",
+          "authored_native_command_index": 26,
+          "control": false
+        },
+        "module": {
+          "exit": 0,
+          "selected_nodes": 54,
+          "nodeids_sha256": "1ba31a66205aedff2c9baa27f6488be19a5987f013fb937cb81300fa30218710",
+          "summary": [
+            "54 passed, 6 warnings in 1.07s"
+          ]
+        },
+        "direct_declared": {
+          "exit": 0,
+          "selected_nodes": 54,
+          "nodeids_sha256": "1ba31a66205aedff2c9baa27f6488be19a5987f013fb937cb81300fa30218710",
+          "summary": [
+            "54 passed, 6 warnings in 1.04s"
+          ]
+        },
+        "identical_selected_nodeids": true
+      }
+    ],
+    "stock_limit": "The archived stock command explicitly uses -c /dev/null -p pytester. Its 54 passing tests do not establish normally configured-suite coverage.",
+    "redundancy_limit": "Earlier same-literal revised broad command exec-58b854b2-c9bd-46bc-b892-1cb0793dff9b returned294passed/1xfailed; final exec-f46dbe69-cc70-4ad8-a36a-406cddfe1778 returned297passed/1xfailed after repair/tests. Different artifacts are not redundant equivalent invocations."
+  },
+  "guidance": {
+    "package_sha256": "2488466be8b48949dbd7291964425eef81c3d50e3b8e4a88f786d6e8bdbdd9e6",
+    "local_changes_sha256": "b88d09bfe5c8e57b9072e9b97bff40b5f3fbceb38a8900937fa8010135ea9e87",
+    "existing_requirement": "For changed exports or startup, run an affected existing test through the declared public entry in a fresh, normally configured process.",
+    "operational_missing_launcher_fallback_present": false,
+    "interpretation": "This is an operational clarification of an existing obligation, not proof that a new instruction changes behavior."
+  },
+  "producer_evidence": {
+    "module_command_counts": {
+      "revised_develop": 7,
+      "stock": 5,
+      "prior_develop": 8
+    },
+    "identified_literal_direct_or_legacy_command_count": 0,
+    "source_mapping_tool_output_readbacks": {
+      "revised_develop": 2,
+      "stock": 2,
+      "prior_develop": 0
+    },
+    "limit": "Derived from sealed private command/event records, bound by receipt/evidence hashes. Raw transcripts and private filesystem paths are omitted. Absence of a recognized literal command does not exclude every dynamically equivalent invocation; availability does not establish uptake."
+  },
+  "execution_limits": [
+    "Exact retained Python3.13.18/toolchain/deps; native Docker rather than original TCG transport.",
+    "Network disabled, disjoint normal CPU lease6,7, readonly shared inputs, task-scoped writable output/cache copies; no actor/provider/installation/VM/new task.",
+    "Launcher replay used a stdlib-only exit identity recorder and scratch JUnit/cache outputs; all11 passing cases selected exactly1 unchanged testcase.",
+    "Suite replay preserved test argv and used symmetric PYTHONVERBOSE import logging, fresh normal caches and scratch source copies. Source Python files and metadata remained unchanged; successful code objects came from checkout src.",
+    "Direct-call argv0 and native container cwd/HOME/temp/cache differ from original generated wrapper/producer. The observed defect precedes argument parsing.",
+    "Node-ID hashes bind cache-recorded selected collections; outcomes are native summaries, not per-node public transcript records.",
+    "No retrospective score/eligibility change, projected cost saving, expected runtime range or causal treatment effect. Paired diagnostic executions are not avoided production work."
+  ]
+}

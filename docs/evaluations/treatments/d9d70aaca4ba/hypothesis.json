@@ -1,0 +1,59 @@
+{
+  "id": "distinguish-contract-restoration",
+  "previous": "ece61bdf084467d04d8efd9e8b8c9e58db30636b7c59fbeb9ac5a4e53168ed98",
+  "targets": [
+    "plugins/develop/skills/iterate/references/local-changes.md"
+  ],
+  "evidence": [
+    {
+      "case": "black",
+      "run": "same-check-black-01",
+      "registration_sha256": "b12734ae5446afff0a8c1c2aa3e5f5f4e01a8238dd07a162fb13172df3d97338",
+      "comparison": {
+        "control": {
+          "native_sha256": "e417b76cc23cf7e194c76ee234a346c0c10ccabdb67feaf1b99e8e671f9e5ffb",
+          "grade_sha256": "67f750f133b035a97cd5d9c8e28f63038c3c2f26edd29e8148a45dc7c5767a98",
+          "gates": {
+            "build": 0,
+            "native": 0,
+            "contract": 0,
+            "preserve": 0
+          },
+          "proposal_usd": 0.39424280000000006,
+          "proposal_seconds": 552.40868292097,
+          "root_usd": 0.39424280000000006,
+          "commands": 24,
+          "children": 0
+        },
+        "develop": {
+          "native_sha256": "9db871c8ebe516cc3fa93528c404d3d278eacd53a892539b07f6d4afb0804d8d",
+          "grade_sha256": "bc3e6b08360fc77244865e8e657739dcc0d38ae21be4fdfcd197a08eaa52fddd",
+          "gates": {
+            "build": 0,
+            "native": 0,
+            "contract": 0,
+            "preserve": 0
+          },
+          "proposal_usd": 1.1516156000000002,
+          "proposal_seconds": 961.5412047978025,
+          "root_usd": 0.8892928,
+          "commands": 62,
+          "children": 2
+        }
+      },
+      "source_base": "04afd895bf343e5dc41fc168ba3f8ac378a7ee5f",
+      "source_docs": {
+        "docs/usage_and_configuration/the_basics.md": "64de3aa4ba37a2d730c6e46584cbf2e572179b5167f5afc4cf0c02cf8e19e73d",
+        "docs/the_black_code_style/current_style.md": "9ebd4545b580f01bf01188bd2006127206da13784c886f9ee9265f3e6edbd8f9"
+      },
+      "review_message_sha256": "453677ac751a6609e625ee6aa27ee3bbef52029cc5d4729f46b71839816f788f",
+      "observation": "Black already documents skip directives and AST equivalence. The intent reviewer found no public API change and reviewed two designs. Both submitted arms pass all four frozen gates and both of the revised Develop fixtures. The revised root alone cost more than the complete raw proposal. Judge scores and the prior arm were pending at registration of this hypothesis."
+    }
+  ],
+  "change": "Classify a bounded repair using the documented or tested promise it restores. Keep independent checkpoints for changed promises and use the wider workflow whenever design is unsettled, risk is consequential or stronger instructions apply.",
+  "prediction": "For a settled restoration, fewer guide and review turns before checking the real caller reduce proposal time and cost versus the matched prior. A real contract or design change during implementation still receives its applicable independent checks.",
+  "sequence": [
+    "black"
+  ],
+  "falsifier": "Reject if any frozen Black gate or either previously observed final fixture regresses, the candidate cannot ground its route in the original contract, or a required review or material design transition is skipped. Require improved cost and time over prior, and a ready higher-quality full PR at or below the complete stock cost. Record the exact reviewed revisions and actual guide and reviewer use. A ceiling or tie is not a win."
+}

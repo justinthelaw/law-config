@@ -1,0 +1,42 @@
+diff --git a/plugins/develop/skills/develop/SKILL.md b/plugins/develop/skills/develop/SKILL.md
+index d1f5657..8cd6754 100644
+--- a/plugins/develop/skills/develop/SKILL.md
++++ b/plugins/develop/skills/develop/SKILL.md
+@@ -5,8 +5,10 @@ description: Implement and verify repository changes through their callers.
+ 
+ # Develop
+ 
+-Trace the requested behavior to its smallest owner. Reproduce bugs through a real caller. When extending a condition or replacing a representation, preserve an input the old path accepted that the new one might lose.
++Reproduce bugs through a real caller. Change the smallest owner and retain existing conversions and fallbacks. Check alternate definitions of dependencies you introduce. Verify the result or written state for the new case and an old input the edit could break.
+ 
+-Make the change and run the focused regression with the project's configuration. Exercise changed entry points as users invoke them. For writes and cleanup, check the resulting state. Complete required checks and report what ran.
++Start with the cheapest check that executes the changed code. Reuse the project's toolchain, build tree and results. If setup fails, try the documented entry point and a focused executable equivalent. Run required checks and report material gaps.
+ 
+-Handle a local, verifiable change directly. Use [design or review](references/planning-and-review.md) for a requested review, repository requirement, or consequential uncertainty the checks cannot settle. [Iterate](../iterate/SKILL.md) covers delivery.
++For long builds and tests, [wait on the running command](references/long-checks.md). Do independent work while it runs. Otherwise let one tool call wait for its exit and diagnostics.
++
++Handle verifiable changes directly. Use [design or review](references/planning-and-review.md) when requested, required, or needed to settle consequential uncertainty. [Iterate](../iterate/SKILL.md) covers delivery.
+diff --git a/plugins/develop/skills/develop/references/long-checks.md b/plugins/develop/skills/develop/references/long-checks.md
+new file mode 100644
+index 0000000..b1be459
+--- /dev/null
++++ b/plugins/develop/skills/develop/references/long-checks.md
+@@ -0,0 +1,18 @@
++# Run a long check
++
++Start a noninteractive check once. In Codex code mode, keep the terminal waits inside one cell. Replace the example command with the project check.
++
++```js
++// @exec: {"yield_time_ms": 300000}
++let result = await tools.exec_command({cmd: "make test", yield_time_ms: 1000});
++let output = result.output.slice(-6000);
++while (result.exit_code == null && result.session_id != null) {
++  result = await tools.write_stdin({
++    session_id: result.session_id, chars: "", yield_time_ms: 300000
++  });
++  output = (output + result.output).slice(-6000);
++}
++text({exit_code: result.exit_code, output});
++```
++
++Use a short initial cell yield if independent work is ready. If the cell yields, use `functions.wait` with its cell ID and a long wait. For a command already running, use its existing terminal handle. With direct shell tools, wait on that handle. Keep full logs in the task's scratch directory when needed. Treat a lost handle or missing exit status as incomplete.

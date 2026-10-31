@@ -1,0 +1,9 @@
+{
+  "label": "check-observable-contracts-in-review",
+  "package_sha256": "c979c41b0fe2c9eff5615dea243334b70b442a3cb7b13d18f5e19773b9263825",
+  "plugin_hook_sha256": "dd62f6937b7d39abcea657c28045b313be734f107d6ac0e72e4f581e4467d95d",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}

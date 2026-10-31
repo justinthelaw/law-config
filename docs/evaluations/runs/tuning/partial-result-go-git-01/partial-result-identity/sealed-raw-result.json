@@ -1,0 +1,600 @@
+{
+  "registration": {
+    "path": "pilots/partial-result-go-git-01/registration.json",
+    "sha256": "5253c0a80019608e0063bd16f46bea03673cfaa4880b5726b77980d172445805"
+  },
+  "case": {
+    "control": {
+      "state": "completed",
+      "status": "ready",
+      "executable_pass": true,
+      "stages": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "grade_receipt": {
+        "path": "runs/partial-result-go-git-01-candidate/attempts/go-git/control/grade/grade.json",
+        "sha256": "850fb6aa64a6283b89397b28bbc1dec720b85dc68cfa4cf595c1c77bce764ba5"
+      },
+      "review": {
+        "axes": {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        "score": 96.25,
+        "range": [
+          96.25,
+          100.0
+        ],
+        "judgments": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/C.patch: plumbing/filemode/filemode.go accepts padded octal values and checks (MaxUint32-digit)/8 before accumulation, returning Empty on overflow or invalid bytes. Canonical selects regular-file executability solely from owner bit 0100 and preserves Git type mappings. plumbing/object/tree.go streams wrapping mode fragments across buffers and returns ErrMalformedTree for invalid, empty or unterminated modes while accepting clean EOF. Frozen packet/task.json reports build, native, contract, preserve, and independent exits 0 for C; declared build/native coverage is plumbing/filemode and plumbing/object.",
+              "tests": "packet/C.patch: TestFromBytesUint32 compares padded, 9000-zero, maximum and padded-maximum values with New; error tests cover overflow, invalid bytes, signs and long invalid input. TestCanonical covers owner versus group/other execute bits, special permission bits, nonregular/unknown types, high bits and idempotence. TestTreeDecodeOctalModes covers multi-buffer padding/nonzero digits, uint32 wrapping, maximum/zero/nonregular modes, following entries, hashes and full-entry round trips. TestTreeDecodeInvalidOctalModes asserts ErrorIs(ErrMalformedTree) for empty/invalid and short or multi-buffer unterminated fields. Existing regression assertions remain; frozen native and independent exits are 0.",
+              "design": "packet/C.patch confines production changes to strict FromBytes parsing, the public Canonical mapping, and an inline constant-memory fragment loop in Decode. Removing canonicalTreeMode only relocates its semantics with the requested execute-bit fix. The removed trailing return nil is replaced by the clean-EOF return inside the loop, preserving deferred cleanup. Starting tree.go filename/truncated-ID errors, reset and sorting behavior, Encode validation, and Validate protections are unchanged; no protections or existing test assertions are removed.",
+              "proposal": "packet/C.md clearly names the changed semantics and public API, links Git source, describes regression categories and explicitly records interrupted build/test/baseline verification. It gives limited explanation of the original failure or the downstream effect of owner-bit canonicalization. The claims of local Git parity, formatting and diff checks have no supporting observations in the packet and receive no verification credit; the frozen successful checks are assessed independently."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 4
+            },
+            "evidence": {
+              "contract": "packet/B.patch: plumbing/filemode/filemode.go checks octal digits and overflow before accumulation, accepts padded uint32 values, and exposes Canonical with owner-execute semantics and unchanged non-regular mappings. plumbing/object/tree.go parses arbitrarily many fragments with uint32 wrapping, rejects empty/non-octal/unterminated modes with ErrMalformedTree, and preserves following entry decoding. packet/task.json records build, native, contract, preserve and independent exits of 0 for B.",
+              "tests": "packet/B.patch adds TestFromBytesUint32 and overflow/invalid-byte cases, Canonical idempotence and type cases, and TestTreeDecodeOctalModes covering owner versus group/other execution, zero padding, multi-buffer nonzero digits, wrapping and non-regular types. Each valid tree case checks a following entry and full entry equality after encode/decode. Invalid-mode tests assert ErrMalformedTree for empty, signed, non-octal, NUL, high-byte and long/truncated fields. Existing tests remain; frozen native and independent checks exit 0.",
+              "design": "packet/B.patch uses the existing ReadSlice approach with bounded memory and a small nested fragment loop, keeping strict FromBytes overflow handling separate from tree wrapping. Canonical replaces the removed private helper while preserving its type cases and correcting only execute-bit semantics. The full diff leaves filename/hash validation, sorting, Tree.Validate, Encode validation and path/metadata protections intact; the removed seven-digit cap is replaced with value-based overflow protection.",
+              "proposal": "packet/B.md has a precise title, explains Git parity and both parser contracts, links versioned Git source, and identifies the relevant regression coverage. It explicitly reports build/test and baseline verification as unverified after interrupted attempts, without claiming those passed. Those historical attempts and claimed local Git/formatting checks are unavailable for confirmation and receive no execution credit; the frozen successful checks are recorded separately. The brief proposal clearly communicates its verification limitation."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/A.patch: plumbing/filemode/filemode.go accepts arbitrary leading zeros, checks octal bytes and uint32 overflow, and exposes Canonical using 0o100. plumbing/object/tree.go parses buffer fragments with uint32 wrapping independently of FromBytes and wraps empty, invalid and unterminated modes in ErrMalformedTree. Nonregular mappings and round trips are covered. packet/task.json records build, native, contract, preserve and independent exits of 0 for A; the declared build/native scope is plumbing/filemode and plumbing/object.",
+              "tests": "packet/A.patch: TestFromBytesUint32 covers padded values and uint32 maximum; TestFromBytesErrors covers overflow, signs, NUL, high bytes and invalid digits after 9000 zeros. TestCanonical checks owner versus group/other execute, type mappings and idempotence. TestTreeDecodeOctalModes covers padding, nonzero buffer-spanning fields, wrapping, a following entry and encode/decode equality. TestTreeDecodeInvalidOctalModes requires ErrMalformedTree, including long unterminated fields. Existing malformed-entry and validation assertions remain intact. Frozen native, contract, preserve and independent checks all exit 0.",
+              "design": "packet/A.patch changes only mode parsing, the public canonicalization method, relevant comments and tests. The incremental ReadSlice loop uses constant memory and keeps tree wrapping separate from public overflow rejection. Explicitly inspected deletions: the seven-character limit is replaced by numeric overflow validation; canonicalTreeMode is replaced by the equivalent type mapping with the requested owner-bit correction. Starting plumbing/object/tree.go filename/hash checks, Encode validation gate and Validate protections are untouched.",
+              "proposal": "packet/A.md supplies a precise package title, Git source link, changed parsing/canonicalization behavior and regression scope. It explicitly reports interrupted build/test verification rather than claiming those runs passed. Its local Git, formatting and diff-check claims have no supporting execution detail in the packet and receive no check credit. Motivation and the downstream compatibility consequence of changing group/other-only executable entries are less explicit than the implementation warrants."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ],
+        "flags": []
+      },
+      "adjudication": {},
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 2935535,
+        "cachedInputTokens": 2858112,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 15973,
+        "reasoningOutputTokens": 7829,
+        "totalTokens": 2951508
+      },
+      "threads": 1,
+      "usd_estimate": 0.6003871999999999,
+      "wall_seconds": 781.2435921109281,
+      "proposal_wall_seconds": 811.8322337511927,
+      "end_to_end_seconds": 939.8996646190062,
+      "setup_seconds": 28.579906467115507,
+      "grading_seconds": 126.55456717079505,
+      "captured_unix": 1793343258.758891,
+      "start_unix": 1793342446.9266605,
+      "patch_sha256": "b934728a336b409a6dde8f0e924e1fae42ede879140856541cab6f3dc9a0e127",
+      "proposal_sha256": "d08a18596ce0d221f52e31dbfd9fb620dc0069ce071b40cec4fd0317fd810711",
+      "error": null
+    },
+    "develop": {
+      "state": "completed",
+      "status": "ready",
+      "executable_pass": true,
+      "stages": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "grade_receipt": {
+        "path": "runs/partial-result-go-git-01-candidate/attempts/go-git/develop/grade/grade.json",
+        "sha256": "e8a99aa5b5c872214ab3223328db7be163b9ad17fe2a99f72828ab33d9843b4e"
+      },
+      "review": {
+        "axes": {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        "score": 96.25,
+        "range": [
+          96.25,
+          96.25
+        ],
+        "judgments": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/A.patch: plumbing/filemode/filemode.go removes the digit-count limit, validates octal bytes, and checks the uint32 shift boundary before accumulation; Canonical uses type mask 0170000 and owner execute bit 0100. plumbing/object/tree.go accumulates wrapping uint32 fragments across ErrBufferFull, distinguishes clean EOF from unterminated modes, and wraps invalid encodings in ErrMalformedTree. Frozen packet/task.json reports build, native, contract, preserve, and independent exits 0 for A; the declared build/native scope is plumbing/filemode and plumbing/object.",
+              "tests": "packet/A.patch: TestFromBytes and TestFromBytesErrors cover padded/all-zero multi-buffer inputs, uint32 maximum, overflow including valid low mode bits, and invalid bytes. TestCanonical covers owner versus group/other execute bits, nonregular/unknown types, high bits, and idempotence. TestTreeDecodeOctalModes covers an exact 4096-byte mode, multiple buffers with nonzero digits, wide wrapping, subsequent entries and hashes, and full entry round trips. TestTreeDecodeInvalidOctalModes checks ErrorIs(ErrMalformedTree) for empty, invalid and unterminated fields, including buffer-spanning cases. Existing tests remain; frozen native and independent exits are 0.",
+              "design": "packet/A.patch limits production changes to filemode.go and the mode-reading portion of Tree.Decode. Streaming ReadSlice accumulation uses constant extra memory and deliberately separates tree wrapping from public FromBytes overflow rejection. The deleted canonicalTreeMode is replaced by the public Canonical with the requested owner-bit correction and identical nonregular mappings. Inspection against starting plumbing/object/tree.go confirms filename/truncated-ID errors, reset and sorting behavior, Encode validation, and all Validate protections are retained; no test assertion is weakened.",
+              "proposal": "packet/A.md has a precise title and explains padding, buffer spanning, wrapping, owner-bit canonicalization, strict FromBytes, and regression coverage, with upstream references and explicit interrupted runtime verification. It gives little concrete explanation of the prior failure or compatibility consequence. The claimed local parity, formatting and independent static reviews have no supporting observations in the packet, and the linked /tmp review record is not supplied; those claims receive no verification credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/C.patch: plumbing/filemode/filemode.go accepts arbitrarily padded octal uint32 values, rejects invalid bytes and values above uint32, and adds owner-execute Canonical with directory/symlink/submodule semantics preserved. plumbing/object/tree.go tracks whether digits were seen across ReadSlice fragments, allows wide modes to wrap, and reports invalid or unterminated fields as ErrMalformedTree. Clean EOF remains successful. packet/task.json records build, native, contract, preserve and independent exits of 0 for C.",
+              "tests": "packet/C.patch tests uint32 maximum, padded maximum, long zero-only inputs, overflow and invalid bytes in FromBytes. Canonical tests distinguish owner, group and other execution and check idempotence. Tree tests cover an exact 4096-byte mode boundary, multiple buffers including nonzero padding, wide wrapping, unknown and non-regular types, a following entry and complete encode/decode entry equality. Invalid cases check ErrMalformedTree after buffer boundaries and missing terminators. Existing malformed-entry and validation tests remain; frozen native and independent checks exit 0.",
+              "design": "packet/C.patch keeps parsing allocation-free for mode length, separates public overflow rejection from tree wrapping and centralizes type normalization in Canonical. The labeled outer-loop exit correctly distinguishes clean EOF from a partial mode. Removal of canonicalTreeMode preserves its non-regular mappings. Inspection against starting plumbing/object/tree.go shows no removal of filename/hash checks, sorting, Encode validation, path checks or metadata-symlink protections. A few unchanged comments still name the removed helper, a minor documentation defect.",
+              "proposal": "packet/C.md provides a precise title, describes wrapping versus strict public parsing, links Git parser/canonicalization sources and lists relevant tests. It explicitly discloses interrupted runtime verification. However, its verification narrative relies partly on unspecified independent reviews and a /tmp review-record link absent from the supplied artifacts, which cannot provide reviewable supporting evidence. Claimed Git parity/gofmt checks and historical interruptions receive no execution credit; frozen successful checks are assessed separately."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/B.patch: FromBytes validates octal bytes and checks mode > ^uint32(0)>>3 before accumulation; since the maximum uint32 has low three bits 7, this accepts the full range without overflow. Canonical uses owner execute and preserves directory/symlink/gitlink semantics. Tree.Decode handles full-buffer fragments, wide wrapping, empty fields and missing delimiters independently of FromBytes. packet/task.json records build, native, contract, preserve and independent exits of 0 for B within the declared two-package scope.",
+              "tests": "packet/B.patch: FromBytes cases include uint32 maximum, padded maximum, 8192 zeros, overflow and invalid bytes. TestCanonical distinguishes group/other execute from owner execute and checks unknown types, high bits and idempotence. TestTreeDecodeOctalModes covers an exact buffer boundary, multiple buffers of zeros and nonzero digits, uint32 wrapping, following entries and full entry round trips. Invalid-mode tests require ErrMalformedTree for invalid bytes after buffer boundaries and unterminated full-buffer modes. No existing protection assertions are removed. Frozen native, contract, preserve and independent checks exit 0.",
+              "design": "packet/B.patch keeps mode parsing allocation-free and bounded in memory, exposes a small documented method and confines production changes to the requested behavior. The labeled outer-loop exit preserves clean EOF handling. Explicitly inspected removed protections: the old length guard is replaced by overflow validation and canonicalTreeMode is replaced by Canonical; the other Decode checks, Encode validation gate and Validate rules remain unchanged.",
+              "proposal": "packet/B.md gives the package title, parsing/canonicalization changes, Git source links and test scope, and clearly states that its build/test attempts stalled. The claimed local Git checks, formatting and independent static reviews are not supported by frozen execution detail and receive no verification credit; the /tmp review-record link is not supplied in the packet. It explains the desired Git agreement but leaves the concrete original failure and downstream compatibility effects implicit."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ],
+        "flags": []
+      },
+      "adjudication": {},
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 2592396,
+        "cachedInputTokens": 2486272,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 16984,
+        "reasoningOutputTokens": 5854,
+        "totalTokens": 2609380
+      },
+      "threads": 3,
+      "usd_estimate": 0.6307152,
+      "wall_seconds": 741.1259389650077,
+      "proposal_wall_seconds": 781.9616444769781,
+      "end_to_end_seconds": 909.7532767818775,
+      "setup_seconds": 38.8108200058341,
+      "grading_seconds": 126.17501241201535,
+      "captured_unix": 1793347419.8130984,
+      "start_unix": 1793346637.851455,
+      "patch_sha256": "7a50d1f759055cd41d324ec809f88e5a41152a31b123c7b04647cab207dc9db9",
+      "proposal_sha256": "78139c104033687b7098e5b21d7bb991465895b4f2407a9b00c5481cf52bb10a",
+      "error": null
+    },
+    "upstream": {
+      "state": "merged",
+      "status": "ready",
+      "executable_pass": true,
+      "stages": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "grade_receipt": {
+        "path": "cache/calibration/go-git/1793342010045875752/gold/grade.json",
+        "sha256": "fcf325f731b782f3c5826a0890f0a9cc7b30d6446c96a0c0aa6a70a5acf97e36"
+      },
+      "review": {
+        "axes": {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        "score": 96.25,
+        "range": [
+          90.0,
+          96.25
+        ],
+        "judgments": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/B.patch: plumbing/filemode/filemode.go accepts arbitrary leading zeros through uint32 maximum, rejects empty/non-octal/overflow inputs with Empty, and exposes Canonical using owner execute bit 0100. plumbing/object/tree.go uses readTreeEntryMode to process arbitrarily long fields with wrapping uint32 accumulation, reject empty/invalid/unterminated modes as ErrMalformedTree, and preserve clean EOF. Frozen packet/task.json reports build, native, contract, preserve, and independent exits 0 for B; the declared build/native scope is plumbing/filemode and plumbing/object.",
+              "tests": "packet/B.patch adds FromBytes padding/maximum/overflow cases, Canonical owner/group/other-bit and type cases, and Tree.Decode tests for exact-buffer and longer modes, wrapping beyond 32 and 64 bits, malformed long fields, and canonical round trips. TestTreeDecodeCanonicalizesModes retains the original five mode mappings in an expanded table rather than dropping their checks. TestTreeDecodeModesMatchGit compares public decoding with git ls-tree through isolated gitenv commands; it can skip without git or under -short, so its individual execution is not established by the aggregate exits. FuzzTreeDecode retains decode execution and adds canonical-mode assertions. Frozen native and independent exits are 0.",
+              "design": "packet/B.patch separates the streaming mode parser from Decode and keeps strict public FromBytes parsing independent of tree wrapping. Canonical centralizes the former private mapping with the required owner-bit correction. The Git oracle uses the existing internal/test/gitenv isolation and t.Cleanup for parallel subtests. Deleted production logic is replaced rather than bypassed: starting tree.go filename and object-ID checks, reset/sorting behavior, Encode validation and Validate protections remain intact. Changes stay within the requested API and its tests.",
+              "proposal": "packet/B.md precisely explains both original failures with inputs and before/after outputs, links upstream semantics, distinguishes tree wrapping from FromBytes overflow, and describes downstream compatibility consequences and oracle skip conditions. However, it reports no actual build or package-test outcome or explicit verification limitation; describing tests does not establish their execution. Frozen successful checks support the implementation separately, but do not fill this proposal-level reporting gap. The claimed example outputs are not separately evidenced."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/A.patch: plumbing/filemode/filemode.go accepts leading zeros through 37777777777, rejects non-octal bytes and uint32 overflow, and adds Canonical using the owner execute bit. plumbing/object/tree.go reads mode fragments with wrapping uint32 arithmetic, distinguishes clean EOF from unterminated or empty modes, and wraps malformed encodings in ErrMalformedTree. Non-regular mappings are preserved. packet/task.json records build, native, contract, preserve and independent exits of 0 for A.",
+              "tests": "packet/A.patch adds FromBytes maximum/overflow/padding tests, Canonical type and execute-bit cases, buffer-size and wider-than-64-bit tree modes, malformed long modes, canonical encode/decode checks, a Git ls-tree differential test, and a stronger fuzz invariant. The replaced TestTreeDecodeCanonicalizesModes retains all five original type cases and expands them. Existing malformed-entry and validation tests remain. Frozen native and independent checks exit 0; whether the optional Git oracle ran is not recorded.",
+              "design": "packet/A.patch confines production changes to filemode and tree mode decoding. readTreeEntryMode consumes ReadSlice fragments in constant memory and intentionally separates wrapping tree semantics from the strict public parser. Removing canonicalTreeMode moves its type dispatch into the public Canonical method with the required owner-bit correction. Inspection of starting plumbing/object/tree.go and the full diff shows filename/hash error handling, sorting, Encode validation, path protections and metadata-symlink protections retained.",
+              "proposal": "packet/A.md gives a precise title, concrete failing examples, upstream source links, the distinction between public overflow rejection and tree wrapping, and downstream checkout/status implications. Its test descriptions match the patch, but it provides no explicit build/package-test outcome or verification limitation. The frozen successful checks establish implementation evidence independently; they do not supply that missing proposal report. Claimed downstream observations are not independently demonstrated by the packet."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 3,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/C.patch: FromBytes accepts leading zeros and the uint32 maximum while rejecting invalid bytes and overflow. readTreeEntryMode consumes chunks with uint32 wrapping, distinguishes clean EOF from unterminated modes and returns ErrMalformedTree for malformed modes. Canonical uses only type bits and owner execute, retaining nonregular semantics. packet/task.json records build, native, contract, preserve and independent exits of 0 for C in the declared filemode/object scope.",
+              "tests": "packet/C.patch adds FromBytes boundary/error cases, Canonical type/execute-bit coverage, exact-buffer and long-mode decoding, wide wrapping and round-trip tests. TestTreeDecodeModesMatchGit provides a real Git oracle for padded, wide, long and unusual modes, with explicit availability/short-mode skips; the frozen summaries do not show whether those subtests ran. FuzzTreeDecode strengthens the existing no-panic exercise with canonical-output assertions. The rewritten TestTreeDecodeCanonicalizesModes retains all five prior cases and adds distinct cases; malformed-entry and validation checks are preserved. Frozen native, contract, preserve and independent checks exit 0.",
+              "design": "packet/C.patch uses a clear bounded-memory reader and a documented public Canonical method, with appropriate separation between tree wrapping and public overflow checks. Explicitly inspected deletions retain the previous canonicalization cases and replace the length restriction with overflow validation; filename/hash checks and Encode/Validate protections remain intact. Avoidable complexity remains in tree_test.go: gitCanonMode duplicates the production accumulator and canonicalization switch while claiming independence, alongside fixed expected-value tests and a real Git oracle. This adds a second modeled implementation to maintain without supplying independent Git evidence itself.",
+              "proposal": "packet/C.md precisely describes the original failures, provides a reproducer and Git references, distinguishes public overflow rejection from tree wrapping, and explains downstream checkout/status consequences. It accurately describes the added oracle and its skip conditions. It gives no explicit build/package-test execution status and no AI-assistance disclosure; those are observed communication omissions. The prose reproduction and downstream assertions are not additional frozen execution evidence. Successful checks are credited independently from packet/task.json."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ],
+        "flags": []
+      },
+      "adjudication": {}
+    },
+    "pairs": {
+      "develop_control": {
+        "verdict": "tie",
+        "reason": "blinded rubric",
+        "score_delta": 0.0,
+        "votes": [
+          "tie",
+          "control",
+          "tie"
+        ],
+        "order_sensitive": true
+      },
+      "develop_upstream": {
+        "verdict": "tie",
+        "reason": "blinded rubric",
+        "score_delta": 0.0,
+        "votes": [
+          "tie",
+          "tie",
+          "develop"
+        ],
+        "order_sensitive": true
+      },
+      "control_upstream": {
+        "verdict": "tie",
+        "reason": "blinded rubric",
+        "score_delta": 3.75,
+        "votes": [
+          "tie",
+          "control",
+          "control"
+        ],
+        "order_sensitive": true
+      }
+    },
+    "case": "go-git",
+    "repo": "go-git/go-git",
+    "pr": 2538,
+    "split": "tuning",
+    "stratum": "external",
+    "language": "Go",
+    "domain": "Git object decoder",
+    "base_files": 756,
+    "base_bytes": 5177314,
+    "pr_delta": [
+      5,
+      386,
+      70
+    ],
+    "first_commit": "2026-10-23",
+    "assessors": [
+      {
+        "rotation": 0,
+        "usage": {
+          "coverage": "complete",
+          "tokens": {
+            "inputTokens": 839758,
+            "cachedInputTokens": 779392,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 3586,
+            "reasoningOutputTokens": 636,
+            "totalTokens": 843344
+          },
+          "threads": 1,
+          "usd_estimate": 0.23453120000000002
+        },
+        "wall": 181.67777100298554,
+        "assessed_unix": 1793347841.4671252,
+        "limitations": [
+          "Assessment used the full packet/A.md and A.patch, then B.md and B.patch, then C.md and C.patch, the rubric/template/task, and relevant starting source. Candidate submissions were neither executed nor edited; no agents or external services were used.",
+          "Frozen execution evidence consists of exit statuses in packet/task.json. Detailed output, baseline behavioral mismatches, hidden-check contents, individual test/skip results, race checks and full-repository results are unavailable. Successful outcomes are recorded only for the supplied checks and declared package scope.",
+          "Proposal claims about local Git experiments, formatting, historical interrupted runs or static reviews are not independently supported by supplied logs. They are not treated as additional successful checks or as concrete integrity findings."
+        ]
+      },
+      {
+        "rotation": 1,
+        "usage": {
+          "coverage": "complete",
+          "tokens": {
+            "inputTokens": 507668,
+            "cachedInputTokens": 452864,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 2652,
+            "reasoningOutputTokens": 292,
+            "totalTokens": 510320
+          },
+          "threads": 1,
+          "usd_estimate": 0.1814144
+        },
+        "wall": 176.4627566630952,
+        "assessed_unix": 1793347835.1689832,
+        "limitations": [
+          "Assessment used the full packet/A.md and A.patch, then B.md and B.patch, then C.md and C.patch, plus packet/task.json, rubric.md, template.json and relevant starting source. No candidate code was executed or edited, no agents were run and no external sources were accessed.",
+          "Frozen execution evidence consists of exit codes: all three submissions have build, native, contract, preserve and independent exit 0. The named build/native scope is plumbing/filemode and plumbing/object; detailed logs, hidden-check cases, baseline behavioral mismatches, timing/apply records and individual test skip status are unavailable. Full-repository and race coverage cannot be inferred.",
+          "Proposal claims about local Git commands, formatting, historical stalled runs, review sessions, commit organization and downstream worktree observations are not independently evidenced. No identities or authorship cues were used. No concrete integrity violation or critical regression was found in the supplied diffs."
+        ]
+      },
+      {
+        "rotation": 2,
+        "usage": {
+          "coverage": "complete",
+          "tokens": {
+            "inputTokens": 797992,
+            "cachedInputTokens": 733440,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 3144,
+            "reasoningOutputTokens": 388,
+            "totalTokens": 801136
+          },
+          "threads": 1,
+          "usd_estimate": 0.233888
+        },
+        "wall": 159.88467199192382,
+        "assessed_unix": 1793347819.998711,
+        "limitations": [
+          "Assessment uses the full packet/A, packet/B and packet/C proposal/patch files in supplied order, relevant starting tree source and packet/task.json frozen outcomes. No candidate was executed or edited, and no agents or external sources were used.",
+          "Frozen checks provide exit codes, not command transcripts, individual assertions, oracle skip results or reached behavioral mismatches on the base. Build/native scope is limited to plumbing/filemode and plumbing/object; full-suite, race, lint, baseline discrimination and worker historical checks cannot be established from these summaries.",
+          "Eligibility timing, patch-application logs and commit history are unavailable. Proposal claims about interrupted historical checks are not contradicted by later frozen successful outcomes and are not themselves counted as verification."
+        ]
+      }
+    ],
+    "authorship": "public author identified; assistance unverified",
+    "base_grade_receipt": {
+      "path": "cache/calibration/go-git/1793342010045875752/base/grade.json",
+      "sha256": "ed0e9dca7196e67da10447aaf8f0b833f2421b95b754293b613110eb3bc51b67"
+    },
+    "deadline_seconds": 3060,
+    "first_arm": "control",
+    "upstream_observed_at": "2026-10-28T15:04:47Z",
+    "evaluator_cost": [
+      {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 797992,
+          "cachedInputTokens": 733440,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 3144,
+          "reasoningOutputTokens": 388,
+          "totalTokens": 801136
+        },
+        "threads": 1,
+        "usd_estimate": 0.233888
+      },
+      {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 839758,
+          "cachedInputTokens": 779392,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 3586,
+          "reasoningOutputTokens": 636,
+          "totalTokens": 843344
+        },
+        "threads": 1,
+        "usd_estimate": 0.23453120000000002
+      },
+      {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 507668,
+          "cachedInputTokens": 452864,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2652,
+          "reasoningOutputTokens": 292,
+          "totalTokens": 510320
+        },
+        "threads": 1,
+        "usd_estimate": 0.1814144
+      }
+    ],
+    "pr_open_to_merge_seconds": 5383.0
+  },
+  "goal_win": false,
+  "attestations": {
+    "candidate/control": {
+      "input": {
+        "path": "runs/partial-result-go-git-01-candidate/attempts/go-git/control/turn-input.json",
+        "sha256": "d6564c712631be526ebd1a6968ccedfe163d287131b48410d81bc663e4706733"
+      },
+      "inventory": {
+        "path": "runs/partial-result-go-git-01-candidate/attempts/go-git/control/inventory.json",
+        "sha256": "6f64658cedcf511085c2b6ed3d98bb1a2d2ae8a0d1f667c60fb3a49104811f2a"
+      },
+      "final_config_sha256": "f226a43ac26e4c07acce8eb4eba9f67a6ed26920e4125aca98b4104f5abfa67d",
+      "final_stock": {
+        "apps": [],
+        "mcp": [],
+        "config_layers": [
+          "project",
+          "user",
+          "enterpriseManaged",
+          "system"
+        ],
+        "profile_keys": [
+          "approval_policy",
+          "features",
+          "model",
+          "model_reasoning_effort",
+          "plugins",
+          "projects",
+          "sandbox_mode",
+          "web_search"
+        ],
+        "repository_instructions_sha256": {
+          "AGENTS.md": "57404f69a6bdf9ebc0a112ac04f1c64f717c0da39758af27d15cb33e726238b4"
+        },
+        "global_instructions": [],
+        "stock_skills": [
+          "imagegen",
+          "openai-docs",
+          "review-agent",
+          "skill-creator",
+          "skill-installer"
+        ]
+      }
+    },
+    "prior/develop": null,
+    "candidate/develop": {
+      "input": {
+        "path": "runs/partial-result-go-git-01-candidate/attempts/go-git/develop/turn-input.json",
+        "sha256": "f19ec0bf97b9b3a783af122d8459d018d8888798a8d11aed16fbab9bc4a9755a"
+      },
+      "inventory": {
+        "path": "runs/partial-result-go-git-01-candidate/attempts/go-git/develop/inventory.json",
+        "sha256": "fa8455f41024cac3fe9c21b595ddd98e6e6e111cc7f36a7dd5cdca928df7cc75"
+      },
+      "final_config_sha256": "68289290e48c3c27b396dae0bea6c3ca05a46c908c42f037d5dfaa85d7d3615a",
+      "final_stock": {
+        "apps": [],
+        "mcp": [],
+        "config_layers": [
+          "project",
+          "user",
+          "enterpriseManaged",
+          "system"
+        ],
+        "profile_keys": [
+          "approval_policy",
+          "features",
+          "hooks",
+          "marketplaces",
+          "model",
+          "model_reasoning_effort",
+          "plugins",
+          "projects",
+          "sandbox_mode",
+          "web_search"
+        ],
+        "repository_instructions_sha256": {
+          "AGENTS.md": "57404f69a6bdf9ebc0a112ac04f1c64f717c0da39758af27d15cb33e726238b4"
+        },
+        "global_instructions": [],
+        "stock_skills": [
+          "imagegen",
+          "openai-docs",
+          "review-agent",
+          "skill-creator",
+          "skill-installer"
+        ]
+      }
+    }
+  },
+  "prior": {
+    "coverage": "lower bound",
+    "tokens": {
+      "inputTokens": 12008822,
+      "cachedInputTokens": 11779840,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 46471,
+      "reasoningOutputTokens": 25877,
+      "totalTokens": 12055293
+    },
+    "threads": 3,
+    "usd_estimate": 2.100658,
+    "state": "timeout",
+    "wall_seconds": 3100.4100480391644,
+    "grade": {
+      "path": "runs/partial-result-go-git-01-prior/attempts/go-git/develop/grade/grade.json",
+      "sha256": "4c5e8fbd39a5d66095fd1aa1bed2fb1a954d6aa38116d95443e16db2f9d088b5"
+    },
+    "exits": {
+      "build": 0,
+      "native": 0,
+      "contract": 0,
+      "preserve": 0,
+      "independent": 0
+    },
+    "soft_pr_quality": null
+  },
+  "route_review": "Requires inspection of the recorded independent review events."
+}

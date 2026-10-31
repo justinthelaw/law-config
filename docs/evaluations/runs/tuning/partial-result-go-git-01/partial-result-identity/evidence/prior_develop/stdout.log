@@ -1,0 +1,8 @@
+readslice bytes="8" sentinel=true error=mode read failed
+sentinel-empty sentinel=true malformed=false error=mode read failed entries=0
+sentinel-valid sentinel=true malformed=false error=mode read failed entries=0
+sentinel-zeros-1000 sentinel=true malformed=false error=mode read failed entries=0
+sentinel-zeros-9000 sentinel=true malformed=false error=mode read failed entries=0
+sentinel-invalid sentinel=true malformed=false error=mode read failed entries=0
+terminated-invalid sentinel=false malformed=true error=malformed tree: malformed mode entries=0
+normal-valid sentinel=false malformed=false error=<nil> entries=1

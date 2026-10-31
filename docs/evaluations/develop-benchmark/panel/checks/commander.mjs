@@ -1,0 +1,13 @@
+import { pathToFileURL } from 'node:url';
+import { resolve } from 'node:path';
+const { Command } = await import(pathToFileURL(resolve('index.js')));
+const parent = new Command().enablePositionalOptions().option('--mode <v>');
+const child = parent.command('child').option('--mode <v>').option('--leaf <v>').action(() => {});
+if (process.env.PANEL_STAGE === 'contract') parent.setOptionValueWithSource('mode', 'parent');
+else parent.setOptionValueWithSource('mode', 'parent', 'config');
+parent.parse(['child','--mode','child','--leaf','yes'], {from:'user'});
+const value = child.optsWithGlobals().mode;
+const source = child.getOptionValueSourceWithGlobals('mode');
+const leaf = child.getOptionValueSourceWithGlobals('leaf');
+console.log({value,source,leaf});
+if (value !== 'parent' || source !== (process.env.PANEL_STAGE === 'contract' ? undefined : 'config') || leaf !== 'cli') process.exit(42);

@@ -1,0 +1,13 @@
+case,cohort,condition,order,minutes_per_arm,state,released_utc,closed_utc,arm_seconds,completed_calls,interrupted_calls,usage_receipts,known_uncached_input,known_cached_input,known_output,known_total_context,reasoning_output_subset,usage_status,stop_reason
+fmt,recovered-fixture,develop,1,20,completed,2026-10-27T06:58:57.663543+00:00,2026-10-27T07:00:25.989140+00:00,88.327,7,0,7,299984,16256,5706,321946,1298,complete,
+fmt,recovered-fixture,control,2,20,completed,2026-10-27T07:00:25.989758+00:00,2026-10-27T07:01:56.320173+00:00,90.331,7,0,7,234054,19456,4695,258205,1204,complete,
+svelte,recovered-fixture,develop,1,75,completed,2026-10-27T07:26:42.620432+00:00,2026-10-27T07:29:53.340601+00:00,190.661,7,0,7,309815,15104,7600,332519,2770,complete,
+svelte,recovered-fixture,control,2,75,completed,2026-10-27T07:29:53.341318+00:00,2026-10-27T07:32:13.600687+00:00,140.258,7,0,7,226035,37760,6444,270239,1907,complete,
+law,recovered-fixture,develop,1,75,completed,2026-10-27T07:41:54.571089+00:00,2026-10-27T07:45:28.995397+00:00,214.422,7,0,7,280660,52864,14328,347852,3286,complete,
+law,recovered-fixture,control,2,75,completed,2026-10-27T07:45:28.996027+00:00,2026-10-27T07:49:47.386452+00:00,258.387,7,0,7,226435,45312,14503,286250,3836,complete,
+site,recovered-fixture,control,1,75,completed,2026-10-27T08:15:47.594489+00:00,2026-10-27T08:18:33.667242+00:00,166.085,7,0,7,199160,45312,11749,256221,1903,complete,
+site,recovered-fixture,develop,2,75,completed,2026-10-27T08:18:33.668429+00:00,2026-10-27T08:21:40.307087+00:00,186.637,7,0,7,254902,52864,12951,320717,1721,complete,
+tokio,replacement-fixture,control,1,20,completed,2026-10-27T07:54:08.904542+00:00,2026-10-27T07:55:44.015202+00:00,95.11,7,0,7,203826,45312,3963,253101,581,complete,
+tokio,replacement-fixture,develop,2,20,completed,2026-10-27T07:55:44.016246+00:00,2026-10-27T07:57:16.988441+00:00,92.971,7,0,7,265662,45312,4486,315460,649,complete,
+runner,replacement-fixture,control,1,75,completed,2026-10-27T08:06:29.596945+00:00,2026-10-27T08:10:08.898465+00:00,219.299,7,0,7,199854,45312,12871,258037,3061,complete,
+runner,replacement-fixture,develop,2,75,completed,2026-10-27T08:10:08.899969+00:00,2026-10-27T08:13:59.614654+00:00,230.712,7,0,7,257699,52864,16509,327072,4198,complete,

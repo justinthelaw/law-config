@@ -1,0 +1,14 @@
+{
+  "name": "observable-werkzeug-01",
+  "registration_sha256": "51c4eb9950f037e41021b7bfd4933f95e739d4880a97b93555dbd29765dc6fa2",
+  "treatments": {
+    "prior": "6885dd085133250a524251e7dd0bfbb0302a841e5d08464c580890c9055f71aa",
+    "candidate": "7ed91df07062b0a88cab8cd5b5e74ee8a7c7e258afa2a42645b60e793ea68791"
+  },
+  "case": "werkzeug",
+  "base": "15fc22b699ecacd04824092453c0cd2a8c4a3a67",
+  "merged": "28360ef872ae984cc08209cb333db5649ce977bc",
+  "prompt_sha256": "2d2b01a70ce1822e55ece82a6f056088db9e39385a0a7c0a9651b7e95e4b829d",
+  "target_sha256": "ef964bbe31faee6884025ac0cc64b969727934d7e37f44b60eac001bed59683a",
+  "descriptor_sha256": "3eb8896cbcec3b1232aedc4395047c9b34389bf543198b4802337edfd9354926"
+}

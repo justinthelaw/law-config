@@ -1,0 +1,94 @@
+{
+  "registration_sha256": "8f74fc02d5b24998b10b5d1c0c23b951f00b6e49d8b93fd260d608fbb8b66682",
+  "method": "Price each native response at the registered rates. Classify by the tools that response invoked. Sum unique root and descendant meters and match the proposal totals. Forked tool history without a new response meter adds no cost.",
+  "arms": {
+    "D": {
+      "threads": [
+        {
+          "role": "root",
+          "rollout_sha256": "28a709ed76eaa21e168a97ccaf7286bf7ac42bbc74b6800ee550989f23e7e74e",
+          "usd": 0.6929236
+        },
+        {
+          "role": "child",
+          "rollout_sha256": "11642a9d0df1c10adde9842c818433515d177b3ece16570b036427cfc70256e4",
+          "usd": 0.0308724
+        }
+      ],
+      "categories": {
+        "functions_wait_only": {
+          "responses": 92,
+          "usd": 0.4730512
+        },
+        "mixed_poll_with_work": {
+          "responses": 1,
+          "usd": 0.0058852
+        },
+        "no_tool_call": {
+          "responses": 3,
+          "usd": 0.0317864
+        },
+        "other_work": {
+          "responses": 21,
+          "usd": 0.1624124
+        },
+        "write_stdin_only": {
+          "responses": 9,
+          "usd": 0.0506608
+        }
+      },
+      "outer_wait_ms_requested": {
+        "1000": 6,
+        "10000": 86
+      }
+    },
+    "C": {
+      "threads": [
+        {
+          "role": "root",
+          "rollout_sha256": "2b1d02522ad818aeaad49d9a4a72b693ad22e72259ed7eb975f2fdeeb3bb2615",
+          "usd": 0.669092
+        }
+      ],
+      "categories": {
+        "no_tool_call": {
+          "responses": 1,
+          "usd": 0.0094352
+        },
+        "other_work": {
+          "responses": 18,
+          "usd": 0.1516772
+        },
+        "write_stdin_only": {
+          "responses": 97,
+          "usd": 0.5079796
+        }
+      },
+      "outer_wait_ms_requested": {}
+    },
+    "stock": {
+      "threads": [
+        {
+          "role": "root",
+          "rollout_sha256": "6b2354f67cab24cbfe16422164790917b1dd6418493b8c273edb6be83c0d73ac",
+          "usd": 0.5498268
+        }
+      ],
+      "categories": {
+        "no_tool_call": {
+          "responses": 1,
+          "usd": 0.0103528
+        },
+        "other_work": {
+          "responses": 15,
+          "usd": 0.1144808
+        },
+        "write_stdin_only": {
+          "responses": 78,
+          "usd": 0.4249932
+        }
+      },
+      "outer_wait_ms_requested": {}
+    }
+  }
+}

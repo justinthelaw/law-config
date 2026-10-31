@@ -1,0 +1,97 @@
+diff --git a/lib/command.js b/lib/command.js
+index 8ed77a2..4104e21 100644
+--- a/lib/command.js
++++ b/lib/command.js
+@@ -975,7 +975,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
+     // global overwrites local, like optsWithGlobals
+     let source;
+     this._getCommandAndAncestors().forEach((cmd) => {
+-      if (cmd.getOptionValueSource(key) !== undefined) {
++      if (Object.hasOwn(cmd.opts(), key)) {
+         source = cmd.getOptionValueSource(key);
+       }
+     });
+diff --git a/tests/options.optsWithGlobals.test.js b/tests/options.optsWithGlobals.test.js
+index 0f84454..cd2de3a 100644
+--- a/tests/options.optsWithGlobals.test.js
++++ b/tests/options.optsWithGlobals.test.js
+@@ -68,6 +68,79 @@ describe('Command.optsWithGlobals()', () => {
+ });
+ 
+ describe('getOptionValueSourceWithGlobals', () => {
++  for (const storeAsProperties of [false, true]) {
++    describe(`with storeOptionsAsProperties(${storeAsProperties})`, () => {
++      for (const value of ['parent value', false, 0, '', undefined]) {
++        test(`parent value ${JSON.stringify(value)} with unknown source masks child source`, () => {
++          const program = new commander.Command()
++            .storeOptionsAsProperties(storeAsProperties)
++            .option('--common <value>');
++          const sub = program
++            .command('sub')
++            .storeOptionsAsProperties(storeAsProperties)
++            .option('--common <value>');
++          program.setOptionValue('common', value);
++          sub.setOptionValueWithSource('common', 'child value', 'cli');
++
++          assert.equal(sub.optsWithGlobals().common, value);
++          assert.equal(sub.getOptionValueSourceWithGlobals('common'), undefined);
++        });
++      }
++
++      for (const source of ['default', 'config', 'env', 'cli', 'implied']) {
++        test(`parent source ${source} masks child source`, () => {
++          const program = new commander.Command()
++            .storeOptionsAsProperties(storeAsProperties)
++            .option('--common <value>');
++          const sub = program
++            .command('sub')
++            .storeOptionsAsProperties(storeAsProperties)
++            .option('--common <value>');
++          program.setOptionValueWithSource('common', 'parent value', source);
++          sub.setOptionValueWithSource('common', 'child value', 'cli');
++
++          assert.equal(sub.optsWithGlobals().common, 'parent value');
++          assert.equal(sub.getOptionValueSourceWithGlobals('common'), source);
++        });
++      }
++
++      test('nested commands preserve child-only sources and ancestor precedence', () => {
++        const program = new commander.Command().storeOptionsAsProperties(
++          storeAsProperties,
++        );
++        const sub = program
++          .command('sub')
++          .storeOptionsAsProperties(storeAsProperties)
++          .option('--common <value>');
++        const leaf = sub
++          .command('leaf')
++          .storeOptionsAsProperties(storeAsProperties)
++          .option('--common <value>')
++          .option('--local <value>');
++        sub.setOptionValue('common', 'parent value');
++        leaf.setOptionValueWithSource('common', 'child value', 'cli');
++        leaf.setOptionValueWithSource('local', 'local value', 'env');
++
++        assert.deepEqual(leaf.optsWithGlobals(), {
++          common: 'parent value',
++          local: 'local value',
++        });
++        assert.equal(leaf.getOptionValueSourceWithGlobals('common'), undefined);
++        assert.equal(leaf.getOptionValueSourceWithGlobals('local'), 'env');
++        assert.equal(leaf.getOptionValueSourceWithGlobals('missing'), undefined);
++
++        program.option('--common <value>');
++        program.setOptionValueWithSource('common', 'root value', 'config');
++        assert.equal(leaf.optsWithGlobals().common, 'root value');
++        assert.equal(leaf.getOptionValueSourceWithGlobals('common'), 'config');
++
++        program.setOptionValue('common', 'unknown root value');
++        assert.equal(leaf.optsWithGlobals().common, 'unknown root value');
++        assert.equal(leaf.getOptionValueSourceWithGlobals('common'), undefined);
++      });
++    });
++  }
++
+   test('when option used with simple command then source is defined', () => {
+     const program = new commander.Command();
+     program.option('-g, --global');

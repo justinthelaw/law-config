@@ -1,0 +1,68 @@
+{
+  "id": "preserve-exposed-behavior",
+  "previous": "3b0bd70d20a63dbf66750151ef0730b26032ecf30e0f4bf3599256ab1398cbb5",
+  "targets": [
+    "plugins/develop/skills/develop/SKILL.md"
+  ],
+  "evidence": [
+    {
+      "case": "pytest",
+      "source": "runs/tuning/focused-review-pytest-01/result.json",
+      "source_sha256": "53f15b93e1aa1f349f2ef31432c447f364486e791ccee9bc01f54dc7025e7fb6",
+      "registration_sha256": "61ab3ac525a1fab57ed499478a432b9966459d91a7453d21ca6513ba85221647",
+      "roles": {
+        "control": {
+          "package_or_stock": "stock",
+          "pr_score_100": 96.25,
+          "proposal_usd": 0.4230268,
+          "native_sha256": "eaae9824227c7435a84beb208aa48922762e2b68a77f00d9fa5e48880b1a23de"
+        },
+        "develop": {
+          "package_or_stock": "8e7437469ab13c593927f22b350da2d864ef460bd671c750481ea521edaec541",
+          "pr_score_100": 60.0,
+          "proposal_usd": 0.7832136000000001,
+          "native_sha256": "61b001d761aacadaabc418c1b056f60cd1f71a78ecda0a5ac2db0593e2f9f0de"
+        }
+      },
+      "supplemental_receipts": {
+        "copy-pickle-compatibility": "902b210472a70fa6fd349bdad5947fa949ca38837d291f8d47583366258d3b4c",
+        "pytest-param-tuple": "07a09761e2414c68f3a9707cd7414675a55d00d0ff830a21b16193050470be79",
+        "reviewed-revision": "ad12ea3ed08a2b290b130782835ab25322081269f7243e66c022688f7d2b41a2"
+      },
+      "observation": "The base and stock patch allow unpacking the factory result. The candidate replaced the result type, documented the incompatibility and raised TypeError on unpacking. All three fresh reviewers accepted the resulting design or patch. All three blind rotations preferred stock. Both proposals passed the five frozen gates."
+    },
+    {
+      "case": "werkzeug",
+      "source": "runs/tuning/caller-werkzeug-01/result.json",
+      "source_sha256": "f46fcd947213399255a6f0a0f6bdf540a393017aef61a2f8605214013fbce4d5",
+      "registration_sha256": "af169f9ab90a93ae0bad6fccb9f15aceaccc1a74711f8f486854fdf4db7cc012",
+      "roles": {
+        "control": {
+          "package_or_stock": "stock",
+          "pr_score_100": 75.0,
+          "proposal_usd": 0.32879359999999996,
+          "native_sha256": "00c372597095811824fc3c3580bf2576b6587dc925646215a56c11c463c64484"
+        },
+        "develop": {
+          "package_or_stock": "fdc34c55ece9fd9e61e3476408f4d378f16b2771796c104af5d5f3b469501b80",
+          "pr_score_100": 96.25,
+          "proposal_usd": 1.4064603999999998,
+          "native_sha256": "93282592db915aef42e911043c1dbe1ea577df59a82eec6b8ea5e5af0c5765ff"
+        }
+      },
+      "supplemental_receipts": {
+        "public-warnings": "ebadafdba524558ea5275c5336ba0e5252b99a8b001ea2e24258e33c017433d1",
+        "warning-check-interpretation": "2b2ebd5300083f76965f9045cc9d369221585ed4937242fcc4bf54339afdfd59",
+        "werkzeug-stream-length": "348ada376cb0050486cfb033c2e11719c69ab84c5269f07c79a55a747f0bf84c"
+      },
+      "observation": "Changes to stored response chunks affected public stream length, warning timing and encoded output. The earlier candidate gained 21.25 median full-PR points but cost over four times the matched control."
+    }
+  ],
+  "change": "Replace the existing local-work opening paragraph. Prefer an existing representation when it fits, and verify a previously exposed operation before replacing it.",
+  "prediction": "Accounting for behavior available to external callers before selecting a design avoids a breaking replacement and subsequent review or repair. Measure the full proposal, all mandated reviews and the adjacent working operation.",
+  "sequence": [
+    "pytest only if the independent reviewer-packet screen still loses caller behavior or misses the strict quality and cost target and no candidate has already earned confirmation",
+    "werkzeug only if the pytest screen passes"
+  ],
+  "falsifier": "Reject a changed tuple result, type/value loss or warnings on copy or reconstruction, a lost primary gate, or skipped required review. Count every release. Require a ready full-PR win at or below stock cost and improved cost and proposal time over the matched prior. For a subsequent Werkzeug guard, reapply the sealed stream-length and warning checks, including their recorded interpretation. A score ceiling does not qualify."
+}

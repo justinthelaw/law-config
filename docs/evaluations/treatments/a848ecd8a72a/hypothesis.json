@@ -1,0 +1,12 @@
+{
+  "id": "await-native-checks-d-v1",
+  "previous": "0085f2ad8d61c0b153d7909f12b2e80f320676494e2bbe2fe83d1e6f07a7bd04",
+  "change": "Use bounded native waiting for long checks and reuse supported build state while preserving real focused verification.",
+  "evidence": [
+    {
+      "case": "fmt",
+      "reason": "Prior full-panel Develop ran repeated long-check polling on a build-intensive change; measure cost, elapsed and retained verification."
+    }
+  ],
+  "falsifier": "Reject non-ready candidate, lost prior verified behavior or coverage, missing required review or unresolved material risk, full-PR loss to stock, incomplete pricing, or failure of strict cost and elapsed improvement over prior. Prior soft PR quality is unknown. Report all allocations and exact checks. One exposed case cannot establish full-panel outcome."
+}

@@ -1,0 +1,262 @@
+{
+  "black": {
+    "build": "PYTHONPATH=src:/deps/lib python -m compileall -q src/black",
+    "native": "PYTHONPATH=.:src:/deps/lib python -m pytest -q -o addopts= tests/test_ranges.py",
+    "observed_at": "2026-10-29T14:24:37.146756+00:00",
+    "base_files": 550,
+    "base_bytes": 6349096,
+    "delta": [
+      3,
+      94,
+      3
+    ],
+    "active_probe_sha256": "5f9c84bc2712f23d3cd3f9221b45e09cd25942586f9a245c36613f4a0f76bfff"
+  },
+  "cli11": {
+    "build": "g++ -std=c++17 -Iinclude -fsyntax-only examples/positional_validation.cpp",
+    "native": "g++ -std=c++17 -Iinclude examples/positional_validation.cpp -o /tmp/cli-example && /tmp/cli-example --help >/dev/null",
+    "observed_at": "2026-10-29T14:24:43.454920+00:00",
+    "base_files": 320,
+    "base_bytes": 3190374,
+    "delta": [
+      2,
+      41,
+      1
+    ],
+    "active_probe_sha256": "50a0924ef58c0011120a8790e4feddf9de0fc225bd195d5f869d971379177678"
+  },
+  "commander": {
+    "build": "node --check lib/command.js",
+    "native": "node --test tests/options.optional.test.js tests/options.bool.small.combined.test.js",
+    "observed_at": "2026-10-29T14:24:39.352813+00:00",
+    "base_files": 220,
+    "base_bytes": 1003375,
+    "delta": [
+      4,
+      22,
+      45
+    ],
+    "active_probe_sha256": "49c225c8ede1a19245df6a66c6fe964a7e836058802f48969befe9bb680c4215"
+  },
+  "commons-lang": {
+    "build": "mkdir -p target/panel-classes && javac -encoding UTF-8 -d target/panel-classes -sourcepath src/main/java src/main/java/org/apache/commons/lang3/RandomStringUtils.java src/main/java/org/apache/commons/lang3/concurrent/TimedSemaphore.java",
+    "native": "java -cp target/panel-classes /deps/public/Legacy.java",
+    "observed_at": "2026-10-29T14:24:45.780981+00:00",
+    "base_files": 719,
+    "base_bytes": 10716446,
+    "delta": [
+      2,
+      22,
+      5
+    ],
+    "active_probe_sha256": "dcffbc309dd161d032515aea28cc3a38d27ad17fe45d56ed660a6d6fcf981165"
+  },
+  "django": {
+    "build": "PYTHONPATH=.:/deps/lib python -m compileall -q django/forms",
+    "native": "PYTHONPATH=.:/deps/lib python tests/runtests.py forms_tests.tests.test_forms --parallel=1 --verbosity=0",
+    "observed_at": "2026-10-29T14:24:41.305864+00:00",
+    "base_files": 7091,
+    "base_bytes": 46242542,
+    "delta": [
+      3,
+      22,
+      2
+    ],
+    "active_probe_sha256": "5dbea44cea25cf877379fe3b5a0fa0a065233e60ae90462e00fe15b54092ffcc"
+  },
+  "expat": {
+    "build": "/deps/lib/cmake/data/bin/cmake -S expat -B build-panel -DEXPAT_BUILD_DOCS=OFF -DEXPAT_BUILD_TESTS=ON && /deps/lib/cmake/data/bin/cmake --build build-panel -j2",
+    "native": "/deps/lib/cmake/data/bin/ctest --test-dir build-panel --output-on-failure -R '^runtests$'",
+    "observed_at": "2026-10-29T14:24:49.484077+00:00",
+    "base_files": 235,
+    "base_bytes": 136413470,
+    "delta": [
+      2,
+      22,
+      0
+    ],
+    "active_probe_sha256": "4b94e2fa25c8a2845b794db4825755b096c93a117f26ee893ec64e1127f9e2ed"
+  },
+  "fd": {
+    "build": "cargo build --offline --locked --bin fd",
+    "native": "cargo test --offline --locked --bin fd",
+    "observed_at": "2026-10-29T14:24:41.056858+00:00",
+    "base_files": 60,
+    "base_bytes": 593401,
+    "delta": [
+      4,
+      37,
+      20
+    ],
+    "active_probe_sha256": "bd576e41a49864d6ec93c2e8608b3854a8beb1d6227fc1cad364beef22c4750a"
+  },
+  "fmt": {
+    "build": "/deps/lib/cmake/data/bin/cmake -S . -B build -DFMT_DOC=OFF -DFMT_TEST=ON && /deps/lib/cmake/data/bin/cmake --build build -j2 --target fmt-c printf-test",
+    "native": "./build/bin/printf-test",
+    "observed_at": "2026-10-29T14:24:42.733902+00:00",
+    "base_files": 145,
+    "base_bytes": 3169457,
+    "delta": [
+      2,
+      3,
+      0
+    ],
+    "active_probe_sha256": "7eab27279cec3c6561ecb7dd21b248e4ef54d9e019017e395a917456e1c15bb2"
+  },
+  "go-git": {
+    "build": "go build ./plumbing/format/packfile",
+    "native": "go test -count=1 ./plumbing/format/packfile",
+    "observed_at": "2026-10-29T14:24:36.652743+00:00",
+    "base_files": 756,
+    "base_bytes": 5172931,
+    "delta": [
+      2,
+      107,
+      2
+    ],
+    "active_probe_sha256": "b614adddf69ea19eedfeee0ac4af0897b3c457555d7a7940f91c3690d752e684"
+  },
+  "jq": {
+    "build": "autoreconf -fi && ./configure --with-oniguruma=builtin --disable-docs && make -j2",
+    "native": "make check-am TESTS=tests/shtest",
+    "observed_at": "2026-10-29T14:24:34.367683+00:00",
+    "base_files": 436,
+    "base_bytes": 4829020,
+    "delta": [
+      2,
+      22,
+      8
+    ],
+    "active_probe_sha256": "8fcfdb34918138e1cd116caffce45ec6182d4a3af2274bd92424c7adbe65134b"
+  },
+  "libarchive": {
+    "build": "/deps/lib/cmake/data/bin/cmake -S . -B build-panel -DENABLE_TEST=ON -DENABLE_CPIO=OFF -DENABLE_CAT=OFF && /deps/lib/cmake/data/bin/cmake --build build-panel -j2 --target bsdtar libarchive_test",
+    "native": "./build-panel/bin/libarchive_test test_archive_read_open_filenames_null test_archive_read_open_filenames_split_uaf test_read_data_large",
+    "observed_at": "2026-10-29T14:24:48.346048+00:00",
+    "base_files": 1587,
+    "base_bytes": 20990601,
+    "delta": [
+      2,
+      65,
+      47
+    ],
+    "active_probe_sha256": "a057e1c77379baaa3c61d06c6373f394e1ace37dcd58b62aef387128953e7e24"
+  },
+  "marked": {
+    "build": "npm run build:esbuild && ./node_modules/.bin/tsc --noEmit",
+    "native": "npm run test:specs",
+    "observed_at": "2026-10-29T14:24:35.193705+00:00",
+    "base_files": 619,
+    "base_bytes": 1379936,
+    "delta": [
+      4,
+      33,
+      10
+    ],
+    "active_probe_sha256": "b6868207bf199ab20c62d5d8bb1b6339a2e58a594b922de74e2a0da09990deb9"
+  },
+  "packaging": {
+    "build": "PYTHONPATH=src python -m compileall -q src/packaging",
+    "native": "PYTHONPATH=src:/deps/lib python -m pytest -q -o addopts= tests/test_ranges.py",
+    "observed_at": "2026-10-29T14:24:32.981647+00:00",
+    "base_files": 140,
+    "base_bytes": 1634516,
+    "delta": [
+      4,
+      109,
+      8
+    ],
+    "active_probe_sha256": "b6f26eaa9fd23e0045ea5c597fa98e933276353aa5b0cfe81b1e0cff2240d94f"
+  },
+  "prometheus": {
+    "build": "go build ./prometheus/push",
+    "native": "go test -count=1 ./prometheus/push",
+    "observed_at": "2026-10-29T14:24:43.562923+00:00",
+    "base_files": 213,
+    "base_bytes": 2713704,
+    "delta": [
+      2,
+      6,
+      4
+    ],
+    "active_probe_sha256": "f5cbc45387958e8da570ffecff5528762162badf9d60d7a0d2a2b66f9527ef8e"
+  },
+  "pytest": {
+    "build": "PYTHONPATH=src:/deps/lib python -m compileall -q src/_pytest/tmpdir.py",
+    "native": "PYTHONPATH=src:/deps/lib python -m pytest -q -c /dev/null -p pytester -o pytester_example_dir=\"$PWD/testing/example_scripts\" testing/test_tmpdir.py",
+    "observed_at": "2026-10-29T14:24:39.985830+00:00",
+    "base_files": 733,
+    "base_bytes": 7476737,
+    "delta": [
+      3,
+      155,
+      4
+    ],
+    "active_probe_sha256": "3e3d628e36325fc85f08e0a456c0a3226748a69dd47558f10941db75d9a34c7a"
+  },
+  "ripgrep": {
+    "build": "cargo build --locked --offline -p globset",
+    "native": "cargo test --locked --offline -p globset --lib",
+    "observed_at": "2026-10-29T14:24:31.985621+00:00",
+    "base_files": 226,
+    "base_bytes": 3232672,
+    "delta": [
+      2,
+      121,
+      20
+    ],
+    "active_probe_sha256": "8dfacde03c45703c1f0b95b346aa08e1198d948c8775ef9ad7a14cdfb8e8aeec"
+  },
+  "rspec": {
+    "build": "ruby -c rspec-mocks/lib/rspec/mocks/mutate_const.rb",
+    "native": "RUBYLIB=rspec-core/lib:rspec-support/lib:rspec-expectations/lib:rspec-mocks/lib:/deps/public ruby /deps/public/legacy_rspec.rb",
+    "observed_at": "2026-10-29T14:24:44.578950+00:00",
+    "base_files": 797,
+    "base_bytes": 4064151,
+    "delta": [
+      3,
+      69,
+      2
+    ],
+    "active_probe_sha256": "7a1d4372379168491e9149a7f22c1ad6c07884402400efd6a740b98fffe15e7e"
+  },
+  "runner-space": {
+    "build": "node node_modules/typescript/bin/tsc --project tsconfig.build.json",
+    "native": "node node_modules/typescript/bin/tsc --project tsconfig.json && node --test build/test/planner.test.js",
+    "observed_at": "2026-10-29T14:32:46.312508+00:00",
+    "base_files": 62,
+    "base_bytes": 1046294,
+    "delta": [
+      5,
+      8,
+      4
+    ],
+    "active_probe_sha256": "3f6cbd1e36f8cfdef32ad11b2d322177e1c1b2bd58fc2663c0f92974612f9c6c"
+  },
+  "sympy": {
+    "build": "PYTHONPATH=.:/deps/lib python -m compileall -q sympy/logic",
+    "native": "PYTHONPATH=.:/deps/lib python -m pytest -q -o addopts= sympy/logic/tests/test_boolalg.py",
+    "observed_at": "2026-10-29T14:24:42.143886+00:00",
+    "base_files": 2094,
+    "base_bytes": 33987331,
+    "delta": [
+      3,
+      15,
+      3
+    ],
+    "active_probe_sha256": "8aa45087cc86cc4bc978b8bf48b31164bd7f26ea091bc3524c9337870c5ac71c"
+  },
+  "werkzeug": {
+    "build": "PYTHONPATH=src:/deps/lib python -m compileall -q src/werkzeug",
+    "native": "PYTHONPATH=src:/deps/lib python -m pytest -q -o addopts= tests/test_wrappers.py",
+    "observed_at": "2026-10-29T14:24:36.805747+00:00",
+    "base_files": 294,
+    "base_bytes": 2386113,
+    "delta": [
+      2,
+      17,
+      10
+    ],
+    "active_probe_sha256": "7ebf18330c82f0e92035faf433d5709d2c495ad8fc971474e548ee822a3151cd"
+  }
+}

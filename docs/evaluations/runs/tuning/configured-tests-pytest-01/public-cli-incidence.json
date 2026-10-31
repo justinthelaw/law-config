@@ -1,0 +1,1063 @@
+{
+  "format": "law-config.public-cli-incidence/v1",
+  "kind": "post_freeze_probe",
+  "primary_scores_changed": false,
+  "title": "Pytest declared console startup regression across six published pilots",
+  "case": {
+    "repository": "pytest-dev/pytest",
+    "pr": 15193,
+    "base": "4088e1a84ef1cb8ba80aac4e75449459fc092c12",
+    "merged": "0f54d41bedf00505bb1ac2c724abf96ba6dcf48d"
+  },
+  "scope": "Retrospective execution of one ordinary declared public console entry and an unchanged existing test on all 18 sealed stock, revised Develop and prior Develop role patches from the six published pytest pilots.",
+  "finding": "The exact declared pytest console entry crashes before collection on some proposals even though python -m pytest runs the same existing test successfully. Base and upstream merge both pass. This is public application breakage, beyond a private import-order or class-field introspection difference.",
+  "summary": {
+    "role_count": 18,
+    "distinct_reconstructed_sources": 18,
+    "by_role": {
+      "stock": {
+        "pass": 3,
+        "public-cli-startup-regression": 3,
+        "unknown": 0
+      },
+      "revised": {
+        "pass": 4,
+        "public-cli-startup-regression": 2,
+        "unknown": 0
+      },
+      "prior": {
+        "pass": 5,
+        "public-cli-startup-regression": 1,
+        "unknown": 0
+      }
+    },
+    "observed_public_cli_startup_regressions": 6,
+    "legacy_all_five_recorded_executable_stages_green": 18
+  },
+  "mechanism": "The generated public console starts with _pytest.config:_console_main. On the failing dataclass variants it reaches ParameterSet while pytest is absent from sys.modules. The class already declares __module__=\"pytest\"; Python dataclasses resolves its string annotations through sys.modules.get(cls.__module__).__dict__ and crashes. Running -m pytest first initializes the pytest package. Delaying only the public module assignment until pytest initialization repairs startup in the same revised source.",
+  "diagnostic": {
+    "exception": "AttributeError: 'NoneType' object has no attribute '__dict__'",
+    "frame": "dataclasses._is_type: ns = sys.modules.get(cls.__module__).__dict__",
+    "stage": "Before test collection"
+  },
+  "method": {
+    "runtime_image": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+    "python_version": "3.13.18 (main, Oct 26 2026, 22:48:24) [GCC 12.2.0]",
+    "python_executable": "/usr/local/bin/python3",
+    "pip_version": "26.2.2",
+    "distlib_scripts_sha256": "ad59b803e61f1900e9b0e4703b2ec0c1ea724536b2bb2eab73e32768230101c3",
+    "project_pyproject_sha256": "9f7f69ac0a2a77f329e0689306ab1b904059acc67ddaaecec18ee0582cc7f2e9",
+    "declared_project_scripts": {
+      "pytest": "_pytest.config:_console_main",
+      "py.test": "_pytest.config:_console_main"
+    },
+    "launcher_sha256": "551fe571cabee67851cf9ac698511e7d2d3dea7eb3095d484ba0c7d9b10c422e",
+    "launcher_source": "#!/usr/local/bin/python3\n# -*- coding: utf-8 -*-\nimport re\nimport sys\nif __name__ == '__main__':\n    from _pytest.config import _console_main\n    sys.argv[0] = re.sub(r'(-script\\.pyw|\\.exe)?$', '', sys.argv[0])\n    sys.exit(_console_main())\n",
+    "launcher_generation": "Pinned pip._vendor.distlib.scripts.ScriptMaker using unchanged pyproject.toml metadata. No historical dependency pytest wrapper, assessor shim, sitecustomize, module preloading or module monkeypatching.",
+    "routes": {
+      "help-console": [
+        "/task-output/bin/pytest",
+        "--help"
+      ],
+      "native-console": [
+        "/task-output/bin/pytest",
+        "testing/test_mark_expression.py::test_empty_is_false"
+      ],
+      "native-module": [
+        "python3",
+        "-B",
+        "-m",
+        "pytest",
+        "testing/test_mark_expression.py::test_empty_is_false"
+      ]
+    },
+    "configuration": "Unchanged original pyproject.toml, natural argv and working directory, normal plugin loading; no -c, -o, plugin or autoload override. Fresh process and source copy for each route.",
+    "classification": "A public CLI startup regression requires both console --help and the existing native test to exit 1 with the recorded dataclasses traceback, while the same native test through -m pytest exits 0 with 1 passed. A pass requires all three routes to exit 0 and both native routes to report 1 passed. Other or unavailable outcomes remain unknown.",
+    "test": {
+      "file": "testing/test_mark_expression.py",
+      "node": "testing/test_mark_expression.py::test_empty_is_false",
+      "sha256": "6efe7b62b6f0231671c445688fd7cdf721f72005a535591d0820bfcc4d121f20",
+      "same_bytes_in_all_18_roles": true
+    },
+    "dependencies_sha256_before_after": "3943d438ec411c91cbe477975e33cf4846643cd9a896e6f83e099a65e9561e72",
+    "sources": "Every replay preserves noncache source bytes before/after. Ordinary .pytest_cache files may be created within isolated copies.",
+    "cpu_lease": [
+      2,
+      3
+    ]
+  },
+  "shared_controls": {
+    "base": {
+      "commit": "4088e1a84ef1cb8ba80aac4e75449459fc092c12",
+      "git_tree": "5672c2c4bcece9d1136230efe62c12208b03c38a",
+      "sealed_source_manifest_sha256": "3fefd116106e5e95f8ee1a2dae63e1c32a2c1f958fe9e2eb44f05f786735aee5",
+      "reconstructed_source_sha256": "41c62636b18926853ac87dae9bfe1e0b103d4a86ffaa987287376352e5067a24",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "41c62636b18926853ac87dae9bfe1e0b103d4a86ffaa987287376352e5067a24",
+          "source_sha256_after": "41c62636b18926853ac87dae9bfe1e0b103d4a86ffaa987287376352e5067a24",
+          "one_test_passed": false
+        },
+        "help-module": {
+          "exit": 0,
+          "log_sha256": "7c0cfa79596f9653190a005b5175d8f9952de0a14f7a50a40c64a59140bef55c",
+          "source_sha256_before": "41c62636b18926853ac87dae9bfe1e0b103d4a86ffaa987287376352e5067a24",
+          "source_sha256_after": "41c62636b18926853ac87dae9bfe1e0b103d4a86ffaa987287376352e5067a24",
+          "one_test_passed": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "d4b4aec3303474e9b9a6a065fc96b747c6df0cb6909d52c0745a14aed26e3e9b",
+          "source_sha256_before": "41c62636b18926853ac87dae9bfe1e0b103d4a86ffaa987287376352e5067a24",
+          "source_sha256_after": "41c62636b18926853ac87dae9bfe1e0b103d4a86ffaa987287376352e5067a24",
+          "one_test_passed": true
+        }
+      }
+    },
+    "merge": {
+      "commit": "0f54d41bedf00505bb1ac2c724abf96ba6dcf48d",
+      "git_tree": "d2ab21025cac52250c44e21140d0c468a33ca253",
+      "sealed_source_manifest_sha256": "77c2c7321a8616de365b1995a90a3917970b200e4475ef8758b47285bb5cd561",
+      "reconstructed_source_sha256": "996edd6ae979ee124405e93ccca6cd6734092d546433f8fcd5b3c6b4a985760d",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "996edd6ae979ee124405e93ccca6cd6734092d546433f8fcd5b3c6b4a985760d",
+          "source_sha256_after": "996edd6ae979ee124405e93ccca6cd6734092d546433f8fcd5b3c6b4a985760d",
+          "one_test_passed": false
+        },
+        "help-module": {
+          "exit": 0,
+          "log_sha256": "7c0cfa79596f9653190a005b5175d8f9952de0a14f7a50a40c64a59140bef55c",
+          "source_sha256_before": "996edd6ae979ee124405e93ccca6cd6734092d546433f8fcd5b3c6b4a985760d",
+          "source_sha256_after": "996edd6ae979ee124405e93ccca6cd6734092d546433f8fcd5b3c6b4a985760d",
+          "one_test_passed": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "649ca6dfd76127727c088f506d186decc12189fd92178611c59e64e88b30471e",
+          "source_sha256_before": "996edd6ae979ee124405e93ccca6cd6734092d546433f8fcd5b3c6b4a985760d",
+          "source_sha256_after": "996edd6ae979ee124405e93ccca6cd6734092d546433f8fcd5b3c6b4a985760d",
+          "one_test_passed": true
+        }
+      }
+    }
+  },
+  "roles": [
+    {
+      "pilot": "scoped-pytest-01",
+      "role": "stock",
+      "result_file": "docs/evaluations/runs/tuning/scoped-pytest-01/result.json",
+      "result_file_sha256": "3a856110cb6fb56287b983118e3a3a194753dcba8d7ebcf3e01f80d63451452c",
+      "sealed_patch_sha256": "43b05dd0617fa1c9582e1c77a41f4cc8ce1595f7b9f7d555e51ea42b3ce73b25",
+      "observation": "pass",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": "ready",
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "f0a347525a9615ec9ab531830fda915d3fe3a62ce5c3c8db78ad2d74dcc75521",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "f0a347525a9615ec9ab531830fda915d3fe3a62ce5c3c8db78ad2d74dcc75521",
+          "source_sha256_after": "f0a347525a9615ec9ab531830fda915d3fe3a62ce5c3c8db78ad2d74dcc75521",
+          "one_test_passed": false,
+          "same_startup_exception": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "aeb73fcf2e43ffe19a4ffd71eeaf4fdb7d5d66458c08553b1b28ab61ef752564",
+          "source_sha256_before": "f0a347525a9615ec9ab531830fda915d3fe3a62ce5c3c8db78ad2d74dcc75521",
+          "source_sha256_after": "f0a347525a9615ec9ab531830fda915d3fe3a62ce5c3c8db78ad2d74dcc75521",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "0c906311158925faadf0cd99c183c392f4ae7a1e662dd61a539be8029d00e43a",
+          "source_sha256_before": "f0a347525a9615ec9ab531830fda915d3fe3a62ce5c3c8db78ad2d74dcc75521",
+          "source_sha256_after": "f0a347525a9615ec9ab531830fda915d3fe3a62ce5c3c8db78ad2d74dcc75521",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "scoped-pytest-01",
+      "role": "revised",
+      "result_file": "docs/evaluations/runs/tuning/scoped-pytest-01/result.json",
+      "result_file_sha256": "3a856110cb6fb56287b983118e3a3a194753dcba8d7ebcf3e01f80d63451452c",
+      "sealed_patch_sha256": "4f2a37a1787bd3d64dcb22320375efc5ea1df8f39d2f6ee5b15ed837696c5e58",
+      "observation": "pass",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": "ready",
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "859dfc19281b7f1adfb40df7df684c498e7c188f93049c7d960b280d9e64b4ed",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "859dfc19281b7f1adfb40df7df684c498e7c188f93049c7d960b280d9e64b4ed",
+          "source_sha256_after": "859dfc19281b7f1adfb40df7df684c498e7c188f93049c7d960b280d9e64b4ed",
+          "one_test_passed": false,
+          "same_startup_exception": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "aeb73fcf2e43ffe19a4ffd71eeaf4fdb7d5d66458c08553b1b28ab61ef752564",
+          "source_sha256_before": "859dfc19281b7f1adfb40df7df684c498e7c188f93049c7d960b280d9e64b4ed",
+          "source_sha256_after": "859dfc19281b7f1adfb40df7df684c498e7c188f93049c7d960b280d9e64b4ed",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "b3761fa9b25ef1988584238b9046282b0bdad71706b80306c80a4def218599f0",
+          "source_sha256_before": "859dfc19281b7f1adfb40df7df684c498e7c188f93049c7d960b280d9e64b4ed",
+          "source_sha256_after": "859dfc19281b7f1adfb40df7df684c498e7c188f93049c7d960b280d9e64b4ed",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "scoped-pytest-01",
+      "role": "prior",
+      "result_file": "docs/evaluations/runs/tuning/scoped-pytest-01/result.json",
+      "result_file_sha256": "3a856110cb6fb56287b983118e3a3a194753dcba8d7ebcf3e01f80d63451452c",
+      "sealed_patch_sha256": "0c2ff8dc1feb99abeb64cb31e40d1b3ac0c4527719c25a18f3c1af6655270dc1",
+      "observation": "pass",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": null,
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "patch_sidecar": {
+        "file": "docs/evaluations/runs/tuning/scoped-pytest-01/prior.json",
+        "sha256": "880147f8df1587bbe85042ccf7b4a5355a2c2c64fe1bdc2d55984a4b66dbfc85",
+        "binding": "Patch and proposal bytes match their sealed hashes in result.json."
+      },
+      "reconstructed_source_sha256": "81f2a22e9de8a95478cc79f99e1ac10f600e29e2e6743238a5ff1b115dcc8289",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "81f2a22e9de8a95478cc79f99e1ac10f600e29e2e6743238a5ff1b115dcc8289",
+          "source_sha256_after": "81f2a22e9de8a95478cc79f99e1ac10f600e29e2e6743238a5ff1b115dcc8289",
+          "one_test_passed": false,
+          "same_startup_exception": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "0c906311158925faadf0cd99c183c392f4ae7a1e662dd61a539be8029d00e43a",
+          "source_sha256_before": "81f2a22e9de8a95478cc79f99e1ac10f600e29e2e6743238a5ff1b115dcc8289",
+          "source_sha256_after": "81f2a22e9de8a95478cc79f99e1ac10f600e29e2e6743238a5ff1b115dcc8289",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "0c906311158925faadf0cd99c183c392f4ae7a1e662dd61a539be8029d00e43a",
+          "source_sha256_before": "81f2a22e9de8a95478cc79f99e1ac10f600e29e2e6743238a5ff1b115dcc8289",
+          "source_sha256_after": "81f2a22e9de8a95478cc79f99e1ac10f600e29e2e6743238a5ff1b115dcc8289",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "caller-review-pytest-01",
+      "role": "stock",
+      "result_file": "docs/evaluations/runs/tuning/caller-review-pytest-01/result.json",
+      "result_file_sha256": "6a3893e6a7e3240e38a05e8731e9622895f3cd580303d6a13fad47b33be91939",
+      "sealed_patch_sha256": "3ffb535c13ded0ac0a9870a66a8a8dbf625479bd58bd9bef59d9ab1bc05830d6",
+      "observation": "pass",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": "ready",
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "d4fe3ecf610ec66ebea77e862425696fc4165ef40a59f2c3fcd3e2c026cbb20e",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "d4fe3ecf610ec66ebea77e862425696fc4165ef40a59f2c3fcd3e2c026cbb20e",
+          "source_sha256_after": "d4fe3ecf610ec66ebea77e862425696fc4165ef40a59f2c3fcd3e2c026cbb20e",
+          "one_test_passed": false,
+          "same_startup_exception": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "435e44eaab94a4ab22ec4297eb9aae7a939fdb7a3e63ca0d081e6dc03e238676",
+          "source_sha256_before": "d4fe3ecf610ec66ebea77e862425696fc4165ef40a59f2c3fcd3e2c026cbb20e",
+          "source_sha256_after": "d4fe3ecf610ec66ebea77e862425696fc4165ef40a59f2c3fcd3e2c026cbb20e",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "044a6b1c5650f417d2d2d147f56e1ac9cbb9ff831631d752e300b2ad7663ce3c",
+          "source_sha256_before": "d4fe3ecf610ec66ebea77e862425696fc4165ef40a59f2c3fcd3e2c026cbb20e",
+          "source_sha256_after": "d4fe3ecf610ec66ebea77e862425696fc4165ef40a59f2c3fcd3e2c026cbb20e",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "caller-review-pytest-01",
+      "role": "revised",
+      "result_file": "docs/evaluations/runs/tuning/caller-review-pytest-01/result.json",
+      "result_file_sha256": "6a3893e6a7e3240e38a05e8731e9622895f3cd580303d6a13fad47b33be91939",
+      "sealed_patch_sha256": "89c8834979e74543e2ce7b632eb6d93fb29ba1a1b85d97fdf76adda119056c98",
+      "observation": "pass",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": "ready",
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "371385fdef6d06a8072839811b4988d66a523239cf77c3ab8d7a2811fc1ef0eb",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "371385fdef6d06a8072839811b4988d66a523239cf77c3ab8d7a2811fc1ef0eb",
+          "source_sha256_after": "371385fdef6d06a8072839811b4988d66a523239cf77c3ab8d7a2811fc1ef0eb",
+          "one_test_passed": false,
+          "same_startup_exception": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "aeb73fcf2e43ffe19a4ffd71eeaf4fdb7d5d66458c08553b1b28ab61ef752564",
+          "source_sha256_before": "371385fdef6d06a8072839811b4988d66a523239cf77c3ab8d7a2811fc1ef0eb",
+          "source_sha256_after": "371385fdef6d06a8072839811b4988d66a523239cf77c3ab8d7a2811fc1ef0eb",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "aeb73fcf2e43ffe19a4ffd71eeaf4fdb7d5d66458c08553b1b28ab61ef752564",
+          "source_sha256_before": "371385fdef6d06a8072839811b4988d66a523239cf77c3ab8d7a2811fc1ef0eb",
+          "source_sha256_after": "371385fdef6d06a8072839811b4988d66a523239cf77c3ab8d7a2811fc1ef0eb",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "caller-review-pytest-01",
+      "role": "prior",
+      "result_file": "docs/evaluations/runs/tuning/caller-review-pytest-01/result.json",
+      "result_file_sha256": "6a3893e6a7e3240e38a05e8731e9622895f3cd580303d6a13fad47b33be91939",
+      "sealed_patch_sha256": "6e2e4476d0d028af156f307b19229bf9ce523e99957278ce2221c34e35e385ac",
+      "observation": "pass",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": null,
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "9909f177fb73d2295e87715328ad6489da20e49d5347913d604759a5f984feea",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "9909f177fb73d2295e87715328ad6489da20e49d5347913d604759a5f984feea",
+          "source_sha256_after": "9909f177fb73d2295e87715328ad6489da20e49d5347913d604759a5f984feea",
+          "one_test_passed": false,
+          "same_startup_exception": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "73d61eb58ee409dba0a2eada890f00675846a7c0198f71e2973ad11d057bb866",
+          "source_sha256_before": "9909f177fb73d2295e87715328ad6489da20e49d5347913d604759a5f984feea",
+          "source_sha256_after": "9909f177fb73d2295e87715328ad6489da20e49d5347913d604759a5f984feea",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "b3761fa9b25ef1988584238b9046282b0bdad71706b80306c80a4def218599f0",
+          "source_sha256_before": "9909f177fb73d2295e87715328ad6489da20e49d5347913d604759a5f984feea",
+          "source_sha256_after": "9909f177fb73d2295e87715328ad6489da20e49d5347913d604759a5f984feea",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "focused-review-pytest-01",
+      "role": "stock",
+      "result_file": "docs/evaluations/runs/tuning/focused-review-pytest-01/result.json",
+      "result_file_sha256": "53f15b93e1aa1f349f2ef31432c447f364486e791ccee9bc01f54dc7025e7fb6",
+      "sealed_patch_sha256": "7a9992f97cf541ccf3ef31889898288d62fdbd7a3b38c5a32c371582aad61646",
+      "observation": "pass",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": "ready",
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "0e130a0810d7107ee92750e9756a64113bf9f116af1daac5eb9c30a47c2b887d",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "0e130a0810d7107ee92750e9756a64113bf9f116af1daac5eb9c30a47c2b887d",
+          "source_sha256_after": "0e130a0810d7107ee92750e9756a64113bf9f116af1daac5eb9c30a47c2b887d",
+          "one_test_passed": false,
+          "same_startup_exception": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "f32ac2486416a9308dc9b6ab2bbf65f6311a0cee70a54294d858e52d38b01d72",
+          "source_sha256_before": "0e130a0810d7107ee92750e9756a64113bf9f116af1daac5eb9c30a47c2b887d",
+          "source_sha256_after": "0e130a0810d7107ee92750e9756a64113bf9f116af1daac5eb9c30a47c2b887d",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "aeb73fcf2e43ffe19a4ffd71eeaf4fdb7d5d66458c08553b1b28ab61ef752564",
+          "source_sha256_before": "0e130a0810d7107ee92750e9756a64113bf9f116af1daac5eb9c30a47c2b887d",
+          "source_sha256_after": "0e130a0810d7107ee92750e9756a64113bf9f116af1daac5eb9c30a47c2b887d",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "focused-review-pytest-01",
+      "role": "revised",
+      "result_file": "docs/evaluations/runs/tuning/focused-review-pytest-01/result.json",
+      "result_file_sha256": "53f15b93e1aa1f349f2ef31432c447f364486e791ccee9bc01f54dc7025e7fb6",
+      "sealed_patch_sha256": "8006c2749e932ac8a3f33a70ea1e77d3a4d6adb9d0e933838ed2ec3bab22e22e",
+      "observation": "public-cli-startup-regression",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": "ready",
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "a727ad6963f31cfaf869ad61fb7336e62dc7d8ec2879f976ba5ce76e90395d88",
+      "routes": {
+        "help-console": {
+          "exit": 1,
+          "log_sha256": "529239cfed8b6d6586e786ed5cc8e544768e7987f5b13e1f2bcfe9079078371f",
+          "source_sha256_before": "a727ad6963f31cfaf869ad61fb7336e62dc7d8ec2879f976ba5ce76e90395d88",
+          "source_sha256_after": "a727ad6963f31cfaf869ad61fb7336e62dc7d8ec2879f976ba5ce76e90395d88",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-console": {
+          "exit": 1,
+          "log_sha256": "529239cfed8b6d6586e786ed5cc8e544768e7987f5b13e1f2bcfe9079078371f",
+          "source_sha256_before": "a727ad6963f31cfaf869ad61fb7336e62dc7d8ec2879f976ba5ce76e90395d88",
+          "source_sha256_after": "a727ad6963f31cfaf869ad61fb7336e62dc7d8ec2879f976ba5ce76e90395d88",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "aeb73fcf2e43ffe19a4ffd71eeaf4fdb7d5d66458c08553b1b28ab61ef752564",
+          "source_sha256_before": "a727ad6963f31cfaf869ad61fb7336e62dc7d8ec2879f976ba5ce76e90395d88",
+          "source_sha256_after": "a727ad6963f31cfaf869ad61fb7336e62dc7d8ec2879f976ba5ce76e90395d88",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "focused-review-pytest-01",
+      "role": "prior",
+      "result_file": "docs/evaluations/runs/tuning/focused-review-pytest-01/result.json",
+      "result_file_sha256": "53f15b93e1aa1f349f2ef31432c447f364486e791ccee9bc01f54dc7025e7fb6",
+      "sealed_patch_sha256": "b71c0dbbebd232e25bf65bbc06960f19b5ffc0e934605318cdc06080b37f6573",
+      "observation": "pass",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": null,
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "patch_sidecar": {
+        "file": "docs/evaluations/runs/tuning/focused-review-pytest-01/prior.json",
+        "sha256": "7742cdb0587f71c886f9f9f217e569b2cf6c33c0ecae78817ececbc0bc0a3661",
+        "binding": "Patch and proposal bytes match their sealed hashes in result.json."
+      },
+      "reconstructed_source_sha256": "42d42d3db38bae6d073d72ea338b6a70cc2fdad15d15e9e46404eee0269ed84a",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "42d42d3db38bae6d073d72ea338b6a70cc2fdad15d15e9e46404eee0269ed84a",
+          "source_sha256_after": "42d42d3db38bae6d073d72ea338b6a70cc2fdad15d15e9e46404eee0269ed84a",
+          "one_test_passed": false,
+          "same_startup_exception": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "aeb73fcf2e43ffe19a4ffd71eeaf4fdb7d5d66458c08553b1b28ab61ef752564",
+          "source_sha256_before": "42d42d3db38bae6d073d72ea338b6a70cc2fdad15d15e9e46404eee0269ed84a",
+          "source_sha256_after": "42d42d3db38bae6d073d72ea338b6a70cc2fdad15d15e9e46404eee0269ed84a",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "73d61eb58ee409dba0a2eada890f00675846a7c0198f71e2973ad11d057bb866",
+          "source_sha256_before": "42d42d3db38bae6d073d72ea338b6a70cc2fdad15d15e9e46404eee0269ed84a",
+          "source_sha256_after": "42d42d3db38bae6d073d72ea338b6a70cc2fdad15d15e9e46404eee0269ed84a",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "native-record-pytest-01",
+      "role": "stock",
+      "result_file": "docs/evaluations/runs/tuning/native-record-pytest-01/result.json",
+      "result_file_sha256": "2f09917193059e0c4a49f89cbf36c4b31de03cfdd750db7dfbd55f21ed410deb",
+      "sealed_patch_sha256": "dcaf7ffbf6ceb9c6abbfaa09362545c7d9db3a282ee859759cf2f30905c20bfc",
+      "observation": "public-cli-startup-regression",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": "ready",
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "3e140ae538dc5e5f70de6193674f067c6a060129646c411f14827de9e7bfc13f",
+      "routes": {
+        "help-console": {
+          "exit": 1,
+          "log_sha256": "529239cfed8b6d6586e786ed5cc8e544768e7987f5b13e1f2bcfe9079078371f",
+          "source_sha256_before": "3e140ae538dc5e5f70de6193674f067c6a060129646c411f14827de9e7bfc13f",
+          "source_sha256_after": "3e140ae538dc5e5f70de6193674f067c6a060129646c411f14827de9e7bfc13f",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-console": {
+          "exit": 1,
+          "log_sha256": "529239cfed8b6d6586e786ed5cc8e544768e7987f5b13e1f2bcfe9079078371f",
+          "source_sha256_before": "3e140ae538dc5e5f70de6193674f067c6a060129646c411f14827de9e7bfc13f",
+          "source_sha256_after": "3e140ae538dc5e5f70de6193674f067c6a060129646c411f14827de9e7bfc13f",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "f32ac2486416a9308dc9b6ab2bbf65f6311a0cee70a54294d858e52d38b01d72",
+          "source_sha256_before": "3e140ae538dc5e5f70de6193674f067c6a060129646c411f14827de9e7bfc13f",
+          "source_sha256_after": "3e140ae538dc5e5f70de6193674f067c6a060129646c411f14827de9e7bfc13f",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "native-record-pytest-01",
+      "role": "revised",
+      "result_file": "docs/evaluations/runs/tuning/native-record-pytest-01/result.json",
+      "result_file_sha256": "2f09917193059e0c4a49f89cbf36c4b31de03cfdd750db7dfbd55f21ed410deb",
+      "sealed_patch_sha256": "80707a33c575a1170d7717fbfa56a40d430f9dbd789fd3220270cbc9a28ea70e",
+      "observation": "pass",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": "ready",
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "334acee6bc4af7449f8f52d608e687e09d5d6161d7ca035ae6eff404a932c816",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "334acee6bc4af7449f8f52d608e687e09d5d6161d7ca035ae6eff404a932c816",
+          "source_sha256_after": "334acee6bc4af7449f8f52d608e687e09d5d6161d7ca035ae6eff404a932c816",
+          "one_test_passed": false,
+          "same_startup_exception": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "0c906311158925faadf0cd99c183c392f4ae7a1e662dd61a539be8029d00e43a",
+          "source_sha256_before": "334acee6bc4af7449f8f52d608e687e09d5d6161d7ca035ae6eff404a932c816",
+          "source_sha256_after": "334acee6bc4af7449f8f52d608e687e09d5d6161d7ca035ae6eff404a932c816",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "0c906311158925faadf0cd99c183c392f4ae7a1e662dd61a539be8029d00e43a",
+          "source_sha256_before": "334acee6bc4af7449f8f52d608e687e09d5d6161d7ca035ae6eff404a932c816",
+          "source_sha256_after": "334acee6bc4af7449f8f52d608e687e09d5d6161d7ca035ae6eff404a932c816",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "native-record-pytest-01",
+      "role": "prior",
+      "result_file": "docs/evaluations/runs/tuning/native-record-pytest-01/result.json",
+      "result_file_sha256": "2f09917193059e0c4a49f89cbf36c4b31de03cfdd750db7dfbd55f21ed410deb",
+      "sealed_patch_sha256": "dfafb4690a7e793dc207e67ddaaca906dc2cdbf99ffd76927bdffbc473d95f6b",
+      "observation": "pass",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": null,
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "938048dd70cb8da87f4408a043b17cccbe84919884569175073afb5ddbdb5c8a",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "938048dd70cb8da87f4408a043b17cccbe84919884569175073afb5ddbdb5c8a",
+          "source_sha256_after": "938048dd70cb8da87f4408a043b17cccbe84919884569175073afb5ddbdb5c8a",
+          "one_test_passed": false,
+          "same_startup_exception": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "f32ac2486416a9308dc9b6ab2bbf65f6311a0cee70a54294d858e52d38b01d72",
+          "source_sha256_before": "938048dd70cb8da87f4408a043b17cccbe84919884569175073afb5ddbdb5c8a",
+          "source_sha256_after": "938048dd70cb8da87f4408a043b17cccbe84919884569175073afb5ddbdb5c8a",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "f32ac2486416a9308dc9b6ab2bbf65f6311a0cee70a54294d858e52d38b01d72",
+          "source_sha256_before": "938048dd70cb8da87f4408a043b17cccbe84919884569175073afb5ddbdb5c8a",
+          "source_sha256_after": "938048dd70cb8da87f4408a043b17cccbe84919884569175073afb5ddbdb5c8a",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "public-result-pytest-01",
+      "role": "stock",
+      "result_file": "docs/evaluations/runs/tuning/public-result-pytest-01/result.json",
+      "result_file_sha256": "2877f04236ade4d162b9645cc3697174852098bfd5afae551198b683df5c21cb",
+      "sealed_patch_sha256": "da9659ab93ccd3c834d22aaafbf8cd8aeacdbdd01b55daaf7c9033cfa819a538",
+      "observation": "public-cli-startup-regression",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": "ready",
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "e9bbda07bebd8414687d9fc59b16b3576e9801cd59f6d895b6944cda34951fad",
+      "routes": {
+        "help-console": {
+          "exit": 1,
+          "log_sha256": "529239cfed8b6d6586e786ed5cc8e544768e7987f5b13e1f2bcfe9079078371f",
+          "source_sha256_before": "e9bbda07bebd8414687d9fc59b16b3576e9801cd59f6d895b6944cda34951fad",
+          "source_sha256_after": "e9bbda07bebd8414687d9fc59b16b3576e9801cd59f6d895b6944cda34951fad",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-console": {
+          "exit": 1,
+          "log_sha256": "529239cfed8b6d6586e786ed5cc8e544768e7987f5b13e1f2bcfe9079078371f",
+          "source_sha256_before": "e9bbda07bebd8414687d9fc59b16b3576e9801cd59f6d895b6944cda34951fad",
+          "source_sha256_after": "e9bbda07bebd8414687d9fc59b16b3576e9801cd59f6d895b6944cda34951fad",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "aeb73fcf2e43ffe19a4ffd71eeaf4fdb7d5d66458c08553b1b28ab61ef752564",
+          "source_sha256_before": "e9bbda07bebd8414687d9fc59b16b3576e9801cd59f6d895b6944cda34951fad",
+          "source_sha256_after": "e9bbda07bebd8414687d9fc59b16b3576e9801cd59f6d895b6944cda34951fad",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "public-result-pytest-01",
+      "role": "revised",
+      "result_file": "docs/evaluations/runs/tuning/public-result-pytest-01/result.json",
+      "result_file_sha256": "2877f04236ade4d162b9645cc3697174852098bfd5afae551198b683df5c21cb",
+      "sealed_patch_sha256": "e38185b72060140d23990b6750979ba75ac5b472ba52fc49a3f4a10ca69e50ad",
+      "observation": "pass",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": "ready",
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "48c4d4bc0c2e2fb4fb1e6619ece45c6eb717b64be516fb9ab5153aa7aebc88c2",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "48c4d4bc0c2e2fb4fb1e6619ece45c6eb717b64be516fb9ab5153aa7aebc88c2",
+          "source_sha256_after": "48c4d4bc0c2e2fb4fb1e6619ece45c6eb717b64be516fb9ab5153aa7aebc88c2",
+          "one_test_passed": false,
+          "same_startup_exception": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "73d61eb58ee409dba0a2eada890f00675846a7c0198f71e2973ad11d057bb866",
+          "source_sha256_before": "48c4d4bc0c2e2fb4fb1e6619ece45c6eb717b64be516fb9ab5153aa7aebc88c2",
+          "source_sha256_after": "48c4d4bc0c2e2fb4fb1e6619ece45c6eb717b64be516fb9ab5153aa7aebc88c2",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "73d61eb58ee409dba0a2eada890f00675846a7c0198f71e2973ad11d057bb866",
+          "source_sha256_before": "48c4d4bc0c2e2fb4fb1e6619ece45c6eb717b64be516fb9ab5153aa7aebc88c2",
+          "source_sha256_after": "48c4d4bc0c2e2fb4fb1e6619ece45c6eb717b64be516fb9ab5153aa7aebc88c2",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "public-result-pytest-01",
+      "role": "prior",
+      "result_file": "docs/evaluations/runs/tuning/public-result-pytest-01/result.json",
+      "result_file_sha256": "2877f04236ade4d162b9645cc3697174852098bfd5afae551198b683df5c21cb",
+      "sealed_patch_sha256": "aedbeeda57356031dcb2b4a79af6b640e95d16591941f4da84cc7267a119ad3f",
+      "observation": "pass",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": null,
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "cc35eaab757b48c78fd459142faef78042d558eb52af1bc9fed948f11f9b6937",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "cc35eaab757b48c78fd459142faef78042d558eb52af1bc9fed948f11f9b6937",
+          "source_sha256_after": "cc35eaab757b48c78fd459142faef78042d558eb52af1bc9fed948f11f9b6937",
+          "one_test_passed": false,
+          "same_startup_exception": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "0c906311158925faadf0cd99c183c392f4ae7a1e662dd61a539be8029d00e43a",
+          "source_sha256_before": "cc35eaab757b48c78fd459142faef78042d558eb52af1bc9fed948f11f9b6937",
+          "source_sha256_after": "cc35eaab757b48c78fd459142faef78042d558eb52af1bc9fed948f11f9b6937",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "73d61eb58ee409dba0a2eada890f00675846a7c0198f71e2973ad11d057bb866",
+          "source_sha256_before": "cc35eaab757b48c78fd459142faef78042d558eb52af1bc9fed948f11f9b6937",
+          "source_sha256_after": "cc35eaab757b48c78fd459142faef78042d558eb52af1bc9fed948f11f9b6937",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "configured-tests-pytest-01",
+      "role": "stock",
+      "result_file": "docs/evaluations/runs/tuning/configured-tests-pytest-01/result.json",
+      "result_file_sha256": "b6987fb36fc41b922d878530e57f2e21e5edf219c3d645ea6e15e489aaa82bca",
+      "sealed_patch_sha256": "ca835110f0736935332b648f9df2f51b808e021867656e2f8ac2a92a45879725",
+      "observation": "public-cli-startup-regression",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": "ready",
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "94dfb24b5a266c7408123dc7ee16a58ed2205d2e8a80c77dedf1676fec24b09c",
+      "routes": {
+        "help-console": {
+          "exit": 1,
+          "log_sha256": "63e0bbe778052ba749012544b87a26efe883fced91fee1c8ce3ef78597a45e55",
+          "source_sha256_before": "94dfb24b5a266c7408123dc7ee16a58ed2205d2e8a80c77dedf1676fec24b09c",
+          "source_sha256_after": "94dfb24b5a266c7408123dc7ee16a58ed2205d2e8a80c77dedf1676fec24b09c",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-console": {
+          "exit": 1,
+          "log_sha256": "63e0bbe778052ba749012544b87a26efe883fced91fee1c8ce3ef78597a45e55",
+          "source_sha256_before": "94dfb24b5a266c7408123dc7ee16a58ed2205d2e8a80c77dedf1676fec24b09c",
+          "source_sha256_after": "94dfb24b5a266c7408123dc7ee16a58ed2205d2e8a80c77dedf1676fec24b09c",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "0c906311158925faadf0cd99c183c392f4ae7a1e662dd61a539be8029d00e43a",
+          "source_sha256_before": "94dfb24b5a266c7408123dc7ee16a58ed2205d2e8a80c77dedf1676fec24b09c",
+          "source_sha256_after": "94dfb24b5a266c7408123dc7ee16a58ed2205d2e8a80c77dedf1676fec24b09c",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "configured-tests-pytest-01",
+      "role": "revised",
+      "result_file": "docs/evaluations/runs/tuning/configured-tests-pytest-01/result.json",
+      "result_file_sha256": "b6987fb36fc41b922d878530e57f2e21e5edf219c3d645ea6e15e489aaa82bca",
+      "sealed_patch_sha256": "3957f3a6ce11fece3667db79295050f01124f7dfbd95573de53e23d44b69c653",
+      "observation": "public-cli-startup-regression",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": "ready",
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "f031d05991ed7d275cf11171b4e6f59ba9b41e7549dbfb117069e0d9e301ed8d",
+      "routes": {
+        "help-console": {
+          "exit": 1,
+          "log_sha256": "63e0bbe778052ba749012544b87a26efe883fced91fee1c8ce3ef78597a45e55",
+          "source_sha256_before": "f031d05991ed7d275cf11171b4e6f59ba9b41e7549dbfb117069e0d9e301ed8d",
+          "source_sha256_after": "f031d05991ed7d275cf11171b4e6f59ba9b41e7549dbfb117069e0d9e301ed8d",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-console": {
+          "exit": 1,
+          "log_sha256": "63e0bbe778052ba749012544b87a26efe883fced91fee1c8ce3ef78597a45e55",
+          "source_sha256_before": "f031d05991ed7d275cf11171b4e6f59ba9b41e7549dbfb117069e0d9e301ed8d",
+          "source_sha256_after": "f031d05991ed7d275cf11171b4e6f59ba9b41e7549dbfb117069e0d9e301ed8d",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "73d61eb58ee409dba0a2eada890f00675846a7c0198f71e2973ad11d057bb866",
+          "source_sha256_before": "f031d05991ed7d275cf11171b4e6f59ba9b41e7549dbfb117069e0d9e301ed8d",
+          "source_sha256_after": "f031d05991ed7d275cf11171b4e6f59ba9b41e7549dbfb117069e0d9e301ed8d",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "pilot": "configured-tests-pytest-01",
+      "role": "prior",
+      "result_file": "docs/evaluations/runs/tuning/configured-tests-pytest-01/result.json",
+      "result_file_sha256": "b6987fb36fc41b922d878530e57f2e21e5edf219c3d645ea6e15e489aaa82bca",
+      "sealed_patch_sha256": "72921d7af0b75c45ec22d4a0fe96690aa5b688435cd67efcae1f9c0e08fe0519",
+      "observation": "public-cli-startup-regression",
+      "legacy_terminal_state": "completed",
+      "legacy_readiness_as_published": null,
+      "legacy_stage_exits_as_published": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "reconstructed_source_sha256": "c9b4d300d66e1b45fb49a54df8fdc03da36510eaf0eca38a3f98cd3025d42f59",
+      "routes": {
+        "help-console": {
+          "exit": 1,
+          "log_sha256": "529239cfed8b6d6586e786ed5cc8e544768e7987f5b13e1f2bcfe9079078371f",
+          "source_sha256_before": "c9b4d300d66e1b45fb49a54df8fdc03da36510eaf0eca38a3f98cd3025d42f59",
+          "source_sha256_after": "c9b4d300d66e1b45fb49a54df8fdc03da36510eaf0eca38a3f98cd3025d42f59",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-console": {
+          "exit": 1,
+          "log_sha256": "529239cfed8b6d6586e786ed5cc8e544768e7987f5b13e1f2bcfe9079078371f",
+          "source_sha256_before": "c9b4d300d66e1b45fb49a54df8fdc03da36510eaf0eca38a3f98cd3025d42f59",
+          "source_sha256_after": "c9b4d300d66e1b45fb49a54df8fdc03da36510eaf0eca38a3f98cd3025d42f59",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "d4b4aec3303474e9b9a6a065fc96b747c6df0cb6909d52c0745a14aed26e3e9b",
+          "source_sha256_before": "c9b4d300d66e1b45fb49a54df8fdc03da36510eaf0eca38a3f98cd3025d42f59",
+          "source_sha256_after": "c9b4d300d66e1b45fb49a54df8fdc03da36510eaf0eca38a3f98cd3025d42f59",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    }
+  ],
+  "causal_controls": [
+    {
+      "name": "delayed-module",
+      "against_sealed_patch_sha256": "3957f3a6ce11fece3667db79295050f01124f7dfbd95573de53e23d44b69c653",
+      "patch_sha256": "39363f2d7493258c9cebb13fb66c63b7524602212accd8016a43910bacd71de9",
+      "patch": "--- a/src/_pytest/mark/structures.py\n+++ b/src/_pytest/mark/structures.py\n@@ -116,7 +116,6 @@\n         # ParameterSet(values=(40, 2, 42), marks=(), id=\"everything\")\n     \"\"\"\n \n-    __module__ = \"pytest\"\n \n     #: Parameter values, in order.\n     values: Sequence[object | NotSetType]\n--- a/src/pytest/__init__.py\n+++ b/src/pytest/__init__.py\n@@ -43,6 +43,8 @@\n from _pytest.mark import MarkGenerator\n from _pytest.mark import param\n from _pytest.mark import ParameterSet\n+\n+ParameterSet.__module__ = \"pytest\"\n from _pytest.monkeypatch import MonkeyPatch\n from _pytest.nodes import Collector\n from _pytest.nodes import Directory\n",
+      "reconstructed_source_sha256": "e663a8f01101dbec6e3208bf9e07ee22fbec623abbbd23c0177a68d23bb089d9",
+      "observed": {
+        "console_help": "pass",
+        "console_existing_native_test": "1 passed",
+        "module_help": "pass"
+      },
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "e663a8f01101dbec6e3208bf9e07ee22fbec623abbbd23c0177a68d23bb089d9",
+          "source_sha256_after": "e663a8f01101dbec6e3208bf9e07ee22fbec623abbbd23c0177a68d23bb089d9",
+          "one_test_passed": false
+        },
+        "help-module": {
+          "exit": 0,
+          "log_sha256": "7c0cfa79596f9653190a005b5175d8f9952de0a14f7a50a40c64a59140bef55c",
+          "source_sha256_before": "e663a8f01101dbec6e3208bf9e07ee22fbec623abbbd23c0177a68d23bb089d9",
+          "source_sha256_after": "e663a8f01101dbec6e3208bf9e07ee22fbec623abbbd23c0177a68d23bb089d9",
+          "one_test_passed": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "b3761fa9b25ef1988584238b9046282b0bdad71706b80306c80a4def218599f0",
+          "source_sha256_before": "e663a8f01101dbec6e3208bf9e07ee22fbec623abbbd23c0177a68d23bb089d9",
+          "source_sha256_after": "e663a8f01101dbec6e3208bf9e07ee22fbec623abbbd23c0177a68d23bb089d9",
+          "one_test_passed": true
+        }
+      },
+      "limit": "Only startup and the one unmodified native test were measured. Tuple APIs, copy/pickle, authored tests and the full public contract were not validated on this illustrative control."
+    },
+    {
+      "name": "namedtuple-control",
+      "against_sealed_patch_sha256": "3957f3a6ce11fece3667db79295050f01124f7dfbd95573de53e23d44b69c653",
+      "patch_sha256": "8ac000ca323ddedeab7ea891933ed56bd1b2c34de9ad4803f09c616e16696689",
+      "patch": "--- a/src/_pytest/mark/structures.py\n+++ b/src/_pytest/mark/structures.py\n@@ -15,6 +15,7 @@\n from typing import Any\n from typing import final\n from typing import Literal\n+from typing import NamedTuple\n from typing import overload\n from typing import TYPE_CHECKING\n from typing import TypeVar\n@@ -79,18 +80,23 @@\n             assert_never(unreachable)\n \n \n-@final\n-@dataclasses.dataclass(frozen=True)\n-class ParameterSet:\n+class _ParameterSet(NamedTuple):\n+    values: Sequence[object | NotSetType]\n+    marks: Collection[MarkDecorator | Mark]\n+    id: str | _HiddenParam | None\n+\n+\n+class ParameterSet(_ParameterSet):\n     \"\"\"A set of values for a set of parameters along with associated marks and\n     an optional ID for the set.\n \n-    Use :func:`pytest.param` to create parameter sets. Direct construction is\n-    unsupported. This type can be used to annotate helpers returning parameter\n-    sets::\n-\n-        def case(value: object) -> pytest.ParameterSet:\n-            return pytest.param(value, id=\"example\")\n+    Use :func:`pytest.param` to create parameter sets. This type can be used\n+    to annotate helpers which return parameter sets::\n+\n+        def case(value: int) -> pytest.ParameterSet:\n+            return pytest.param(value, id=str(value))\n+\n+    Direct construction is not supported.\n \n     Examples::\n \n@@ -117,27 +123,23 @@\n     \"\"\"\n \n     __module__ = \"pytest\"\n-\n-    #: Parameter values, in order.\n-    values: Sequence[object | NotSetType]\n-    #: Marks applied to this parameter set.\n-    marks: Collection[MarkDecorator | Mark]\n-    #: Custom ID, the hidden-parameter sentinel, or None for an automatic ID.\n-    id: str | _HiddenParam | None\n-\n-    def __init__(\n-        self,\n+    __slots__ = ()\n+\n+    def __new__(\n+        cls,\n         values: Sequence[object | NotSetType],\n         marks: Collection[MarkDecorator | Mark],\n         id: str | _HiddenParam | None,\n         *,\n         _ispytest: bool = False,\n-    ) -> None:\n+    ) -> ParameterSet:\n         \"\"\":meta private:\"\"\"\n         check_ispytest(_ispytest)\n-        object.__setattr__(self, \"values\", values)\n-        object.__setattr__(self, \"marks\", marks)\n-        object.__setattr__(self, \"id\", id)\n+        return super().__new__(cls, values, marks, id)\n+\n+    def __getnewargs_ex__(self):\n+        # Copying and unpickling reconstruct through __new__.\n+        return tuple(self), {\"_ispytest\": True}\n \n     @classmethod\n     def param(\n",
+      "reconstructed_source_sha256": "2699e5db11fcbba5d6b1b20089440a6744e267dd58b63c1348882d64cfbad99a",
+      "observed": {
+        "console_help": "pass",
+        "console_existing_native_test": "1 passed",
+        "module_help": "pass"
+      },
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "2699e5db11fcbba5d6b1b20089440a6744e267dd58b63c1348882d64cfbad99a",
+          "source_sha256_after": "2699e5db11fcbba5d6b1b20089440a6744e267dd58b63c1348882d64cfbad99a",
+          "one_test_passed": false
+        },
+        "help-module": {
+          "exit": 0,
+          "log_sha256": "7c0cfa79596f9653190a005b5175d8f9952de0a14f7a50a40c64a59140bef55c",
+          "source_sha256_before": "2699e5db11fcbba5d6b1b20089440a6744e267dd58b63c1348882d64cfbad99a",
+          "source_sha256_after": "2699e5db11fcbba5d6b1b20089440a6744e267dd58b63c1348882d64cfbad99a",
+          "one_test_passed": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "0c906311158925faadf0cd99c183c392f4ae7a1e662dd61a539be8029d00e43a",
+          "source_sha256_before": "2699e5db11fcbba5d6b1b20089440a6744e267dd58b63c1348882d64cfbad99a",
+          "source_sha256_after": "2699e5db11fcbba5d6b1b20089440a6744e267dd58b63c1348882d64cfbad99a",
+          "one_test_passed": true
+        }
+      },
+      "limit": "Only startup and the one unmodified native test were measured. Tuple APIs, copy/pickle, authored tests and the full public contract were not validated on this illustrative control."
+    }
+  ],
+  "reproduction": {
+    "instructions": [
+      "Reconstruct the chosen checkout from the base commit and the exact archived patch (control=stock, develop=revised, prior_develop=prior). If prior patch bytes are in prior.json, verify them against prior_develop.patch_sha256 from result.json. Use merged commit for the shared upstream control.",
+      "Use the pinned linux/amd64 runtime image and offline dependency recipe below. Copy the public version fixture into src/_pytest/_version.py as the original runtime does. Preserve project configuration and plugin-loading defaults.",
+      "Save source below as reproduce.py; mount checkout=/work, offline dependencies=/deps, writable output=/task-output and reproduce.py=/reproduce.py.",
+      "From /work execute: PYTHONPATH=/work/src:/deps/lib PYTHONDONTWRITEBYTECODE=1 python3 -B /reproduce.py /work /task-output",
+      "Inspect help-console.log, native-console.log and native-module.log plus receipt.json. Passing native routes print 1 passed; failing public console exits 1 with the recorded dataclasses exception before collection."
+    ],
+    "dependency_recipe": "python -m pip --disable-pip-version-check install --no-cache-dir --no-deps -t /deps/lib pytest==8.4.2 iniconfig==2.3.0 packaging==25.0 pluggy==1.6.0 pygments==2.19.2 attrs==25.4.0 hypothesis==6.142.2 sortedcontainers==2.4.0",
+    "version_fixture": {
+      "file": "docs/evaluations/develop-benchmark/panel/public/pytest/_version.py",
+      "sha256": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e",
+      "content": "# setuptools-scm normally writes these symbols into the editable source tree.\nversion = __version__ = \"9.2.0\"\nversion_tuple = __version_tuple__ = (9, 2, 0)\n"
+    },
+    "source_sha256": "b244c2b3cca0fbbf679c231a5de8251514dad677f43c812b2ce485d76518c3f1",
+    "source": "\"\"\"Run inside the pinned Python image with the checkout and offline deps mounted.\"\"\"\nfrom pathlib import Path\nimport argparse\nimport hashlib\nimport json\nimport os\nimport subprocess\nimport sys\nimport tomllib\nfrom pip._vendor.distlib.scripts import ScriptMaker\n\nparser = argparse.ArgumentParser()\nparser.add_argument('checkout', type=Path)\nparser.add_argument('output', type=Path)\nargs = parser.parse_args()\nwork = args.checkout.resolve()\noutput = args.output.resolve()\noutput.mkdir(parents=True, exist_ok=True)\nmetadata = tomllib.loads((work/'pyproject.toml').read_text())\nentry = metadata['project']['scripts']['pytest']\nassert entry == '_pytest.config:_console_main'\nassert sys.version_info[:3] == (3, 13, 18)\nassert 'pytest' not in sys.modules\nmaker = ScriptMaker(None, str(output/'bin'))\nmaker.variants = {''}\nmaker.clobber = True\nmaker.make('pytest = ' + entry)\nlauncher = output/'bin/pytest'\ntarget = 'testing/test_mark_expression.py::test_empty_is_false'\ncommands = {\n    'help-console': [str(launcher), '--help'],\n    'native-console': [str(launcher), target],\n    'native-module': [sys.executable, '-B', '-m', 'pytest', target],\n}\nenv = dict(os.environ, PYTHONDONTWRITEBYTECODE='1')\nrows = {}\nfor name, command in commands.items():\n    result = subprocess.run(command, cwd=work, env=env, capture_output=True)\n    log = result.stdout + result.stderr\n    (output/(name+'.log')).write_bytes(log)\n    rows[name] = {'exit': result.returncode, 'log_sha256': hashlib.sha256(log).hexdigest()}\nrecord = {'python': sys.version, 'entry': entry,\n          'launcher_sha256': hashlib.sha256(launcher.read_bytes()).hexdigest(), 'routes': rows}\n(output/'receipt.json').write_text(json.dumps(record, indent=2)+'\\n')\nprint(json.dumps(record, sort_keys=True))\n",
+    "validation": {
+      "sealed_patch_sha256": "3957f3a6ce11fece3667db79295050f01124f7dfbd95573de53e23d44b69c653",
+      "receipt_sha256": "f96ab9f2330645ff14c8960918c050367c4e416cdb5cc59acfe952627278c39b",
+      "route_exits": {
+        "help-console": 1,
+        "native-console": 1,
+        "native-module": 0
+      }
+    }
+  },
+  "evidence_receipts_sha256": {
+    "independent": "561a0605e2550958c39537d880ca8b00eb0ba38eb21c0a25d51550d9738600fc",
+    "enumeration": "3cfa1747c92892e9190320d88c9ee58c962403f090da1e1cf0e10ed3173264de"
+  },
+  "interpretation": {
+    "supported": "A consequential public CLI regression missed by the archived executable routes, and its observed incidence among these published role patches. Distinct fresh process entry routes can have different package-initialization state.",
+    "limits": "One retrospective known-repository sample. This does not establish an instruction treatment effect, transfer, an economic benefit, or a revised blind quality ranking. Two aliases with identical metadata are one entry implementation.",
+    "primary_scores_changed": false,
+    "legacy_metrics": "All original scores, costs, readiness and missing/unknown measures remain as published. Prior and upstream soft PR quality remains unknown wherever it was not assessed."
+  }
+}

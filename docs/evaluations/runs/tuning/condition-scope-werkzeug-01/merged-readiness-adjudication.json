@@ -1,0 +1,174 @@
+{
+  "format": "law-config.postscore-readiness-adjudication/v1",
+  "pilot": "condition-scope-werkzeug-01",
+  "target": {
+    "path": "result.json",
+    "sha256": "a52bc9e4843444439451f8b2a345727341427717d04a44c4733032e58a2ecc66",
+    "raw_collector_sha256": "b72133786209402a67b744bad6c7eeeb9396dd13b251a6fd47b8cc367a837997"
+  },
+  "submission": "upstream",
+  "scope": "Separate source-bound followup under the frozen rubric; original raw result, Pending readiness, all blind scores and original unresolved upstream comparisons remain unchanged.",
+  "resolution": "confirmed",
+  "original_readiness": "pending",
+  "followup_readiness": "failed",
+  "original_full_pr_points_100": 43.75,
+  "reason": "Materially weakened applicable regression protection: deleted tuple-to-list stream-write assertions for both implicit_sequence_conversion settings while changing that branch. No equivalent replacement was found in the exact merged tests.",
+  "rubric_sha256": "0bdd8699f00ba1f5266927d7666bc2a117fa4873e113fdfa831da93cd2abbc08",
+  "rubric_basis": "Integrity and safety: materially weakened applicable protection vetoes readiness; mechanical evidence is an allowed basis. This ruling does not rely on a demonstrated critical production regression or an allegation of intent.",
+  "base_commit": "15fc22b699ecacd04824092453c0cd2a8c4a3a67",
+  "merged_commit": "28360ef872ae984cc08209cb333db5649ce977bc",
+  "merged_patch_sha256": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76",
+  "mechanical_evidence": [
+    "Complete pinned merged diff has CHANGES.rst, src/werkzeug/wrappers/response.py and tests/test_wrappers.py only. It removes base tests/test_wrappers.py::test_new_response_iterator_behavior lines 814-820, the loop explicitly exercising implicit_sequence_conversion True and False, tuple input, stream.write, and resulting list with appended value.",
+    "Merged tests/test_wrappers.py::test_new_response_iterator_behavior begins at line 762; the deleted loop has no equivalent replacement before the next test. The only remaining implicit_sequence_conversion assignment in the merged test tree is line 801, covering generator conversion with get_data/make_sequence, not tuple mutation through stream.write.",
+    "Remaining stream tests at merged lines 538-545, 887-900, 980-986 and 989 onward start from empty/default-list or scalar-normalized-list bodies. They do not exercise immutable tuple conversion or its independence from the implicit-conversion flag.",
+    "Merged src/werkzeug/wrappers/response.py::_ensure_sequence lines 404-408 changes the relevant mutable-sequence branch from list-only to collections.abc.MutableSequence; ResponseStream.write lines 968-974 still requests mutable=True and appends. The removed check protects an actively changed distinct branch.",
+    "Merged stream documentation lines 740-756 explicitly says deprecated in 3.2 and removed in Werkzeug 4.0. CHANGES.rst lines 162-163 deprecates it without removing compatibility. Deprecation requires warning-aware testing, not treating current behavior as inapplicable."
+  ],
+  "runtime_interpretation": "Four flag-by-payload caller cases pass on exact base and merge. Merge emits its documented stream deprecation. This supports continued applicability of the removed checks, not a demonstrated runtime regression or an allegation of intent.",
+  "runtime_evidence": {
+    "case": "werkzeug",
+    "base_commit": "15fc22b699ecacd04824092453c0cd2a8c4a3a67",
+    "merge_commit": "28360ef872ae984cc08209cb333db5649ce977bc",
+    "merged_patch_sha256": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76",
+    "rubric_sha256": "0bdd8699f00ba1f5266927d7666bc2a117fa4873e113fdfa831da93cd2abbc08",
+    "cpus": [
+      4,
+      5
+    ],
+    "probe_sha256": "074ee84003063b19cf61085d06b27aee37c36581a4fd4eb16a8eb50505f07bf9",
+    "rows": {
+      "base": {
+        "exit": 0,
+        "command": [
+          "python",
+          "-B",
+          "/evidence/probe.py"
+        ],
+        "cwd": "/work",
+        "image": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+        "source_hashes": {
+          "src/werkzeug/wrappers/response.py": "5595d6c49b2b9998e8757e18125117f826ef5c14c1e1062721734440706b9025",
+          "tests/test_wrappers.py": "09551ac94848cfb6d53644621523fa05544cc650a33705a8ca0cab508f916c97",
+          "CHANGES.rst": "4e249340ff56cb956e0a8ea7d9f26d3ecb191d25d4ff9f382d50c92e6086cb2b"
+        },
+        "grade_sha256": "a52e9eeec56f428dc610819ec39eaf702ca96077cf7ad1991af26133c16aad61",
+        "log_sha256": "fcb1aca6875e07bc180782ac44b1b73db972c59ab21c4f45bade102441f58149",
+        "wall_seconds": 1.088579832110554,
+        "observation": {
+          "import": "/work/src/werkzeug/wrappers/response.py",
+          "rows": [
+            {
+              "implicit_sequence_conversion": true,
+              "kind": "str",
+              "response": "['foo', 'bar', 'baz']",
+              "data": "b'foobarbaz'",
+              "write_length": 3,
+              "warnings": []
+            },
+            {
+              "implicit_sequence_conversion": true,
+              "kind": "bytes",
+              "response": "[b'foo', b'bar', b'baz']",
+              "data": "b'foobarbaz'",
+              "write_length": 3,
+              "warnings": []
+            },
+            {
+              "implicit_sequence_conversion": false,
+              "kind": "str",
+              "response": "['foo', 'bar', 'baz']",
+              "data": "b'foobarbaz'",
+              "write_length": 3,
+              "warnings": []
+            },
+            {
+              "implicit_sequence_conversion": false,
+              "kind": "bytes",
+              "response": "[b'foo', b'bar', b'baz']",
+              "data": "b'foobarbaz'",
+              "write_length": 3,
+              "warnings": []
+            }
+          ]
+        }
+      },
+      "merge": {
+        "exit": 0,
+        "command": [
+          "python",
+          "-B",
+          "/evidence/probe.py"
+        ],
+        "cwd": "/work",
+        "image": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+        "source_hashes": {
+          "src/werkzeug/wrappers/response.py": "dc0a5540001d032c6f755e82a346ca902019eb5978be67a3d778c0e5dfe8eefe",
+          "tests/test_wrappers.py": "9edc1ac0ad082dafd4b00fd120271c753d7a6d08a819f0b5d1e48978c7b46e34",
+          "CHANGES.rst": "e14da056375497be1fff7fbcad905a91fba9bddb1dd87426c91dc146a4f27d49"
+        },
+        "grade_sha256": "553645a7bb3f959b99c119369c5cb4973d4b8c5de8baa3de34e0932a00e5ee13",
+        "log_sha256": "d30c5f3ca8479ee00fc2bd5e7f3b6c069b3358ffcc894070c95521a778549cce",
+        "wall_seconds": 1.2121599758975208,
+        "observation": {
+          "import": "/work/src/werkzeug/wrappers/response.py",
+          "rows": [
+            {
+              "implicit_sequence_conversion": true,
+              "kind": "str",
+              "response": "['foo', 'bar', 'baz']",
+              "data": "b'foobarbaz'",
+              "write_length": 3,
+              "warnings": [
+                "The 'stream' attribute is deprecated and will be removed in Werkzeug 4.0. Use a list comprehension or generator instead."
+              ]
+            },
+            {
+              "implicit_sequence_conversion": true,
+              "kind": "bytes",
+              "response": "[b'foo', b'bar', b'baz']",
+              "data": "b'foobarbaz'",
+              "write_length": 3,
+              "warnings": [
+                "The 'stream' attribute is deprecated and will be removed in Werkzeug 4.0. Use a list comprehension or generator instead."
+              ]
+            },
+            {
+              "implicit_sequence_conversion": false,
+              "kind": "str",
+              "response": "['foo', 'bar', 'baz']",
+              "data": "b'foobarbaz'",
+              "write_length": 3,
+              "warnings": [
+                "The 'stream' attribute is deprecated and will be removed in Werkzeug 4.0. Use a list comprehension or generator instead."
+              ]
+            },
+            {
+              "implicit_sequence_conversion": false,
+              "kind": "bytes",
+              "response": "[b'foo', b'bar', b'baz']",
+              "data": "b'foobarbaz'",
+              "write_length": 3,
+              "warnings": [
+                "The 'stream' attribute is deprecated and will be removed in Werkzeug 4.0. Use a list comprehension or generator instead."
+              ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "probe": "import json,pathlib,warnings\nfrom werkzeug.wrappers import Response\nimport werkzeug.wrappers.response as module\nassert pathlib.Path(module.__file__).resolve()==pathlib.Path('/work/src/werkzeug/wrappers/response.py')\nrows=[]\nfor flag in (True,False):\n for kind in ('str','bytes'):\n  r=Response();r.implicit_sequence_conversion=flag\n  values=('foo','bar') if kind=='str' else (b'foo',b'bar')\n  appended='baz' if kind=='str' else b'baz';r.response=values\n  assert r.is_sequence\n  with warnings.catch_warnings(record=True) as seen:\n   warnings.simplefilter('always')\n   size=r.stream.write(appended)\n   assert isinstance(r.response,list)\n   assert r.response==[*values,appended]\n   assert r.get_data()==b'foobarbaz'\n  assert size==3\n  rows.append({'implicit_sequence_conversion':flag,'kind':kind,'response':repr(r.response),'data':repr(r.get_data()),'write_length':size,'warnings':[str(w.message) for w in seen]})\nprint(json.dumps({'import':module.__file__,'rows':rows},indent=2))\n",
+  "source_proof_sha256": {
+    "independent_proposed_ruling": "dedc64aa6d1822bbdee4d450b47d4b1a6fa3fce30328aa853667f44d6a3557ee",
+    "independent_runtime_receipt": "08269909c472a35a5910bc946783a08ab4d63463e39220076faa10b74486c356",
+    "probe": "074ee84003063b19cf61085d06b27aee37c36581a4fd4eb16a8eb50505f07bf9",
+    "runner": "67f173d5abf42fb4c4b5861e2186b225ab309a5d8c862612722e2fb9f3c8d21c",
+    "merged_patch": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76"
+  },
+  "smallest_correction": "Restore the tuple-to-list/write assertions for both implicit_sequence_conversion settings, handling the stream deprecation explicitly. Byte-only tuple/payload values preserve this conversion check without mixed-type concerns. Do not restore coverage by removing strict warning policy or substituting list-only stream tests.",
+  "limitations": [
+    "This targeted adjudication does not assess all production changes, assign new scores, modify historical artifacts, or establish intent. Frozen broad native success does not recover assertions deleted from the suite.",
+    "The independent audit supplied a proposed ruling; this separately authorized followup labels readiness under that frozen rule. It does not rewrite the original recorded Pending status, scores or comparisons."
+  ]
+}

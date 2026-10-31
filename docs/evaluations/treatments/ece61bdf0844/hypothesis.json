@@ -1,0 +1,35 @@
+{
+  "id": "trace-the-affected-caller-in-review",
+  "previous": "8e7437469ab13c593927f22b350da2d864ef460bd671c750481ea521edaec541",
+  "targets": [
+    "plugins/develop/skills/adversarial-loop/references/review-packet.md"
+  ],
+  "evidence": [
+    {
+      "case": "pytest",
+      "source": "runs/tuning/scoped-pytest-01/result.json",
+      "source_sha256": "3a856110cb6fb56287b983118e3a3a194753dcba8d7ebcf3e01f80d63451452c",
+      "review_revision_receipt": "a7ece988c80070c5ebdbeecb97208ce712ac91c3e6a8bc5fa1a5ac81dc5daeb3",
+      "reproduction_receipt": "52b04c1502ae84bdf5e2af0721a98aa6fb1b8e602ffe9cbb1406a98faa4d7a7e",
+      "assessed_contract_scores": [
+        3,
+        2,
+        3
+      ],
+      "candidate_patch_sha256": "4f2a37a1787bd3d64dcb22320375efc5ea1df8f39d2f6ee5b15ed837696c5e58",
+      "observation": "The artifact reviewer approved the submitted revision. Its constructor emitted a new warning during three previously warning-free reconstruction paths. All three blinded assessments cite the missed boundary."
+    }
+  ],
+  "change": "Replace the 703-word reviewer template with a 336-word brief. Require the reviewer to trace an existing caller across a changed code boundary and compare observable behavior with the base when applicable.",
+  "packet": {
+    "previous_bytes": 5064,
+    "candidate_bytes": 2406,
+    "previous_sha256": "cd01aa9a3b3cb08943164eff615f25f3ad129f541a256d0217c7b4ec78eab476",
+    "candidate_sha256": "714881c8284598602f4c6acdea6b49832c9994440111f692c224488ae084e684"
+  },
+  "sequence": [
+    "pytest"
+  ],
+  "prediction": "Maintains the required matched fresh reviews, spends less time and proposal cost than prior Develop, and yields a ready PR with better protected compatibility than stock Codex at equal or less complete cost.",
+  "falsifier": "Reject if tuple use changes or copying, deep copying or pickle round-tripping introduces a warning, loses value or loses type. Verify the review examined an actual consumer and the final patch, and that both required checkpoints ran. Require the registered raw comparison and strict prior efficiency, counting every allocation, tie and missing result. Keep this reused tuning case separate from confirmation."
+}

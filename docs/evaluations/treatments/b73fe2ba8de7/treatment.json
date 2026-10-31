@@ -1,0 +1,9 @@
+{
+  "label": "configured-authored-tests",
+  "package_sha256": "b73fe2ba8de7f25b9b4fce253bde165d6e8624bff4e3fbd78b6fff1e082ba1cb",
+  "plugin_hook_sha256": "2845c0ac79bda37656db9815a9c7af97857c9a62e92a2f1442d60f407dfc80ab",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}

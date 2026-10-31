@@ -1,0 +1,629 @@
+{
+  "format": "law-config.pilot-process-audit/v1",
+  "scope": "Sealed exposed tuning pilot. Proposal costs are standard-rate estimates, not invoices. Assessor and qualification usage excluded from producer totals. Root/child gaps are accounting, not causal or removable savings.",
+  "preview_sha256": "2061b62f1b2b228637792e775348ec630aead38428dcf5d10abd39683e362d4b",
+  "raw_result_sha256": "c34e40fed7d75cde1ff723dd931b4a92228a0523a123be964f4914cc33fa5e7f",
+  "registration_sha256": "d439c94b0ac32d686ef1a357a93182ebb4795d6d36589b25658a54337c373ec7",
+  "evaluator_protocol": "pr-quality-pytest-entry-v1",
+  "runtime_sha256": "a53ad6e006bebf7b48dd5042fccdd3ca4594cea85c7d6d43f8011a1811be5803",
+  "prompt_sha256": "95e93418812685c2387b8605ff7aa5ea218a707f34dab09f871ca7b74dd4b449",
+  "treatments": {
+    "prior": "f5c1cdefb7795b8ff34fe9ae94b2d39e08468af50700455691849417ce715116",
+    "candidate": "7aab5e963a6f0464adc6f3d7b223cbee7029828218fb96e204ce1781c45e1847"
+  },
+  "components": {
+    "prior": {
+      "package_sha256": "2488466be8b48949dbd7291964425eef81c3d50e3b8e4a88f786d6e8bdbdd9e6",
+      "companion_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+    },
+    "candidate": {
+      "package_sha256": "21cec3d7f1e35d759bf9209a708e6c9d317dea580d1a48f97e210aa00d2d3638",
+      "companion_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+    }
+  },
+  "rates_usd_per_million": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "arms": {
+    "candidate/control": {
+      "native_sha256": "8c05f6cf9b6fa4798a9a2b78641dde0c7635ca7579070ccf497166604f7fe2b1",
+      "result_sha256": "8e044fafecb12c221ce7a975e9e18bfb721d7e41e85a3b4297aaa5de356e4ff0",
+      "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+      "config_sha256": "738d89bcc50c7c5a9bc9a830940b18cf0c68905d8337c17ac17ba851b96f41c4",
+      "turn_input_sha256": "c46dd5f256fb837210aa9f2c494e4fa6ea3f28ab16b2a4e8c501356e9405583c",
+      "plugins": [],
+      "state": "completed",
+      "readiness": "failed",
+      "stage_exits": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 42,
+        "independent": 0
+      },
+      "blind_full_pr": 20.0,
+      "patch_sha256": "9199ec6321e8d0a4513974c89e82d0775e76fc785040749b20e48b487017770c",
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 1665116,
+          "cachedInputTokens": 1595776,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 8506,
+          "reasoningOutputTokens": 1463,
+          "totalTokens": 1673622
+        },
+        "estimated_usd": 0.38331760000000004,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 534.1122589821462,
+        "prompt_to_terminal_seconds": 503.35746942902915,
+        "through_grading_seconds": 547.0626359160524,
+        "setup_seconds": 29.209816836053506,
+        "grading_seconds": 11.481329631060362,
+        "thread_count": 2,
+        "child_count": 1,
+        "root_tokens": {
+          "totalTokens": 1384814,
+          "inputTokens": 1377479,
+          "cachedInputTokens": 1314304,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 7335,
+          "reasoningOutputTokens": 1098
+        },
+        "descendant_tokens": {
+          "inputTokens": 287637,
+          "cachedInputTokens": 281472,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 1171,
+          "reasoningOutputTokens": 365,
+          "totalTokens": 288808
+        },
+        "observed_commands": 27,
+        "native_hook_receipts": 0
+      },
+      "root_usd_components": {
+        "uncached_input": 0.12635,
+        "cached_input": 0.1314304,
+        "output": 0.07335
+      },
+      "descendant_usd_components": {
+        "uncached_input": 0.01233,
+        "cached_input": 0.0281472,
+        "output": 0.01171
+      }
+    },
+    "prior/develop": {
+      "native_sha256": "aaa2bcfa877fd54bab4e1efd12e1facd0780a8dc7ab296b446eb5fec0cb3fcd9",
+      "result_sha256": "22f899d21f185d10fdfb77e7311dd5ae786efa6adf475a7c06e61e7bff6b417e",
+      "inventory_sha256": "8b226c6bb22e085a9c559485122d79513c2a7e381302241cc7addd6e555b7a96",
+      "config_sha256": "ac528d1054368e548983d5444fa4c2660c04490c03caad16dbb9556a59afd95b",
+      "turn_input_sha256": "19746ba09ddb9ecc6ff4dec919d376b22f62b9eb76095758ab471729de7891e3",
+      "plugins": [
+        "develop@law-config",
+        "superpowers@superpowers-local"
+      ],
+      "state": "completed",
+      "readiness": null,
+      "stage_exits": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 42,
+        "independent": 0
+      },
+      "blind_full_pr": null,
+      "patch_sha256": "912649672caf919903043d8a4925bb4889120288ce461df1e17866f8b6a2e6c0",
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 3226982,
+          "cachedInputTokens": 3112960,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 17790,
+          "reasoningOutputTokens": 5223,
+          "totalTokens": 3244772
+        },
+        "estimated_usd": 0.71724,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 790.2323302119039,
+        "prompt_to_terminal_seconds": 750.3108946171124,
+        "through_grading_seconds": 800.9923122050241,
+        "setup_seconds": 38.01680177892558,
+        "grading_seconds": 9.31329857208766,
+        "thread_count": 3,
+        "child_count": 2,
+        "root_tokens": {
+          "totalTokens": 2907226,
+          "inputTokens": 2892672,
+          "cachedInputTokens": 2815360,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 14554,
+          "reasoningOutputTokens": 4291
+        },
+        "descendant_tokens": {
+          "inputTokens": 334310,
+          "cachedInputTokens": 297600,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 3236,
+          "reasoningOutputTokens": 932,
+          "totalTokens": 337546
+        },
+        "observed_commands": 40,
+        "native_hook_receipts": 96
+      },
+      "root_usd_components": {
+        "uncached_input": 0.154624,
+        "cached_input": 0.281536,
+        "output": 0.14554
+      },
+      "descendant_usd_components": {
+        "uncached_input": 0.07342,
+        "cached_input": 0.02976,
+        "output": 0.03236
+      }
+    },
+    "candidate/develop": {
+      "native_sha256": "cd4cec2fa2cd4e3b91bedeff86b0acc8d2306563ac6133c517a8811cdf925bba",
+      "result_sha256": "4862a1619528d61d276917ff5e2e5ff678308b87e063f9e45bcad302f1a90c24",
+      "inventory_sha256": "0818323c755576c26292cc3158ad33643c3b2df4589b69479210f56a7aac9887",
+      "config_sha256": "ea53f4b6e60d012513488a98729c841afe3d950668e5db8b37f2d1fbb0d4f632",
+      "turn_input_sha256": "1a5624c9fb13be87933bac1123c2f477e78d5cea646b1371c874983b8c0501ff",
+      "plugins": [
+        "develop@law-config",
+        "superpowers@superpowers-local"
+      ],
+      "state": "completed",
+      "readiness": "ready",
+      "stage_exits": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "blind_full_pr": 96.25,
+      "patch_sha256": "765cca1151351741bdb356bf0a691435c44fd078228f1e091cc35d0ad103bc4e",
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 2357268,
+          "cachedInputTokens": 2278144,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 13402,
+          "reasoningOutputTokens": 2398,
+          "totalTokens": 2370670
+        },
+        "estimated_usd": 0.5200824000000001,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 650.3471029200591,
+        "prompt_to_terminal_seconds": 611.2711115241982,
+        "through_grading_seconds": 663.0346655980684,
+        "setup_seconds": 37.29336643894203,
+        "grading_seconds": 11.17872789199464,
+        "thread_count": 3,
+        "child_count": 2,
+        "root_tokens": {
+          "totalTokens": 2000544,
+          "inputTokens": 1989483,
+          "cachedInputTokens": 1931776,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 11061,
+          "reasoningOutputTokens": 1746
+        },
+        "descendant_tokens": {
+          "inputTokens": 367785,
+          "cachedInputTokens": 346368,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2341,
+          "reasoningOutputTokens": 652,
+          "totalTokens": 370126
+        },
+        "observed_commands": 33,
+        "native_hook_receipts": 84
+      },
+      "root_usd_components": {
+        "uncached_input": 0.115414,
+        "cached_input": 0.1931776,
+        "output": 0.11061
+      },
+      "descendant_usd_components": {
+        "uncached_input": 0.042834,
+        "cached_input": 0.0346368,
+        "output": 0.02341
+      }
+    }
+  },
+  "blind_comparisons": {
+    "develop_control": {
+      "scores": [
+        {
+          "rotation": 0,
+          "left": 96.25,
+          "right": 20.0,
+          "delta": 76.25,
+          "direction": "develop"
+        },
+        {
+          "rotation": 1,
+          "left": 96.25,
+          "right": 20.0,
+          "delta": 76.25,
+          "direction": "develop"
+        },
+        {
+          "rotation": 2,
+          "left": 96.25,
+          "right": 26.25,
+          "delta": 70.0,
+          "direction": "develop"
+        }
+      ],
+      "blind_verdict": {
+        "verdict": "develop",
+        "reason": "blinded rubric",
+        "score_delta": 76.25,
+        "votes": [
+          "develop",
+          "develop",
+          "develop"
+        ],
+        "order_sensitive": false
+      },
+      "readiness": {
+        "develop": "ready",
+        "control": "failed"
+      }
+    },
+    "develop_upstream": {
+      "scores": [
+        {
+          "rotation": 0,
+          "left": 96.25,
+          "right": 30.0,
+          "delta": 66.25,
+          "direction": "develop"
+        },
+        {
+          "rotation": 1,
+          "left": 96.25,
+          "right": 30.0,
+          "delta": 66.25,
+          "direction": "develop"
+        },
+        {
+          "rotation": 2,
+          "left": 96.25,
+          "right": 30.0,
+          "delta": 66.25,
+          "direction": "develop"
+        }
+      ],
+      "blind_verdict": {
+        "verdict": "develop",
+        "reason": "blinded rubric",
+        "score_delta": 66.25,
+        "votes": [
+          "develop",
+          "develop",
+          "develop"
+        ],
+        "order_sensitive": false
+      },
+      "readiness": {
+        "develop": "ready",
+        "upstream": "failed"
+      }
+    },
+    "control_upstream": {
+      "scores": [
+        {
+          "rotation": 0,
+          "left": 20.0,
+          "right": 30.0,
+          "delta": -10.0,
+          "direction": "upstream"
+        },
+        {
+          "rotation": 1,
+          "left": 20.0,
+          "right": 30.0,
+          "delta": -10.0,
+          "direction": "upstream"
+        },
+        {
+          "rotation": 2,
+          "left": 26.25,
+          "right": 30.0,
+          "delta": -3.75,
+          "direction": "upstream"
+        }
+      ],
+      "blind_verdict": {
+        "verdict": "upstream",
+        "reason": "blinded rubric",
+        "score_delta": -10.0,
+        "votes": [
+          "upstream",
+          "upstream",
+          "upstream"
+        ],
+        "order_sensitive": false
+      },
+      "readiness": {
+        "control": "failed",
+        "upstream": "failed"
+      }
+    }
+  },
+  "readiness_first": {
+    "develop_control": {
+      "verdict": "develop",
+      "reason": "hard gates"
+    },
+    "develop_upstream": {
+      "verdict": "develop",
+      "reason": "hard gates"
+    },
+    "control_upstream": {
+      "verdict": "both failed",
+      "reason": "hard gates"
+    }
+  },
+  "control_headroom": {
+    "case": "pytest",
+    "control_readiness": "failed",
+    "complete_control": true,
+    "rotation_scores_100": [
+      20.0,
+      20.0,
+      26.25
+    ],
+    "maximum_median_lead": 80.0,
+    "strict_win_route": "hard gates"
+  },
+  "registered_goal": false,
+  "registered_falsifier": "Reject non-ready candidate, lost verified caller/declared-entry behavior or required tests/reviews, unestablished applicable uptake/final-byte/evidence closure, stock quality tie/loss or insufficient registered margin, cost above stock, or failure of either strict complete-cost or checkout-wall improvement over matched prior. Preserve all failed allocations and unknowns. Reject lost prior verified behavior or required review, failure of either strict prior cost or wall improvement, non-ready candidate, or full-PR loss to pure. Missing measures or unverifiable review leave the comparison unestablished.",
+  "decision": "Rejected: candidate complete estimated cost exceeds stock. Candidate is ready and the blind comparison favors it; independently the cost criterion fails. Other uptime/behavior checks are separate and do not reverse that rejection.",
+  "deltas": {
+    "candidate_minus_stock_usd": 0.13676480000000002,
+    "candidate_minus_prior_usd": -0.19715759999999993,
+    "candidate_minus_stock_checkout_seconds": 116.23484393791296,
+    "candidate_minus_prior_checkout_seconds": -139.88522729184479,
+    "candidate_minus_stock_root_components": {
+      "uncached_input": -0.010935999999999987,
+      "cached_input": 0.0617472,
+      "output": 0.03726
+    },
+    "candidate_minus_stock_descendant_components": {
+      "uncached_input": 0.030503999999999996,
+      "cached_input": 0.006489600000000002,
+      "output": 0.0117
+    },
+    "candidate_minus_prior_root_components": {
+      "uncached_input": -0.03921000000000001,
+      "cached_input": -0.0883584,
+      "output": -0.03493
+    },
+    "candidate_minus_prior_descendant_components": {
+      "uncached_input": -0.030586000000000002,
+      "cached_input": 0.004876800000000001,
+      "output": -0.00895
+    }
+  },
+  "judges": [
+    {
+      "rotation": 0,
+      "native_sha256": "31372ef6c6c185887c2f1dd511363c3f462e5243ca142f91be74c30f4d94f7fb",
+      "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+      "judgment_sha256": "aac357722cb42933381865fac24f5bc314aa46cd8b564799d972d82f17afb45d",
+      "setup_seconds": 71.94257899210788,
+      "assessment_started_unix": 1793360649.9655805,
+      "assessment_finished_unix": 1793360885.8782487,
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 336152,
+          "cachedInputTokens": 291072,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2895,
+          "reasoningOutputTokens": 372,
+          "totalTokens": 339047
+        },
+        "threads": 1,
+        "usd_estimate": 0.14821720000000002
+      }
+    },
+    {
+      "rotation": 1,
+      "native_sha256": "2c968479dc1d6f6240fbf5bb6955c44926418f8ad50d4dc32cee0430ec498498",
+      "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+      "judgment_sha256": "25325e8ad4431c19c9ddf3b6fae4476878af85ef8fbfb7f8a67ea8e6273d4942",
+      "setup_seconds": 75.26290264399722,
+      "assessment_started_unix": 1793360649.8585258,
+      "assessment_finished_unix": 1793360898.1722553,
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 363159,
+          "cachedInputTokens": 317952,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2877,
+          "reasoningOutputTokens": 345,
+          "totalTokens": 366036
+        },
+        "threads": 1,
+        "usd_estimate": 0.1509792
+      }
+    },
+    {
+      "rotation": 2,
+      "native_sha256": "8b542746dab6c53063f1d5a888d7142184c62973ab0c446ba8815d0cd672e28b",
+      "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+      "judgment_sha256": "9bccb302748310f3037f8d2a17c906343d368936a36a2b86bfdf562e13c4ab46",
+      "setup_seconds": 72.06621985300444,
+      "assessment_started_unix": 1793360649.50673,
+      "assessment_finished_unix": 1793360859.8875682,
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 335416,
+          "cachedInputTokens": 269568,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2606,
+          "reasoningOutputTokens": 367,
+          "totalTokens": 338022
+        },
+        "threads": 1,
+        "usd_estimate": 0.18471279999999998
+      }
+    }
+  ],
+  "judge_total_usd": 0.48390920000000004,
+  "judge_total_tokens": 1043105,
+  "judge_setup_seconds_sum_not_wall": 219.27170148910955,
+  "qualification": [
+    {
+      "role": "prior",
+      "disposition": "reused from #18",
+      "qualification_sha256": "e4067db7d2910981ea8ff8238d28010c08aa19306528b460094c4f1ecb0ca2db",
+      "probes": [
+        {
+          "arm": "control",
+          "probe_sha256": "44342d38a808b9549507c14007cc810d38e3866ee294fedd18111ea4b93f0ba0",
+          "usage": {
+            "coverage": "complete",
+            "tokens": {
+              "inputTokens": 86099,
+              "cachedInputTokens": 79616,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 342,
+              "reasoningOutputTokens": 0,
+              "totalTokens": 86441
+            },
+            "threads": 2,
+            "usd_estimate": 0.024347599999999997
+          }
+        },
+        {
+          "arm": "develop",
+          "probe_sha256": "0ed51ecdcadab12d8ada4d6d8a52b0700611555847ce64c8204385dfb69bafcc",
+          "usage": {
+            "coverage": "complete",
+            "tokens": {
+              "inputTokens": 120563,
+              "cachedInputTokens": 101120,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 539,
+              "reasoningOutputTokens": 0,
+              "totalTokens": 121102
+            },
+            "threads": 2,
+            "usd_estimate": 0.054388
+          }
+        }
+      ],
+      "usd_estimate": 0.07873559999999999,
+      "tokens": 207543
+    },
+    {
+      "role": "candidate",
+      "disposition": "new for #19",
+      "qualification_sha256": "783e6b52e51cec99dfd9d4245457a92f2f7704d2537a703906f3e70748e1a991",
+      "probes": [
+        {
+          "arm": "control",
+          "probe_sha256": "f45f31a90d9ba2669b626cdf82f421789120869e2acbf865aaf17704ce1afb19",
+          "usage": {
+            "coverage": "complete",
+            "tokens": {
+              "inputTokens": 86037,
+              "cachedInputTokens": 69888,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 306,
+              "reasoningOutputTokens": 0,
+              "totalTokens": 86343
+            },
+            "threads": 2,
+            "usd_estimate": 0.0423468
+          }
+        },
+        {
+          "arm": "develop",
+          "probe_sha256": "d056670c357630a7d0ab71762644136ea06dfe1f8c99ec9a99c9938ae1dbbe7d",
+          "usage": {
+            "coverage": "complete",
+            "tokens": {
+              "inputTokens": 117467,
+              "cachedInputTokens": 98560,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 489,
+              "reasoningOutputTokens": 31,
+              "totalTokens": 117956
+            },
+            "threads": 2,
+            "usd_estimate": 0.05256
+          }
+        }
+      ],
+      "usd_estimate": 0.0949068,
+      "tokens": 204299
+    }
+  ],
+  "repeated_parent": {
+    "receipt_sha256": "9fca196c0d4b98d6bb66c6c7f167367bdc58f8aee0a3824d9be3129c12e9223f",
+    "conclusion": "Observed repeated same-package Develop and stock both preserve0 to42, with tuple to dataclass final-artifact changes. These two observations establish neither treatment effect, failure probability nor expected cost/time range.",
+    "rows": {
+      "18_develop": {
+        "state": "completed",
+        "all_executable_gates_pass": true,
+        "estimated_usd": 0.8635396000000001,
+        "checkout_to_proposal_seconds": 873.4355588410981,
+        "patch_sha256": "4e8ad8f81d784dba5af0de702611126b9dc6746bf69a06bee6c397aa31f3cfec"
+      },
+      "18_stock": {
+        "state": "completed",
+        "all_executable_gates_pass": true,
+        "estimated_usd": 0.7345004,
+        "checkout_to_proposal_seconds": 531.3796125529334,
+        "patch_sha256": "1ee6bbe72c8abe2a5a6b02cdd53b573efbab2344467fbd313e4c0bae51f72f05"
+      },
+      "19_prior_develop": {
+        "state": "completed",
+        "all_executable_gates_pass": false,
+        "estimated_usd": 0.71724,
+        "checkout_to_proposal_seconds": 790.2323302119039,
+        "patch_sha256": "912649672caf919903043d8a4925bb4889120288ce461df1e17866f8b6a2e6c0"
+      },
+      "19_stock": {
+        "state": "completed",
+        "all_executable_gates_pass": false,
+        "estimated_usd": 0.3833176,
+        "checkout_to_proposal_seconds": 534.1122589821462,
+        "patch_sha256": "9199ec6321e8d0a4513974c89e82d0775e76fc785040749b20e48b487017770c"
+      }
+    }
+  },
+  "operator_period": {
+    "first_checkout_start_unix": 1793358577.3919106,
+    "last_blind_assessment_end_unix": 1793360898.1722553,
+    "seconds": 2320.780344724655,
+    "scope": "Includes sequential proposal checkouts, gaps, grading and overlapping blind assessments; excludes prior qualification. No per-arm shared judge time."
+  },
+  "assessor_order": "Portable assessor list is not assumed rotation ordered; verified as a multiset against native receipts.",
+  "total_proposal_usd": 1.62064,
+  "incremental_measured_usd": 2.199456,
+  "incremental_scope": "All three completed proposal estimates plus three judge estimates and the new candidate qualification. Reused prior qualification excluded; other setup/infrastructure is unpriced and actual invoice unknown.",
+  "proposal_token_total": 7289064,
+  "delta_root_and_descendant_usd": {
+    "stock": {
+      "root": 0.08807120000000002,
+      "descendants": 0.0486936
+    },
+    "prior": {
+      "root": -0.16249840000000002,
+      "descendants": -0.0346592
+    }
+  }
+}

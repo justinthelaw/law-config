@@ -1,0 +1,485 @@
+{
+  "format": "law-config.external-entry-process-control/v1",
+  "status": "staged assessor-only supplement; no primary result changes",
+  "scope": "Six sealed historical sources and two matched published draws on one exposed pytest task. No new execution, provider activity or prospective participant observation.",
+  "inputs": {
+    "six_source_control_receipt_sha256": "9f344ad5074e0b6f45d8f67631ca6ec3b8a522fa367009872357073cabd9a545",
+    "matched_repeat": {
+      "path": "docs/evaluations/runs/tuning/public-result-pytest-01/matched-repeat.json",
+      "sha256": "e6265411129179df2831bbfdf1469f825045e0c6b209a8b6982849c0a82fa7b1"
+    },
+    "original_console_incidence": {
+      "path": "docs/evaluations/runs/tuning/configured-tests-pytest-01/public-cli-incidence.json",
+      "sha256": "5db7b6f100b1b8fb5786ca0dac73bbea7f7e0d583a3e0463e4e01bc79a739525"
+    }
+  },
+  "case": {
+    "repository": "pytest-dev/pytest",
+    "pr": 15193,
+    "base": "4088e1a84ef1cb8ba80aac4e75449459fc092c12",
+    "merged": "0f54d41bedf00505bb1ac2c724abf96ba6dcf48d"
+  },
+  "historical_matched_repeat": {
+    "package_sha256": "fb6b2eacbc6ae3a94fb237d6a54c4166ecbbb7d5678ae9b3273fdaf072c6b372",
+    "base": "4088e1a84ef1cb8ba80aac4e75449459fc092c12",
+    "evaluator_sha256": "a9cc8fbcb356eeb34cb4bc365a7b0ec9fbd871d00c13e1ebbb325c916ccbd01d",
+    "normalized_matched_settings_sha256": "43a61302dc3e51cb957388c02e5785abc1593492ed74b93ca38da90c1ba634b6",
+    "model": "gpt-6.1-sol",
+    "effort": "medium",
+    "budget_seconds": 1200,
+    "cpu_set": [
+      4,
+      5
+    ],
+    "results": {
+      "public-result-pytest-01": "2877f04236ade4d162b9645cc3697174852098bfd5afae551198b683df5c21cb",
+      "native-record-pytest-01": "2f09917193059e0c4a49f89cbf36c4b31de03cfdd750db7dfbd55f21ed410deb"
+    }
+  },
+  "current_declared_entry_evaluator": {
+    "protocol": "pr-quality-pytest-entry-v1",
+    "source_sha256": "a53ad6e006bebf7b48dd5042fccdd3ca4594cea85c7d6d43f8011a1811be5803",
+    "fixture_sha256": "a3d8eddf20c014afaa86a805f97569a0acab2442afe2324851be70ccaef3b790",
+    "helper_sha256": "ba5a1c9a5a44200cc1f32ec6b565354f19d8756a1a8335694c9466ec5f12682c",
+    "admission_sha256": "993986a7327bddf40a0cb5b1d8125da7892c252a73e9644410b5ce7e12ecda70",
+    "dependencies_sha256_before_after": "3943d438ec411c91cbe477975e33cf4846643cd9a896e6f83e099a65e9561e72",
+    "image": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+    "node": "testing/test_mark_expression.py::test_empty_is_false",
+    "node_module_sha256": "6efe7b62b6f0231671c445688fd7cdf721f72005a535591d0820bfcc4d121f20",
+    "new_execution_cpu_lease": [
+      4,
+      5
+    ]
+  },
+  "original_published_subprocess_argv": {
+    "help-console": [
+      "/task-output/bin/pytest",
+      "--help"
+    ],
+    "native-console": [
+      "/task-output/bin/pytest",
+      "testing/test_mark_expression.py::test_empty_is_false"
+    ],
+    "native-module": [
+      "python3",
+      "-B",
+      "-m",
+      "pytest",
+      "testing/test_mark_expression.py::test_empty_is_false"
+    ]
+  },
+  "original_console_method": {
+    "runtime_image": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+    "python_version": "3.13.18 (main, Oct 26 2026, 22:48:24) [GCC 12.2.0]",
+    "python_executable": "/usr/local/bin/python3",
+    "pip_version": "26.2.2",
+    "distlib_scripts_sha256": "ad59b803e61f1900e9b0e4703b2ec0c1ea724536b2bb2eab73e32768230101c3",
+    "declared_project_scripts": {
+      "pytest": "_pytest.config:_console_main",
+      "py.test": "_pytest.config:_console_main"
+    },
+    "launcher_sha256": "551fe571cabee67851cf9ac698511e7d2d3dea7eb3095d484ba0c7d9b10c422e",
+    "configuration": "Unchanged original pyproject.toml, natural argv and working directory, normal plugin loading; no -c, -o, plugin or autoload override. Fresh process and source copy for each route.",
+    "classification": "A public CLI startup regression requires both console --help and the existing native test to exit 1 with the recorded dataclasses traceback, while the same native test through -m pytest exits 0 with 1 passed. A pass requires all three routes to exit 0 and both native routes to report 1 passed. Other or unavailable outcomes remain unknown.",
+    "test": {
+      "file": "testing/test_mark_expression.py",
+      "node": "testing/test_mark_expression.py::test_empty_is_false",
+      "sha256": "6efe7b62b6f0231671c445688fd7cdf721f72005a535591d0820bfcc4d121f20",
+      "same_bytes_in_all_18_roles": true
+    },
+    "dependencies_sha256_before_after": "3943d438ec411c91cbe477975e33cf4846643cd9a896e6f83e099a65e9561e72",
+    "cpu_lease": [
+      2,
+      3
+    ]
+  },
+  "source_controls": {
+    "base": {
+      "source": {
+        "pilot": "public-result-pytest-01",
+        "public_result_id": "ce2f5910227684c84b012372ff403c5a5742a905ca2dea14d55eca7b26deb5db",
+        "public_file_sha256": "2877f04236ade4d162b9645cc3697174852098bfd5afae551198b683df5c21cb",
+        "archived_role": "base",
+        "original_grade_sha256": "915e2b2a63df1fa038e29ca85747e6e2bcc42750bba4d64bab8af94d8acb51c7",
+        "patch_sha256": null,
+        "legacy_stage_exits": {
+          "build": 0,
+          "native": 0,
+          "contract": 42,
+          "preserve": 0,
+          "independent": 42
+        },
+        "git_tree": "5672c2c4bcece9d1136230efe62c12208b03c38a",
+        "verified_tracked_files": 730,
+        "version_sha256": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e"
+      },
+      "declared_entry": {
+        "evidence_kind": "reused current declared-entry evaluator",
+        "grade_sha256": "9dbddc282172bde18b5a94505e492fbe1ddd61d0e3abe5206d85875818864eb9",
+        "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py && PYTHONPATH=src:/deps/lib python3 -B /oracle/pytest-entry.py",
+        "helper_exit": 0,
+        "console_returncode": 0,
+        "status": "passed",
+        "log_sha256": "68aa21566e2dcf39d3c7af90469a5881b91d51d124470acc7a2b4ca9e4f23b8f",
+        "helper_derived_subprocess_argv": [
+          "/tmp/pytest-entry-s2vihwd3/bin/pytest",
+          "--junitxml=/tmp/pytest-entry-s2vihwd3/pytest.xml",
+          "testing/test_mark_expression.py::test_empty_is_false"
+        ],
+        "argv_evidence": "Exact bound helper constructs this vector; launcher/report path comes from its traceback or JUnit-path stdout. Full vector was not separately logged.",
+        "junit_sha256": "dd98547208c203d3a805dd2b6331d74ea66e04fa3f4cc2e1173e5f78a2467bb3",
+        "expected_testcase_passed": true
+      }
+    },
+    "merged": {
+      "source": {
+        "pilot": "public-result-pytest-01",
+        "public_result_id": "ce2f5910227684c84b012372ff403c5a5742a905ca2dea14d55eca7b26deb5db",
+        "public_file_sha256": "2877f04236ade4d162b9645cc3697174852098bfd5afae551198b683df5c21cb",
+        "archived_role": "gold",
+        "original_grade_sha256": "7bc93d9d71342e190b3cef0eb7545b71188804df9918aea76f5c954311fc8da2",
+        "patch_sha256": "a99a7d0fb3b9ce80997a2236170e14e4d27161acdd1a897651bce1e630c6cce7",
+        "legacy_stage_exits": {
+          "build": 0,
+          "native": 0,
+          "contract": 0,
+          "preserve": 0,
+          "independent": 42
+        },
+        "git_tree": "d2ab21025cac52250c44e21140d0c468a33ca253",
+        "verified_tracked_files": 731,
+        "version_sha256": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e"
+      },
+      "declared_entry": {
+        "evidence_kind": "reused current declared-entry evaluator",
+        "grade_sha256": "75bddf2a2c318778dd654ebb63686efdcc2b4e355f02f43d4858a82952bcf3c8",
+        "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py && PYTHONPATH=src:/deps/lib python3 -B /oracle/pytest-entry.py",
+        "helper_exit": 0,
+        "console_returncode": 0,
+        "status": "passed",
+        "log_sha256": "3750e0d6860690915397e362f18be002ebd07fb38237408006d152d7685f887c",
+        "helper_derived_subprocess_argv": [
+          "/tmp/pytest-entry-nhveyeim/bin/pytest",
+          "--junitxml=/tmp/pytest-entry-nhveyeim/pytest.xml",
+          "testing/test_mark_expression.py::test_empty_is_false"
+        ],
+        "argv_evidence": "Exact bound helper constructs this vector; launcher/report path comes from its traceback or JUnit-path stdout. Full vector was not separately logged.",
+        "junit_sha256": "ee59f977375d722f4498caee551a4b00847b417912e9e3351c42440418929d41",
+        "expected_testcase_passed": true
+      }
+    },
+    "public-stock": {
+      "source": {
+        "pilot": "public-result-pytest-01",
+        "public_result_id": "ce2f5910227684c84b012372ff403c5a5742a905ca2dea14d55eca7b26deb5db",
+        "public_file_sha256": "2877f04236ade4d162b9645cc3697174852098bfd5afae551198b683df5c21cb",
+        "archived_role": "candidate-control",
+        "original_grade_sha256": "15007f1b323cb7b5075b124d50af2a1929c2dfd5f0f2020e51e1fb709503dcf4",
+        "patch_sha256": "da9659ab93ccd3c834d22aaafbf8cd8aeacdbdd01b55daaf7c9033cfa819a538",
+        "legacy_stage_exits": {
+          "build": 0,
+          "native": 0,
+          "contract": 0,
+          "preserve": 0,
+          "independent": 0
+        },
+        "git_tree": "19b4814f9e2ba8e2fa404931d5ef9e5d3c39eeca",
+        "verified_tracked_files": 731,
+        "version_sha256": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e"
+      },
+      "declared_entry": {
+        "evidence_kind": "executed missing current declared-entry preserve route",
+        "grade_sha256": "6d5317cfd7b1c747a79ad74df857c5be78de7a2f33fa8d9fea605aa3adf1c3a9",
+        "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py && PYTHONPATH=src:/deps/lib python3 -B /oracle/pytest-entry.py",
+        "helper_exit": 42,
+        "console_returncode": 1,
+        "status": "behavior_failed",
+        "log_sha256": "ada1351218b504c2d2d3d25e93c1e4bf955d598dda2b19b3166f7ff2b811ab5e",
+        "helper_derived_subprocess_argv": [
+          "/task-output/container-tmp/pytest-entry-7qjif4f9/bin/pytest",
+          "--junitxml=/task-output/container-tmp/pytest-entry-7qjif4f9/pytest.xml",
+          "testing/test_mark_expression.py::test_empty_is_false"
+        ],
+        "argv_evidence": "Exact bound helper constructs this vector; launcher/report path comes from its traceback or JUnit-path stdout. Full vector was not separately logged.",
+        "junit_sha256": null,
+        "expected_testcase_passed": false
+      }
+    },
+    "public-fb6": {
+      "source": {
+        "pilot": "public-result-pytest-01",
+        "public_result_id": "ce2f5910227684c84b012372ff403c5a5742a905ca2dea14d55eca7b26deb5db",
+        "public_file_sha256": "2877f04236ade4d162b9645cc3697174852098bfd5afae551198b683df5c21cb",
+        "archived_role": "candidate-develop",
+        "original_grade_sha256": "e1d3710550ce30f5102569b16f15f837f544e086a3d23c6bf5cdd745f95eecb3",
+        "patch_sha256": "e38185b72060140d23990b6750979ba75ac5b472ba52fc49a3f4a10ca69e50ad",
+        "legacy_stage_exits": {
+          "build": 0,
+          "native": 0,
+          "contract": 0,
+          "preserve": 0,
+          "independent": 0
+        },
+        "git_tree": "0588a950f7821b7fd4f60b85b4962cb6ecd6136e",
+        "verified_tracked_files": 732,
+        "version_sha256": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e"
+      },
+      "declared_entry": {
+        "evidence_kind": "reused current declared-entry evaluator",
+        "grade_sha256": "f5e196cbfdd612837a381d27190f3b80734d76f204dfb180e24aad99fc66da26",
+        "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py && PYTHONPATH=src:/deps/lib python3 -B /oracle/pytest-entry.py",
+        "helper_exit": 0,
+        "console_returncode": 0,
+        "status": "passed",
+        "log_sha256": "6d808c65514616b2867cc3a6f5869fc273288913b7ae1f87841ff3fc0473cb20",
+        "helper_derived_subprocess_argv": [
+          "/tmp/pytest-entry-scitaep8/bin/pytest",
+          "--junitxml=/tmp/pytest-entry-scitaep8/pytest.xml",
+          "testing/test_mark_expression.py::test_empty_is_false"
+        ],
+        "argv_evidence": "Exact bound helper constructs this vector; launcher/report path comes from its traceback or JUnit-path stdout. Full vector was not separately logged.",
+        "junit_sha256": "16838f3e175b4db7f505c63932d9e1f0319cde7a0f5a2d687a8b510001169b22",
+        "expected_testcase_passed": true
+      }
+    },
+    "native-stock": {
+      "source": {
+        "pilot": "native-record-pytest-01",
+        "public_result_id": "a16e0909b19f0b1e7a7c0f403dbaa3f6768e32236e3a898154f5715635c2b86d",
+        "public_file_sha256": "2f09917193059e0c4a49f89cbf36c4b31de03cfdd750db7dfbd55f21ed410deb",
+        "archived_role": "candidate-control",
+        "original_grade_sha256": "1b3ae3780f8e5881da41afde62fa7c1ef19139baa8e0f468edf1d32acd3e4104",
+        "patch_sha256": "dcaf7ffbf6ceb9c6abbfaa09362545c7d9db3a282ee859759cf2f30905c20bfc",
+        "legacy_stage_exits": {
+          "build": 0,
+          "native": 0,
+          "contract": 0,
+          "preserve": 0,
+          "independent": 0
+        },
+        "git_tree": "c24de3c7dd5f48339312c0650170dea445636a22",
+        "verified_tracked_files": 731,
+        "version_sha256": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e"
+      },
+      "declared_entry": {
+        "evidence_kind": "executed missing current declared-entry preserve route",
+        "grade_sha256": "a2511450e6ad7d6ef5a2bffdc3615ed09769af57e2ddbaed051e1752c0db413e",
+        "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py && PYTHONPATH=src:/deps/lib python3 -B /oracle/pytest-entry.py",
+        "helper_exit": 42,
+        "console_returncode": 1,
+        "status": "behavior_failed",
+        "log_sha256": "212bc23d8a37dcd5d1aa3c283cde2d19738aa4aae8fed4b06462e3ef7f14d0a2",
+        "helper_derived_subprocess_argv": [
+          "/task-output/container-tmp/pytest-entry-fst32iay/bin/pytest",
+          "--junitxml=/task-output/container-tmp/pytest-entry-fst32iay/pytest.xml",
+          "testing/test_mark_expression.py::test_empty_is_false"
+        ],
+        "argv_evidence": "Exact bound helper constructs this vector; launcher/report path comes from its traceback or JUnit-path stdout. Full vector was not separately logged.",
+        "junit_sha256": null,
+        "expected_testcase_passed": false
+      }
+    },
+    "native-prior-fb6": {
+      "source": {
+        "pilot": "native-record-pytest-01",
+        "public_result_id": "a16e0909b19f0b1e7a7c0f403dbaa3f6768e32236e3a898154f5715635c2b86d",
+        "public_file_sha256": "2f09917193059e0c4a49f89cbf36c4b31de03cfdd750db7dfbd55f21ed410deb",
+        "archived_role": "prior-develop",
+        "original_grade_sha256": "6390658dc1c0057e589a52bf680d4eeb74deb9555ae58b2aecd3a0917c17a483",
+        "patch_sha256": "dfafb4690a7e793dc207e67ddaaca906dc2cdbf99ffd76927bdffbc473d95f6b",
+        "legacy_stage_exits": {
+          "build": 0,
+          "native": 0,
+          "contract": 0,
+          "preserve": 0,
+          "independent": 0
+        },
+        "git_tree": "8b5881caa74869079e91b3c0693a556c5da48fe3",
+        "verified_tracked_files": 732,
+        "version_sha256": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e"
+      },
+      "declared_entry": {
+        "evidence_kind": "executed missing current declared-entry preserve route",
+        "grade_sha256": "3f45ab61637c828724739f2aac59e3f0c1d272b4e72e91036e8e5651b5380db7",
+        "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py && PYTHONPATH=src:/deps/lib python3 -B /oracle/pytest-entry.py",
+        "helper_exit": 0,
+        "console_returncode": 0,
+        "status": "passed",
+        "log_sha256": "0373bcb58a579d9a971ae170ac0780685ead308d47e87725bbafd24e93e89aba",
+        "helper_derived_subprocess_argv": [
+          "/task-output/container-tmp/pytest-entry-xc1uf0qk/bin/pytest",
+          "--junitxml=/task-output/container-tmp/pytest-entry-xc1uf0qk/pytest.xml",
+          "testing/test_mark_expression.py::test_empty_is_false"
+        ],
+        "argv_evidence": "Exact bound helper constructs this vector; launcher/report path comes from its traceback or JUnit-path stdout. Full vector was not separately logged.",
+        "junit_sha256": "793465c2c737be4da7df0730271854491d20d1d1bd67e58d1d3b3c75c144998d",
+        "expected_testcase_passed": true
+      }
+    }
+  },
+  "original_published_console_outcomes": [
+    {
+      "control_label": "public-fb6",
+      "pilot": "public-result-pytest-01",
+      "role": "candidate-develop",
+      "patch_sha256": "e38185b72060140d23990b6750979ba75ac5b472ba52fc49a3f4a10ca69e50ad",
+      "observation": "pass",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "48c4d4bc0c2e2fb4fb1e6619ece45c6eb717b64be516fb9ab5153aa7aebc88c2",
+          "source_sha256_after": "48c4d4bc0c2e2fb4fb1e6619ece45c6eb717b64be516fb9ab5153aa7aebc88c2",
+          "one_test_passed": false,
+          "same_startup_exception": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "73d61eb58ee409dba0a2eada890f00675846a7c0198f71e2973ad11d057bb866",
+          "source_sha256_before": "48c4d4bc0c2e2fb4fb1e6619ece45c6eb717b64be516fb9ab5153aa7aebc88c2",
+          "source_sha256_after": "48c4d4bc0c2e2fb4fb1e6619ece45c6eb717b64be516fb9ab5153aa7aebc88c2",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "73d61eb58ee409dba0a2eada890f00675846a7c0198f71e2973ad11d057bb866",
+          "source_sha256_before": "48c4d4bc0c2e2fb4fb1e6619ece45c6eb717b64be516fb9ab5153aa7aebc88c2",
+          "source_sha256_after": "48c4d4bc0c2e2fb4fb1e6619ece45c6eb717b64be516fb9ab5153aa7aebc88c2",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "control_label": "public-stock",
+      "pilot": "public-result-pytest-01",
+      "role": "candidate-control",
+      "patch_sha256": "da9659ab93ccd3c834d22aaafbf8cd8aeacdbdd01b55daaf7c9033cfa819a538",
+      "observation": "public-cli-startup-regression",
+      "routes": {
+        "help-console": {
+          "exit": 1,
+          "log_sha256": "529239cfed8b6d6586e786ed5cc8e544768e7987f5b13e1f2bcfe9079078371f",
+          "source_sha256_before": "e9bbda07bebd8414687d9fc59b16b3576e9801cd59f6d895b6944cda34951fad",
+          "source_sha256_after": "e9bbda07bebd8414687d9fc59b16b3576e9801cd59f6d895b6944cda34951fad",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-console": {
+          "exit": 1,
+          "log_sha256": "529239cfed8b6d6586e786ed5cc8e544768e7987f5b13e1f2bcfe9079078371f",
+          "source_sha256_before": "e9bbda07bebd8414687d9fc59b16b3576e9801cd59f6d895b6944cda34951fad",
+          "source_sha256_after": "e9bbda07bebd8414687d9fc59b16b3576e9801cd59f6d895b6944cda34951fad",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "aeb73fcf2e43ffe19a4ffd71eeaf4fdb7d5d66458c08553b1b28ab61ef752564",
+          "source_sha256_before": "e9bbda07bebd8414687d9fc59b16b3576e9801cd59f6d895b6944cda34951fad",
+          "source_sha256_after": "e9bbda07bebd8414687d9fc59b16b3576e9801cd59f6d895b6944cda34951fad",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "control_label": "native-prior-fb6",
+      "pilot": "native-record-pytest-01",
+      "role": "prior-develop",
+      "patch_sha256": "dfafb4690a7e793dc207e67ddaaca906dc2cdbf99ffd76927bdffbc473d95f6b",
+      "observation": "pass",
+      "routes": {
+        "help-console": {
+          "exit": 0,
+          "log_sha256": "8564d7ffa3b5c9130346445fee4c6982e50f00df749ffc3a7b8d2d5da777ce82",
+          "source_sha256_before": "938048dd70cb8da87f4408a043b17cccbe84919884569175073afb5ddbdb5c8a",
+          "source_sha256_after": "938048dd70cb8da87f4408a043b17cccbe84919884569175073afb5ddbdb5c8a",
+          "one_test_passed": false,
+          "same_startup_exception": false
+        },
+        "native-console": {
+          "exit": 0,
+          "log_sha256": "f32ac2486416a9308dc9b6ab2bbf65f6311a0cee70a54294d858e52d38b01d72",
+          "source_sha256_before": "938048dd70cb8da87f4408a043b17cccbe84919884569175073afb5ddbdb5c8a",
+          "source_sha256_after": "938048dd70cb8da87f4408a043b17cccbe84919884569175073afb5ddbdb5c8a",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "f32ac2486416a9308dc9b6ab2bbf65f6311a0cee70a54294d858e52d38b01d72",
+          "source_sha256_before": "938048dd70cb8da87f4408a043b17cccbe84919884569175073afb5ddbdb5c8a",
+          "source_sha256_after": "938048dd70cb8da87f4408a043b17cccbe84919884569175073afb5ddbdb5c8a",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    },
+    {
+      "control_label": "native-stock",
+      "pilot": "native-record-pytest-01",
+      "role": "candidate-control",
+      "patch_sha256": "dcaf7ffbf6ceb9c6abbfaa09362545c7d9db3a282ee859759cf2f30905c20bfc",
+      "observation": "public-cli-startup-regression",
+      "routes": {
+        "help-console": {
+          "exit": 1,
+          "log_sha256": "529239cfed8b6d6586e786ed5cc8e544768e7987f5b13e1f2bcfe9079078371f",
+          "source_sha256_before": "3e140ae538dc5e5f70de6193674f067c6a060129646c411f14827de9e7bfc13f",
+          "source_sha256_after": "3e140ae538dc5e5f70de6193674f067c6a060129646c411f14827de9e7bfc13f",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-console": {
+          "exit": 1,
+          "log_sha256": "529239cfed8b6d6586e786ed5cc8e544768e7987f5b13e1f2bcfe9079078371f",
+          "source_sha256_before": "3e140ae538dc5e5f70de6193674f067c6a060129646c411f14827de9e7bfc13f",
+          "source_sha256_after": "3e140ae538dc5e5f70de6193674f067c6a060129646c411f14827de9e7bfc13f",
+          "one_test_passed": false,
+          "same_startup_exception": true
+        },
+        "native-module": {
+          "exit": 0,
+          "log_sha256": "f32ac2486416a9308dc9b6ab2bbf65f6311a0cee70a54294d858e52d38b01d72",
+          "source_sha256_before": "3e140ae538dc5e5f70de6193674f067c6a060129646c411f14827de9e7bfc13f",
+          "source_sha256_after": "3e140ae538dc5e5f70de6193674f067c6a060129646c411f14827de9e7bfc13f",
+          "one_test_passed": true,
+          "same_startup_exception": false
+        }
+      }
+    }
+  ],
+  "published_probe_contract": {
+    "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+    "environment": "PANEL_STAGE equals stage key; separate fresh process per route; pinned offline Python image/deps",
+    "configuration": "Actual published probe bytes, no substitutes. Declared startup uses normal project pyproject.toml/argv/plugin loading, generated exact project.scripts mapping, immutable mounted native-test module; no -c /dev/null, plugin override or preload in startup.",
+    "ids": [
+      "copy-pickle-compatibility",
+      "import-order",
+      "pytest-param-tuple",
+      "runtime-type-hints"
+    ]
+  },
+  "repeated_behavior": {
+    "both_develop_patches": "Tuple unpacking, both import orders, warning-free copy and pickle, class annotation lookup and declared console startup succeeded.",
+    "both_stock_patches": "Unpacking raised TypeError. The internal-first import and console startup failed. Class annotation lookup raised NameError. The public-first import, helper annotation and copy/pickle checks passed.",
+    "comparison": "Across both draws, the four probes produced identical exit codes and structured outputs within each arm. Each arm produced two distinct patches. The repeated Develop proposal has no blind score."
+  },
+  "limits": [
+    "The original published argv arrays above are retained verbatim, including their in-container paths. Current helper argv vectors are explicitly helper-derived, not independently logged full argv; no host/source-checkout path is published.",
+    "The matched proposals used the historical evaluator; the six-source declared-entry controls use the separately bound current evaluator. Do not relabel old five-stage results or contextual blind scores.",
+    "Public console behavior is actual declared-entry execution, not a proxy inferred from -m pytest, private import order, tuple unpacking or type-hint introspection. The human merge also fails class-field annotation lookup; that is not stock-only evidence.",
+    "Helper exit2 denotes unestablished setup, never pass. Both stock console processes returned1 with the dataclass AttributeError before collection; helper exit42 classifies that observed behavior. Passing requires exactly one unchanged expected JUnit testcase.",
+    "Retrospective assessor checks do not show producer-selected tests or establish a new treatment mechanism. Two draws on one exposed task are not fresh confirmation; the repeated Develop proposal has no blind score. No new economics, quality, generalization or current prospective-candidate binding is claimed."
+  ],
+  "verification": {
+    "public_result_files_checked": 2,
+    "source_patch_bindings_checked": 6,
+    "grade_and_raw_startup_log_bindings_checked": 6,
+    "published_probe_stages_checked": 30,
+    "matched_proposal_console_bindings_checked": 4,
+    "new_executions": 0
+  }
+}

@@ -1,0 +1,1270 @@
+{
+  "campaign_elapsed_seconds": 10298.35660123825,
+  "cases": [
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "bad49b7819853023d8f6a7181951108750d14ae0",
+      "base_bytes": 20972218,
+      "base_files": 1582,
+      "comparison": {
+        "control_upstream": {
+          "reason": "hard gates",
+          "verdict": "upstream"
+        },
+        "develop_control": {
+          "reason": "hard gates",
+          "verdict": "develop"
+        },
+        "develop_upstream": {
+          "order_sensitive": true,
+          "reason": "blinded rubric",
+          "score_delta": -5.0,
+          "verdict": "upstream",
+          "votes": [
+            "develop",
+            "upstream",
+            "upstream"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": -30.0,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 21.25,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": -8.75,
+            "reversal": false
+          }
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "control",
+          "develop"
+        ],
+        "build": "/deps/lib/cmake/data/bin/cmake -S . -B build-panel -DENABLE_TEST=ON -DENABLE_CPIO=OFF -DENABLE_CAT=OFF && /deps/lib/cmake/data/bin/cmake --build build-panel -j2 --target bsdtar libarchive_test",
+        "cpu_pair": [
+          0,
+          1
+        ],
+        "deadline_seconds": 14040,
+        "dependencies_sha256": "f3fac19cb045d9f788cb39476f3efe604630a792d3658720c3b176c63322a870",
+        "fixture_sha256": "d8ad89adbfec3459da1063c9da2c84e74fbf224e4920f839038f019e9be682c0",
+        "grader_native": "./build-panel/bin/libarchive_test test_read_data_large test_read_data_into_fd_sparse",
+        "independent_check": false,
+        "merged_patch_sha256": "bc070b611217b0e21de63df6c22a1fce52a5dc131113a3722f064e2c129765c0",
+        "prompt_sha256": "d8f75ba3b38d2fff0a98b0cbb6d3d6a8bc9173f5b335c2e8a54e53ba359a4b13",
+        "worker_native": "./build-panel/bin/libarchive_test test_read_data_large test_read_data_into_fd_sparse",
+        "workers": {
+          "toolchain": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+          "worker": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3"
+        }
+      },
+      "domain": "archive reader and CLI",
+      "first_commit": "2026-10-21T17:32:12Z",
+      "id": "libarchive",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only the supplied frozen exits are execution evidence; no candidate was executed or edited. The selected native scope is test_read_data_large and test_read_data_into_fd_sparse, not the entire suite or all newly added tests.",
+            "Contract and preserve checks have successful exits but no supplied commands, case inventories or detailed logs. No additional execution coverage, sanitizer run, diff check or non-Linux run is inferred from proposal claims.",
+            "Native Windows findings are source-level deductions from the supplied patches and starting platform shims, not observed Windows executions. Existing Windows WriteFile append limitations are distinguished from introduced regressions.",
+            "Eligibility timing, patch application logs and historical verification details are unavailable; no authorship or identity inference was used."
+          ],
+          "native_sha256": "40dff78c90de2d530ad09b61307327af7f85457c8d8b7c97b5f03ba5b0560788",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 367488,
+            "inputTokens": 403812,
+            "outputTokens": 3183,
+            "reasoningOutputTokens": 690,
+            "totalTokens": 406995
+          },
+          "usd_estimate": 0.14122679999999999,
+          "wall_seconds": 126.24111139494926
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only the frozen exit codes in packet/task.json are available as execution evidence. No candidate was executed, applied or edited. No agents or external sources were used.",
+            "The supplied build targets bsdtar and libarchive_test; the native command selects test_read_data_large and test_read_data_into_fd_sparse. Detailed contract/preserve commands, assertions, baseline mismatches, skip counts and logs are unavailable, so their exit 0 results cannot establish broader or historical verification claims.",
+            "All three proposal texts are observed as present and were scored separately from implementation. No absent or interrupted proposal text required a null score. Release timing and patch replay eligibility were not independently established.",
+            "Platform findings are based on the supplied patches and starting Windows wrappers, not additional runtime observations. Removal of C's final position check was inspected explicitly; no unsupported integrity allegation or speculative security bypass is asserted."
+          ],
+          "native_sha256": "4ed33c810c8580b83ca6c336b2093c4378acefcd2d882f86de34126b48b74198",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 339328,
+            "inputTokens": 374469,
+            "outputTokens": 3078,
+            "reasoningOutputTokens": 688,
+            "totalTokens": 377547
+          },
+          "usd_estimate": 0.1349948,
+          "wall_seconds": 113.91856555803679
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment uses only packet artifacts and static inspection of starting source; no candidate was executed, applied or edited.",
+            "Frozen execution evidence consists of exit summaries only. The specified native slice is test_read_data_large and test_read_data_into_fd_sparse; detailed contract/preserve cases, logs, skips, sanitizer runs, CLI-test execution and cross-platform runs are unavailable.",
+            "B final-offset-check removal was inspected explicitly. Declared-size and write-error protections remain; no concrete material bypass or critical regression is demonstrated by the available evidence. Windows test incompatibilities are static findings, not observed Windows executions.",
+            "Eligibility timing, patch-application logs and historical verification transcripts are unavailable; no identity or authorship information was used."
+          ],
+          "native_sha256": "b68165c248ee55f4ad20386fa9d8aff2bb21f309f733dc5f8df62b30920fb80f",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 260736,
+            "inputTokens": 305898,
+            "outputTokens": 2860,
+            "reasoningOutputTokens": 642,
+            "totalTokens": 308758
+          },
+          "usd_estimate": 0.1449976,
+          "wall_seconds": 103.76881620800123
+        }
+      ],
+      "language": "C",
+      "merged": "7bf74d481dbfdf72b90f3dab949c1eedb09c6dd0",
+      "pr": 3737,
+      "pr_delta": [
+        2,
+        117,
+        2
+      ],
+      "pr_open_to_merge_seconds": 524745.0,
+      "prompt": "Fix extracting archive data to a nonempty file opened with O_APPEND. Appending entries through bsdtar -xO must preserve the prefix and append all entries without a spurious seek failure. Keep ordinary extraction, pipe output and sparse file handling working. Add a regression.",
+      "repo": "libarchive/libarchive",
+      "split": "confirmation",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "3a11ad148397b7628256f5e5d76a454213480c63",
+      "base_bytes": 1375318,
+      "base_files": 595,
+      "comparison": {
+        "control_upstream": {
+          "reason": "hard gates",
+          "verdict": "both failed"
+        },
+        "develop_control": {
+          "reason": "hard gates",
+          "verdict": "both failed"
+        },
+        "develop_upstream": {
+          "reason": "hard gates",
+          "verdict": "both failed"
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 0.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          }
+        }
+      },
+      "complexity": "TypeScript Markdown parser, interacting delimiter rules",
+      "controls": {
+        "arm_order": [
+          "develop",
+          "control"
+        ],
+        "build": "npm run build:esbuild && ./node_modules/.bin/tsc --noEmit",
+        "cpu_pair": [
+          0,
+          1
+        ],
+        "deadline_seconds": 1200,
+        "dependencies_sha256": "f08bb6c6875287e2d561d736c4c33a97bb90f22aadf6e9d6260267795495296b",
+        "fixture_sha256": "9d50ede802144f9a4031c62139d5a2a2565ed4331de08d6f158b5c28cdd45d57",
+        "grader_native": "npm run test:specs",
+        "independent_check": true,
+        "merged_patch_sha256": "3affc55aebbd9f2345b890cb9f6dc40a6fdb024bc4674e697ffaaf37d49dcd6a",
+        "prompt_sha256": "6ce320c1f43703add9787cbe9e32867d750eaa5c2d845b00125ee798bc2f30ba",
+        "worker_native": "node --test --test-skip-pattern='^quadratic_' --test-reporter=spec test/run-spec-tests.js",
+        "workers": {
+          "toolchain": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+          "worker": "sha256:ba131adedde43c7d8199f10740bbf95ec1f628cdbdcaf44accccd9e0100ae90c"
+        }
+      },
+      "domain": "Markdown parser",
+      "first_commit": "2026-10-17",
+      "id": "marked",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only supplied frozen execution outcomes were used; candidate submissions were neither applied nor executed. Full files were read in A, B, C order and relevant starting lexer/tokenizer/rules and spec runner were inspected.",
+            "Worker native scope skips tests matching ^quadratic_. Exit codes do not supply complete logs, test counts, unit/lint results, timing results or base outputs. Claimed checks outside the frozen observations receive no execution credit.",
+            "Independent observations establish public-output failures for every submission, so none has affirmative evidence of complete requested behavior. They do not establish base-to-submission regression history or critical severity; no integrity or critical-regression flag is warranted. Deleted or narrowed delimiter guards are assessed under design and coverage.",
+            "Eligibility timing, patch-application logs and historical differential/performance results are unavailable. All proposal texts are present, so proposal scores reflect observed text rather than null for unavailable history."
+          ],
+          "native_sha256": "473fb438a0c5e927b05dbd0345c40a10ad7053e9c66ac636d109556f60fe879a",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 289024,
+            "inputTokens": 329788,
+            "outputTokens": 2376,
+            "reasoningOutputTokens": 200,
+            "totalTokens": 332164
+          },
+          "usd_estimate": 0.1341904,
+          "wall_seconds": 84.25088390987366
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used only packet files and read-only inspection of starting source and test configuration. No candidate was applied, executed or edited; no additional execution evidence was generated.",
+            "Frozen build covers esbuild plus tsc --noEmit; worker native covers the spec runner with ^quadratic_ tests skipped. Build/native/contract/preserve have exit codes only. The independent record has exit 42 and six expected/actual probes, including successful probes; it is not a complete npm run test:specs log.",
+            "No base outputs, timing/apply logs, unit/lint logs, benchmark results or detailed contract/preserve assertions are supplied. Eligibility timing, claimed broader verification, performance magnitude, and whether nesting mismatches were pre-existing cannot be established. All three have observed nonempty patches and proposal text.",
+            "All three have concrete independent behavioral failures and lack affirmative evidence for full readiness. None of the inspected diffs demonstrates validation bypass, materially weakened security protection or a critical regression warranting an integrity/safety flag."
+          ],
+          "native_sha256": "8a4124fcf74fbf4eb34d71a53ac5ea51acb8af1c57d0ff2f3cc3bae37bdac1d8",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 388352,
+            "inputTokens": 435470,
+            "outputTokens": 2965,
+            "reasoningOutputTokens": 510,
+            "totalTokens": 438435
+          },
+          "usd_estimate": 0.1627212,
+          "wall_seconds": 103.69116927310824
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only the frozen checks in packet/task.json were treated as execution evidence. Candidate submissions were neither applied nor executed; source inspection was static. Build success covers the stated esbuild and tsc scope; native success covers the selected spec runner with quadratic_ tests skipped, not a documented full unit, lint, browser or performance run.",
+            "The independent observation supplies six public input/output pairs per label and exit 42, not a full independent npm run test:specs transcript. Equal expected/actual pairs were treated as passes, not failures merely because the overall exit was nonzero.",
+            "No base execution outputs, apply/replay logs, timing eligibility records, or historical verification logs are supplied. Whether particular mismatches were newly introduced, and whether claimed additional checks ran, cannot be established. Proposal text is present for all three labels; no proposal score is null for unavailable historical text.",
+            "No concrete validation bypass, materially weakened safety protection, or demonstrated critical regression is established. Retry-guard changes were assessed in design and behavior evidence; unverified performance claims and unsupported check claims were not promoted to integrity findings."
+          ],
+          "native_sha256": "36e3512e5b049dbd5217a67d59f24a11bae3b4e44f7048ceaa1b2cc819052b41",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 282240,
+            "inputTokens": 332789,
+            "outputTokens": 2614,
+            "reasoningOutputTokens": 304,
+            "totalTokens": 335403
+          },
+          "usd_estimate": 0.155462,
+          "wall_seconds": 87.65783672803082
+        }
+      ],
+      "language": "TypeScript",
+      "merged": "5d8e2340d78c25c611e1d8215b302fd48f01a601",
+      "pr": 4145,
+      "pr_delta": [
+        3,
+        55,
+        12
+      ],
+      "pr_open_to_merge_seconds": 718880.0,
+      "prompt": "Bring emphasis parsing into line with CommonMark delimiter-run flanking and the multiple-of-three rule for runs of asterisks and underscores, including when a run can both open and close. Preserve ordinary emphasis, strong emphasis and intraword behavior. Add focused parser regression examples. Include Unicode delimiter context, including punctuation and combining marks.",
+      "repo": "markedjs/marked",
+      "split": "tuning",
+      "stratum": "external"
+    },
+    {
+      "authorship": "author explicitly reports no AI use",
+      "base": "e9414948e9660ee4c167eebb187710ee3031d9d8",
+      "base_bytes": 46255476,
+      "base_files": 7089,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": -11.25,
+          "verdict": "upstream",
+          "votes": [
+            "upstream",
+            "upstream",
+            "upstream"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "verdict": "tie",
+          "votes": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": -11.25,
+          "verdict": "upstream",
+          "votes": [
+            "upstream",
+            "upstream",
+            "upstream"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": -15.0,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 0.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": -15.0,
+            "reversal": false
+          }
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "develop",
+          "control"
+        ],
+        "build": "PYTHONPATH=.:/deps/lib python -m compileall -q django/db/models/sql",
+        "cpu_pair": [
+          4,
+          5
+        ],
+        "deadline_seconds": 1200,
+        "dependencies_sha256": "75bdf98b64728fd7a8ec109f93848c669b8ba2bea23f1ba2b3c9b5a3007e45a4",
+        "fixture_sha256": "e69f279d53611ce599f557232ed3e6211f2d9600ee8fda437d07806e87c671d0",
+        "grader_native": "PYTHONPATH=.:/deps/lib python tests/runtests.py queries.tests.Queries1Tests --parallel=1 --verbosity=0",
+        "independent_check": false,
+        "merged_patch_sha256": "6b92439cf9edeefdee82d813f27b648238b83278f6593a343130bc1e1326b68c",
+        "prompt_sha256": "ba1677babc3665d76db490f34c8fb304db221b8d6758838ed854036d7f11dfb0",
+        "worker_native": "PYTHONPATH=.:/deps/lib python tests/runtests.py queries.tests.Queries1Tests --parallel=1 --verbosity=0",
+        "workers": {
+          "toolchain": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+          "worker": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3"
+        }
+      },
+      "domain": "ORM and SQLite",
+      "first_commit": "2026-10-18T14:55:41Z",
+      "id": "django",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Candidates were read in A, B, C order. No candidate code was executed, applied or edited; evaluation used full packet files and relevant starting source.",
+            "Frozen execution evidence consists of exit codes only. The build scope is django/db/models/sql compilation; native scope is queries.tests.Queries1Tests. Contract and preserve scripts, detailed outputs, backend identity, base failures, exact test counts, restoration checks and timing/apply logs are unavailable.",
+            "Additional boundary findings follow mechanically from starting build_filter(), _add_q(), JoinPromoter.update_join_types(), model definitions and XOR truth values. They were not independently executed. The missed B/C edge also exists in the starting implementation; it is an incomplete fix, not evidence of a newly introduced critical regression. No concrete integrity or critical-regression veto was established."
+          ],
+          "native_sha256": "0888cd9546ce725f09c3964d017e1e3937c95cc15606006b5a00b3eb19e3d785",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 168448,
+            "inputTokens": 195896,
+            "outputTokens": 3407,
+            "reasoningOutputTokens": 1088,
+            "totalTokens": 199303
+          },
+          "usd_estimate": 0.1058108,
+          "wall_seconds": 107.41834659082815
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used the full A, B, C proposal and patch files in supplied order, packet/task.json, packet/rubric.md, and relevant starting query, where, Q and model source. No candidate was applied, edited or executed.",
+            "Frozen execution evidence consists only of exit codes: build, native, contract and preserve are 0 for each label. There are no detailed logs, hidden-check definitions, baseline distinguishing outcomes, patch-application/timing records or separate restoration/whitespace records. Passing summaries cannot establish coverage of the statically identified boundaries.",
+            "The supplied native scope is queries.tests.Queries1Tests; C adds tests in NullJoinPromotionOrTest, outside that scope. Other backends and the full suite have no supplied execution evidence.",
+            "Static counterexamples describe independently verifiable behavior but were not run. The identified correctness edge and join-selection regression are scored as ordinary contract defects; no concrete validation bypass, weakened existing protection or demonstrated critical regression warrants an integrity flag."
+          ],
+          "native_sha256": "5499210c2ca1a37203d3e5e228d3448126525ea7d3a9c37e2b1b03cb5b55847a",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 245760,
+            "inputTokens": 274716,
+            "outputTokens": 3556,
+            "reasoningOutputTokens": 910,
+            "totalTokens": 278272
+          },
+          "usd_estimate": 0.118048,
+          "wall_seconds": 120.87796458695084
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used supplied full patches/proposals, packet/task.json frozen exit codes, and static inspection of starting query.py, where.py, query_utils.py, tree.py and query models/tests. Candidate code was neither executed nor edited.",
+            "Frozen observations contain exit codes without logs, backend identities, contract/preserve case definitions, base distinguishing results, patch-apply logs or timing evidence. Successful exits are recorded as supplied; exact suite counts and claimed reverse-rule experiments cannot be independently confirmed.",
+            "The cited uncovered counterexamples follow mechanically from build_filter inner votes, JoinPromoter selection and XOR parity; they were not executed. Remaining row-loss defects are not newly introduced critical regressions, and unnecessary outer promotion alone does not establish a critical regression or integrity violation. No integrity veto is asserted."
+          ],
+          "native_sha256": "66b7ab2aa3d9887eb02485ef6e64114f8131b2fbabfd1eeeb19e3a6132c807f5",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 184192,
+            "inputTokens": 212586,
+            "outputTokens": 3279,
+            "reasoningOutputTokens": 1087,
+            "totalTokens": 215865
+          },
+          "usd_estimate": 0.1079972,
+          "wall_seconds": 104.51677171885967
+        }
+      ],
+      "language": "Python",
+      "merged": "77eea99b455396145188305c31284720751df6f5",
+      "pr": 22169,
+      "pr_delta": [
+        2,
+        53,
+        5
+      ],
+      "pr_open_to_merge_seconds": 709298.0,
+      "prompt": "Fix XOR join promotion in the Django ORM. Positive and negated XOR across nullable relations must retain rows whose truth value depends on an absent related row. Preserve AND, OR and existing INNER JOIN behavior where promotion is unnecessary. Add a query regression.",
+      "repo": "django/django",
+      "split": "confirmation",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "c44735ec0f130c2486afe9c976937c03b57a8c62",
+      "base_bytes": 591765,
+      "base_files": 60,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 10.0,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "verdict": "tie",
+          "votes": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 10.0,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 0.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          }
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "develop",
+          "control"
+        ],
+        "build": "cargo build --offline --locked --bin fd",
+        "cpu_pair": [
+          2,
+          3
+        ],
+        "deadline_seconds": 9540,
+        "dependencies_sha256": "e6145be78552a0bce29c9f6cac40d6b50d8a678226409fe11416ac52686f2861",
+        "fixture_sha256": "59059109b932e2240a919ce3f9eec6a51c5c2bf5e12265b3253cf59f8d45313f",
+        "grader_native": "cargo test --offline --locked --bin fd filter::size",
+        "independent_check": false,
+        "merged_patch_sha256": "241d16a90d2c1bf5f4cfff40f7ee0c7c268779b8a6d9dcb9ef0b6d3eeab195d5",
+        "prompt_sha256": "7f95df7d4919125ea76aba2bce76a492317007632400ede6fc8812440b2a14aa",
+        "worker_native": "cargo test --offline --locked --bin fd filter::size",
+        "workers": {
+          "toolchain": "sha256:4ec71e955e6c08aeb238885083222ddff79d82eb87654a96c76e38e94da1a53b",
+          "worker": "sha256:589cb05c68a702e350eb7c51c9a9072d8df598c2f13252ec64f7330ed7454c1b"
+        }
+      },
+      "domain": "filesystem CLI",
+      "first_commit": "2026-10-26T23:08:28Z",
+      "id": "fd",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used the full A, B and C proposal/patch files in supplied order, starting source and frozen packet/task.json observations. No candidate was executed or edited.",
+            "Frozen observations supply only exit codes: build/native/contract/preserve are 0 for every submission. The declared native slice is cargo test --offline --locked --bin fd filter::size, not the full suite. No raw outputs, contract/control case inventories, base behavioral mismatch trace, optimized-build logs, timing/apply logs or historical worker logs are supplied; these details cannot be independently verified.",
+            "Claims in proposal text are assessed separately from implementation and are not additional execution evidence. No concrete integrity bypass or critical regression was found in the supplied changes."
+          ],
+          "native_sha256": "516fd49664d920e0f14d927c3ec439815129639eadf224136123f2a34e551b44",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 194176,
+            "inputTokens": 221166,
+            "outputTokens": 2129,
+            "reasoningOutputTokens": 147,
+            "totalTokens": 223295
+          },
+          "usd_estimate": 0.09468760000000001,
+          "wall_seconds": 76.51559931901284
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used the full A, B, C proposal and patch files in supplied order, relevant starting source and packet/task.json frozen observations. No candidate was executed or edited.",
+            "Frozen execution evidence consists of exit codes only: build, native, contract and preserve are 0 for each submission. Detailed logs, contract inputs, base fail-to-pass evidence and optimization-mode execution details are unavailable; no additional checks or full-suite passes are inferred.",
+            "The declared native scope is cargo test --offline --locked --bin fd filter::size; it does not establish execution of tests/tests.rs integration tests. Proposal-specific historical checks, counts and interruptions are not independently verifiable from the packet."
+          ],
+          "native_sha256": "857967815a5e5a9efad227aaea943762a09ab282d302e709ff18922364054b30",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 201856,
+            "inputTokens": 235780,
+            "outputTokens": 2019,
+            "reasoningOutputTokens": 178,
+            "totalTokens": 237799
+          },
+          "usd_estimate": 0.1082236,
+          "wall_seconds": 77.09086902206764
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only the frozen build/native/contract/preserve exit statuses in packet/task.json are available as execution evidence. No candidate was executed or edited. Detailed command output, contract cases, build profiles and starting-tree fail-to-pass observations are unavailable; aggregate success does not independently establish those details.",
+            "The supplied native verification scope is cargo test --offline --locked --bin fd filter::size. It does not cover the full repository suite or A's tests/tests.rs integration regression. Detailed verification assertions in proposal text were not treated as execution evidence.",
+            "Scores combine full patch and starting-source inspection with frozen outcomes. No identity or authorship cues were used; eligibility timing and historical replay were not independently observable."
+          ],
+          "native_sha256": "85090151215a899d14cd192e2823a4d4d04543a7c565fa8afadee88601f977cb",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 138624,
+            "inputTokens": 161981,
+            "outputTokens": 1941,
+            "reasoningOutputTokens": 116,
+            "totalTokens": 163922
+          },
+          "usd_estimate": 0.0799864,
+          "wall_seconds": 65.08500445308164
+        }
+      ],
+      "language": "Rust",
+      "merged": "d76b4e3e5b380081f01c4e6c1caaf688038679a9",
+      "pr": 2196,
+      "pr_delta": [
+        2,
+        41,
+        1
+      ],
+      "pr_open_to_merge_seconds": 101767.0,
+      "prompt": "Reject size constraints whose numeric quantity fits in u64 but whose multiplication by the decimal or binary unit multiplier would overflow. The fd CLI should report an invalid size in both debug and optimized builds, preserve valid values and bounds, and handle signed filter prefixes. Add regression tests.",
+      "repo": "sharkdp/fd",
+      "split": "confirmation",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "da4da65c0cfffe0481ebf26ad64346eb45e4f34d",
+      "base_bytes": 4827460,
+      "base_files": 436,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 13.75,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "verdict": "tie",
+          "votes": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 13.75,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 0.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          }
+        }
+      },
+      "complexity": "C interpreter, observable CLI bytes",
+      "controls": {
+        "arm_order": [
+          "control",
+          "develop"
+        ],
+        "build": "autoreconf -fi && ./configure --with-oniguruma=builtin --disable-docs && make -j2",
+        "cpu_pair": [
+          4,
+          5
+        ],
+        "deadline_seconds": 7200,
+        "dependencies_sha256": "0e5a1311e19f4c83d96a4b60f35dd43c909e27706d3d5ee6e00a123b2ffd71a9",
+        "fixture_sha256": "b1938ff1278e3b7db1b51a0975cfb9ca95269dc856f0a451988e91ee52eeb14e",
+        "grader_native": "make check-am TESTS=tests/shtest",
+        "independent_check": false,
+        "merged_patch_sha256": "b0333a34a4449822d1fea3639cb0c52449fa1b4757a9a0da64918ba13fc74c5d",
+        "prompt_sha256": "79a872434d2c99b927dccb4f1b65e9e080dde1733db2dc243c283a6323b52949",
+        "worker_native": "make check-am TESTS=tests/shtest",
+        "workers": {
+          "toolchain": "sha256:0ac99c7dcee4d051ea036dd4dc6db33cef4c5d2088c0bed4001d81e3d6cf53bd",
+          "worker": "sha256:4d1032598cd1dcb323ab58c77d4ec45346157b36cba2c4e3edb938f0c11e9d36"
+        }
+      },
+      "domain": "JSON interpreter",
+      "first_commit": "2026-10-23",
+      "id": "jq",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Execution assessment uses only the frozen exit outcomes in packet/task.json. Candidate submissions were neither executed nor edited. Detailed checker inputs, logs, and a reached pre-fix behavioral mismatch are unavailable, so their exact coverage and claimed red runs cannot be independently confirmed.",
+            "The native verification scope is make check-am TESTS=tests/shtest, not the full project suite. Proposal-only claims of additional checks do not establish executable outcomes."
+          ],
+          "native_sha256": "55e46071b79a52dd8d1b996db0e38aa37ea3586bfe0436dd8eb0bd4ea8a8a63d",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 139648,
+            "inputTokens": 159434,
+            "outputTokens": 2121,
+            "reasoningOutputTokens": 242,
+            "totalTokens": 161555
+          },
+          "usd_estimate": 0.0747468,
+          "wall_seconds": 59.51133078709245
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment uses the complete packet patches/proposals and static inspection of the starting source. No candidate submission was executed or edited.",
+            "Frozen observations provide only exit codes for build, native, contract and preserve checks. Detailed check cases, logs, baseline behavioral failures, patch-application records and deadline evidence are unavailable; those properties were not independently established.",
+            "The supplied native verification scope is make check-am TESTS=tests/shtest, not the full project test suite. Proposal-only claims of extra checks or historical failures are not treated as execution evidence."
+          ],
+          "native_sha256": "d52e0c90a214cf9c2e1cfacc2e81a9886daee445f7327e011fb5de7d0f671b14",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 189952,
+            "inputTokens": 213397,
+            "outputTokens": 2232,
+            "reasoningOutputTokens": 369,
+            "totalTokens": 215629
+          },
+          "usd_estimate": 0.0882052,
+          "wall_seconds": 80.05765965091996
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used the complete packet/A, B and C proposal/patch files, starting source and frozen exit summaries only. Candidate submissions were neither executed nor edited.",
+            "Frozen observations report successful build, native, contract and preserve exits for every label, but supply no detailed check logs or inputs, historical red-run evidence, shell-syntax/diff-check outcomes, full-suite results or platform-specific results. The native scope is make check-am TESTS=tests/shtest; broader verification is not inferred."
+          ],
+          "native_sha256": "3f07c7f0a631c286e1e1dcaa270f060615c77e484ebd903c06e9b4f25f29f7e5",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 150144,
+            "inputTokens": 202728,
+            "outputTokens": 2025,
+            "reasoningOutputTokens": 269,
+            "totalTokens": 204753
+          },
+          "usd_estimate": 0.14043239999999999,
+          "wall_seconds": 73.61807563598268
+        }
+      ],
+      "language": "C",
+      "merged": "bd56a745624a5246fac7fe80d11a9cd6fb361ddb",
+      "pr": 3694,
+      "pr_delta": [
+        2,
+        9,
+        8
+      ],
+      "pr_open_to_merge_seconds": 78394.0,
+      "prompt": "Make halt_error emit the documented byte-exact stderr output for non-string inputs as well as strings. Preserve its exit status, stdout behavior, and existing null behavior. Add a regression that distinguishes an appended newline.",
+      "repo": "jqlang/jq",
+      "split": "tuning",
+      "stratum": "external"
+    }
+  ],
+  "cohort": "capacity-recovery",
+  "evaluator": {
+    "attempts": 15,
+    "complete_receipts": 15,
+    "observed_usd": 1.7917308
+  },
+  "format": "law-config.eval-run/v1",
+  "frozen_unix": 1793244809.3184686,
+  "groups": {
+    "all": {
+      "code_and_tokens": {
+        "complete_pair_tokens": {
+          "develop_sum": 20517340,
+          "interval": [
+            0.32199927723429045,
+            0.9817598196469508
+          ],
+          "pairs": 5,
+          "pure_sum": 32606097,
+          "ratio": 0.6292485727439258
+        },
+        "diff_85": {
+          "control_upstream": {
+            "equal": 0,
+            "higher": 3,
+            "interval": [
+              -19.75,
+              6.25
+            ],
+            "lower": 2,
+            "mean_delta_85": -5.25,
+            "pairs": 5,
+            "reversals": 0
+          },
+          "develop_control": {
+            "equal": 4,
+            "higher": 1,
+            "interval": [
+              0.0,
+              12.75
+            ],
+            "lower": 0,
+            "mean_delta_85": 4.25,
+            "pairs": 5,
+            "reversals": 0
+          },
+          "develop_upstream": {
+            "equal": 0,
+            "higher": 3,
+            "interval": [
+              -9.5,
+              6.25
+            ],
+            "lower": 2,
+            "mean_delta_85": -1.0,
+            "pairs": 5,
+            "reversals": 0
+          }
+        }
+      },
+      "n": 5,
+      "observed_by_arm": {
+        "control": {
+          "complete": 5,
+          "observed_proposal_wall_seconds": 14978.752700641751,
+          "timed_attempts": 5,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 31944448,
+            "inputTokens": 32460297,
+            "outputTokens": 145800,
+            "reasoningOutputTokens": 75170,
+            "totalTokens": 32606097
+          },
+          "usd_estimate": 5.6841428,
+          "usd_observations": 5
+        },
+        "develop": {
+          "complete": 5,
+          "observed_proposal_wall_seconds": 9711.348223958863,
+          "timed_attempts": 5,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 19993088,
+            "inputTokens": 20443327,
+            "outputTokens": 74013,
+            "reasoningOutputTokens": 29144,
+            "totalTokens": 20517340
+          },
+          "usd_estimate": 3.6399168000000004,
+          "usd_observations": 5
+        }
+      },
+      "paired": {
+        "end_to_end_seconds": {
+          "develop_sum": 10114.73450451577,
+          "median_pair_ratio": 0.9231661652983424,
+          "pairs": 5,
+          "pure_sum": 15381.341209309641,
+          "ratio": 0.6575976936519536,
+          "ratio_interval": [
+            0.3361429163272318,
+            1.0387508075270218
+          ]
+        },
+        "proposal_wall_seconds": {
+          "develop_sum": 9711.348223958863,
+          "median_pair_ratio": 0.9232813727913559,
+          "pairs": 5,
+          "pure_sum": 14978.752700641751,
+          "ratio": 0.6483415821093561,
+          "ratio_interval": [
+            0.3207785020745217,
+            1.039605250186395
+          ]
+        },
+        "quality_delta": {
+          "interval": [
+            0.0,
+            9.0
+          ],
+          "mean": 3.0,
+          "pairs": 5
+        },
+        "usd_estimate": {
+          "develop_sum": 3.6399168000000004,
+          "median_pair_ratio": 0.8560012067719035,
+          "pairs": 5,
+          "pure_sum": 5.6841428,
+          "ratio": 0.6403633631442195,
+          "ratio_interval": [
+            0.349205232671225,
+            1.003447324810347
+          ]
+        },
+        "wall_seconds": {
+          "develop_sum": 9525.121455169981,
+          "median_pair_ratio": 0.9164938874109517,
+          "pairs": 5,
+          "pure_sum": 14824.265034327982,
+          "ratio": 0.6425358311601299,
+          "ratio_interval": [
+            0.3136042666901403,
+            1.0371757660015102
+          ]
+        }
+      },
+      "preferences": {
+        "control_upstream": {
+          "both failed": 1,
+          "control": 2,
+          "tie": 0,
+          "unresolved": 0,
+          "upstream": 2
+        },
+        "develop_control": {
+          "both failed": 1,
+          "control": 0,
+          "develop": 1,
+          "tie": 3,
+          "unresolved": 0
+        },
+        "develop_upstream": {
+          "both failed": 1,
+          "develop": 2,
+          "tie": 0,
+          "unresolved": 0,
+          "upstream": 2
+        }
+      },
+      "simultaneous": [
+        "libarchive",
+        "fd"
+      ],
+      "status_counts": {
+        "control": {
+          "failed": 2,
+          "pending": 0,
+          "ready": 3,
+          "unavailable": 0
+        },
+        "develop": {
+          "failed": 1,
+          "pending": 0,
+          "ready": 4,
+          "unavailable": 0
+        },
+        "upstream": {
+          "failed": 1,
+          "pending": 0,
+          "ready": 4,
+          "unavailable": 0
+        }
+      }
+    }
+  },
+  "name": "capacity-recovery",
+  "observations": [
+    {
+      "evidence": {
+        "case": "libarchive",
+        "package_source": "https://archive.ubuntu.com/ubuntu/pool/universe/m/mingw-w64/",
+        "packages_sha256": {
+          "mingw-w64-common_11.0.1-3build1_all.deb": "4a42fd30fbc3838c58c929d8a4882682fc12408bb7a0e6cafa913c0f0a57c187",
+          "mingw-w64-x86-64-dev_11.0.1-3build1_all.deb": "018480a62907fcca19c6bf2975ae01f5c92c23dee8c3cf7a8355c10bf7d42c6f"
+        },
+        "parent_probe_sha256": "03e34198d0869a4303a13fe749145be6ec9ce5888179518b4cc4d6a74b7806d2",
+        "plan_sha256": "10864a78108003f2b2616a695a00013dbbb3ac1bb4e7b0ffaca5b714041511af",
+        "probe_file": "probe.py",
+        "probe_sha256": "2575bec85d46f15f21a6461e72d3f0c3e5e59eb5a425074be8c267bb25d7b57c",
+        "results": {
+          "base": {
+            "grade": {
+              "path": "cache/calibration/libarchive/1793202608540048092/base/grade.json",
+              "sha256": "d28c956da0951c3b50dfd39a1fd8bbcfb6e7eb3696965e8b1f204d27bab6cf2b"
+            },
+            "observation": {
+              "clang": "Ubuntu clang version 18.1.3 (1ubuntu1)",
+              "diagnostics": [],
+              "exit": 0,
+              "macros": [
+                "#define F_GETFL 3",
+                "#define O_APPEND _O_APPEND",
+                "#define fcntl(fd,cmd,flg) "
+              ],
+              "target": "x86_64-w64-windows-gnu"
+            },
+            "patch_sha256": null,
+            "source_file_sha256": "cd2d73e2bef966e286c5b7dcf2e79a72eec68d0a65003dd79c69a436d5e5b901"
+          },
+          "control": {
+            "grade": {
+              "path": "runs/capacity-recovery/attempts/libarchive/control/grade/grade.json",
+              "sha256": "cb3c29f672599cc9b3392368151dfa0deeb34202f1c48fe37864a77b18e6d80d"
+            },
+            "observation": {
+              "clang": "Ubuntu clang version 18.1.3 (1ubuntu1)",
+              "diagnostics": [
+                "libarchive/archive_read_data_into_fd.c:115:32: error: too few arguments provided to function-like macro invocation",
+                "libarchive/archive_windows.h:92:9: note: macro 'fcntl' defined here"
+              ],
+              "exit": 1,
+              "macros": [
+                "#define F_GETFL 3",
+                "#define O_APPEND _O_APPEND",
+                "#define fcntl(fd,cmd,flg) "
+              ],
+              "target": "x86_64-w64-windows-gnu"
+            },
+            "patch_sha256": "542ad49c0e07425f6d451ef0c5d28d08f300cd838e806a1ed603d0198a57748c",
+            "source_file_sha256": "3bb258be1d4098136fea527a049bd489724a2a253f4b35705a8ac62459ba943e"
+          },
+          "develop": {
+            "grade": {
+              "path": "runs/capacity-recovery/attempts/libarchive/develop/grade/grade.json",
+              "sha256": "2a2ed78fbc2a024bf4c4d0ed055f7f4771651c665eb7d5df8b04bdfd3563a025"
+            },
+            "observation": {
+              "clang": "Ubuntu clang version 18.1.3 (1ubuntu1)",
+              "diagnostics": [],
+              "exit": 0,
+              "macros": [
+                "#define F_GETFL 3",
+                "#define O_APPEND _O_APPEND",
+                "#define fcntl(fd,cmd,flg) "
+              ],
+              "target": "x86_64-w64-windows-gnu"
+            },
+            "patch_sha256": "ded490e7f0d5eba5ac75663957587eb5f122f9ecbdeb28e97e0876cd930c3ae6",
+            "source_file_sha256": "3d0822c1cb354f53957dd055cc25868ab6bba25ab11af7186d65c7e86a8d8e26"
+          },
+          "gold": {
+            "grade": {
+              "path": "cache/calibration/libarchive/1793202608540048092/gold/grade.json",
+              "sha256": "f9480103d9ac942c694848a53528ab0ee546767ddd569bed3405b296ac1348e0"
+            },
+            "observation": {
+              "clang": "Ubuntu clang version 18.1.3 (1ubuntu1)",
+              "diagnostics": [],
+              "exit": 0,
+              "macros": [
+                "#define F_GETFL 3",
+                "#define O_APPEND _O_APPEND",
+                "#define fcntl(fd,cmd,flg) "
+              ],
+              "target": "x86_64-w64-windows-gnu"
+            },
+            "patch_sha256": null,
+            "source_file_sha256": "46192eecaabf3ed0a15fa767c26c41afcb302955ac14b542f2da515fc933f89d"
+          }
+        },
+        "scope": "Native-Windows target preprocessing of the complete archive_read_data_into_fd.c translation unit using clang-18 and actual MinGW-w64 11.0.1 headers with the six recorded header-presence macros. This is a preprocessor check; no Windows executable was linked or run.",
+        "timing": "post-freeze independent replay, primary scores unchanged"
+      },
+      "id": "libarchive-windows-fcntl",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "probe": "\"\"\"Run from a libarchive grade tree with the pinned MinGW sysroot in LIBARCHIVE_MINGW_HEADERS.\"\"\"\nimport json\nimport os\nfrom pathlib import Path\nimport subprocess\nimport tempfile\n\ninclude = Path(\"libarchive\")\nwith tempfile.TemporaryDirectory() as folder:\n    Path(folder, \"config.h\").write_text(\"\".join(\n        f\"#define HAVE_{name}_H 1\\n\" for name in (\"FCNTL\", \"ERRNO\", \"SYS_TYPES\", \"STDINT\", \"INTTYPES\", \"WCHAR\")\n    ))\n    args = [\"clang-18\", \"--target=x86_64-w64-windows-gnu\", \"--sysroot=\" + os.environ[\"LIBARCHIVE_MINGW_HEADERS\"],\n            \"-E\", \"-Wno-everything\", \"-DHAVE_CONFIG_H\", \"-I\" + folder, \"-Ilibarchive\"]\n    macros = subprocess.run([*args, \"-dM\", \"-x\", \"c\", \"-\"], input='#include \"archive_platform.h\"\\n#include <fcntl.h>\\n',\n                            text=True, capture_output=True, check=True)\n    active = [line for line in macros.stdout.splitlines() if line.startswith((\"#define fcntl(\", \"#define F_GETFL \", \"#define O_APPEND \"))]\n    output = subprocess.run([*args, str(include / \"archive_read_data_into_fd.c\"), \"-o\", os.devnull],\n                            text=True, capture_output=True)\n    print(json.dumps({\"clang\": subprocess.check_output([\"clang-18\", \"--version\"], text=True).splitlines()[0],\n                      \"target\": \"x86_64-w64-windows-gnu\", \"macros\": sorted(active), \"exit\": output.returncode,\n                      \"diagnostics\": [line for line in output.stderr.splitlines() if \"error:\" in line or \"note: macro\" in line]}))\n",
+      "receipt_sha256": "02260c929d2689a5411818981a784ab05a555eb1062bb8e97d2d4152f36798ab"
+    },
+    {
+      "evidence": {
+        "case": "marked",
+        "commonmark_js_sha256": "4d124568b8d4490df72fea8aa0f9a144c5b581b0de0eb63d3a996104b2797edc",
+        "commonmark_js_version": "0.31.2",
+        "markdown_it_py_version": "4.2.0",
+        "probe_file": "probe.py",
+        "probe_sha256": "7082e3b79da4e904a832018964e0863b1941c96b1ce7a68dbbfdd715361c3e25",
+        "roles": {
+          "control": "a668f2264583f2f9287087b2e0efb85ffa8f2accf8b46accb9c8dd410ee4fdef",
+          "develop": "387b0fac6ed0da3cbd0f992cfbc0869f422580000e15deb2f104480b82475309"
+        },
+        "rows": [
+          {
+            "commonmark_js": "🙂*a**",
+            "develop": "🙂<em>a</em>*",
+            "frozen": "🙂<em>a</em>*",
+            "markdown_it_py": "🙂<em>a</em>*",
+            "pure": "🙂<em>a</em>*",
+            "source": "🙂*a**"
+          },
+          {
+            "commonmark_js": "_*!a**",
+            "develop": "_<em>!a</em>*",
+            "frozen": "_*!a**",
+            "markdown_it_py": "_*!a**",
+            "pure": "_<em>!a</em>*",
+            "source": "_*!a**"
+          },
+          {
+            "commonmark_js": "á_b_",
+            "develop": "á_b_",
+            "frozen": "á_b_",
+            "markdown_it_py": "á_b_",
+            "pure": "á_b_",
+            "source": "á_b_"
+          },
+          {
+            "commonmark_js": "**<em>foo</em>bar",
+            "develop": "**<em>foo</em>bar",
+            "frozen": "**<em>foo</em>bar",
+            "markdown_it_py": "**<em>foo</em>bar",
+            "pure": "**<em>foo</em>bar",
+            "source": "***foo*bar"
+          },
+          {
+            "commonmark_js": "<strong>****(**</strong>",
+            "develop": "<strong>**<strong>(</strong></strong>",
+            "frozen": "<strong>****(**</strong>",
+            "markdown_it_py": "<strong>****(**</strong>",
+            "pure": "<strong>**<strong>(</strong></strong>",
+            "source": "__****(**__"
+          },
+          {
+            "commonmark_js": "__ _<em>****<em>ö**</em></em>",
+            "develop": "__ _<em>**<strong>_ö</strong>_</em>",
+            "frozen": "__ _<em>****<em>ö**</em></em>",
+            "markdown_it_py": "__ _<em>****<em>ö**</em></em>",
+            "pure": "__ _<em>**<strong>_ö</strong>_</em>",
+            "source": "__ __****_ö**__"
+          }
+        ],
+        "scope": "Post-freeze corroboration of the six independent-stage expectations. Each reference parser agrees on the three failed inputs. The one disputed input passed in both fresh proposals.",
+        "spec": "https://spec.commonmark.org/0.31.2/#emphasis-and-strong-emphasis",
+        "stage_logs_sha256": [
+          "af253f0952ebc46f3337f7a21a0d323c402eb5f93082d570ee8c96def452842b",
+          "af253f0952ebc46f3337f7a21a0d323c402eb5f93082d570ee8c96def452842b"
+        ]
+      },
+      "id": "marked-reference-parsers",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "probe": "\"\"\"Compare two fresh Marked stage logs with two independently maintained parsers.\"\"\"\nimport hashlib\nimport json\nfrom pathlib import Path\nimport subprocess\nimport sys\n\nimport markdown_it\n\n\ndef digest(path):\n    return hashlib.sha256(path.read_bytes()).hexdigest()\n\n\ndef run(pure_log, develop_log, commonmark):\n    pure = json.loads(pure_log.read_bytes())\n    develop = json.loads(develop_log.read_bytes())\n    assert [(r[\"source\"], r[\"expected\"]) for r in pure] == [\n        (r[\"source\"], r[\"expected\"]) for r in develop]\n    javascript = \"\"\"\n    const fs = require('node:fs');\n    const path = require('node:path');\n    const {Parser, HtmlRenderer} = require(process.argv[1]);\n    const parser = new Parser(), renderer = new HtmlRenderer();\n    const inputs = JSON.parse(fs.readFileSync(0, 'utf8'));\n    const html = inputs.map(s => renderer.render(parser.parse(s)).match(/^<p>([\\\\s\\\\S]*)<\\\\/p>\\\\n$/)[1]);\n    console.log(JSON.stringify(html));\n    \"\"\"\n    outputs = subprocess.run([\"node\", \"-e\", javascript, str(commonmark.resolve())],\n                             input=json.dumps([r[\"source\"] for r in pure]), text=True,\n                             capture_output=True, check=True)\n    py_parser = markdown_it.MarkdownIt(\"commonmark\")\n    return {\"markdown_it_py_version\": markdown_it.__version__,\n            \"commonmark_js_version\": json.loads((commonmark / \"package.json\").read_bytes())[\"version\"],\n            \"commonmark_js_sha256\": digest(commonmark / \"dist/commonmark.js\"),\n            \"stage_logs_sha256\": [digest(pure_log), digest(develop_log)],\n            \"rows\": [{\"source\": c[\"source\"], \"frozen\": c[\"expected\"], \"pure\": c[\"actual\"],\n                      \"develop\": d[\"actual\"], \"commonmark_js\": js,\n                      \"markdown_it_py\": py_parser.renderInline(c[\"source\"])}\n                     for c, d, js in zip(pure, develop, json.loads(outputs.stdout), strict=True)]}\n\n\nif __name__ == \"__main__\":\n    print(json.dumps(run(*(Path(v) for v in sys.argv[1:])), ensure_ascii=False, indent=2))\n\n",
+      "receipt_sha256": "9a2837892c69b123f3e10b17efb0463eceddb4fa1c03f0d3629ff2e505b1d97a"
+    }
+  ],
+  "parent_plan_sha256": "53a8bd549c93423b9ac7b889702be24b7b8823baaaba439a965e7ba6685975ad",
+  "plan_sha256": "10864a78108003f2b2616a695a00013dbbb3ac1bb4e7b0ffaca5b714041511af",
+  "protocol": "pr-quality-panel-v2",
+  "runtime": {
+    "bwrap_sha256": "77360cb751ccedc5971391444ac86a8a33c15b04d6b4a6fe45f5d25496e62c4c",
+    "cli_sha256": "c1eecb4b2304cb0e077a673231e30c9d759dec8fea4a6b8818078865e392fa90",
+    "effort": "medium",
+    "executor": {
+      "boundary": {
+        "controller.py": "1deece01f7908cd355cdfb37f01cb1c31e02b9fd8ded004bbeb2fe4c860c5926",
+        "environment.py": "04ad8d8e8b095d93eb6a4e42d0052eb69e5ea7c6a9be2ff7ca1d15038a78482e",
+        "guest.py": "988721345bf34b094a39f1c0f4dca8147d0bcf91a36c5138acbca97f72672308",
+        "host.py": "8a690b246a7161e89064a583118ba03dff91ac9255c44d360d4050f9cce00b64",
+        "lab.py": "5fb64b06a11a9bfa7999e9ac846f6eaa797c3da71d7b6372aac4eb261c62ba2f",
+        "platform.json": "703cede8f6c1b298f2fe00e30ad425224ae3ace5c06510b40f02868a2d81c1fa",
+        "run.py": "61a9e2ed23e2fda2c32a5411178a3ba4e748e89d1f86e62a339a1ba3f0c26f1b"
+      },
+      "cpus_per_worker": 2,
+      "judge": {
+        "effort": "medium",
+        "entrypoint_sha256": "71af66c14f415febc98b56a29e477ecaa824f846d6007ab75a61b48181dbd1d1",
+        "max_attempts_per_rotation": 1,
+        "model": "gpt-6.1-sol",
+        "rotations": 3
+      },
+      "lanes": 3,
+      "managed_hooks": {
+        "managed_hook_sha256": [
+          "sha256:a79f6a172423c70427168b961eda5f185d4846935c8187dc51528f46d43f4851",
+          "sha256:97fd1b8e1448bcf5a982080549b7a9fa05cf3dfecbe13ab34ccad635fc2881a2"
+        ],
+        "stock_cli_sha256": "c1eecb4b2304cb0e077a673231e30c9d759dec8fea4a6b8818078865e392fa90"
+      },
+      "memory": "4g"
+    },
+    "implementation_sha256": "8322007f2fb4b9d8c89caed8950e25f420b49d8aa45be443c35bd74f43dd98df",
+    "model": "gpt-6.1-sol",
+    "package_sha256": "c619be0cc2668f45fc51c3a8582af64581a83c993b83981e776fa45f90e10fbb",
+    "qualifier": "45a9802476f0903f4289838cb48d7c47390b379c69ddb07366e58f9c500cfdf0",
+    "rates_usd_per_million": {
+      "cached_input": 0.1,
+      "output": 10,
+      "uncached_input": 2
+    },
+    "rubric_sha256": "0bdd8699f00ba1f5266927d7666bc2a117fa4873e113fdfa831da93cd2abbc08",
+    "seed": 20261028,
+    "source_sha256": "b7afbbfa863f56d65d5627875f9dde8e9b6440eb1b580d0756ff85efe6b51fd3",
+    "treatment": {
+      "hook_sha256": {
+        "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c",
+        "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368"
+      },
+      "label": "develop-0.9.0-revised",
+      "package_sha256": "c619be0cc2668f45fc51c3a8582af64581a83c993b83981e776fa45f90e10fbb",
+      "plugin_hook_sha256": "ac6e190ec47b97ea91894054c7ec9b8e5c32d2f6c9caed08a0666ba58d46b2a8"
+    }
+  },
+  "selection": null,
+  "source": {
+    "original_git_base": "0b81d80a0e2bec323711eb0c0718f38915992b12",
+    "recovery_controller": {
+      "plan_sha256": "10864a78108003f2b2616a695a00013dbbb3ac1bb4e7b0ffaca5b714041511af",
+      "sha256": "5ba743025d99ba11deb0e99edd98041646b8a7491f0f847a82f51b39d1d1f838",
+      "source": "\"\"\"Run one fresh pair and three assessors per primary case interrupted by provider capacity.\"\"\"\nimport argparse\nfrom concurrent.futures import ThreadPoolExecutor\nimport fcntl\nimport json\nimport os\nfrom pathlib import Path\nimport subprocess\nimport sys\nimport time\n\nsys.path.insert(0, str(Path(__file__).resolve().parent / \"panel\"))\nimport campaign as C\nimport judge as J\nimport results as R\n\nE = C.E\n\n\ndef select(primary, name):\n    if primary == name:\n        raise ValueError(\"recovery requires a new campaign name\")\n    parent = C.run_dir(primary)\n    original = C.plan_for(primary)\n    layout = E.read(parent / \"lanes.json\")\n    if not (parent / \"report/results.json\").is_file() or C.launcher_active(primary):\n        raise ValueError(\"wait for the primary campaign and its assessments\")\n    cases = []\n    failures = {}\n    last_failure = last_success = 0\n    for key in original[\"schedule\"]:\n        for arm in original[\"order\"][key]:\n            row = C.read_attempt(primary, key, arm)\n            if row[\"state\"] in {\"interrupted\", \"unreleased\"}:\n                raise ValueError(\"primary slot has no terminal result\")\n            if row[\"state\"] == \"blocked\" and \"serverOverloaded\" in str(row.get(\"error\")):\n                if key not in cases:\n                    cases.append(key)\n                record = parent / \"attempts\" / key / arm / \"result.json\"\n                failures[f\"{key}/{arm}\"] = C.receipt(record)\n                last_failure = max(last_failure, row[\"start_unix\"] + row[\"end_to_end_seconds\"])\n            elif row[\"state\"] == \"completed\":\n                last_success = max(last_success, row[\"captured_unix\"])\n    for p in parent.glob(\"judges/*/*/*/native.json\"):\n        native = E.read(p)\n        if native[\"state\"] == \"completed\":\n            last_success = max(last_success, native[\"assessment_finished_unix\"])\n    if not cases:\n        raise ValueError(\"no primary capacity interruptions\")\n    if last_success <= last_failure:\n        raise ValueError(\"no observed successful model turn after the last capacity stop\")\n    selection = {\"parent_plan\": C.receipt(parent / \"plan.json\"), \"cases\": cases, \"capacity_receipts\": failures,\n                 \"last_capacity_end_unix\": last_failure, \"subsequent_success_unix\": last_success,\n                 \"proposal_attempts_per_arm\": 1, \"judge_calls_per_rotation\": 1}\n    root = C.run_dir(name)\n    if (root / \"plan.json\").is_file():\n        plan = C.plan_for(name)\n        if plan.get(\"recovery\") != selection or E.read(root / \"lanes.json\") != layout:\n            raise ValueError(\"recovery selection or CPU layout changed\")\n    else:\n        root.mkdir(parents=True, exist_ok=False)\n        E.save(root / \"lanes.json\", layout)\n        E.save(root / \"plan.json\", dict(original, name=name, schedule=cases, frozen_unix=time.time(), recovery=selection))\n    return root, layout, cases\n\n\ndef run(primary, name):\n    root, layout, cases = select(primary, name)\n    with (root / \"recovery.lock\").open(\"a+\") as lock:\n        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)\n        execute(root, layout, cases, name)\n\n\ndef execute(root, layout, cases, name):\n    plan = C.plan_for(name)\n    print(\"Selected fresh pairs:\", \", \".join(cases), flush=True)\n    def proposals(lane):\n        cpus = \",\".join(map(str, layout[\"cpu_pairs\"][lane]))\n        for key in layout[\"queues\"][lane]:\n            if key not in cases:\n                continue\n            for arm in plan[\"order\"][key]:\n                if C.read_attempt(name, key, arm)[\"state\"] != \"unreleased\":\n                    continue\n                subprocess.run([\"taskset\", \"-c\", cpus, sys.executable, \"-B\", str(E.HERE / \"campaign.py\"),\n                                \"attempt\", name, key, arm], env=dict(os.environ, PANEL_CPUSET=cpus), check=True)\n    with (root / \"launcher.lock\").open(\"a+\") as lock:\n        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)\n        with ThreadPoolExecutor(max_workers=layout[\"jobs\"]) as pool:\n            list(pool.map(proposals, range(layout[\"jobs\"])))\n    # The frozen assessor normally permits one technical repair. Reserve that slot\n    # without releasing a model so this secondary experiment uses at most three calls per case.\n    for key in cases:\n        for rotation in range(plan[\"judge_rotations\"]):\n            repair = root / \"judges\" / key / str(rotation) / \"1\"\n            repair.mkdir(parents=True, exist_ok=True)\n            if not (repair / \"call-limit.json\").exists():\n                E.save(repair / \"call-limit.json\", {\"released\": False, \"reason\": \"one assessor call per rotation\"})\n    subprocess.run([sys.executable, \"-B\", str(E.HERE / \"judge.py\"), name, \"--jobs\", str(layout[\"jobs\"])], check=False)\n    for key in cases:\n        for rotation in range(plan[\"judge_rotations\"]):\n            folder = root / \"judges\" / key / str(rotation)\n            if not (folder / \"0\").is_dir() or not ((folder / \"judgment.json\").is_file() or (folder / \"0/invalid.json\").is_file()):\n                raise RuntimeError(f\"inspect incomplete recovery assessor: {key} rotation {rotation}\")\n    write_report(name)\n\n\ndef write_report(name):\n    root = C.run_dir(name)\n    plan = C.plan_for(name)\n    cases = plan[\"recovery\"][\"cases\"]\n    rows = [R.case_row(name, E.CASES[key]) for key in cases]\n    evaluator = [x for row in rows for x in row[\"evaluator_cost\"]]\n    arms = [row[arm] for row in rows for arm in (\"control\", \"develop\")]\n    captures = [(arm[\"start_unix\"], arm[\"captured_unix\"]) for arm in arms\n                if arm[\"start_unix\"] is not None and arm[\"captured_unix\"] is not None]\n    ends = [arm[\"start_unix\"] + arm[\"end_to_end_seconds\"] for arm in arms\n            if arm[\"start_unix\"] is not None and arm[\"end_to_end_seconds\"] is not None]\n    ends.extend(a[\"assessed_unix\"] for row in rows for a in row[\"assessors\"])\n    ends.extend(E.read(p)[\"assessment_finished_unix\"] for p in root.glob(\"judges/*/*/*/native.json\"))\n    report = {\"plan_sha256\": E.sha(root / \"plan.json\"), \"selection\": plan[\"recovery\"],\n              \"campaign_submission_span_seconds\": max(y for x,y in captures) - min(x for x,y in captures) if captures else None,\n              \"campaign_elapsed_through_last_measurement_seconds\": max(ends) - plan[\"frozen_unix\"] if ends else None,\n              \"groups\": {\"all\": R.group(rows)}, \"cases\": rows, \"evaluator\": {\n                  \"attempts\": len(evaluator), \"observed_usd\": sum(x[\"usd_estimate\"] or 0 for x in evaluator),\n                  \"complete_receipts\": sum(x[\"coverage\"] == \"complete\" for x in evaluator)}}\n    target = root / \"report\"\n    target.mkdir(exist_ok=True)\n    (target / \"results.json\").write_text(json.dumps(report, indent=2) + \"\\n\")\n    print(\"Recovery comparison:\", target / \"results.json\", flush=True)\n\n\nif __name__ == \"__main__\":\n    parser = argparse.ArgumentParser()\n    parser.add_argument(\"primary\")\n    parser.add_argument(\"name\")\n    parser.add_argument(\"--report-only\", action=\"store_true\")\n    args = parser.parse_args()\n    C.controller.activate()\n    if args.report_only:\n        write_report(args.name)\n    else:\n        run(args.primary, args.name)\n"
+    },
+    "source_archive_sha256": "797c47b9f66382abcc68cec609d1ad26e54be8033463e13829368560e1f0b194",
+    "treatment_recipe": "treatments/c619be0cc266/recipe.json"
+  },
+  "submission_span_seconds": 9577.181191444397,
+  "submissions": {
+    "path": "submissions.jsonl",
+    "rows": 15,
+    "sha256": "8be1aa6e76203f96f3f1acccdd45233d9f14f1d48f377a982a624c508a5464c6"
+  }
+}

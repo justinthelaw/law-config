@@ -1,0 +1,289 @@
+{
+  "format": "law-config.post-score-witness/v1",
+  "case": "go-git",
+  "scope": "Exposed tuning case; post-score model-free diagnostic. This does not alter scores or establish a quality or cost win.",
+  "finding": "With invalid octal byte and non-EOF read error returned together, revised Develop returns ErrMalformedTree and loses sentinel identity; base, merge, prior Develop and stock preserve the sentinel. This is a change to observed go-git error identity, not a universal I/O error-precedence rule. Incidence in production is unknown.",
+  "origin": {
+    "prior_test": "TestTreeDecodeModeReadError in prior Develop plumbing/object/tree_test.go",
+    "prior_test_file_sha256": "7ca5ce74926489dfd3fbdd708a9659cf0a53bdea60e8c2bddb04d01a36d47963",
+    "method": "The existing test embeds EncodedObject and supplies io.MultiReader(valid prefix, iotest.ErrReader(sentinel)); this witness adds invalid prefix 8 and ordinary malformed and successful controls."
+  },
+  "contracts": [
+    {
+      "url": "https://pkg.go.dev/bufio#Reader.ReadSlice",
+      "relevance": "Before a delimiter, ReadSlice can return buffered data and the underlying error together."
+    },
+    {
+      "url": "https://pkg.go.dev/io#Reader",
+      "relevance": "Direct Reader clients should process n > 0 bytes before considering err; this does not prescribe Tree.Decode error identity."
+    }
+  ],
+  "source_verification": {
+    "method": "Independently archive each pinned Git commit; for participants apply each sealed patch to a clean base outside the parent Git worktree. Compare every file content SHA-256, symlink target and executable bits to the actual replay copies; exclude only .git and the added witness.go. All five have 756 entries and zero differences. Manifest digest is SHA-256 of compact sorted JSON mapping paths to [file, content SHA-256, octal executable bits] or [link, target].",
+    "trees": {
+      "base": {
+        "commit": "e59664470f3644a3114c6760086892dbcd0d7ac9",
+        "patch_sha256": null,
+        "manifest_sha256": "a8c40109fa0f60f8915caa74bb5bb94aa419d94752e3fa4281c39ee6ec248d72"
+      },
+      "merge": {
+        "commit": "41c3e4d6c870cafea5c4343623d2e3a8ffa31d05",
+        "patch_sha256": null,
+        "manifest_sha256": "e36350b4a68a8fa16d59463cc9d01b5d9eab52812025a013f9ea421f7e05d518"
+      },
+      "prior_develop": {
+        "commit": "e59664470f3644a3114c6760086892dbcd0d7ac9",
+        "patch_sha256": "57bebfa65bb29cf2549caad37499f66c8ff3bef39f5bb2be1e10722680776b55",
+        "manifest_sha256": "94fd2e850974024a3ae68c191f8106b94f172bd5acd9212176e7e77cf0f70708"
+      },
+      "stock": {
+        "commit": "e59664470f3644a3114c6760086892dbcd0d7ac9",
+        "patch_sha256": "c5f49529bbff7c7d24baa6f8bdf79c2f32da6f7723932819a7e941e1a0b9681d",
+        "manifest_sha256": "ed88fd95fc56456500bc5ea9894252e3c85912d9b94ebcf81064f71519279e21"
+      },
+      "revised_develop": {
+        "commit": "e59664470f3644a3114c6760086892dbcd0d7ac9",
+        "patch_sha256": "f10dd945e9b6361db91cf7997d797b9aae6d6454a19432fa5905c867852f1ac8",
+        "manifest_sha256": "b09505f05e3fef4bfc0e39727bb057ac289e0ca61904e281ecc5007bff13f4aa"
+      }
+    },
+    "participant_patches": "Stock and revised patches are in adjacent diagnostic-artifacts.json; prior patch is embedded below.",
+    "prior_patch": "diff --git a/plumbing/filemode/filemode.go b/plumbing/filemode/filemode.go\nindex 4dd77ba..6515eff 100644\n--- a/plumbing/filemode/filemode.go\n+++ b/plumbing/filemode/filemode.go\n@@ -66,12 +66,13 @@ func New(s string) (FileMode, error) {\n }\n \n // FromBytes parses a FileMode from a byte slice containing an octal\n-// number. This avoids allocating a string when parsing from binary data.\n+// number, including zero padding. Values must fit in a uint32. This avoids\n+// allocating a string when parsing from binary data.\n //\n // Please note this function does not check if the returned FileMode\n // is valid in git or if it is malformed.\n func FromBytes(b []byte) (FileMode, error) {\n-\tif len(b) == 0 || len(b) > 7 {\n+\tif len(b) == 0 {\n \t\treturn Empty, fmt.Errorf(\"invalid mode length: %d\", len(b))\n \t}\n \n@@ -80,7 +81,11 @@ func FromBytes(b []byte) (FileMode, error) {\n \t\tif c < '0' || c > '7' {\n \t\t\treturn Empty, fmt.Errorf(\"invalid octal character: %c\", c)\n \t\t}\n-\t\tmode = mode*8 + uint32(c-'0')\n+\t\tdigit := uint32(c - '0')\n+\t\tif mode > (^uint32(0)-digit)/8 {\n+\t\t\treturn Empty, fmt.Errorf(\"mode overflows uint32\")\n+\t\t}\n+\t\tmode = mode*8 + digit\n \t}\n \treturn FileMode(mode), nil\n }\n@@ -134,6 +139,26 @@ func isSetSymLink(m os.FileMode) bool {\n \treturn m&os.ModeSymlink != 0\n }\n \n+// Canonical returns the mode Git uses when reading a tree entry. Regular\n+// files are executable only when the owner execute bit is set. Directories\n+// and symlinks lose their permission bits; all other types become Submodule.\n+// This does not validate the mode.\n+func (m FileMode) Canonical() FileMode {\n+\tswitch m & 0o170000 {\n+\tcase 0o040000:\n+\t\treturn Dir\n+\tcase 0o100000:\n+\t\tif m&0o100 != 0 {\n+\t\t\treturn Executable\n+\t\t}\n+\t\treturn Regular\n+\tcase 0o120000:\n+\t\treturn Symlink\n+\tdefault:\n+\t\treturn Submodule\n+\t}\n+}\n+\n // Bytes return a slice of 4 bytes with the mode in little endian\n // encoding.\n func (m FileMode) Bytes() []byte {\ndiff --git a/plumbing/filemode/filemode_test.go b/plumbing/filemode/filemode_test.go\nindex 18cfd46..083d755 100644\n--- a/plumbing/filemode/filemode_test.go\n+++ b/plumbing/filemode/filemode_test.go\n@@ -3,6 +3,7 @@ package filemode\n import (\n \t\"fmt\"\n \t\"os\"\n+\t\"strings\"\n \t\"testing\"\n \n \t\"github.com/stretchr/testify/suite\"\n@@ -82,6 +83,11 @@ func (s *ModeSuite) TestFromBytes() {\n \t\t{input: \"040000\", expected: Dir},\n \t\t{input: \"0\", expected: Empty},\n \t\t{input: \"42\", expected: FileMode(0o42)},\n+\t\t{input: \"00000000100644\", expected: Regular},\n+\t\t{input: strings.Repeat(\"0\", 9000) + \"100755\", expected: Executable},\n+\t\t{input: \"37777777777\", expected: FileMode(0xffffffff)},\n+\t\t{input: \"00037777777777\", expected: FileMode(0xffffffff)},\n+\t\t{input: \"12345670\", expected: FileMode(0o12345670)},\n \t} {\n \t\tcomment := fmt.Sprintf(\"input = %q\", test.input)\n \t\tobtained, err := FromBytes([]byte(test.input))\n@@ -92,13 +98,21 @@ func (s *ModeSuite) TestFromBytes() {\n \n func (s *ModeSuite) TestFromBytesErrors() {\n \tfor _, input := range [...]string{\n-\t\t\"\",         // empty\n-\t\t\"9\",        // non-octal digit\n-\t\t\"09\",       // non-octal digit\n-\t\t\"mode\",     // letters\n-\t\t\"12345678\", // too long (>7 chars)\n-\t\t\"0x81a4\",   // hex prefix\n-\t\t\"-100644\",  // negative\n+\t\t\"\",                         // empty\n+\t\t\"9\",                        // non-octal digit\n+\t\t\"09\",                       // non-octal digit\n+\t\t\"mode\",                     // letters\n+\t\t\"12345678\",                 // non-octal digit\n+\t\t\"40000000000\",              // uint32 overflow\n+\t\t\"40000100644\",              // would wrap to Regular\n+\t\t\"777777777777777777777777\", // overflow\n+\t\t\"+100644\",\n+\t\t\"100644 \",\n+\t\t\"100644\\x00\",\n+\t\t\"100644\\xff\",\n+\t\tstrings.Repeat(\"0\", 9000) + \"8\",\n+\t\t\"0x81a4\",  // hex prefix\n+\t\t\"-100644\", // negative\n \t} {\n \t\tcomment := fmt.Sprintf(\"input = %q\", input)\n \t\tobtained, err := FromBytes([]byte(input))\n@@ -403,3 +417,18 @@ func (s *ModeSuite) TestToOSFileMode() {\n \t\t}\n \t}\n }\n+\n+func (s *ModeSuite) TestCanonical() {\n+\tfor _, tc := range []struct{ mode, want FileMode }{\n+\t\t{Regular, Regular}, {Deprecated, Regular}, {Executable, Executable},\n+\t\t{0o100000, Regular}, {0o100654, Regular}, {0o100645, Regular},\n+\t\t{0o100655, Regular}, {0o100744, Executable}, {0o104700, Executable},\n+\t\t{Dir, Dir}, {0o047777, Dir}, {Symlink, Symlink}, {0o120777, Symlink},\n+\t\t{Submodule, Submodule}, {0o160755, Submodule}, {Empty, Submodule},\n+\t\t{0o010644, Submodule}, {0o060644, Submodule}, {0o170000, Submodule},\n+\t\t{0xffffffff, Submodule}, {0x80000000 | Regular, Regular},\n+\t} {\n+\t\ts.Equal(tc.want, tc.mode.Canonical(), \"mode %o\", tc.mode)\n+\t\ts.Equal(tc.want, tc.mode.Canonical().Canonical(), \"idempotence for %o\", tc.mode)\n+\t}\n+}\ndiff --git a/plumbing/object/tree.go b/plumbing/object/tree.go\nindex 77799ad..da614dd 100644\n--- a/plumbing/object/tree.go\n+++ b/plumbing/object/tree.go\n@@ -301,27 +301,43 @@ func (t *Tree) Decode(o plumbing.EncodedObject) (err error) {\n \n \tvar prevSortName string\n \tfor {\n-\t\t// Use ReadSlice to get a view into bufio's internal buffer,\n-\t\t// avoiding a string allocation for the mode (which is parsed\n-\t\t// into a uint32 immediately and doesn't need to persist).\n-\t\tmodeSlice, err := r.ReadSlice(' ')\n-\t\tif err != nil {\n+\t\tvar mode filemode.FileMode\n+\t\thaveMode := false\n+\t\tfor {\n+\t\t\tmodeSlice, err := r.ReadSlice(' ')\n+\t\t\tif err != nil && err != io.EOF && err != bufio.ErrBufferFull {\n+\t\t\t\treturn err\n+\t\t\t}\n+\t\t\tif err == nil {\n+\t\t\t\tmodeSlice = modeSlice[:len(modeSlice)-1]\n+\t\t\t}\n+\t\t\tfor _, c := range modeSlice {\n+\t\t\t\tif c < '0' || c > '7' {\n+\t\t\t\t\treturn fmt.Errorf(\"%w: malformed mode\", ErrMalformedTree)\n+\t\t\t\t}\n+\t\t\t\thaveMode = true\n+\t\t\t\t// Git's get_mode accumulates into an unsigned int,\n+\t\t\t\t// wrapping wide fields rather than rejecting overflow.\n+\t\t\t\tmode = mode*8 + filemode.FileMode(c-'0')\n+\t\t\t}\n+\t\t\tif err == bufio.ErrBufferFull {\n+\t\t\t\tcontinue\n+\t\t\t}\n \t\t\tif err == io.EOF {\n-\t\t\t\tif len(modeSlice) != 0 {\n+\t\t\t\tif haveMode {\n \t\t\t\t\treturn fmt.Errorf(\"%w: missing mode terminator\", ErrMalformedTree)\n \t\t\t\t}\n \t\t\t\tbreak\n \t\t\t}\n-\n-\t\t\treturn err\n+\t\t\tif !haveMode {\n+\t\t\t\treturn fmt.Errorf(\"%w: malformed mode\", ErrMalformedTree)\n+\t\t\t}\n+\t\t\tbreak\n \t\t}\n-\t\tmodeSlice = modeSlice[:len(modeSlice)-1] // strip delimiter\n-\n-\t\tmode, err := filemode.FromBytes(modeSlice)\n-\t\tif err != nil {\n-\t\t\treturn fmt.Errorf(\"%w: malformed mode\", ErrMalformedTree)\n+\t\tif !haveMode {\n+\t\t\tbreak\n \t\t}\n-\t\tmode = canonicalTreeMode(mode)\n+\t\tmode = mode.Canonical()\n \n \t\tnameSlice, err := r.ReadSlice(0)\n \t\tif err == bufio.ErrBufferFull {\n@@ -393,22 +409,6 @@ func treeEntrySortName(e *TreeEntry) string {\n \treturn e.Name\n }\n \n-func canonicalTreeMode(mode filemode.FileMode) filemode.FileMode {\n-\tswitch mode & 0o170000 {\n-\tcase 0o040000:\n-\t\treturn filemode.Dir\n-\tcase 0o100000:\n-\t\tif mode&0o111 != 0 {\n-\t\t\treturn filemode.Executable\n-\t\t}\n-\t\treturn filemode.Regular\n-\tcase 0o120000:\n-\t\treturn filemode.Symlink\n-\tdefault:\n-\t\treturn filemode.Submodule\n-\t}\n-}\n-\n // Encode transforms a Tree into a plumbing.EncodedObject.\n //\n // The tree is run through Tree.Validate before any bytes are written,\n@@ -463,7 +463,7 @@ func (t *Tree) Encode(o plumbing.EncodedObject) (err error) {\n //\n // Two fsck_tree warnings — zero-padded modes and the non-canonical\n // 0100664 bits — are not surfaced here. Both rely on inspecting the\n-// original octal string from the wire, which canonicalTreeMode\n+// original octal string from the wire, which FileMode.Canonical\n // discards during Decode. Detecting them would require a parallel\n // raw-mode field on TreeEntry; the structural rules below are the\n // load-bearing ones for refusing malformed trees.\n@@ -505,7 +505,7 @@ func (t *Tree) Validate() error {\n \t\t}\n \n \t\t// Mode validation against the canonical set. Decode normalises\n-\t\t// the wire bytes via canonicalTreeMode, so this rule mainly\n+\t\t// the wire bytes via FileMode.Canonical, so this rule mainly\n \t\t// catches programmatically-built trees with garbage modes;\n \t\t// the zero-padded-mode and non-canonical-bit checks fsck_tree\n \t\t// runs against the raw wire form are out of reach without\ndiff --git a/plumbing/object/tree_test.go b/plumbing/object/tree_test.go\nindex 4aa925e..00818ca 100644\n--- a/plumbing/object/tree_test.go\n+++ b/plumbing/object/tree_test.go\n@@ -8,6 +8,7 @@ import (\n \t\"sort\"\n \t\"strings\"\n \t\"testing\"\n+\t\"testing/iotest\"\n \n \tfixtures \"github.com/go-git/go-git-fixtures/v6\"\n \t\"github.com/stretchr/testify/assert\"\n@@ -2339,7 +2340,7 @@ func TestTreeValidateRejectsFsckRules(t *testing.T) {\n \t\t\twantIs: ErrDuplicateEntry,\n \t\t},\n \t\t{\n-\t\t\t// canonicalTreeMode maps the non-canonical 0100664 down\n+\t\t\t// FileMode.Canonical maps the non-canonical 0100664 down\n \t\t\t// to the canonical Regular mode at Decode, so Validate\n \t\t\t// sees a well-formed entry and accepts it. The rule is\n \t\t\t// kept in the table to document that the canonicalising\n@@ -2429,7 +2430,7 @@ func TestTreeValidateEmptyName(t *testing.T) {\n \n // TestTreeValidateBadInMemoryMode pins the bad-mode rule against\n // programmatically-constructed entries. Wire-decoded modes go through\n-// canonicalTreeMode and always land on a valid value, so this rule is\n+// FileMode.Canonical and always land on a valid value, so this rule is\n // only reachable when a caller sets a non-canonical Mode by hand.\n func TestTreeValidateBadInMemoryMode(t *testing.T) {\n \tt.Parallel()\n@@ -2465,3 +2466,93 @@ func TestTreeValidateReportsAllRules(t *testing.T) {\n \tassert.ErrorIs(t, verr, pathutil.ErrInvalidPath)\n \tassert.Contains(t, verr.Error(), \"null hash\")\n }\n+\n+func TestTreeDecodeOctalModes(t *testing.T) {\n+\tt.Parallel()\n+\thash := bytes.Repeat([]byte{0xAA}, 20)\n+\tcases := []struct {\n+\t\tname string\n+\t\tmode string\n+\t\twant filemode.FileMode\n+\t}{\n+\t\t{\"group execute\", \"100654\", filemode.Regular},\n+\t\t{\"other execute\", \"100645\", filemode.Regular},\n+\t\t{\"group and other execute\", \"100655\", filemode.Regular},\n+\t\t{\"owner execute\", \"100744\", filemode.Executable},\n+\t\t{\"padded\", \"00000000100644\", filemode.Regular},\n+\t\t{\"delimiter at boundary\", strings.Repeat(\"0\", 4089) + \"100755\", filemode.Executable},\n+\t\t{\"delimiter after boundary\", strings.Repeat(\"0\", 4090) + \"100755\", filemode.Executable},\n+\t\t{\"all zero multiple buffers\", strings.Repeat(\"0\", 9000), filemode.Submodule},\n+\t\t{\"wrapped directory\", \"40000040755\", filemode.Dir},\n+\t\t{\"buffer boundary\", strings.Repeat(\"0\", 4093) + \"100755\", filemode.Executable},\n+\t\t{\"multiple buffers\", strings.Repeat(\"0\", 9000) + \"100644\", filemode.Regular},\n+\t\t{\"uint32 maximum\", \"37777777777\", filemode.Submodule},\n+\t\t{\"uint32 wrap\", \"40000100644\", filemode.Regular},\n+\t\t{\"wide wrap\", strings.Repeat(\"7\", 9000) + \"100755\", filemode.Executable},\n+\t\t{\"directory\", \"40755\", filemode.Dir},\n+\t\t{\"symlink\", \"120777\", filemode.Symlink},\n+\t\t{\"submodule\", \"160755\", filemode.Submodule},\n+\t\t{\"unknown type\", \"170000\", filemode.Submodule},\n+\t\t{\"zero\", \"0\", filemode.Submodule},\n+\t}\n+\tfor _, tc := range cases {\n+\t\tt.Run(tc.name, func(t *testing.T) {\n+\t\t\tbody := encodeRawTreeEntries(\n+\t\t\t\trawTreeEntry{tc.mode, \"a\", hash},\n+\t\t\t\trawTreeEntry{\"100644\", \"b\", hash},\n+\t\t\t)\n+\t\t\ttree, err := decodeRawTree(t, body)\n+\t\t\trequire.NoError(t, err)\n+\t\t\trequire.Len(t, tree.Entries, 2)\n+\t\t\tassert.Equal(t, tc.want, tree.Entries[0].Mode)\n+\t\t\tassert.Equal(t, \"a\", tree.Entries[0].Name)\n+\t\t\tassert.Equal(t, hash, tree.Entries[0].Hash.Bytes())\n+\t\t\tassert.Equal(t, filemode.Regular, tree.Entries[1].Mode)\n+\t\t\tassert.Equal(t, \"b\", tree.Entries[1].Name)\n+\t\t\tobj := &plumbing.MemoryObject{}\n+\t\t\trequire.NoError(t, tree.Encode(obj))\n+\t\t\tvar again Tree\n+\t\t\trequire.NoError(t, again.Decode(obj))\n+\t\t\tassert.Equal(t, tree.Entries, again.Entries)\n+\t\t})\n+\t}\n+}\n+\n+func TestTreeDecodeInvalidOctalModes(t *testing.T) {\n+\tt.Parallel()\n+\thash := bytes.Repeat([]byte{0xAA}, 20)\n+\tfor _, mode := range []string{\n+\t\t\"\", \"+100644\", \"-100644\", \"100648\", \"100644\\n\", \"100644\\x00\", \"100644\\xff\",\n+\t\t\"8\" + strings.Repeat(\"0\", 9000),\n+\t\tstrings.Repeat(\"0\", 9000) + \"8\",\n+\t} {\n+\t\t_, err := decodeRawTree(t, encodeRawTreeEntries(rawTreeEntry{mode, \"a\", hash}))\n+\t\trequire.ErrorIs(t, err, ErrMalformedTree)\n+\t}\n+\tfor _, mode := range []string{\"100644\", strings.Repeat(\"0\", 4096), strings.Repeat(\"0\", 9000)} {\n+\t\t_, err := decodeRawTree(t, []byte(mode))\n+\t\trequire.ErrorIs(t, err, ErrMalformedTree)\n+\t}\n+}\n+\n+type treeModeReadErrorObject struct {\n+\tplumbing.EncodedObject\n+\treader io.Reader\n+}\n+\n+func (o treeModeReadErrorObject) Reader() (io.ReadCloser, error) {\n+\treturn io.NopCloser(o.reader), nil\n+}\n+\n+func TestTreeDecodeModeReadError(t *testing.T) {\n+\tt.Parallel()\n+\treadErr := errors.New(\"mode read failed\")\n+\tfor _, prefix := range []string{\"\", \"100\", strings.Repeat(\"0\", 9000)} {\n+\t\tobj := treeModeReadErrorObject{\n+\t\t\tEncodedObject: newRawTreeObject(t, []byte(\"100644 a\\x00\")),\n+\t\t\treader:        io.MultiReader(strings.NewReader(prefix), iotest.ErrReader(readErr)),\n+\t\t}\n+\t\tvar tree Tree\n+\t\trequire.ErrorIs(t, tree.Decode(obj), readErr)\n+\t}\n+}\n",
+    "diagnostic_artifacts_sha256": "506b597f4583337889b757f490be4f16525861faa505326f2bacbe2f4930748f"
+  },
+  "execution": {
+    "image": "golang@sha256:88750ccdd0f2a77fcc00a14b1a48d6409bd8ddb5d7c2dd6ec0b4a2e916daf9d9",
+    "network": "none",
+    "cpus": "4,5",
+    "dependencies": "existing locked go module cache, mounted read-only",
+    "witness_sha256": "8dd4197a314957fd02aac18903601e5ae5cafd8250a05812cab369d23c6b220a",
+    "witness_go": "package main\n\nimport (\n \"bufio\"\n \"bytes\"\n \"errors\"\n \"fmt\"\n \"io\"\n \"strings\"\n \"testing/iotest\"\n\n \"github.com/go-git/go-git/v6/plumbing\"\n \"github.com/go-git/go-git/v6/plumbing/object\"\n)\n\ntype injected struct { plumbing.EncodedObject; reader io.Reader }\nfunc (o injected) Reader() (io.ReadCloser, error) { return io.NopCloser(o.reader), nil }\nfunc main() {\n sentinel := errors.New(\"mode read failed\")\n chunk, readErr := bufio.NewReader(io.MultiReader(strings.NewReader(\"8\"), iotest.ErrReader(sentinel))).ReadSlice(' ')\n fmt.Printf(\"readslice bytes=%q sentinel=%t error=%v\\n\", chunk, errors.Is(readErr,sentinel), readErr)\n for _, tc := range []struct {name, input string; fail bool}{\n  {\"sentinel-empty\", \"\", true}, {\"sentinel-valid\", \"100\", true},\n  {\"sentinel-zeros-1000\", strings.Repeat(\"0\", 1000), true},\n  {\"sentinel-zeros-9000\", strings.Repeat(\"0\", 9000), true},\n  {\"sentinel-invalid\", \"8\", true}, {\"terminated-invalid\", \"8 a\\x00\" + string(make([]byte,20)), false},\n  {\"normal-valid\", \"100644 a\\x00\" + string(make([]byte,20)), false},\n } {\n  m := &plumbing.MemoryObject{}; m.SetType(plumbing.TreeObject); _, _ = m.Write([]byte(\"100644 a\\x00\"))\n  var r io.Reader = bytes.NewBufferString(tc.input)\n  if tc.fail { r = io.MultiReader(r, iotest.ErrReader(sentinel)) }\n  var t object.Tree; err := t.Decode(injected{m,r})\n  fmt.Printf(\"%s sentinel=%t malformed=%t error=%v entries=%d\\n\",tc.name,errors.Is(err,sentinel),errors.Is(err,object.ErrMalformedTree),err,len(t.Entries))\n }\n}\n",
+    "runner_sha256": "4e7337cc7417568db10eb4179b0e783c93597bccaa27249bec31934678aafec1",
+    "replay": "For each reconstructed tree, place witness.go in its root and run go run witness.go using the pinned image and offline dependency cache. The local runner uses one container per tree with --cpuset-cpus 4,5 and GOPROXY=off.",
+    "raw_output_sha256": "1a6f86d4749a6ae8e3b4b1594a4bf9660c03695ab522391dcd1682a1f797240c",
+    "raw_output": "ROLE base\nreadslice bytes=\"8\" sentinel=true error=mode read failed\nsentinel-empty sentinel=true malformed=false error=mode read failed entries=0\nsentinel-valid sentinel=true malformed=false error=mode read failed entries=0\nsentinel-zeros-1000 sentinel=true malformed=false error=mode read failed entries=0\nsentinel-zeros-9000 sentinel=false malformed=false error=bufio: buffer full entries=0\nsentinel-invalid sentinel=true malformed=false error=mode read failed entries=0\nterminated-invalid sentinel=false malformed=true error=malformed tree: malformed mode entries=0\nnormal-valid sentinel=false malformed=false error=<nil> entries=1\nROLE merge\nreadslice bytes=\"8\" sentinel=true error=mode read failed\nsentinel-empty sentinel=true malformed=false error=mode read failed entries=0\nsentinel-valid sentinel=true malformed=false error=mode read failed entries=0\nsentinel-zeros-1000 sentinel=true malformed=false error=mode read failed entries=0\nsentinel-zeros-9000 sentinel=true malformed=false error=mode read failed entries=0\nsentinel-invalid sentinel=true malformed=false error=mode read failed entries=0\nterminated-invalid sentinel=false malformed=true error=malformed tree: malformed mode entries=0\nnormal-valid sentinel=false malformed=false error=<nil> entries=1\nROLE prior\nreadslice bytes=\"8\" sentinel=true error=mode read failed\nsentinel-empty sentinel=true malformed=false error=mode read failed entries=0\nsentinel-valid sentinel=true malformed=false error=mode read failed entries=0\nsentinel-zeros-1000 sentinel=true malformed=false error=mode read failed entries=0\nsentinel-zeros-9000 sentinel=true malformed=false error=mode read failed entries=0\nsentinel-invalid sentinel=true malformed=false error=mode read failed entries=0\nterminated-invalid sentinel=false malformed=true error=malformed tree: malformed mode entries=0\nnormal-valid sentinel=false malformed=false error=<nil> entries=1\nROLE stock\nreadslice bytes=\"8\" sentinel=true error=mode read failed\nsentinel-empty sentinel=true malformed=false error=mode read failed entries=0\nsentinel-valid sentinel=true malformed=false error=mode read failed entries=0\nsentinel-zeros-1000 sentinel=true malformed=false error=mode read failed entries=0\nsentinel-zeros-9000 sentinel=true malformed=false error=mode read failed entries=0\nsentinel-invalid sentinel=true malformed=false error=mode read failed entries=0\nterminated-invalid sentinel=false malformed=true error=malformed tree: malformed mode entries=0\nnormal-valid sentinel=false malformed=false error=<nil> entries=1\nROLE revised\nreadslice bytes=\"8\" sentinel=true error=mode read failed\nsentinel-empty sentinel=true malformed=false error=mode read failed entries=0\nsentinel-valid sentinel=true malformed=false error=mode read failed entries=0\nsentinel-zeros-1000 sentinel=true malformed=false error=mode read failed entries=0\nsentinel-zeros-9000 sentinel=true malformed=false error=mode read failed entries=0\nsentinel-invalid sentinel=false malformed=true error=malformed tree: malformed mode entries=0\nterminated-invalid sentinel=false malformed=true error=malformed tree: malformed mode entries=0\nnormal-valid sentinel=false malformed=false error=<nil> entries=1\n"
+  },
+  "matrix": {
+    "base": {
+      "sentinel-empty": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-valid": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-zeros-1000": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-zeros-9000": {
+        "sentinel": false,
+        "malformed": false,
+        "error": "bufio: buffer full",
+        "entries": 0
+      },
+      "sentinel-invalid": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "terminated-invalid": {
+        "sentinel": false,
+        "malformed": true,
+        "error": "malformed tree: malformed mode",
+        "entries": 0
+      },
+      "normal-valid": {
+        "sentinel": false,
+        "malformed": false,
+        "error": "<nil>",
+        "entries": 1
+      }
+    },
+    "merge": {
+      "sentinel-empty": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-valid": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-zeros-1000": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-zeros-9000": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-invalid": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "terminated-invalid": {
+        "sentinel": false,
+        "malformed": true,
+        "error": "malformed tree: malformed mode",
+        "entries": 0
+      },
+      "normal-valid": {
+        "sentinel": false,
+        "malformed": false,
+        "error": "<nil>",
+        "entries": 1
+      }
+    },
+    "prior_develop": {
+      "sentinel-empty": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-valid": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-zeros-1000": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-zeros-9000": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-invalid": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "terminated-invalid": {
+        "sentinel": false,
+        "malformed": true,
+        "error": "malformed tree: malformed mode",
+        "entries": 0
+      },
+      "normal-valid": {
+        "sentinel": false,
+        "malformed": false,
+        "error": "<nil>",
+        "entries": 1
+      }
+    },
+    "stock": {
+      "sentinel-empty": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-valid": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-zeros-1000": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-zeros-9000": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-invalid": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "terminated-invalid": {
+        "sentinel": false,
+        "malformed": true,
+        "error": "malformed tree: malformed mode",
+        "entries": 0
+      },
+      "normal-valid": {
+        "sentinel": false,
+        "malformed": false,
+        "error": "<nil>",
+        "entries": 1
+      }
+    },
+    "revised_develop": {
+      "sentinel-empty": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-valid": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-zeros-1000": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-zeros-9000": {
+        "sentinel": true,
+        "malformed": false,
+        "error": "mode read failed",
+        "entries": 0
+      },
+      "sentinel-invalid": {
+        "sentinel": false,
+        "malformed": true,
+        "error": "malformed tree: malformed mode",
+        "entries": 0
+      },
+      "terminated-invalid": {
+        "sentinel": false,
+        "malformed": true,
+        "error": "malformed tree: malformed mode",
+        "entries": 0
+      },
+      "normal-valid": {
+        "sentinel": false,
+        "malformed": false,
+        "error": "<nil>",
+        "entries": 1
+      }
+    }
+  },
+  "control_notes": "All five preserve sentinel for empty, 100 and 1000 zeros. Base returns bufio.ErrBufferFull for 9000 zeros before the sentinel, while the other four reach it. All five return ErrMalformedTree for terminated invalid octal, and all decode the normal valid entry. Direct ReadSlice instrumentation prints bytes=\"8\" with sentinel=true for each run."
+}

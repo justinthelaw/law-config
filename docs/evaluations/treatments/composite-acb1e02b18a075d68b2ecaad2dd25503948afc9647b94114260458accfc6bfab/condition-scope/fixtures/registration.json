@@ -1,0 +1,25 @@
+{
+  "scope": "New exposed Werkzeug-only assessor contract; no participant release or score edits.",
+  "source_sha256": "ef964bbe31faee6884025ac0cc64b969727934d7e37f44b60eac001bed59683a",
+  "helper_sha256": "ece16bcb5b051d37c0dd7dd60a800ccfb5c0e41dcef04044c57700b63e3c3488",
+  "runner_sha256": "4c7e1b8b52ad72d3155d02ee60a4353a0a77056c328695058ed1dd7c165d9b89",
+  "warning_supplement_sha256": "779a3572d6313a6ec0d8f670cf28397557c4062a426d502e66d1aa3d3b5e9dbb",
+  "stream_probe_sha256": "24bb35b1c130ac4e93f75b07dc382328b8d3bc10d8a18371eec16a19ccf876df",
+  "stream_receipt_sha256": "7377874d50114ce1ba0371177f082b7ddc7ceaecea066a26d11ae2a5e4ed8b64",
+  "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+  "positive_patch_sha256": "de69e522f591bd630079935034f65958fce803e472f4f85f9ec94c47033c2468",
+  "positive": {
+    "warnings": {
+      "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+      "exit": 0,
+      "log_sha256": "814a3b32c2892633529b83014f75f0c029fc52475fd951c20002231a6e684ea5",
+      "output": "{\"outcome\": \"green\", \"rows\": [{\"input\": \"strings\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": []}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}, {\"input\": \"bytes\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": []}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}, {\"input\": \"bytes-strings\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": [{\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/oracle/probe.py\", \"line\": 26, \"message\": \"A response iterable containing both bytes and strings is deprecated.\"}]}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}, {\"input\": \"strings-bytes\", \"operations\": [{\"operation\": \"get_data\", \"warnings\": [{\"class\": \"builtins.DeprecationWarning\", \"filename\": \"/oracle/probe.py\", \"line\": 26, \"message\": \"A response iterable containing both bytes and strings is deprecated.\"}]}, {\"operation\": \"close\", \"warnings\": []}], \"bytes\": [120, 121], \"pass\": true}]}\n"
+    },
+    "stream": {
+      "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+      "exit": 0,
+      "log_sha256": "9b4625cc7ea29050905246824e6c5fc593d46eec81ff54f2786bb7e31a079657",
+      "output": "{\"outcome\": \"green\", \"generated_cases\": 144, \"failing_cases\": 0, \"minimal_replay\": null, \"oracle\": \"UTF-8 bytes accumulated by public writes; tell equals byte count; get_data preserves bytes; repeat tell after normalization.\"}\n"
+    }
+  }
+}

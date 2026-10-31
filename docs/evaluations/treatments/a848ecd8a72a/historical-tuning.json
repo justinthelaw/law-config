@@ -1,0 +1,19 @@
+{
+  "registered_utc": "2026-10-31T13:45:01+00:00",
+  "source_commit": "2ca7031c9468e3309efc009b2c6e6904a39f9d30",
+  "package_sha256": "a848ecd8a72a435415dd4fb7754efe5e7b8cbad7308a26b5b114ca5249e90d2e",
+  "pilot_registration_sha256": "fb324bfd60f82199a51d73767b774f734dd2e67675f98522326603a5efbc0ffa",
+  "eligibility": "Run once only if the registered fmt pilot meets its criteria. Preserve its result either way.",
+  "inherits": {
+    "path": "../0085f2ad8d61/historical-tuning.json",
+    "sha256": "87cb05429aab0ea991a5775d6e557171fe39cc50499cf0a4a349a6983a78fcad",
+    "fields": [
+      "cohort",
+      "cases",
+      "metrics",
+      "stop_rule"
+    ]
+  },
+  "hypothesis": "Waiting in one tool call, reusing the configured build and exercising real callers will lower proposal cost and time while preserving functional behavior.",
+  "selection": "Use all 20 historical repositories with one fresh standalone Develop attempt and one fresh stock attempt each. Score every allocation under the inherited policy. Keep pilots and earlier cohorts separate."
+}

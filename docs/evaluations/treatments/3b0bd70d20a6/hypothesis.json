@@ -1,0 +1,297 @@
+{
+  "id": "await-local-commands",
+  "previous": "d9d70aaca4ba2cf3d124f6eb5d47bc0495f0a5ff172002720dc968eb745bda52",
+  "targets": [
+    "plugins/develop/skills/iterate/references/local-changes.md"
+  ],
+  "evidence": [
+    {
+      "case": "black",
+      "source": "runs/tuning/same-check-black-01/result.json",
+      "source_sha256": "44747b8361e9d516cd3666e5bd5408aeed81efcc6496c559d88ab40f47eae86a",
+      "registration_sha256": "b12734ae5446afff0a8c1c2aa3e5f5f4e01a8238dd07a162fb13172df3d97338",
+      "audit_sha256": "8f14ed470e15dc7cd614cca943ced99caea1167bfed1e7114c13059a2e810a3e",
+      "roles": {
+        "candidate/develop": {
+          "native_sha256": "9db871c8ebe516cc3fa93528c404d3d278eacd53a892539b07f6d4afb0804d8d",
+          "root_trace_sha256": "6e98f3924a86e3fcbe8a1a04da8c30de1d101bf0d8ed4fad751858abdbd887ca",
+          "responses": 86,
+          "poll_only_responses": 29,
+          "poll_only_tokens": 1790406,
+          "poll_only_usd": 0.2432024,
+          "root_usd": 0.8892928,
+          "proposal_usd": 1.1516156000000002
+        },
+        "candidate/control": {
+          "native_sha256": "e417b76cc23cf7e194c76ee234a346c0c10ccabdb67feaf1b99e8e671f9e5ffb",
+          "root_trace_sha256": "898e4602f93c2db7e360e73819b1a8601040d2193857e3e0e5cfbefb5b6db48f",
+          "responses": 41,
+          "poll_only_responses": 18,
+          "poll_only_tokens": 720705,
+          "poll_only_usd": 0.1997124,
+          "root_usd": 0.39424280000000006,
+          "proposal_usd": 0.39424280000000006
+        },
+        "prior/develop": {
+          "native_sha256": "cc4d49e74a336e09905c52b06523998cb73f64cc4ad46564d25756cb2d1a90fe",
+          "root_trace_sha256": "9e5662353a420bd40a4d04d181b539fbda740f9d42cfc63174ea88ddb67f3077",
+          "responses": 44,
+          "poll_only_responses": 6,
+          "poll_only_tokens": 371188,
+          "poll_only_usd": 0.0653136,
+          "root_usd": 0.48544280000000006,
+          "proposal_usd": 0.7123132000000001
+        }
+      }
+    },
+    {
+      "case": "pytest",
+      "source": "runs/tuning/scoped-pytest-01/result.json",
+      "source_sha256": "3a856110cb6fb56287b983118e3a3a194753dcba8d7ebcf3e01f80d63451452c",
+      "registration_sha256": "006d410f838e0e6c5ce6a151e09546a73ba252c509a7810f734e9d77cf075023",
+      "audit_sha256": "aba281f6bd4341f92c4bc983313296791dd0dcbc1028d56fd50c5ff95da3f246",
+      "roles": {
+        "candidate/control": {
+          "native_sha256": "7991f2b2a72e99d61d7240e1cbe0dc0cfce45c30ca3eb7059556811778668a67",
+          "root_trace_sha256": "6cc55b737a0328d5a834fc73e53bd163bb6ef82419639e559dc0263835fbf739",
+          "responses": 37,
+          "poll_only_responses": 8,
+          "poll_only_tokens": 412376,
+          "poll_only_usd": 0.0746544,
+          "root_usd": 0.38898,
+          "proposal_usd": 0.4988732
+        },
+        "prior/develop": {
+          "native_sha256": "2e795e6957352dd867f239b8a54407ca5290691a1ead4a8ea3b54ff914ae9279",
+          "root_trace_sha256": "e8c5c1121f3b74a510888e1511230c538567e5af639621b27138f6be86f4616c",
+          "responses": 49,
+          "poll_only_responses": 8,
+          "poll_only_tokens": 489111,
+          "poll_only_usd": 0.100582,
+          "root_usd": 0.598688,
+          "proposal_usd": 0.797008
+        },
+        "candidate/develop": {
+          "native_sha256": "0bf3b85be99c08f6f2186bb00d7ea82d296d7f3bae88a07611f6fb08b1599ff0",
+          "root_trace_sha256": "030171be88eafd2d056e0bab97722bebcb627f6783442e23cd2068f819237401",
+          "responses": 45,
+          "poll_only_responses": 16,
+          "poll_only_tokens": 693746,
+          "poll_only_usd": 0.09532560000000001,
+          "root_usd": 0.405124,
+          "proposal_usd": 0.5006536
+        }
+      }
+    },
+    {
+      "case": "werkzeug",
+      "source": "runs/tuning/caller-werkzeug-01/result.json",
+      "source_sha256": "f46fcd947213399255a6f0a0f6bdf540a393017aef61a2f8605214013fbce4d5",
+      "registration_sha256": "af169f9ab90a93ae0bad6fccb9f15aceaccc1a74711f8f486854fdf4db7cc012",
+      "audit_sha256": "86146f2e80f01aebf7eec3d3247914e19adfc486f1a8ded055682ea2e3ff351c",
+      "roles": {
+        "candidate/develop": {
+          "native_sha256": "93282592db915aef42e911043c1dbe1ea577df59a82eec6b8ea5e5af0c5765ff",
+          "root_trace_sha256": "4e69714e71f22b73fd621de27c1fdfa11cbfbada96d83dddd64d7f22f95cce4f",
+          "responses": 66,
+          "poll_only_responses": 13,
+          "poll_only_tokens": 923816,
+          "poll_only_usd": 0.144872,
+          "root_usd": 0.9505568000000001,
+          "proposal_usd": 1.4064603999999998
+        },
+        "prior/develop": {
+          "native_sha256": "8806d95d804da88ef24a0fd55166e98fb9350ed9bfc3a6ba1ad19b49da3ef9b1",
+          "root_trace_sha256": "340d0b1ed18920cfc6e34bbda58e831b4b2d5bf90f291a1cba9dc1205f9194db",
+          "responses": 33,
+          "poll_only_responses": 6,
+          "poll_only_tokens": 310030,
+          "poll_only_usd": 0.0472264,
+          "root_usd": 0.363616,
+          "proposal_usd": 0.5820503999999999
+        },
+        "candidate/control": {
+          "native_sha256": "00c372597095811824fc3c3580bf2576b6587dc925646215a56c11c463c64484",
+          "root_trace_sha256": "e8e6513e1fd6c64f8c81cb553d7bc61daa8e3ad08141e2679c30c6b1df02c55d",
+          "responses": 28,
+          "poll_only_responses": 7,
+          "poll_only_tokens": 372103,
+          "poll_only_usd": 0.05591,
+          "root_usd": 0.32879359999999996,
+          "proposal_usd": 0.32879359999999996
+        }
+      }
+    },
+    {
+      "case": "pytest",
+      "source": "runs/tuning/focused-review-pytest-01/result.json",
+      "source_sha256": "53f15b93e1aa1f349f2ef31432c447f364486e791ccee9bc01f54dc7025e7fb6",
+      "registration_sha256": "61ab3ac525a1fab57ed499478a432b9966459d91a7453d21ca6513ba85221647",
+      "audit_sha256": "11490c6c0b2bfee4cf6725a0164e4c81a803632c121d2f4b73afecb5b79617e1",
+      "roles": {
+        "candidate/control": {
+          "native_sha256": "eaae9824227c7435a84beb208aa48922762e2b68a77f00d9fa5e48880b1a23de",
+          "root_trace_sha256": "3d0d5c84c6b7547e3b13ae848771145eeb72e7962a01abd85e38b9cd97237b5f",
+          "responses": 42,
+          "poll_only_responses": 15,
+          "poll_only_tokens": 704859,
+          "poll_only_usd": 0.11192919999999999,
+          "root_usd": 0.35193559999999996,
+          "proposal_usd": 0.4230268
+        },
+        "prior/develop": {
+          "native_sha256": "257657829f751c7b851780df80f730ac8e19acaf160b2d190277f7b550da45e5",
+          "root_trace_sha256": "d989aeb32bdde642ce0d4344a04fbeef86095aa79640d86538a6e324a5d3e086",
+          "responses": 48,
+          "poll_only_responses": 14,
+          "poll_only_tokens": 678512,
+          "poll_only_usd": 0.1064992,
+          "root_usd": 0.42912680000000003,
+          "proposal_usd": 0.5827392000000001
+        },
+        "candidate/develop": {
+          "native_sha256": "61b001d761aacadaabc418c1b056f60cd1f71a78ecda0a5ac2db0593e2f9f0de",
+          "root_trace_sha256": "70bc673f818f03cd6f798740f6ef77a4abcba854af23ca5f7c126f4e4f6b8a29",
+          "responses": 48,
+          "poll_only_responses": 12,
+          "poll_only_tokens": 695893,
+          "poll_only_usd": 0.1134468,
+          "root_usd": 0.5083032000000001,
+          "proposal_usd": 0.7832136000000001
+        }
+      }
+    },
+    {
+      "case": "expat",
+      "source": "runs/pr-quality-panel-v2/baseline-53a8bd549c93/submissions.jsonl",
+      "source_sha256": "a3b37b03a7ce07ebe6a72bd3aa33b96284b6708d15b6957eddc158452b25a136",
+      "scope": "Conditional second tuning task. Historical Develop restricted the literal-region fix to general entities. All gates passed, but all three judges identified omitted parameter entities. Check this boundary on any attempted repair. Historical controls lack the newer complete stock audit.",
+      "roles": {
+        "control": {
+          "receipt_sha256": {
+            "grade": "cc15bdb60cdb57bef17c22d46e1bba612d455968c927fe54fec42dea87be0833",
+            "inventory": "e69ac7a141010b2777c7f95ce8a68244a0ece63f6399396dd519f53580f792a1",
+            "native": "a56225a5cbc53c79929a33fda210bb71d5f7e24fd2ea49dc37050cae9737236c",
+            "release": "87b8334fa352d761edcad4b297d0d5d00e5100e277a15f7dd95641915a6e5e1f",
+            "result": "3a6e8901c78d6cb54e062bc3f447a21f3dcd20cd895070611f6f3021fc0b6340",
+            "submission": "4b9431bd2d961c60d164e4f9d2449a2b7d896011ec9a6beb9e54cacda8c12ff4"
+          },
+          "score_100": 100.0,
+          "proposal_usd": 0.6515608,
+          "commands": 27,
+          "children": 0
+        },
+        "develop": {
+          "receipt_sha256": {
+            "grade": "71f5218acc173b83d2b6361365d9dc291be5d610da4eef4c2c89a73fbf16bd30",
+            "inventory": "e1cf96b9f52616d3aab36779591e17fa7ddd164bb63cc82d1c4f9b5c07b0acca",
+            "native": "becd8596a14e3678d79ee6e240164284b1e2a40b2ef5c390f6ba16f46f30a126",
+            "release": "666d669744311d993979dcceee25fb06738a7cfe9b30b26d587931745f0be002",
+            "result": "d1295865c9f945d6344288fb3f53a01d680288dad94dd2e0c6cdb691dc0b6825",
+            "submission": "de6e9de6a2a2d89f5c28c260a8bc750625d9ede4e8756b632c42bc3442701270"
+          },
+          "score_100": 76.25,
+          "proposal_usd": 0.9337396,
+          "commands": 67,
+          "children": 5
+        }
+      },
+      "post_freeze_probe": {
+        "scope": "Separate from the historical grades. The base and Develop reject literal parameter references in comments and processing instructions when the named entity has an overflowing expansion. The recorded control and merge accept both. All four safely reject the real chain and recursion. The shorter literal self-reference alone is accepted on all four.",
+        "source": "\"\"\"Exercise literal and real parameter references in the public, DTD-enabled Expat parser.\"\"\"\nimport ctypes as C\nimport json\nfrom pathlib import Path\nimport resource\n\nresource.setrlimit(resource.RLIMIT_CPU, (10, 12))\nresource.setrlimit(resource.RLIMIT_AS, (256 << 20, 256 << 20))\nlib = C.CDLL(str(Path(\"build-panel/libexpat.so\").resolve()))\nfor fn, args, ret in (\n    (\"XML_ParserCreate\", [C.c_char_p], C.c_void_p),\n    (\"XML_SetParamEntityParsing\", [C.c_void_p, C.c_int], C.c_int),\n    (\"XML_Parse\", [C.c_void_p, C.c_char_p, C.c_int, C.c_int], C.c_int),\n    (\"XML_GetErrorCode\", [C.c_void_p], C.c_int),\n    (\"XML_ErrorString\", [C.c_int], C.c_char_p),\n    (\"XML_ParserFree\", [C.c_void_p], None),\n):\n    call = getattr(lib, fn)\n    call.argtypes, call.restype = args, ret\n\ndef check(declarations):\n    document = f\"<!DOCTYPE r [{declarations}]><r/>\".encode()\n    parser = lib.XML_ParserCreate(None)\n    assert parser and lib.XML_SetParamEntityParsing(parser, 2) == 1\n    try:\n        status = lib.XML_Parse(parser, document, len(document), 1)\n        code = lib.XML_GetErrorCode(parser)\n        return {\"accepted\": status == 1, \"error\": (lib.XML_ErrorString(code) or b\"\").decode()}\n    finally:\n        lib.XML_ParserFree(parser)\n\ndef declare(name, text):\n    return f'<!ENTITY % {name} \"{text}\">'\n\nchain = declare(\"b0\", \"<!--leaf-->\") + \"\".join(declare(f\"b{i}\", f\"&#37;b{i-1};\" * 2) for i in range(1, 65))\ncases = {\n    \"simple_comment\": declare(\"lit\", \"<!--text-->\") + \"%lit;\",\n    \"unused_chain\": chain,\n    \"literal_cycle_comment\": declare(\"lit\", \"<!--&#37;lit;-->\") + \"%lit;\",\n    \"literal_cycle_pi\": declare(\"lit\", \"<?q &#37;lit;?>\") + \"%lit;\",\n    \"literal_chain_comment\": chain + declare(\"lit\", \"<!--&#37;b64;-->\") + \"%lit;\",\n    \"literal_chain_pi\": chain + declare(\"lit\", \"<?q &#37;b64;?>\") + \"%lit;\",\n    \"real_cycle\": declare(\"lit\", \"&#37;lit;\") + \"%lit;\",\n    \"real_chain\": chain + \"%b64;\",\n}\nfor name, xml in cases.items():\n    print(json.dumps({\"case\": name, **check(xml)}), flush=True)\n",
+        "source_sha256": "d661518dd012a0a03c07841b143c5f8e48d472b7c9b933d0916429abe2a04107",
+        "replay_result_sha256": "0eccd1e9a5ec8b6fac0e0c3c0345296e5abb6ffffc78f5c80d650ceadc45f59c",
+        "case_order": [
+          "simple_comment",
+          "unused_chain",
+          "literal_cycle_comment",
+          "literal_cycle_pi",
+          "literal_chain_comment",
+          "literal_chain_pi",
+          "real_cycle",
+          "real_chain"
+        ],
+        "readback": {
+          "base": {
+            "grade_sha256": "e907fc3a24afbc0b6d5c073d495ba030bce3f53322be9622b60573ab569ede91",
+            "library_sha256": "901da7a5581ce4b75ca36532bd69322ea4539c573e80fe97a2bba76fa4cb59c1",
+            "log_sha256": "5030ab701c5c99579e63b7a5c3e596de9b52480a78207ba8760280a485ea6ca7",
+            "accepted": [
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              false,
+              false
+            ]
+          },
+          "merge": {
+            "grade_sha256": "0d760750da8ad83198e2b081a36ea0e2497606909a941723dfa0724fa57f89db",
+            "library_sha256": "cc73e2182e7a3eadf03fabae6dce0e5d371b7e15885f65b6c9bce78bb0ed8c56",
+            "log_sha256": "81b2bc39d700ae5a5887c1ab4f456621af9a693e37b584fa1f2ce6283cd28ce8",
+            "accepted": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false
+            ]
+          },
+          "control": {
+            "grade_sha256": "cc15bdb60cdb57bef17c22d46e1bba612d455968c927fe54fec42dea87be0833",
+            "library_sha256": "5ac28baedf517b08cf62d19a55cb826c2708e309561636da39e90a18ab63900f",
+            "log_sha256": "81b2bc39d700ae5a5887c1ab4f456621af9a693e37b584fa1f2ce6283cd28ce8",
+            "accepted": [
+              true,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false
+            ]
+          },
+          "develop": {
+            "grade_sha256": "71f5218acc173b83d2b6361365d9dc291be5d610da4eef4c2c89a73fbf16bd30",
+            "library_sha256": "e3db751fa7f97f7a2f091f780651c52a2a91d7e593ed6b533b99f7e60b0a97d7",
+            "log_sha256": "5030ab701c5c99579e63b7a5c3e596de9b52480a78207ba8760280a485ea6ca7",
+            "accepted": [
+              true,
+              true,
+              true,
+              true,
+              false,
+              false,
+              false,
+              false
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "measurement": "For each sealed root transcript, count each unique metered model response once. Count it as terminal readback if every tool call uses exec and its only nested tool is write_stdin with empty input. Include parallel polls. Use each response\u2019s native token classes and frozen rates. Verify the root sums against all six native usage fields. Some readbacks carry needed output. Measured cost does not establish possible savings.",
+  "change": "Keep ordinary foreground commands together with their output and exit. Use independent work or a meaningful wait for longer commands. Preserve all required tests, reviews and reporting.",
+  "prediction": "Fewer readback-only model responses reduce proposal tokens and estimated cost on the matched Black repair without dropping a command result, behavioral check or required review.",
+  "sequence": [
+    "black",
+    "expat only if the Black screen meets all criteria"
+  ],
+  "black_probes": {
+    "supplementary_fixtures": {
+      "fmtskip_nested_with.py": "056f1a7f94c4d0cad54477b1ac0399f6ed5fc8f4cf4c415e3bccd95b1f5fe517",
+      "fmtskip_nested_yield.py": "95767a80084d8c7b352156ece4aa8fe59caf641606f2e689691c49e9a92e9181"
+    },
+    "operand_probe_sha256": "9d60db767d27257ed12de3cb2fb2c62246a7129c18ea92c7af1a58ddd15817b6",
+    "operand_source_sha256": "c5a881ddb51233346a12c1b2d0c89dc7272a1ce3681fe230983259435b63fb73"
+  },
+  "falsifier": "Reject if the candidate loses any frozen Black gate, previously observed fixture or unary/trailer behavior, or skips required review or validation. Require fewer root readback-only responses and lower readback cost, complete proposal tokens, cost and wall time than the matched prior. For promotion, require a ready higher-quality proposal at or below fully metered stock cost. Count ties, ceiling and missing evidence separately. No confirmed performance claim from tuning.",
+  "measure_with": "python3 -B docs/evaluations/treatments/3b0bd70d20a6/measure_readbacks.py RUN",
+  "measurement_program_sha256": "dcdffe3f61353efad6110ee2e4788b837c0d49adf2770b7c1efbfc4e7a12849c"
+}

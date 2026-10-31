@@ -1,0 +1,25 @@
+diff --git a/plugins/develop/docs/context-guard.md b/plugins/develop/docs/context-guard.md
+index 9811c42..3fbd7d4 100644
+--- a/plugins/develop/docs/context-guard.md
++++ b/plugins/develop/docs/context-guard.md
+@@ -3,6 +3,7 @@
+ Develop's synchronous [hooks](../hooks/hooks.json) use a small
+ [handler](../hooks/context_guard.py) and [response store](../hooks/response_store.py).
+ 
++
+ | Event | Behavior |
+ | --- | --- |
+ | `PreToolUse` | Denies recognizable whole-file reads above 20,000 bytes using file metadata: literal `cat` and supported read-file calls without ranges. Large edits/arguments are allowed; commands are never rewritten or evaluated. |
+diff --git a/plugins/develop/skills/kaizen/references/episode-evidence.md b/plugins/develop/skills/kaizen/references/episode-evidence.md
+index 84f66e8..0818fef 100644
+--- a/plugins/develop/skills/kaizen/references/episode-evidence.md
++++ b/plugins/develop/skills/kaizen/references/episode-evidence.md
+@@ -8,7 +8,7 @@
+ 
+ ## Retrieval and claims
+ 
+-Apply the budget across selected sources, including malformed, duplicate and rejected reads. Samples stop once complete evidence suffices; "every session" requires every accessible page in selected sources. Count distinct sessions separately from deduplicated episodes. Record unfinished pages, inaccessible sources and a private resume point at limits. Retain minimal private evidence; reviewers receive sanitized causal summaries/permitted locators.
++Apply the budget across selected sources, including malformed, duplicate and rejected reads. Samples stop once complete evidence suffices; “every session” requires every accessible page in selected sources. Count distinct sessions separately from deduplicated episodes. Record unfinished pages, inaccessible sources and a private resume point at limits. Retain minimal private evidence; reviewers receive sanitized causal summaries/permitted locators.
+ 
+ Report selected/readable sources, relevant episodes, observed outcomes, omissions, limits, sampling/order bias and inaccessible/in-progress episodes. Partial coverage cannot prove absence across the selection; one defect can justify a narrow correction without proving recurrence.
+ 

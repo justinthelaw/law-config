@@ -1,0 +1,290 @@
+{
+  "format": "partial-result-native-process/v1",
+  "pilot": "partial-result-go-git-01",
+  "status": "final-public-bindings-verified",
+  "scope": "Independent sealed producer process/meter interpretation only. No blind score interpretation, participant replay or score/result mutation.",
+  "registration_sha256": "5253c0a80019608e0063bd16f46bea03673cfaa4880b5726b77980d172445805",
+  "registered_plans": {
+    "prior": {
+      "path": "runs/partial-result-go-git-01-prior/plan.json",
+      "sha256": "24dbe445c8481133491381e214283a7cf4a965a3639d1af789f2bc0ab518b1b7"
+    },
+    "candidate": {
+      "path": "runs/partial-result-go-git-01-candidate/plan.json",
+      "sha256": "6b874a06ffbdfcf7e2142e1936da2ed9daff3bb7584ec68df989ffc1d3c17e78"
+    }
+  },
+  "runtime_source_sha256": "aeb30a53e8554e5800f9e22f562231e6d5b84aa2f209d4593ffd9df79a0a4489",
+  "rates_usd_per_million": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "roles": {
+    "stock": {
+      "state": "completed",
+      "patch_sha256": "b934728a336b409a6dde8f0e924e1fae42ede879140856541cab6f3dc9a0e127",
+      "proposal_sha256": "d08a18596ce0d221f52e31dbfd9fb620dc0069ce071b40cec4fd0317fd810711",
+      "proposal_bytes": 741,
+      "native_sha256": "59ef406a6b1d980a9be6b5302bd66b96af276df63401390f05ff335dd45b7ef2",
+      "release_sha256": "a32c49592c5abb3162b817fff15a2f692051743055991618f264fe92e07fe6fd",
+      "inventory_sha256": "6f64658cedcf511085c2b6ed3d98bb1a2d2ae8a0d1f667c60fb3a49104811f2a",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "model_evidence": "Own turn contexts and matching-thread server metadata; alias/effort only, not undisclosed provider revision",
+      "thread_count": 1,
+      "child_count": 0,
+      "meter_coverage": "complete",
+      "observed_tokens": {
+        "totalTokens": 2951508,
+        "inputTokens": 2935535,
+        "cachedInputTokens": 2858112,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 15973,
+        "reasoningOutputTokens": 7829
+      },
+      "root_estimated_usd": 0.6003872,
+      "descendant_estimated_usd": 0.0,
+      "complete_estimated_usd": 0.6003872,
+      "observed_price_lower_bound_usd": null,
+      "native_capture_estimated_usd": 0.6003872,
+      "checkout_to_proposal_or_capture_seconds": 811.8322337511927,
+      "task_seconds": 781.2435921109281,
+      "setup_seconds": 28.579906467115507,
+      "grading_seconds": 126.55456717079505,
+      "end_to_end_seconds": 939.8996646190062,
+      "right_censored": false,
+      "producer_build_tests_completed": false,
+      "producer_verification": "Git reference checks/formatting completed; Go build/tests/baseline execution incomplete",
+      "review_evidence": "No independent reviewer observed"
+    },
+    "prior": {
+      "state": "timeout",
+      "patch_sha256": "371e1fc570a91315ee5706f1bfdef0cb71bece787440caa5a55b129208e0c56e",
+      "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "proposal_bytes": 0,
+      "native_sha256": "2af2758ed73304a9b168c2e1ba3d17738c8983f6b4603d76611aba042125abc1",
+      "release_sha256": "b7aac034a6e6bba62db9982ebac6e0e8dfde4e32670fca4f35f36aab4b43a749",
+      "inventory_sha256": "8165598d10d1409546d5cb51121ee7a917076851f87fb85b8cd336f6e1afa142",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "model_evidence": "Own turn contexts and matching-thread server metadata; alias/effort only, not undisclosed provider revision",
+      "thread_count": 3,
+      "child_count": 2,
+      "meter_coverage": "observed lower bound; root aborted",
+      "observed_tokens": {
+        "totalTokens": 12183382,
+        "inputTokens": 12136016,
+        "cachedInputTokens": 11906560,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 47366,
+        "reasoningOutputTokens": 26751
+      },
+      "root_estimated_usd": 1.8290596,
+      "descendant_estimated_usd": 0.2941684,
+      "complete_estimated_usd": null,
+      "observed_price_lower_bound_usd": 2.123228,
+      "native_capture_estimated_usd": 2.100658,
+      "checkout_to_proposal_or_capture_seconds": 3100.4100480391644,
+      "task_seconds": 3060.0006545470096,
+      "setup_seconds": 38.80267677293159,
+      "grading_seconds": 126.23278328799643,
+      "end_to_end_seconds": 3228.3238502310123,
+      "right_censored": true,
+      "producer_build_tests_completed": false,
+      "producer_verification": "Build and selected filemode/public replay completed; object/full tests and tested-artifact closure incomplete; empty proposal",
+      "review_evidence": "Matched intent and static artifact reviews completed; runtime certification explicitly pending"
+    },
+    "candidate": {
+      "state": "completed",
+      "patch_sha256": "7a50d1f759055cd41d324ec809f88e5a41152a31b123c7b04647cab207dc9db9",
+      "proposal_sha256": "78139c104033687b7098e5b21d7bb991465895b4f2407a9b00c5481cf52bb10a",
+      "proposal_bytes": 894,
+      "native_sha256": "4f3f7ed55cd5e69fd28fc880f5c3bdd8df4f2ff9ba8c231615e914eb014e9fd5",
+      "release_sha256": "f881724f74d75a8f8f71549ad050d0911b89e7b07725cb8752c014d20988aad8",
+      "inventory_sha256": "fa8455f41024cac3fe9c21b595ddd98e6e6e111cc7f36a7dd5cdca928df7cc75",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "model_evidence": "Own turn contexts and matching-thread server metadata; alias/effort only, not undisclosed provider revision",
+      "thread_count": 3,
+      "child_count": 2,
+      "meter_coverage": "complete",
+      "observed_tokens": {
+        "totalTokens": 2609380,
+        "inputTokens": 2592396,
+        "cachedInputTokens": 2486272,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 16984,
+        "reasoningOutputTokens": 5854
+      },
+      "root_estimated_usd": 0.5041484,
+      "descendant_estimated_usd": 0.1265668,
+      "complete_estimated_usd": 0.6307152,
+      "observed_price_lower_bound_usd": null,
+      "native_capture_estimated_usd": 0.6307152,
+      "checkout_to_proposal_or_capture_seconds": 781.9616444769781,
+      "task_seconds": 741.1259389650077,
+      "setup_seconds": 38.8108200058341,
+      "grading_seconds": 126.17501241201535,
+      "end_to_end_seconds": 909.7532767818775,
+      "right_censored": false,
+      "producer_build_tests_completed": false,
+      "producer_verification": "Git reference checks/formatting completed; Go build/tests/baseline execution incomplete",
+      "review_evidence": "Matched intent and static artifact reviews completed; runtime certification explicitly pending"
+    }
+  },
+  "source_release_comparability": {
+    "base": "e59664470f3644a3114c6760086892dbcd0d7ac9",
+    "merged": "41c3e4d6c870cafea5c4343623d2e3a8ffa31d05",
+    "native_budget_seconds": 3060,
+    "registered_cpus": [
+      6,
+      7
+    ],
+    "stock_common_managed_hooks_retained": true,
+    "prior_package_sha256": "239dccfc0fe4c090a777d8cf46216c99c57bc2bebc08eca013402215b65c7c28",
+    "candidate_package_sha256": "5acc5df6c74850c8d355aa7506e6e91917fbae8f7a162fca0c6da877f88d77d9",
+    "common_companion_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+    "common_companion_source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+    "only_develop_source_file_changed": "skills/iterate/references/local-changes.md",
+    "installed_package_bytes_independently_rehashed": true,
+    "stock_zero_special_plugins_apps_mcp_global_instructions": true,
+    "stock_system_skill_count": 5
+  },
+  "late_prior_meter": {
+    "native_capture_total_tokens": {
+      "totalTokens": 12055293,
+      "inputTokens": 12008822,
+      "cachedInputTokens": 11779840,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 46471,
+      "reasoningOutputTokens": 25877
+    },
+    "latest_raw_total_tokens": {
+      "totalTokens": 12183382,
+      "inputTokens": 12136016,
+      "cachedInputTokens": 11906560,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 47366,
+      "reasoningOutputTokens": 26751
+    },
+    "delta_tokens": {
+      "totalTokens": 128089,
+      "inputTokens": 127194,
+      "cachedInputTokens": 126720,
+      "cacheWriteInputTokens": 0,
+      "outputTokens": 895,
+      "reasoningOutputTokens": 874
+    },
+    "delta_estimated_usd": 0.02257,
+    "capture_utc": "2026-10-30T07:48:27.099710Z",
+    "late_root_meter_utc": "2026-10-30T07:48:27.260Z",
+    "root_aborted_utc": "2026-10-30T07:48:27.275Z",
+    "raw_rollout_sha256": "d7b928bec8678a38ca407f51725d58bc965669b361f816c2bf771b73bfe19c30",
+    "raw_meter_line": 983,
+    "interpretation": "Native capture estimates $2.100658; the later sealed observed registered-price lower bound is $2.123228. Do not rewrite captured data or assert exact complete parent billing. Two children completed; root was interrupted.",
+    "unobserved_billing": "No additional child/reroute/provider error observed; further unreported billing cannot be certified absent an invoice/complete root meter."
+  },
+  "independent_grader_vs_producer": {
+    "original_stages": [
+      "build",
+      "native",
+      "contract",
+      "preserve",
+      "independent"
+    ],
+    "stock_all_original_stage_exits_zero": true,
+    "prior_all_original_stage_exits_zero": true,
+    "candidate_all_original_stage_exits_zero": true,
+    "interpretation": "All five original independent grader stages passed for stock, prior patch and candidate. These results do not establish producer-side test completion, a completed prior proposal or final tested-artifact review. Supplemental source behavior is separately bound in the registered public supplement; no judge scores are interpreted here.",
+    "final_export_stage_exits": {
+      "stock": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "candidate": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "prior": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      }
+    }
+  },
+  "mechanism": {
+    "actual_added_partial_result_sentinel_caller": "not observed in any producer-added test or run",
+    "prior_and_candidate_source": "Both propagate non-EOF reader errors before validating returned mode bytes; this source observation is not an executed caller witness or distinct observed selection mechanism.",
+    "candidate_reviewed_final_blob_prefixes": {
+      "filemode.go": "d6179b1",
+      "filemode_test.go": "be39fcb",
+      "tree.go": "87ebfff",
+      "tree_test.go": "8449ecb"
+    },
+    "runtime_review": "Both candidate reviews explicitly static; raw participant runtime evidence remains incomplete.",
+    "candidate_private_review_link": "Worker-local review link in proposal is not portable reader evidence.",
+    "supplemental_assessor_observation": "The separately bound seven-row replay preserves sentinel identity for base, merge, prior and candidate; stock loses identity on invalid octal prefix plus non-EOF reader error. This assessor-only observation is not producer-selected evidence or a distinct candidate mechanism over prior."
+  },
+  "finite_mixed_revision_observation": {
+    "affected_role": "prior",
+    "one_defect_class_two_executions": true,
+    "live_run": {
+      "start_utc": "2026-10-30T07:13:23.209Z",
+      "end_utc": "2026-10-30T07:31:18.541Z",
+      "exit": 1,
+      "observation": "Go compiles mutable source across production edits; new tree Canonical call resolves an API lacking Canonical."
+    },
+    "mixed_overlay": {
+      "start_utc": "2026-10-30T07:27:57.113Z",
+      "end_utc": "2026-10-30T07:31:36.219Z",
+      "exit": 1,
+      "observation": "Rewound FileMode copied with live Tree during overlapping tree edit; same compile-error class."
+    },
+    "fixed_Git_overlay": {
+      "start_utc": "2026-10-30T07:34:16.842Z",
+      "end_utc": "2026-10-30T07:39:07.135Z",
+      "exit": 0,
+      "observation": "Both source files read from immutable worker HEAD; expected base failures and control behavior printed."
+    },
+    "limits": "Exact bad intermediate hashes and file-read/cache schedule unavailable. Neither compile error is behavioral red. Overlapping intervals must not be added as savings. No per-command dollar attribution, matched timing counterfactual or avoided-deadline claim is supported."
+  },
+  "runtime_timing_limit": "Candidate diagnostic observed one Go process in D state at p9_client_rpc. Slow noncompile Git commands also occurred. No complete effective CPU/cgroup/mount series attributes total delay; no timing correction applied.",
+  "economics": {
+    "candidate_minus_stock_usd": 0.030328,
+    "candidate_minus_stock_checkout_seconds": -29.87058927421458,
+    "candidate_minus_prior_observed_floor_usd": -1.4925128,
+    "parent_time_comparison": "Right-censored parent elapsed remains censored; do not label the difference a completed like-for-like speed comparison.",
+    "actual_billed_usd_available": false,
+    "no_savings_or_score_change_inferred": true
+  },
+  "audit_source_hashes": {
+    "stock_native_interpretation_sha256": "b657cf41b205d1aa4b4ee6d6e676c65114dc12feea7b8e684cb39296fe782ddd",
+    "prior_native_interpretation_sha256": "8e89ae83c895cf5a695bb6350ca70a03534d4d88911cc004cba015c93149c222",
+    "candidate_native_interpretation_sha256": "cfce5c7ceeca4830a555e2ca09326f674dc79d33e803e257d74db3283db30e2f",
+    "mixed_revision_interpretation_sha256": "09823f83627a3148e1b4c462fc755a5b44c63dadb5c4274d1a3583b0c78f3cb4"
+  },
+  "publication_rule": "Assessor-only process interpretation bound to final public result and registered supplement. Original runtime, frozen rows, scores and outcomes remain unchanged.",
+  "public_bindings": {
+    "result": {
+      "path": "result.json",
+      "sha256": "41d493475675ca0145b87ccc2f3c84ed418fdf9cef9f83a994550a785ecfb8f2"
+    },
+    "registered_supplement": {
+      "path": "partial-result-identity/supplement.json",
+      "sha256": "b69d24052050a39a1bb4f470a94208899c0b7ff17525dca3763363e7b72db091"
+    },
+    "sensitivity_receipt_sha256": "e983ee2f864cc318bfaa35ac3961b9b2b3a31f1c0f557c064f8ce503e4289c9b",
+    "candidate_independent_grader_final_export_check": true,
+    "candidate_final_patch_and_reviewed_blob_prefixes_match": true,
+    "registered_plans_match_portable_bundle": true
+  }
+}

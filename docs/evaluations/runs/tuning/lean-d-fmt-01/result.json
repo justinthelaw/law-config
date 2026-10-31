@@ -1,0 +1,1332 @@
+{
+  "format": "law-config.eval-pilot/v1",
+  "name": "lean-d-fmt-01",
+  "case": "fmt",
+  "repository": "fmtlib/fmt",
+  "pr": 4981,
+  "evaluator_protocol": "pr-quality-pytest-entry-natural-v1",
+  "registration": {
+    "protocol": "develop-efficiency-pilot-v1",
+    "name": "lean-d-fmt-01",
+    "case": "fmt",
+    "plans": {
+      "prior": {
+        "path": "runs/lean-d-fmt-01-prior/plan.json",
+        "sha256": "1668c70319f72ff6913c337b82ab9b1b830579f2091d0441987f2efa482bd15d"
+      },
+      "candidate": {
+        "path": "runs/lean-d-fmt-01-candidate/plan.json",
+        "sha256": "5581ef09ab75d9a1597aa30de333d059b628a8391e7eefdd45b5c27cfc4e4a53"
+      }
+    },
+    "evaluator_protocol": "pr-quality-pytest-entry-natural-v1",
+    "operator_sha256": "f1d19e987d916272efe8c9302527a114759af9dcc95c6bd9f9e0d18c38945dd2",
+    "cpus": [
+      0,
+      1
+    ],
+    "order": [
+      [
+        "prior",
+        "develop"
+      ],
+      [
+        "candidate",
+        "control"
+      ],
+      [
+        "candidate",
+        "develop"
+      ]
+    ],
+    "hypothesis": "await-native-checks-d-v1",
+    "tuning_policy_sha256": "589902e5ac1b940405e6f65707f3890987e02e4cc0986132382143fb494cce11",
+    "hypothesis_sha256": "3323c79c792fe29b8db5871e9374d7cf7683242c35a4a157bd31cfc36c1bd50a",
+    "falsifier": "Reject non-ready candidate, lost prior verified behavior or coverage, missing required review or unresolved material risk, full-PR loss to stock, incomplete pricing, or failure of strict cost and elapsed improvement over prior. Prior soft PR quality is unknown. Report all allocations and exact checks. One exposed case cannot establish full-panel outcome. Reject lost prior verified behavior or required review, failure of either strict prior cost or wall improvement, non-ready candidate, or full-PR loss to pure. Missing measures or unverifiable review leave the comparison unestablished.",
+    "quality": "Three blind candidate/pure/merge rotations. Prior Develop soft PR quality is unknown.",
+    "goal": "A ready Develop PR strictly wins the full rubric against a terminal pure proposal at complete cost <= pure.",
+    "attempts": "One proposal per registered slot. All allocations including technical failures remain in the ledger."
+  },
+  "registration_sha256": "8f74fc02d5b24998b10b5d1c0c23b951f00b6e49d8b93fd260d608fbb8b66682",
+  "result_sha256": "48ac94208e2190b12c82e40ef1bb301019ffd5c922bd72e0357e5dec16d4fff6",
+  "treatments": {
+    "prior": "0085f2ad8d61c0b153d7909f12b2e80f320676494e2bbe2fe83d1e6f07a7bd04",
+    "candidate": "a848ecd8a72a435415dd4fb7754efe5e7b8cbad7308a26b5b114ca5249e90d2e"
+  },
+  "base": "a8293b774e5c4bed720391d0453d5ad0239f66a5",
+  "merged": "434e30f81f8735d4c629acea485e6bb3e059e937",
+  "prompt": "Implement the following task in this checkout and add relevant tests. Use your natural local workflow and verification tools. I waive interactive review of the local implementation plan and authorize you to proceed unattended. Follow all applicable repository requirements and complete any required independent review of consequential design or public contracts. Work offline and leave the proposed changes in the checkout. In your final message, put a concise PR title on the first line, followed by a blank line and a PR body explaining the change, motivation, verification actually performed and any material gaps.\n\nFix formatting the sign on negative floating-point chrono durations. Multiple specifiers in the same format must print the sign once, including seconds, count and compound time formats. Handle negative infinity without losing the sign or repeating it, preserve positive and integer duration output, and add tests.\n\nAvailable offline verification commands:\n/deps/lib/cmake/data/bin/cmake -S . -B build -DFMT_DOC=OFF -DFMT_TEST=ON && /deps/lib/cmake/data/bin/cmake --build build -j2 --target chrono-test\n./build/bin/chrono-test --gtest_filter='chrono_test.*'",
+  "prompt_sha256": "503cbc70a78803765ad3c170336a6671b55560c5402ca43a229cd4da4fe40302",
+  "runtime_sha256": "51a4740fa2bc38f96e006d6c904b3ab9037f4151e3295c42a2293237b3c67691",
+  "rubric_sha256": "a47aa29e89ca55d12fd48031fa7ca5073d449caafefd1b17353a917ebe76a3c3",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "rates": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "profiles": {
+    "prior/develop": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "hooks",
+        "marketplaces",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {},
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [
+        "develop@law-config"
+      ],
+      "ephemeral": false,
+      "inventory_sha256": "cf197ff5bf368bfa639805ed4030231c91e3f35648581f7acb7008119905254e",
+      "input_sha256": "c4941ea420948bb963c7e08550e72a88c65ec1eddbf2f325b50450ac83da6e2c",
+      "config_sha256": "26a605ee393e3090d4e253a7b7aa70b60ac7be52bf77af829cb7121c31563614"
+    },
+    "candidate/control": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {},
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [],
+      "ephemeral": false,
+      "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+      "input_sha256": "0ef7a73fc79aff389a44e87bf0facf1a79f8ccd8812ba584fba2c8577a730cb8",
+      "config_sha256": "1aee2d798b6d473c3f4d249d5bc4d49d7bb358829fb77a60dddb65a83fbabd84"
+    },
+    "candidate/develop": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "hooks",
+        "marketplaces",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {},
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [
+        "develop@law-config"
+      ],
+      "ephemeral": false,
+      "inventory_sha256": "7ce8a151907b6400063d5284375e9df436cb70a4aa6b4b7077c3b25a3445f437",
+      "input_sha256": "a80272673eeedf4d86b9ea1bcda8c33159ba985998dc93fef8be627551c908cf",
+      "config_sha256": "d239fec9723a8bcad2cc8ca050648eb688fd07bf63627a5f8829063f06b22e0c"
+    }
+  },
+  "comparisons": {
+    "develop_control": {
+      "verdict": "tie",
+      "reason": "blinded rubric",
+      "score_delta": 0.0,
+      "votes": [
+        "tie",
+        "tie",
+        "tie"
+      ],
+      "order_sensitive": false
+    },
+    "develop_upstream": {
+      "verdict": "develop",
+      "reason": "blinded rubric",
+      "score_delta": 17.5,
+      "votes": [
+        "develop",
+        "develop",
+        "develop"
+      ],
+      "order_sensitive": false
+    },
+    "control_upstream": {
+      "verdict": "control",
+      "reason": "blinded rubric",
+      "score_delta": 17.5,
+      "votes": [
+        "control",
+        "control",
+        "control"
+      ],
+      "order_sensitive": false
+    }
+  },
+  "goal_win": false,
+  "submissions": {
+    "control": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "5581ef09ab75d9a1597aa30de333d059b628a8391e7eefdd45b5c27cfc4e4a53",
+      "case_id": "fmt",
+      "role": "control",
+      "state": "completed",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "8d90d72e579e436b09d1608f0bd981463b07242939aef78df64ea71dd06bb40c",
+          "command": "/deps/lib/cmake/data/bin/cmake -S . -B build -DFMT_DOC=OFF -DFMT_TEST=ON && /deps/lib/cmake/data/bin/cmake --build build -j2 --target chrono-test",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "bd1b923d31338644c819f95165676914bf493d4abc6643488c9b79fcaabed087",
+          "command": "./build/bin/chrono-test --gtest_filter='chrono_test.*'",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "85b597c89c2b4db57e587b11a856e695b11f59984def8002bdb112988474198e",
+          "command": "g++ -std=c++17 -Iinclude /oracle/probe.cpp -o /tmp/check && /tmp/check",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "g++ -std=c++17 -Iinclude /oracle/probe.cpp -o /tmp/check && /tmp/check",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/include/fmt/chrono.h b/include/fmt/chrono.h\nindex c0b88b3..f94a9a8 100644\n--- a/include/fmt/chrono.h\n+++ b/include/fmt/chrono.h\n@@ -1686,11 +1686,8 @@ struct duration_formatter {\n       write_nan();\n       return true;\n     }\n-    // must be +-inf\n-    if (val > 0)\n-      std::copy_n(\"inf\", 3, out);\n-    else\n-      std::copy_n(\"-inf\", 4, out);\n+    write_sign();\n+    std::copy_n(\"inf\", 3, out);\n     return true;\n   }\n \n@@ -1815,7 +1812,7 @@ struct duration_formatter {\n         auto buf = memory_buffer();\n         write_floating_seconds(buf, std::chrono::duration<rep, Period>(val),\n                                precision);\n-        if (negative) *out++ = '-';\n+        write_sign();\n         if (buf.size() < 2 || buf[1] == '.')\n           out = detail::write_padding(out, pad);\n         out = copy<Char>(buf.begin(), buf.end(), out);\ndiff --git a/test/chrono-test.cc b/test/chrono-test.cc\nindex a2f419a..fe8e475 100644\n--- a/test/chrono-test.cc\n+++ b/test/chrono-test.cc\n@@ -755,6 +755,43 @@ TEST(chrono_test, special_durations) {\n       \"01.234\");\n }\n \n+TEST(chrono_test, floating_duration_sign) {\n+  auto d = std::chrono::duration<double>(-61.25);\n+  EXPECT_EQ(fmt::format(\"{:%S %S}\", d), \"-01.250000 01.250000\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q}\", d), \"-01.250000 61.25\");\n+  EXPECT_EQ(fmt::format(\"{:%Q %S}\", d), \"-61.25 01.250000\");\n+  EXPECT_EQ(fmt::format(\"{:%S %M}\", d), \"-01.250000 01\");\n+  EXPECT_EQ(fmt::format(\"{:%T %T}\", d),\n+            \"-00:01:01.250000 00:01:01.250000\");\n+  EXPECT_EQ(fmt::format(\"{:%S %R %T}\", d),\n+            \"-01.250000 00:01 00:01:01.250000\");\n+  EXPECT_EQ(fmt::format(\"{:.2%S %Q}\", d), \"-01.25 61.25\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q}\", std::chrono::duration<float>(-61.25)),\n+            \"-01.250000 61.25\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q}\", dms(-1250)), \"-01.250 1250\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q %T}\", -d),\n+            \"01.250000 61.25 00:01:01.250000\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q %T}\", std::chrono::seconds(-61)),\n+            \"-01 61 00:01:01\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q %T}\", std::chrono::seconds(61)),\n+            \"01 61 00:01:01\");\n+}\n+\n+TEST(chrono_test, infinite_duration_sign) {\n+  auto inf = std::chrono::duration<double>(\n+      std::numeric_limits<double>::infinity());\n+  EXPECT_EQ(fmt::format(\"{:%S}\", -inf), \"-inf\");\n+  EXPECT_EQ(fmt::format(\"{:%Q}\", -inf), \"-inf\");\n+  EXPECT_EQ(fmt::format(\"{:%R}\", -inf), \"-inf:inf\");\n+  EXPECT_EQ(fmt::format(\"{:%T}\", -inf), \"-inf:inf:inf\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q %R %T}\", -inf),\n+            \"-inf inf inf:inf inf:inf:inf\");\n+  EXPECT_EQ(fmt::format(\"{:%Q %S}\", -inf), \"-inf inf\");\n+  EXPECT_EQ(fmt::format(\"{:%R %S}\", -inf), \"-inf:inf inf\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q %R %T}\", inf),\n+            \"inf inf inf:inf inf:inf:inf\");\n+}\n+\n TEST(chrono_test, unsigned_duration) {\n   EXPECT_EQ(fmt::format(\"{}\", std::chrono::duration<unsigned>(42)), \"42s\");\n }\n",
+      "patch_sha256": "401a5793f7af9b3d57b96bb7a1a023fbbb4f3beeda6ef4f137ca18b3378854b4",
+      "proposal": "Fix signs for negative floating-point chrono durations\n\nUse the shared sign writer for floating-point seconds and infinity so multiple chrono specifiers emit the minus sign exactly once. Add regression tests covering seconds, counts, compound formats, precision, and preserved positive and integer output.\n\nVerification: offline CMake build succeeded; all 41 `chrono_test.*` tests passed. Both new regression tests failed before the fix. `git diff --check` passed.\n\nGaps: Japanese and Spanish locales were unavailable, limiting locale-specific checks. Other test targets were not run.",
+      "proposal_sha256": "2cc5d343ed87a0bd43c10568d16c50984712ffc51260ce242ef0acb8378e7f91",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "401a5793f7af9b3d57b96bb7a1a023fbbb4f3beeda6ef4f137ca18b3378854b4",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "patch_sha256": "401a5793f7af9b3d57b96bb7a1a023fbbb4f3beeda6ef4f137ca18b3378854b4",
+            "proposal_sha256": "2cc5d343ed87a0bd43c10568d16c50984712ffc51260ce242ef0acb8378e7f91",
+            "judgment_sha256": "2f182fbab5ef404b55580757f6005fdbedb7f5f622cde85311d0db98b9814bee",
+            "mapping_sha256": "5cf9aa161b5077358e0fc08763682579c01f2e9372f057f4eae907211e2667b8",
+            "assessor_sha256": "60b887bcd44cf6223d0b2ee1d7cae7f967440a38d97e6a193f0cae1fec3eced8",
+            "packet_sha256": "cfef138066ca736f3688e19d2501e47070a8a339ec308c60d6a00d9b402a23c0",
+            "prompt_sha256": "c9625a514108f2d43cd5aa657d6cde2f8683cba1fb7c4cb1fefe0cde0f467838"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "patch_sha256": "401a5793f7af9b3d57b96bb7a1a023fbbb4f3beeda6ef4f137ca18b3378854b4",
+            "proposal_sha256": "2cc5d343ed87a0bd43c10568d16c50984712ffc51260ce242ef0acb8378e7f91",
+            "judgment_sha256": "38dc9906623adbde7b73e154233245dde08c5e881a75f771bbb892b18a5a6c8e",
+            "mapping_sha256": "6df3f5b0f1204b93acb0153446b5773bd06470a5cafb200d3c7a61c82ec44993",
+            "assessor_sha256": "0490df65c37acfe9b5bbe1f91e11ce1fff991ed919989383b20d0231e712f5ff",
+            "packet_sha256": "e11d017b5cb5fffe0e195e52f1d75b6532b647ed76191035df83ad6a0b61813d",
+            "prompt_sha256": "9eedc166917a0fd167bd5c58535ac28f1546360229a970f2f3c94f27a49677de"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "patch_sha256": "401a5793f7af9b3d57b96bb7a1a023fbbb4f3beeda6ef4f137ca18b3378854b4",
+            "proposal_sha256": "2cc5d343ed87a0bd43c10568d16c50984712ffc51260ce242ef0acb8378e7f91",
+            "judgment_sha256": "0a167f375c6f59e206af98c0592f7bb988d268a0e562b5fdeab525ba56bd38d4",
+            "mapping_sha256": "b5d6ee4e2d88f948acc22ca3ea86ec8598c3f18f52a78ffa8337ae9416d3846d",
+            "assessor_sha256": "93fb7008a5b19e90896b60d374b3b5f7a6a8ff3b00138702c1bdeaf8c1edc666",
+            "packet_sha256": "11e76d38eb518040ea28cefe6951016520ed8c3d56628630b0b52d7482e17c30",
+            "prompt_sha256": "682f9f466ab1a81170e1b1e32de7b853eb39f006b437c428b912289e1e028d04"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        "proposal_points_100": 96.25,
+        "diff_points_85": 85.0,
+        "rotation_points_85": {
+          "0": 85.0,
+          "1": 85.0,
+          "2": 85.0
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/B.patch applies the same shared sign consumption to include/fmt/chrono.h::on_second and handle_nan_inf. Constructor normalization plus write_sign() makes negative finite and infinite mixed conversions emit one minus; positive and integral formatting paths retain their logic. packet/task.json records B build, native, contract and preserve exits of 0 within the chrono verification scope.",
+              "tests": "packet/B.patch adds floating_duration_sign and infinite_duration_sign in test/chrono-test.cc. Coverage includes repeated seconds, both count/seconds orders, repeated finite %T, mixed %R/%T, explicit precision, float, floating millisecond periods, positive and negative integers, infinity compounds and %R followed by %S. Starting code would duplicate finite signs and drop the infinity sign, so the added assertions discriminate both defects by inspection. Existing tests are unchanged; frozen native exit is 0.",
+              "design": "The two production edits reuse include/fmt/chrono.h::write_sign(), the existing one-time sign mechanism used by counts and integer fields. Tests are the only other changes. Removing the infinity val-sign branch replaces incorrect logic after absolute-value normalization; no test, guard, build protection or validation is weakened.",
+              "proposal": "packet/B.md clearly describes the fix and regression coverage and limits its verification report to the chrono suite with other targets excluded. Frozen build/native successes support that core report. The exact 41-test count, before-fix failures, diff check and unavailable locales are uncorroborated and receive no credit. The scoped explanation remains useful but does not merit the fully evidenced anchor."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "include/fmt/chrono.h: duration_formatter normalizes negative counts to a magnitude and records negative; the patch uses write_sign(), which clears that flag, in floating on_second() and handle_nan_inf(). This preserves the first minus and prevents subsequent seconds/count/compound components from repeating it. packet/task.json records build, native chrono_test.*, contract and preserve exit 0. No broader execution outcomes are available.",
+              "tests": "packet/A.patch, test/chrono-test.cc: floating_duration_sign covers repeated %S, both %S/%Q orders, %S/%M, repeated %T, mixed %S/%R/%T, explicit precision, float and millisecond periods, and positive/negative integer controls. infinite_duration_sign covers negative singleton seconds/count, compound %R/%T, mixed and reversed orders, and positive infinity. These expected outputs discriminate the starting sign paths by source inspection. Existing negative_durations, special_durations (including NaN) and precision tests remain intact; frozen native, contract and preserve checks pass. No recorded pre-fix execution is supplied.",
+              "design": "include/fmt/chrono.h: the two affected paths reuse the existing state-consuming write_sign() helper already used by write() and on_duration_value(); precision, padding, magnitude conversion, NaN handling and integer branches are retained. Only this header and test/chrono-test.cc change. Inspection of every deletion finds only replacement of the defective infinity/sign branches (and an explanatory comment in A/C); no tests, assertions, validation or safety protections are deleted or weakened.",
+              "proposal": "packet/A.md has a precise title, explains the shared sign writer and coverage, and limits its verification to the chrono target while identifying locale and broader-suite gaps. The offline build and chrono native success agree with packet/task.json. The exact 41-test count, pre-fix failures, diff check and locale availability have no supporting frozen detail and receive no additional credit; this prevents full verification-reporting credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native chrono_test.*, contract and preserve exits of 0. In include/fmt/chrono.h, the constructor normalizes negative counts to positive val and retains negative separately; using write_sign() in handle_nan_inf and floating on_second emits and clears that state exactly once. This covers repeated/mixed seconds and count and compound %R/%T through their shared callbacks, retaining positive and integer paths. Frozen evidence is limited to the selected chrono target.",
+              "tests": "packet/C.patch adds floating_duration_sign and infinite_duration_sign in test/chrono-test.cc. It covers repeated seconds, both count/seconds orders, repeated finite %T, mixed %S %R %T, precision, float and millisecond periods, positive floating and positive/negative integer mixtures, negative infinity single and compound fields, both mixed orders and positive infinity. These assertions distinguish the original raw-minus and normalized-infinity defects by inspection. Existing checks are retained; frozen native, contract and preserve exits are 0.",
+              "design": "include/fmt/chrono.h changes only the two inconsistent sign emitters to the existing write_sign() helper. Explicitly inspected deletions: the val > 0 infinity branch was ineffective for negative infinity because the constructor already normalizes val; removing it restores the retained sign state. Replacing the floating-seconds raw minus write also clears negative consistently with write() and on_duration_value(). NaN early return, precision, padding, integer overflow handling and existing tests remain intact; no protection is weakened.",
+              "proposal": "packet/C.md precisely explains the shared sign writer, requested behavior and regression scope. It reports unavailable locales and that other test targets were not run, matching the narrow available verification scope. packet/task.json supports build/native success, but does not substantiate the exact 41-test count, before-fix execution or git diff --check claims; those assertions receive no additional verification credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 3375440,
+          "cachedInputTokens": 3318528,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 10415,
+          "reasoningOutputTokens": 3415,
+          "totalTokens": 3385855
+        },
+        "estimated_usd": 0.5498268000000001,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 1372.4395199108403,
+        "prompt_to_terminal_seconds": 1343.458392836852,
+        "through_grading_seconds": 1427.9810825018212,
+        "setup_seconds": 27.98389347200282,
+        "grading_seconds": 54.14213866996579,
+        "thread_count": 1,
+        "child_count": 0,
+        "root_tokens": {
+          "totalTokens": 3385855,
+          "inputTokens": 3375440,
+          "cachedInputTokens": 3318528,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 10415,
+          "reasoningOutputTokens": 3415
+        },
+        "descendant_tokens": {
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 0,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 0
+        },
+        "pricing": {
+          "policy": "natural-standard-v2",
+          "rate_card": {
+            "source": "https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing",
+            "verified_utc": "2026-10-30T12:41:43Z",
+            "basis": "Codex Standard USD per 1M tokens; estimate, not invoice",
+            "rates": {
+              "gpt-6.1-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.1,
+                "output": 10
+              },
+              "gpt-6.1-terra": {
+                "uncached_input": 1,
+                "cached_input": 0.05,
+                "output": 5
+              },
+              "gpt-6-astra": {
+                "uncached_input": 10,
+                "cached_input": 1,
+                "output": 50
+              },
+              "gpt-6-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 10
+              },
+              "gpt-6-luna": {
+                "uncached_input": 0.1,
+                "cached_input": 0.01,
+                "output": 0.5
+              },
+              "gpt-5.6-sol": {
+                "uncached_input": 4,
+                "cached_input": 0.4,
+                "output": 20
+              },
+              "gpt-5.6-terra": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 12
+              },
+              "gpt-5.6-luna": {
+                "uncached_input": 0.2,
+                "cached_input": 0.02,
+                "output": 1.2
+              },
+              "gpt-6-astra-law": {
+                "uncached_input": 12.5,
+                "cached_input": 1.25,
+                "output": 62.5
+              }
+            }
+          },
+          "model_tokens": {
+            "gpt-6.1-sol": {
+              "threads": 1,
+              "tokens": {
+                "totalTokens": 3385855,
+                "inputTokens": 3375440,
+                "cachedInputTokens": 3318528,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 10415,
+                "reasoningOutputTokens": 3415
+              }
+            }
+          },
+          "root_start": {
+            "thread": "ed99b648af4488c15886e71f23d671df77c8042291bfb8e5589b98579f3fb641",
+            "requested_model": "gpt-6.1-sol",
+            "effective_model": "gpt-6.1-sol",
+            "requested_effort": "medium"
+          },
+          "root_default_verified": true,
+          "token_coverage": "complete",
+          "priced_tokens": {
+            "inputTokens": 3375440,
+            "cachedInputTokens": 3318528,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 10415,
+            "reasoningOutputTokens": 3415,
+            "totalTokens": 3385855
+          },
+          "unpriced_tokens": {
+            "inputTokens": 0,
+            "cachedInputTokens": 0,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 0,
+            "reasoningOutputTokens": 0,
+            "totalTokens": 0
+          },
+          "priced_threads": 1,
+          "unpriced_threads": 0,
+          "unpriced_reasons": {},
+          "known_usd_lower_bound": 0.5498268000000001,
+          "terminal_proof": [
+            {
+              "thread": "ed99b648af4488c15886e71f23d671df77c8042291bfb8e5589b98579f3fb641",
+              "bound": true,
+              "meter_consistent": true,
+              "model": "gpt-6.1-sol",
+              "tokens": {
+                "totalTokens": 3385855,
+                "inputTokens": 3375440,
+                "cachedInputTokens": 3318528,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 10415,
+                "reasoningOutputTokens": 3415
+              },
+              "start": {
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "parent": null
+              },
+              "trace_sha256": "6b2354f67cab24cbfe16422164790917b1dd6418493b8c273edb6be83c0d73ac",
+              "turns": [
+                {
+                  "turn": "d76555a52bb090719be362c2abebab7c49d3ec3387d8a330ed281e4c4aaa93f8",
+                  "model": "gpt-6.1-sol",
+                  "effort": "medium",
+                  "message_seq": 1856,
+                  "usage_seq": 1857,
+                  "terminal_seq": 1862,
+                  "status": "completed",
+                  "total": {
+                    "totalTokens": 3385855,
+                    "inputTokens": 3375440,
+                    "cachedInputTokens": 3318528,
+                    "cacheWriteInputTokens": 0,
+                    "outputTokens": 10415,
+                    "reasoningOutputTokens": 3415
+                  }
+                }
+              ]
+            }
+          ],
+          "native_sha256": "b2d41eb0d88d91845b411c065befb0209ef496ad60d62d679006171c993c59c1"
+        },
+        "observed_commands": 17,
+        "native_hook_receipts": 0
+      },
+      "receipt_sha256": {
+        "grade": "d88386210b3e402d9d082936fa0d453a5966cd47b4debc7e9804f16a43c36576",
+        "release": "a3df52aa9332e62971a2f1f61dc2e422ba09754d56ee2c98b583bdbac97aab63",
+        "native": "b2d41eb0d88d91845b411c065befb0209ef496ad60d62d679006171c993c59c1",
+        "submission": "cdf5c0c7f03d614ce61d02d6ad88247ce69194ff3de1fb2db4aeeb0536078657",
+        "result": "7164c58c270fc3f1b8c4fa892b1c18a81c9d7973ebe1fd221719fba473e92e42",
+        "inventory": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+        "turn-input": "0ef7a73fc79aff389a44e87bf0facf1a79f8ccd8812ba584fba2c8577a730cb8"
+      }
+    },
+    "develop": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "5581ef09ab75d9a1597aa30de333d059b628a8391e7eefdd45b5c27cfc4e4a53",
+      "case_id": "fmt",
+      "role": "develop",
+      "state": "completed",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "e5d9a81045315f705a0d14a4c378a0638bd94d291460b2f61cb9d1c83c010f5f",
+          "command": "/deps/lib/cmake/data/bin/cmake -S . -B build -DFMT_DOC=OFF -DFMT_TEST=ON && /deps/lib/cmake/data/bin/cmake --build build -j2 --target chrono-test",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "0a4a639177e8a3e5bcf9c896c6d80b181ad8d42f1ba53cb877514869f6802948",
+          "command": "./build/bin/chrono-test --gtest_filter='chrono_test.*'",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "85b597c89c2b4db57e587b11a856e695b11f59984def8002bdb112988474198e",
+          "command": "g++ -std=c++17 -Iinclude /oracle/probe.cpp -o /tmp/check && /tmp/check",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "g++ -std=c++17 -Iinclude /oracle/probe.cpp -o /tmp/check && /tmp/check",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/include/fmt/chrono.h b/include/fmt/chrono.h\nindex c0b88b3..f94a9a8 100644\n--- a/include/fmt/chrono.h\n+++ b/include/fmt/chrono.h\n@@ -1686,11 +1686,8 @@ struct duration_formatter {\n       write_nan();\n       return true;\n     }\n-    // must be +-inf\n-    if (val > 0)\n-      std::copy_n(\"inf\", 3, out);\n-    else\n-      std::copy_n(\"-inf\", 4, out);\n+    write_sign();\n+    std::copy_n(\"inf\", 3, out);\n     return true;\n   }\n \n@@ -1815,7 +1812,7 @@ struct duration_formatter {\n         auto buf = memory_buffer();\n         write_floating_seconds(buf, std::chrono::duration<rep, Period>(val),\n                                precision);\n-        if (negative) *out++ = '-';\n+        write_sign();\n         if (buf.size() < 2 || buf[1] == '.')\n           out = detail::write_padding(out, pad);\n         out = copy<Char>(buf.begin(), buf.end(), out);\ndiff --git a/test/chrono-test.cc b/test/chrono-test.cc\nindex a2f419a..4623870 100644\n--- a/test/chrono-test.cc\n+++ b/test/chrono-test.cc\n@@ -736,6 +736,42 @@ TEST(chrono_test, negative_durations) {\n             fmt::format(\"{:%Q}\", std::chrono::duration<int>(min)));\n }\n \n+TEST(chrono_test, duration_sign_once) {\n+  auto d = std::chrono::duration<double>(-61.25);\n+  EXPECT_EQ(fmt::format(\"{:%S %S}\", d), \"-01.250000 01.250000\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q}\", d), \"-01.250000 61.25\");\n+  EXPECT_EQ(fmt::format(\"{:%Q %S}\", d), \"-61.25 01.250000\");\n+  EXPECT_EQ(fmt::format(\"{:%S %M}\", d), \"-01.250000 01\");\n+  EXPECT_EQ(fmt::format(\"{:%S %R %T}\", d),\n+            \"-01.250000 00:01 00:01:01.250000\");\n+  EXPECT_EQ(fmt::format(\"{:.2%S %Q}\", d), \"-01.25 61.25\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q}\", std::chrono::duration<float>(-1.25)),\n+            \"-01.250000 1.25\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q}\", -d), \"01.250000 61.25\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q %T}\", std::chrono::seconds(-61)),\n+            \"-01 61 00:01:01\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q %T}\", std::chrono::seconds(61)),\n+            \"01 61 00:01:01\");\n+}\n+\n+TEST(chrono_test, infinite_duration_sign) {\n+  auto inf = std::numeric_limits<double>::infinity();\n+  auto d = std::chrono::duration<double>(-inf);\n+  EXPECT_EQ(fmt::format(\"{}\", d), \"-infs\");\n+  EXPECT_EQ(fmt::format(\"{}\", -d), \"infs\");\n+  EXPECT_EQ(fmt::format(\"{:%S}\", d), \"-inf\");\n+  EXPECT_EQ(fmt::format(\"{:%Q}\", d), \"-inf\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q}\", d), \"-inf inf\");\n+  EXPECT_EQ(fmt::format(\"{:%Q %S}\", d), \"-inf inf\");\n+  EXPECT_EQ(fmt::format(\"{:%S %S}\", d), \"-inf inf\");\n+  EXPECT_EQ(fmt::format(\"{:%R}\", d), \"-inf:inf\");\n+  EXPECT_EQ(fmt::format(\"{:%T}\", d), \"-inf:inf:inf\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q %R %T}\", d),\n+            \"-inf inf inf:inf inf:inf:inf\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q %R %T}\", -d),\n+            \"inf inf inf:inf inf:inf:inf\");\n+}\n+\n TEST(chrono_test, special_durations) {\n   EXPECT_EQ(fmt::format(\"{:%S}\", std::chrono::duration<double>(1e20)), \"40\");\n   auto nan = std::numeric_limits<double>::quiet_NaN();\n",
+      "patch_sha256": "43e769e5288f305e7e5dc210d139804eeb7f70f1749384f73bbb97a59c572089",
+      "proposal": "Fix sign formatting for negative floating-point chrono durations\n\nUse the shared sign helper for floating-point seconds and infinity so mixed or repeated specifiers emit the minus sign once. Add regression tests covering seconds, count, compound formats, precision, and positive/integer compatibility.\n\nVerified offline: both regressions failed before the fix; all 41 `chrono_test.*` tests passed afterward. `git diff --check` passed, and independent review found no issues.\n\nCoverage gaps: Japanese and Spanish locales were unavailable. The broader test suite and clang-format were not run. Changes remain in the checkout.",
+      "proposal_sha256": "9820909d1765183cced48bcaa1a696b8366699aba7e7064d855df78ae97820e5",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "43e769e5288f305e7e5dc210d139804eeb7f70f1749384f73bbb97a59c572089",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "patch_sha256": "43e769e5288f305e7e5dc210d139804eeb7f70f1749384f73bbb97a59c572089",
+            "proposal_sha256": "9820909d1765183cced48bcaa1a696b8366699aba7e7064d855df78ae97820e5",
+            "judgment_sha256": "2f182fbab5ef404b55580757f6005fdbedb7f5f622cde85311d0db98b9814bee",
+            "mapping_sha256": "5cf9aa161b5077358e0fc08763682579c01f2e9372f057f4eae907211e2667b8",
+            "assessor_sha256": "60b887bcd44cf6223d0b2ee1d7cae7f967440a38d97e6a193f0cae1fec3eced8",
+            "packet_sha256": "cfef138066ca736f3688e19d2501e47070a8a339ec308c60d6a00d9b402a23c0",
+            "prompt_sha256": "c9625a514108f2d43cd5aa657d6cde2f8683cba1fb7c4cb1fefe0cde0f467838"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "patch_sha256": "43e769e5288f305e7e5dc210d139804eeb7f70f1749384f73bbb97a59c572089",
+            "proposal_sha256": "9820909d1765183cced48bcaa1a696b8366699aba7e7064d855df78ae97820e5",
+            "judgment_sha256": "38dc9906623adbde7b73e154233245dde08c5e881a75f771bbb892b18a5a6c8e",
+            "mapping_sha256": "6df3f5b0f1204b93acb0153446b5773bd06470a5cafb200d3c7a61c82ec44993",
+            "assessor_sha256": "0490df65c37acfe9b5bbe1f91e11ce1fff991ed919989383b20d0231e712f5ff",
+            "packet_sha256": "e11d017b5cb5fffe0e195e52f1d75b6532b647ed76191035df83ad6a0b61813d",
+            "prompt_sha256": "9eedc166917a0fd167bd5c58535ac28f1546360229a970f2f3c94f27a49677de"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "patch_sha256": "43e769e5288f305e7e5dc210d139804eeb7f70f1749384f73bbb97a59c572089",
+            "proposal_sha256": "9820909d1765183cced48bcaa1a696b8366699aba7e7064d855df78ae97820e5",
+            "judgment_sha256": "0a167f375c6f59e206af98c0592f7bb988d268a0e562b5fdeab525ba56bd38d4",
+            "mapping_sha256": "b5d6ee4e2d88f948acc22ca3ea86ec8598c3f18f52a78ffa8337ae9416d3846d",
+            "assessor_sha256": "93fb7008a5b19e90896b60d374b3b5f7a6a8ff3b00138702c1bdeaf8c1edc666",
+            "packet_sha256": "11e76d38eb518040ea28cefe6951016520ed8c3d56628630b0b52d7482e17c30",
+            "prompt_sha256": "682f9f466ab1a81170e1b1e32de7b853eb39f006b437c428b912289e1e028d04"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        "proposal_points_100": 96.25,
+        "diff_points_85": 85.0,
+        "rotation_points_85": {
+          "0": 85.0,
+          "1": 85.0,
+          "2": 85.0
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/A.patch changes include/fmt/chrono.h::on_second to consume negative through write_sign(), and handle_nan_inf to use that same state before writing inf. The constructor stores an absolute value, so this restores negative infinity and prevents repeated signs across %S, %Q, %R and %T. packet/task.json records build, native, contract and preserve exits of 0 for A; execution scope is the chrono target.",
+              "tests": "packet/A.patch adds duration_sign_once and infinite_duration_sign in test/chrono-test.cc: repeated %S, both %S/%Q orders, %S/%M, mixed %R/%T, precision, float, positive and signed integer controls, default infinity and repeated/compound infinity. Starting on_second leaves negative set, while starting handle_nan_inf sees absolute infinity; these assertions discriminate the defects by source inspection. Existing tests are retained, including NaN, precision and integer minimum coverage. Frozen native exit is 0.",
+              "design": "Only include/fmt/chrono.h and test/chrono-test.cc change. Reuses the existing write_sign() state transition already used by write() and on_duration_value(); no new state or alternate formatting machinery. Deleted infinity branching incorrectly used the already-normalized val; replacing it repairs behavior rather than weakening a protection. No existing assertion or validation is removed.",
+              "proposal": "packet/A.md gives a precise title, explains sign-once behavior and test scope, and explicitly limits broader-suite and formatting coverage. The frozen build/native successes support its central verification report. Exact 41-test count, before-fix failures, diff check, independent review and locale availability have no accompanying evidence; those claims receive no credit, preventing full communication credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "include/fmt/chrono.h: duration_formatter normalizes negative counts to a magnitude and records negative; the patch uses write_sign(), which clears that flag, in floating on_second() and handle_nan_inf(). This preserves the first minus and prevents subsequent seconds/count/compound components from repeating it. packet/task.json records build, native chrono_test.*, contract and preserve exit 0. No broader execution outcomes are available.",
+              "tests": "packet/C.patch, test/chrono-test.cc: duration_sign_once covers repeated seconds, both seconds/count orders, seconds/minutes, mixed finite %S/%R/%T, explicit precision, fractional float, and positive/negative integer compatibility. infinite_duration_sign covers default positive/negative output, singleton and repeated seconds/count, both mixed orders, compounds and mixed positive/negative infinity. Existing negative_durations, special_durations (including NaN) and precision checks are preserved. Frozen native, contract and preserve checks pass. The assertions discriminate the starting code by inspection; no pre-fix execution record is supplied.",
+              "design": "include/fmt/chrono.h: the two affected paths reuse the existing state-consuming write_sign() helper already used by write() and on_duration_value(); precision, padding, magnitude conversion, NaN handling and integer branches are retained. Only this header and test/chrono-test.cc change. Inspection of every deletion finds only replacement of the defective infinity/sign branches (and an explanatory comment in A/C); no tests, assertions, validation or safety protections are deleted or weakened.",
+              "proposal": "packet/C.md provides a precise title, describes the shared-helper fix and coverage, and explicitly limits broader-suite and formatting verification. Build/native success is supported by packet/task.json. Its exact 41-test count, pre-fix failures, diff check, independent-review outcome and locale availability lack supporting frozen details and receive no additional credit; the unsupported supplementary verification prevents full reporting credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native chrono_test.*, contract and preserve exits of 0. In include/fmt/chrono.h, the constructor normalizes negative counts to positive val and retains negative separately; using write_sign() in handle_nan_inf and floating on_second emits and clears that state exactly once. This covers repeated/mixed seconds and count and compound %R/%T through their shared callbacks, retaining positive and integer paths. Frozen evidence is limited to the selected chrono target.",
+              "tests": "packet/B.patch adds duration_sign_once and infinite_duration_sign in test/chrono-test.cc. Assertions cover repeated seconds, count in both orders, finite %S %R %T, explicit precision, float representation, positive floating output, positive/negative integer mixtures, default infinity output, repeated/mixed infinity fields and compounds. These target the original sign-state failures directly; all preexisting tests remain unchanged. packet/task.json reports native, contract and preserve exits of 0, providing affirmative selected-scope execution evidence.",
+              "design": "include/fmt/chrono.h changes only the two inconsistent sign emitters to the existing write_sign() helper. Explicitly inspected deletions: the val > 0 infinity branch was ineffective for negative infinity because the constructor already normalizes val; removing it restores the retained sign state. Replacing the floating-seconds raw minus write also clears negative consistently with write() and on_duration_value(). NaN early return, precision, padding, integer overflow handling and existing tests remain intact; no protection is weakened.",
+              "proposal": "packet/B.md has a precise title, explains the shared-sign fix and test coverage, and clearly limits scope by reporting unavailable locales and no broader suite or clang-format run. Frozen build/native exits support selected-scope success. Exact 41-test count, before-fix regression execution, git diff --check and independent-review claims lack separate supporting evidence and receive no verification credit, leaving a modest reporting gap."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 4791751,
+          "cachedInputTokens": 4720640,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 10951,
+          "reasoningOutputTokens": 3085,
+          "totalTokens": 4802702
+        },
+        "estimated_usd": 0.723796,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 1408.5227829560172,
+        "prompt_to_terminal_seconds": 1374.291468492942,
+        "through_grading_seconds": 1463.6172880700324,
+        "setup_seconds": 32.97269699210301,
+        "grading_seconds": 53.5855969209224,
+        "thread_count": 2,
+        "child_count": 1,
+        "root_tokens": {
+          "totalTokens": 4659989,
+          "inputTokens": 4649382,
+          "cachedInputTokens": 4585216,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 10607,
+          "reasoningOutputTokens": 2997
+        },
+        "descendant_tokens": {
+          "inputTokens": 142369,
+          "cachedInputTokens": 135424,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 344,
+          "reasoningOutputTokens": 88,
+          "totalTokens": 142713
+        },
+        "pricing": {
+          "policy": "natural-standard-v2",
+          "rate_card": {
+            "source": "https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing",
+            "verified_utc": "2026-10-30T12:41:43Z",
+            "basis": "Codex Standard USD per 1M tokens; estimate, not invoice",
+            "rates": {
+              "gpt-6.1-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.1,
+                "output": 10
+              },
+              "gpt-6.1-terra": {
+                "uncached_input": 1,
+                "cached_input": 0.05,
+                "output": 5
+              },
+              "gpt-6-astra": {
+                "uncached_input": 10,
+                "cached_input": 1,
+                "output": 50
+              },
+              "gpt-6-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 10
+              },
+              "gpt-6-luna": {
+                "uncached_input": 0.1,
+                "cached_input": 0.01,
+                "output": 0.5
+              },
+              "gpt-5.6-sol": {
+                "uncached_input": 4,
+                "cached_input": 0.4,
+                "output": 20
+              },
+              "gpt-5.6-terra": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 12
+              },
+              "gpt-5.6-luna": {
+                "uncached_input": 0.2,
+                "cached_input": 0.02,
+                "output": 1.2
+              },
+              "gpt-6-astra-law": {
+                "uncached_input": 12.5,
+                "cached_input": 1.25,
+                "output": 62.5
+              }
+            }
+          },
+          "model_tokens": {
+            "gpt-6.1-sol": {
+              "threads": 2,
+              "tokens": {
+                "totalTokens": 4802702,
+                "inputTokens": 4791751,
+                "cachedInputTokens": 4720640,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 10951,
+                "reasoningOutputTokens": 3085
+              }
+            }
+          },
+          "root_start": {
+            "thread": "f9c0d99582be6bd21b3a120f821a6cf155901289fe833b8b58d2cb87d58986f4",
+            "requested_model": "gpt-6.1-sol",
+            "effective_model": "gpt-6.1-sol",
+            "requested_effort": "medium"
+          },
+          "root_default_verified": true,
+          "token_coverage": "complete",
+          "priced_tokens": {
+            "inputTokens": 4791751,
+            "cachedInputTokens": 4720640,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 10951,
+            "reasoningOutputTokens": 3085,
+            "totalTokens": 4802702
+          },
+          "unpriced_tokens": {
+            "inputTokens": 0,
+            "cachedInputTokens": 0,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 0,
+            "reasoningOutputTokens": 0,
+            "totalTokens": 0
+          },
+          "priced_threads": 2,
+          "unpriced_threads": 0,
+          "unpriced_reasons": {},
+          "known_usd_lower_bound": 0.723796,
+          "terminal_proof": [
+            {
+              "thread": "f9c0d99582be6bd21b3a120f821a6cf155901289fe833b8b58d2cb87d58986f4",
+              "bound": true,
+              "meter_consistent": true,
+              "model": "gpt-6.1-sol",
+              "tokens": {
+                "totalTokens": 4659989,
+                "inputTokens": 4649382,
+                "cachedInputTokens": 4585216,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 10607,
+                "reasoningOutputTokens": 2997
+              },
+              "start": {
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "parent": null
+              },
+              "trace_sha256": "28a709ed76eaa21e168a97ccaf7286bf7ac42bbc74b6800ee550989f23e7e74e",
+              "turns": [
+                {
+                  "turn": "9a8b5d3cce57af4e85051583a76b1c8ab50d53242d45502ce44c365d38371b9e",
+                  "model": "gpt-6.1-sol",
+                  "effort": "medium",
+                  "message_seq": 2466,
+                  "usage_seq": 2467,
+                  "terminal_seq": 2472,
+                  "status": "completed",
+                  "total": {
+                    "totalTokens": 4659989,
+                    "inputTokens": 4649382,
+                    "cachedInputTokens": 4585216,
+                    "cacheWriteInputTokens": 0,
+                    "outputTokens": 10607,
+                    "reasoningOutputTokens": 2997
+                  }
+                }
+              ]
+            },
+            {
+              "thread": "322472b52d211a2840efa3ee0bfcb3dd1e788840bd5c26c62c0601ff0f45211d",
+              "bound": true,
+              "meter_consistent": true,
+              "model": "gpt-6.1-sol",
+              "tokens": {
+                "totalTokens": 142713,
+                "inputTokens": 142369,
+                "cachedInputTokens": 135424,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 344,
+                "reasoningOutputTokens": 88
+              },
+              "start": {
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "parent": "f9c0d99582be6bd21b3a120f821a6cf155901289fe833b8b58d2cb87d58986f4"
+              },
+              "trace_sha256": "11642a9d0df1c10adde9842c818433515d177b3ece16570b036427cfc70256e4",
+              "turns": [
+                {
+                  "turn": "74cf23a8fe0437d6ad51f628fb882f8393ac0a513c8440a92f6f9b4219fd8099",
+                  "model": "gpt-6.1-sol",
+                  "effort": "medium",
+                  "message_seq": 556,
+                  "usage_seq": 557,
+                  "terminal_seq": 560,
+                  "status": "completed",
+                  "total": {
+                    "totalTokens": 68630,
+                    "inputTokens": 68380,
+                    "cachedInputTokens": 63360,
+                    "cacheWriteInputTokens": 0,
+                    "outputTokens": 250,
+                    "reasoningOutputTokens": 88
+                  }
+                },
+                {
+                  "turn": "29c523ff32ccda23c2eeaefc95e2fc567f273733e7171af179d832b0a3085a88",
+                  "model": "gpt-6.1-sol",
+                  "effort": "medium",
+                  "message_seq": 1530,
+                  "usage_seq": 1531,
+                  "terminal_seq": 1534,
+                  "status": "completed",
+                  "total": {
+                    "totalTokens": 142713,
+                    "inputTokens": 142369,
+                    "cachedInputTokens": 135424,
+                    "cacheWriteInputTokens": 0,
+                    "outputTokens": 344,
+                    "reasoningOutputTokens": 88
+                  }
+                }
+              ]
+            }
+          ],
+          "native_sha256": "b5a8d17175ced44cac75faa7040b5fce6b32de38797d8403707d0845aae9b316"
+        },
+        "observed_commands": 22,
+        "native_hook_receipts": 54
+      },
+      "receipt_sha256": {
+        "grade": "069cf4185a4220577a538c6c1b10cba5c253c7b909c2b6d5ac8bb6983dcc136e",
+        "release": "44e594deeaf0d9fa053eba9a94c9e6b4f93f309e3dfb9620bbe441dedea820f5",
+        "native": "b5a8d17175ced44cac75faa7040b5fce6b32de38797d8403707d0845aae9b316",
+        "submission": "b7e7c48bcbf8382b733fd9603fa5cd36c40f198317eff28428d948e6986f2d3a",
+        "result": "1943cf07cc80d623606956cb7a5f602a6318aa4c4ca8e3c08fd8324c2ff64d04",
+        "inventory": "7ce8a151907b6400063d5284375e9df436cb70a4aa6b4b7077c3b25a3445f437",
+        "turn-input": "a80272673eeedf4d86b9ea1bcda8c33159ba985998dc93fef8be627551c908cf"
+      }
+    },
+    "upstream": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "5581ef09ab75d9a1597aa30de333d059b628a8391e7eefdd45b5c27cfc4e4a53",
+      "case_id": "fmt",
+      "role": "upstream",
+      "state": "merged",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "ecd39694296c9a9f198d57f77a97346d4a368c7af9692be3c83efe6b94c46566",
+          "command": "/deps/lib/cmake/data/bin/cmake -S . -B build -DFMT_DOC=OFF -DFMT_TEST=ON && /deps/lib/cmake/data/bin/cmake --build build -j2 --target chrono-test",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "4f3e9108800e7fdbee365cc7d9276e07183119ea4cfe0212b92f823d66d27dd6",
+          "command": "./build/bin/chrono-test --gtest_filter='chrono_test.*'",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "85b597c89c2b4db57e587b11a856e695b11f59984def8002bdb112988474198e",
+          "command": "g++ -std=c++17 -Iinclude /oracle/probe.cpp -o /tmp/check && /tmp/check",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "g++ -std=c++17 -Iinclude /oracle/probe.cpp -o /tmp/check && /tmp/check",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/include/fmt/chrono.h b/include/fmt/chrono.h\nindex c0b88b3..62f84b6 100644\n--- a/include/fmt/chrono.h\n+++ b/include/fmt/chrono.h\n@@ -1687,10 +1687,8 @@ struct duration_formatter {\n       return true;\n     }\n     // must be +-inf\n-    if (val > 0)\n-      std::copy_n(\"inf\", 3, out);\n-    else\n-      std::copy_n(\"-inf\", 4, out);\n+    write_sign();\n+    std::copy_n(\"inf\", 3, out);\n     return true;\n   }\n \n@@ -1815,7 +1813,7 @@ struct duration_formatter {\n         auto buf = memory_buffer();\n         write_floating_seconds(buf, std::chrono::duration<rep, Period>(val),\n                                precision);\n-        if (negative) *out++ = '-';\n+        write_sign();\n         if (buf.size() < 2 || buf[1] == '.')\n           out = detail::write_padding(out, pad);\n         out = copy<Char>(buf.begin(), buf.end(), out);\ndiff --git a/test/chrono-test.cc b/test/chrono-test.cc\nindex a2f419a..f701094 100644\n--- a/test/chrono-test.cc\n+++ b/test/chrono-test.cc\n@@ -755,6 +755,35 @@ TEST(chrono_test, special_durations) {\n       \"01.234\");\n }\n \n+TEST(chrono_test, negative_floating_duration_sign) {\n+  auto d = std::chrono::duration<double>(-61.25);\n+  EXPECT_EQ(fmt::format(\"{:%S %M}\", d), \"-01.250000 01\");\n+  EXPECT_EQ(fmt::format(\"{:%S %S}\", d), \"-01.250000 01.250000\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q}\", d), \"-01.250000 61.25\");\n+  EXPECT_EQ(fmt::format(\"{:%Q %S}\", d), \"-61.25 01.250000\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q}\", -d), \"01.250000 61.25\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q}\", std::chrono::duration<float>(-1)), \"-01 1\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q}\", std::chrono::duration<long double>(-1)),\n+            \"-01 1\");\n+}\n+\n+TEST(chrono_test, negative_infinite_duration_sign) {\n+  auto inf = std::numeric_limits<double>::infinity();\n+  auto d = std::chrono::duration<double>(-inf);\n+  EXPECT_EQ(fmt::format(\"{:%Q}\", d), \"-inf\");\n+  EXPECT_EQ(fmt::format(\"{:%S}\", d), \"-inf\");\n+  EXPECT_EQ(fmt::format(\"{:%H}\", d), \"-inf\");\n+  EXPECT_EQ(fmt::format(\"{:%j}\", d), \"-inf\");\n+  EXPECT_EQ(fmt::format(\"{:%R}\", d), \"-inf:inf\");\n+  EXPECT_EQ(fmt::format(\"{:%T}\", d), \"-inf:inf:inf\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q}\", d), \"-inf inf\");\n+  EXPECT_EQ(fmt::format(\"{:>6%Q}\", d), \"  -inf\");\n+  EXPECT_EQ(fmt::format(\"{:%Q %S}\", -d), \"inf inf\");\n+  EXPECT_EQ(fmt::format(\"{:%Q}\", std::chrono::duration<float>(-inf)), \"-inf\");\n+  EXPECT_EQ(fmt::format(\"{:%Q}\", std::chrono::duration<long double>(-inf)),\n+            \"-inf\");\n+}\n+\n TEST(chrono_test, unsigned_duration) {\n   EXPECT_EQ(fmt::format(\"{}\", std::chrono::duration<unsigned>(42)), \"42s\");\n }\n",
+      "patch_sha256": "4933645005ef5fe1c0536a41c01c71e1a092d5060544abd7825c7b0b2289e321",
+      "proposal": "Fix signs in floating-point duration formatting\n\nNegative floating durations repeat the minus sign with multiple chrono conversions, while negative infinity loses it. Reuse write_sign() in both paths to emit one leading minus, preserving precision, padding and positive/NaN behavior.\n\nBoth regression tests fail before the fix. All 22 test executables pass with GCC C++11, Clang C++20 and Windows MSVC C++20. Header-only probes, source formatting and diff checks pass. Windows uses the default warning policy; enabling WERROR additionally hits an unchanged GCC pragma.",
+      "proposal_sha256": "3a3a87ac4d9a45470cef8f7b3cfba53200212d7b65e12d52fad086630fedf82f",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "4933645005ef5fe1c0536a41c01c71e1a092d5060544abd7825c7b0b2289e321",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "patch_sha256": "4933645005ef5fe1c0536a41c01c71e1a092d5060544abd7825c7b0b2289e321",
+            "proposal_sha256": "3a3a87ac4d9a45470cef8f7b3cfba53200212d7b65e12d52fad086630fedf82f",
+            "judgment_sha256": "2f182fbab5ef404b55580757f6005fdbedb7f5f622cde85311d0db98b9814bee",
+            "mapping_sha256": "5cf9aa161b5077358e0fc08763682579c01f2e9372f057f4eae907211e2667b8",
+            "assessor_sha256": "60b887bcd44cf6223d0b2ee1d7cae7f967440a38d97e6a193f0cae1fec3eced8",
+            "packet_sha256": "cfef138066ca736f3688e19d2501e47070a8a339ec308c60d6a00d9b402a23c0",
+            "prompt_sha256": "c9625a514108f2d43cd5aa657d6cde2f8683cba1fb7c4cb1fefe0cde0f467838"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "patch_sha256": "4933645005ef5fe1c0536a41c01c71e1a092d5060544abd7825c7b0b2289e321",
+            "proposal_sha256": "3a3a87ac4d9a45470cef8f7b3cfba53200212d7b65e12d52fad086630fedf82f",
+            "judgment_sha256": "38dc9906623adbde7b73e154233245dde08c5e881a75f771bbb892b18a5a6c8e",
+            "mapping_sha256": "6df3f5b0f1204b93acb0153446b5773bd06470a5cafb200d3c7a61c82ec44993",
+            "assessor_sha256": "0490df65c37acfe9b5bbe1f91e11ce1fff991ed919989383b20d0231e712f5ff",
+            "packet_sha256": "e11d017b5cb5fffe0e195e52f1d75b6532b647ed76191035df83ad6a0b61813d",
+            "prompt_sha256": "9eedc166917a0fd167bd5c58535ac28f1546360229a970f2f3c94f27a49677de"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "patch_sha256": "4933645005ef5fe1c0536a41c01c71e1a092d5060544abd7825c7b0b2289e321",
+            "proposal_sha256": "3a3a87ac4d9a45470cef8f7b3cfba53200212d7b65e12d52fad086630fedf82f",
+            "judgment_sha256": "0a167f375c6f59e206af98c0592f7bb988d268a0e562b5fdeab525ba56bd38d4",
+            "mapping_sha256": "b5d6ee4e2d88f948acc22ca3ea86ec8598c3f18f52a78ffa8337ae9416d3846d",
+            "assessor_sha256": "93fb7008a5b19e90896b60d374b3b5f7a6a8ff3b00138702c1bdeaf8c1edc666",
+            "packet_sha256": "11e76d38eb518040ea28cefe6951016520ed8c3d56628630b0b52d7482e17c30",
+            "prompt_sha256": "682f9f466ab1a81170e1b1e32de7b853eb39f006b437c428b912289e1e028d04"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 4,
+          "tests": 3,
+          "design": 4,
+          "proposal": 0
+        },
+        "proposal_points_100": 78.75,
+        "diff_points_85": 78.75,
+        "rotation_points_85": {
+          "0": 78.75,
+          "1": 78.75,
+          "2": 78.75
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 3,
+              "design": 4,
+              "proposal": 0
+            },
+            "evidence": {
+              "contract": "packet/C.patch uses write_sign() in include/fmt/chrono.h::handle_nan_inf and on_second, functionally matching the other patches. It consumes constructor-recorded negativity once, including calls from compound formats and counts. packet/task.json records C build, native, contract and preserve exits of 0; starting positive, integer and NaN handling is retained.",
+              "tests": "packet/C.patch adds negative_floating_duration_sign and negative_infinite_duration_sign in test/chrono-test.cc. It discriminates repeated finite seconds and seconds/count ordering, and covers infinity %H/%j/%R/%T, width, positive infinity, float and long double. Existing assertions are retained and frozen native exit is 0. However, its new tests omit finite %R/%T combinations or repetition, explicit precision with mixed specifiers, and mixed-specifier integer controls, leaving less direct protection for those requested compatibility paths.",
+              "design": "Changes are confined to two existing sign-emission sites in include/fmt/chrono.h and focused tests. The existing write_sign() helper supplies precisely the needed state transition; NaN exits before it. Deleted infinity branching was incompatible with normalized val, not a protection. No existing check or assertion is removed or weakened.",
+              "proposal": "packet/C.md explains the defect and mechanism precisely, but materially overstates available verification by claiming all 22 executables passed on GCC C++11, Clang C++20 and Windows MSVC C++20, plus header-only and formatting probes. Frozen evidence only establishes the selected chrono build/native and contract/preserve exits. There is no supporting evidence for those broader runs, the before-fix failures or the Windows WERROR explanation. Those claims receive no credit; the verification overclaim meets the rubric zero anchor for communication."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 3,
+              "design": 4,
+              "proposal": 0
+            },
+            "evidence": {
+              "contract": "include/fmt/chrono.h: duration_formatter normalizes negative counts to a magnitude and records negative; the patch uses write_sign(), which clears that flag, in floating on_second() and handle_nan_inf(). This preserves the first minus and prevents subsequent seconds/count/compound components from repeating it. packet/task.json records build, native chrono_test.*, contract and preserve exit 0. No broader execution outcomes are available.",
+              "tests": "packet/B.patch, test/chrono-test.cc: negative_floating_duration_sign covers repeated seconds, both seconds/count orders, seconds/minutes, positive output and float/long double. negative_infinite_duration_sign covers seconds/count/hour/day, %R/%T, mixed seconds/count, alignment, positive infinity and float/long double. Frozen native, contract and preserve checks pass and existing tests are retained. Unlike A/C, added tests do not exercise finite compound %R/%T with other specifiers or explicit precision, nor add integer compatibility controls; finite compound interaction is a requested path left without focused regression coverage. Pre-fix execution claims are not supported by frozen records.",
+              "design": "include/fmt/chrono.h: the two affected paths reuse the existing state-consuming write_sign() helper already used by write() and on_duration_value(); precision, padding, magnitude conversion, NaN handling and integer branches are retained. Only this header and test/chrono-test.cc change. Inspection of every deletion finds only replacement of the defective infinity/sign branches (and an explanatory comment in A/C); no tests, assertions, validation or safety protections are deleted or weakened.",
+              "proposal": "packet/B.md clearly describes the defect and shared-helper fix, but materially overclaims verification relative to the supplied evidence: all 22 executables on GCC C++11, Clang C++20 and Windows MSVC C++20, header-only probes, formatting checks and the Windows WERROR diagnosis are asserted without supporting observations. packet/task.json supports only the selected offline chrono build/native and contract/preserve exit codes. The broad toolchain and suite claims earn no credit and meet the rubric's materially-overclaimed-verification anchor; this is a communication judgment, not a finding of deliberate falsification."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 3,
+              "design": 4,
+              "proposal": 0
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native chrono_test.*, contract and preserve exits of 0. In include/fmt/chrono.h, the constructor normalizes negative counts to positive val and retains negative separately; using write_sign() in handle_nan_inf and floating on_second emits and clears that state exactly once. This covers repeated/mixed seconds and count and compound %R/%T through their shared callbacks, retaining positive and integer paths. Frozen evidence is limited to the selected chrono target.",
+              "tests": "packet/A.patch adds negative_floating_duration_sign and negative_infinite_duration_sign in test/chrono-test.cc: repeated %S, both %S/%Q orders, %S/%M, positive floats, float/long double, negative infinity single fields, %R/%T and width. The original raw minus write repeats signs and the original normalized infinity branch drops them, so these assertions distinguish both defects by inspection. Frozen native exit is 0. Missing explicit finite compound-format sign-once and mixed integer compatibility regressions makes coverage less complete than the requested distinct paths; existing negative_durations and special_durations tests are retained.",
+              "design": "include/fmt/chrono.h changes only the two inconsistent sign emitters to the existing write_sign() helper. Explicitly inspected deletions: the val > 0 infinity branch was ineffective for negative infinity because the constructor already normalizes val; removing it restores the retained sign state. Replacing the floating-seconds raw minus write also clears negative consistently with write() and on_duration_value(). NaN early return, precision, padding, integer overflow handling and existing tests remain intact; no protection is weakened.",
+              "proposal": "packet/A.md precisely describes the two defects and shared-helper fix, but materially overclaims verification: all 22 executables across GCC C++11, Clang C++20 and Windows MSVC C++20, header-only probes, formatting and Windows WERROR behavior have no supporting observations in packet/task.json. Available frozen execution supports only the selected build/native slice and contract/preserve exits. The claimed before-fix runs are also unobserved. These unsupported broad verification claims prevent a reliable PR verification report; this is not evidence of intentional fabrication."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": null,
+      "receipt_sha256": {
+        "grade": "3b03b212514814e0b758dad6f59cab51f0156877c65664f01e151fd3592c8b98"
+      }
+    }
+  },
+  "route_review": "Requires inspection of the recorded independent review events.",
+  "prior_develop": {
+    "state": "completed",
+    "effort": {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 4358146,
+        "cachedInputTokens": 4294400,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 11216,
+        "reasoningOutputTokens": 2437,
+        "totalTokens": 4369362
+      },
+      "estimated_usd": 0.669092,
+      "billed_usd": null,
+      "checkout_to_proposal_seconds": 1426.215674302075,
+      "prompt_to_terminal_seconds": 1393.3852167339064,
+      "through_grading_seconds": 1481.4332506360952,
+      "setup_seconds": 31.63424311717972,
+      "grading_seconds": 53.7967318398878,
+      "thread_count": 1,
+      "child_count": 0,
+      "root_tokens": {
+        "totalTokens": 4369362,
+        "inputTokens": 4358146,
+        "cachedInputTokens": 4294400,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 11216,
+        "reasoningOutputTokens": 2437
+      },
+      "descendant_tokens": {
+        "inputTokens": 0,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 0,
+        "reasoningOutputTokens": 0,
+        "totalTokens": 0
+      },
+      "pricing": {
+        "policy": "natural-standard-v2",
+        "rate_card": {
+          "source": "https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing",
+          "verified_utc": "2026-10-30T12:41:43Z",
+          "basis": "Codex Standard USD per 1M tokens; estimate, not invoice",
+          "rates": {
+            "gpt-6.1-sol": {
+              "uncached_input": 2,
+              "cached_input": 0.1,
+              "output": 10
+            },
+            "gpt-6.1-terra": {
+              "uncached_input": 1,
+              "cached_input": 0.05,
+              "output": 5
+            },
+            "gpt-6-astra": {
+              "uncached_input": 10,
+              "cached_input": 1,
+              "output": 50
+            },
+            "gpt-6-sol": {
+              "uncached_input": 2,
+              "cached_input": 0.2,
+              "output": 10
+            },
+            "gpt-6-luna": {
+              "uncached_input": 0.1,
+              "cached_input": 0.01,
+              "output": 0.5
+            },
+            "gpt-5.6-sol": {
+              "uncached_input": 4,
+              "cached_input": 0.4,
+              "output": 20
+            },
+            "gpt-5.6-terra": {
+              "uncached_input": 2,
+              "cached_input": 0.2,
+              "output": 12
+            },
+            "gpt-5.6-luna": {
+              "uncached_input": 0.2,
+              "cached_input": 0.02,
+              "output": 1.2
+            },
+            "gpt-6-astra-law": {
+              "uncached_input": 12.5,
+              "cached_input": 1.25,
+              "output": 62.5
+            }
+          }
+        },
+        "model_tokens": {
+          "gpt-6.1-sol": {
+            "threads": 1,
+            "tokens": {
+              "totalTokens": 4369362,
+              "inputTokens": 4358146,
+              "cachedInputTokens": 4294400,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 11216,
+              "reasoningOutputTokens": 2437
+            }
+          }
+        },
+        "root_start": {
+          "thread": "f6d9d6c46c9abdac538b47ff980f0e7b577b0783b0d9aa0a62dfe05a2198ac87",
+          "requested_model": "gpt-6.1-sol",
+          "effective_model": "gpt-6.1-sol",
+          "requested_effort": "medium"
+        },
+        "root_default_verified": true,
+        "token_coverage": "complete",
+        "priced_tokens": {
+          "inputTokens": 4358146,
+          "cachedInputTokens": 4294400,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 11216,
+          "reasoningOutputTokens": 2437,
+          "totalTokens": 4369362
+        },
+        "unpriced_tokens": {
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 0,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 0
+        },
+        "priced_threads": 1,
+        "unpriced_threads": 0,
+        "unpriced_reasons": {},
+        "known_usd_lower_bound": 0.669092,
+        "terminal_proof": [
+          {
+            "thread": "f6d9d6c46c9abdac538b47ff980f0e7b577b0783b0d9aa0a62dfe05a2198ac87",
+            "bound": true,
+            "meter_consistent": true,
+            "model": "gpt-6.1-sol",
+            "tokens": {
+              "totalTokens": 4369362,
+              "inputTokens": 4358146,
+              "cachedInputTokens": 4294400,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 11216,
+              "reasoningOutputTokens": 2437
+            },
+            "start": {
+              "model": "gpt-6.1-sol",
+              "effort": "medium",
+              "parent": null
+            },
+            "trace_sha256": "2b1d02522ad818aeaad49d9a4a72b693ad22e72259ed7eb975f2fdeeb3bb2615",
+            "turns": [
+              {
+                "turn": "6600ef91cd945a766020ce945f87d2dc0fd956f3f20bc15ae55f39b270bbd1c9",
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "message_seq": 2115,
+                "usage_seq": 2116,
+                "terminal_seq": 2121,
+                "status": "completed",
+                "total": {
+                  "totalTokens": 4369362,
+                  "inputTokens": 4358146,
+                  "cachedInputTokens": 4294400,
+                  "cacheWriteInputTokens": 0,
+                  "outputTokens": 11216,
+                  "reasoningOutputTokens": 2437
+                }
+              }
+            ]
+          }
+        ],
+        "native_sha256": "d7e621533dc5528fcd9215f26cf215fabb92d5a9457cc6f45a334da2ef6cc84b"
+      },
+      "observed_commands": 20,
+      "native_hook_receipts": 44
+    },
+    "stage_exits": {
+      "build": 0,
+      "native": 0,
+      "contract": 0,
+      "preserve": 0
+    },
+    "patch_sha256": "3b5241027994edfd53f1ae2aa39bc2c15c2755a075d662ea5be80f0db0564caa",
+    "proposal_sha256": "e93fac3951dd8646f1c192bc47aed07f96093f92cd3a9c3dbd40b9fdfaf2187c",
+    "full_pr_score": null,
+    "patch": "diff --git a/include/fmt/chrono.h b/include/fmt/chrono.h\nindex c0b88b3..f94a9a8 100644\n--- a/include/fmt/chrono.h\n+++ b/include/fmt/chrono.h\n@@ -1686,11 +1686,8 @@ struct duration_formatter {\n       write_nan();\n       return true;\n     }\n-    // must be +-inf\n-    if (val > 0)\n-      std::copy_n(\"inf\", 3, out);\n-    else\n-      std::copy_n(\"-inf\", 4, out);\n+    write_sign();\n+    std::copy_n(\"inf\", 3, out);\n     return true;\n   }\n \n@@ -1815,7 +1812,7 @@ struct duration_formatter {\n         auto buf = memory_buffer();\n         write_floating_seconds(buf, std::chrono::duration<rep, Period>(val),\n                                precision);\n-        if (negative) *out++ = '-';\n+        write_sign();\n         if (buf.size() < 2 || buf[1] == '.')\n           out = detail::write_padding(out, pad);\n         out = copy<Char>(buf.begin(), buf.end(), out);\ndiff --git a/test/chrono-test.cc b/test/chrono-test.cc\nindex a2f419a..721c4d2 100644\n--- a/test/chrono-test.cc\n+++ b/test/chrono-test.cc\n@@ -736,6 +736,46 @@ TEST(chrono_test, negative_durations) {\n             fmt::format(\"{:%Q}\", std::chrono::duration<int>(min)));\n }\n \n+TEST(chrono_test, floating_duration_sign) {\n+  auto d = std::chrono::duration<double>(-61.25);\n+  EXPECT_EQ(fmt::format(\"{:%S}\", d), \"-01.250000\");\n+  EXPECT_EQ(fmt::format(\"{:%S %S}\", d), \"-01.250000 01.250000\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q}\", d), \"-01.250000 61.25\");\n+  EXPECT_EQ(fmt::format(\"{:%Q %S}\", d), \"-61.25 01.250000\");\n+  EXPECT_EQ(fmt::format(\"{:%S %T %R}\", d),\n+            \"-01.250000 00:01:01.250000 00:01\");\n+  EXPECT_EQ(fmt::format(\"{:%T %S}\", d), \"-00:01:01.250000 01.250000\");\n+  EXPECT_EQ(fmt::format(\"{:.1%S %Q}\", d), \"-01.2 61.2\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q %T}\", -d),\n+            \"01.250000 61.25 00:01:01.250000\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q %T}\", std::chrono::seconds(-61)),\n+            \"-01 61 00:01:01\");\n+  EXPECT_EQ(fmt::format(\"{:%S %Q %T}\", std::chrono::seconds(61)),\n+            \"01 61 00:01:01\");\n+}\n+\n+TEST(chrono_test, infinite_duration_sign) {\n+  auto inf = std::numeric_limits<double>::infinity();\n+  struct test_case {\n+    const char* spec;\n+    const char* expected;\n+  } cases[] = {{\"{:%S}\", \"inf\"},\n+               {\"{:%Q}\", \"inf\"},\n+               {\"{:%S %S}\", \"inf inf\"},\n+               {\"{:%S %Q}\", \"inf inf\"},\n+               {\"{:%Q %S}\", \"inf inf\"},\n+               {\"{:%R}\", \"inf:inf\"},\n+               {\"{:%T}\", \"inf:inf:inf\"},\n+               {\"{:%r}\", \"inf\"},\n+               {\"{:%S %T %R}\", \"inf inf:inf:inf inf:inf\"}};\n+  for (auto test : cases) {\n+    EXPECT_EQ(fmt::format(runtime(test.spec), std::chrono::duration<double>(inf)),\n+              test.expected);\n+    EXPECT_EQ(fmt::format(runtime(test.spec), std::chrono::duration<double>(-inf)),\n+              std::string(\"-\") + test.expected);\n+  }\n+}\n+\n TEST(chrono_test, special_durations) {\n   EXPECT_EQ(fmt::format(\"{:%S}\", std::chrono::duration<double>(1e20)), \"40\");\n   auto nan = std::numeric_limits<double>::quiet_NaN();\n",
+    "proposal": "Fix sign handling for floating-point chrono durations\n\nReuse the formatter\u2019s sign state so negative durations print one minus sign across seconds, count, and compound time specifiers. Preserve negative infinity\u2019s sign and existing positive and integer output.\n\nAdd regression tests for repeated specifiers, ordering, precision, and infinity.\n\nVerified offline: CMake build, both focused regressions, all 41 `chrono_test.*` tests, and `git diff --check` passed. Japanese and Spanish locale checks were unavailable; the broader test suite was not run."
+  },
+  "assessor_costs": [
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 434557,
+        "cachedInputTokens": 408704,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2240,
+        "reasoningOutputTokens": 268,
+        "totalTokens": 436797
+      },
+      "threads": 1,
+      "usd_estimate": 0.11497639999999999
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 287912,
+        "cachedInputTokens": 262784,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2271,
+        "reasoningOutputTokens": 191,
+        "totalTokens": 290183
+      },
+      "threads": 1,
+      "usd_estimate": 0.0992444
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 355392,
+        "cachedInputTokens": 329984,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2362,
+        "reasoningOutputTokens": 234,
+        "totalTokens": 357754
+      },
+      "threads": 1,
+      "usd_estimate": 0.1074344
+    }
+  ],
+  "observations": []
+}

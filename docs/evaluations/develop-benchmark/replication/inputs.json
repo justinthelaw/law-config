@@ -1,0 +1,186 @@
+{
+  "fmt": {
+    "case": "fmtlib/fmt/4993",
+    "cohort": "recovered-fixture",
+    "requirement": "Formatting nullptr through compiled format strings and to_string should produce the same pointer representation as ordinary runtime formatting, rather than treating it as a null C string or crashing. Preserve formatting with surrounding literal text and through format_to, format_to_n and formatted_size, while retaining existing behavior for actual strings and pointers.",
+    "packet_method": "cpp-v1",
+    "base_archive_url": "https://codeload.github.com/fmtlib/fmt/legacy.tar.gz/3a2dcb59efff30e5ab1698007c6c9745c4a368eb",
+    "base_archive_sha256": "0843247bdcb742eecc4984cc256444cda6607f6bacc54145aeb123b2ae1064a2",
+    "packet_sha256": "59adecab15ab192fcdc6356b6cad5325be55aa66bd440cb41443ffa865b8dcf1",
+    "packet_bytes": 89873,
+    "protocol_sha256": "7ed62a064ad93847539750116fef8d52ec8854f74f9612046c9f8ef2a3d88bb2",
+    "arm_order": [
+      "develop",
+      "control"
+    ],
+    "minutes_per_arm": 20,
+    "frozen_case_fields": {
+      "base_archive_sha256": "0843247bdcb742eecc4984cc256444cda6607f6bacc54145aeb123b2ae1064a2",
+      "client_sha256": "7f72830b3d340a90a243b75a143f7a2011cf7f9535386901717ba989916803a2",
+      "controller_sha256": "86629fec9fe1ce126fe931bb31c13fe04c99096a4be55eadc470882ab1129637",
+      "frozen_utc": "2026-10-27T06:52:35.060870+00:00",
+      "order": [
+        "develop",
+        "control"
+      ],
+      "packet_sha256": "59adecab15ab192fcdc6356b6cad5325be55aa66bd440cb41443ffa865b8dcf1",
+      "seconds_per_arm": 1200,
+      "version": "packet-1"
+    }
+  },
+  "svelte": {
+    "case": "sveltejs/svelte/19076",
+    "cohort": "recovered-fixture",
+    "requirement": "Speculative forks must not expose uncommitted state through $inspect or $state.eager. Starting a fork that changes state must leave observations in the committed application unchanged while that fork is pending. Discarding the fork must not publish its values. Committing it must make the committed values observable through the normal update cycle. Preserve ordinary updates outside forks. This task concerns observable fork visibility, without prescribing a scheduling or dependency-tracking implementation.",
+    "packet_method": "js-v2",
+    "base_archive_url": "https://codeload.github.com/sveltejs/svelte/legacy.tar.gz/7e127b34afab0600066216210f32179d9611e09c",
+    "base_archive_sha256": "67f5d5bb8a5c7880e4434286c7e46cd38554aefc3ab1f2dba37e1064b0a84467",
+    "packet_sha256": "cec1d339412cf606cf736741369fcabe16e79c71ed56474bdaac44784e57691a",
+    "packet_bytes": 89970,
+    "protocol_sha256": "2dce8be95d5c53e28cbcd597290f706f1dda71743c386c5c13c55f14f9da6039",
+    "arm_order": [
+      "develop",
+      "control"
+    ],
+    "minutes_per_arm": 75,
+    "frozen_case_fields": {
+      "base_archive_sha256": "67f5d5bb8a5c7880e4434286c7e46cd38554aefc3ab1f2dba37e1064b0a84467",
+      "base_packet_method": "code packet v2",
+      "case": "svelte",
+      "client_sha256": "7f72830b3d340a90a243b75a143f7a2011cf7f9535386901717ba989916803a2",
+      "controller_sha256": "69c0e942708f75ea9e76fe26598ff85fa017cc673529c6851c463e1edffd8ebc",
+      "frozen_utc": "2026-10-27T07:10:12.261225+00:00",
+      "order": [
+        "develop",
+        "control"
+      ],
+      "packet_sha256": "cec1d339412cf606cf736741369fcabe16e79c71ed56474bdaac44784e57691a",
+      "seconds_per_arm": 4500,
+      "version": "packet-1"
+    }
+  },
+  "law": {
+    "case": "justinthelaw/law-config/20",
+    "cohort": "recovered-fixture",
+    "requirement": "Make orphan-pruning database writes tolerate temporary SQLite writer contention. Keep the existing pruning behavior and default per-attempt busy wait, add documented configuration of the busy timeout and finite retry count, and retry lock-related write failures only within those configured bounds. If a competing writer releases its lock before exhaustion, pruning should complete. Exhaustion must report failure; non-lock SQLite errors must fail without repeated lock retries. Preserve retained records and transactional consistency. Evaluation must use only disposable synthetic SQLite data and fixture paths; never real account, session, rollout or history data.",
+    "packet_method": "shell-v2",
+    "base_archive_url": "https://codeload.github.com/justinthelaw/law-config/legacy.tar.gz/1f8411b3a582edf91b4c4207f40c980b30e38efb",
+    "base_archive_sha256": "f2479101d09169ca661373678e75281312fe04b09321152052e5d86beba927ba",
+    "packet_sha256": "86275187ce6e7f1a27a18e2473da81970d72463a31a11beea747a95cfefee640",
+    "packet_bytes": 86164,
+    "protocol_sha256": "ed75dd9903caffdbacf5424b3e84f6e29ffe88e75c324bb8ce0d10ce5878c5ac",
+    "arm_order": [
+      "develop",
+      "control"
+    ],
+    "minutes_per_arm": 75,
+    "frozen_case_fields": {
+      "base_archive_sha256": "f2479101d09169ca661373678e75281312fe04b09321152052e5d86beba927ba",
+      "base_packet_method": "code packet v2",
+      "case": "law",
+      "client_sha256": "7f72830b3d340a90a243b75a143f7a2011cf7f9535386901717ba989916803a2",
+      "controller_sha256": "5ff53a12029f1ebfb311b15e4921b8a9b81a23f7b4dcbe6cc33dc233864557bf",
+      "frozen_utc": "2026-10-27T07:10:10.970606+00:00",
+      "order": [
+        "develop",
+        "control"
+      ],
+      "packet_sha256": "86275187ce6e7f1a27a18e2473da81970d72463a31a11beea747a95cfefee640",
+      "seconds_per_arm": 4500,
+      "version": "packet-1"
+    }
+  },
+  "site": {
+    "case": "justinthelaw/justinthelaw/413",
+    "cohort": "recovered-fixture",
+    "requirement": "Make arcade input controls robust across iframe navigation and reopening. Cleanup must not leave an uncaught SecurityError when an admitted iframe navigates cross-origin; controls must reconnect when a same-origin document returns. Preserve same-origin admission, typing protections, focus/input ownership, synchronous cancellation of diagonal input, existing exports and React state behavior. Host and iframe touch detection must remain correct across player reopening. Improve separation of input-bridge lifecycle responsibilities without changing key-delivery behavior.",
+    "packet_method": "js-v2",
+    "base_archive_url": "https://codeload.github.com/justinthelaw/justinthelaw/legacy.tar.gz/1be051713a61bfc1e8e98a7f716c353ea3285f51",
+    "base_archive_sha256": "2afb2f9558ef959301d898674911a49cbaf9160789219a79109b83a2087d3b80",
+    "packet_sha256": "4ccdd3c44116c77c4a0b5efcde37869da72b84f461e73ce57a81abdc47c2170c",
+    "packet_bytes": 89976,
+    "protocol_sha256": "4bc6440e12c96bbde59891afccc513e7bf33efdf7da10db44e38f60ed117f3d1",
+    "arm_order": [
+      "control",
+      "develop"
+    ],
+    "minutes_per_arm": 75,
+    "frozen_case_fields": {
+      "base_archive_sha256": "2afb2f9558ef959301d898674911a49cbaf9160789219a79109b83a2087d3b80",
+      "base_packet_method": "code packet v2",
+      "case": "site",
+      "client_sha256": "7f72830b3d340a90a243b75a143f7a2011cf7f9535386901717ba989916803a2",
+      "controller_sha256": "1e20998a6aa53f10a3c8dcf1e04d83263f27fa3a24e76451362b34395caad57f",
+      "frozen_utc": "2026-10-27T07:10:12.692904+00:00",
+      "order": [
+        "control",
+        "develop"
+      ],
+      "packet_sha256": "4ccdd3c44116c77c4a0b5efcde37869da72b84f461e73ce57a81abdc47c2170c",
+      "seconds_per_arm": 4500,
+      "version": "packet-1"
+    }
+  },
+  "tokio": {
+    "case": "tokio-rs/tokio/8686",
+    "cohort": "replacement-fixture",
+    "requirement": "Add mutable access to a SetOnce value without consuming the cell. Provide SetOnce::get_mut for an exclusive mutable borrow of the cell, analogous to the existing OnceCell accessor. An uninitialized cell returns None. An initialized cell returns a mutable reference to the stored value, and mutations remain visible through subsequent existing accessors. Preserve initialization, ownership and destruction behavior. No change to AsyncFd is requested.",
+    "packet_method": "rust-v2",
+    "base_archive_url": "https://codeload.github.com/tokio-rs/tokio/legacy.tar.gz/b6b49d01096e955a791c58be6ecb972f120fa3d7",
+    "base_archive_sha256": "85316ea951aefa5f2fd5f071db3489c6a34f9d8a0b15d1a6cef5c924482f7623",
+    "packet_sha256": "730146f3922b70b59f48bdf5c8dc6147e178f13d83c6cc365fc3032fa5cdfee6",
+    "packet_bytes": 89904,
+    "protocol_sha256": "d632890ebc82c5f264b73138a7db499b1d4614b2efb16845ef4c369ea6b42fc7",
+    "arm_order": [
+      "control",
+      "develop"
+    ],
+    "minutes_per_arm": 20,
+    "frozen_case_fields": {
+      "base_archive_sha256": "85316ea951aefa5f2fd5f071db3489c6a34f9d8a0b15d1a6cef5c924482f7623",
+      "base_packet_method": "code packet v2",
+      "case": "tokio",
+      "client_sha256": "7f72830b3d340a90a243b75a143f7a2011cf7f9535386901717ba989916803a2",
+      "controller_sha256": "468c98138f1976fbedd5a8ba64cb1a8f898cd816eaf0adb638f28c8c117e7ef8",
+      "frozen_utc": "2026-10-27T07:34:12.430451+00:00",
+      "order": [
+        "control",
+        "develop"
+      ],
+      "packet_sha256": "730146f3922b70b59f48bdf5c8dc6147e178f13d83c6cc365fc3032fa5cdfee6",
+      "seconds_per_arm": 1200,
+      "version": "packet-1"
+    }
+  },
+  "runner": {
+    "case": "justinthelaw/maximize-github-runner-space/50",
+    "cohort": "replacement-fixture",
+    "requirement": "Make filesystem-removal failure handling detect a target that has changed since safety validation. If a path is observed to refer to a different target or link kind before removal or a privileged retry, stop that operation safely instead of removing the replacement. Report failure when removal returns but the target remains. Preserve ordered results, best-effort processing of other targets, failed-operation output and existing public inputs and outputs. The concurrency scope is changes observable at the existing platform-adapter boundaries, not an atomic guarantee against arbitrary external mutations between operating-system calls. Test only disposable fixtures and mocked privileged operations.",
+    "packet_method": "js-v2",
+    "base_archive_url": "https://codeload.github.com/justinthelaw/maximize-github-runner-space/legacy.tar.gz/05168ac693c1c688a963d4b6b03112e93de4f51b",
+    "base_archive_sha256": "2658d9ccad9665efb3e65e3bbe33ed63cd02c7450eef08e619283609f269c19c",
+    "packet_sha256": "48c44cd78a4ef059c39f089829297c9ca4d470106959f16d87c83f1fcaf41fc6",
+    "packet_bytes": 89816,
+    "protocol_sha256": "f5d3a561e27b719dc9bd8c65bf682fa4e195188440f5538bd95950129fe77214",
+    "arm_order": [
+      "control",
+      "develop"
+    ],
+    "minutes_per_arm": 75,
+    "frozen_case_fields": {
+      "base_archive_sha256": "2658d9ccad9665efb3e65e3bbe33ed63cd02c7450eef08e619283609f269c19c",
+      "base_packet_method": "code packet v2",
+      "case": "runner",
+      "client_sha256": "7f72830b3d340a90a243b75a143f7a2011cf7f9535386901717ba989916803a2",
+      "controller_sha256": "c11efe634eb323cef5c8d86ba23837331d886cb6c4268583d23eb36d6a176ce3",
+      "frozen_utc": "2026-10-27T07:34:12.720231+00:00",
+      "order": [
+        "control",
+        "develop"
+      ],
+      "packet_sha256": "48c44cd78a4ef059c39f089829297c9ca4d470106959f16d87c83f1fcaf41fc6",
+      "seconds_per_arm": 4500,
+      "version": "packet-1"
+    }
+  }
+}

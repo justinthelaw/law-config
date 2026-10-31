@@ -1,0 +1,47 @@
+{
+  "id": "check-observable-contracts-in-review",
+  "previous": "3b0bd70d20a63dbf66750151ef0730b26032ecf30e0f4bf3599256ab1398cbb5",
+  "targets": [
+    "plugins/develop/skills/adversarial-loop/SKILL.md"
+  ],
+  "evidence": [
+    {
+      "case": "werkzeug",
+      "source": "runs/tuning/caller-werkzeug-01/result.json",
+      "source_sha256": "f46fcd947213399255a6f0a0f6bdf540a393017aef61a2f8605214013fbce4d5",
+      "registration_sha256": "af169f9ab90a93ae0bad6fccb9f15aceaccc1a74711f8f486854fdf4db7cc012",
+      "supplemental_receipts": {
+        "public-warnings": "ebadafdba524558ea5275c5336ba0e5252b99a8b001ea2e24258e33c017433d1",
+        "warning-check-interpretation": "2b2ebd5300083f76965f9045cc9d369221585ed4937242fcc4bf54339afdfd59",
+        "werkzeug-stream-length": "348ada376cb0050486cfb033c2e11719c69ab84c5269f07c79a55a747f0bf84c",
+        "review-cost-timing": "a0d1b377efd95cc5057c6baaa6c205e0df9d5f26dd32e3bb574892e10d7eac17"
+      },
+      "observation": "The candidate gained 21.25 full-PR points and preserved the encoded stream position, but cost $1.4065 against stock at $0.3288. It already exceeded full stock spend when its first artifact reviewer started."
+    },
+    {
+      "case": "pytest",
+      "source": "runs/tuning/caller-review-pytest-01/result.json",
+      "source_sha256": "6a3893e6a7e3240e38a05e8731e9622895f3cd580303d6a13fad47b33be91939",
+      "registration_sha256": "4acecbf56290dfc8d2f54751625f0b02d439249afc77b1f7ede6e734d56df35a",
+      "supplemental_receipts": {
+        "pytest-param-tuple": "fce83f8d76b137362ef8a164c4c4bba35176709bbc2d61b89e42335f77db29ac",
+        "copy-pickle-compatibility": "11b93c8b46645aefa8ce5f6888ce85605a11afd2eb368727d0593868d0ed185a",
+        "import-order": "d6ad949a04d50dbb27edc78de6c914f515e10ba9a0baa7d243fc4b6c21f57bcf",
+        "reviewer-packet-delivery": "94e3d65e9ee75167cef3ae4df0ee856b8a16c9c668821f888151ad7d8764f58b",
+        "intermediate-review": "b759757fdcaf8d4766b2574e58ae30adc5fecf4353c193c31c74612772d01c61"
+      },
+      "observation": "Review caught an import-order failure but accepted a formerly unpackable public result becoming non-iterable. All candidate reviewers received the full review entrypoint. The packet edit had no recorded exact exposure.",
+      "companion": {
+        "source": "runs/tuning/caller-review-pytest-01/type-hints-replay.json",
+        "sha256": "da94e0e502a9e8ba0f8b075bb0019c94a4f5113b23d982874e93be752f76ec09"
+      }
+    }
+  ],
+  "change": "Reduce the independent review entrypoint from 1,258 to 629 words. Keep its review lanes, authority, blind sequence and fresh review after material changes. Require the reviewer to exercise a previously working external operation when a representation changes.",
+  "prediction": "Earlier concrete caller evidence reduces corrective review rounds and total cost without sacrificing the verified public operations.",
+  "sequence": [
+    "Only after the queued Black, pytest and Marked branches and their eligible guards have failed to nominate a treatment, run Werkzeug against the registered parent and fresh stock.",
+    "Run pytest with the same package only if Werkzeug clears all criteria."
+  ],
+  "falsifier": "Require a ready higher-scoring full PR at or below completely metered stock proposal cost, and lower cost and checkout-to-proposal time than the matched parent. All frozen executable gates must pass. Verify independent pre-edit intent, fresh review of the actual final artifact, original model and effort, and further review after any material revision. Missing evidence or a ceiling leaves the screen unsuccessful. For Werkzeug require the two-byte stream position, preserved ordinary response data and length, correctly timed public deprecation warnings and encoded results. Interpret semantic warnings from both operation logs even when the historical wording matcher fails. For pytest require preserved unpacking, copy, deep copy, pickle, fresh imports in both orders and base-supported runtime annotation resolution. Keep all attempts and unaltered blind scores."
+}

@@ -2,7 +2,6 @@
 
 Develop's synchronous [hooks](../hooks/hooks.json) use a small
 [handler](../hooks/context_guard.py) and [response store](../hooks/response_store.py).
-This shared guard is not a ninth skill or a security boundary.
 
 | Event | Behavior |
 | --- | --- |
@@ -98,8 +97,7 @@ The documented `continue:false` path avoids `decision:block`'s nested code-mode
 promise rejection. The contract does **not** guarantee the resolved value/type:
 field access, aggregation and explicit printing require actual host testing, and
 scripts may re-emit large data. Synthetic tests prove handler/storage behavior,
-not native activation or code-mode compatibility. See the
-[native trials](../tests/evaluations/native-hosts.md#context-hook-trials).
+not native activation or code-mode compatibility.
 
 The sole runtime manifest is `.codex-plugin/plugin.json`; root `plugin.json`
 would suppress native hooks. Hook commands use `-I -B` and a fixed bootstrap;

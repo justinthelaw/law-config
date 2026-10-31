@@ -1,0 +1,9 @@
+{
+  "label": "declared-consumer-entry",
+  "package_sha256": "2488466be8b48949dbd7291964425eef81c3d50e3b8e4a88f786d6e8bdbdd9e6",
+  "plugin_hook_sha256": "4689e1ee94b88f24ab49116d7dc135192adb365ad34da1d08c7bb085ef2d6d61",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}

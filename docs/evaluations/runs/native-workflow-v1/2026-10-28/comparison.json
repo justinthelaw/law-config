@@ -1,0 +1,1008 @@
+{
+  "planned_pairs": 6,
+  "human_time_seconds": null,
+  "human_cost_usd": null,
+  "pairs": [
+    {
+      "case": "packaging",
+      "stratum": "external",
+      "reference": "https://github.com/pypa/packaging/pull/1457",
+      "control": {
+        "state": "completed",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "reference_checks_pass": true,
+        "seconds": {
+          "wall_seconds": 187.8916770890355,
+          "setup_seconds": 24.149306014878675,
+          "grading_seconds": 6.379576232051477,
+          "end_to_end_seconds": 219.60431526997127
+        },
+        "usage_complete": true,
+        "threads_observed": 1,
+        "tokens": {
+          "inputTokens": 654802,
+          "cachedInputTokens": 624896,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 7036,
+          "reasoningOutputTokens": 713,
+          "totalTokens": 661838
+        },
+        "observed_tokens": {
+          "inputTokens": 654802,
+          "cachedInputTokens": 624896,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 7036,
+          "reasoningOutputTokens": 713,
+          "totalTokens": 661838
+        },
+        "token_coverage": "complete",
+        "diagnostics": null,
+        "usd": null,
+        "error": null,
+        "cohort": "primary",
+        "standard_usd_estimate": 0.1926616,
+        "cost_coverage": "complete",
+        "root_tokens": 661838,
+        "descendant_tokens": 0,
+        "descendant_count": 0,
+        "root_command_count": 15,
+        "grade_patch_sha256": "c9a738923b79e6f97bda3ea2f7a25c246349cbdba03dd8733945755d65697a05"
+      },
+      "develop": {
+        "state": "completed",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "reference_checks_pass": true,
+        "seconds": {
+          "wall_seconds": 335.383211534936,
+          "setup_seconds": 27.586191235110164,
+          "grading_seconds": 6.802084540948272,
+          "end_to_end_seconds": 370.9577226638794
+        },
+        "usage_complete": true,
+        "threads_observed": 5,
+        "tokens": {
+          "inputTokens": 1923911,
+          "cachedInputTokens": 1791360,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 12843,
+          "reasoningOutputTokens": 1319,
+          "totalTokens": 1936754
+        },
+        "observed_tokens": {
+          "inputTokens": 1923911,
+          "cachedInputTokens": 1791360,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 12843,
+          "reasoningOutputTokens": 1319,
+          "totalTokens": 1936754
+        },
+        "token_coverage": "complete",
+        "diagnostics": null,
+        "usd": null,
+        "error": null,
+        "cohort": "primary",
+        "standard_usd_estimate": 0.572668,
+        "cost_coverage": "complete",
+        "root_tokens": 1412894,
+        "descendant_tokens": 523860,
+        "descendant_count": 4,
+        "root_command_count": 22,
+        "grade_patch_sha256": "a9a0c698907c1d9847708a3dccd58c5c4d04b2b03612f7e700a86e8cf5e7d12c"
+      },
+      "develop_minus_control": {
+        "reference_pass_delta": 0,
+        "wall_seconds_delta": 147.49153444590047,
+        "end_to_end_seconds_delta": 151.35340739390813,
+        "tokens_delta": {
+          "inputTokens": 1269109,
+          "cachedInputTokens": 1166464,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 5807,
+          "reasoningOutputTokens": 606,
+          "totalTokens": 1274916,
+          "uncachedInputTokens": 102645
+        },
+        "usd_delta": null,
+        "standard_usd_estimate_delta": 0.3800064
+      },
+      "blind_quality": {
+        "assessor": "GPT-6.1 Sol Medium, fresh masked review",
+        "limitations": "Offline static assessment of task.json, all three complete patches, and the relevant starting source, tests, documentation and project configuration. No patches were applied, submissions modified, or tests/builds/type checks executed. task.json records build=0, native=0 and hidden=0 for every submission, with null diagnostics; these identical recorded outcomes provide no differentiating evidence or detail about exercised cases. No credit is assigned for unavailable hosted or CI reports. Runtime, interpreter-specific and subclass-constructor behavior remains unverified. Recognizable provenance: the source identifies the public PyPA packaging project, its existing licensing and documentation conventions; A and C have closely similar implementation structure, and A and B share a version-dependent sentinel expression. These observations do not establish authorship or submission identity. No author identity is inferable from the inspected submission content, and provenance was not used as a quality criterion.",
+        "pairs": [
+          {
+            "arms": [
+              "control",
+              "reference"
+            ],
+            "correctness": "control",
+            "regression_coverage": "control",
+            "maintainability_scope": "control",
+            "evidence": "Correctness: in src/packaging/specifiers.py, B SpecifierSet.__replace__ only returns self when specifiers is omitted, so SpecifierSet(\">=1\").__replace__(specifiers=\">=1\") creates a new object despite the required no-op identity. A compares stored member fields and returns self for equivalent order/duplicates while distinguishing spelling and member prerelease overrides. B Specifier.__replace__ formats unchecked fields: Specifier(\"==1\").__replace__(version=\"=2\") parses as ===2, changing the omitted operator; version=2 is silently stringified. B also accepts invalid prerelease types through the unvalidated constructors (or its equality shortcut, e.g. 1 versus True). A validates string/bool-or-None types, operator membership, iterable members and the parsed field round trip before accepting a replacement. Both preserve omitted raw prerelease overrides and reconstruct changed instances through self.__class__. Coverage: tests/test_specifiers.py in A adds explicit-content set no-ops, automatic versus explicit policy transitions, invalid types, operator/version boundary injection, member policies, spelling changes, empty sets, arbitrary === transitions, subclass preservation and populated range/satisfiability caches. B covers basic replacement, reset, invalid syntax, subclasses and copy.replace but omits the concrete failure cases above. Neither patch removes or weakens existing native assertions. Maintainability/scope: both are confined to the requested API, docs and tests (A also adds a changelog). A documents guaranteed no-op identity, reset semantics and errors in docs/specifiers.rst and enforces these centrally using the existing validator and constructors; B documents that a no-op merely may return the same instance and leaves its set identity shortcut inconsistent with its specifier method and the task. A's extra validation and state comparison serve the requested contract rather than unrelated scope."
+          },
+          {
+            "arms": [
+              "control",
+              "develop"
+            ],
+            "correctness": "tie",
+            "regression_coverage": "control",
+            "maintainability_scope": "develop",
+            "evidence": "Correctness: src/packaging/specifiers.py in both A and C distinguishes omitted fields from explicit None, preserves self._prereleases rather than the inferred property, validates field types and operator membership, rejects operator/version reparsing, reconstructs changed objects with fresh caches, and detects set no-ops using raw (_spec, _prereleases) member state without canonicalizing the original. A compares result._spec to a tuple; C compares the operator/version properties, which the starting source shows expose the same tuple. No material behavior difference is established by static inspection. Coverage: both additions to tests/test_specifiers.py cover reset versus explicit policy, invalid fields, no-op identity, generators/member overrides, cached satisfiability, original preservation and version-gated copy.replace. A has broader edge coverage: arbitrary ===custom replacement and matching transitions, wildcard and local-version invalidity, whitespace and semantically equal spelling changes, empty iterable replacement, more malformed set strings, and subclass preservation for both classes. C adds valuable positional-argument rejection and an explicit assertion that a no-op preserves _specs identity and _canonicalized=False; A still has the stronger overall regression breadth. Neither weakens existing native tests. Maintainability/scope: both touch only src/packaging/specifiers.py, tests/test_specifiers.py, docs/specifiers.rst and CHANGELOG.rst, with comparable explanatory documentation. C modestly improves simplicity by using a single object() sentinel instead of A's additional builtins/sys imports and Python-3.15-specific sentinel branch, which is unnecessary for distinguishing omission. C also uses concrete union/type and dict parameter annotations in its new tests where A uses bare type/dict. These are small maintenance advantages, not an asserted runtime defect in A."
+          },
+          {
+            "arms": [
+              "reference",
+              "develop"
+            ],
+            "correctness": "develop",
+            "regression_coverage": "develop",
+            "maintainability_scope": "develop",
+            "evidence": "Correctness: in src/packaging/specifiers.py, C recognizes unchanged supplied set contents (including reordered/duplicate members), while B allocates a new set whenever specifiers is supplied, violating required no-op identity even for specifiers=\">=1\" on SpecifierSet(\">=1\"). C validates replacement types, iterable members, operator membership and parsed field boundaries. B string interpolation accepts numeric versions and permits Specifier(\"==1\").__replace__(version=\"=2\") to become ===2; its constructors do not validate prereleases, so invalid policy values can escape rejection. C preserves individual member overrides in its no-op comparison and preserves automatic versus explicit prerelease state. Both use self.__class__ for changed objects and preserve the original through reconstruction. Coverage: tests/test_specifiers.py in C exercises supplied-content no-ops without original canonicalization, member override changes, automatic-versus-explicit policy retention after version/content changes, invalid policy and content types, positional rejection, field-boundary injection and populated cache/satisfiability behavior. B adds useful subclass and copy.replace subclass checks absent from C, plus basic changes/reset/syntax tests, but lacks coverage of the identified failures. Both retain existing native tests without weakened assertions. Maintainability/scope: C uses the existing _validate_pre helper and constructors plus a localized raw-state comparison, and explains why normal equality/canonicalization is unsuitable. B's shorter methods omit required validation and set identity behavior. C's docs/specifiers.rst defines fields, errors, copy.replace availability, automatic reset and guaranteed identity; B weakens the identity wording to may return the same instance. C's simple object() sentinel also avoids B's extra builtins/sys imports and version-specific branch. C's changelog and tests stay within the requested feature scope."
+          }
+        ]
+      },
+      "upstream": {
+        "additions": 186,
+        "author": "notatallshaw",
+        "changed_files": 3,
+        "created_at": "2026-10-19T17:05:42Z",
+        "deletions": 1,
+        "merge_commit_sha": "ffced26d0a30557a0e181dbaca561a0432ddec53",
+        "merged_at": "2026-10-20T21:17:59Z",
+        "number": 1457,
+        "url": "https://github.com/pypa/packaging/pull/1457",
+        "pr_cycle_seconds": 101537,
+        "labor_seconds": null,
+        "human_tokens": null,
+        "cost_usd": null,
+        "grade": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "case": "ripgrep",
+      "stratum": "external",
+      "reference": "https://github.com/BurntSushi/ripgrep/pull/3578",
+      "control": {
+        "state": "completed",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "reference_checks_pass": true,
+        "seconds": {
+          "wall_seconds": 400.10303295310587,
+          "setup_seconds": 24.112464031903073,
+          "grading_seconds": 17.390128985978663,
+          "end_to_end_seconds": 442.8029125670437
+        },
+        "usage_complete": true,
+        "threads_observed": 1,
+        "tokens": {
+          "inputTokens": 1519194,
+          "cachedInputTokens": 1463552,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 6032,
+          "reasoningOutputTokens": 1423,
+          "totalTokens": 1525226
+        },
+        "observed_tokens": {
+          "inputTokens": 1519194,
+          "cachedInputTokens": 1463552,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 6032,
+          "reasoningOutputTokens": 1423,
+          "totalTokens": 1525226
+        },
+        "token_coverage": "complete",
+        "diagnostics": null,
+        "usd": null,
+        "error": null,
+        "cohort": "primary",
+        "standard_usd_estimate": 0.3179592,
+        "cost_coverage": "complete",
+        "root_tokens": 1525226,
+        "descendant_tokens": 0,
+        "descendant_count": 0,
+        "root_command_count": 15,
+        "grade_patch_sha256": "6878cb38ea3803bb72b4ddc635b5c5c7d85a7d9354d4c54375bf4ed1a5c64c3b"
+      },
+      "develop": {
+        "state": "completed",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "reference_checks_pass": true,
+        "seconds": {
+          "wall_seconds": 558.5387772200629,
+          "setup_seconds": 27.23226016201079,
+          "grading_seconds": 17.31157746911049,
+          "end_to_end_seconds": 604.3746117728297
+        },
+        "usage_complete": true,
+        "threads_observed": 1,
+        "tokens": {
+          "inputTokens": 1973825,
+          "cachedInputTokens": 1899648,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 6123,
+          "reasoningOutputTokens": 889,
+          "totalTokens": 1979948
+        },
+        "observed_tokens": {
+          "inputTokens": 1973825,
+          "cachedInputTokens": 1899648,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 6123,
+          "reasoningOutputTokens": 889,
+          "totalTokens": 1979948
+        },
+        "token_coverage": "complete",
+        "diagnostics": null,
+        "usd": null,
+        "error": null,
+        "cohort": "primary",
+        "standard_usd_estimate": 0.3995488,
+        "cost_coverage": "complete",
+        "root_tokens": 1979948,
+        "descendant_tokens": 0,
+        "descendant_count": 0,
+        "root_command_count": 23,
+        "grade_patch_sha256": "7efe540b2724eff7b726371845d306af0c73f2f6df39fae302adac91da201ff4"
+      },
+      "develop_minus_control": {
+        "reference_pass_delta": 0,
+        "wall_seconds_delta": 158.43574426695704,
+        "end_to_end_seconds_delta": 161.571699205786,
+        "tokens_delta": {
+          "inputTokens": 454631,
+          "cachedInputTokens": 436096,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 91,
+          "reasoningOutputTokens": -534,
+          "totalTokens": 454722,
+          "uncachedInputTokens": 18535
+        },
+        "usd_delta": null,
+        "standard_usd_estimate_delta": 0.0815896
+      },
+      "blind_quality": {
+        "assessor": "GPT-6.1 Sol Medium, fresh masked review",
+        "limitations": "Offline static assessment of task.json, all three patches, and relevant starting source in crates/ignore/src/dir.rs and crates/ignore/src/walk.rs. No submissions were applied, modified, built, or tested. task.json records build=0, native=0, hidden=0 and null diagnostics for each submission; these equal reported outcomes provide no preference and do not supply test inventories or execution logs. No unavailable hosted/CI reports were credited. The starting source includes directory-entry probing optimizations, so the actual starting implementation and walker helpers were inspected rather than assuming an upstream revision. Recognizable provenance is the ripgrep/ignore crate source, Git-style patch paths, and existing upstream issue URLs in source; no submission author or model identity is inferable from the inspected material. All three retain the existing resolver, including its handling of gitdir paths; the added fixtures use absolute gitdir targets and do not establish support for every Git worktree layout. Walker assert_paths covers serial and parallel output but its collection helpers discard error entries, so those tests do not prove absence of walker errors.",
+        "pairs": [
+          {
+            "arms": [
+              "control",
+              "reference"
+            ],
+            "correctness": "tie",
+            "regression_coverage": "control",
+            "maintainability_scope": "tie",
+            "evidence": "Correctness: both change crates/ignore/src/dir.rs::add_child_path_with_found_ignore_files to probe .git when check_vcs_dir || git_exclude, retaining the discovered-entry guard. With require_git(false), the resulting file type lets resolve_git_commondir read the .git gitdir pointer and commondir to load the shared info/exclude. Both leave has_git gated by check_vcs_dir and leave exclude loading gated by git_exclude; ordinary .git directories still resolve directly. Their production behavior is identical, and the supplied stage outcomes are equal. Coverage: B adds only an error-free require_git(false) ignore_me assertion for relative commondir to the existing dir.rs::git_info_exclude_in_linked_worktree test. A adds walk.rs::git_exclude_linked_worktree covering relative and absolute commondir, both require_git values, excludes enabled/disabled, and filtering at root and subdirectory levels. assert_paths checks serial and parallel walkers, covering public traversal beyond B's direct matcher test. A also adds a repository-free .gitignore walker test with excludes enabled and disabled. Neither weakens existing tests. Maintainability/scope: both use the same small production fix and keep changes within ignore implementation/tests; A adds a useful explanatory comment and larger relevant coverage, while B economically reuses the existing fixture. Neither scope warrants a preference."
+          },
+          {
+            "arms": [
+              "control",
+              "develop"
+            ],
+            "correctness": "tie",
+            "regression_coverage": "develop",
+            "maintainability_scope": "tie",
+            "evidence": "Correctness: A and C make the identical condition change in crates/ignore/src/dir.rs, with equivalent comments. The resolver receives .git file metadata even when require_git is false, while repository-boundary detection and the git_exclude-disabled path retain their gates. No runtime behavior difference is present; all supplied stage outcomes match. Coverage: both new walk.rs linked-worktree tests check serial/parallel traversal, relative/absolute commondir, both require_git values, both git_exclude values, and ignored files in the root and a subdirectory. A additionally disables parent rules for fixture isolation and tests repository-free .gitignore traversal. C additionally expands dir.rs::git_exclude across the full require_git/git_exclude matrix for ordinary .git/info/exclude, directly checking ignore, whitelist, and unmatched behavior, and expands gitignore_allowed_no_git across both git_exclude values while preserving its error/ignore/whitelist/unmatched assertions. Those ordinary .git-directory and disabled-exclude assertions directly cover a preservation requirement absent from A's new tests, giving C the coverage preference. C retains all original assertions in the original configurations; no native test was weakened. Maintainability/scope: both retain a minimal production fix and relevant, straightforward loop-based tests. A isolates parent rules and adds separate walker tests; C reuses existing unit fixtures and adds one walker fixture. Both approaches are appropriately scoped, with no material maintainability preference."
+          },
+          {
+            "arms": [
+              "reference",
+              "develop"
+            ],
+            "correctness": "tie",
+            "regression_coverage": "develop",
+            "maintainability_scope": "tie",
+            "evidence": "Correctness: B and C use the same check_vcs_dir || git_exclude condition in crates/ignore/src/dir.rs, preserving the directory-entry availability guard, has_git calculation, and disabled-exclude matcher gate. Thus both supply the file type needed by resolve_git_commondir without changing ordinary-directory or disabled-exclude rule handling. Reported build/native/hidden outcomes are equal with no diagnostics. Coverage: B extends the existing linked-worktree matcher fixture with one require_git(false), relative-commondir ignore assertion and an error assertion. C's new walk.rs test verifies actual serial and parallel outputs for relative/absolute commondir, both require_git settings, excludes enabled/disabled, root and nested ignored files, and retained files. C also expands dir.rs::git_exclude for ordinary repositories across both flags and gitignore_allowed_no_git across exclude settings, including whitelist and unmatched checks. C preserves existing test assertions, including the default cases; B is purely additive. C therefore has substantially broader regression coverage. Maintainability/scope: B is the smallest patch and reuses a fixture; C explains the subtle metadata requirement and adds relevant public walker and preservation coverage using existing helpers. Both keep the same minimal production fix within the ignore crate, and the additional test scope in C is justified by the task, so neither merits a maintainability/scope preference."
+          }
+        ]
+      },
+      "upstream": {
+        "additions": 8,
+        "author": "CheckPickerUpper",
+        "changed_files": 1,
+        "created_at": "2026-10-26T18:13:06Z",
+        "deletions": 1,
+        "merge_commit_sha": "65e072fab262fdaaa19ef788bbb468ae6f8e4f8e",
+        "merged_at": "2026-10-27T18:30:54Z",
+        "number": 3578,
+        "url": "https://github.com/BurntSushi/ripgrep/pull/3578",
+        "pr_cycle_seconds": 87468,
+        "labor_seconds": null,
+        "human_tokens": null,
+        "cost_usd": null,
+        "grade": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "case": "jq",
+      "stratum": "external",
+      "reference": "https://github.com/jqlang/jq/pull/3694",
+      "control": {
+        "state": "blocked",
+        "stages": {
+          "build": null,
+          "native": null,
+          "hidden": null
+        },
+        "reference_checks_pass": false,
+        "seconds": {
+          "wall_seconds": 21.88612957089208,
+          "setup_seconds": 24.516549166990444,
+          "grading_seconds": 0.0001476930920034647,
+          "end_to_end_seconds": 48.09291142690927
+        },
+        "usage_complete": false,
+        "threads_observed": 1,
+        "tokens": null,
+        "observed_tokens": {
+          "inputTokens": 28000,
+          "cachedInputTokens": 9728,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 158,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 28158
+        },
+        "token_coverage": "lower_bound",
+        "diagnostics": null,
+        "usd": null,
+        "error": "{'message': 'Selected model is at capacity. Please try a different model.', 'codexErrorInfo': 'serverOverloaded', 'additionalDetails': None, 'misalignment': None}",
+        "cohort": "primary",
+        "standard_usd_estimate": 0.0390968,
+        "cost_coverage": "lower_bound",
+        "root_tokens": 28158,
+        "descendant_tokens": 0,
+        "descendant_count": 0,
+        "root_command_count": 1,
+        "grade_patch_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "develop": {
+        "state": "completed",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "reference_checks_pass": true,
+        "seconds": {
+          "wall_seconds": 3805.1683260989375,
+          "setup_seconds": 29.004714095965028,
+          "grading_seconds": 71.25398955214769,
+          "end_to_end_seconds": 3907.283186523011
+        },
+        "usage_complete": true,
+        "threads_observed": 1,
+        "tokens": {
+          "inputTokens": 7835891,
+          "cachedInputTokens": 7750784,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 15333,
+          "reasoningOutputTokens": 3764,
+          "totalTokens": 7851224
+        },
+        "observed_tokens": {
+          "inputTokens": 7835891,
+          "cachedInputTokens": 7750784,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 15333,
+          "reasoningOutputTokens": 3764,
+          "totalTokens": 7851224
+        },
+        "token_coverage": "complete",
+        "diagnostics": null,
+        "usd": null,
+        "error": null,
+        "cohort": "supplementary",
+        "standard_usd_estimate": 1.0986224,
+        "cost_coverage": "complete",
+        "root_tokens": 7851224,
+        "descendant_tokens": 0,
+        "descendant_count": 0,
+        "root_command_count": 55,
+        "grade_patch_sha256": "730405fc34ddd6601d394447059e19bbd6d0fa13993fdca1ba84782f44312ba6"
+      },
+      "develop_minus_control": null,
+      "blind_quality": null,
+      "upstream": {
+        "additions": 9,
+        "author": "Huang-404-Q",
+        "changed_files": 2,
+        "created_at": "2026-10-23T08:32:41Z",
+        "deletions": 8,
+        "merge_commit_sha": "bd56a745624a5246fac7fe80d11a9cd6fb361ddb",
+        "merged_at": "2026-10-24T06:19:15Z",
+        "number": 3694,
+        "url": "https://github.com/jqlang/jq/pull/3694",
+        "pr_cycle_seconds": 78394,
+        "labor_seconds": null,
+        "human_tokens": null,
+        "cost_usd": null,
+        "grade": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "diagnostics": null
+      },
+      "bilateral_gold_review": {
+        "type": "supplementary bilateral review",
+        "arm": "develop",
+        "assessor": "GPT-6.1 Sol Medium, fresh masked review",
+        "limitations": "Static assessment only: read starting sources, both patches and review-packet/task.json; did not apply, build or run either submission. Frozen build/native/hidden stage values are all 0 for both submissions, with diagnostics null. These supplied codes do not establish test counts, environments, platform coverage or individual runtime behavior; no additional runtime results are inferred. Recognizable provenance includes jq paths and halt_error documentation, the existing CVE-2026-44777 comment in tests/shtest, and the Windows console helper comments referencing #1121/#1184 in src/util.h. These are source-context clues, not evidence of submission identities. Patch SHA-256 values match the supplied packet: A 730405fc34ddd6601d394447059e19bbd6d0fa13993fdca1ba84782f44312ba6; B b0333a34a4449822d1fea3639cb0c52449fa1b4757a9a0da64918ba13fc74c5d. No authorship or identity inference was used.",
+        "evidence": "Correctness: tie. docs/content/manual/manual.yml documents no decoration or appended newline, with default status 5. Starting src/main.c process() already writes strings by explicit byte length, suppresses null, but appends a newline after jv_dump_string(error_message, 0) for other valid values. A removes only that newline; B serializes non-strings then shares the existing length-aware priv_fwrite path. src/jv_print.c jvp_dump_string() escapes control bytes, including embedded NUL, so A using %s for serialized non-strings is not a demonstrated truncation defect. Both preserve the exit-code logic, stdout logic, null suppression and raw string bytes by inspection. B additionally uses src/util.h Windows console handling for serialized values; no console behavior was measured. Regression coverage: A. In tests/shtest A replaces the newline-insensitive object command substitution with file cmp across object, array, number, both booleans, null, raw string, string with trailing newline and string with embedded NUL. Each runs default halt_error and halt_error(11), checks exact status, exact stderr and empty stdout. tests/setup enables set -eu, so standalone cmp failures fail the native script. B changes only the object assertion, appending an echo z sentinel after the expected nonzero exit; this exposes the unwanted newline before z, following the existing string test idiom, but adds no corresponding type/status/stdout matrix. Maintainability/scope: B. Both limit edits to src/main.c and tests/shtest. B consolidates raw-string and serialized-value writes into one existing length-aware helper and documents the no-newline invariant. Its one-line sentinel test reuses the nearby established idiom. A has the smallest production edit and a useful, task-relevant test matrix, but retains separate output mechanisms and adds a larger loop with input-specific expectations and status branches. B has the smaller overall maintenance surface. Native-test weakening: neither submission shows weakening. A replaces the original object assertion with a stronger exact-byte check retaining that object and leaves neighboring halt tests intact; B strengthens the same assertion to distinguish a trailing newline and leaves all other assertions intact. Neither changes tests/setup, Makefile.am native test registration, skips or success criteria. A uses the existing VG_EXIT0 convention for intentional nonzero exits, as neighboring status tests already do; B retains the original object test Valgrind invocation. Frozen stage codes are identical and do not independently distinguish these static judgments.",
+        "correctness": "tie",
+        "regression_coverage": "develop",
+        "maintainability_scope": "reference"
+      }
+    },
+    {
+      "case": "marked",
+      "stratum": "external",
+      "reference": "https://github.com/markedjs/marked/pull/4145",
+      "control": {
+        "state": "completed",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "reference_checks_pass": true,
+        "seconds": {
+          "wall_seconds": 1045.1657443270087,
+          "setup_seconds": 23.857118817977607,
+          "grading_seconds": 15.380511060822755,
+          "end_to_end_seconds": 1085.9996531240176
+        },
+        "usage_complete": true,
+        "threads_observed": 1,
+        "tokens": {
+          "inputTokens": 3751997,
+          "cachedInputTokens": 3656064,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 19785,
+          "reasoningOutputTokens": 10540,
+          "totalTokens": 3771782
+        },
+        "observed_tokens": {
+          "inputTokens": 3751997,
+          "cachedInputTokens": 3656064,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 19785,
+          "reasoningOutputTokens": 10540,
+          "totalTokens": 3771782
+        },
+        "token_coverage": "complete",
+        "diagnostics": {
+          "commonmark_extra": [
+            false,
+            false
+          ]
+        },
+        "usd": null,
+        "error": null,
+        "cohort": "supplementary",
+        "standard_usd_estimate": 0.7553224,
+        "cost_coverage": "complete",
+        "root_tokens": 3771782,
+        "descendant_tokens": 0,
+        "descendant_count": 0,
+        "root_command_count": 35,
+        "grade_patch_sha256": "b695c95cb19b7e21a90411461ba3b813c1d47fb962cb0124c98d187109993ae3"
+      },
+      "develop": {
+        "state": "completed",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "reference_checks_pass": true,
+        "seconds": {
+          "wall_seconds": 638.2679697389249,
+          "setup_seconds": 27.796280999900773,
+          "grading_seconds": 15.666590352077037,
+          "end_to_end_seconds": 683.7166920541786
+        },
+        "usage_complete": true,
+        "threads_observed": 1,
+        "tokens": {
+          "inputTokens": 2464551,
+          "cachedInputTokens": 2411904,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 14465,
+          "reasoningOutputTokens": 5292,
+          "totalTokens": 2479016
+        },
+        "observed_tokens": {
+          "inputTokens": 2464551,
+          "cachedInputTokens": 2411904,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 14465,
+          "reasoningOutputTokens": 5292,
+          "totalTokens": 2479016
+        },
+        "token_coverage": "complete",
+        "diagnostics": {
+          "commonmark_extra": [
+            false,
+            false
+          ]
+        },
+        "usd": null,
+        "error": null,
+        "cohort": "supplementary",
+        "standard_usd_estimate": 0.4911344,
+        "cost_coverage": "complete",
+        "root_tokens": 2479016,
+        "descendant_tokens": 0,
+        "descendant_count": 0,
+        "root_command_count": 45,
+        "grade_patch_sha256": "708b0f559bf8dbea1873326691af23034f7cf9d8869ccfd8752218793e5cb60a"
+      },
+      "develop_minus_control": {
+        "reference_pass_delta": 0,
+        "wall_seconds_delta": -406.89777458808385,
+        "end_to_end_seconds_delta": -402.2829610698391,
+        "tokens_delta": {
+          "inputTokens": -1287446,
+          "cachedInputTokens": -1244160,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": -5320,
+          "reasoningOutputTokens": -5248,
+          "totalTokens": -1292766,
+          "uncachedInputTokens": -43286
+        },
+        "usd_delta": null,
+        "standard_usd_estimate_delta": -0.264188
+      },
+      "blind_quality": {
+        "assessor": "GPT-6.1 Sol Medium, fresh masked review",
+        "limitations": "Offline static assessment only: read task.json, all three patches, starting src/Tokenizer.ts, src/rules.ts, src/Lexer.ts, relevant existing fixtures and the spec runner. No patches were applied, submissions modified, builds/tests/benchmarks executed, or network sources consulted. Predicted behavior below follows source inspection, not new execution. task.json records build/native/hidden exit codes of 0 and commonmark_extra [false, false] identically for A, B and C; these provide no relative advantage, and diagnostic inputs, raw logs and hosted CI reports are unavailable. The diagnostic booleans alone do not establish additional CommonMark compliance. Performance and exhaustive compatibility, including pedantic mode and extension masking, remain unverified. Recognizable provenance: this is the marked TypeScript parser and its Markdown/HTML fixture convention; all patches identify the same starting Tokenizer.ts blob 2254714 and share original-run recovery ideas. No author identity is inferable from the supplied patch metadata; no identities were guessed or used.",
+        "pairs": [
+          {
+            "arms": [
+              "control",
+              "develop"
+            ],
+            "correctness": "control",
+            "regression_coverage": "control",
+            "maintainability_scope": "control",
+            "evidence": "Correctness: src/Lexer.ts tracks prevChar with token.raw.slice(-1), so an astral symbol leaves a lone low surrogate. A/src/Tokenizer.ts recovers the complete preceding code point even on the initial attempt; B only recovers it when runStart < start. For A's fixture \ud83d\ude42*a**, the emoji is punctuation/symbol under src/rules.ts, so the opener cannot close and the expected result is \ud83d\ude42<em>a</em>*. B instead classifies the surrogate as ordinary text, marks the opener as able to close, and rejects the 1+2 pair under the multiple-of-three rule. Likewise, A recovers the preceding underscore when the lexer leaves prevChar empty: its _*!a** regression expects literal text, whereas B treats the star as whitespace-preceded and can accept the prohibited 1+2 pairing. Both implement the symmetric multiple-of-three condition and preserve original run lengths. Coverage: A adds 38 exact-output examples in both explicit GFM and non-GFM fixtures, covering ordinary/strong emphasis, intraword runs, combining marks, astral symbols, mixed delimiters and unmatched suffixes (including ***foo*bar). B adds 27 examples per mode, with useful astral punctuation and !*a** cases, but misses the initial-surrogate and stale-underscore cases above. Neither weakens or removes native tests. Maintainability/scope: A confines production changes to emStrong and reuses beginningSpace and punctuation rules; B also replaces unicodeAlphaNumeric with two helpers in src/rules.ts while retaining incomplete character recovery. A's explicit surrogate repair avoids B's conditional codePointAt(runStart - 2) reconstruction. Both add backward scans whose worst-case performance is unmeasured, and neither adds pedantic-mode regression fixtures."
+          },
+          {
+            "arms": [
+              "control",
+              "reference"
+            ],
+            "correctness": "control",
+            "regression_coverage": "control",
+            "maintainability_scope": "control",
+            "evidence": "Correctness: A/src/Tokenizer.ts rejects underscore opening after any non-whitespace, non-punctuation character; C retains the starting unicodeAlphaNumeric-only test. With a\u0301_b_ (a plus combining acute), Lexer.prevChar is the combining mark, so C allows an underscore opener and produces emphasis where A's fixture correctly requires literal a\u0301_b_. C also retains the midRun break for ambiguous closers. For ***foo*bar, earlier opener attempts fail; the final star of the original length-three run can pair with the middle star because their lengths sum to four. A removes the heuristic and its fixture expects **<em>foo</em>bar; C breaks on that ambiguous closer and leaves the span unmatched. Both recover original run lengths and address a*b**. Coverage: A supplies 38 exact-output cases in each of GFM and non-GFM, including combining marks, ordinary and strong emphasis, intraword underscores, astral symbols and mixed runs. C supplies seven default-mode cases in em_strong_delimiter_run.md/html, mainly punctuation-led suffixes and a*b**, without corresponding non-GFM, Unicode or ordinary-emphasis controls. Neither changes existing tests. Maintainability/scope: both limit production changes to emStrong, but A replaces the mid-run heuristic with the flanking/rule condition, while C keeps both mechanisms and allocates an array via spread/slice/.at plus uses trim to determine preceding-character properties on every candidate. A directly reuses existing whitespace/punctuation checks. C does explicitly gate its new run recovery/openerCanClose logic for pedantic mode, a compatibility consideration A lacks; without execution this does not outweigh the demonstrated CommonMark gaps and extra heuristic complexity."
+          },
+          {
+            "arms": [
+              "develop",
+              "reference"
+            ],
+            "correctness": "develop",
+            "regression_coverage": "develop",
+            "maintainability_scope": "develop",
+            "evidence": "Correctness: B/src/Tokenizer.ts uses explicit Unicode punctuation/whitespace classification and prevents underscore opening after combining marks. C keeps unicodeAlphaNumeric, which does not include combining marks, so a\u0301_b_ can become a\u0301<em>b</em>; B's em_strong_delimiter_runs fixture requires literal a\u0301_b_ a\u0301__b__. B also removes the midRun break and applies the multiple-of-three rule when either run can open and close, using the original opener length. C retains the break, incorrectly preventing the final star of ***foo*bar from pairing with its ambiguous length-one closer even though the original length-three opener permits that pairing; B's logic permits **<em>foo</em>bar. B still has an initial astral-character limitation because it repairs prevChar only on retried suffixes; this preference is not a claim of full compliance. Coverage: B adds 27 cases in both default GFM and explicit non-GFM fixtures, including ordinary/strong/triple emphasis, intraword behavior, combining marks, astral punctuation, ambiguous runs and **a*b*c. C adds only seven default-mode cases and lacks those controls and the second mode. All existing native tests are untouched by both. Maintainability/scope: B replaces the special midRun branch with an explicit openerCanClose/multiple-of-three condition and gives character classification named reusable helpers in src/rules.ts. C confines changes to one production file but layers new original-run logic over the retained heuristic, with per-candidate spread/slice/.at and trim allocations. B is the clearer implementation of the requested rule. C's explicit pedantic guards reduce some compatibility exposure compared with B, but neither adds pedantic tests or provides offline performance evidence."
+          }
+        ]
+      },
+      "upstream": {
+        "additions": 55,
+        "author": "ybai08",
+        "changed_files": 3,
+        "created_at": "2026-10-17T22:00:14Z",
+        "deletions": 12,
+        "merge_commit_sha": "5d8e2340d78c25c611e1d8215b302fd48f01a601",
+        "merged_at": "2026-10-26T05:41:34Z",
+        "number": 4145,
+        "url": "https://github.com/markedjs/marked/pull/4145",
+        "pr_cycle_seconds": 718880,
+        "labor_seconds": null,
+        "human_tokens": null,
+        "cost_usd": null,
+        "grade": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "diagnostics": {
+          "commonmark_extra": [
+            false,
+            false
+          ]
+        }
+      }
+    },
+    {
+      "case": "go-git",
+      "stratum": "external",
+      "reference": "https://github.com/go-git/go-git/pull/2538",
+      "control": {
+        "state": "completed",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "reference_checks_pass": true,
+        "seconds": {
+          "wall_seconds": 421.3850292998832,
+          "setup_seconds": 25.013277267105877,
+          "grading_seconds": 85.96419246005826,
+          "end_to_end_seconds": 534.2403208678588
+        },
+        "usage_complete": true,
+        "threads_observed": 1,
+        "tokens": {
+          "inputTokens": 1517236,
+          "cachedInputTokens": 1473152,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 7691,
+          "reasoningOutputTokens": 2350,
+          "totalTokens": 1524927
+        },
+        "observed_tokens": {
+          "inputTokens": 1517236,
+          "cachedInputTokens": 1473152,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 7691,
+          "reasoningOutputTokens": 2350,
+          "totalTokens": 1524927
+        },
+        "token_coverage": "complete",
+        "diagnostics": null,
+        "usd": null,
+        "error": null,
+        "cohort": "supplementary",
+        "standard_usd_estimate": 0.3123932,
+        "cost_coverage": "complete",
+        "root_tokens": 1524927,
+        "descendant_tokens": 0,
+        "descendant_count": 0,
+        "root_command_count": 12,
+        "grade_patch_sha256": "39b1bc53a379599619c5042dec1f65abdf7725e03ce7ce828a280a7b63427f55"
+      },
+      "develop": {
+        "state": "completed",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "reference_checks_pass": true,
+        "seconds": {
+          "wall_seconds": 2473.1484585017897,
+          "setup_seconds": 27.516934448154643,
+          "grading_seconds": 86.52288037212566,
+          "end_to_end_seconds": 2588.9925198920537
+        },
+        "usage_complete": true,
+        "threads_observed": 5,
+        "tokens": {
+          "inputTokens": 10545204,
+          "cachedInputTokens": 10368384,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 39063,
+          "reasoningOutputTokens": 15705,
+          "totalTokens": 10584267
+        },
+        "observed_tokens": {
+          "inputTokens": 10545204,
+          "cachedInputTokens": 10368384,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 39063,
+          "reasoningOutputTokens": 15705,
+          "totalTokens": 10584267
+        },
+        "token_coverage": "complete",
+        "diagnostics": null,
+        "usd": null,
+        "error": null,
+        "cohort": "supplementary",
+        "standard_usd_estimate": 1.7811084,
+        "cost_coverage": "complete",
+        "root_tokens": 8751264,
+        "descendant_tokens": 1833003,
+        "descendant_count": 4,
+        "root_command_count": 75,
+        "grade_patch_sha256": "f5d1ac337098ddb7fa75f3cc03cdc46b9e54f034e41ee250dba3191647c7bff8"
+      },
+      "develop_minus_control": {
+        "reference_pass_delta": 0,
+        "wall_seconds_delta": 2051.7634292019065,
+        "end_to_end_seconds_delta": 2054.752199024195,
+        "tokens_delta": {
+          "inputTokens": 9027968,
+          "cachedInputTokens": 8895232,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 31372,
+          "reasoningOutputTokens": 13355,
+          "totalTokens": 9059340,
+          "uncachedInputTokens": 132736
+        },
+        "usd_delta": null,
+        "standard_usd_estimate_delta": 1.4687152
+      },
+      "blind_quality": {
+        "assessor": "GPT-6.1 Sol Medium, fresh masked review",
+        "limitations": "Offline static assessment of task.json, all three complete patches, and the relevant starting filemode, tree, fuzz, buffer-pool and Git-test-environment source. No submissions were applied, modified, built or tested; no network or external CI reports were consulted. task.json records build/native/hidden exit codes of 0 for A, B and C and null diagnostics; these give no pairwise distinction and do not establish which cases ran or whether optional Git oracle tests ran. Git overflow semantics were assessed from the code and documented parse_mode/canon_mode model; the linked upstream sources and oracle results were not independently verified in this review. The prompt explicitly requires overflow rejection in FromBytes; I distinguish that public parser contract from Git-compatible wrapping during tree decoding. Recognizable provenance consists of go-git paths, common preimage blob IDs, existing project helpers and upstream Git object.h links (A cites v2.55.0, B/C v2.54.0). No author, account, model attribution or identifying commit metadata is exposed by the patches; no submission identity is inferred. These references were not used as identity or prestige evidence.",
+        "pairs": [
+          {
+            "arms": [
+              "reference",
+              "develop"
+            ],
+            "correctness": "reference",
+            "regression_coverage": "reference",
+            "maintainability_scope": "develop",
+            "evidence": "Correctness: both plumbing/filemode/filemode.go patches accept arbitrarily zero-padded uint32 values, reject invalid digits/overflow in FromBytes, and expose Canonical using 0o100 rather than the starting tree helper's 0o111. Both preserve directory, symlink and fallback submodule mapping. A's plumbing/object/tree.go readTreeEntryMode separately wraps octal accumulation and canonicalizes the low type/owner-execute bits, matching Git's parse_mode/canon_mode model: tree mode 1000000100644 becomes Regular. B routes the same tree mode through strict FromBytes and returns ErrMalformedTree. The starting Validate documentation explicitly permits unusual decoded entries. A also processes long mode chunks with constant auxiliary memory; B copies the complete mode before parsing. Coverage: A adds wider-than-32/64-bit tree cases, high-bit masking, an actual git hash-object --literally/ls-tree oracle test, and a canonical-output invariant in plumbing/object/decode_fuzz_test.go. B has valuable exact buffer-delimiter boundaries, two-entry alignment checks, round trips and a broader invalid-byte table, but its tree overflow assertions pin rejection rather than Git wrapping. A rewrites TestTreeDecodeCanonicalizesModes while retaining all five original mode expectations and adding cases; B retains it unchanged. Neither weakens native assertions. Maintainability/scope: B confines the work to four existing mode/tree files, reuses FromBytes and the existing long-name accumulation idiom, and uses compact table tests. A's bounded streaming parser has a real benefit, but adds a second octal parser, lengthy API commentary, a hand-transcribed gitCanonMode test oracle largely duplicating the implementation, and filesystem/subprocess test infrastructure. B is the smaller, easier maintenance surface on this axis, despite the correctness limitation above. Recorded stage outcomes and null diagnostics are identical."
+          },
+          {
+            "arms": [
+              "reference",
+              "control"
+            ],
+            "correctness": "reference",
+            "regression_coverage": "reference",
+            "maintainability_scope": "control",
+            "evidence": "Correctness: A and C implement the same public Canonical type mask and owner execute rule in plumbing/filemode/filemode.go, preserve other public mode methods, and correctly bound FromBytes to uint32 (A checks before shifting, C before multiplying/adding). Their tree behavior differs: A's readTreeEntryMode accepts arbitrary octal width and keeps the low bits needed by Canonical, whereas C's Tree.Decode feeds an accumulated slice to FromBytes and rejects 40000000000 or 1000000100644. Git-compatible tree reading wraps these values; uint32 overflow rejection is explicitly required for FromBytes, not a reason to lose that tree behavior. A's streaming implementation also avoids C's allocation proportional to zero-padding length. Both report ErrMalformedTree for invalid digits and missing mode delimiters. Coverage: C adds useful offset boundary cases in TestTreeDecodeModeBufferBoundary, padded uint32 maximum, invalid-byte/overflow tables and round trips. A additionally exercises wrapped tree values beyond 32 and 64 bits, high bits outside the type mask, checks actual Git output in TestTreeDecodeModesMatchGit, and strengthens FuzzTreeDecode to reject noncanonical successful output. The Git oracle is optional under -short or without git; its execution is not established by the stage summary. A's native canonicalization-test rewrite retains all original type expectations; C leaves those assertions unchanged. No native test is weakened. Maintainability/scope: C keeps four existing files and one shared strict parser with short table tests and local buffer handling. A adds a separate production parser, a second simulated Git implementation in tests, subprocess/filesystem setup and substantially more commentary/test scaffolding. C has the narrower maintenance burden, acknowledging A's bounded-memory advantage and better tree semantics. All recorded stages are 0 with null diagnostics for both."
+          },
+          {
+            "arms": [
+              "develop",
+              "control"
+            ],
+            "correctness": "tie",
+            "regression_coverage": "develop",
+            "maintainability_scope": "tie",
+            "evidence": "Correctness: plumbing/object/tree.go has effectively the same ReadSlice/ErrBufferFull accumulation and Canonical call in B and C. In plumbing/filemode/filemode.go B uses a uint64 accumulator checked after every digit against 2^32-1; C checks (MaxUint32-digit)/8 before updating uint32. Both safely accept all uint32 octal values with arbitrary leading zeros and reject overflow/invalid bytes. Their Canonical methods have identical type and owner-execute semantics. Both share the tree-overflow incompatibility: strict FromBytes rejects values Git reads by wrapping. No observed public behavior separates them. Coverage: both add multi-buffer padding, owner versus group/other execute bits, maximum uint32, malformed-mode errors and encode/decode round trips. B's TestTreeDecodeOctalModes explicitly puts the delimiter at the buffer end and in the next buffer, follows each mode with a second entry, verifies both names/modes and compares complete round-tripped entries. Its TestFromBytesUint32 additionally round-trips mode.String() and tests thousands of zeros followed by the uint32 maximum; its error table includes a newline and a very long overflowing number. C compensates partly with TestTreeDecodeModeBufferBoundary varying the preceding filename length and a padded tree maximum, but B more directly combines boundary handling, entry alignment and round-trip preservation. Both retain the original native assertions, including the 12345678 rejection (only its incorrect length-based comment changes). Maintainability/scope: both touch the same four files, remove the old private canonicalizer, update its comment references and reuse the existing buffer accumulation pattern; the accumulator and test-layout differences do not justify a material preference. Identical zero stage exit codes and null diagnostics provide no additional distinction."
+          }
+        ]
+      },
+      "upstream": {
+        "additions": 386,
+        "author": "hiddeco",
+        "changed_files": 5,
+        "created_at": "2026-10-23T09:09:48Z",
+        "deletions": 70,
+        "merge_commit_sha": "41c3e4d6c870cafea5c4343623d2e3a8ffa31d05",
+        "merged_at": "2026-10-23T10:39:31Z",
+        "number": 2538,
+        "url": "https://github.com/go-git/go-git/pull/2538",
+        "pr_cycle_seconds": 5383,
+        "labor_seconds": null,
+        "human_tokens": null,
+        "cost_usd": null,
+        "grade": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "diagnostics": null
+      }
+    },
+    {
+      "case": "runner-space",
+      "stratum": "owner-maintenance",
+      "reference": "https://github.com/justinthelaw/maximize-github-runner-space/pull/69",
+      "control": {
+        "state": "completed",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "reference_checks_pass": true,
+        "seconds": {
+          "wall_seconds": 463.0338511711452,
+          "setup_seconds": 25.075976060004905,
+          "grading_seconds": 6.8211577499751,
+          "end_to_end_seconds": 496.05472223996185
+        },
+        "usage_complete": true,
+        "threads_observed": 1,
+        "tokens": {
+          "inputTokens": 2319767,
+          "cachedInputTokens": 2265472,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 6295,
+          "reasoningOutputTokens": 1097,
+          "totalTokens": 2326062
+        },
+        "observed_tokens": {
+          "inputTokens": 2319767,
+          "cachedInputTokens": 2265472,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 6295,
+          "reasoningOutputTokens": 1097,
+          "totalTokens": 2326062
+        },
+        "token_coverage": "complete",
+        "diagnostics": null,
+        "usd": null,
+        "error": null,
+        "cohort": "supplementary",
+        "standard_usd_estimate": 0.3980872,
+        "cost_coverage": "complete",
+        "root_tokens": 2326062,
+        "descendant_tokens": 0,
+        "descendant_count": 0,
+        "root_command_count": 13,
+        "grade_patch_sha256": "90ae17dc568ee22e1967f0568e68e7553e8069236283b93fdeb057597560ad0c"
+      },
+      "develop": {
+        "state": "completed",
+        "stages": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "reference_checks_pass": true,
+        "seconds": {
+          "wall_seconds": 210.15954462601803,
+          "setup_seconds": 27.044066410977393,
+          "grading_seconds": 7.023296772036701,
+          "end_to_end_seconds": 245.26417179196142
+        },
+        "usage_complete": true,
+        "threads_observed": 1,
+        "tokens": {
+          "inputTokens": 740220,
+          "cachedInputTokens": 704000,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 4219,
+          "reasoningOutputTokens": 238,
+          "totalTokens": 744439
+        },
+        "observed_tokens": {
+          "inputTokens": 740220,
+          "cachedInputTokens": 704000,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 4219,
+          "reasoningOutputTokens": 238,
+          "totalTokens": 744439
+        },
+        "token_coverage": "complete",
+        "diagnostics": null,
+        "usd": null,
+        "error": null,
+        "cohort": "supplementary",
+        "standard_usd_estimate": 0.18503,
+        "cost_coverage": "complete",
+        "root_tokens": 744439,
+        "descendant_tokens": 0,
+        "descendant_count": 0,
+        "root_command_count": 14,
+        "grade_patch_sha256": "b2531a00c46319e0e89a3d8b2714a270bfe493f0def063d22211763ba14fb1b4"
+      },
+      "develop_minus_control": {
+        "reference_pass_delta": 0,
+        "wall_seconds_delta": -252.87430654512718,
+        "end_to_end_seconds_delta": -250.79055044800043,
+        "tokens_delta": {
+          "inputTokens": -1579547,
+          "cachedInputTokens": -1561472,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": -2076,
+          "reasoningOutputTokens": -859,
+          "totalTokens": -1581623,
+          "uncachedInputTokens": -18075
+        },
+        "usd_delta": null,
+        "standard_usd_estimate_delta": -0.2130572
+      },
+      "blind_quality": {
+        "assessor": "GPT-6.1 Sol Medium, fresh masked review",
+        "limitations": "Offline static assessment of task.json, all three complete patches, and relevant starting workflow, hook configuration, package manifest/lockfile, action metadata, metadata tests and prior dependency ledgers. No submissions were applied, modified or tested, and no network sources were consulted. task.json records build/native/hidden codes of 0 for every submission and null diagnostics, providing no differentiating failure evidence or detailed coverage report. Submission-authored validation narratives and release/registry/hosted-check claims are not independently available evidence and receive no additional credit. New upstream action bundles, hook graphs and actual hook compatibility cannot be established from this packet. Recognizable provenance: C's new ledger names Dependabot, PRs #67/#68, source-head hashes and a main commit; the starting repository also contains its public project identity. These clues do not establish the anonymous submitters' identities, which were neither inferred nor used for ranking.",
+        "pairs": [
+          {
+            "arms": [
+              "control",
+              "develop"
+            ],
+            "correctness": "control",
+            "regression_coverage": "tie",
+            "maintainability_scope": "tie",
+            "evidence": "Both patches identically update .github/workflows/lint.yml to setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 (v7.1.0) and .pre-commit-config.yaml to markdownlint-cli2 v0.24.0. Both preserve Python 3.15, hook arguments/exclusions/stages, package engines >=22, action.yml's node24 runtime, runtime source and dist/. Both add a dated ledger linking prior deferrals and explicitly leave new upstream graphs unverified. A has a small documentation correctness advantage: B's docs/dependency-upgrades/2026-10-28.md calls project Undici 6.29.0 the 'Retained baseline', but starting package-lock.json has node_modules/undici 6.29.1. B's historical-target qualification explains 8.11.2 but does not correct that retained baseline; A avoids this stale version assertion. Coverage ties: neither changes test/ or native workflow checks, and all supplied stage codes are 0 with null diagnostics. A's reported unidentified test failure and B's reported exact-diff checks are ledger narratives without supplied diagnostic artifacts, not comparative test evidence. Scope ties: each changes only the two requested pins and one ledger; A groups retained boundaries while B enumerates historical deferrals and accurately explains that package.json's format:check omits the changed YAML/ledger. Neither introduces runtime changes or test weakening."
+          },
+          {
+            "arms": [
+              "control",
+              "reference"
+            ],
+            "correctness": "control",
+            "regression_coverage": "tie",
+            "maintainability_scope": "control",
+            "evidence": "The operative workflow and pre-commit diffs are identical and satisfy both requested version changes, including the exact setup-python SHA. Neither patch changes supported runtime selectors, action inputs/outputs, source, npm graph or dist/. A's docs/dependency-upgrades/2026-10-28.md carries forward the prior action/hook security deferrals pending bundle/graph inspection and explicitly makes no claim that old advisories remain or are resolved. C's docs/dependency-upgrades/2026-10-25.md instead asserts specific new setup-python lock dependencies and markdownlint manifest versions and declares the old smol-toml deferral superseded; those new release contents are not provided by the task or starting source. A therefore supplies a better-supported ledger for this offline task. C correctly lists the starting project's Undici 6.29.1, but its broader registry-latest and release-status assertions cannot be established offline. Coverage ties: no tests or native assertions are added, removed or weakened, and task.json gives identical 0 stage codes and no diagnostics. C's claimed two-runtime test passes, hook passes and reproducibility checks are not supplied reports and receive no extra credit; A's self-reported failure likewise lacks supplied diagnostic detail. A also has tighter maintainability/scope: it records requested changes, retained boundaries and explicit retry conditions, whereas C adds an unsubstantiated whole-registry survey and source-closure/branch instructions beyond the requested tooling update. C's provenance clues themselves are not a ranking factor."
+          },
+          {
+            "arms": [
+              "develop",
+              "reference"
+            ],
+            "correctness": "develop",
+            "regression_coverage": "tie",
+            "maintainability_scope": "develop",
+            "evidence": "Both make the same correct setup-python SHA/version and markdownlint-cli2 revision changes, retaining lint Python 3.15, hook configuration, Node >=22 development support, node24 action execution and the committed distribution. B's docs/dependency-upgrades/2026-10-28.md explicitly marks new upstream graphs unverified and requires reassessment of prior setup-python and Markdown security findings. C's docs/dependency-upgrades/2026-10-25.md asserts new upstream manifest/lock contents and supersedes the smol-toml deferral without packet evidence supporting that resolution. B is preferable for evidence-bounded ledger correctness, although its 'Retained baseline' Undici 6.29.0 is stale against starting package-lock.json's 6.29.1, which C records correctly. No preference rests on C's reported registry or hosted validation. Regression coverage ties: both leave test/ and native runner assertions unchanged, neither adds a regression check for these pins, and task.json supplies identical 0 build/native/hidden codes with null diagnostics. B's exact-diff assertions and C's test/hook/reproducibility narratives have no supplied execution artifacts to distinguish coverage. Maintainability/scope favors B's explicit retained support boundaries, parent-managed dependency retry conditions, and accurate format:check limitation over C's wider unsupported registry survey and unrelated source-branch closure process. Both otherwise keep implementation scope appropriately limited to two pin edits and one ledger."
+          }
+        ]
+      },
+      "upstream": {
+        "additions": 55,
+        "author": "justinthelaw",
+        "changed_files": 3,
+        "created_at": "2026-10-25T19:34:22Z",
+        "deletions": 2,
+        "merge_commit_sha": "bbaad53e5c844645ef54d9309adf96be46ab159e",
+        "merged_at": "2026-10-25T21:15:22Z",
+        "number": 69,
+        "url": "https://github.com/justinthelaw/maximize-github-runner-space/pull/69",
+        "pr_cycle_seconds": 6060,
+        "labor_seconds": null,
+        "human_tokens": null,
+        "cost_usd": null,
+        "grade": {
+          "build": 0,
+          "native": 0,
+          "hidden": 0
+        },
+        "diagnostics": null
+      }
+    }
+  ],
+  "primary_snapshot": {
+    "path": "continuation/primary-report.json",
+    "sha256": "82dfee7dba80a80063c51757d3ca151332cf8a0ec22c057600d4f36bb13694be",
+    "released_slots": 5
+  },
+  "supplementary_slots": [
+    "jq/develop",
+    "marked/develop",
+    "marked/control",
+    "go-git/control",
+    "go-git/develop",
+    "runner-space/develop",
+    "runner-space/control"
+  ],
+  "cost_model": {
+    "name": "GPT-6.1 Sol Codex Enterprise Standard list-price estimate",
+    "rates_usd_per_million": {
+      "uncached_input": 2,
+      "cached_input": 0.1,
+      "output": 10
+    },
+    "source": "https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing",
+    "billed_usd": null,
+    "excludes": "setup, graders, recovery probes, external infrastructure and contractual discounts"
+  }
+}

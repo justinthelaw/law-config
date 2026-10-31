@@ -1,0 +1,9 @@
+{
+  "label": "progressive-local-work",
+  "package_sha256": "6f23f7f98c2636db58d960418014e6c9233db5d5132561296f3922a73bfce5c8",
+  "plugin_hook_sha256": "0a1487e7e55b311b1700c4def5da5a1c5a99ca963aeb6eea44fd8a2ddd16ccb9",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}

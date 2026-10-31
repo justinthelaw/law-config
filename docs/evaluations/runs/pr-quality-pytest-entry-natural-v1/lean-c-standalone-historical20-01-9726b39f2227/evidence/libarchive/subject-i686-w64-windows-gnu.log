@@ -1,0 +1,7 @@
+libarchive/archive_read_data_into_fd.c:119:37: error: too few arguments provided to function-like macro invocation
+  119 |         if (can_lseek && (fcntl(fd, F_GETFL) & O_APPEND) != 0)
+      |                                            ^
+libarchive/archive_windows.h:92:9: note: macro 'fcntl' defined here
+   92 | #define fcntl(fd, cmd, flg)     /* No operation. */
+      |         ^
+1 error generated.

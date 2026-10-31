@@ -1,0 +1,5 @@
+Postscore exposed go-git supplemental witness. Reconstructed exact sources match frozen grade trees; external witness runs read-only with pinned offline Go image/dependencies and fresh per-role caches. Logs/manifests/patches and immutable raw registration/plans bind every role.
+
+Base, merge, prior Develop and revised Develop preserve the invalid-prefix/non-EOF-error sentinel; fresh stock returns malformed-tree and loses it. Normal and terminated-invalid controls pass for all. Six real runs include the known historical negative control; truncated/missing/bad-instrumentation/nonzero parser self-controls cannot pass.
+
+Registered gates, blind scores and strict result are unchanged. Revised ties stock on full PR and costs more, so strict product goal remains false. Prior timed out and retains lower-bound economics and unknown soft quality/final attestation; revised matches its measured seven rows. No distinct mechanism, promotion, universal error-precedence rule or production incidence is established.

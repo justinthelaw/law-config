@@ -1,0 +1,10 @@
+{
+  "format": "law-config.supplement-file-manifest/v1",
+  "files": {
+    "README.md": "3df24de1a372156c7082aac5fffaef4602a20a0e91dee06c9cd7687c440b50ad",
+    "assay.py": "3a8a8393bf2b323731e7a2934386ab5af29e439b88260596f70603ecedd6657d",
+    "replay.py": "4fd8ed994f55f8158951d106b8cab118e27a27fc7f0bee243667f15bacbc385d",
+    "supplement.json": "60a660863f6e56465fb0cf4d483b3f53b2cafbb861c5273b202bad961067925e",
+    "validate-controls.mjs": "4972973499d82d38db1ee4d62c36cd5e2f9774f9189bd2ef547925e984ba6211"
+  }
+}

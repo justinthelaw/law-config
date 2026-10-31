@@ -1,0 +1,954 @@
+{
+  "format": "law-config.eval-pilot/v1",
+  "name": "partial-result-go-git-01",
+  "case": "go-git",
+  "repository": "go-git/go-git",
+  "pr": 2538,
+  "registration": {
+    "protocol": "develop-efficiency-pilot-v1",
+    "name": "partial-result-go-git-01",
+    "case": "go-git",
+    "plans": {
+      "prior": {
+        "path": "runs/partial-result-go-git-01-prior/plan.json",
+        "sha256": "24dbe445c8481133491381e214283a7cf4a965a3639d1af789f2bc0ab518b1b7"
+      },
+      "candidate": {
+        "path": "runs/partial-result-go-git-01-candidate/plan.json",
+        "sha256": "6b874a06ffbdfcf7e2142e1936da2ed9daff3bb7584ec68df989ffc1d3c17e78"
+      }
+    },
+    "operator_sha256": "703b8cad2e19c3b69b6520ae07471b3bb1b4f058fd99d81132deaf02088db79e",
+    "cpus": [
+      6,
+      7
+    ],
+    "order": [
+      [
+        "candidate",
+        "control"
+      ],
+      [
+        "prior",
+        "develop"
+      ],
+      [
+        "candidate",
+        "develop"
+      ]
+    ],
+    "hypothesis": "partial-result-identity",
+    "tuning_policy_sha256": "589902e5ac1b940405e6f65707f3890987e02e4cc0986132382143fb494cce11",
+    "hypothesis_sha256": "cd96970fcfcb8ef50ba895ab995ab6f945af4c4752b69b44425213ca5e74ce06",
+    "falsifier": "Reject lost sentinel identity on the highest-relevance overlap, lost normal/malformed/mode/overflow/roundtrip behavior, omission of a required command/review, non-ready result, full-PR stock tie/loss or insufficient registered win margin, cost above stock, or price/wall not strictly below parent. Missing setup, tree identity, output rows, meters or review proof is unestablished, never green. Equivalent parent behavior cannot establish a distinct observed selection mechanism. Reject lost prior verified behavior or required review, failure of either strict prior cost or wall improvement, non-ready candidate, or full-PR loss to pure. Missing measures or unverifiable review leave the comparison unestablished.",
+    "quality": "Three blind candidate/pure/merge rotations. Prior Develop soft PR quality is unknown.",
+    "goal": "A ready Develop PR strictly wins the full rubric against a terminal pure proposal at complete cost <= pure.",
+    "attempts": "One proposal per registered slot. All allocations including technical failures remain in the ledger."
+  },
+  "registration_sha256": "5253c0a80019608e0063bd16f46bea03673cfaa4880b5726b77980d172445805",
+  "result_sha256": "8b3a3bd4d46c1111f0e8b56666885286d3c4f439a1b726bd2d95197054ca7959",
+  "treatments": {
+    "prior": "7ed91df07062b0a88cab8cd5b5e74ee8a7c7e258afa2a42645b60e793ea68791",
+    "candidate": "c1f85eb15db1d478daf300cc41120862b3adf528e1fe3bb0b05f7959f6a70ea5"
+  },
+  "treatment_components": {
+    "prior": {
+      "label": "superpowers-observable-caller",
+      "package_sha256": "239dccfc0fe4c090a777d8cf46216c99c57bc2bebc08eca013402215b65c7c28",
+      "plugin_hook_sha256": "2820cd4662b8438ba0654c55f9f24577fb8ec13bcc9ad362c598d8777b94ec1b",
+      "hook_sha256": {
+        "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+        "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+      },
+      "companion": {
+        "source": "https://github.com/openai/plugins",
+        "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+        "source_path": "plugins/superpowers",
+        "version": "6.3.0",
+        "manifest_sha256": "18eb497a5c3c5aade93fe1982db0fbd2ab23d4a428fc552da6ee3cc520c9706d",
+        "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+        "skills": {
+          "brainstorming": "74edf03ea6d24ef53db48677b93558d14a979bdf052ca3f57ecdca0c66791608",
+          "dispatching-parallel-agents": "1968923066f3b707eb01d1992cdf4c42284c3855f70253b9cd5000ff45fca13c",
+          "executing-plans": "c4c3d8b628c51114cd165fb8246fe02744cd8be180032328391252e653028d9b",
+          "finishing-a-development-branch": "8db5a922b242dd4e1bf824cb91c13b3e8d8e8a86d6ceaf7f0774eb9cce909d65",
+          "receiving-code-review": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438",
+          "requesting-code-review": "d71cc01ba56d2325cf8af5f7c11837819b63ecd57de0bfdb812f7f3ff7751df8",
+          "subagent-driven-development": "8dd1b8e698edec3700c6d89517dbe96febd3bacd3f6ea21c1a3569c62ea104b5",
+          "systematic-debugging": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787",
+          "test-driven-development": "bf1b8216e523851a411e91d429a7c1c2a173e79d88957bc78e348218d50edd54",
+          "using-git-worktrees": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd",
+          "using-superpowers": "30f2ab78e20ddc27ee7158ae8d4a2abe161c360981c7cc3548070913142d3dc3",
+          "verification-before-completion": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+          "writing-plans": "48508f44bbfd7d24b029fbf3a314f3cd14c9615599059366e922f47b8dc08cf2",
+          "writing-skills": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b"
+        }
+      }
+    },
+    "candidate": {
+      "label": "superpowers-partial-result-identity",
+      "package_sha256": "5acc5df6c74850c8d355aa7506e6e91917fbae8f7a162fca0c6da877f88d77d9",
+      "plugin_hook_sha256": "ebd35de67865326d70e2c1439ff00caedf22ad8d8d239d9045d8fbec68571d45",
+      "hook_sha256": {
+        "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+        "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+      },
+      "companion": {
+        "source": "https://github.com/openai/plugins",
+        "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+        "source_path": "plugins/superpowers",
+        "version": "6.3.0",
+        "manifest_sha256": "18eb497a5c3c5aade93fe1982db0fbd2ab23d4a428fc552da6ee3cc520c9706d",
+        "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+        "skills": {
+          "brainstorming": "74edf03ea6d24ef53db48677b93558d14a979bdf052ca3f57ecdca0c66791608",
+          "dispatching-parallel-agents": "1968923066f3b707eb01d1992cdf4c42284c3855f70253b9cd5000ff45fca13c",
+          "executing-plans": "c4c3d8b628c51114cd165fb8246fe02744cd8be180032328391252e653028d9b",
+          "finishing-a-development-branch": "8db5a922b242dd4e1bf824cb91c13b3e8d8e8a86d6ceaf7f0774eb9cce909d65",
+          "receiving-code-review": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438",
+          "requesting-code-review": "d71cc01ba56d2325cf8af5f7c11837819b63ecd57de0bfdb812f7f3ff7751df8",
+          "subagent-driven-development": "8dd1b8e698edec3700c6d89517dbe96febd3bacd3f6ea21c1a3569c62ea104b5",
+          "systematic-debugging": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787",
+          "test-driven-development": "bf1b8216e523851a411e91d429a7c1c2a173e79d88957bc78e348218d50edd54",
+          "using-git-worktrees": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd",
+          "using-superpowers": "30f2ab78e20ddc27ee7158ae8d4a2abe161c360981c7cc3548070913142d3dc3",
+          "verification-before-completion": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+          "writing-plans": "48508f44bbfd7d24b029fbf3a314f3cd14c9615599059366e922f47b8dc08cf2",
+          "writing-skills": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b"
+        }
+      }
+    }
+  },
+  "base": "e59664470f3644a3114c6760086892dbcd0d7ac9",
+  "merged": "41c3e4d6c870cafea5c4343623d2e3a8ffa31d05",
+  "prompt": "Implement the following task in this checkout and add relevant tests. Use your natural local workflow and verification tools. I waive interactive review of the local implementation plan and authorize you to proceed unattended. Follow all applicable repository requirements and complete any required independent review of consequential design or public contracts. Work offline and leave the proposed changes in the checkout. In your final message, put a concise PR title on the first line, followed by a blank line and a PR body explaining the change, motivation, verification actually performed and any material gaps.\n\nMake tree decoding agree with Git on octal file modes. Handle zero padding and modes that span a read buffer, canonicalize regular files using the owner execute bit, and return the malformed-tree error for invalid encodings. Expose Canonical on FileMode for Git's tree mode semantics. FromBytes accepts zero-padded octal values through uint32 and rejects overflow or invalid bytes. Preserve round trips, non-regular types and existing public contracts. Add regression coverage. Tree.Decode should match Git when wide tree-mode fields wrap, independently of the public FromBytes overflow rule.\n\nAvailable offline verification commands:\ngo build ./plumbing/filemode ./plumbing/object\ngo test ./plumbing/filemode ./plumbing/object",
+  "prompt_sha256": "8e4a1d96e3a68695b5694d2cd09c56be7ddcfd34b94f3b7d6d405856797a6b32",
+  "runtime_sha256": "aeb30a53e8554e5800f9e22f562231e6d5b84aa2f209d4593ffd9df79a0a4489",
+  "rubric_sha256": "0bdd8699f00ba1f5266927d7666bc2a117fa4873e113fdfa831da93cd2abbc08",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "rates": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "profiles": {
+    "candidate/control": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "project",
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {
+        "AGENTS.md": "57404f69a6bdf9ebc0a112ac04f1c64f717c0da39758af27d15cb33e726238b4"
+      },
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [],
+      "ephemeral": false,
+      "inventory_sha256": "6f64658cedcf511085c2b6ed3d98bb1a2d2ae8a0d1f667c60fb3a49104811f2a",
+      "input_sha256": "d6564c712631be526ebd1a6968ccedfe163d287131b48410d81bc663e4706733",
+      "config_sha256": "f226a43ac26e4c07acce8eb4eba9f67a6ed26920e4125aca98b4104f5abfa67d"
+    },
+    "prior/develop": null,
+    "candidate/develop": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "project",
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "hooks",
+        "marketplaces",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {
+        "AGENTS.md": "57404f69a6bdf9ebc0a112ac04f1c64f717c0da39758af27d15cb33e726238b4"
+      },
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [
+        "develop@law-config",
+        "superpowers@superpowers-local"
+      ],
+      "ephemeral": false,
+      "inventory_sha256": "fa8455f41024cac3fe9c21b595ddd98e6e6e111cc7f36a7dd5cdca928df7cc75",
+      "input_sha256": "f19ec0bf97b9b3a783af122d8459d018d8888798a8d11aed16fbab9bc4a9755a",
+      "config_sha256": "68289290e48c3c27b396dae0bea6c3ca05a46c908c42f037d5dfaa85d7d3615a"
+    }
+  },
+  "comparisons": {
+    "develop_control": {
+      "verdict": "tie",
+      "reason": "blinded rubric",
+      "score_delta": 0.0,
+      "votes": [
+        "tie",
+        "control",
+        "tie"
+      ],
+      "order_sensitive": true
+    },
+    "develop_upstream": {
+      "verdict": "tie",
+      "reason": "blinded rubric",
+      "score_delta": 0.0,
+      "votes": [
+        "tie",
+        "tie",
+        "develop"
+      ],
+      "order_sensitive": true
+    },
+    "control_upstream": {
+      "verdict": "tie",
+      "reason": "blinded rubric",
+      "score_delta": 3.75,
+      "votes": [
+        "tie",
+        "control",
+        "control"
+      ],
+      "order_sensitive": true
+    }
+  },
+  "goal_win": false,
+  "submissions": {
+    "control": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "6b874a06ffbdfcf7e2142e1936da2ed9daff3bb7584ec68df989ffc1d3c17e78",
+      "case_id": "go-git",
+      "role": "control",
+      "state": "completed",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "go build ./plumbing/filemode ./plumbing/object",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "9d1db33ea604615a7076bba6ae4fe68f21c2d62f71caae8545136fe0873abe2b",
+          "command": "go test ./plumbing/filemode ./plumbing/object",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "go build -o /tmp/probe /oracle/check.go && /tmp/probe",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+          "reason": null
+        },
+        "independent": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/plumbing/filemode/filemode.go b/plumbing/filemode/filemode.go\nindex 4dd77ba..98c5466 100644\n--- a/plumbing/filemode/filemode.go\n+++ b/plumbing/filemode/filemode.go\n@@ -66,12 +66,14 @@ func New(s string) (FileMode, error) {\n }\n \n // FromBytes parses a FileMode from a byte slice containing an octal\n-// number. This avoids allocating a string when parsing from binary data.\n+// number, optionally padded with leading zeros. Values exceeding uint32\n+// and non-octal bytes are rejected. This avoids allocating a string when\n+// parsing from binary data.\n //\n // Please note this function does not check if the returned FileMode\n // is valid in git or if it is malformed.\n func FromBytes(b []byte) (FileMode, error) {\n-\tif len(b) == 0 || len(b) > 7 {\n+\tif len(b) == 0 {\n \t\treturn Empty, fmt.Errorf(\"invalid mode length: %d\", len(b))\n \t}\n \n@@ -80,6 +82,9 @@ func FromBytes(b []byte) (FileMode, error) {\n \t\tif c < '0' || c > '7' {\n \t\t\treturn Empty, fmt.Errorf(\"invalid octal character: %c\", c)\n \t\t}\n+\t\tif mode > (1<<32-1-uint32(c-'0'))/8 {\n+\t\t\treturn Empty, fmt.Errorf(\"mode overflows uint32\")\n+\t\t}\n \t\tmode = mode*8 + uint32(c-'0')\n \t}\n \treturn FileMode(mode), nil\n@@ -207,3 +212,26 @@ func (m FileMode) ToOSFileMode() (os.FileMode, error) {\n \n \treturn os.FileMode(0), fmt.Errorf(\"malformed mode (%s)\", m)\n }\n+\n+// Canonical returns the mode Git uses when reading a tree entry. Directories\n+// and symlinks lose their permission bits; regular files become Regular or\n+// Executable according to the owner execute bit. All other types, including\n+// Empty and unrecognized types, become Submodule.\n+//\n+// Canonical does not validate the original mode. Use IsMalformed to check\n+// whether a mode is one of the constants defined by this package.\n+func (m FileMode) Canonical() FileMode {\n+\tswitch m & 0o170000 {\n+\tcase 0o040000:\n+\t\treturn Dir\n+\tcase 0o100000:\n+\t\tif m&0o100 != 0 {\n+\t\t\treturn Executable\n+\t\t}\n+\t\treturn Regular\n+\tcase 0o120000:\n+\t\treturn Symlink\n+\tdefault:\n+\t\treturn Submodule\n+\t}\n+}\ndiff --git a/plumbing/filemode/filemode_test.go b/plumbing/filemode/filemode_test.go\nindex 18cfd46..014eb24 100644\n--- a/plumbing/filemode/filemode_test.go\n+++ b/plumbing/filemode/filemode_test.go\n@@ -3,6 +3,7 @@ package filemode\n import (\n \t\"fmt\"\n \t\"os\"\n+\t\"strings\"\n \t\"testing\"\n \n \t\"github.com/stretchr/testify/suite\"\n@@ -90,15 +91,33 @@ func (s *ModeSuite) TestFromBytes() {\n \t}\n }\n \n+func (s *ModeSuite) TestFromBytesUint32() {\n+\tfor _, input := range []string{\"00000000000100644\", strings.Repeat(\"0\", 9000) + \"100644\", \"37777777777\", \"00037777777777\", \"12345670\"} {\n+\t\texpected, err := New(input)\n+\t\ts.Require().NoError(err)\n+\t\tgot, err := FromBytes([]byte(input))\n+\t\ts.NoError(err, \"input length %d\", len(input))\n+\t\ts.Equal(expected, got)\n+\t}\n+}\n+\n func (s *ModeSuite) TestFromBytesErrors() {\n \tfor _, input := range [...]string{\n-\t\t\"\",         // empty\n-\t\t\"9\",        // non-octal digit\n-\t\t\"09\",       // non-octal digit\n-\t\t\"mode\",     // letters\n-\t\t\"12345678\", // too long (>7 chars)\n-\t\t\"0x81a4\",   // hex prefix\n-\t\t\"-100644\",  // negative\n+\t\t\"\",            // empty\n+\t\t\"9\",           // non-octal digit\n+\t\t\"09\",          // non-octal digit\n+\t\t\"mode\",        // letters\n+\t\t\"12345678\",    // non-octal digit\n+\t\t\"40000000000\", // uint32 overflow\n+\t\t\"40000100644\", // overflow with valid tree mode in low bits\n+\t\t\"777777777777777777777777\",\n+\t\t\"+100644\",\n+\t\t\"100644 \",\n+\t\t\"100644\\x00\",\n+\t\t\"100644\\xff\",\n+\t\tstrings.Repeat(\"0\", 9000) + \"8\",\n+\t\t\"0x81a4\",  // hex prefix\n+\t\t\"-100644\", // negative\n \t} {\n \t\tcomment := fmt.Sprintf(\"input = %q\", input)\n \t\tobtained, err := FromBytes([]byte(input))\n@@ -403,3 +422,22 @@ func (s *ModeSuite) TestToOSFileMode() {\n \t\t}\n \t}\n }\n+\n+func (s *ModeSuite) TestCanonical() {\n+\tfor _, tc := range []struct {\n+\t\tmode FileMode\n+\t\twant FileMode\n+\t}{\n+\t\t{Dir, Dir}, {Regular, Regular}, {Deprecated, Regular},\n+\t\t{Executable, Executable}, {Symlink, Symlink}, {Submodule, Submodule},\n+\t\t{0o100000, Regular}, {0o100001, Regular}, {0o100010, Regular},\n+\t\t{0o100011, Regular}, {0o100100, Executable}, {0o104600, Regular},\n+\t\t{0o104700, Executable}, {0o040755, Dir}, {0o120777, Symlink},\n+\t\t{0o160755, Submodule}, {Empty, Submodule}, {0o42, Submodule},\n+\t\t{0o020644, Submodule}, {0o140755, Submodule},\n+\t\t{0o37777777777, Submodule}, {0o20000100644, Regular},\n+\t} {\n+\t\ts.Equal(tc.want, tc.mode.Canonical(), \"mode %o\", tc.mode)\n+\t\ts.Equal(tc.want, tc.mode.Canonical().Canonical(), \"idempotence for %o\", tc.mode)\n+\t}\n+}\ndiff --git a/plumbing/object/tree.go b/plumbing/object/tree.go\nindex 77799ad..2442fba 100644\n--- a/plumbing/object/tree.go\n+++ b/plumbing/object/tree.go\n@@ -301,27 +301,42 @@ func (t *Tree) Decode(o plumbing.EncodedObject) (err error) {\n \n \tvar prevSortName string\n \tfor {\n-\t\t// Use ReadSlice to get a view into bufio's internal buffer,\n-\t\t// avoiding a string allocation for the mode (which is parsed\n-\t\t// into a uint32 immediately and doesn't need to persist).\n-\t\tmodeSlice, err := r.ReadSlice(' ')\n-\t\tif err != nil {\n+\t\t// Git's get_mode accumulates into an unsigned int, allowing wide\n+\t\t// octal fields to wrap. Parse fragments without retaining padding\n+\t\t// or imposing FromBytes' public uint32 overflow check.\n+\t\tvar mode filemode.FileMode\n+\t\tmodeStarted := false\n+\t\tfor {\n+\t\t\tfragment, err := r.ReadSlice(' ')\n+\t\t\tterminated := err == nil\n+\t\t\tif terminated {\n+\t\t\t\tfragment = fragment[:len(fragment)-1]\n+\t\t\t}\n+\t\t\tfor _, c := range fragment {\n+\t\t\t\tif c < '0' || c > '7' {\n+\t\t\t\t\treturn fmt.Errorf(\"%w: malformed mode\", ErrMalformedTree)\n+\t\t\t\t}\n+\t\t\t\tmode = mode<<3 | filemode.FileMode(c-'0')\n+\t\t\t\tmodeStarted = true\n+\t\t\t}\n+\t\t\tif terminated {\n+\t\t\t\tif !modeStarted {\n+\t\t\t\t\treturn fmt.Errorf(\"%w: empty mode\", ErrMalformedTree)\n+\t\t\t\t}\n+\t\t\t\tbreak\n+\t\t\t}\n+\t\t\tif err == bufio.ErrBufferFull {\n+\t\t\t\tcontinue\n+\t\t\t}\n \t\t\tif err == io.EOF {\n-\t\t\t\tif len(modeSlice) != 0 {\n+\t\t\t\tif modeStarted {\n \t\t\t\t\treturn fmt.Errorf(\"%w: missing mode terminator\", ErrMalformedTree)\n \t\t\t\t}\n-\t\t\t\tbreak\n+\t\t\t\treturn nil\n \t\t\t}\n-\n \t\t\treturn err\n \t\t}\n-\t\tmodeSlice = modeSlice[:len(modeSlice)-1] // strip delimiter\n-\n-\t\tmode, err := filemode.FromBytes(modeSlice)\n-\t\tif err != nil {\n-\t\t\treturn fmt.Errorf(\"%w: malformed mode\", ErrMalformedTree)\n-\t\t}\n-\t\tmode = canonicalTreeMode(mode)\n+\t\tmode = mode.Canonical()\n \n \t\tnameSlice, err := r.ReadSlice(0)\n \t\tif err == bufio.ErrBufferFull {\n@@ -366,8 +381,6 @@ func (t *Tree) Decode(o plumbing.EncodedObject) (err error) {\n \t\tprevSortName = sortName\n \t\tt.Entries = append(t.Entries, entry)\n \t}\n-\n-\treturn nil\n }\n \n // TreeEntrySorter is a helper type for sorting TreeEntry slices.\n@@ -393,22 +406,6 @@ func treeEntrySortName(e *TreeEntry) string {\n \treturn e.Name\n }\n \n-func canonicalTreeMode(mode filemode.FileMode) filemode.FileMode {\n-\tswitch mode & 0o170000 {\n-\tcase 0o040000:\n-\t\treturn filemode.Dir\n-\tcase 0o100000:\n-\t\tif mode&0o111 != 0 {\n-\t\t\treturn filemode.Executable\n-\t\t}\n-\t\treturn filemode.Regular\n-\tcase 0o120000:\n-\t\treturn filemode.Symlink\n-\tdefault:\n-\t\treturn filemode.Submodule\n-\t}\n-}\n-\n // Encode transforms a Tree into a plumbing.EncodedObject.\n //\n // The tree is run through Tree.Validate before any bytes are written,\n@@ -463,7 +460,7 @@ func (t *Tree) Encode(o plumbing.EncodedObject) (err error) {\n //\n // Two fsck_tree warnings \u2014 zero-padded modes and the non-canonical\n // 0100664 bits \u2014 are not surfaced here. Both rely on inspecting the\n-// original octal string from the wire, which canonicalTreeMode\n+// original octal string from the wire, which FileMode.Canonical\n // discards during Decode. Detecting them would require a parallel\n // raw-mode field on TreeEntry; the structural rules below are the\n // load-bearing ones for refusing malformed trees.\n@@ -505,7 +502,7 @@ func (t *Tree) Validate() error {\n \t\t}\n \n \t\t// Mode validation against the canonical set. Decode normalises\n-\t\t// the wire bytes via canonicalTreeMode, so this rule mainly\n+\t\t// the wire bytes via FileMode.Canonical, so this rule mainly\n \t\t// catches programmatically-built trees with garbage modes;\n \t\t// the zero-padded-mode and non-canonical-bit checks fsck_tree\n \t\t// runs against the raw wire form are out of reach without\ndiff --git a/plumbing/object/tree_test.go b/plumbing/object/tree_test.go\nindex 4aa925e..55c0b91 100644\n--- a/plumbing/object/tree_test.go\n+++ b/plumbing/object/tree_test.go\n@@ -4,6 +4,7 @@ import (\n \t\"bytes\"\n \t\"context\"\n \t\"errors\"\n+\t\"fmt\"\n \t\"io\"\n \t\"sort\"\n \t\"strings\"\n@@ -2339,7 +2340,7 @@ func TestTreeValidateRejectsFsckRules(t *testing.T) {\n \t\t\twantIs: ErrDuplicateEntry,\n \t\t},\n \t\t{\n-\t\t\t// canonicalTreeMode maps the non-canonical 0100664 down\n+\t\t\t// FileMode.Canonical maps the non-canonical 0100664 down\n \t\t\t// to the canonical Regular mode at Decode, so Validate\n \t\t\t// sees a well-formed entry and accepts it. The rule is\n \t\t\t// kept in the table to document that the canonicalising\n@@ -2429,7 +2430,7 @@ func TestTreeValidateEmptyName(t *testing.T) {\n \n // TestTreeValidateBadInMemoryMode pins the bad-mode rule against\n // programmatically-constructed entries. Wire-decoded modes go through\n-// canonicalTreeMode and always land on a valid value, so this rule is\n+// FileMode.Canonical and always land on a valid value, so this rule is\n // only reachable when a caller sets a non-canonical Mode by hand.\n func TestTreeValidateBadInMemoryMode(t *testing.T) {\n \tt.Parallel()\n@@ -2465,3 +2466,62 @@ func TestTreeValidateReportsAllRules(t *testing.T) {\n \tassert.ErrorIs(t, verr, pathutil.ErrInvalidPath)\n \tassert.Contains(t, verr.Error(), \"null hash\")\n }\n+\n+func TestTreeDecodeOctalModes(t *testing.T) {\n+\tt.Parallel()\n+\thash := bytes.Repeat([]byte{0xAA}, 20)\n+\tfor _, tc := range []struct {\n+\t\tname string\n+\t\tmode string\n+\t\twant filemode.FileMode\n+\t}{\n+\t\t{\"zero padded\", \"00000000100644\", filemode.Regular},\n+\t\t{\"group execute only\", \"100010\", filemode.Regular},\n+\t\t{\"other execute only\", \"100001\", filemode.Regular},\n+\t\t{\"owner execute only\", \"100100\", filemode.Executable},\n+\t\t{\"buffer spanning padding\", strings.Repeat(\"0\", 9000) + \"100644\", filemode.Regular},\n+\t\t{\"buffer spanning digits\", strings.Repeat(\"7\", 9000) + \"100100\", filemode.Executable},\n+\t\t{\"uint32 wrap\", \"40000100644\", filemode.Regular},\n+\t\t{\"uint32 max\", \"37777777777\", filemode.Submodule},\n+\t\t{\"zero\", \"0\", filemode.Submodule},\n+\t\t{\"directory\", \"40755\", filemode.Dir},\n+\t\t{\"symlink\", \"120777\", filemode.Symlink},\n+\t\t{\"submodule\", \"160755\", filemode.Submodule},\n+\t} {\n+\t\tt.Run(tc.name, func(t *testing.T) {\n+\t\t\tt.Parallel()\n+\t\t\ttree, err := decodeRawTree(t, encodeRawTreeEntries(\n+\t\t\t\trawTreeEntry{tc.mode, \"a\", hash}, rawTreeEntry{\"100644\", \"b\", hash},\n+\t\t\t))\n+\t\t\trequire.NoError(t, err)\n+\t\t\trequire.Len(t, tree.Entries, 2)\n+\t\t\tassert.Equal(t, tc.want, tree.Entries[0].Mode)\n+\t\t\tassert.Equal(t, \"a\", tree.Entries[0].Name)\n+\t\t\tassert.Equal(t, hash, tree.Entries[0].Hash.Bytes())\n+\t\t\tassert.Equal(t, filemode.Regular, tree.Entries[1].Mode)\n+\t\t\tassert.Equal(t, \"b\", tree.Entries[1].Name)\n+\n+\t\t\tencoded := &plumbing.MemoryObject{}\n+\t\t\trequire.NoError(t, tree.Encode(encoded))\n+\t\t\tvar roundTrip Tree\n+\t\t\trequire.NoError(t, roundTrip.Decode(encoded))\n+\t\t\tassert.Equal(t, tree.Entries, roundTrip.Entries)\n+\t\t})\n+\t}\n+}\n+\n+func TestTreeDecodeInvalidOctalModes(t *testing.T) {\n+\tt.Parallel()\n+\thash := bytes.Repeat([]byte{0xAA}, 20)\n+\tfor _, mode := range []string{\"\", \"8\", \"100648\", \"+100644\", \"-100644\", \"100644\\x00\", \"100644\\xff\", strings.Repeat(\"0\", 9000) + \"8\"} {\n+\t\tt.Run(fmt.Sprintf(\"%q\", mode[:min(len(mode), 20)]), func(t *testing.T) {\n+\t\t\tt.Parallel()\n+\t\t\t_, err := decodeRawTree(t, encodeRawTreeEntries(rawTreeEntry{mode, \"a\", hash}))\n+\t\t\trequire.ErrorIs(t, err, ErrMalformedTree)\n+\t\t})\n+\t}\n+\tfor _, mode := range []string{\"100644\", strings.Repeat(\"0\", 9000), strings.Repeat(\"7\", 9000)} {\n+\t\t_, err := decodeRawTree(t, []byte(mode))\n+\t\trequire.ErrorIs(t, err, ErrMalformedTree)\n+\t}\n+}\n",
+      "patch_sha256": "b934728a336b409a6dde8f0e924e1fae42ede879140856541cab6f3dc9a0e127",
+      "proposal": "plumbing: object, Fix octal tree mode decoding\n\nMatch [Git\u2019s tree decoding](https://github.com/git/git/blob/v2.39.5/tree-walk.c) for zero padding, buffer-spanning fields, uint32 wrapping, and owner-execute canonicalization. Add `FileMode.Canonical()` and let `FromBytes` accept zero-padded uint32 values while rejecting overflow and invalid bytes.\n\nAdd regression coverage for malformed encodings, non-regular types, buffer boundaries, and round trips.\n\nVerified behavior with local Git 2.39.5; formatting and `git diff --check` passed. Offline builds, package tests, and baseline regression verification were attempted but remain unverified: runs stalled during source indexing, and bounded diagnostics timed out.\n\nAI-assisted with Codex.",
+      "proposal_sha256": "d08a18596ce0d221f52e31dbfd9fb620dc0069ce071b40cec4fd0317fd810711",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "b934728a336b409a6dde8f0e924e1fae42ede879140856541cab6f3dc9a0e127",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "patch_sha256": "b934728a336b409a6dde8f0e924e1fae42ede879140856541cab6f3dc9a0e127",
+            "proposal_sha256": "d08a18596ce0d221f52e31dbfd9fb620dc0069ce071b40cec4fd0317fd810711",
+            "judgment_sha256": "58117dc28b3cbd812d9cd32c5b13547a5339b41d313c27084c3a108e26859d0b",
+            "mapping_sha256": "fb66cc5d30b7a8386a7cdc5d425d291df400d5358bf4331ffece83e03574de81",
+            "assessor_sha256": "c49087bd3707e9d1aeba700edd654d61818fb499a1d29258ee6ee289fdd6778b",
+            "packet_sha256": "0640c0017a7db130ae58b0e03306919a5dbda557535db05ab15cc1ab56f90ea6",
+            "prompt_sha256": "fc3ba048a0e7f818b333eea0d9b58c200684adb5faf8e0c93740056a91349bc1"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "patch_sha256": "b934728a336b409a6dde8f0e924e1fae42ede879140856541cab6f3dc9a0e127",
+            "proposal_sha256": "d08a18596ce0d221f52e31dbfd9fb620dc0069ce071b40cec4fd0317fd810711",
+            "judgment_sha256": "ecfe47a82e6f707dbe8c0aa9b3beed6cf385f7f34e1422889ff2452407d9800c",
+            "mapping_sha256": "473c990e001efb67a3ac9234ec3ebca8eaafb8bcb7441f79efeb40b848d823b8",
+            "assessor_sha256": "6f49fc39f99c1e52c6db747a209752d4fc26160e0c246fe76935735c9d1dd611",
+            "packet_sha256": "94b8afff3785e6a2ae76bf36dfc55a4a4818dd50badf835db4e0d9a25090f696",
+            "prompt_sha256": "2e03343b5f7c752539af1f20957805ca8be0528934575cc6c84d3721c4c6b8f7"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "patch_sha256": "b934728a336b409a6dde8f0e924e1fae42ede879140856541cab6f3dc9a0e127",
+            "proposal_sha256": "d08a18596ce0d221f52e31dbfd9fb620dc0069ce071b40cec4fd0317fd810711",
+            "judgment_sha256": "8b8084f83490dbb56e975855ad3baca66dd294873c7aeb115d20edbc7251795f",
+            "mapping_sha256": "202173ee68f1d4e1e2561590aa9a3f567b8321ae13439a2ee6e40ab64c1801d4",
+            "assessor_sha256": "577f556fbe73d47450e30df815ee7883be493c77a61eb799fd9b8f9cfd1de99e",
+            "packet_sha256": "f21c1945ced3725b171bd223acb18154c1596523c57df12c432f5afb9a83ac08",
+            "prompt_sha256": "bcf4a4abc3e38afaed2476e0cc7a4699107ccef3589177ccbc6977db0137ebc8"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        "proposal_points_100": 96.25,
+        "diff_points_85": 85.0,
+        "rotation_points_85": {
+          "0": 85.0,
+          "1": 85.0,
+          "2": 85.0
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/C.patch: plumbing/filemode/filemode.go accepts padded octal values and checks (MaxUint32-digit)/8 before accumulation, returning Empty on overflow or invalid bytes. Canonical selects regular-file executability solely from owner bit 0100 and preserves Git type mappings. plumbing/object/tree.go streams wrapping mode fragments across buffers and returns ErrMalformedTree for invalid, empty or unterminated modes while accepting clean EOF. Frozen packet/task.json reports build, native, contract, preserve, and independent exits 0 for C; declared build/native coverage is plumbing/filemode and plumbing/object.",
+              "tests": "packet/C.patch: TestFromBytesUint32 compares padded, 9000-zero, maximum and padded-maximum values with New; error tests cover overflow, invalid bytes, signs and long invalid input. TestCanonical covers owner versus group/other execute bits, special permission bits, nonregular/unknown types, high bits and idempotence. TestTreeDecodeOctalModes covers multi-buffer padding/nonzero digits, uint32 wrapping, maximum/zero/nonregular modes, following entries, hashes and full-entry round trips. TestTreeDecodeInvalidOctalModes asserts ErrorIs(ErrMalformedTree) for empty/invalid and short or multi-buffer unterminated fields. Existing regression assertions remain; frozen native and independent exits are 0.",
+              "design": "packet/C.patch confines production changes to strict FromBytes parsing, the public Canonical mapping, and an inline constant-memory fragment loop in Decode. Removing canonicalTreeMode only relocates its semantics with the requested execute-bit fix. The removed trailing return nil is replaced by the clean-EOF return inside the loop, preserving deferred cleanup. Starting tree.go filename/truncated-ID errors, reset and sorting behavior, Encode validation, and Validate protections are unchanged; no protections or existing test assertions are removed.",
+              "proposal": "packet/C.md clearly names the changed semantics and public API, links Git source, describes regression categories and explicitly records interrupted build/test/baseline verification. It gives limited explanation of the original failure or the downstream effect of owner-bit canonicalization. The claims of local Git parity, formatting and diff checks have no supporting observations in the packet and receive no verification credit; the frozen successful checks are assessed independently."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 4
+            },
+            "evidence": {
+              "contract": "packet/B.patch: plumbing/filemode/filemode.go checks octal digits and overflow before accumulation, accepts padded uint32 values, and exposes Canonical with owner-execute semantics and unchanged non-regular mappings. plumbing/object/tree.go parses arbitrarily many fragments with uint32 wrapping, rejects empty/non-octal/unterminated modes with ErrMalformedTree, and preserves following entry decoding. packet/task.json records build, native, contract, preserve and independent exits of 0 for B.",
+              "tests": "packet/B.patch adds TestFromBytesUint32 and overflow/invalid-byte cases, Canonical idempotence and type cases, and TestTreeDecodeOctalModes covering owner versus group/other execution, zero padding, multi-buffer nonzero digits, wrapping and non-regular types. Each valid tree case checks a following entry and full entry equality after encode/decode. Invalid-mode tests assert ErrMalformedTree for empty, signed, non-octal, NUL, high-byte and long/truncated fields. Existing tests remain; frozen native and independent checks exit 0.",
+              "design": "packet/B.patch uses the existing ReadSlice approach with bounded memory and a small nested fragment loop, keeping strict FromBytes overflow handling separate from tree wrapping. Canonical replaces the removed private helper while preserving its type cases and correcting only execute-bit semantics. The full diff leaves filename/hash validation, sorting, Tree.Validate, Encode validation and path/metadata protections intact; the removed seven-digit cap is replaced with value-based overflow protection.",
+              "proposal": "packet/B.md has a precise title, explains Git parity and both parser contracts, links versioned Git source, and identifies the relevant regression coverage. It explicitly reports build/test and baseline verification as unverified after interrupted attempts, without claiming those passed. Those historical attempts and claimed local Git/formatting checks are unavailable for confirmation and receive no execution credit; the frozen successful checks are recorded separately. The brief proposal clearly communicates its verification limitation."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/A.patch: plumbing/filemode/filemode.go accepts arbitrary leading zeros, checks octal bytes and uint32 overflow, and exposes Canonical using 0o100. plumbing/object/tree.go parses buffer fragments with uint32 wrapping independently of FromBytes and wraps empty, invalid and unterminated modes in ErrMalformedTree. Nonregular mappings and round trips are covered. packet/task.json records build, native, contract, preserve and independent exits of 0 for A; the declared build/native scope is plumbing/filemode and plumbing/object.",
+              "tests": "packet/A.patch: TestFromBytesUint32 covers padded values and uint32 maximum; TestFromBytesErrors covers overflow, signs, NUL, high bytes and invalid digits after 9000 zeros. TestCanonical checks owner versus group/other execute, type mappings and idempotence. TestTreeDecodeOctalModes covers padding, nonzero buffer-spanning fields, wrapping, a following entry and encode/decode equality. TestTreeDecodeInvalidOctalModes requires ErrMalformedTree, including long unterminated fields. Existing malformed-entry and validation assertions remain intact. Frozen native, contract, preserve and independent checks all exit 0.",
+              "design": "packet/A.patch changes only mode parsing, the public canonicalization method, relevant comments and tests. The incremental ReadSlice loop uses constant memory and keeps tree wrapping separate from public overflow rejection. Explicitly inspected deletions: the seven-character limit is replaced by numeric overflow validation; canonicalTreeMode is replaced by the equivalent type mapping with the requested owner-bit correction. Starting plumbing/object/tree.go filename/hash checks, Encode validation gate and Validate protections are untouched.",
+              "proposal": "packet/A.md supplies a precise package title, Git source link, changed parsing/canonicalization behavior and regression scope. It explicitly reports interrupted build/test verification rather than claiming those runs passed. Its local Git, formatting and diff-check claims have no supporting execution detail in the packet and receive no check credit. Motivation and the downstream compatibility consequence of changing group/other-only executable entries are less explicit than the implementation warrants."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 2935535,
+          "cachedInputTokens": 2858112,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 15973,
+          "reasoningOutputTokens": 7829,
+          "totalTokens": 2951508
+        },
+        "estimated_usd": 0.6003871999999999,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 811.8322337511927,
+        "prompt_to_terminal_seconds": 781.2435921109281,
+        "through_grading_seconds": 939.8996646190062,
+        "setup_seconds": 28.579906467115507,
+        "grading_seconds": 126.55456717079505,
+        "thread_count": 1,
+        "child_count": 0,
+        "root_tokens": {
+          "totalTokens": 2951508,
+          "inputTokens": 2935535,
+          "cachedInputTokens": 2858112,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 15973,
+          "reasoningOutputTokens": 7829
+        },
+        "descendant_tokens": {
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 0,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 0
+        },
+        "observed_commands": 23,
+        "native_hook_receipts": 0
+      },
+      "receipt_sha256": {
+        "grade": "850fb6aa64a6283b89397b28bbc1dec720b85dc68cfa4cf595c1c77bce764ba5",
+        "release": "a32c49592c5abb3162b817fff15a2f692051743055991618f264fe92e07fe6fd",
+        "native": "59ef406a6b1d980a9be6b5302bd66b96af276df63401390f05ff335dd45b7ef2",
+        "submission": "ede75c1a73618e6e5abc9735a63bf8214e8ba5d0851947ed259e7d167018357e",
+        "result": "a293cac2c5afe5be0f5ba44a0fb5209d4153f163862c58f8ff11a868db2974fe",
+        "inventory": "6f64658cedcf511085c2b6ed3d98bb1a2d2ae8a0d1f667c60fb3a49104811f2a"
+      }
+    },
+    "develop": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "6b874a06ffbdfcf7e2142e1936da2ed9daff3bb7584ec68df989ffc1d3c17e78",
+      "case_id": "go-git",
+      "role": "develop",
+      "state": "completed",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "go build ./plumbing/filemode ./plumbing/object",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "cd8ec0695147045f9ca6bdd72e180574e7bc742a8b126b74deb8a431634d7ef5",
+          "command": "go test ./plumbing/filemode ./plumbing/object",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "go build -o /tmp/probe /oracle/check.go && /tmp/probe",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+          "reason": null
+        },
+        "independent": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/plumbing/filemode/filemode.go b/plumbing/filemode/filemode.go\nindex 4dd77ba..d6179b1 100644\n--- a/plumbing/filemode/filemode.go\n+++ b/plumbing/filemode/filemode.go\n@@ -66,12 +66,14 @@ func New(s string) (FileMode, error) {\n }\n \n // FromBytes parses a FileMode from a byte slice containing an octal\n-// number. This avoids allocating a string when parsing from binary data.\n+// number, allowing leading zeros. The value must fit in a uint32; empty\n+// input, non-octal bytes and overflow return Empty and an error. This avoids\n+// allocating a string when parsing from binary data.\n //\n // Please note this function does not check if the returned FileMode\n // is valid in git or if it is malformed.\n func FromBytes(b []byte) (FileMode, error) {\n-\tif len(b) == 0 || len(b) > 7 {\n+\tif len(b) == 0 {\n \t\treturn Empty, fmt.Errorf(\"invalid mode length: %d\", len(b))\n \t}\n \n@@ -80,11 +82,35 @@ func FromBytes(b []byte) (FileMode, error) {\n \t\tif c < '0' || c > '7' {\n \t\t\treturn Empty, fmt.Errorf(\"invalid octal character: %c\", c)\n \t\t}\n+\t\tif mode > ^uint32(0)>>3 {\n+\t\t\treturn Empty, fmt.Errorf(\"file mode overflows uint32\")\n+\t\t}\n \t\tmode = mode*8 + uint32(c-'0')\n \t}\n \treturn FileMode(mode), nil\n }\n \n+// Canonical returns the canonical mode used when Git reads a tree entry.\n+// Regular files become Regular or Executable according to the owner execute\n+// bit. Directories and symlinks become Dir and Symlink; all other types,\n+// including Empty and unrecognized types, become Submodule. Canonical does\n+// not validate the mode.\n+func (m FileMode) Canonical() FileMode {\n+\tswitch m & 0o170000 {\n+\tcase 0o040000:\n+\t\treturn Dir\n+\tcase 0o100000:\n+\t\tif m&0o100 != 0 {\n+\t\t\treturn Executable\n+\t\t}\n+\t\treturn Regular\n+\tcase 0o120000:\n+\t\treturn Symlink\n+\tdefault:\n+\t\treturn Submodule\n+\t}\n+}\n+\n // NewFromOSFileMode returns the FileMode used by git to represent\n // the provided file system modes and a nil error on success.  If the\n // file system mode cannot be mapped to any valid git mode (as with\ndiff --git a/plumbing/filemode/filemode_test.go b/plumbing/filemode/filemode_test.go\nindex 18cfd46..be39fcb 100644\n--- a/plumbing/filemode/filemode_test.go\n+++ b/plumbing/filemode/filemode_test.go\n@@ -3,6 +3,7 @@ package filemode\n import (\n \t\"fmt\"\n \t\"os\"\n+\t\"strings\"\n \t\"testing\"\n \n \t\"github.com/stretchr/testify/suite\"\n@@ -82,6 +83,11 @@ func (s *ModeSuite) TestFromBytes() {\n \t\t{input: \"040000\", expected: Dir},\n \t\t{input: \"0\", expected: Empty},\n \t\t{input: \"42\", expected: FileMode(0o42)},\n+\t\t{input: \"20000100644\", expected: FileMode(0o20000100644)},\n+\t\t{input: \"37777777777\", expected: FileMode(^uint32(0))},\n+\t\t{input: strings.Repeat(\"0\", 8192) + \"100644\", expected: Regular},\n+\t\t{input: strings.Repeat(\"0\", 8192), expected: Empty},\n+\t\t{input: \"00037777777777\", expected: FileMode(^uint32(0))},\n \t} {\n \t\tcomment := fmt.Sprintf(\"input = %q\", test.input)\n \t\tobtained, err := FromBytes([]byte(test.input))\n@@ -92,13 +98,21 @@ func (s *ModeSuite) TestFromBytes() {\n \n func (s *ModeSuite) TestFromBytesErrors() {\n \tfor _, input := range [...]string{\n-\t\t\"\",         // empty\n-\t\t\"9\",        // non-octal digit\n-\t\t\"09\",       // non-octal digit\n-\t\t\"mode\",     // letters\n-\t\t\"12345678\", // too long (>7 chars)\n-\t\t\"0x81a4\",   // hex prefix\n-\t\t\"-100644\",  // negative\n+\t\t\"\",            // empty\n+\t\t\"9\",           // non-octal digit\n+\t\t\"09\",          // non-octal digit\n+\t\t\"mode\",        // letters\n+\t\t\"12345678\",    // invalid octal digit\n+\t\t\"40000000000\", // uint32 overflow\n+\t\t\"40000100644\", // wrapping would produce Regular\n+\t\t\"777777777777777777777777777777100755\",\n+\t\t\"00040000000000\",\n+\t\t\"100644 \",\n+\t\t\"100644\\x00\",\n+\t\t\"100644\\xff\",\n+\t\t\"+100644\",\n+\t\t\"0x81a4\",  // hex prefix\n+\t\t\"-100644\", // negative\n \t} {\n \t\tcomment := fmt.Sprintf(\"input = %q\", input)\n \t\tobtained, err := FromBytes([]byte(input))\n@@ -403,3 +417,31 @@ func (s *ModeSuite) TestToOSFileMode() {\n \t\t}\n \t}\n }\n+\n+func TestCanonical(t *testing.T) {\n+\tt.Parallel()\n+\tfor _, tc := range []struct {\n+\t\tmode FileMode\n+\t\twant FileMode\n+\t}{\n+\t\t{Regular, Regular}, {Deprecated, Regular}, {Executable, Executable},\n+\t\t{0o100000, Regular}, {0o100600, Regular}, {0o100654, Regular},\n+\t\t{0o100645, Regular}, {0o100655, Regular}, {0o100700, Executable},\n+\t\t{0o107777, Executable}, {Dir, Dir}, {0o047777, Dir},\n+\t\t{Symlink, Symlink}, {0o127777, Symlink},\n+\t\t{Submodule, Submodule}, {0o167777, Submodule},\n+\t\t{Empty, Submodule}, {0o010000, Submodule}, {0o020000, Submodule},\n+\t\t{0o060000, Submodule}, {0o140000, Submodule},\n+\t\t{0o20000100644, Regular}, {FileMode(^uint32(0)), Submodule},\n+\t} {\n+\t\tt.Run(fmt.Sprintf(\"%o\", tc.mode), func(t *testing.T) {\n+\t\t\tgot := tc.mode.Canonical()\n+\t\t\tif got != tc.want {\n+\t\t\t\tt.Errorf(\"Canonical() = %v, want %v\", got, tc.want)\n+\t\t\t}\n+\t\t\tif got.Canonical() != got {\n+\t\t\t\tt.Errorf(\"Canonical() is not idempotent for %v\", got)\n+\t\t\t}\n+\t\t})\n+\t}\n+}\ndiff --git a/plumbing/object/tree.go b/plumbing/object/tree.go\nindex 77799ad..87ebfff 100644\n--- a/plumbing/object/tree.go\n+++ b/plumbing/object/tree.go\n@@ -300,28 +300,42 @@ func (t *Tree) Decode(o plumbing.EncodedObject) (err error) {\n \tdefer sync.PutBufioReader(r)\n \n \tvar prevSortName string\n+entries:\n \tfor {\n-\t\t// Use ReadSlice to get a view into bufio's internal buffer,\n-\t\t// avoiding a string allocation for the mode (which is parsed\n-\t\t// into a uint32 immediately and doesn't need to persist).\n-\t\tmodeSlice, err := r.ReadSlice(' ')\n-\t\tif err != nil {\n-\t\t\tif err == io.EOF {\n-\t\t\t\tif len(modeSlice) != 0 {\n-\t\t\t\t\treturn fmt.Errorf(\"%w: missing mode terminator\", ErrMalformedTree)\n+\t\tvar mode filemode.FileMode\n+\t\thasMode := false\n+\t\tfor {\n+\t\t\tmodeSlice, err := r.ReadSlice(' ')\n+\t\t\tif err == io.EOF && len(modeSlice) == 0 && !hasMode {\n+\t\t\t\tbreak entries\n+\t\t\t}\n+\t\t\tif err != nil && err != bufio.ErrBufferFull && err != io.EOF {\n+\t\t\t\treturn err\n+\t\t\t}\n+\t\t\tif err == nil {\n+\t\t\t\tmodeSlice = modeSlice[:len(modeSlice)-1]\n+\t\t\t}\n+\t\t\tfor _, c := range modeSlice {\n+\t\t\t\tif c < '0' || c > '7' {\n+\t\t\t\t\treturn fmt.Errorf(\"%w: malformed mode\", ErrMalformedTree)\n \t\t\t\t}\n-\t\t\t\tbreak\n+\t\t\t\t// Git accumulates tree modes in an unsigned int, allowing\n+\t\t\t\t// wide fields to wrap. FromBytes instead rejects overflow.\n+\t\t\t\tmode = mode<<3 | filemode.FileMode(c-'0')\n+\t\t\t\thasMode = true\n \t\t\t}\n-\n-\t\t\treturn err\n-\t\t}\n-\t\tmodeSlice = modeSlice[:len(modeSlice)-1] // strip delimiter\n-\n-\t\tmode, err := filemode.FromBytes(modeSlice)\n-\t\tif err != nil {\n-\t\t\treturn fmt.Errorf(\"%w: malformed mode\", ErrMalformedTree)\n+\t\t\tif err == io.EOF {\n+\t\t\t\treturn fmt.Errorf(\"%w: missing mode terminator\", ErrMalformedTree)\n+\t\t\t}\n+\t\t\tif err == bufio.ErrBufferFull {\n+\t\t\t\tcontinue\n+\t\t\t}\n+\t\t\tif !hasMode {\n+\t\t\t\treturn fmt.Errorf(\"%w: malformed mode\", ErrMalformedTree)\n+\t\t\t}\n+\t\t\tbreak\n \t\t}\n-\t\tmode = canonicalTreeMode(mode)\n+\t\tmode = mode.Canonical()\n \n \t\tnameSlice, err := r.ReadSlice(0)\n \t\tif err == bufio.ErrBufferFull {\n@@ -393,22 +407,6 @@ func treeEntrySortName(e *TreeEntry) string {\n \treturn e.Name\n }\n \n-func canonicalTreeMode(mode filemode.FileMode) filemode.FileMode {\n-\tswitch mode & 0o170000 {\n-\tcase 0o040000:\n-\t\treturn filemode.Dir\n-\tcase 0o100000:\n-\t\tif mode&0o111 != 0 {\n-\t\t\treturn filemode.Executable\n-\t\t}\n-\t\treturn filemode.Regular\n-\tcase 0o120000:\n-\t\treturn filemode.Symlink\n-\tdefault:\n-\t\treturn filemode.Submodule\n-\t}\n-}\n-\n // Encode transforms a Tree into a plumbing.EncodedObject.\n //\n // The tree is run through Tree.Validate before any bytes are written,\ndiff --git a/plumbing/object/tree_test.go b/plumbing/object/tree_test.go\nindex 4aa925e..8449ecb 100644\n--- a/plumbing/object/tree_test.go\n+++ b/plumbing/object/tree_test.go\n@@ -4,6 +4,7 @@ import (\n \t\"bytes\"\n \t\"context\"\n \t\"errors\"\n+\t\"fmt\"\n \t\"io\"\n \t\"sort\"\n \t\"strings\"\n@@ -2339,7 +2340,7 @@ func TestTreeValidateRejectsFsckRules(t *testing.T) {\n \t\t\twantIs: ErrDuplicateEntry,\n \t\t},\n \t\t{\n-\t\t\t// canonicalTreeMode maps the non-canonical 0100664 down\n+\t\t\t// FileMode.Canonical maps the non-canonical 0100664 down\n \t\t\t// to the canonical Regular mode at Decode, so Validate\n \t\t\t// sees a well-formed entry and accepts it. The rule is\n \t\t\t// kept in the table to document that the canonicalising\n@@ -2429,7 +2430,7 @@ func TestTreeValidateEmptyName(t *testing.T) {\n \n // TestTreeValidateBadInMemoryMode pins the bad-mode rule against\n // programmatically-constructed entries. Wire-decoded modes go through\n-// canonicalTreeMode and always land on a valid value, so this rule is\n+// FileMode.Canonical and always land on a valid value, so this rule is\n // only reachable when a caller sets a non-canonical Mode by hand.\n func TestTreeValidateBadInMemoryMode(t *testing.T) {\n \tt.Parallel()\n@@ -2465,3 +2466,72 @@ func TestTreeValidateReportsAllRules(t *testing.T) {\n \tassert.ErrorIs(t, verr, pathutil.ErrInvalidPath)\n \tassert.Contains(t, verr.Error(), \"null hash\")\n }\n+\n+func TestTreeDecodeOctalModes(t *testing.T) {\n+\tt.Parallel()\n+\thash := bytes.Repeat([]byte{0xAA}, 20)\n+\tcases := []struct {\n+\t\tname string\n+\t\tmode string\n+\t\twant filemode.FileMode\n+\t}{\n+\t\t{\"regular\", \"100644\", filemode.Regular},\n+\t\t{\"deprecated\", \"100664\", filemode.Regular},\n+\t\t{\"owner execute\", \"100744\", filemode.Executable},\n+\t\t{\"group execute\", \"100654\", filemode.Regular},\n+\t\t{\"other execute\", \"100645\", filemode.Regular},\n+\t\t{\"group and other execute\", \"100655\", filemode.Regular},\n+\t\t{\"directory\", \"40755\", filemode.Dir},\n+\t\t{\"symlink\", \"120777\", filemode.Symlink},\n+\t\t{\"submodule\", \"160755\", filemode.Submodule},\n+\t\t{\"unknown type\", \"140000\", filemode.Submodule},\n+\t\t{\"zero\", \"0\", filemode.Submodule},\n+\t\t{\"padded\", \"00000000000100644\", filemode.Regular},\n+\t\t{\"wide uint32\", \"20000100644\", filemode.Regular},\n+\t\t{\"wrapped uint32\", \"40000100644\", filemode.Regular},\n+\t\t{\"wide executable\", \"777777777777777777777777777777100755\", filemode.Executable},\n+\t\t{\"mode ends at buffer boundary\", strings.Repeat(\"0\", 4096-6) + \"100644\", filemode.Regular},\n+\t\t{\"mode crosses buffers\", strings.Repeat(\"0\", 8192) + \"100755\", filemode.Executable},\n+\t\t{\"nonzero mode crosses buffers\", strings.Repeat(\"7\", 8192) + \"100655\", filemode.Regular},\n+\t}\n+\tfor _, tc := range cases {\n+\t\tt.Run(tc.name, func(t *testing.T) {\n+\t\t\ttree, err := decodeRawTree(t, encodeRawTreeEntries(\n+\t\t\t\trawTreeEntry{tc.mode, \"a\", hash},\n+\t\t\t\trawTreeEntry{\"100644\", \"z\", hash},\n+\t\t\t))\n+\t\t\trequire.NoError(t, err)\n+\t\t\trequire.Len(t, tree.Entries, 2)\n+\t\t\tassert.Equal(t, tc.want, tree.Entries[0].Mode)\n+\t\t\tassert.Equal(t, \"a\", tree.Entries[0].Name)\n+\t\t\tassert.Equal(t, plumbing.NewHash(\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"), tree.Entries[0].Hash)\n+\t\t\tassert.Equal(t, filemode.Regular, tree.Entries[1].Mode)\n+\t\t\tassert.Equal(t, \"z\", tree.Entries[1].Name)\n+\t\t\tencoded := &plumbing.MemoryObject{}\n+\t\t\trequire.NoError(t, tree.Encode(encoded))\n+\t\t\tvar decoded Tree\n+\t\t\trequire.NoError(t, decoded.Decode(encoded))\n+\t\t\tassert.Equal(t, tree.Entries, decoded.Entries)\n+\t\t})\n+\t}\n+}\n+\n+func TestTreeDecodeInvalidOctalModes(t *testing.T) {\n+\tt.Parallel()\n+\thash := bytes.Repeat([]byte{0xAA}, 20)\n+\tfor _, mode := range []string{\n+\t\t\"\", \"8\", \"100648\", \"+100644\", \"-100644\", \"0x81a4\", \"100644\\x00\", \"100644\\xff\",\n+\t\tstrings.Repeat(\"0\", 8192) + \"8\",\n+\t\tstrings.Repeat(\"7\", 4096) + \"x100644\",\n+\t} {\n+\t\t// Keep subtest names short for the multi-buffer cases.\n+\t\tt.Run(fmt.Sprintf(\"length_%d_suffix_%x\", len(mode), []byte(mode[max(0, len(mode)-8):])), func(t *testing.T) {\n+\t\t\t_, err := decodeRawTree(t, encodeRawTreeEntries(rawTreeEntry{mode, \"file\", hash}))\n+\t\t\trequire.ErrorIs(t, err, ErrMalformedTree)\n+\t\t})\n+\t}\n+\tfor _, mode := range []string{\"100644\", strings.Repeat(\"0\", 8192), strings.Repeat(\"7\", 4096)} {\n+\t\t_, err := decodeRawTree(t, []byte(mode))\n+\t\trequire.ErrorIs(t, err, ErrMalformedTree)\n+\t}\n+}\n",
+      "patch_sha256": "7a50d1f759055cd41d324ec809f88e5a41152a31b123c7b04647cab207dc9db9",
+      "proposal": "plumbing: object, Match Git\u2019s octal tree modes\n\nDecode zero-padded and buffer-spanning modes with Git\u2019s uint32 wrapping behavior. Add `FileMode.Canonical`, using the owner execute bit for regular files while preserving nonregular semantics. Keep `FromBytes` strict about overflow and invalid bytes.\n\nAdd regressions for boundaries, malformed encodings, following entries and round trips. Behavior follows Git\u2019s [tree parser](https://github.com/git/git/blob/master/tree-walk.c) and [canonicalization](https://github.com/git/git/blob/master/object.h).\n\nVerification: local Git parity checks and gofmt completed. Independent design and static implementation reviews found no material issues.\n\nGap: Go build, package tests and baseline regression runs stalled on filesystem RPC; runtime verification remains incomplete. [Review record](/tmp/go-git-tree-mode-review.md).\n\nAI assistance: Codex.",
+      "proposal_sha256": "78139c104033687b7098e5b21d7bb991465895b4f2407a9b00c5481cf52bb10a",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "7a50d1f759055cd41d324ec809f88e5a41152a31b123c7b04647cab207dc9db9",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "patch_sha256": "7a50d1f759055cd41d324ec809f88e5a41152a31b123c7b04647cab207dc9db9",
+            "proposal_sha256": "78139c104033687b7098e5b21d7bb991465895b4f2407a9b00c5481cf52bb10a",
+            "judgment_sha256": "58117dc28b3cbd812d9cd32c5b13547a5339b41d313c27084c3a108e26859d0b",
+            "mapping_sha256": "fb66cc5d30b7a8386a7cdc5d425d291df400d5358bf4331ffece83e03574de81",
+            "assessor_sha256": "c49087bd3707e9d1aeba700edd654d61818fb499a1d29258ee6ee289fdd6778b",
+            "packet_sha256": "0640c0017a7db130ae58b0e03306919a5dbda557535db05ab15cc1ab56f90ea6",
+            "prompt_sha256": "fc3ba048a0e7f818b333eea0d9b58c200684adb5faf8e0c93740056a91349bc1"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "patch_sha256": "7a50d1f759055cd41d324ec809f88e5a41152a31b123c7b04647cab207dc9db9",
+            "proposal_sha256": "78139c104033687b7098e5b21d7bb991465895b4f2407a9b00c5481cf52bb10a",
+            "judgment_sha256": "ecfe47a82e6f707dbe8c0aa9b3beed6cf385f7f34e1422889ff2452407d9800c",
+            "mapping_sha256": "473c990e001efb67a3ac9234ec3ebca8eaafb8bcb7441f79efeb40b848d823b8",
+            "assessor_sha256": "6f49fc39f99c1e52c6db747a209752d4fc26160e0c246fe76935735c9d1dd611",
+            "packet_sha256": "94b8afff3785e6a2ae76bf36dfc55a4a4818dd50badf835db4e0d9a25090f696",
+            "prompt_sha256": "2e03343b5f7c752539af1f20957805ca8be0528934575cc6c84d3721c4c6b8f7"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "patch_sha256": "7a50d1f759055cd41d324ec809f88e5a41152a31b123c7b04647cab207dc9db9",
+            "proposal_sha256": "78139c104033687b7098e5b21d7bb991465895b4f2407a9b00c5481cf52bb10a",
+            "judgment_sha256": "8b8084f83490dbb56e975855ad3baca66dd294873c7aeb115d20edbc7251795f",
+            "mapping_sha256": "202173ee68f1d4e1e2561590aa9a3f567b8321ae13439a2ee6e40ab64c1801d4",
+            "assessor_sha256": "577f556fbe73d47450e30df815ee7883be493c77a61eb799fd9b8f9cfd1de99e",
+            "packet_sha256": "f21c1945ced3725b171bd223acb18154c1596523c57df12c432f5afb9a83ac08",
+            "prompt_sha256": "bcf4a4abc3e38afaed2476e0cc7a4699107ccef3589177ccbc6977db0137ebc8"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        "proposal_points_100": 96.25,
+        "diff_points_85": 85.0,
+        "rotation_points_85": {
+          "0": 85.0,
+          "1": 85.0,
+          "2": 85.0
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/A.patch: plumbing/filemode/filemode.go removes the digit-count limit, validates octal bytes, and checks the uint32 shift boundary before accumulation; Canonical uses type mask 0170000 and owner execute bit 0100. plumbing/object/tree.go accumulates wrapping uint32 fragments across ErrBufferFull, distinguishes clean EOF from unterminated modes, and wraps invalid encodings in ErrMalformedTree. Frozen packet/task.json reports build, native, contract, preserve, and independent exits 0 for A; the declared build/native scope is plumbing/filemode and plumbing/object.",
+              "tests": "packet/A.patch: TestFromBytes and TestFromBytesErrors cover padded/all-zero multi-buffer inputs, uint32 maximum, overflow including valid low mode bits, and invalid bytes. TestCanonical covers owner versus group/other execute bits, nonregular/unknown types, high bits, and idempotence. TestTreeDecodeOctalModes covers an exact 4096-byte mode, multiple buffers with nonzero digits, wide wrapping, subsequent entries and hashes, and full entry round trips. TestTreeDecodeInvalidOctalModes checks ErrorIs(ErrMalformedTree) for empty, invalid and unterminated fields, including buffer-spanning cases. Existing tests remain; frozen native and independent exits are 0.",
+              "design": "packet/A.patch limits production changes to filemode.go and the mode-reading portion of Tree.Decode. Streaming ReadSlice accumulation uses constant extra memory and deliberately separates tree wrapping from public FromBytes overflow rejection. The deleted canonicalTreeMode is replaced by the public Canonical with the requested owner-bit correction and identical nonregular mappings. Inspection against starting plumbing/object/tree.go confirms filename/truncated-ID errors, reset and sorting behavior, Encode validation, and all Validate protections are retained; no test assertion is weakened.",
+              "proposal": "packet/A.md has a precise title and explains padding, buffer spanning, wrapping, owner-bit canonicalization, strict FromBytes, and regression coverage, with upstream references and explicit interrupted runtime verification. It gives little concrete explanation of the prior failure or compatibility consequence. The claimed local parity, formatting and independent static reviews have no supporting observations in the packet, and the linked /tmp review record is not supplied; those claims receive no verification credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/C.patch: plumbing/filemode/filemode.go accepts arbitrarily padded octal uint32 values, rejects invalid bytes and values above uint32, and adds owner-execute Canonical with directory/symlink/submodule semantics preserved. plumbing/object/tree.go tracks whether digits were seen across ReadSlice fragments, allows wide modes to wrap, and reports invalid or unterminated fields as ErrMalformedTree. Clean EOF remains successful. packet/task.json records build, native, contract, preserve and independent exits of 0 for C.",
+              "tests": "packet/C.patch tests uint32 maximum, padded maximum, long zero-only inputs, overflow and invalid bytes in FromBytes. Canonical tests distinguish owner, group and other execution and check idempotence. Tree tests cover an exact 4096-byte mode boundary, multiple buffers including nonzero padding, wide wrapping, unknown and non-regular types, a following entry and complete encode/decode entry equality. Invalid cases check ErrMalformedTree after buffer boundaries and missing terminators. Existing malformed-entry and validation tests remain; frozen native and independent checks exit 0.",
+              "design": "packet/C.patch keeps parsing allocation-free for mode length, separates public overflow rejection from tree wrapping and centralizes type normalization in Canonical. The labeled outer-loop exit correctly distinguishes clean EOF from a partial mode. Removal of canonicalTreeMode preserves its non-regular mappings. Inspection against starting plumbing/object/tree.go shows no removal of filename/hash checks, sorting, Encode validation, path checks or metadata-symlink protections. A few unchanged comments still name the removed helper, a minor documentation defect.",
+              "proposal": "packet/C.md provides a precise title, describes wrapping versus strict public parsing, links Git parser/canonicalization sources and lists relevant tests. It explicitly discloses interrupted runtime verification. However, its verification narrative relies partly on unspecified independent reviews and a /tmp review-record link absent from the supplied artifacts, which cannot provide reviewable supporting evidence. Claimed Git parity/gofmt checks and historical interruptions receive no execution credit; frozen successful checks are assessed separately."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/B.patch: FromBytes validates octal bytes and checks mode > ^uint32(0)>>3 before accumulation; since the maximum uint32 has low three bits 7, this accepts the full range without overflow. Canonical uses owner execute and preserves directory/symlink/gitlink semantics. Tree.Decode handles full-buffer fragments, wide wrapping, empty fields and missing delimiters independently of FromBytes. packet/task.json records build, native, contract, preserve and independent exits of 0 for B within the declared two-package scope.",
+              "tests": "packet/B.patch: FromBytes cases include uint32 maximum, padded maximum, 8192 zeros, overflow and invalid bytes. TestCanonical distinguishes group/other execute from owner execute and checks unknown types, high bits and idempotence. TestTreeDecodeOctalModes covers an exact buffer boundary, multiple buffers of zeros and nonzero digits, uint32 wrapping, following entries and full entry round trips. Invalid-mode tests require ErrMalformedTree for invalid bytes after buffer boundaries and unterminated full-buffer modes. No existing protection assertions are removed. Frozen native, contract, preserve and independent checks exit 0.",
+              "design": "packet/B.patch keeps mode parsing allocation-free and bounded in memory, exposes a small documented method and confines production changes to the requested behavior. The labeled outer-loop exit preserves clean EOF handling. Explicitly inspected removed protections: the old length guard is replaced by overflow validation and canonicalTreeMode is replaced by Canonical; the other Decode checks, Encode validation gate and Validate rules remain unchanged.",
+              "proposal": "packet/B.md gives the package title, parsing/canonicalization changes, Git source links and test scope, and clearly states that its build/test attempts stalled. The claimed local Git checks, formatting and independent static reviews are not supported by frozen execution detail and receive no verification credit; the /tmp review-record link is not supplied in the packet. It explains the desired Git agreement but leaves the concrete original failure and downstream compatibility effects implicit."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 2592396,
+          "cachedInputTokens": 2486272,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 16984,
+          "reasoningOutputTokens": 5854,
+          "totalTokens": 2609380
+        },
+        "estimated_usd": 0.6307152,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 781.9616444769781,
+        "prompt_to_terminal_seconds": 741.1259389650077,
+        "through_grading_seconds": 909.7532767818775,
+        "setup_seconds": 38.8108200058341,
+        "grading_seconds": 126.17501241201535,
+        "thread_count": 3,
+        "child_count": 2,
+        "root_tokens": {
+          "totalTokens": 2234647,
+          "inputTokens": 2219479,
+          "cachedInputTokens": 2150784,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 15168,
+          "reasoningOutputTokens": 5631
+        },
+        "descendant_tokens": {
+          "inputTokens": 372917,
+          "cachedInputTokens": 335488,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 1816,
+          "reasoningOutputTokens": 223,
+          "totalTokens": 374733
+        },
+        "observed_commands": 30,
+        "native_hook_receipts": 85
+      },
+      "receipt_sha256": {
+        "grade": "e8a99aa5b5c872214ab3223328db7be163b9ad17fe2a99f72828ab33d9843b4e",
+        "release": "f881724f74d75a8f8f71549ad050d0911b89e7b07725cb8752c014d20988aad8",
+        "native": "4f3f7ed55cd5e69fd28fc880f5c3bdd8df4f2ff9ba8c231615e914eb014e9fd5",
+        "submission": "b6eb6e1daec83d27207bbbaf373fdac0198700e7abad96ad8fb5ed9f848b8afd",
+        "result": "a9f6801ab3bb2ccb1e2dc0842b883ebebe485fdf735085e0be559ceef487a1f8",
+        "inventory": "fa8455f41024cac3fe9c21b595ddd98e6e6e111cc7f36a7dd5cdca928df7cc75"
+      }
+    },
+    "upstream": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "6b874a06ffbdfcf7e2142e1936da2ed9daff3bb7584ec68df989ffc1d3c17e78",
+      "case_id": "go-git",
+      "role": "upstream",
+      "state": "merged",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "go build ./plumbing/filemode ./plumbing/object",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "86bf64d79de092a5a46c7dd3bc68e56055cbb1ee766c61444cb7fd284e3fcc99",
+          "command": "go test ./plumbing/filemode ./plumbing/object",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "go build -o /tmp/probe /oracle/check.go && /tmp/probe",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+          "reason": null
+        },
+        "independent": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "go build -o /tmp/probe /oracle/probe.go && /tmp/probe",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/plumbing/filemode/filemode.go b/plumbing/filemode/filemode.go\nindex 4dd77ba..f239ecf 100644\n--- a/plumbing/filemode/filemode.go\n+++ b/plumbing/filemode/filemode.go\n@@ -3,7 +3,9 @@ package filemode\n \n import (\n \t\"encoding/binary\"\n+\t\"errors\"\n \t\"fmt\"\n+\t\"math\"\n \t\"os\"\n \t\"strconv\"\n )\n@@ -65,22 +67,32 @@ func New(s string) (FileMode, error) {\n \treturn FileMode(n), nil\n }\n \n-// FromBytes parses a FileMode from a byte slice containing an octal\n-// number. This avoids allocating a string when parsing from binary data.\n+// FromBytes parses b, a run of octal digits such as the mode of a tree\n+// entry, as a FileMode. It accepts leading zeros, so zero-padded modes\n+// such as \"040000\", written by early Git versions, or\n+// \"00000000000100644\" parse. It avoids allocating a string when\n+// parsing from binary data.\n //\n-// Please note this function does not check if the returned FileMode\n-// is valid in git or if it is malformed.\n+// If b is empty, contains a byte other than '0' to '7', or holds a\n+// value wider than 32 bits, FromBytes returns [Empty] and an error, as\n+// [New] does.\n+//\n+// FromBytes does not check whether the result is a valid tree entry\n+// mode. Use [FileMode.Canonical] to normalize the result.\n func FromBytes(b []byte) (FileMode, error) {\n-\tif len(b) == 0 || len(b) > 7 {\n-\t\treturn Empty, fmt.Errorf(\"invalid mode length: %d\", len(b))\n+\tif len(b) == 0 {\n+\t\treturn Empty, errors.New(\"empty mode\")\n \t}\n \n \tvar mode uint32\n \tfor _, c := range b {\n \t\tif c < '0' || c > '7' {\n-\t\t\treturn Empty, fmt.Errorf(\"invalid octal character: %c\", c)\n+\t\t\treturn Empty, fmt.Errorf(\"invalid octal character: %q\", c)\n+\t\t}\n+\t\tif mode > math.MaxUint32>>3 {\n+\t\t\treturn Empty, errors.New(\"mode wider than 32 bits\")\n \t\t}\n-\t\tmode = mode*8 + uint32(c-'0')\n+\t\tmode = mode<<3 | uint32(c-'0')\n \t}\n \treturn FileMode(mode), nil\n }\n@@ -181,6 +193,41 @@ func (m FileMode) IsFile() bool {\n \t\tm == Symlink\n }\n \n+// Canonical returns the mode Git acts on for a tree entry stored with\n+// mode m, as Git's canon_mode[1] does. It is meant for modes read from\n+// tree objects: [Empty], which go-git elsewhere uses for an absent\n+// entry, becomes [Submodule] like any other unknown type.\n+//\n+// Only the file type bits (m & 0o170000) and the owner execute bit\n+// (0o100) count:\n+//\n+//   - type 0o100000 is [Executable] if the owner execute bit is set,\n+//     and [Regular] otherwise, so [Deprecated] and 0o100011 both\n+//     become Regular;\n+//   - type 0o120000 is [Symlink] and type 0o040000 is [Dir], whatever\n+//     their permission bits;\n+//   - any other type is [Submodule].\n+//\n+// The result is never malformed (see [FileMode.IsMalformed]), and\n+// Canonical of a canonical mode returns it unchanged.\n+//\n+// [1]: https://github.com/git/git/blob/v2.55.0/object.h#L133-L154\n+func (m FileMode) Canonical() FileMode {\n+\tswitch m & 0o170000 {\n+\tcase 0o100000:\n+\t\tif m&0o100 != 0 {\n+\t\t\treturn Executable\n+\t\t}\n+\t\treturn Regular\n+\tcase 0o120000:\n+\t\treturn Symlink\n+\tcase 0o040000:\n+\t\treturn Dir\n+\tdefault:\n+\t\treturn Submodule\n+\t}\n+}\n+\n // ToOSFileMode returns the os.FileMode to be used when creating file\n // system elements with the given git mode and a nil error on success.\n //\ndiff --git a/plumbing/filemode/filemode_test.go b/plumbing/filemode/filemode_test.go\nindex 18cfd46..500a4bc 100644\n--- a/plumbing/filemode/filemode_test.go\n+++ b/plumbing/filemode/filemode_test.go\n@@ -82,6 +82,10 @@ func (s *ModeSuite) TestFromBytes() {\n \t\t{input: \"040000\", expected: Dir},\n \t\t{input: \"0\", expected: Empty},\n \t\t{input: \"42\", expected: FileMode(0o42)},\n+\t\t{input: \"00000000000100644\", expected: Regular},\n+\t\t{input: \"000000000000000000000000100644\", expected: Regular},\n+\t\t{input: \"37777777777\", expected: FileMode(0xFFFFFFFF)},\n+\t\t{input: \"1234567012\", expected: FileMode(0o1234567012)},\n \t} {\n \t\tcomment := fmt.Sprintf(\"input = %q\", test.input)\n \t\tobtained, err := FromBytes([]byte(test.input))\n@@ -92,13 +96,16 @@ func (s *ModeSuite) TestFromBytes() {\n \n func (s *ModeSuite) TestFromBytesErrors() {\n \tfor _, input := range [...]string{\n-\t\t\"\",         // empty\n-\t\t\"9\",        // non-octal digit\n-\t\t\"09\",       // non-octal digit\n-\t\t\"mode\",     // letters\n-\t\t\"12345678\", // too long (>7 chars)\n-\t\t\"0x81a4\",   // hex prefix\n-\t\t\"-100644\",  // negative\n+\t\t\"\",                           // empty\n+\t\t\"9\",                          // non-octal digit\n+\t\t\"09\",                         // non-octal digit\n+\t\t\"12345678\",                   // non-octal digit, past the old 7-digit limit\n+\t\t\"40000000000\",                // wider than 32 bits\n+\t\t\"1000000100644\",              // wider than 32 bits\n+\t\t\"77777777777777777777100644\", // wider than 32 bits\n+\t\t\"mode\",                       // letters\n+\t\t\"0x81a4\",                     // hex prefix\n+\t\t\"-100644\",                    // negative\n \t} {\n \t\tcomment := fmt.Sprintf(\"input = %q\", input)\n \t\tobtained, err := FromBytes([]byte(input))\n@@ -111,6 +118,7 @@ func (s *ModeSuite) TestFromBytesEquivalence() {\n \t// FromBytes should produce the same results as New for valid git modes\n \tfor _, m := range [...]string{\n \t\t\"40000\", \"100644\", \"100664\", \"100755\", \"120000\", \"160000\",\n+\t\t\"00000000000100644\",\n \t} {\n \t\texpected, err1 := New(m)\n \t\ts.NoError(err1)\n@@ -349,6 +357,36 @@ func (s *ModeSuite) TestIsRegular() {\n \t}\n }\n \n+func (s *ModeSuite) TestCanonical() {\n+\tfor _, test := range [...]struct {\n+\t\tinput    FileMode\n+\t\texpected FileMode\n+\t}{\n+\t\t{input: 0o100644, expected: Regular},\n+\t\t{input: Deprecated, expected: Regular},\n+\t\t{input: 0o100011, expected: Regular},\n+\t\t{input: 0o100001, expected: Regular},\n+\t\t{input: 0o100010, expected: Regular},\n+\t\t{input: 0o300644, expected: Regular},\n+\t\t{input: 0o100755, expected: Executable},\n+\t\t{input: 0o100100, expected: Executable},\n+\t\t{input: 0o100111, expected: Executable},\n+\t\t{input: 0o120000, expected: Symlink},\n+\t\t{input: 0o120777, expected: Symlink},\n+\t\t{input: 0o040000, expected: Dir},\n+\t\t{input: 0o040755, expected: Dir},\n+\t\t{input: 0o160000, expected: Submodule},\n+\t\t{input: 0o160777, expected: Submodule},\n+\t\t{input: Empty, expected: Submodule},\n+\t\t{input: FileMode(0o42), expected: Submodule},\n+\t} {\n+\t\tcomment := fmt.Sprintf(\"input = %07o\", uint32(test.input))\n+\t\ts.Equal(test.expected, test.input.Canonical(), comment)\n+\t\ts.Equal(test.expected, test.expected.Canonical(), comment)\n+\t\ts.False(test.expected.IsMalformed(), comment)\n+\t}\n+}\n+\n func (s *ModeSuite) TestIsFile() {\n \tfor _, test := range [...]struct {\n \t\tmode     FileMode\ndiff --git a/plumbing/object/decode_fuzz_test.go b/plumbing/object/decode_fuzz_test.go\nindex 67237c6..b51792b 100644\n--- a/plumbing/object/decode_fuzz_test.go\n+++ b/plumbing/object/decode_fuzz_test.go\n@@ -4,6 +4,7 @@ import (\n \t\"testing\"\n \n \t\"github.com/go-git/go-git/v6/plumbing\"\n+\t\"github.com/go-git/go-git/v6/plumbing/filemode\"\n )\n \n func FuzzCommitDecode(f *testing.F) {\n@@ -29,11 +30,20 @@ func FuzzTreeDecode(f *testing.F) {\n \tf.Add(append([]byte(\"100644 a\\x00\"), make([]byte, 20)...))\n \tf.Add([]byte{})\n \n-\tf.Fuzz(func(_ *testing.T, data []byte) {\n+\tf.Fuzz(func(t *testing.T, data []byte) {\n \t\tmo := &plumbing.MemoryObject{}\n \t\tmo.SetType(plumbing.TreeObject)\n \t\t_, _ = mo.Write(data)\n-\t\t_ = (&Tree{}).Decode(mo)\n+\n+\t\tvar tree Tree\n+\t\tif tree.Decode(mo) != nil {\n+\t\t\treturn\n+\t\t}\n+\t\tfor _, e := range tree.Entries {\n+\t\t\tif e.Mode.IsMalformed() || e.Mode == filemode.Deprecated {\n+\t\t\t\tt.Fatalf(\"entry %q decoded to non-canonical mode %o\", e.Name, e.Mode)\n+\t\t\t}\n+\t\t}\n \t})\n }\n \ndiff --git a/plumbing/object/tree.go b/plumbing/object/tree.go\nindex 77799ad..f5c3dde 100644\n--- a/plumbing/object/tree.go\n+++ b/plumbing/object/tree.go\n@@ -301,27 +301,14 @@ func (t *Tree) Decode(o plumbing.EncodedObject) (err error) {\n \n \tvar prevSortName string\n \tfor {\n-\t\t// Use ReadSlice to get a view into bufio's internal buffer,\n-\t\t// avoiding a string allocation for the mode (which is parsed\n-\t\t// into a uint32 immediately and doesn't need to persist).\n-\t\tmodeSlice, err := r.ReadSlice(' ')\n-\t\tif err != nil {\n-\t\t\tif err == io.EOF {\n-\t\t\t\tif len(modeSlice) != 0 {\n-\t\t\t\t\treturn fmt.Errorf(\"%w: missing mode terminator\", ErrMalformedTree)\n-\t\t\t\t}\n-\t\t\t\tbreak\n-\t\t\t}\n-\n-\t\t\treturn err\n+\t\tmode, err := readTreeEntryMode(r)\n+\t\tif err == io.EOF {\n+\t\t\tbreak\n \t\t}\n-\t\tmodeSlice = modeSlice[:len(modeSlice)-1] // strip delimiter\n-\n-\t\tmode, err := filemode.FromBytes(modeSlice)\n \t\tif err != nil {\n-\t\t\treturn fmt.Errorf(\"%w: malformed mode\", ErrMalformedTree)\n+\t\t\treturn err\n \t\t}\n-\t\tmode = canonicalTreeMode(mode)\n+\t\tmode = mode.Canonical()\n \n \t\tnameSlice, err := r.ReadSlice(0)\n \t\tif err == bufio.ErrBufferFull {\n@@ -393,19 +380,54 @@ func treeEntrySortName(e *TreeEntry) string {\n \treturn e.Name\n }\n \n-func canonicalTreeMode(mode filemode.FileMode) filemode.FileMode {\n-\tswitch mode & 0o170000 {\n-\tcase 0o040000:\n-\t\treturn filemode.Dir\n-\tcase 0o100000:\n-\t\tif mode&0o111 != 0 {\n-\t\t\treturn filemode.Executable\n+// readTreeEntryMode reads the mode of the next tree entry from r,\n+// consuming the space that ends it. It returns io.EOF when r holds no\n+// further entries.\n+//\n+// Git's parse_mode[1] accepts any nonempty run of octal digits and keeps\n+// the low 16 bits of a wider value. readTreeEntryMode keeps the low 32\n+// bits; [filemode.FileMode.Canonical] reads only bits both keep, so the\n+// canonical mode is the one Git acts on. A mode longer than r's buffer\n+// is read in chunks, so memory use does not grow with its length.\n+//\n+// [1]: https://github.com/git/git/blob/v2.55.0/object.h#L200-L215\n+func readTreeEntryMode(r *bufio.Reader) (filemode.FileMode, error) {\n+\tvar (\n+\t\tmode uint32\n+\t\tseen bool\n+\t)\n+\tfor {\n+\t\t// ReadSlice returns a view into bufio's internal buffer, which\n+\t\t// avoids allocating for a mode that is parsed immediately.\n+\t\tchunk, err := r.ReadSlice(' ')\n+\t\tswitch err {\n+\t\tcase nil:\n+\t\t\tchunk = chunk[:len(chunk)-1] // strip delimiter\n+\t\tcase bufio.ErrBufferFull:\n+\t\tcase io.EOF:\n+\t\t\tif !seen && len(chunk) == 0 {\n+\t\t\t\treturn filemode.Empty, io.EOF\n+\t\t\t}\n+\t\t\treturn filemode.Empty, fmt.Errorf(\"%w: missing mode terminator\", ErrMalformedTree)\n+\t\tdefault:\n+\t\t\treturn filemode.Empty, err\n+\t\t}\n+\n+\t\tfor _, c := range chunk {\n+\t\t\tif c < '0' || c > '7' {\n+\t\t\t\treturn filemode.Empty, fmt.Errorf(\"%w: malformed mode\", ErrMalformedTree)\n+\t\t\t}\n+\t\t\t// Overflow wraps, keeping the low 32 bits.\n+\t\t\tmode = mode<<3 | uint32(c-'0')\n+\t\t}\n+\t\tseen = seen || len(chunk) > 0\n+\n+\t\tif err == nil {\n+\t\t\tif !seen {\n+\t\t\t\treturn filemode.Empty, fmt.Errorf(\"%w: malformed mode\", ErrMalformedTree)\n+\t\t\t}\n+\t\t\treturn filemode.FileMode(mode), nil\n \t\t}\n-\t\treturn filemode.Regular\n-\tcase 0o120000:\n-\t\treturn filemode.Symlink\n-\tdefault:\n-\t\treturn filemode.Submodule\n \t}\n }\n \n@@ -462,11 +484,11 @@ func (t *Tree) Encode(o plumbing.EncodedObject) (err error) {\n // together via errors.Join.\n //\n // Two fsck_tree warnings \u2014 zero-padded modes and the non-canonical\n-// 0100664 bits \u2014 are not surfaced here. Both rely on inspecting the\n-// original octal string from the wire, which canonicalTreeMode\n-// discards during Decode. Detecting them would require a parallel\n-// raw-mode field on TreeEntry; the structural rules below are the\n-// load-bearing ones for refusing malformed trees.\n+// 0100664 bits \u2014 are not surfaced here. Both need the mode as stored,\n+// which Decode replaces with [filemode.FileMode.Canonical]. Detecting\n+// them would require a parallel raw-mode field on TreeEntry; the\n+// structural rules below are the load-bearing ones for refusing\n+// malformed trees.\n //\n // [1]: https://github.com/git/git/blob/v2.54.0/fsck.c#L616-L800\n func (t *Tree) Validate() error {\n@@ -504,8 +526,8 @@ func (t *Tree) Validate() error {\n \t\t\t}\n \t\t}\n \n-\t\t// Mode validation against the canonical set. Decode normalises\n-\t\t// the wire bytes via canonicalTreeMode, so this rule mainly\n+\t\t// Mode validation against the canonical set. Decode stores\n+\t\t// FileMode.Canonical of the wire mode, so this rule mainly\n \t\t// catches programmatically-built trees with garbage modes;\n \t\t// the zero-padded-mode and non-canonical-bit checks fsck_tree\n \t\t// runs against the raw wire form are out of reach without\ndiff --git a/plumbing/object/tree_test.go b/plumbing/object/tree_test.go\nindex 4aa925e..a9af3a7 100644\n--- a/plumbing/object/tree_test.go\n+++ b/plumbing/object/tree_test.go\n@@ -1,20 +1,25 @@\n package object\n \n import (\n+\t\"bufio\"\n \t\"bytes\"\n \t\"context\"\n+\t\"encoding/hex\"\n \t\"errors\"\n \t\"io\"\n+\t\"os/exec\"\n \t\"sort\"\n \t\"strings\"\n \t\"testing\"\n \n+\t\"github.com/go-git/go-billy/v6/osfs\"\n \tfixtures \"github.com/go-git/go-git-fixtures/v6\"\n \t\"github.com/stretchr/testify/assert\"\n \t\"github.com/stretchr/testify/require\"\n \t\"github.com/stretchr/testify/suite\"\n \n \t\"github.com/go-git/go-git/v6/internal/pathutil\"\n+\t\"github.com/go-git/go-git/v6/internal/test/gitenv\"\n \t\"github.com/go-git/go-git/v6/plumbing\"\n \t\"github.com/go-git/go-git/v6/plumbing/cache\"\n \t\"github.com/go-git/go-git/v6/plumbing/filemode\"\n@@ -1804,6 +1809,14 @@ func TestTreeDecodeRejectsMalformedEntries(t *testing.T) {\n \t\t\tname: \"trailing partial entry\",\n \t\t\tbody: append(encodeRawTreeEntries(rawTreeEntry{\"100644\", \"foo\", hash}), []byte(\"100644 trailing\")...),\n \t\t},\n+\t\t{\n+\t\t\tname: \"long mode without terminator\",\n+\t\t\tbody: []byte(strings.Repeat(\"0\", 5000)),\n+\t\t},\n+\t\t{\n+\t\t\tname: \"long mode with non-octal byte\",\n+\t\t\tbody: encodeRawTreeEntries(rawTreeEntry{strings.Repeat(\"0\", 5000) + \"9\", \"foo\", hash}),\n+\t\t},\n \t}\n \n \tfor _, tc := range cases {\n@@ -1817,26 +1830,212 @@ func TestTreeDecodeRejectsMalformedEntries(t *testing.T) {\n \t}\n }\n \n+func TestTreeDecodeLongModes(t *testing.T) {\n+\tt.Parallel()\n+\n+\thash := bytes.Repeat([]byte{0xAA}, 20)\n+\n+\tcases := []struct {\n+\t\tname string\n+\t\tmode string\n+\t\twant filemode.FileMode\n+\t}{\n+\t\t{name: \"zero-padded\", mode: \"00000000000100644\", want: filemode.Regular},\n+\t\t{name: \"wider than 32 bits\", mode: \"1000000100644\", want: filemode.Regular},\n+\t\t{name: \"wider than 64 bits\", mode: \"77777777777777777777100755\", want: filemode.Executable},\n+\t\t{name: \"fills read buffer\", mode: strings.Repeat(\"0\", 4090) + \"100644\", want: filemode.Regular},\n+\t\t{name: \"exceeds read buffer\", mode: strings.Repeat(\"0\", 5000) + \"100644\", want: filemode.Regular},\n+\t\t{name: \"exceeds read buffer executable\", mode: strings.Repeat(\"0\", 5000) + \"100755\", want: filemode.Executable},\n+\t}\n+\n+\tfor _, tc := range cases {\n+\t\tt.Run(tc.name, func(t *testing.T) {\n+\t\t\tt.Parallel()\n+\n+\t\t\ttree, err := decodeRawTree(t, encodeRawTreeEntries(rawTreeEntry{tc.mode, \"a\", hash}))\n+\t\t\trequire.NoError(t, err)\n+\t\t\trequire.Len(t, tree.Entries, 1)\n+\t\t\tassert.Equal(t, tc.want, tree.Entries[0].Mode)\n+\t\t\tassert.Equal(t, \"a\", tree.Entries[0].Name)\n+\t\t})\n+\t}\n+}\n+\n func TestTreeDecodeCanonicalizesModes(t *testing.T) {\n \tt.Parallel()\n \n \thash := bytes.Repeat([]byte{0xAA}, 20)\n-\tbody := encodeRawTreeEntries(\n-\t\trawTreeEntry{\"100664\", \"regular\", hash},\n-\t\trawTreeEntry{\"100111\", \"executable\", hash},\n-\t\trawTreeEntry{\"120777\", \"symlink\", hash},\n-\t\trawTreeEntry{\"040755\", \"directory\", hash},\n-\t\trawTreeEntry{\"42\", \"submodule\", hash},\n-\t)\n+\tentries := []struct {\n+\t\tmode string\n+\t\tname string\n+\t\twant filemode.FileMode\n+\t}{\n+\t\t{\"100664\", \"a-regular\", filemode.Regular},\n+\t\t{\"100111\", \"b-executable\", filemode.Executable},\n+\t\t{\"120777\", \"c-symlink\", filemode.Symlink},\n+\t\t{\"040755\", \"d-directory\", filemode.Dir},\n+\t\t{\"42\", \"e-submodule\", filemode.Submodule},\n+\t\t{\"100011\", \"f-group-other-execute\", filemode.Regular},\n+\t\t{\"100100\", \"g-owner-execute\", filemode.Executable},\n+\t\t{\"300644\", \"h-high-bits\", filemode.Regular},\n+\t\t{\"160777\", \"i-gitlink-bits\", filemode.Submodule},\n+\t\t{\"0\", \"j-zero\", filemode.Submodule},\n+\t}\n \n-\ttree, err := decodeRawTree(t, body)\n+\traw := make([]rawTreeEntry, 0, len(entries))\n+\tfor _, e := range entries {\n+\t\traw = append(raw, rawTreeEntry{e.mode, e.name, hash})\n+\t}\n+\n+\ttree, err := decodeRawTree(t, encodeRawTreeEntries(raw...))\n+\trequire.NoError(t, err)\n+\trequire.Len(t, tree.Entries, len(entries))\n+\tfor i, e := range entries {\n+\t\tassert.Equal(t, e.name, tree.Entries[i].Name)\n+\t\tassert.Equal(t, e.want, tree.Entries[i].Mode, \"mode %s\", e.mode)\n+\t}\n+}\n+\n+// gitCanonMode mirrors how Git reads a tree entry mode: parse_mode\n+// accumulates in an unsigned int and stores a uint16_t, then canon_mode\n+// keeps the file type and the owner execute bit. It is written\n+// independently of readTreeEntryMode and FileMode.Canonical so that\n+// each checks the other.\n+func gitCanonMode(s string) filemode.FileMode {\n+\tvar acc uint32\n+\tfor _, c := range []byte(s) {\n+\t\tacc = acc<<3 + uint32(c-'0')\n+\t}\n+\tm := uint16(acc)\n+\n+\tswitch m & 0o170000 {\n+\tcase 0o100000:\n+\t\tif m&0o100 != 0 {\n+\t\t\treturn 0o100755\n+\t\t}\n+\t\treturn 0o100644\n+\tcase 0o120000:\n+\t\treturn 0o120000\n+\tcase 0o040000:\n+\t\treturn 0o040000\n+\tdefault:\n+\t\treturn 0o160000\n+\t}\n+}\n+\n+func TestReadTreeEntryModeCanonicalMatchesGit(t *testing.T) {\n+\tt.Parallel()\n+\n+\tfor _, input := range []string{\n+\t\t\"100644\", \"100011\", \"1000000100644\", \"77777777777777777777100644\",\n+\t\t\"37777777777\", \"40000000000\", \"0\", \"120777\", \"160777\", \"300644\",\n+\t\t\"177777\", \"777777777777\",\n+\t} {\n+\t\tt.Run(input, func(t *testing.T) {\n+\t\t\tt.Parallel()\n+\n+\t\t\tmode, err := readTreeEntryMode(bufio.NewReader(strings.NewReader(input + \" \")))\n+\t\t\trequire.NoError(t, err)\n+\t\t\tassert.Equal(t, gitCanonMode(input), mode.Canonical())\n+\t\t})\n+\t}\n+}\n+\n+func TestTreeDecodeEncodeCanonicalModes(t *testing.T) {\n+\tt.Parallel()\n+\n+\thash := bytes.Repeat([]byte{0xAA}, 20)\n+\ttree, err := decodeRawTree(t, encodeRawTreeEntries(\n+\t\trawTreeEntry{\"100011\", \"a\", hash},\n+\t\trawTreeEntry{\"100664\", \"b\", hash},\n+\t\trawTreeEntry{\"160777\", \"c\", hash},\n+\t))\n \trequire.NoError(t, err)\n-\trequire.Len(t, tree.Entries, 5)\n-\tassert.Equal(t, filemode.Regular, tree.Entries[0].Mode)\n-\tassert.Equal(t, filemode.Executable, tree.Entries[1].Mode)\n-\tassert.Equal(t, filemode.Symlink, tree.Entries[2].Mode)\n-\tassert.Equal(t, filemode.Dir, tree.Entries[3].Mode)\n-\tassert.Equal(t, filemode.Submodule, tree.Entries[4].Mode)\n+\n+\tobj := &plumbing.MemoryObject{}\n+\trequire.NoError(t, tree.Encode(obj))\n+\n+\tvar got Tree\n+\trequire.NoError(t, got.Decode(obj))\n+\trequire.Len(t, got.Entries, 3)\n+\tassert.Equal(t, filemode.Regular, got.Entries[0].Mode)\n+\tassert.Equal(t, filemode.Regular, got.Entries[1].Mode)\n+\tassert.Equal(t, filemode.Submodule, got.Entries[2].Mode)\n+}\n+\n+// TestTreeDecodeModesMatchGit writes trees whose entry modes Git\n+// canonicalises and checks that Decode reads each mode as git ls-tree\n+// prints it.\n+func TestTreeDecodeModesMatchGit(t *testing.T) {\n+\tt.Parallel()\n+\n+\tif testing.Short() {\n+\t\tt.Skip(\"oracle disabled: -short\")\n+\t}\n+\tif _, err := exec.LookPath(\"git\"); err != nil {\n+\t\tt.Skipf(\"oracle disabled: git not found: %v\", err)\n+\t}\n+\n+\tdir := t.TempDir()\n+\trunGit := func(t *testing.T, stdin []byte, args ...string) string {\n+\t\tt.Helper()\n+\n+\t\tcmd := gitenv.CommandContext(t.Context(), \"git\", args...)\n+\t\tcmd.Dir = dir\n+\t\tif stdin != nil {\n+\t\t\tcmd.Stdin = bytes.NewReader(stdin)\n+\t\t}\n+\t\tout, err := cmd.Output()\n+\t\trequire.NoError(t, err, \"git %s\", strings.Join(args, \" \"))\n+\t\treturn strings.TrimSpace(string(out))\n+\t}\n+\n+\trunGit(t, nil, \"init\", \"-q\", \"--bare\", \".\")\n+\tblob, err := hex.DecodeString(runGit(t, []byte(\"hello\\n\"), \"hash-object\", \"-w\", \"--stdin\"))\n+\trequire.NoError(t, err)\n+\n+\tsto := filesystem.NewStorage(osfs.New(dir), cache.NewObjectLRUDefault())\n+\t// t.Cleanup rather than defer: the parallel subtests below run\n+\t// after this function returns.\n+\tt.Cleanup(func() { _ = sto.Close() })\n+\n+\tcases := []struct {\n+\t\tname string\n+\t\tmode string\n+\t}{\n+\t\t{\"00000000000100644\", \"00000000000100644\"},\n+\t\t{\"1000000100644\", \"1000000100644\"},\n+\t\t{\"long\", strings.Repeat(\"0\", 5000) + \"100644\"},\n+\t\t{\"100011\", \"100011\"},\n+\t\t{\"100001\", \"100001\"},\n+\t\t{\"100010\", \"100010\"},\n+\t\t{\"100664\", \"100664\"},\n+\t\t{\"300644\", \"300644\"},\n+\t\t{\"100100\", \"100100\"},\n+\t\t{\"100755\", \"100755\"},\n+\t\t{\"120777\", \"120777\"},\n+\t\t{\"160777\", \"160777\"},\n+\t\t{\"0\", \"0\"},\n+\t}\n+\n+\tfor _, tc := range cases {\n+\t\tt.Run(tc.name, func(t *testing.T) {\n+\t\t\tt.Parallel()\n+\n+\t\t\tbody := encodeRawTreeEntries(rawTreeEntry{tc.mode, \"a\", blob})\n+\t\t\tid := runGit(t, body, \"hash-object\", \"--literally\", \"-t\", \"tree\", \"-w\", \"--stdin\")\n+\n+\t\t\tfields := strings.Fields(runGit(t, nil, \"ls-tree\", id))\n+\t\t\trequire.NotEmpty(t, fields)\n+\t\t\twant, err := filemode.New(fields[0])\n+\t\t\trequire.NoError(t, err)\n+\n+\t\t\ttree, err := GetTree(sto, plumbing.NewHash(id))\n+\t\t\trequire.NoError(t, err)\n+\t\t\trequire.Len(t, tree.Entries, 1)\n+\t\t\tassert.Equal(t, want, tree.Entries[0].Mode)\n+\t\t})\n+\t}\n }\n \n func TestTreeDecodeEmptyClearsExistingEntries(t *testing.T) {\n@@ -2339,7 +2538,7 @@ func TestTreeValidateRejectsFsckRules(t *testing.T) {\n \t\t\twantIs: ErrDuplicateEntry,\n \t\t},\n \t\t{\n-\t\t\t// canonicalTreeMode maps the non-canonical 0100664 down\n+\t\t\t// FileMode.Canonical maps the non-canonical 0100664 down\n \t\t\t// to the canonical Regular mode at Decode, so Validate\n \t\t\t// sees a well-formed entry and accepts it. The rule is\n \t\t\t// kept in the table to document that the canonicalising\n@@ -2429,7 +2628,7 @@ func TestTreeValidateEmptyName(t *testing.T) {\n \n // TestTreeValidateBadInMemoryMode pins the bad-mode rule against\n // programmatically-constructed entries. Wire-decoded modes go through\n-// canonicalTreeMode and always land on a valid value, so this rule is\n+// FileMode.Canonical and always land on a valid value, so this rule is\n // only reachable when a caller sets a non-canonical Mode by hand.\n func TestTreeValidateBadInMemoryMode(t *testing.T) {\n \tt.Parallel()\n",
+      "patch_sha256": "2db3d5cff2ec513ac44461ff48a5ba7ec6648b998fbd22c6f46418391eb8178d",
+      "proposal": "plumbing: object, Decode tree entry modes as Git does\n\ngo-git reads the mode of a tree entry differently from Git in two ways. As a result, a tree Git reads without issue either fails to decode or decodes with a different mode:\n\n1. `filemode.FromBytes` rejects a mode longer than 7 digits, while Git's `parse_mode` accepts any nonempty run of octal digits ([object.h#L200-L215](https://github.com/git/git/blob/v2.55.0/object.h#L200-L215)). Git accepts a zero-padded mode such as `00000000000100644` when reading a tree (`git ls-tree` prints `100644`), but go-git fails with `malformed tree: malformed mode`. A mode longer than the 4096-byte read buffer of `Tree.Decode` fails with a bare `bufio.ErrBufferFull` instead of `ErrMalformedTree`.\n2. When canonicalising a regular file, go-git tests any of the execute bits (`0o111`). Git's `canon_mode` only looks at the owner execute bit (`0o100`, see [object.h#L133-L154](https://github.com/git/git/blob/v2.55.0/object.h#L133-L154)). Due to this, go-git reads a stored `100011` as `100755` where Git reads `100644`.\n\nThe following reproduces both:\n\n```go\npackage main\n\nimport (\n\t\"bytes\"\n\t\"fmt\"\n\n\t\"github.com/go-git/go-git/v6/plumbing\"\n\t\"github.com/go-git/go-git/v6/plumbing/object\"\n)\n\nfunc main() {\n\thash := bytes.Repeat([]byte{0xAA}, 20)\n\tfor _, mode := range []string{\"00000000000100644\", \"100011\"} {\n\t\tobj := &plumbing.MemoryObject{}\n\t\tobj.SetType(plumbing.TreeObject)\n\t\t_, _ = obj.Write(append([]byte(mode+\" a\\x00\"), hash...))\n\n\t\tvar tree object.Tree\n\t\tif err := tree.Decode(obj); err != nil {\n\t\t\tfmt.Printf(\"%s: %v\\n\", mode, err)\n\t\t\tcontinue\n\t\t}\n\t\tfmt.Printf(\"%s: %s\\n\", mode, tree.Entries[0].Mode)\n\t}\n}\n```\n\nOn `main` this prints:\n\n```\n00000000000100644: malformed tree: malformed mode\n100011: 0100755\n```\n\nWith this change, the example prints `0100644` for both entries. This is the same mode that `git ls-tree` reports as `100644` for equivalent raw tree entries written using `git hash-object --literally -t tree`.\n\nThis PR is split into two commits:\n\n1. `Tree.Decode` now reads a mode of any length and keeps the low 32 bits of a wider value. Git keeps the low 16 bits, but `canon_mode` only reads bits both keep, so the canonical result is the same. A mode that does not fit in its buffer is read in chunks, in constant memory, and every malformed mode is reported as `ErrMalformedTree`. `filemode.FromBytes` accepts input longer than 7 digits as well, but still returns an error for a value wider than 32 bits, like `filemode.New`.\n2. A new `filemode.FileMode.Canonical` maps a stored mode to the mode Git acts on, as `canon_mode` does, and `Tree.Decode` now uses it instead of its private `canonicalTreeMode`.\n\nThe second commit changes behaviour for regular-file entries whose group or other execute bits are set while the owner execute bit is clear. These now decode as `100644`, so merges and commits built from such a tree record `100644`, and checkout writes the file without execute permission. Existing commits do not change. A worktree an earlier go-git checked out from such a tree shows the file as modified in `Status` until it is reset, which is also what Git reports for it.\n\nBesides unit tests for `FromBytes` and `Canonical`, `TestTreeDecodeModesMatchGit` writes trees with unusual modes (zero-padded, over 4096 digits, `100011`, `100664`, `120777`, `160777`, `0`, and others) using `git hash-object --literally`, and checks that `Tree.Decode` returns the mode `git ls-tree` prints for each. The test is skipped when `git` is unavailable or when tests run with `-short`. `FuzzTreeDecode` now also asserts that every decoded mode is canonical.\n",
+      "proposal_sha256": "4bbd8e0be689499e6e7322f4fb3a0ae5dd186b36603f771f0e52efc675ca633a",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "2db3d5cff2ec513ac44461ff48a5ba7ec6648b998fbd22c6f46418391eb8178d",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "patch_sha256": "2db3d5cff2ec513ac44461ff48a5ba7ec6648b998fbd22c6f46418391eb8178d",
+            "proposal_sha256": "4bbd8e0be689499e6e7322f4fb3a0ae5dd186b36603f771f0e52efc675ca633a",
+            "judgment_sha256": "58117dc28b3cbd812d9cd32c5b13547a5339b41d313c27084c3a108e26859d0b",
+            "mapping_sha256": "fb66cc5d30b7a8386a7cdc5d425d291df400d5358bf4331ffece83e03574de81",
+            "assessor_sha256": "c49087bd3707e9d1aeba700edd654d61818fb499a1d29258ee6ee289fdd6778b",
+            "packet_sha256": "0640c0017a7db130ae58b0e03306919a5dbda557535db05ab15cc1ab56f90ea6",
+            "prompt_sha256": "fc3ba048a0e7f818b333eea0d9b58c200684adb5faf8e0c93740056a91349bc1"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "patch_sha256": "2db3d5cff2ec513ac44461ff48a5ba7ec6648b998fbd22c6f46418391eb8178d",
+            "proposal_sha256": "4bbd8e0be689499e6e7322f4fb3a0ae5dd186b36603f771f0e52efc675ca633a",
+            "judgment_sha256": "ecfe47a82e6f707dbe8c0aa9b3beed6cf385f7f34e1422889ff2452407d9800c",
+            "mapping_sha256": "473c990e001efb67a3ac9234ec3ebca8eaafb8bcb7441f79efeb40b848d823b8",
+            "assessor_sha256": "6f49fc39f99c1e52c6db747a209752d4fc26160e0c246fe76935735c9d1dd611",
+            "packet_sha256": "94b8afff3785e6a2ae76bf36dfc55a4a4818dd50badf835db4e0d9a25090f696",
+            "prompt_sha256": "2e03343b5f7c752539af1f20957805ca8be0528934575cc6c84d3721c4c6b8f7"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "patch_sha256": "2db3d5cff2ec513ac44461ff48a5ba7ec6648b998fbd22c6f46418391eb8178d",
+            "proposal_sha256": "4bbd8e0be689499e6e7322f4fb3a0ae5dd186b36603f771f0e52efc675ca633a",
+            "judgment_sha256": "8b8084f83490dbb56e975855ad3baca66dd294873c7aeb115d20edbc7251795f",
+            "mapping_sha256": "202173ee68f1d4e1e2561590aa9a3f567b8321ae13439a2ee6e40ab64c1801d4",
+            "assessor_sha256": "577f556fbe73d47450e30df815ee7883be493c77a61eb799fd9b8f9cfd1de99e",
+            "packet_sha256": "f21c1945ced3725b171bd223acb18154c1596523c57df12c432f5afb9a83ac08",
+            "prompt_sha256": "bcf4a4abc3e38afaed2476e0cc7a4699107ccef3589177ccbc6977db0137ebc8"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        "proposal_points_100": 96.25,
+        "diff_points_85": 85.0,
+        "rotation_points_85": {
+          "0": 85.0,
+          "1": 85.0,
+          "2": 78.75
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/B.patch: plumbing/filemode/filemode.go accepts arbitrary leading zeros through uint32 maximum, rejects empty/non-octal/overflow inputs with Empty, and exposes Canonical using owner execute bit 0100. plumbing/object/tree.go uses readTreeEntryMode to process arbitrarily long fields with wrapping uint32 accumulation, reject empty/invalid/unterminated modes as ErrMalformedTree, and preserve clean EOF. Frozen packet/task.json reports build, native, contract, preserve, and independent exits 0 for B; the declared build/native scope is plumbing/filemode and plumbing/object.",
+              "tests": "packet/B.patch adds FromBytes padding/maximum/overflow cases, Canonical owner/group/other-bit and type cases, and Tree.Decode tests for exact-buffer and longer modes, wrapping beyond 32 and 64 bits, malformed long fields, and canonical round trips. TestTreeDecodeCanonicalizesModes retains the original five mode mappings in an expanded table rather than dropping their checks. TestTreeDecodeModesMatchGit compares public decoding with git ls-tree through isolated gitenv commands; it can skip without git or under -short, so its individual execution is not established by the aggregate exits. FuzzTreeDecode retains decode execution and adds canonical-mode assertions. Frozen native and independent exits are 0.",
+              "design": "packet/B.patch separates the streaming mode parser from Decode and keeps strict public FromBytes parsing independent of tree wrapping. Canonical centralizes the former private mapping with the required owner-bit correction. The Git oracle uses the existing internal/test/gitenv isolation and t.Cleanup for parallel subtests. Deleted production logic is replaced rather than bypassed: starting tree.go filename and object-ID checks, reset/sorting behavior, Encode validation and Validate protections remain intact. Changes stay within the requested API and its tests.",
+              "proposal": "packet/B.md precisely explains both original failures with inputs and before/after outputs, links upstream semantics, distinguishes tree wrapping from FromBytes overflow, and describes downstream compatibility consequences and oracle skip conditions. However, it reports no actual build or package-test outcome or explicit verification limitation; describing tests does not establish their execution. Frozen successful checks support the implementation separately, but do not fill this proposal-level reporting gap. The claimed example outputs are not separately evidenced."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/A.patch: plumbing/filemode/filemode.go accepts leading zeros through 37777777777, rejects non-octal bytes and uint32 overflow, and adds Canonical using the owner execute bit. plumbing/object/tree.go reads mode fragments with wrapping uint32 arithmetic, distinguishes clean EOF from unterminated or empty modes, and wraps malformed encodings in ErrMalformedTree. Non-regular mappings are preserved. packet/task.json records build, native, contract, preserve and independent exits of 0 for A.",
+              "tests": "packet/A.patch adds FromBytes maximum/overflow/padding tests, Canonical type and execute-bit cases, buffer-size and wider-than-64-bit tree modes, malformed long modes, canonical encode/decode checks, a Git ls-tree differential test, and a stronger fuzz invariant. The replaced TestTreeDecodeCanonicalizesModes retains all five original type cases and expands them. Existing malformed-entry and validation tests remain. Frozen native and independent checks exit 0; whether the optional Git oracle ran is not recorded.",
+              "design": "packet/A.patch confines production changes to filemode and tree mode decoding. readTreeEntryMode consumes ReadSlice fragments in constant memory and intentionally separates wrapping tree semantics from the strict public parser. Removing canonicalTreeMode moves its type dispatch into the public Canonical method with the required owner-bit correction. Inspection of starting plumbing/object/tree.go and the full diff shows filename/hash error handling, sorting, Encode validation, path protections and metadata-symlink protections retained.",
+              "proposal": "packet/A.md gives a precise title, concrete failing examples, upstream source links, the distinction between public overflow rejection and tree wrapping, and downstream checkout/status implications. Its test descriptions match the patch, but it provides no explicit build/package-test outcome or verification limitation. The frozen successful checks establish implementation evidence independently; they do not supply that missing proposal report. Claimed downstream observations are not independently demonstrated by the packet."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 3,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/C.patch: FromBytes accepts leading zeros and the uint32 maximum while rejecting invalid bytes and overflow. readTreeEntryMode consumes chunks with uint32 wrapping, distinguishes clean EOF from unterminated modes and returns ErrMalformedTree for malformed modes. Canonical uses only type bits and owner execute, retaining nonregular semantics. packet/task.json records build, native, contract, preserve and independent exits of 0 for C in the declared filemode/object scope.",
+              "tests": "packet/C.patch adds FromBytes boundary/error cases, Canonical type/execute-bit coverage, exact-buffer and long-mode decoding, wide wrapping and round-trip tests. TestTreeDecodeModesMatchGit provides a real Git oracle for padded, wide, long and unusual modes, with explicit availability/short-mode skips; the frozen summaries do not show whether those subtests ran. FuzzTreeDecode strengthens the existing no-panic exercise with canonical-output assertions. The rewritten TestTreeDecodeCanonicalizesModes retains all five prior cases and adds distinct cases; malformed-entry and validation checks are preserved. Frozen native, contract, preserve and independent checks exit 0.",
+              "design": "packet/C.patch uses a clear bounded-memory reader and a documented public Canonical method, with appropriate separation between tree wrapping and public overflow checks. Explicitly inspected deletions retain the previous canonicalization cases and replace the length restriction with overflow validation; filename/hash checks and Encode/Validate protections remain intact. Avoidable complexity remains in tree_test.go: gitCanonMode duplicates the production accumulator and canonicalization switch while claiming independence, alongside fixed expected-value tests and a real Git oracle. This adds a second modeled implementation to maintain without supplying independent Git evidence itself.",
+              "proposal": "packet/C.md precisely describes the original failures, provides a reproducer and Git references, distinguishes public overflow rejection from tree wrapping, and explains downstream checkout/status consequences. It accurately describes the added oracle and its skip conditions. It gives no explicit build/package-test execution status and no AI-assistance disclosure; those are observed communication omissions. The prose reproduction and downstream assertions are not additional frozen execution evidence. Successful checks are credited independently from packet/task.json."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": null,
+      "receipt_sha256": {
+        "grade": "fcf325f731b782f3c5826a0890f0a9cc7b30d6446c96a0c0aa6a70a5acf97e36"
+      }
+    }
+  },
+  "route_review": "Requires inspection of the recorded independent review events.",
+  "prior_develop": {
+    "state": "timeout",
+    "effort": {
+      "coverage": "lower bound",
+      "tokens": {
+        "inputTokens": 12008822,
+        "cachedInputTokens": 11779840,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 46471,
+        "reasoningOutputTokens": 25877,
+        "totalTokens": 12055293
+      },
+      "estimated_usd": 2.100658,
+      "billed_usd": null,
+      "checkout_to_proposal_seconds": 3100.4100480391644,
+      "prompt_to_terminal_seconds": 3060.0006545470096,
+      "through_grading_seconds": 3228.3238502310123,
+      "setup_seconds": 38.80267677293159,
+      "grading_seconds": 126.23278328799643,
+      "thread_count": 3,
+      "child_count": 2,
+      "root_tokens": {
+        "totalTokens": 11087856,
+        "inputTokens": 11044780,
+        "cachedInputTokens": 10902016,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 43076,
+        "reasoningOutputTokens": 25375
+      },
+      "descendant_tokens": {
+        "inputTokens": 964042,
+        "cachedInputTokens": 877824,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 3395,
+        "reasoningOutputTokens": 502,
+        "totalTokens": 967437
+      },
+      "observed_commands": 47,
+      "native_hook_receipts": 184
+    },
+    "stage_exits": {
+      "build": 0,
+      "native": 0,
+      "contract": 0,
+      "preserve": 0,
+      "independent": 0
+    },
+    "patch_sha256": "371e1fc570a91315ee5706f1bfdef0cb71bece787440caa5a55b129208e0c56e",
+    "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "full_pr_score": null,
+    "patch": "diff --git a/plumbing/filemode/filemode.go b/plumbing/filemode/filemode.go\nindex 4dd77ba..20af794 100644\n--- a/plumbing/filemode/filemode.go\n+++ b/plumbing/filemode/filemode.go\n@@ -66,12 +66,13 @@ func New(s string) (FileMode, error) {\n }\n \n // FromBytes parses a FileMode from a byte slice containing an octal\n-// number. This avoids allocating a string when parsing from binary data.\n+// number in the uint32 range, allowing leading zeros. This avoids allocating\n+// a string when parsing from binary data.\n //\n // Please note this function does not check if the returned FileMode\n // is valid in git or if it is malformed.\n func FromBytes(b []byte) (FileMode, error) {\n-\tif len(b) == 0 || len(b) > 7 {\n+\tif len(b) == 0 {\n \t\treturn Empty, fmt.Errorf(\"invalid mode length: %d\", len(b))\n \t}\n \n@@ -80,11 +81,35 @@ func FromBytes(b []byte) (FileMode, error) {\n \t\tif c < '0' || c > '7' {\n \t\t\treturn Empty, fmt.Errorf(\"invalid octal character: %c\", c)\n \t\t}\n-\t\tmode = mode*8 + uint32(c-'0')\n+\t\tdigit := uint32(c - '0')\n+\t\tif mode > (^uint32(0)-digit)/8 {\n+\t\t\treturn Empty, fmt.Errorf(\"mode overflows uint32\")\n+\t\t}\n+\t\tmode = mode*8 + digit\n \t}\n \treturn FileMode(mode), nil\n }\n \n+// Canonical returns the mode Git uses when reading a tree entry. Regular\n+// files are executable only when the owner execute bit is set. Directory and\n+// symlink permissions are discarded; all other types are treated as submodules.\n+// Canonical does not validate the mode.\n+func (m FileMode) Canonical() FileMode {\n+\tswitch m & 0o170000 {\n+\tcase 0o040000:\n+\t\treturn Dir\n+\tcase 0o100000:\n+\t\tif m&0o100 != 0 {\n+\t\t\treturn Executable\n+\t\t}\n+\t\treturn Regular\n+\tcase 0o120000:\n+\t\treturn Symlink\n+\tdefault:\n+\t\treturn Submodule\n+\t}\n+}\n+\n // NewFromOSFileMode returns the FileMode used by git to represent\n // the provided file system modes and a nil error on success.  If the\n // file system mode cannot be mapped to any valid git mode (as with\ndiff --git a/plumbing/filemode/filemode_test.go b/plumbing/filemode/filemode_test.go\nindex 18cfd46..c7c5760 100644\n--- a/plumbing/filemode/filemode_test.go\n+++ b/plumbing/filemode/filemode_test.go\n@@ -3,6 +3,7 @@ package filemode\n import (\n \t\"fmt\"\n \t\"os\"\n+\t\"strings\"\n \t\"testing\"\n \n \t\"github.com/stretchr/testify/suite\"\n@@ -90,13 +91,28 @@ func (s *ModeSuite) TestFromBytes() {\n \t}\n }\n \n+func (s *ModeSuite) TestFromBytesUint32() {\n+\tfor _, mode := range []FileMode{Empty, Dir, Regular, Deprecated, Executable, Symlink, Submodule, 0o7777777, 0o10000000, 0o37777777777} {\n+\t\tfor _, input := range []string{mode.String(), strings.Repeat(\"0\", 5000) + mode.String()} {\n+\t\t\tgot, err := FromBytes([]byte(input))\n+\t\t\ts.Require().NoError(err)\n+\t\t\ts.Equal(mode, got)\n+\t\t}\n+\t}\n+\tfor _, input := range []string{\"40000000000\", \"100000000000\", \"00040000000000\", \"00000008\", \"+100644\", \"100644\\x00\", \"100644 \"} {\n+\t\tgot, err := FromBytes([]byte(input))\n+\t\ts.Error(err, input)\n+\t\ts.Equal(Empty, got, input)\n+\t}\n+}\n+\n func (s *ModeSuite) TestFromBytesErrors() {\n \tfor _, input := range [...]string{\n \t\t\"\",         // empty\n \t\t\"9\",        // non-octal digit\n \t\t\"09\",       // non-octal digit\n \t\t\"mode\",     // letters\n-\t\t\"12345678\", // too long (>7 chars)\n+\t\t\"12345678\", // non-octal digit\n \t\t\"0x81a4\",   // hex prefix\n \t\t\"-100644\",  // negative\n \t} {\n@@ -403,3 +419,19 @@ func (s *ModeSuite) TestToOSFileMode() {\n \t\t}\n \t}\n }\n+\n+func (s *ModeSuite) TestCanonical() {\n+\tfor _, tc := range []struct{ mode, want FileMode }{\n+\t\t{Regular, Regular}, {Deprecated, Regular}, {Executable, Executable},\n+\t\t{0o100000, Regular}, {0o100654, Regular}, {0o100645, Regular},\n+\t\t{0o100100, Executable}, {0o104700, Executable},\n+\t\t{Dir, Dir}, {0o040755, Dir}, {Symlink, Symlink}, {0o120777, Symlink},\n+\t\t{Submodule, Submodule}, {0o160755, Submodule},\n+\t\t{Empty, Submodule}, {0o42, Submodule}, {0o170000, Submodule},\n+\t\t{0x800081a4, Regular}, {0xffffffff, Submodule},\n+\t} {\n+\t\tgot := tc.mode.Canonical()\n+\t\ts.Equal(tc.want, got, \"mode %o\", tc.mode)\n+\t\ts.Equal(got, got.Canonical(), \"mode %o\", tc.mode)\n+\t}\n+}\ndiff --git a/plumbing/object/tree.go b/plumbing/object/tree.go\nindex 77799ad..6dde465 100644\n--- a/plumbing/object/tree.go\n+++ b/plumbing/object/tree.go\n@@ -301,27 +301,40 @@ func (t *Tree) Decode(o plumbing.EncodedObject) (err error) {\n \n \tvar prevSortName string\n \tfor {\n-\t\t// Use ReadSlice to get a view into bufio's internal buffer,\n-\t\t// avoiding a string allocation for the mode (which is parsed\n-\t\t// into a uint32 immediately and doesn't need to persist).\n-\t\tmodeSlice, err := r.ReadSlice(' ')\n-\t\tif err != nil {\n-\t\t\tif err == io.EOF {\n-\t\t\t\tif len(modeSlice) != 0 {\n+\t\t// Git accumulates tree modes in an unsigned 32-bit integer, allowing\n+\t\t// wraparound. FromBytes deliberately rejects overflow instead.\n+\t\tvar mode filemode.FileMode\n+\t\thaveMode := false\n+\t\tfor {\n+\t\t\tmodeSlice, readErr := r.ReadSlice(' ')\n+\t\t\tif readErr != nil && readErr != bufio.ErrBufferFull && readErr != io.EOF {\n+\t\t\t\treturn readErr\n+\t\t\t}\n+\t\t\tif readErr == nil {\n+\t\t\t\tmodeSlice = modeSlice[:len(modeSlice)-1]\n+\t\t\t}\n+\t\t\tfor _, c := range modeSlice {\n+\t\t\t\tif c < '0' || c > '7' {\n+\t\t\t\t\treturn fmt.Errorf(\"%w: malformed mode\", ErrMalformedTree)\n+\t\t\t\t}\n+\t\t\t\tmode = mode*8 + filemode.FileMode(c-'0')\n+\t\t\t\thaveMode = true\n+\t\t\t}\n+\t\t\tif readErr == bufio.ErrBufferFull {\n+\t\t\t\tcontinue\n+\t\t\t}\n+\t\t\tif readErr == io.EOF {\n+\t\t\t\tif haveMode {\n \t\t\t\t\treturn fmt.Errorf(\"%w: missing mode terminator\", ErrMalformedTree)\n \t\t\t\t}\n-\t\t\t\tbreak\n+\t\t\t\treturn nil\n \t\t\t}\n-\n-\t\t\treturn err\n-\t\t}\n-\t\tmodeSlice = modeSlice[:len(modeSlice)-1] // strip delimiter\n-\n-\t\tmode, err := filemode.FromBytes(modeSlice)\n-\t\tif err != nil {\n-\t\t\treturn fmt.Errorf(\"%w: malformed mode\", ErrMalformedTree)\n+\t\t\tif !haveMode {\n+\t\t\t\treturn fmt.Errorf(\"%w: malformed mode\", ErrMalformedTree)\n+\t\t\t}\n+\t\t\tbreak\n \t\t}\n-\t\tmode = canonicalTreeMode(mode)\n+\t\tmode = mode.Canonical()\n \n \t\tnameSlice, err := r.ReadSlice(0)\n \t\tif err == bufio.ErrBufferFull {\n@@ -366,8 +379,6 @@ func (t *Tree) Decode(o plumbing.EncodedObject) (err error) {\n \t\tprevSortName = sortName\n \t\tt.Entries = append(t.Entries, entry)\n \t}\n-\n-\treturn nil\n }\n \n // TreeEntrySorter is a helper type for sorting TreeEntry slices.\n@@ -393,22 +404,6 @@ func treeEntrySortName(e *TreeEntry) string {\n \treturn e.Name\n }\n \n-func canonicalTreeMode(mode filemode.FileMode) filemode.FileMode {\n-\tswitch mode & 0o170000 {\n-\tcase 0o040000:\n-\t\treturn filemode.Dir\n-\tcase 0o100000:\n-\t\tif mode&0o111 != 0 {\n-\t\t\treturn filemode.Executable\n-\t\t}\n-\t\treturn filemode.Regular\n-\tcase 0o120000:\n-\t\treturn filemode.Symlink\n-\tdefault:\n-\t\treturn filemode.Submodule\n-\t}\n-}\n-\n // Encode transforms a Tree into a plumbing.EncodedObject.\n //\n // The tree is run through Tree.Validate before any bytes are written,\n@@ -463,7 +458,7 @@ func (t *Tree) Encode(o plumbing.EncodedObject) (err error) {\n //\n // Two fsck_tree warnings \u2014 zero-padded modes and the non-canonical\n // 0100664 bits \u2014 are not surfaced here. Both rely on inspecting the\n-// original octal string from the wire, which canonicalTreeMode\n+// original octal string from the wire, which FileMode.Canonical\n // discards during Decode. Detecting them would require a parallel\n // raw-mode field on TreeEntry; the structural rules below are the\n // load-bearing ones for refusing malformed trees.\n@@ -505,7 +500,7 @@ func (t *Tree) Validate() error {\n \t\t}\n \n \t\t// Mode validation against the canonical set. Decode normalises\n-\t\t// the wire bytes via canonicalTreeMode, so this rule mainly\n+\t\t// the wire bytes via FileMode.Canonical, so this rule mainly\n \t\t// catches programmatically-built trees with garbage modes;\n \t\t// the zero-padded-mode and non-canonical-bit checks fsck_tree\n \t\t// runs against the raw wire form are out of reach without\ndiff --git a/plumbing/object/tree_test.go b/plumbing/object/tree_test.go\nindex 4aa925e..57354a9 100644\n--- a/plumbing/object/tree_test.go\n+++ b/plumbing/object/tree_test.go\n@@ -2339,7 +2339,7 @@ func TestTreeValidateRejectsFsckRules(t *testing.T) {\n \t\t\twantIs: ErrDuplicateEntry,\n \t\t},\n \t\t{\n-\t\t\t// canonicalTreeMode maps the non-canonical 0100664 down\n+\t\t\t// FileMode.Canonical maps the non-canonical 0100664 down\n \t\t\t// to the canonical Regular mode at Decode, so Validate\n \t\t\t// sees a well-formed entry and accepts it. The rule is\n \t\t\t// kept in the table to document that the canonicalising\n@@ -2429,7 +2429,7 @@ func TestTreeValidateEmptyName(t *testing.T) {\n \n // TestTreeValidateBadInMemoryMode pins the bad-mode rule against\n // programmatically-constructed entries. Wire-decoded modes go through\n-// canonicalTreeMode and always land on a valid value, so this rule is\n+// FileMode.Canonical and always land on a valid value, so this rule is\n // only reachable when a caller sets a non-canonical Mode by hand.\n func TestTreeValidateBadInMemoryMode(t *testing.T) {\n \tt.Parallel()\n@@ -2465,3 +2465,58 @@ func TestTreeValidateReportsAllRules(t *testing.T) {\n \tassert.ErrorIs(t, verr, pathutil.ErrInvalidPath)\n \tassert.Contains(t, verr.Error(), \"null hash\")\n }\n+\n+func TestTreeDecodeOctalModes(t *testing.T) {\n+\tt.Parallel()\n+\thash := bytes.Repeat([]byte{0xAA}, 20)\n+\tfor _, tc := range []struct {\n+\t\tname, mode string\n+\t\twant       filemode.FileMode\n+\t}{\n+\t\t{\"regular\", \"100644\", filemode.Regular},\n+\t\t{\"deprecated\", \"100664\", filemode.Regular},\n+\t\t{\"group execute\", \"100654\", filemode.Regular},\n+\t\t{\"other execute\", \"100645\", filemode.Regular},\n+\t\t{\"owner execute\", \"100100\", filemode.Executable},\n+\t\t{\"padded\", \"00000000100644\", filemode.Regular},\n+\t\t{\"buffer boundary\", strings.Repeat(\"0\", 4090) + \"100755\", filemode.Executable},\n+\t\t{\"multiple buffers\", strings.Repeat(\"0\", 10000) + \"100644\", filemode.Regular},\n+\t\t{\"uint32 wrap\", \"40000100644\", filemode.Regular},\n+\t\t{\"wide wrap\", strings.Repeat(\"7\", 10000) + \"00100755\", filemode.Executable},\n+\t\t{\"directory\", \"040755\", filemode.Dir},\n+\t\t{\"symlink\", \"120777\", filemode.Symlink},\n+\t\t{\"submodule\", \"160777\", filemode.Submodule},\n+\t\t{\"unknown type\", \"170000\", filemode.Submodule},\n+\t\t{\"zero\", \"00000000\", filemode.Submodule},\n+\t} {\n+\t\tt.Run(tc.name, func(t *testing.T) {\n+\t\t\tt.Parallel()\n+\t\t\tbody := encodeRawTreeEntries(rawTreeEntry{tc.mode, \"a\", hash}, rawTreeEntry{\"100644\", \"b\", hash})\n+\t\t\ttree, err := decodeRawTree(t, body)\n+\t\t\trequire.NoError(t, err)\n+\t\t\trequire.Len(t, tree.Entries, 2)\n+\t\t\tassert.Equal(t, tc.want, tree.Entries[0].Mode)\n+\t\t\tassert.Equal(t, \"a\", tree.Entries[0].Name)\n+\t\t\tassert.Equal(t, plumbing.NewHash(strings.Repeat(\"aa\", 20)), tree.Entries[0].Hash)\n+\t\t\tassert.Equal(t, filemode.Regular, tree.Entries[1].Mode)\n+\t\t\tvar encoded plumbing.MemoryObject\n+\t\t\trequire.NoError(t, tree.Encode(&encoded))\n+\t\t\tvar decoded Tree\n+\t\t\trequire.NoError(t, decoded.Decode(&encoded))\n+\t\t\tassert.Equal(t, tree.Entries, decoded.Entries)\n+\t\t})\n+\t}\n+}\n+\n+func TestTreeDecodeInvalidOctalModes(t *testing.T) {\n+\tt.Parallel()\n+\thash := bytes.Repeat([]byte{0xAA}, 20)\n+\tfor _, mode := range []string{\"\", \"8\", \"+100644\", \"-100644\", \"100644\\x00\", \"100644\\t\", \"x\" + strings.Repeat(\"0\", 10000), strings.Repeat(\"0\", 10000) + \"8\"} {\n+\t\t_, err := decodeRawTree(t, encodeRawTreeEntries(rawTreeEntry{mode, \"a\", hash}))\n+\t\trequire.ErrorIs(t, err, ErrMalformedTree, \"mode length %d\", len(mode))\n+\t}\n+\tfor _, mode := range []string{\"100644\", strings.Repeat(\"0\", 4096), strings.Repeat(\"7\", 10000)} {\n+\t\t_, err := decodeRawTree(t, []byte(mode))\n+\t\trequire.ErrorIs(t, err, ErrMalformedTree)\n+\t}\n+}\n",
+    "proposal": ""
+  },
+  "assessor_costs": [
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 797992,
+        "cachedInputTokens": 733440,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 3144,
+        "reasoningOutputTokens": 388,
+        "totalTokens": 801136
+      },
+      "threads": 1,
+      "usd_estimate": 0.233888
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 839758,
+        "cachedInputTokens": 779392,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 3586,
+        "reasoningOutputTokens": 636,
+        "totalTokens": 843344
+      },
+      "threads": 1,
+      "usd_estimate": 0.23453120000000002
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 507668,
+        "cachedInputTokens": 452864,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2652,
+        "reasoningOutputTokens": 292,
+        "totalTokens": 510320
+      },
+      "threads": 1,
+      "usd_estimate": 0.1814144
+    }
+  ],
+  "observations": [
+    {
+      "id": "partial-result-identity",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "receipt_sha256": "e983ee2f864cc318bfaa35ac3961b9b2b3a31f1c0f557c064f8ce503e4289c9b",
+      "evidence": {
+        "case": "go-git",
+        "registration_sha256": "5253c0a80019608e0063bd16f46bea03673cfaa4880b5726b77980d172445805",
+        "public_artifact": {
+          "path": "runs/tuning/partial-result-go-git-01/partial-result-identity/supplement.json",
+          "sha256": "b69d24052050a39a1bb4f470a94208899c0b7ff17525dca3763363e7b72db091"
+        },
+        "public_bundle_manifest": {
+          "path": "runs/tuning/partial-result-go-git-01/partial-result-identity/manifest.json",
+          "sha256": "635a71864fb4d9c96d1790c8dfe88097a311a08fd57e242e15aa3ff727e9993e"
+        },
+        "raw_result_sha256": "8b3a3bd4d46c1111f0e8b56666885286d3c4f439a1b726bd2d95197054ca7959",
+        "witness_sha256": "8dd4197a314957fd02aac18903601e5ae5cafd8250a05812cab369d23c6b220a",
+        "observation": {
+          "row": "invalid octal prefix plus non-EOF reader error",
+          "sentinel_preserved": [
+            "base",
+            "merge",
+            "prior_develop",
+            "revised_develop"
+          ],
+          "sentinel_lost_and_malformed": [
+            "stock"
+          ],
+          "all_five_normal_valid_and_terminated_invalid_controls_preserved": true,
+          "prior_state": "timeout/censored",
+          "registered_strict_product_goal": false,
+          "scope": "Postscore measured source behavior only; no universal error-precedence rule or production incidence inferred."
+        },
+        "primary_scores_changed": false
+      }
+    }
+  ]
+}

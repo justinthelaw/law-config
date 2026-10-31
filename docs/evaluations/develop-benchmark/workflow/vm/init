@@ -1,0 +1,19 @@
+#!/bin/busybox sh
+export PATH=/bin
+/bin/busybox --install -s /bin
+mount -t devtmpfs devtmpfs /dev
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+for module in virtio_pci virtio_console 9pnet_virtio 9p; do modprobe "$module" || exit 1; done
+mount9() { mount -t 9p -o "trans=virtio,version=9p2000.L,msize=1048576,$3" "$1" "$2"; }
+mount9 root /guest ro || exit 1
+for area in sys proc dev; do mount --bind "/$area" "/guest/$area"; done
+mount -t tmpfs -o nosuid,nodev,mode=1777 tmpfs /guest/tmp
+mount -t tmpfs -o nosuid,nodev tmpfs /guest/home
+mount9 work /guest/work rw || exit 1
+mount9 deps /guest/deps ro || exit 1
+mount9 setup /guest/setup ro || exit 1
+# The named protocol port carries only exec-server stdio. Guest boot output uses the serial console.
+for ch in /sys/class/virtio-ports/*; do if [ "$(cat "$ch/name")" = lab ]; then port="/dev/${ch##*/}"; fi; done
+exec 3<>"$port"
+exec switch_root /guest /bin/sh /setup/session.sh <&3 >&3 2> /dev/console

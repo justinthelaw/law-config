@@ -1,0 +1,51 @@
+{
+  "case": "black",
+  "arm": "candidate",
+  "state": "blocked",
+  "native_error": "treatment command hooks did not complete",
+  "post_attestation_error": "hook dispatch evidence missing (78 isolated executions, 79 native receipts)",
+  "native_hook_counts": {
+    "preToolUse/completed": 40,
+    "postToolUse/completed": 38,
+    "preToolUse/failed": 1
+  },
+  "hook_errors": [
+    "[{'kind': 'error', 'text': 'hook timed out after 5s'}]"
+  ],
+  "isolated_dispatches": 78,
+  "coverage": "lower bound",
+  "usd_estimate": null,
+  "known_usd_lower_bound": 0.569742,
+  "tokens": {
+    "inputTokens": 2710724,
+    "cachedInputTokens": 2624640,
+    "cacheWriteInputTokens": 0,
+    "outputTokens": 13511,
+    "reasoningOutputTokens": 4621,
+    "totalTokens": 2724235
+  },
+  "proposal_wall_seconds": 650.5704753960017,
+  "setup_seconds": 36.36775203910656,
+  "wall_seconds": 612.7982844000217,
+  "final_phase": "final_answer",
+  "interpretation": "One native preToolUse failed after a 5s hook timeout in the descendant; completed native receipts total78 and isolated dispatches78. Failure receipt79 has no counted isolated dispatch. No proof identifies whether timeout occurred before wrapper launch or counter write. Treat as blocked boundary failure; do not waive or replace slot.",
+  "prior_sealed_history": {
+    "runs": [
+      "iterate-entry-tuning-01",
+      "iterate-entry-historical-rest-01"
+    ],
+    "develop_attempts": 20,
+    "native_hook_receipts": 2115,
+    "failed_native_hook_receipts": 0,
+    "note": "Descriptive sealed evidence, not an estimated future failure rate."
+  },
+  "hashes": {
+    "native.json": "685e2578a52a4d3f00925895ececb2e96caa463326521d200c10b750421d88bf",
+    "result.json": "fe6d0e2a04fbeb03a8632c73acb72d8a0236eefbd9877423c0a3420d13d47791",
+    "hook-calls.log": "3c58a87fe79910e45dbbcc7ea63d92bc9df908cea2429ce2700af55f8d187308",
+    "submission.json": "1137d5b954c59eb5901b57c7d3b2b4e02f5c53084de6ecb3205b478c458a8c27",
+    "candidate.patch": "847bf2b2967c0387923d0005a1f16a6c0b250e47d3a73e63e7ffa44cb2a8a1bf",
+    "proposal.md": "418829d900dad33187ecef45fda31228705bd5453831a8eca7207c7c05dd79de"
+  },
+  "binding_limit": "The counter records only exact PLUGIN_ROOT matches. Static dispatcher falls back to host python for other values (needed for managed protections). Receipts do not retain per-failed-hook environment or launch timestamp, so prelaunch timeout, pre-counter failure and root/path binding mismatch cannot be distinguished. Do not certify the failed hook as isolated or waive its failed attestation."
+}

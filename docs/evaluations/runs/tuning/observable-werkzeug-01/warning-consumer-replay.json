@@ -1,0 +1,183 @@
+{
+  "format": "law-config.post-score-warning-replay/v1",
+  "scope": "Exposed Werkzeug tuning case only; post-score supplemental observation. No frozen scores, strict gates, participant verification, or meters modified.",
+  "source_result_sha256": "ef964bbe31faee6884025ac0cc64b969727934d7e37f44b60eac001bed59683a",
+  "registration_sha256": "51c4eb9950f037e41021b7bfd4933f95e739d4880a97b93555dbd29765dc6fa2",
+  "base": "15fc22b699ecacd04824092453c0cd2a8c4a3a67",
+  "merge": "28360ef872ae984cc08209cb333db5649ce977bc",
+  "cpu": [
+    2,
+    3
+  ],
+  "image": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+  "network": "none",
+  "work_mount": "readonly",
+  "timeout_seconds": 120,
+  "rows": {
+    "base": {
+      "grade_sha256": "a52e9eeec56f428dc610819ec39eaf702ca96077cf7ad1991af26133c16aad61",
+      "patch_sha256": null,
+      "tests": {
+        "named": {
+          "command": "PYTHONPATH=src:/deps/lib python -B -m pytest -q -p no:cacheprovider tests/test_internal.py::test_wrapper_internals",
+          "exit": 0,
+          "timeout": false,
+          "log_sha256": "fa8e3e1f0a4b084326a7027307e5cc3a94f799f9733ea598c3b878fa3c70f37c",
+          "stdout_and_stderr": ".                                                                        [100%]\n1 passed in 0.18s\n"
+        },
+        "modules": {
+          "command": "PYTHONPATH=src:/deps/lib python -B -m pytest -q -p no:cacheprovider tests/test_internal.py tests/test_test.py",
+          "exit": 0,
+          "timeout": false,
+          "log_sha256": "b3ea48dfc3c3917361a6490b82575ba9d2001f5f232354cdbd989545bf5952f3",
+          "stdout_and_stderr": "........................................................................ [ 97%]\n..                                                                       [100%]\n74 passed in 0.35s\n"
+        }
+      },
+      "reconstructed_tree": "fdb9ca5de6cd16edd1364038641a4a1fe8f33cda",
+      "base_tree": "fdb9ca5de6cd16edd1364038641a4a1fe8f33cda"
+    },
+    "merge": {
+      "grade_sha256": "553645a7bb3f959b99c119369c5cb4973d4b8c5de8baa3de34e0932a00e5ee13",
+      "patch_sha256": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76",
+      "tests": {
+        "named": {
+          "command": "PYTHONPATH=src:/deps/lib python -B -m pytest -q -p no:cacheprovider tests/test_internal.py::test_wrapper_internals",
+          "exit": 0,
+          "timeout": false,
+          "log_sha256": "8989a153a4f265bdf8bf8abfcbf7ce96cf91c69ee66d543244ebf0fc2c9d041d",
+          "stdout_and_stderr": ".                                                                        [100%]\n1 passed in 0.21s\n"
+        },
+        "modules": {
+          "command": "PYTHONPATH=src:/deps/lib python -B -m pytest -q -p no:cacheprovider tests/test_internal.py tests/test_test.py",
+          "exit": 0,
+          "timeout": false,
+          "log_sha256": "b3ea48dfc3c3917361a6490b82575ba9d2001f5f232354cdbd989545bf5952f3",
+          "stdout_and_stderr": "........................................................................ [ 97%]\n..                                                                       [100%]\n74 passed in 0.35s\n"
+        }
+      },
+      "reconstructed_tree": "f917f34fb7cbde28f7d81af9c02e4cf713c1dc92",
+      "base_tree": "fdb9ca5de6cd16edd1364038641a4a1fe8f33cda"
+    },
+    "candidate-develop": {
+      "grade_sha256": "d226fd9c919b8831c250d3ae0362775ba98c97f6b80f6530f6e7171eeb9f188e",
+      "patch_sha256": "e8c9d512d446a48a621eb4283913f91a16a050535bda7aa75fc28aaf7cdae4a1",
+      "tests": {
+        "named": {
+          "command": "PYTHONPATH=src:/deps/lib python -B -m pytest -q -p no:cacheprovider tests/test_internal.py::test_wrapper_internals",
+          "exit": 1,
+          "timeout": false,
+          "log_sha256": "dca85dd909c7da5411f9a3d79bff5a2f532f0f35137e1752a2067525f1ac502b",
+          "stdout_and_stderr": "F                                                                        [100%]\n=================================== FAILURES ===================================\n____________________________ test_wrapper_internals ____________________________\n\n    def test_wrapper_internals():\n        req = Request.from_values(data={\"foo\": \"bar\"}, method=\"POST\")\n        req._load_form_data()\n        assert req.form.to_dict() == {\"foo\": \"bar\"}\n    \n        # second call does not break\n        req._load_form_data()\n        assert req.form.to_dict() == {\"foo\": \"bar\"}\n    \n        # check reprs\n        assert repr(req) == \"<Request 'http://localhost/' [POST]>\"\n        resp = Response()\n        assert repr(resp) == \"<Response 0 bytes [200 OK]>\"\n        resp.set_data(\"Hello World!\")\n        assert repr(resp) == \"<Response 12 bytes [200 OK]>\"\n        resp.response = iter([\"Test\"])\n        assert repr(resp) == \"<Response streamed [200 OK]>\"\n    \n        response = Response([\"H\u00e4llo W\u00f6rld\"])\n>       headers = response.get_wsgi_headers(create_environ())\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/test_internal.py:28: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsrc/werkzeug/wrappers/response.py:564: in get_wsgi_headers\n    content_length = sum(len(x) for x in self.iter_encoded())\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/werkzeug/wrappers/response.py:564: in <genexpr>\n    content_length = sum(len(x) for x in self.iter_encoded())\n                                         ^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\niterable = ['H\u00e4llo W\u00f6rld']\n\n    def _iter_encoded(iterable: t.Iterable[str | bytes]) -> t.Iterator[bytes]:\n        for item in iterable:\n            if not isinstance(item, bytes):\n>               warnings.warn(\n                    \"Response iterable items must be bytes. Nonbytes items are deprecated\"\n                    \" and will be unsupported in Werkzeug 4.0. Encode strings before\"\n                    \" adding them to the iterable.\",\n                    DeprecationWarning,\n                    stacklevel=2,\n                )\nE               DeprecationWarning: Response iterable items must be bytes. Nonbytes items are deprecated and will be unsupported in Werkzeug 4.0. Encode strings before adding them to the iterable.\n\nsrc/werkzeug/wrappers/response.py:30: DeprecationWarning\n=========================== short test summary info ============================\nFAILED tests/test_internal.py::test_wrapper_internals - DeprecationWarning: R...\n1 failed in 0.21s\n"
+        },
+        "modules": {
+          "command": "PYTHONPATH=src:/deps/lib python -B -m pytest -q -p no:cacheprovider tests/test_internal.py tests/test_test.py",
+          "exit": 1,
+          "timeout": false,
+          "log_sha256": "16fa42e72305e7989d0a8d335077acfc7b469e6ef70f55ade630f7224026b77d",
+          "stdout_and_stderr": "F...................................................F................... [ 97%]\n..                                                                       [100%]\n=================================== FAILURES ===================================\n____________________________ test_wrapper_internals ____________________________\n\n    def test_wrapper_internals():\n        req = Request.from_values(data={\"foo\": \"bar\"}, method=\"POST\")\n        req._load_form_data()\n        assert req.form.to_dict() == {\"foo\": \"bar\"}\n    \n        # second call does not break\n        req._load_form_data()\n        assert req.form.to_dict() == {\"foo\": \"bar\"}\n    \n        # check reprs\n        assert repr(req) == \"<Request 'http://localhost/' [POST]>\"\n        resp = Response()\n        assert repr(resp) == \"<Response 0 bytes [200 OK]>\"\n        resp.set_data(\"Hello World!\")\n        assert repr(resp) == \"<Response 12 bytes [200 OK]>\"\n        resp.response = iter([\"Test\"])\n        assert repr(resp) == \"<Response streamed [200 OK]>\"\n    \n        response = Response([\"H\u00e4llo W\u00f6rld\"])\n>       headers = response.get_wsgi_headers(create_environ())\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\ntests/test_internal.py:28: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsrc/werkzeug/wrappers/response.py:564: in get_wsgi_headers\n    content_length = sum(len(x) for x in self.iter_encoded())\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/werkzeug/wrappers/response.py:564: in <genexpr>\n    content_length = sum(len(x) for x in self.iter_encoded())\n                                         ^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\niterable = ['H\u00e4llo W\u00f6rld']\n\n    def _iter_encoded(iterable: t.Iterable[str | bytes]) -> t.Iterator[bytes]:\n        for item in iterable:\n            if not isinstance(item, bytes):\n>               warnings.warn(\n                    \"Response iterable items must be bytes. Nonbytes items are deprecated\"\n                    \" and will be unsupported in Werkzeug 4.0. Encode strings before\"\n                    \" adding them to the iterable.\",\n                    DeprecationWarning,\n                    stacklevel=2,\n                )\nE               DeprecationWarning: Response iterable items must be bytes. Nonbytes items are deprecated and will be unsupported in Werkzeug 4.0. Encode strings before adding them to the iterable.\n\nsrc/werkzeug/wrappers/response.py:30: DeprecationWarning\n_____________________ test_path_info_script_name_unquoting _____________________\n\n    def test_path_info_script_name_unquoting():\n        def test_app(environ, start_response):\n            start_response(\"200 OK\", [(\"Content-Type\", \"text/plain\")])\n            return [f\"{environ['PATH_INFO']}\\n{environ['SCRIPT_NAME']}\"]\n    \n        c = Client(test_app)\n        resp = c.get(\"/foo%40bar\")\n>       assert resp.text == \"/foo@bar\\n\"\n               ^^^^^^^^^\n\ntests/test_test.py:586: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsrc/werkzeug/utils.py:103: in __get__\n    value = self.fget(obj)  # type: ignore[misc]\n            ^^^^^^^^^^^^^^\nsrc/werkzeug/test.py:1371: in text\n    return self.get_data(as_text=True)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/werkzeug/wrappers/response.py:297: in get_data\n    self._ensure_sequence()\nsrc/werkzeug/wrappers/response.py:366: in _ensure_sequence\n    self.make_sequence()\nsrc/werkzeug/wrappers/response.py:378: in make_sequence\n    self._buffer_response()\nsrc/werkzeug/wrappers/response.py:383: in _buffer_response\n    self.response = list(self.iter_encoded())\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\niterable = <itertools.chain object at 0x7a8d98bf04c0>\n\n    def _iter_encoded(iterable: t.Iterable[str | bytes]) -> t.Iterator[bytes]:\n        for item in iterable:\n            if not isinstance(item, bytes):\n>               warnings.warn(\n                    \"Response iterable items must be bytes. Nonbytes items are deprecated\"\n                    \" and will be unsupported in Werkzeug 4.0. Encode strings before\"\n                    \" adding them to the iterable.\",\n                    DeprecationWarning,\n                    stacklevel=2,\n                )\nE               DeprecationWarning: Response iterable items must be bytes. Nonbytes items are deprecated and will be unsupported in Werkzeug 4.0. Encode strings before adding them to the iterable.\n\nsrc/werkzeug/wrappers/response.py:30: DeprecationWarning\n=========================== short test summary info ============================\nFAILED tests/test_internal.py::test_wrapper_internals - DeprecationWarning: R...\nFAILED tests/test_test.py::test_path_info_script_name_unquoting - Deprecation...\n2 failed, 72 passed in 0.47s\n"
+        }
+      },
+      "reconstructed_tree": "684c9ac96f1a1216a039f6bf36e8f6d4c45fe905",
+      "base_tree": "fdb9ca5de6cd16edd1364038641a4a1fe8f33cda"
+    },
+    "candidate-control": {
+      "grade_sha256": "3a57840dbca3720dc247008de8e87d6899019c00a30c25e3fb61b8b8e6938f59",
+      "patch_sha256": "531e2a62a23d4d8859b52b864c8664ac457266ed75b03d379a442b9e01b00b21",
+      "tests": {
+        "named": {
+          "command": "PYTHONPATH=src:/deps/lib python -B -m pytest -q -p no:cacheprovider tests/test_internal.py::test_wrapper_internals",
+          "exit": 0,
+          "timeout": false,
+          "log_sha256": "fa8e3e1f0a4b084326a7027307e5cc3a94f799f9733ea598c3b878fa3c70f37c",
+          "stdout_and_stderr": ".                                                                        [100%]\n1 passed in 0.18s\n"
+        },
+        "modules": {
+          "command": "PYTHONPATH=src:/deps/lib python -B -m pytest -q -p no:cacheprovider tests/test_internal.py tests/test_test.py",
+          "exit": 0,
+          "timeout": false,
+          "log_sha256": "da95fdeb1248ba685496a79ee35ccfefe263efd4fd2ca9f14ab9488f86a92373",
+          "stdout_and_stderr": "........................................................................ [ 97%]\n..                                                                       [100%]\n74 passed in 0.41s\n"
+        }
+      },
+      "reconstructed_tree": "bfa32179c1d3f6d5727555eff3f94b7ea97b13a6",
+      "base_tree": "fdb9ca5de6cd16edd1364038641a4a1fe8f33cda"
+    },
+    "prior-develop": {
+      "grade_sha256": "ceb52f2044adda7c6b3efad7a5cdb7b1df209e82a85a9dd25ebc74aa37e2f97a",
+      "patch_sha256": "7409a51870a0dd146998ce5ea0b1d03ab4c54a269fee41d429486ee014404e5e",
+      "tests": {
+        "named": {
+          "command": "PYTHONPATH=src:/deps/lib python -B -m pytest -q -p no:cacheprovider tests/test_internal.py::test_wrapper_internals",
+          "exit": 0,
+          "timeout": false,
+          "log_sha256": "7fefcaf66f6e7137767bc25d16d128cbf7b8617ad0b6f14fbf9a0b8e7fdd81cd",
+          "stdout_and_stderr": ".                                                                        [100%]\n1 passed in 0.17s\n"
+        },
+        "modules": {
+          "command": "PYTHONPATH=src:/deps/lib python -B -m pytest -q -p no:cacheprovider tests/test_internal.py tests/test_test.py",
+          "exit": 1,
+          "timeout": false,
+          "log_sha256": "da23280bf3edd3a5f715ca0ef96ba5c719d672f751c5fa8b963e070e9094ca00",
+          "stdout_and_stderr": "....................................................F................... [ 97%]\n..                                                                       [100%]\n=================================== FAILURES ===================================\n_____________________ test_path_info_script_name_unquoting _____________________\n\n    def test_path_info_script_name_unquoting():\n        def test_app(environ, start_response):\n            start_response(\"200 OK\", [(\"Content-Type\", \"text/plain\")])\n            return [f\"{environ['PATH_INFO']}\\n{environ['SCRIPT_NAME']}\"]\n    \n        c = Client(test_app)\n        resp = c.get(\"/foo%40bar\")\n>       assert resp.text == \"/foo@bar\\n\"\n               ^^^^^^^^^\n\ntests/test_test.py:586: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \nsrc/werkzeug/utils.py:103: in __get__\n    value = self.fget(obj)  # type: ignore[misc]\n            ^^^^^^^^^^^^^^\nsrc/werkzeug/test.py:1371: in text\n    return self.get_data(as_text=True)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nsrc/werkzeug/wrappers/response.py:302: in get_data\n    self._ensure_sequence()\nsrc/werkzeug/wrappers/response.py:373: in _ensure_sequence\n    self.make_sequence()\nsrc/werkzeug/wrappers/response.py:391: in make_sequence\n    self.response = list(self.iter_encoded())\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\niterable = <itertools.chain object at 0x725e99100040>\n\n    def _iter_encoded(iterable: t.Iterable[str | bytes]) -> t.Iterator[bytes]:\n        for item in iterable:\n            if not isinstance(item, bytes):\n>               warnings.warn(\n                    \"Response iterable items must be bytes. Non-bytes items are\"\n                    \" deprecated and will not be supported in Werkzeug 4.0.\",\n                    DeprecationWarning,\n                    stacklevel=2,\n                )\nE               DeprecationWarning: Response iterable items must be bytes. Non-bytes items are deprecated and will not be supported in Werkzeug 4.0.\n\nsrc/werkzeug/wrappers/response.py:30: DeprecationWarning\n=========================== short test summary info ============================\nFAILED tests/test_test.py::test_path_info_script_name_unquoting - Deprecation...\n1 failed, 73 passed in 0.45s\n"
+        }
+      },
+      "reconstructed_tree": "391faa9878364187d836e6916bdfd776fb6e8ef6",
+      "base_tree": "fdb9ca5de6cd16edd1364038641a4a1fe8f33cda"
+    }
+  },
+  "assessment_bindings": [
+    {
+      "rotation": 0,
+      "label": "C",
+      "patch_sha256": "e8c9d512d446a48a621eb4283913f91a16a050535bda7aa75fc28aaf7cdae4a1",
+      "proposal_sha256": "02be156bd897d475326e64784752a7ff26483bbec898f7db78af5f74d70e0164",
+      "judgment_sha256": "d60ea088d5a7f2b5ed4d2c4579bf44b3d56a70de66a46c7d54f83f3a15b9e401",
+      "mapping_sha256": "57b4a85f98d2f876ed54a5ea332a76ee344e85a98e0bdc0866420f991933fae1",
+      "assessor_sha256": "7ffcc38649bc9680c49253def8f22207e82e35b403f2c87eac0bc0c359a058a3",
+      "packet_sha256": "b74bb4ccc064c564737dca859785f3c05180b7686f53889cf6f130f243e87951",
+      "prompt_sha256": "3aa90f98dc77d7578ab18409288968d0e5ed52189a42645e19026afa85442a4c"
+    },
+    {
+      "rotation": 1,
+      "label": "B",
+      "patch_sha256": "e8c9d512d446a48a621eb4283913f91a16a050535bda7aa75fc28aaf7cdae4a1",
+      "proposal_sha256": "02be156bd897d475326e64784752a7ff26483bbec898f7db78af5f74d70e0164",
+      "judgment_sha256": "f0e55a4b3e443b214d5c2ed12c2d5f63e36401c638b374065b293f8b9d3e918f",
+      "mapping_sha256": "866edc514b6ac66621458e119ce85b043bc25453e9f9f4e351bdb890741c02cd",
+      "assessor_sha256": "eb1c5177cc904786f90fb5679ab01345388d4803a23c7d2a3f2264d2b4da3938",
+      "packet_sha256": "360b94d011d2c3d10ab35f92543d8284541440f258be93ecd4e327188f514c44",
+      "prompt_sha256": "a0ae38763e0836b0e7db72c9c3959ec031e3e3176ae96b16c66cd5c8ac2ec360"
+    },
+    {
+      "rotation": 2,
+      "label": "A",
+      "patch_sha256": "e8c9d512d446a48a621eb4283913f91a16a050535bda7aa75fc28aaf7cdae4a1",
+      "proposal_sha256": "02be156bd897d475326e64784752a7ff26483bbec898f7db78af5f74d70e0164",
+      "judgment_sha256": "b567e02b1a3e92ac5b41ba765838ef7117c01fc0e26875bf9fba474a0b6526d8",
+      "mapping_sha256": "bbf4a26a58a2d32defcc40298da6677ca4fb69908d5fa6071586a39d7d3a14e0",
+      "assessor_sha256": "a1d4d500af4280266d5f24eec78f304b51a5495d44b889193efec82b72c602ec",
+      "packet_sha256": "0979c15a0baaaf85d30b79949b05b4118f017b3a4195fa50e6af6e5d6b86946c",
+      "prompt_sha256": "56ebdcec5831d4c46a4d1f8765602e7645b6b836999eaaf856d8b8c42b360327"
+    }
+  ],
+  "method": "Fresh isolated snapshots reconstructed from the frozen base and exact verified grade patches, not the historical workspaces; official prepared offline Docker image and dependencies. pytest project filterwarnings=[\"error\"] retained; cache plugin disabled for read-only worktree. CPU lease and cpuset 2,3. Each test has 120 seconds.",
+  "finding": "Candidate: named test fails with the predicted nonbytes DeprecationWarning. Two-module follow-up finds the same warning in test_path_info_script_name_unquoting. Stock passes both; prior passes the named test but fails the second warning-sensitive test. Base and merge pass both.",
+  "interpretation": "Supplemental post-score observation, not a frozen gate or participant verification. It corroborates the rotation-0 static finding; it does not rerun or alter blind full-PR scores. Original four gates and screen decision remain as recorded. This does not establish the full suite or documentation build.",
+  "source_code_sha256": "3ce37f4cfc30a97e42b5867e132562db9a5a2d2351174c9e10e076fe7a9118e1",
+  "frozen_context": {
+    "candidate_four_gates": {
+      "build": 0,
+      "native": 0,
+      "contract": 0,
+      "preserve": 0
+    },
+    "full_pr_scores": {
+      "candidate_develop": 81.25,
+      "stock_control": 81.25,
+      "merge": 43.75
+    },
+    "blind_verdict": "tie",
+    "screen_decision": "rejected",
+    "candidate_participant_verification": "99 wrapper tests and compile recorded; wider suite and docs build not established. This subsequent replay is not participant verification."
+  }
+}

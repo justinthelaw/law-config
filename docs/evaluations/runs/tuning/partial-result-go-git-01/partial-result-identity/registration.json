@@ -1,0 +1,41 @@
+{
+  "protocol": "develop-efficiency-pilot-v1",
+  "name": "partial-result-go-git-01",
+  "case": "go-git",
+  "plans": {
+    "prior": {
+      "path": "runs/partial-result-go-git-01-prior/plan.json",
+      "sha256": "24dbe445c8481133491381e214283a7cf4a965a3639d1af789f2bc0ab518b1b7"
+    },
+    "candidate": {
+      "path": "runs/partial-result-go-git-01-candidate/plan.json",
+      "sha256": "6b874a06ffbdfcf7e2142e1936da2ed9daff3bb7584ec68df989ffc1d3c17e78"
+    }
+  },
+  "operator_sha256": "703b8cad2e19c3b69b6520ae07471b3bb1b4f058fd99d81132deaf02088db79e",
+  "cpus": [
+    6,
+    7
+  ],
+  "order": [
+    [
+      "candidate",
+      "control"
+    ],
+    [
+      "prior",
+      "develop"
+    ],
+    [
+      "candidate",
+      "develop"
+    ]
+  ],
+  "hypothesis": "partial-result-identity",
+  "tuning_policy_sha256": "589902e5ac1b940405e6f65707f3890987e02e4cc0986132382143fb494cce11",
+  "hypothesis_sha256": "cd96970fcfcb8ef50ba895ab995ab6f945af4c4752b69b44425213ca5e74ce06",
+  "falsifier": "Reject lost sentinel identity on the highest-relevance overlap, lost normal/malformed/mode/overflow/roundtrip behavior, omission of a required command/review, non-ready result, full-PR stock tie/loss or insufficient registered win margin, cost above stock, or price/wall not strictly below parent. Missing setup, tree identity, output rows, meters or review proof is unestablished, never green. Equivalent parent behavior cannot establish a distinct observed selection mechanism. Reject lost prior verified behavior or required review, failure of either strict prior cost or wall improvement, non-ready candidate, or full-PR loss to pure. Missing measures or unverifiable review leave the comparison unestablished.",
+  "quality": "Three blind candidate/pure/merge rotations. Prior Develop soft PR quality is unknown.",
+  "goal": "A ready Develop PR strictly wins the full rubric against a terminal pure proposal at complete cost <= pure.",
+  "attempts": "One proposal per registered slot. All allocations including technical failures remain in the ledger."
+}

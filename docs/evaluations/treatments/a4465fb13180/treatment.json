@@ -1,0 +1,9 @@
+{
+  "label": "scoped-contract",
+  "package_sha256": "a4465fb131805a9f7674f0d131c8f7a3abc0dfc73546ff4cf74df215a84f1c61",
+  "plugin_hook_sha256": "04729ce70798e05d581e8b9ee0749d6e31e9a92d7b1e832c23aed1b70476c5fb",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "id": "inline-waits-e-v1",
+  "previous": "a848ecd8a72a435415dd4fb7754efe5e7b8cbad7308a26b5b114ca5249e90d2e",
+  "change": "Put long native wait instructions at point of use and coordinate build ownership and a focused real-caller baseline.",
+  "evidence": [
+    {
+      "case": "ripgrep",
+      "reason": "An exposed historical tuning case with substantial pure waiting and equal prior blind quality provides a transfer test."
+    }
+  ],
+  "falsifier": "Require ready E and all executable gates, no confirmed preservation regression or material lost verified coverage versus D, no blind full-PR loss to fresh stock, complete meters, fewer total poll-only model responses and lower estimated proposal cost than D. Report all allocations, exact checks, stock comparison and checkout time. Prior soft PR quality is unknown. A passing exposed-case screen does not establish panel success."
+}

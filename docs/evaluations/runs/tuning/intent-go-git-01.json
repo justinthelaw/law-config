@@ -1,0 +1,317 @@
+{
+  "protocol": "develop-efficiency-pilot-v1",
+  "name": "intent-go-git-01",
+  "split": "tuning",
+  "case": "go-git",
+  "repository": "go-git/go-git",
+  "pull_request": 2538,
+  "registration_sha256": "d23adc8559a6e1421c39cdf8427adf6f3848274d8c50c49da06e777a1dfc5dae",
+  "registered_outcome": "stopped at final configuration audit",
+  "diagnostic": "Three planned blinded judgments of the unchanged proposals, after proving the candidate's extra project layer resolved to an empty directory, empty configuration and the digest of {}.",
+  "diagnostic_audit_sha256": "cf4915e86108c120114fd7c4aa30a186ec3b822c8e5e6e4a4cbead238676756e",
+  "diagnostic_result_sha256": "1345b4fb254f0165136081d0987b724edececb953f1dbf3dd4744c5b2e386cc4",
+  "goal_win": false,
+  "full_pr_verdicts": {
+    "develop_control": {
+      "verdict": "tie",
+      "reason": "blinded rubric",
+      "score_delta": 0.0,
+      "votes": [
+        "tie",
+        "tie",
+        "tie"
+      ],
+      "order_sensitive": false
+    },
+    "develop_upstream": {
+      "verdict": "tie",
+      "reason": "blinded rubric",
+      "score_delta": 0.0,
+      "votes": [
+        "tie",
+        "tie",
+        "upstream"
+      ],
+      "order_sensitive": true
+    },
+    "control_upstream": {
+      "verdict": "tie",
+      "reason": "blinded rubric",
+      "score_delta": 0.0,
+      "votes": [
+        "tie",
+        "tie",
+        "upstream"
+      ],
+      "order_sensitive": true
+    }
+  },
+  "proposals": {
+    "pure": {
+      "treatment_sha256": null,
+      "stock_plugins": [],
+      "apps": [],
+      "mcp": [],
+      "terminal_state": "completed",
+      "plan_sha256": "52d4aec2915231692bbedc56ec2a2753374b4b7970f9a8c90f0b526cb575a646",
+      "release_sha256": "b53f9927cddc5384aa97e2411c49908653b59fa1ebf458419e0f7897ce9b6719",
+      "result_sha256": "a36e64e243497f8021b12ebee16a7a4ae3c86c3774c59a28252e07d2616cb577",
+      "patch_sha256": "c5f49529bbff7c7d24baa6f8bdf79c2f32da6f7723932819a7e941e1a0b9681d",
+      "proposal_sha256": "d2dc6962845c8a696f8493249b1206203068b32d1bd43e98c0dfb7b0fddb0193",
+      "grade_exits": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "proposal_wall_seconds": 2307.8945262769703,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 6401102,
+          "cachedInputTokens": 6235904,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 25587,
+          "reasoningOutputTokens": 14519,
+          "totalTokens": 6426689
+        },
+        "threads": 1,
+        "usd_estimate": 1.2098563999999998
+      },
+      "full_pr_score": 96.25,
+      "rotation_scores": [
+        {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        }
+      ],
+      "reviewers": []
+    },
+    "prior": {
+      "treatment_sha256": "579bba8e795debf349127719d68e3d499fc6f759f176ccb13db17062ea25f9b8",
+      "stock_plugins": [
+        "develop@law-config"
+      ],
+      "apps": [],
+      "mcp": [],
+      "terminal_state": "completed",
+      "plan_sha256": "07a37c9398a1c8dc51f30433bd20674bc70cb4dfce036d620b14eb7c917402e6",
+      "release_sha256": "5ce647e0d65602fb2ef0bd3d12ad639bbf22a7c24c0bd424457bc96aba07f3da",
+      "result_sha256": "8c735259e8ae899b8a9882648caa63d07d52e31c68702fb7b73986eada925d58",
+      "patch_sha256": "57bebfa65bb29cf2549caad37499f66c8ff3bef39f5bb2be1e10722680776b55",
+      "proposal_sha256": "d7f213c9fdfed71fb29f587116f7719ed2b8eef9f90cb39e3dddd7ebc247fc56",
+      "grade_exits": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "proposal_wall_seconds": 2248.8681759990286,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 10263575,
+          "cachedInputTokens": 10066560,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 33909,
+          "reasoningOutputTokens": 16285,
+          "totalTokens": 10297484
+        },
+        "threads": 5,
+        "usd_estimate": 1.739776
+      },
+      "full_pr_score": null,
+      "rotation_scores": [],
+      "reviewers": [
+        "intent_review",
+        "design_review",
+        "evidence_review",
+        "evidence_intent"
+      ]
+    },
+    "candidate": {
+      "treatment_sha256": "50e517f82dcefbba09122de12284817c257d7059f1dbbe9eb2d89708a5a7d4f0",
+      "stock_plugins": [
+        "develop@law-config"
+      ],
+      "apps": [],
+      "mcp": [],
+      "terminal_state": "completed",
+      "plan_sha256": "52d4aec2915231692bbedc56ec2a2753374b4b7970f9a8c90f0b526cb575a646",
+      "release_sha256": "ad4bca48b369f922783dde416e86ca1b400a84e4e8393cf8c79e9fd7636b222d",
+      "result_sha256": "67ac72349bcfe7c509f3249dd04df5c55f2f105d7a97f8d769b28d36ae774c5e",
+      "patch_sha256": "f10dd945e9b6361db91cf7997d797b9aae6d6454a19432fa5905c867852f1ac8",
+      "proposal_sha256": "72736b6f2dde27d6d59745f4e97fcc8a602419daf40ca2d47075812ae3bbc128",
+      "grade_exits": {
+        "build": 0,
+        "native": 0,
+        "contract": 0,
+        "preserve": 0,
+        "independent": 0
+      },
+      "proposal_wall_seconds": 618.4394658189267,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 2860525,
+          "cachedInputTokens": 2724864,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 13901,
+          "reasoningOutputTokens": 3050,
+          "totalTokens": 2874426
+        },
+        "threads": 3,
+        "usd_estimate": 0.6828184
+      },
+      "full_pr_score": 96.25,
+      "rotation_scores": [
+        {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        }
+      ],
+      "reviewers": [
+        "intent_review",
+        "artifact_review"
+      ]
+    }
+  },
+  "blinded_assessors": [
+    {
+      "rotation": 0,
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 466346,
+          "cachedInputTokens": 408192,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2702,
+          "reasoningOutputTokens": 472,
+          "totalTokens": 469048
+        },
+        "threads": 1,
+        "usd_estimate": 0.1841472
+      },
+      "wall": 164.46486089285463,
+      "assessed_unix": 1793290152.5030613,
+      "limitations": [
+        "Assessment uses the supplied full patches/proposals, starting source and frozen packet/task.json exit statuses only. No candidate code was executed or modified and no external sources were consulted.",
+        "Frozen checks provide exit codes without command output, individual test results or skip reports. The declared build/native scope is plumbing/filemode and plumbing/object; full-repository behavior, lint, race checks and real-Git oracle execution are not established.",
+        "No apply/timing logs, baseline behavioral outputs, local-Git comparison logs, formatting logs or historical review observations are supplied. Eligibility timing and claimed historical checks cannot be independently established. No concrete integrity bypass or critical regression was found in the inspected changes."
+      ]
+    },
+    {
+      "rotation": 1,
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 471242,
+          "cachedInputTokens": 409600,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2829,
+          "reasoningOutputTokens": 437,
+          "totalTokens": 474071
+        },
+        "threads": 1,
+        "usd_estimate": 0.192534
+      },
+      "wall": 143.14397167414427,
+      "assessed_unix": 1793290122.7249956,
+      "limitations": [
+        "Assessment used packet/task.json, packet/rubric.md, the full A, B and C proposal/patch files in that order, and relevant starting source. Candidate submissions were neither executed nor edited; no agents or external services were used.",
+        "Frozen observations provide exit codes only. Build and native command scope is supplied, but contract/preserve/independent case details, base behavioral mismatch logs, oracle run/skip output, formatting logs and historical attempt/timing records are unavailable. Successful exits are recorded as available evidence without inventing missing coverage or fail-to-pass history.",
+        "All proposals are present, so communication omissions are scored rather than marked unavailable. Unsupported verification claims receive no extra credit; unavailable interrupted history is not treated as a demonstrated failure. No concrete integrity or critical-regression finding was established."
+      ]
+    },
+    {
+      "rotation": 2,
+      "usage": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 443032,
+          "cachedInputTokens": 374400,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 3316,
+          "reasoningOutputTokens": 873,
+          "totalTokens": 446348
+        },
+        "threads": 1,
+        "usd_estimate": 0.207864
+      },
+      "wall": 208.2432903740555,
+      "assessed_unix": 1793290194.1083117,
+      "limitations": [
+        "Evaluation used only packet/task.json, packet/rubric.md, the full A/B/C proposal and patch files in supplied order, and relevant starting source. No candidate was executed or edited; no external sources or agents were used.",
+        "Frozen execution evidence consists of exit-status summaries, not raw command output, hidden-check source, baseline mismatch transcripts, per-test execution/skip records, timing or apply logs. Passing outcomes are recorded as supplied; eligibility timing, exact hidden coverage and a reached baseline fail-to-pass result cannot be independently established.",
+        "Verification scope is the selected plumbing/filemode and plumbing/object build/test slice. Full-repository tests, lint, local Git comparisons claimed in proposal prose, formatting checks, historical interruptions and review claims have no additional frozen execution evidence. No concrete integrity or critical-regression finding was established."
+      ]
+    }
+  ],
+  "merged_reference": {
+    "full_pr_score": 96.25,
+    "scores": [
+      {
+        "contract": 4,
+        "tests": 4,
+        "design": 4,
+        "proposal": 3
+      },
+      {
+        "contract": 4,
+        "tests": 4,
+        "design": 4,
+        "proposal": 3
+      },
+      {
+        "contract": 4,
+        "tests": 4,
+        "design": 4,
+        "proposal": 4
+      }
+    ],
+    "grade_exits": {
+      "build": 0,
+      "native": 0,
+      "contract": 0,
+      "preserve": 0,
+      "independent": 0
+    },
+    "cost": null,
+    "wall_seconds": null
+  },
+  "interpretation": [
+    "The candidate, pure and merged reference each scored 96.25 at the median. All three judgments tied the candidate and pure. A perfect score could improve on pure by 3.75 points. The registered win margin is 5.",
+    "The candidate used one intent reviewer before implementation and one artifact reviewer after it. The predecessor used two reviewers at each checkpoint. Reuse alone does not explain removal of the predecessor's plan artifact review. The experiment cannot establish preserved required review.",
+    "The candidate disclosed stalled in-turn checks. All five offline grader stages succeeded. The predecessor has no blinded quality score. The cost and time differences are single paired draws; human effort is unknown."
+  ]
+}

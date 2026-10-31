@@ -1,0 +1,22 @@
+{
+  "boundary": {
+    "accepted": true,
+    "returned": ">=1.0"
+  },
+  "integer_version": {
+    "accepted": true,
+    "returned": ">=2"
+  },
+  "integer_prereleases": {
+    "accepted": true,
+    "prereleases": 1
+  },
+  "valid_control": {
+    "accepted": true,
+    "returned": "<2"
+  },
+  "worker": "law-benchmark-python:workflow-v1",
+  "python": "3.11.2",
+  "limitations": "Task requires invalid replacements rejected; boundary construction proves validation bypass. No baseline replacement API exists.",
+  "witness_sha256": "926aa59fe28215c01951a53a7f566b19b01aa748b4164d31a23afa0092987332"
+}

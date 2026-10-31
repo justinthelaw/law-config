@@ -1,0 +1,12 @@
+diff --git a/plugins/develop/skills/iterate/references/local-changes.md b/plugins/develop/skills/iterate/references/local-changes.md
+index 5f01917..7de6ddf 100644
+--- a/plugins/develop/skills/iterate/references/local-changes.md
++++ b/plugins/develop/skills/iterate/references/local-changes.md
+@@ -4,6 +4,6 @@ Iterate owns local, reversible changes in one selected checkout, including work
+ 
+ 1. Trace the owner and its normal caller. State the design decision, behavior to preserve and a check that would fail without the fix. Reuse a current accepted brief. Follow explicit waivers within their scope, complete delegated independent plan review, or present the brief and wait before editing. Implementation authority alone does not waive review.
+ 2. For a bounded public contract change, read the two closing sections of the [shared contract](../../develop/references/contract.md#applicable-planning), Applicable planning and Review gates. Carry one brief through Engineering Design, independent intent review before edits and artifact review on the tested diff. Resume here with those decisions. Follow the wider workflow for unsettled design, unclear scope, interface design, security, concurrency, migrations, persistent data, multiple owners, destructive work, publication or explicit independent review. Honor selected skills and stronger user, repository or host requirements.
+-3. Run the distinguishing check on the base. Fix the owner using existing representations. Exercise the caller and adjacent behavior, add a regression test, update affected docs and run required checks. Inspect the final diff and report what passed and any gap. Reopen affected decisions when scope or evidence changes.
++3. Run the same caller check on the base and patch. Keep it when it adds regression coverage. Fix the owner using existing representations. Check a working neighboring case, update affected docs and run affected caller suites and required checks before reviewing the final diff. Report results and gaps. Revisit decisions when scope or evidence changes.
+ 
+ Return the requested proposal or other local artifact once these checks pass. Read the owning guidance when the task needs [diagnosis](debugging.md), [refactoring](refactoring.md), [visual verification](visual-validation.md) or [publication](publication.md). Direct design and independent review use their selected entry points. A constrained resource or broad inspection request never selects a maintenance skill.

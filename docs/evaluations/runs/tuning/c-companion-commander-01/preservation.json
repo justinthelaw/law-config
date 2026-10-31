@@ -1,0 +1,856 @@
+{
+  "scope": "Separate post-seal general historical preservation follow-up on exact frozen companion artifacts. No inference, Docker, install, grader or published-score changes.",
+  "runtime": "Local host Node; byte-identical to prior archived witness runtime, not a new native Docker qualification.",
+  "node": {
+    "version": "v22.23.3",
+    "binary_sha256": "fde6a4bf8d0562f7751d1a2d6cb9b417c4cfe107bbcb0aa3e9a24e125e348f48"
+  },
+  "cpus": [
+    12,
+    13
+  ],
+  "case_base": "c807ce933836d0d99719bac82ee477f3d7eb4268",
+  "case_gold": "1536d5bb9da38d1d94926aedfa31c8ece1f7dce5",
+  "patch_sha256": {
+    "c_sp": "938bc5ccccb94bfd6b8ea5273bba0e98d29f9c35478cdecb8aa0173f3901076c",
+    "c": "0cf976836978e0344744d2c5955e9ae1f11f804ee288503810cbeac930a1688a",
+    "pure": "406e88a555ea55a52bfda6b9de3b9fab31b3a5f809887ccaed9213d0061b0e1e"
+  },
+  "source_object_sha256": {
+    "c_sp": "eb5bfed29a3bbee9195cdd77645ba062c7535b08e7f364b4b298dec78e9096d2",
+    "c": "f2c2d8182b0fdbf0136edc5aadd68cc248757d72f7806dce58a0b6768a7269c2",
+    "pure": "328874737868ee6ddcd1ce83bdcdf65a37fb18c8bc82bafa1298ac83055533f9"
+  },
+  "source_tree_sha256": {
+    "c_sp": "66cf84725783cab69369cc19e0751cf71d5e047ba7fd74e27bb83d218a738b2e",
+    "c": "e1a415f87fda18d5d2e93c75799bfec50116c6a85f9a88755cdad57cecf9ce72",
+    "pure": "6dd3f2095d4d0227a372323c23e7b309a9a763b74a1ce7c4d92055648d223acf",
+    "base": "7dbcfb7af6fa0d497e2b5b0c1aa2cfe7ceca663fdecfe602031bd552e0413d65",
+    "upstream": "d0a43ae0848eb267ee209027fe128e1ea75bd7b5f52951bde154f6df0cd1be63",
+    "historical_positive": "82983572ab3c1a16ba8f4e2abb2590d85cb3b76550af9eb226fc3eba2d11051d"
+  },
+  "source_object_matches_sealed_grade_work": true,
+  "source_comparison_notes": {
+    "c_sp": {
+      "comparison": "All Git source blobs and executable modes match exact sealed grade/work. Generated node_modules mount link excluded; probe has no external dependency. Non-executable POSIX umask bits do not change Git objects.",
+      "excluded_generated_dependency_binding_sha256": "4f0bdacb652b2c4756372d87016b4f5747560e1618b934b38009fd13f2238acf"
+    },
+    "c": {
+      "comparison": "All Git source blobs and executable modes match exact sealed grade/work. Generated node_modules mount link excluded; probe has no external dependency. Non-executable POSIX umask bits do not change Git objects.",
+      "excluded_generated_dependency_binding_sha256": "4f0bdacb652b2c4756372d87016b4f5747560e1618b934b38009fd13f2238acf"
+    },
+    "pure": {
+      "comparison": "All Git source blobs and executable modes match exact sealed grade/work. Generated node_modules mount link excluded; probe has no external dependency. Non-executable POSIX umask bits do not change Git objects.",
+      "excluded_generated_dependency_binding_sha256": "4f0bdacb652b2c4756372d87016b4f5747560e1618b934b38009fd13f2238acf"
+    }
+  },
+  "sources_unchanged_after": true,
+  "preparation_note": "Initial full-filesystem comparison stopped before witness execution because grade snapshots add a node_modules mount link and git apply uses different non-executable umask bits. Every Git source blob and executable mode was then verified equal; no frozen source was changed.",
+  "historical_proof_sha256": "2e5725e8676672949083125f8a7a372865b1f591c132aa151d30f6b2f1cdb560",
+  "property_sha256": "4de0ff7deb88e27ff7593ca033300dba94265f53d11705e1de6d86df562bef07",
+  "simple_property_sha256": "1ac0e4d5be5210153e5f59acf992f4d0f13d62d769ddb1c83c5de83bcc04d6b5",
+  "results": {
+    "c_sp": {
+      "finite": {
+        "exit": 0,
+        "result": {
+          "total": 22736,
+          "failures": 0,
+          "counts": {
+            "2-level": {
+              "cases": 784,
+              "failures": 0
+            },
+            "3-level": {
+              "cases": 21952,
+              "failures": 0
+            }
+          },
+          "failureClasses": {},
+          "ownerDepth": {},
+          "examples": [],
+          "controls": {
+            "knownParent": {
+              "pass": true,
+              "winner": 0,
+              "expectedValue": "value",
+              "expectedSource": "config",
+              "actualSource": "config",
+              "states": [
+                "config-value",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "childOnly": {
+              "pass": true,
+              "winner": 1,
+              "expectedValue": "value",
+              "expectedSource": "cli",
+              "actualSource": "cli",
+              "states": [
+                "absent",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "unknownParent": {
+              "pass": true,
+              "winner": 0,
+              "expectedValue": "value",
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": {
+                "undefined": true
+              },
+              "states": [
+                "unknown-value",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "declaredPropertyParent": {
+              "pass": true,
+              "winner": 0,
+              "expectedValue": {
+                "undefined": true
+              },
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": {
+                "undefined": true
+              },
+              "states": [
+                "declared-unset",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                true,
+                false
+              ]
+            }
+          },
+          "oracle": "Rootmost own key in public opts() must supply both optsWithGlobals value and getOptionValueSourceWithGlobals source; explicit undefined remains an own value. No arbitrary source strings/private state mutation."
+        },
+        "stdout_sha256": "abbe8030f8200278465044a2f7e75bd3c85c73568957e395b690c06485e7d805",
+        "stderr_sha256": "1af1822c47121442d9f78a07293ae99e74840c37a346b77e6e39beeff3795728"
+      },
+      "simple": {
+        "exit": 0,
+        "result": {
+          "value": "parent",
+          "source": null
+        },
+        "stdout_sha256": "499dc08d74b450b5999f20f3b576d71fc04997cef64a3710d18ae59cac78bd88",
+        "stderr_sha256": "4dc64a70a85d70d6b31248205e1c5f621f3813e1b411d743659c3c71b38cc884"
+      }
+    },
+    "c": {
+      "finite": {
+        "exit": 0,
+        "result": {
+          "total": 22736,
+          "failures": 0,
+          "counts": {
+            "2-level": {
+              "cases": 784,
+              "failures": 0
+            },
+            "3-level": {
+              "cases": 21952,
+              "failures": 0
+            }
+          },
+          "failureClasses": {},
+          "ownerDepth": {},
+          "examples": [],
+          "controls": {
+            "knownParent": {
+              "pass": true,
+              "winner": 0,
+              "expectedValue": "value",
+              "expectedSource": "config",
+              "actualSource": "config",
+              "states": [
+                "config-value",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "childOnly": {
+              "pass": true,
+              "winner": 1,
+              "expectedValue": "value",
+              "expectedSource": "cli",
+              "actualSource": "cli",
+              "states": [
+                "absent",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "unknownParent": {
+              "pass": true,
+              "winner": 0,
+              "expectedValue": "value",
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": {
+                "undefined": true
+              },
+              "states": [
+                "unknown-value",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "declaredPropertyParent": {
+              "pass": true,
+              "winner": 0,
+              "expectedValue": {
+                "undefined": true
+              },
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": {
+                "undefined": true
+              },
+              "states": [
+                "declared-unset",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                true,
+                false
+              ]
+            }
+          },
+          "oracle": "Rootmost own key in public opts() must supply both optsWithGlobals value and getOptionValueSourceWithGlobals source; explicit undefined remains an own value. No arbitrary source strings/private state mutation."
+        },
+        "stdout_sha256": "abbe8030f8200278465044a2f7e75bd3c85c73568957e395b690c06485e7d805",
+        "stderr_sha256": "641c113122724a05fd264bd7476b0dd941946021cd0d3f779cbf41d3f452a569"
+      },
+      "simple": {
+        "exit": 0,
+        "result": {
+          "value": "parent",
+          "source": null
+        },
+        "stdout_sha256": "499dc08d74b450b5999f20f3b576d71fc04997cef64a3710d18ae59cac78bd88",
+        "stderr_sha256": "afe0234d33108b24ba239e7ceb8d0f18c2dc2386bdf6298c3e57075cb50e5552"
+      }
+    },
+    "pure": {
+      "finite": {
+        "exit": 0,
+        "result": {
+          "total": 22736,
+          "failures": 0,
+          "counts": {
+            "2-level": {
+              "cases": 784,
+              "failures": 0
+            },
+            "3-level": {
+              "cases": 21952,
+              "failures": 0
+            }
+          },
+          "failureClasses": {},
+          "ownerDepth": {},
+          "examples": [],
+          "controls": {
+            "knownParent": {
+              "pass": true,
+              "winner": 0,
+              "expectedValue": "value",
+              "expectedSource": "config",
+              "actualSource": "config",
+              "states": [
+                "config-value",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "childOnly": {
+              "pass": true,
+              "winner": 1,
+              "expectedValue": "value",
+              "expectedSource": "cli",
+              "actualSource": "cli",
+              "states": [
+                "absent",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "unknownParent": {
+              "pass": true,
+              "winner": 0,
+              "expectedValue": "value",
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": {
+                "undefined": true
+              },
+              "states": [
+                "unknown-value",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "declaredPropertyParent": {
+              "pass": true,
+              "winner": 0,
+              "expectedValue": {
+                "undefined": true
+              },
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": {
+                "undefined": true
+              },
+              "states": [
+                "declared-unset",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                true,
+                false
+              ]
+            }
+          },
+          "oracle": "Rootmost own key in public opts() must supply both optsWithGlobals value and getOptionValueSourceWithGlobals source; explicit undefined remains an own value. No arbitrary source strings/private state mutation."
+        },
+        "stdout_sha256": "abbe8030f8200278465044a2f7e75bd3c85c73568957e395b690c06485e7d805",
+        "stderr_sha256": "60b03bfb0c9553e98f65783f7790533cc9561cbe0608a08781edcb8f858f163f"
+      },
+      "simple": {
+        "exit": 0,
+        "result": {
+          "value": "parent",
+          "source": null
+        },
+        "stdout_sha256": "499dc08d74b450b5999f20f3b576d71fc04997cef64a3710d18ae59cac78bd88",
+        "stderr_sha256": "b1246df41bee12a931202f29d405cc785f39ddd46a5f824362d289e1d466740d"
+      }
+    },
+    "base": {
+      "finite": {
+        "exit": 0,
+        "result": {
+          "total": 22736,
+          "failures": 7084,
+          "counts": {
+            "2-level": {
+              "cases": 784,
+              "failures": 154
+            },
+            "3-level": {
+              "cases": 21952,
+              "failures": 6930
+            }
+          },
+          "failureClasses": {
+            "declared-unset-property-winner-unknown-source": 644,
+            "explicit-unknown-source-winner": 6440
+          },
+          "ownerDepth": {
+            "2-level/winner-index-0": 154,
+            "3-level/winner-index-1": 462,
+            "3-level/winner-index-0": 6468
+          },
+          "examples": [
+            {
+              "pass": false,
+              "winner": 0,
+              "expectedValue": {
+                "undefined": true
+              },
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": "default",
+              "states": [
+                "declared-unset",
+                "default-value"
+              ],
+              "storeAsProperties": [
+                true,
+                false
+              ]
+            },
+            {
+              "pass": false,
+              "winner": 0,
+              "expectedValue": {
+                "undefined": true
+              },
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": "default",
+              "states": [
+                "declared-unset",
+                "default-value"
+              ],
+              "storeAsProperties": [
+                true,
+                true
+              ]
+            },
+            {
+              "pass": false,
+              "winner": 0,
+              "expectedValue": {
+                "undefined": true
+              },
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": "config",
+              "states": [
+                "declared-unset",
+                "config-value"
+              ],
+              "storeAsProperties": [
+                true,
+                false
+              ]
+            },
+            {
+              "pass": false,
+              "winner": 0,
+              "expectedValue": {
+                "undefined": true
+              },
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": "config",
+              "states": [
+                "declared-unset",
+                "config-value"
+              ],
+              "storeAsProperties": [
+                true,
+                true
+              ]
+            }
+          ],
+          "controls": {
+            "knownParent": {
+              "pass": true,
+              "winner": 0,
+              "expectedValue": "value",
+              "expectedSource": "config",
+              "actualSource": "config",
+              "states": [
+                "config-value",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "childOnly": {
+              "pass": true,
+              "winner": 1,
+              "expectedValue": "value",
+              "expectedSource": "cli",
+              "actualSource": "cli",
+              "states": [
+                "absent",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "unknownParent": {
+              "pass": false,
+              "winner": 0,
+              "expectedValue": "value",
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": "cli",
+              "states": [
+                "unknown-value",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "declaredPropertyParent": {
+              "pass": false,
+              "winner": 0,
+              "expectedValue": {
+                "undefined": true
+              },
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": "cli",
+              "states": [
+                "declared-unset",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                true,
+                false
+              ]
+            }
+          },
+          "oracle": "Rootmost own key in public opts() must supply both optsWithGlobals value and getOptionValueSourceWithGlobals source; explicit undefined remains an own value. No arbitrary source strings/private state mutation."
+        },
+        "stdout_sha256": "fd203f83080a133bc04c97166e92806aabf927c08e1fba8aaa83ddd4dc60c7cf",
+        "stderr_sha256": "234dd9d86243c62e29d8e3a162eaa0c0c74ab775167888c6c423af849e7545bc"
+      },
+      "simple": {
+        "exit": 0,
+        "result": {
+          "value": "parent",
+          "source": "cli"
+        },
+        "stdout_sha256": "52780d7768da8b62ad357d357370cd612c3e64d65eb2a90d1550c152db5083cb",
+        "stderr_sha256": "8f35e1ff98c121262bb7c182645671217f181aba49670bf1af58e450590873ba"
+      }
+    },
+    "upstream": {
+      "finite": {
+        "exit": 0,
+        "result": {
+          "total": 22736,
+          "failures": 504,
+          "counts": {
+            "2-level": {
+              "cases": 784,
+              "failures": 14
+            },
+            "3-level": {
+              "cases": 21952,
+              "failures": 490
+            }
+          },
+          "failureClasses": {
+            "declared-unset-property-winner-unknown-source": 504
+          },
+          "ownerDepth": {
+            "2-level/winner-index-0": 14,
+            "3-level/winner-index-1": 42,
+            "3-level/winner-index-0": 448
+          },
+          "examples": [
+            {
+              "pass": false,
+              "winner": 0,
+              "expectedValue": {
+                "undefined": true
+              },
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": "default",
+              "states": [
+                "declared-unset",
+                "default-value"
+              ],
+              "storeAsProperties": [
+                true,
+                false
+              ]
+            },
+            {
+              "pass": false,
+              "winner": 0,
+              "expectedValue": {
+                "undefined": true
+              },
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": "default",
+              "states": [
+                "declared-unset",
+                "default-value"
+              ],
+              "storeAsProperties": [
+                true,
+                true
+              ]
+            },
+            {
+              "pass": false,
+              "winner": 0,
+              "expectedValue": {
+                "undefined": true
+              },
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": "config",
+              "states": [
+                "declared-unset",
+                "config-value"
+              ],
+              "storeAsProperties": [
+                true,
+                false
+              ]
+            },
+            {
+              "pass": false,
+              "winner": 0,
+              "expectedValue": {
+                "undefined": true
+              },
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": "config",
+              "states": [
+                "declared-unset",
+                "config-value"
+              ],
+              "storeAsProperties": [
+                true,
+                true
+              ]
+            }
+          ],
+          "controls": {
+            "knownParent": {
+              "pass": true,
+              "winner": 0,
+              "expectedValue": "value",
+              "expectedSource": "config",
+              "actualSource": "config",
+              "states": [
+                "config-value",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "childOnly": {
+              "pass": true,
+              "winner": 1,
+              "expectedValue": "value",
+              "expectedSource": "cli",
+              "actualSource": "cli",
+              "states": [
+                "absent",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "unknownParent": {
+              "pass": true,
+              "winner": 0,
+              "expectedValue": "value",
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": {
+                "undefined": true
+              },
+              "states": [
+                "unknown-value",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "declaredPropertyParent": {
+              "pass": false,
+              "winner": 0,
+              "expectedValue": {
+                "undefined": true
+              },
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": "cli",
+              "states": [
+                "declared-unset",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                true,
+                false
+              ]
+            }
+          },
+          "oracle": "Rootmost own key in public opts() must supply both optsWithGlobals value and getOptionValueSourceWithGlobals source; explicit undefined remains an own value. No arbitrary source strings/private state mutation."
+        },
+        "stdout_sha256": "e5ec2abf35579c62087bcc9e6279da7b67d6935644efbf3cad9c5835c1181091",
+        "stderr_sha256": "ff9826cc6727710bae1d834e93909ae9e67ad3f82ee1c86e490e1f11b51529e6"
+      },
+      "simple": {
+        "exit": 0,
+        "result": {
+          "value": "parent",
+          "source": "cli"
+        },
+        "stdout_sha256": "52780d7768da8b62ad357d357370cd612c3e64d65eb2a90d1550c152db5083cb",
+        "stderr_sha256": "f02dbfc8ffee96ee445b4f739bc4353bdb575a0d4ad7dfd81f81594d886610f7"
+      }
+    },
+    "historical_positive": {
+      "finite": {
+        "exit": 0,
+        "result": {
+          "total": 22736,
+          "failures": 0,
+          "counts": {
+            "2-level": {
+              "cases": 784,
+              "failures": 0
+            },
+            "3-level": {
+              "cases": 21952,
+              "failures": 0
+            }
+          },
+          "failureClasses": {},
+          "ownerDepth": {},
+          "examples": [],
+          "controls": {
+            "knownParent": {
+              "pass": true,
+              "winner": 0,
+              "expectedValue": "value",
+              "expectedSource": "config",
+              "actualSource": "config",
+              "states": [
+                "config-value",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "childOnly": {
+              "pass": true,
+              "winner": 1,
+              "expectedValue": "value",
+              "expectedSource": "cli",
+              "actualSource": "cli",
+              "states": [
+                "absent",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "unknownParent": {
+              "pass": true,
+              "winner": 0,
+              "expectedValue": "value",
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": {
+                "undefined": true
+              },
+              "states": [
+                "unknown-value",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                false,
+                false
+              ]
+            },
+            "declaredPropertyParent": {
+              "pass": true,
+              "winner": 0,
+              "expectedValue": {
+                "undefined": true
+              },
+              "expectedSource": {
+                "undefined": true
+              },
+              "actualSource": {
+                "undefined": true
+              },
+              "states": [
+                "declared-unset",
+                "cli-value"
+              ],
+              "storeAsProperties": [
+                true,
+                false
+              ]
+            }
+          },
+          "oracle": "Rootmost own key in public opts() must supply both optsWithGlobals value and getOptionValueSourceWithGlobals source; explicit undefined remains an own value. No arbitrary source strings/private state mutation."
+        },
+        "stdout_sha256": "abbe8030f8200278465044a2f7e75bd3c85c73568957e395b690c06485e7d805",
+        "stderr_sha256": "7d15090a200f80e9d0e6e7a7e2fb1abc74649b4d75781fb7f62d06090c3e177e"
+      },
+      "simple": {
+        "exit": 0,
+        "result": {
+          "value": "parent",
+          "source": null
+        },
+        "stdout_sha256": "499dc08d74b450b5999f20f3b576d71fc04997cef64a3710d18ae59cac78bd88",
+        "stderr_sha256": "3546ab85dbbcde5e2567b0f8abf8dcfc57f3e162a25e7fa5e4e6ecf22df382cb"
+      }
+    }
+  },
+  "elapsed_seconds": 2.93450927734375,
+  "portable_result_sha256": "b7093d84af4057bd78aedab02431327f29246510338046c74a9efdb74c1d0383",
+  "historical_positive_patch_sha256": "5af9c52f002659e49ad570fef2d9ccf4d8d92b44aa9d61eda687319813350564",
+  "historical_positive_origin": "pr-quality-panel-v2/baseline-53a8bd549c93 Commander control proposal",
+  "supplement_does_not_change_canonical_score_or_gates": true
+}

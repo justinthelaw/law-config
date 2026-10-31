@@ -1,0 +1,24 @@
+{
+  "protocol": "runner-space-50-prospective-v2",
+  "evidence_class": "independently authored from the exact frozen requirement and public base adapters after historical aggregate/metadata exposure, before raw base/gold execution",
+  "behavior_titles": [
+    "stable directory is removed normally",
+    "stable final link is unlinked without traversing its referent",
+    "absent target is reported without a retry",
+    "rejects same-kind replacement after initial observation before removal",
+    "rejects kind-changing replacement after initial observation before removal",
+    "rejects replacement after refused ordinary directory removal before elevated retry",
+    "rejects replacement after refused ordinary link removal before elevated retry",
+    "an unchanged target can be removed by the mocked elevated retry",
+    "ordinary successful return with a surviving target reports failure",
+    "elevated successful return with a surviving target reports failure",
+    "partial failures keep result order and allow independent targets to finish"
+  ],
+  "output_titles": [
+    "public input and output names match the frozen action contract",
+    "failed operations reach the public output while cleanup remains best effort"
+  ],
+  "native_design": "Compile effective product src plus unmodified frozen base tests. Run all compiled base *.test.js, and run the frozen Linux services/homebrew file again under synthetic mode-000 /home. Report all six known historical failures separately even if they do not reproduce. Any additional candidate native failures relative to a calibrated baseline fail. Only exact shared verified environmental failures may be accounted separately. Do not coerce unknown or missing tests into a pass.",
+  "calibration_rule": "Run the unchanged fixture on exact archived base and gold before release. The candidate scorer is eligible only if baseline native handling is resolved, gold passes all applicable prospective checks, and at least one relevant behavior distinguishes it from base. Any unresolved boundary or fixture defect remains visible and prevents an implementation pass.",
+  "safety": "Use a private Linux namespace, no network or credentials, read-only source and dependencies, bounded disposable tmpfs for builds and synthetic target operations, no real sudo/rm/systemctl on PATH. Output fixture runs orchestration text in a VM with explicit synthetic adapters and builtins only. No equivalence to historical nine-case grade; no atomic external-race claim or real cross-platform runtime claim."
+}

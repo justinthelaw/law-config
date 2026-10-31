@@ -1,0 +1,4567 @@
+{
+  "campaign_elapsed_seconds": 20005.83911371231,
+  "cases": [
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "fc613377731e5211ab6e08e6fd6163f09ae67ce8",
+      "base_bytes": 1616794,
+      "base_files": 140,
+      "comparison": {
+        "control_upstream": {
+          "reason": "hard gates",
+          "verdict": "control"
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 30.0,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "develop_upstream": {
+          "reason": "hard gates",
+          "verdict": "develop"
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 12.5,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 30.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 42.5,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "a588764bfc4fd663140d71fb359d31da6a4f7b776d98dfb7e6e9fa27762baa14",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "3c0ae3bf3b4eaf05bdc0ada1fad972175cdee5da9095e7a5f23022bbace8e5f0"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "aec240cf1ae585643b927bfc123201539503acce1c66c62468e7fc0f33b264dd",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "9d2731296f3b9b6b255a9ce6f266c3358b5a6c21939b8c869dfad3eb0a9d71cb",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "348ec216fd74dedfe4dad47ac5d5cd2a90ca5277591e527d706e1d1ebd470c4b"
+          }
+        }
+      },
+      "complexity": "Python library, two public types",
+      "controls": {
+        "arm_order": [
+          "control",
+          "develop"
+        ],
+        "build": "PYTHONPATH=src python -m compileall -q src/packaging",
+        "cpu_pair": [
+          2,
+          3
+        ],
+        "deadline_seconds": 1200,
+        "dependencies_sha256": "be7e85582d2cfa345bc9c8603800fa48b18c73cb17295513e2ccd4bcd995046a",
+        "fixture_sha256": "2b71b66b5defcf669543dee61bc4883b916006f5ad8ba581481a31a6d31a3039",
+        "grader_native": "PYTHONPATH=src:/deps/lib python -m pytest -q -o addopts= tests/test_specifiers.py",
+        "independent_check": true,
+        "merged_patch_sha256": "5eb48d6d82ccc17b5493067cb7a88a2f79c3316e591a7e508dc31532ae312829",
+        "prompt_sha256": "2a48edfb86762a04f022f418fc0cc01158357dc6be18f831332d6aa4043b2e9d",
+        "worker_native": "PYTHONPATH=src:/deps/lib python -m pytest -q -o addopts= tests/test_specifiers.py",
+        "workers": {
+          "toolchain": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+          "worker": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3"
+        }
+      },
+      "domain": "packaging API",
+      "first_commit": "2026-10-19",
+      "id": "packaging",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment uses the supplied full patches/proposals, relevant starting source and frozen observations only; no submission was executed or edited and no agents or external services were used.",
+            "Frozen checks supply exit status only, except the C independent failure text. Detailed commands for contract/preserve/independent checks, assertions, toolchain versions and full logs are unavailable. A passing exit does not establish coverage of every edge.",
+            "Exact suite counts, doctests, whitespace checks, independent review claims, broader suites, documentation builds and cross-version execution are not independently evidenced. Patch-application timing and release/deadline history are unavailable."
+          ],
+          "native_sha256": "f2414689f0f853c561de3d8e3237ad7f81b1b1d28ad0f6bd77b20867ab3e0b9b",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 281728,
+            "inputTokens": 334284,
+            "outputTokens": 2748,
+            "reasoningOutputTokens": 598,
+            "totalTokens": 337032
+          },
+          "usd_estimate": 0.16076479999999999,
+          "wall_seconds": 102.4101747199893
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Read full packet/A.md and A.patch, then B.md and B.patch, then C.md and C.patch. Candidate code was neither executed nor edited; only judgment.json was written.",
+            "Execution conclusions are restricted to packet/task.json frozen exit statuses and the single B independent diagnostic. Exact test counts, runtime versions, doctests, lint, whitespace checks and review claims are not independently evidenced. The frozen record does not expose hidden check bodies or a distinguishing base failure.",
+            "Patch application, deadline/eligibility timing and historical execution details are unavailable. No identities or authorship cues were used. Static counterexamples are identified as source-derived, with verification expressions supplied rather than claimed execution."
+          ],
+          "native_sha256": "a1d0797dcf7c3d4d4cd3890dff32ad430c5fedb1f8faedfd580aa85658d7bdc2",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 335616,
+            "inputTokens": 379747,
+            "outputTokens": 2767,
+            "reasoningOutputTokens": 374,
+            "totalTokens": 382514
+          },
+          "usd_estimate": 0.1494936,
+          "wall_seconds": 99.6003565499559
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment used the full supplied A, B, C proposal and patch files in that order, packet/task.json, packet/rubric.md and relevant starting src/packaging/specifiers.py. No candidate submission was executed, applied or edited, and no agents or external services were used.",
+            "Frozen execution evidence consists of exit codes and A's short independent failure output. Detailed test logs, distinguishing base runs, toolchain versions, timing/apply records and claimed documentation or whitespace checks are unavailable. Passing checks establish only their supplied scope, not the broader project suite.",
+            "Counterexamples beyond the frozen observations are mechanical conclusions from the patches and starting source, with verification expressions supplied; they are not additional observed execution results. C's member-policy defect is a contract issue, not evidence of an integrity violation or critical regression."
+          ],
+          "native_sha256": "150e5964268002f1385bb15ad9f19674fed02235db91d84b43164dae4563ed17",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 380160,
+            "inputTokens": 421820,
+            "outputTokens": 3093,
+            "reasoningOutputTokens": 534,
+            "totalTokens": 424913
+          },
+          "usd_estimate": 0.152266,
+          "wall_seconds": 100.42335077282041
+        }
+      ],
+      "language": "Python",
+      "merged": "ffced26d0a30557a0e181dbaca561a0432ddec53",
+      "pr": 1457,
+      "pr_delta": [
+        3,
+        186,
+        1
+      ],
+      "pr_open_to_merge_seconds": 101537.0,
+      "prompt": "Support Python's __replace__ protocol on Specifier and SpecifierSet. Callers can override the operator/version of a single specifier, the specifiers in a set, or prerelease handling. Omitted fields retain their original values, and explicitly resetting prereleases to None restores automatic behavior. A no-op replacement returns the same object. Preserve the original on changes and reject invalid replacements. Document and test the API. Explicitly replacing a set with its equivalent specifiers is also a no-op.",
+      "repo": "pypa/packaging",
+      "split": "tuning",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "d19650f4fca84c0f65f4ec024b16200bf3d41c33",
+      "base_bytes": 3236498,
+      "base_files": 226,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 12.5,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "verdict": "tie",
+          "votes": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 12.5,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 12.5,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 0.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 12.5,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "1f7da72ccebb69db1289845d27600c4c684abad83677562147e73b4ff3a66144",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "7ab0316861f97bee94f83b93ff363f56c66ad6307eeff2c77c56aedaec65a73f"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "59f1ed6a75c32acce7c9f4ca493e33ba58434eb4cf1784ecdf4f2cae01372bee",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "531a3d8f626eb50133ed2b20ea631d5fd963e61362341d2d1fc7c33de4a31d8b",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "1cacdd16908ac2af53463eb38c7f48ca924720f6ae58212d66a718713ba8ec66"
+          }
+        }
+      },
+      "complexity": "Rust workspace, linked-worktree traversal",
+      "controls": {
+        "arm_order": [
+          "develop",
+          "control"
+        ],
+        "build": "cargo build --locked --offline -p ignore",
+        "cpu_pair": [
+          4,
+          5
+        ],
+        "deadline_seconds": 1200,
+        "dependencies_sha256": "babd78d7bb55518f16e421b5c7981a6d098cdd91744f05412388b7f7f01a3007",
+        "fixture_sha256": "2d664c02ecd6e8d307770d1afc172fc1916a9ea5ce79d316a554ffdf4ab1fc85",
+        "grader_native": "cargo test --locked --offline -p ignore --lib",
+        "independent_check": false,
+        "merged_patch_sha256": "47ad08316405d168fdd97e4dc5409755b79fc07e4103c798acc640ea2a22e6e0",
+        "prompt_sha256": "b5d124751940bce3cc9a878c9a1a9adc2b2e14c419926b3447172f56253f35a8",
+        "worker_native": "cargo test --locked --offline -p ignore --lib",
+        "workers": {
+          "toolchain": "sha256:4ec71e955e6c08aeb238885083222ddff79d82eb87654a96c76e38e94da1a53b",
+          "worker": "sha256:589cb05c68a702e350eb7c51c9a9072d8df598c2f13252ec64f7330ed7454c1b"
+        }
+      },
+      "domain": "Git ignore walker",
+      "first_commit": "2026-10-26",
+      "id": "ripgrep",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment uses full packet/A.patch, A.md, B.patch, B.md, C.patch and C.md, the starting dir.rs/walk.rs source, and the frozen exit codes in packet/task.json. Candidate submissions were neither executed nor edited.",
+            "Frozen checks provide exit codes only, without test logs, hidden-check definitions, base behavioral mismatch output, patch-application logs or timing evidence. Success is recorded for the specified ignore build/library-test scope and reported contract/preserve checks; detailed red/green histories, exact counts, nextest timing, formatting availability and diff-check claims cannot be verified from this packet."
+          ],
+          "native_sha256": "b1981c117a3596527c326f500b09f6a902bdd92c6a6565435166922f03ddbe17",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 166528,
+            "inputTokens": 189911,
+            "outputTokens": 2202,
+            "reasoningOutputTokens": 214,
+            "totalTokens": 192113
+          },
+          "usd_estimate": 0.08543880000000001,
+          "wall_seconds": 70.9087966370862
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used the full ordered A, B, C proposal/patch files, relevant starting source and frozen packet/task.json outcomes only; candidate submissions were neither executed nor edited.",
+            "Frozen execution evidence supplies exit codes, not detailed logs, test counts, base failure traces, timing, patch-application records or historical eligibility evidence. Successful contract/preserve exits are recorded as supplied; their exact scenario coverage cannot be reconstructed from this packet. Proposal-only claims of additional checks are not treated as execution evidence."
+          ],
+          "native_sha256": "d22d170ba77f3d3e3e6d6abe13249d48732e41d07ecd80be5daa90cbc4421b60",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 169344,
+            "inputTokens": 190369,
+            "outputTokens": 2222,
+            "reasoningOutputTokens": 304,
+            "totalTokens": 192591
+          },
+          "usd_estimate": 0.0812044,
+          "wall_seconds": 67.21980891888961
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only the supplied frozen exit statuses are available execution evidence; candidate submissions were neither executed nor edited. The packet does not include check output, individual hidden cases, apply/timing logs or a reached base behavioral mismatch, so those details cannot be independently audited.",
+            "Historical focused-test runs, exact test counts, diff checks and tool availability asserted in proposal text are uncorroborated. This is an evidence limitation, not a demonstrated integrity violation.",
+            "Assessment used the full A, B and C artifacts in supplied order and relevant starting dir.rs and walk.rs source. Existing protection changes were inspected: A retains its replaced assertions inside a wider parameter loop; B and C remove no tests or guards."
+          ],
+          "native_sha256": "37dd674fa502eb3b098bd8ff5f5ad103b9022f7b9b0d5109d0b15211eb4200b7",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 143616,
+            "inputTokens": 167393,
+            "outputTokens": 1949,
+            "reasoningOutputTokens": 170,
+            "totalTokens": 169342
+          },
+          "usd_estimate": 0.08140560000000001,
+          "wall_seconds": 64.06582517316565
+        }
+      ],
+      "language": "Rust",
+      "merged": "65e072fab262fdaaa19ef788bbb468ae6f8e4f8e",
+      "pr": 3578,
+      "pr_delta": [
+        1,
+        8,
+        1
+      ],
+      "pr_open_to_merge_seconds": 87468.0,
+      "prompt": "When the ignore walker is configured to apply Git excludes without requiring a Git repository, linked worktrees should honor the shared repository's info/exclude. Preserve behavior for ordinary directories and when Git excludes are disabled. Add regression coverage.",
+      "repo": "BurntSushi/ripgrep",
+      "split": "tuning",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "da4da65c0cfffe0481ebf26ad64346eb45e4f34d",
+      "base_bytes": 4827460,
+      "base_files": 436,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 17.5,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "verdict": "tie",
+          "votes": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 17.5,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 0.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "fbc52985d76e9add8b5efefc9069376e2a3cc3325c83bda7ec93176917d2b125",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "65587444cd8d953460a12db65cddf20af921edfce29a5dfe926fa62212fd583d"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "a88751b97dc22d204ed8ab1512a32afcef774d548cf20e251a6bffe931a08e1a",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "a00941b42e851fcf3490546ecb4b5b99371810e63e0abd8c318d3f5f4cc578bf",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "817d8dce59384f68e912f9b0afda7fbbdee89ca7cc5cd421e744c96f2d7afd00"
+          }
+        }
+      },
+      "complexity": "C interpreter, observable CLI bytes",
+      "controls": {
+        "arm_order": [
+          "control",
+          "develop"
+        ],
+        "build": "autoreconf -fi && ./configure --with-oniguruma=builtin --disable-docs && make -j2",
+        "cpu_pair": [
+          4,
+          5
+        ],
+        "deadline_seconds": 7200,
+        "dependencies_sha256": "0e5a1311e19f4c83d96a4b60f35dd43c909e27706d3d5ee6e00a123b2ffd71a9",
+        "fixture_sha256": "1d62532b1a9b9934388f63c8d8b61a7978a9aa122d1f4c39fceedad81c56bb8e",
+        "grader_native": "make check-am TESTS=tests/shtest",
+        "independent_check": false,
+        "merged_patch_sha256": "b0333a34a4449822d1fea3639cb0c52449fa1b4757a9a0da64918ba13fc74c5d",
+        "prompt_sha256": "79a872434d2c99b927dccb4f1b65e9e080dde1733db2dc243c283a6323b52949",
+        "worker_native": "make check-am TESTS=tests/shtest",
+        "workers": {
+          "toolchain": "sha256:0ac99c7dcee4d051ea036dd4dc6db33cef4c5d2088c0bed4001d81e3d6cf53bd",
+          "worker": "sha256:4d1032598cd1dcb323ab58c77d4ec45346157b36cba2c4e3edb938f0c11e9d36"
+        }
+      },
+      "domain": "JSON interpreter",
+      "first_commit": "2026-10-23",
+      "id": "jq",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used full packet/A.md and A.patch, then B.md and B.patch, then C.md and C.patch, plus relevant starting source. Candidate submissions were neither executed nor edited.",
+            "Frozen execution evidence consists of exit codes in packet/task.json. No command output, reached base mismatch, independent case logs, full-suite logs, timing or patch-application logs are supplied; those properties cannot be independently established. Native verification covers make check-am TESTS=tests/shtest only.",
+            "Proposal-only claims do not establish execution outcomes. No concrete integrity bypass or critical regression was found by inspection."
+          ],
+          "native_sha256": "a9b225ba1abc76e3acf3aa436506b3417e93cc28363424d5aeaaed3a719dc77f",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 151680,
+            "inputTokens": 184195,
+            "outputTokens": 2437,
+            "reasoningOutputTokens": 440,
+            "totalTokens": 186632
+          },
+          "usd_estimate": 0.104568,
+          "wall_seconds": 78.72781644598581
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment uses the supplied full patches, proposals, starting source and frozen exit statuses only; no candidate was executed or edited.",
+            "Frozen outcomes provide no detailed check output, base mismatch transcript, whole-suite result, timing or patch-application log. Those properties cannot be independently established from this packet.",
+            "Cross-platform console behavior has source-level evidence in src/util.h but no supplied Windows execution evidence. Auxiliary proposal claims such as whitespace and shell-syntax checks are not independently evidenced."
+          ],
+          "native_sha256": "dd0011c663e4266cfbd9676abf5349f70d022c7e20c0d3f44fb47ab82c86e047",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 145920,
+            "inputTokens": 166826,
+            "outputTokens": 2589,
+            "reasoningOutputTokens": 748,
+            "totalTokens": 169415
+          },
+          "usd_estimate": 0.082294,
+          "wall_seconds": 82.56466277991422
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment uses the full packet/A, B and C patches/proposals, relevant starting source and the frozen exit summaries in packet/task.json. No candidate code was executed or modified.",
+            "Frozen evidence supplies successful build, selected tests/shtest native, contract and preserve exit codes but no detailed logs, base-run output, platform matrix, timing or patch-application records. Broader-suite, red-run and ancillary-check claims are not independently established."
+          ],
+          "native_sha256": "81c050a6317f71ca3b0744f377423f77201fc476459075e93d08d53f39686f7b",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 160640,
+            "inputTokens": 179813,
+            "outputTokens": 2124,
+            "reasoningOutputTokens": 280,
+            "totalTokens": 181937
+          },
+          "usd_estimate": 0.07565,
+          "wall_seconds": 64.63672151789069
+        }
+      ],
+      "language": "C",
+      "merged": "bd56a745624a5246fac7fe80d11a9cd6fb361ddb",
+      "pr": 3694,
+      "pr_delta": [
+        2,
+        9,
+        8
+      ],
+      "pr_open_to_merge_seconds": 78394.0,
+      "prompt": "Make halt_error emit the documented byte-exact stderr output for non-string inputs as well as strings. Preserve its exit status, stdout behavior, and existing null behavior. Add a regression that distinguishes an appended newline.",
+      "repo": "jqlang/jq",
+      "split": "tuning",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "3a11ad148397b7628256f5e5d76a454213480c63",
+      "base_bytes": 1375318,
+      "base_files": 595,
+      "comparison": {
+        "control_upstream": {
+          "reason": "hard gates",
+          "verdict": "both failed"
+        },
+        "develop_control": {
+          "reason": "hard gates",
+          "verdict": "both failed"
+        },
+        "develop_upstream": {
+          "reason": "hard gates",
+          "verdict": "both failed"
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 12.5,
+            "reversal": false
+          },
+          "develop_control": null,
+          "develop_upstream": null
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "4bb49764a8d85dcc98efebc8aa4e1a2caec28ebc94b38f15efca6274edc86f3a",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "f26dfcf5b97dc8525ebf58546f0e7f5a69c189421174bbfb01138dd21e8335d4",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {
+              "AGENTS.md": "5a43508733e7682902b3f930d3796984796655f9a426d27057a4570b5e14056e"
+            },
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "6fde9cd8a633ff904f9c48b2cf5a33bb73e6e3302ebcf7f3fb266134d26e6aa1"
+          },
+          "develop": null
+        }
+      },
+      "complexity": "TypeScript Markdown parser, interacting delimiter rules",
+      "controls": {
+        "arm_order": [
+          "develop",
+          "control"
+        ],
+        "build": "npm run build:esbuild && ./node_modules/.bin/tsc --noEmit",
+        "cpu_pair": [
+          0,
+          1
+        ],
+        "deadline_seconds": 1200,
+        "dependencies_sha256": "f08bb6c6875287e2d561d736c4c33a97bb90f22aadf6e9d6260267795495296b",
+        "fixture_sha256": "bdb26e9da4f95ce14e90fe269c44b997607f02abb554a100fd17d6bdbe086d9b",
+        "grader_native": "npm run test:specs",
+        "independent_check": true,
+        "merged_patch_sha256": "3affc55aebbd9f2345b890cb9f6dc40a6fdb024bc4674e697ffaaf37d49dcd6a",
+        "prompt_sha256": "6ce320c1f43703add9787cbe9e32867d750eaa5c2d845b00125ee798bc2f30ba",
+        "worker_native": "node --test --test-skip-pattern='^quadratic_' --test-reporter=spec test/run-spec-tests.js",
+        "workers": {
+          "toolchain": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+          "worker": "sha256:ba131adedde43c7d8199f10740bbf95ec1f628cdbdcaf44accccd9e0100ae90c"
+        }
+      },
+      "domain": "Markdown parser",
+      "first_commit": "2026-10-17",
+      "id": "marked",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Read full artifacts in supplied A, B, C order and inspected relevant starting source. No candidate was applied, executed or edited; no agents or external services were used. Frozen task.json observations are the only execution evidence.",
+            "Native scope is the supplied worker spec command with ^quadratic_ tests skipped; independent observations are the supplied six public-output comparisons. Exit codes are recorded separately in evidence. The packet supplies no complete native logs, independent failure details beyond those comparisons, per-case base outputs, patch-application logs or eligibility timing evidence.",
+            "Unsupported proposal claims of full-suite passes, lint, random differential checks and timings are not treated as verified results. No performance or security regression is established from those claims.",
+            "All three have observed behavioral mismatches and A additionally fails native regression checks, so none has affirmative evidence for full readiness. Flags are empty because the available evidence establishes correctness defects, not a validation bypass, materially weakened applicable safety protection or demonstrated critical regression."
+          ],
+          "native_sha256": "f2d32988fce5be764b5b2224783b68f6564bf2562c1063bc0d387446be919bc6",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 346752,
+            "inputTokens": 402112,
+            "outputTokens": 2577,
+            "reasoningOutputTokens": 357,
+            "totalTokens": 404689
+          },
+          "usd_estimate": 0.17116520000000002,
+          "wall_seconds": 97.24657820118591
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Reviewed full packet/A.md and A.patch, then B.md and B.patch, then C.md and C.patch, and relevant starting Lexer.ts, Tokenizer.ts, rules.ts and the existing nesting fixture. No candidate code was executed or edited, and no agents or external services were used.",
+            "Frozen build evidence covers npm run build:esbuild and tsc --noEmit. Worker native scope is node --test --test-skip-pattern='^quadratic_' --test-reporter=spec test/run-spec-tests.js; it excludes quadratic tests and does not establish the full npm test suite or unit suite. Independent observations contain six public-interface comparisons per submission, not a complete npm run test:specs transcript.",
+            "Contract and preserve checks have exit codes but no case inventory or base outputs. No apply/timing logs, reached base behavioral mismatch logs, performance measurements or full lint/unit/browser results are supplied; proposal claims do not fill those gaps.",
+            "All three fail independent behavior, and C also fails the selected existing native suite. These readiness failures are recorded separately from communication and design scores. The observed parsing defects do not establish a critical regression or integrity violation, so no such flags are asserted."
+          ],
+          "native_sha256": "9aff89a71c107aab45fceabe83d02f16d96d07e3978611048d5d922ba9516b35",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 270336,
+            "inputTokens": 322606,
+            "outputTokens": 2508,
+            "reasoningOutputTokens": 183,
+            "totalTokens": 325114
+          },
+          "usd_estimate": 0.1566536,
+          "wall_seconds": 87.97873110696673
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used full packet/A, B, C proposal and patch files in supplied order, task.json frozen observations, and relevant starting source. No candidate was executed, applied or edited.",
+            "Frozen checks provide selected build/native outcomes, narrow contract/preserve exits and independent public-output samples, not full logs, immutable base outputs, apply/timing logs or separate grader-native npm run test:specs results. Eligibility timing and base-to-submission fail-to-pass cannot be independently established.",
+            "Proposal claims beyond the frozen evidence, including full suites, unit runs, lint, performance and differential experiments, were not treated as observed successful checks. No concrete integrity bypass or demonstrated critical regression warrants a flag; the behavioral failures above still prevent readiness."
+          ],
+          "native_sha256": "743faf44d9345d4fa85f14867864bbb480d6568739d83a98e2cddc3d2c35ed42",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 353408,
+            "inputTokens": 396628,
+            "outputTokens": 2300,
+            "reasoningOutputTokens": 252,
+            "totalTokens": 398928
+          },
+          "usd_estimate": 0.1447808,
+          "wall_seconds": 85.6756427870132
+        }
+      ],
+      "language": "TypeScript",
+      "merged": "5d8e2340d78c25c611e1d8215b302fd48f01a601",
+      "pr": 4145,
+      "pr_delta": [
+        3,
+        55,
+        12
+      ],
+      "pr_open_to_merge_seconds": 718880.0,
+      "prompt": "Bring emphasis parsing into line with CommonMark delimiter-run flanking and the multiple-of-three rule for runs of asterisks and underscores, including when a run can both open and close. Preserve ordinary emphasis, strong emphasis and intraword behavior. Add focused parser regression examples. Include Unicode delimiter context, including punctuation and combining marks.",
+      "repo": "markedjs/marked",
+      "split": "tuning",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "e59664470f3644a3114c6760086892dbcd0d7ac9",
+      "base_bytes": 5177314,
+      "base_files": 756,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "verdict": "tie",
+          "votes": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "verdict": "tie",
+          "votes": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "verdict": "tie",
+          "votes": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 0.0,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 0.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 0.0,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "6920e8f00e1b9ec195ed2a84f4648b1f1bfd2d9c8734dd4d18026bae4828e525",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "6f64658cedcf511085c2b6ed3d98bb1a2d2ae8a0d1f667c60fb3a49104811f2a",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {
+              "AGENTS.md": "57404f69a6bdf9ebc0a112ac04f1c64f717c0da39758af27d15cb33e726238b4"
+            },
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "04f9cdfc3b573ff591a3138f8e23798710c980c2abdb6c573b05a942d4771760"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "009341d6015cdf6f253e45952b27f4b0c089e20e7aaee1390eec96110290df60",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "2fcd788ab1c343cb3b1f5adae9a84aac936ab6e1723bba7725364a8ee9695c38",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {
+              "AGENTS.md": "57404f69a6bdf9ebc0a112ac04f1c64f717c0da39758af27d15cb33e726238b4"
+            },
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "78172ead6af8d6f3fb5a4083b6678cc213dc8f37f6d5f792f6d411afae4ce0e4"
+          }
+        }
+      },
+      "complexity": "Go Git implementation, streamed decoding and file-mode semantics",
+      "controls": {
+        "arm_order": [
+          "control",
+          "develop"
+        ],
+        "build": "go build ./plumbing/filemode ./plumbing/object",
+        "cpu_pair": [
+          4,
+          5
+        ],
+        "deadline_seconds": 3060,
+        "dependencies_sha256": "6afea4e52a8f2e2ce53825cb388207cc2eff5554b49f959ba5c1f0bc71791ef9",
+        "fixture_sha256": "9a822d25512848daa60efa9e8f36e340cff73431f7569670602243713ba9a0db",
+        "grader_native": "go test ./plumbing/filemode ./plumbing/object",
+        "independent_check": true,
+        "merged_patch_sha256": "2db3d5cff2ec513ac44461ff48a5ba7ec6648b998fbd22c6f46418391eb8178d",
+        "prompt_sha256": "45942b50c94264247759edd0a277d9e7ce75e2dcd0146faf9d6d64f8a9f7b573",
+        "worker_native": "go test ./plumbing/filemode ./plumbing/object",
+        "workers": {
+          "toolchain": "sha256:88750ccdd0f2a77fcc00a14b1a48d6409bd8ddb5d7c2dd6ec0b4a2e916daf9d9",
+          "worker": "sha256:b0eddd7cf3f3a45640730d621d22870d9d02cf1acf56176f5357888eb9915a53"
+        }
+      },
+      "domain": "Git object decoder",
+      "first_commit": "2026-10-23",
+      "id": "go-git",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used the supplied full A, B, C proposals and patches in that order, relevant starting source, and frozen observations only. No candidate was applied, executed or edited, and no external sources were consulted.",
+            "Frozen execution evidence consists of exit codes: all five checks pass for each submission. Build/native commands are specified for the two selected packages; contract/preserve/independent test bodies, individual test logs, baseline behavioral mismatch logs, local Git comparisons and historical eligibility/apply/timing evidence are unavailable. No additional verification is inferred from proposal claims.",
+            "No concrete validation bypass, materially weakened protection or critical regression was found by inspection; empty flags do not assert coverage beyond the supplied evidence."
+          ],
+          "native_sha256": "86c25dac15c92bbfe84c9109bd969a0d666b328bc6b9e2e9501492b0f5480aa1",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 356736,
+            "inputTokens": 411259,
+            "outputTokens": 2648,
+            "reasoningOutputTokens": 383,
+            "totalTokens": 413907
+          },
+          "usd_estimate": 0.1711996,
+          "wall_seconds": 87.3175146470312
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used the supplied A, B, C files in order and starting source by static inspection only; no candidate was applied, executed or edited, and no external sources or agents were used.",
+            "Frozen execution evidence consists of exit statuses in packet/task.json. Build and native commands are specified only for plumbing/filemode and plumbing/object; contract/preserve check bodies, detailed output, base distinguishing runs, oracle execution/skip status and eligibility timing/apply history are not supplied. Successful statuses are recorded without inventing their internal coverage.",
+            "No full-repository, race or lint execution evidence is available. Unsupported proposal verification assertions are not treated as established facts or as proven integrity violations."
+          ],
+          "native_sha256": "c29577a5d388b9d85eb3f627f0ea7add725b0eb57f3721cfc8b4748ec52a0f82",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 422528,
+            "inputTokens": 478574,
+            "outputTokens": 2749,
+            "reasoningOutputTokens": 339,
+            "totalTokens": 481323
+          },
+          "usd_estimate": 0.1818348,
+          "wall_seconds": 102.91957659902982
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment used the complete supplied A, B, C proposal and patch files in order plus relevant starting source. No candidate code was executed or edited, no agents were run, and no external sources were consulted.",
+            "Frozen execution evidence consists of exit statuses in packet/task.json. Detailed logs, hidden-check cases, reached baseline mismatches, timing/apply records and individual test skip results are unavailable; no additional verification is inferred from proposal claims.",
+            "Recorded success covers the requested plumbing/filemode and plumbing/object build/native slice, with separately reported contract, preserve and independent success. Full-repository, race, lint, Git-version compatibility and downstream worktree behavior are not independently established."
+          ],
+          "native_sha256": "48422e3f5ed9c936e32cbf30e37ac3588fa3123a54f135c0870845cdb0dea8e3",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 325504,
+            "inputTokens": 382803,
+            "outputTokens": 2472,
+            "reasoningOutputTokens": 276,
+            "totalTokens": 385275
+          },
+          "usd_estimate": 0.1718684,
+          "wall_seconds": 88.05216331407428
+        }
+      ],
+      "language": "Go",
+      "merged": "41c3e4d6c870cafea5c4343623d2e3a8ffa31d05",
+      "pr": 2538,
+      "pr_delta": [
+        5,
+        386,
+        70
+      ],
+      "pr_open_to_merge_seconds": 5383.0,
+      "prompt": "Make tree decoding agree with Git on octal file modes. Handle zero padding and modes that span a read buffer, canonicalize regular files using the owner execute bit, and return the malformed-tree error for invalid encodings. Expose Canonical on FileMode for Git's tree mode semantics. FromBytes accepts zero-padded octal values through uint32 and rejects overflow or invalid bytes. Preserve round trips, non-regular types and existing public contracts. Add regression coverage. Tree.Decode should match Git when wide tree-mode fields wrap, independently of the public FromBytes overflow rule.",
+      "repo": "go-git/go-git",
+      "split": "tuning",
+      "stratum": "external"
+    },
+    {
+      "authorship": "owner maintenance with dependency automation",
+      "base": "a2f3ac8c38982d83e3d02e89342d856a7e026268",
+      "base_bytes": 1617454,
+      "base_files": 70,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 43.75,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": true,
+          "reason": "blinded rubric",
+          "score_delta": -6.25,
+          "verdict": "control",
+          "votes": [
+            "tie",
+            "control",
+            "control"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 37.5,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 40.0,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": -6.25,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 33.75,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "fb983fa6e67119c29f9cee7caed8e54181a8a24ab5d1cc80aca948fd6cc22d1b",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "cd42353fcd0ec0d9f08b09af090e0aaebf40d8f3c5836d95caa02d4f18a56249",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {
+              "AGENTS.md": "1afaae2092518e2f35f2c51840157d968707bc296c78d170b05801a292187d00"
+            },
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "db23006aff08b13f2172bd2730eef35cbd7e28b7cd21bcde12b2edc676b6b16b"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "ff5ec01f5561a44f101687a4e9c968a1903aa7ec94745421fe421d072b844678",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "da62b181f8aad8dbb8c0bc71ef88e3d59edcba5d133624ded0aec44f569e8985",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {
+              "AGENTS.md": "1afaae2092518e2f35f2c51840157d968707bc296c78d170b05801a292187d00"
+            },
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "4f2000103ebbd6bc51ad637461bc59cb3dd3ae73269e492153ea3b2e5bfc1af8"
+          }
+        }
+      },
+      "complexity": "GitHub Action, maintenance and immutable workflow pins",
+      "controls": {
+        "arm_order": [
+          "control",
+          "develop"
+        ],
+        "build": "npm run typecheck",
+        "cpu_pair": [
+          2,
+          3
+        ],
+        "deadline_seconds": 1200,
+        "dependencies_sha256": "1569eb231fe0417185952682f25b71ad512aae30961e17aa8e9eaf483d3bd6af",
+        "fixture_sha256": "5891f5543c448aa86325386f02fcfcaf0dd5a9165b33de9c9d568de5fedf26f0",
+        "grader_native": "npm run format:check",
+        "independent_check": false,
+        "merged_patch_sha256": "bcec41059a146bbfa3b4c42bfd0bff825b81cc6497c2003e00ddcfb6c92be56a",
+        "prompt_sha256": "4f63deaae6a2865b4f39d24b846b4eef61715bce0cc2ef16302dc91659af0f93",
+        "worker_native": "npm run format:check",
+        "workers": {
+          "toolchain": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+          "worker": "sha256:ba131adedde43c7d8199f10740bbf95ec1f628cdbdcaf44accccd9e0100ae90c"
+        }
+      },
+      "domain": "GitHub Actions maintenance",
+      "first_commit": "2026-10-25",
+      "id": "runner-space",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Available execution evidence is limited to packet/task.json frozen typecheck, format:check, contract and preservation exit codes. No detailed logs, npm test, pre-commit, fresh installation, rebuild or hosted-check records are supplied. No candidate was applied, executed or edited.",
+            "Full proposal and patch files were read in A, B, C order. Starting lint configuration, package metadata, metadata tests and prior dependency ledgers were inspected as untrusted data. External release metadata, new upstream manifests/bundles and registry audit results were not accessed.",
+            "Unsupported historical check claims are neither credited as execution evidence nor declared fabricated. No concrete validation bypass, weakened protection or critical regression was demonstrated. All flags are therefore empty."
+          ],
+          "native_sha256": "78cc7eaea2b3af89513efd9c38ffd2278e76be9e16ce334e9279955b865e7100",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 313728,
+            "inputTokens": 371485,
+            "outputTokens": 4147,
+            "reasoningOutputTokens": 357,
+            "totalTokens": 375632
+          },
+          "usd_estimate": 0.1883568,
+          "wall_seconds": 102.89012658107094
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Read full A, B and C proposals and patches in supplied order and relevant starting source/configuration and historical ledgers. No candidate was applied, executed or edited; no external services or agents were used.",
+            "Frozen execution evidence consists only of exit 0 for typecheck, format:check, contract and preserve for each label. Full-suite counts, installation, hooks, rebuilds, upstream audits and hosted checks are unsupported proposal/ledger claims here.",
+            "The mechanical contract gate establishes pins, preserved files and a changed nonempty regular Markdown ledger, not upstream inventory or audit accuracy. No upstream verification was performed.",
+            "All proposals are observed present. Complete diffs delete or weaken no existing protections; no concrete validation bypass or critical regression was found. Unsupported historical assertions alone are not integrity findings."
+          ],
+          "native_sha256": "30f76d5c1a4366e1684f41e83e03309e1e550f899d5f254be34d41e40c4dd8c9",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 378368,
+            "inputTokens": 428414,
+            "outputTokens": 4071,
+            "reasoningOutputTokens": 397,
+            "totalTokens": 432485
+          },
+          "usd_estimate": 0.1786388,
+          "wall_seconds": 107.5961208299268
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only packet/task.json frozen exit statuses provide execution evidence: build is npm run typecheck and native is npm run format:check. No candidate was applied, executed or edited; no agents or external services were used.",
+            "The mechanical contract gate checks pins, preserved files and a changed nonempty regular Markdown ledger, not the accuracy of registry, release-graph or advisory claims. No independent new upstream artifacts are supplied.",
+            "Claims about test counts, installation, pre-commit, check-dist, hosted checks, source closures and upstream audits lack corroborating frozen observations. Missing corroboration alone is not an integrity finding.",
+            "No deleted or weakened applicable protection or demonstrated critical regression was found in the full patches. Hosted lint and fresh hook compatibility remain unobserved."
+          ],
+          "native_sha256": "39a670e919dc08d4d21175a5d9b783db7a88c3a523031a80818f42071e4db434",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 373248,
+            "inputTokens": 434756,
+            "outputTokens": 4040,
+            "reasoningOutputTokens": 316,
+            "totalTokens": 438796
+          },
+          "usd_estimate": 0.2007408,
+          "wall_seconds": 117.61073727183975
+        }
+      ],
+      "language": "YAML and TypeScript",
+      "merged": "bbaad53e5c844645ef54d9309adf96be46ab159e",
+      "pr": 69,
+      "pr_delta": [
+        3,
+        55,
+        2
+      ],
+      "pr_open_to_merge_seconds": 6060.0,
+      "prompt": "Update the lint tooling to actions/setup-python v7.1.0 (upstream tag commit 6d4fd22b20465ccc0f7354476588e8df7c9ca0e0) and markdownlint-cli2 v0.24.0. Record both changes and any deferred upgrades in the repository's dependency ledger. Preserve supported runtime versions, action behavior and generated distribution.",
+      "repo": "justinthelaw/maximize-github-runner-space",
+      "split": "tuning",
+      "stratum": "owner-maintenance"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "04afd895bf343e5dc41fc168ba3f8ac378a7ee5f",
+      "base_bytes": 6338826,
+      "base_files": 547,
+      "comparison": {
+        "control_upstream": {
+          "reason": "hard gates",
+          "verdict": "upstream"
+        },
+        "develop_control": {
+          "reason": "hard gates",
+          "verdict": "both failed"
+        },
+        "develop_upstream": {
+          "reason": "hard gates",
+          "verdict": "upstream"
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": -21.25,
+            "reversal": false
+          },
+          "develop_control": null,
+          "develop_upstream": null
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "f1c3356ae4cba52edea91df41b0121d5fbd8fa00fd2944fa4c9d9a1cca988b01",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "b49feb98c86e2fc78d3a589b1de1a6798bf272d7e765dbd1f957de6c0c56f299"
+          },
+          "develop": null
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "develop",
+          "control"
+        ],
+        "build": "PYTHONPATH=src:/deps/lib python -m compileall -q src/black",
+        "cpu_pair": [
+          0,
+          1
+        ],
+        "deadline_seconds": 1200,
+        "dependencies_sha256": "2ba7345673123fec7b09d2a99a4e761c56a95d4865ec5ce6bdccad6727309740",
+        "fixture_sha256": "3e9ee7a5d07479e0e339f3c24d1ee828e257079d856e526f04e8b9e702c027ea",
+        "grader_native": "PYTHONPATH=.:src:/deps/lib python -m pytest -q -o addopts= tests/test_format.py -k fmtskip",
+        "independent_check": false,
+        "merged_patch_sha256": "ee9a6e9b1d712ad6be09bc4e98f56faee2d6f05d53aa389714b0e636308d1bb3",
+        "prompt_sha256": "2353acb044609c3a17adc4512f53ab57ad6053ab544676366c81d9ae7ae91399",
+        "worker_native": "PYTHONPATH=.:src:/deps/lib python -m pytest -q -o addopts= tests/test_format.py -k fmtskip",
+        "workers": {
+          "toolchain": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+          "worker": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3"
+        }
+      },
+      "domain": "formatter and parser",
+      "first_commit": "2026-10-25T21:17:20Z",
+      "id": "black",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment used the supplied full A, B, C patches and proposal files in order, starting source and frozen packet/task.json outcomes. No candidate was executed, applied or edited.",
+            "Frozen checks provide exit summaries, plus the C contract diagnostic, rather than full check implementations or logs. Passing contract/preserve checks are affirmative but do not establish exhaustive boundary coverage. No full-suite, timing, patch-application or exact merged-tree evidence is available.",
+            "Unsupported proposal claims of additional checks are not execution evidence. No concrete validation bypass, materially weakened applicable protection or newly introduced critical regression was established; C has a demonstrated unresolved task failure, not an established new regression."
+          ],
+          "native_sha256": "fb849296267f367b70cb84efa6cabb972ca073b09c3c9625902c8f20b8e9c46a",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 268032,
+            "inputTokens": 308592,
+            "outputTokens": 2800,
+            "reasoningOutputTokens": 613,
+            "totalTokens": 311392
+          },
+          "usd_estimate": 0.13592320000000002,
+          "wall_seconds": 103.80350021319464
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "No candidate submission was executed or edited. Execution conclusions are limited to packet/task.json frozen outcomes; no complete logs, contract implementation or preservation-check inventory are supplied.",
+            "The supplied packet does not expose a reached base behavioral-check run, patch-application logs or timing evidence, so those eligibility and distinguishing-check prerequisites cannot be independently established.",
+            "Passing the fmtskip slice is not evidence that the full test suite passes. Proposal-only generated checks, exact test counts and diff checks are not treated as additional execution evidence.",
+            "The C unary-factor edge is a static code-path finding, not a newly executed failure. It can be verified by formatting the counterexample in its contract evidence with AST and stability checks. No demonstrated critical regression or integrity bypass is established, so no integrity flags are asserted."
+          ],
+          "native_sha256": "c49aa7a9cffe9b1cc43f3f97de992b3a3ed2ea574da10c5e3bab6ad3b1343b91",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 308224,
+            "inputTokens": 352579,
+            "outputTokens": 3553,
+            "reasoningOutputTokens": 1221,
+            "totalTokens": 356132
+          },
+          "usd_estimate": 0.1550624,
+          "wall_seconds": 131.30750902206637
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Read full packet files in supplied A, B, C order and inspected relevant starting source. No submission was applied, edited or executed; no agents or external services were used.",
+            "Frozen execution evidence consists of the exit statuses in packet/task.json and the detailed failing contract output for A. Successful contract/preserve inputs, base distinguishing output, full-suite results, apply/timing logs and detailed successful test logs are not supplied, so those properties cannot be independently reconstructed.",
+            "Proposal claims without corresponding frozen evidence, including exact test counts, diff checks and generated differential runs, were not treated as observed checks. A proposal is unavailable rather than observed missing.",
+            "B unary-factor finding follows the changed traversal, ignored-node removal/insertion in src/black/comments.py::_handle_regular_fmt_block and the unchanged two-child unpack in visit_factor. Its suggested public-interface reproduction is provided for verification, not claimed as an executed check."
+          ],
+          "native_sha256": "e6076d1117918e9d124faf73be24f032e6206dc1663eb88d73e10a2fa3d54b0e",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 316288,
+            "inputTokens": 353861,
+            "outputTokens": 3657,
+            "reasoningOutputTokens": 1223,
+            "totalTokens": 357518
+          },
+          "usd_estimate": 0.1433448,
+          "wall_seconds": 136.32557991798967
+        }
+      ],
+      "language": "Python",
+      "merged": "062d76a492d7337f3de951bd7ef1af1096a439ee",
+      "pr": 5620,
+      "pr_delta": [
+        4,
+        114,
+        20
+      ],
+      "pr_open_to_merge_seconds": 77892.0,
+      "prompt": "Fix Black's handling of a fmt: skip directive on an opening bracket nested in a longer with, async with, or yield expression. Preserve skipped text, format surrounding code normally, and preserve the AST and idempotence. Add focused formatter fixtures.",
+      "repo": "psf/black",
+      "split": "tuning",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "15fc22b699ecacd04824092453c0cd2a8c4a3a67",
+      "base_bytes": 2354740,
+      "base_files": 294,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 37.5,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 15.0,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 52.5,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 33.75,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 15.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 48.75,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "a010ce31d33c38cdc3a2144c27c5d271107ac4700b506486c8282696c67f6995",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "62c3e6dd728deb78fc7212ee5ee109f8b1775a693b394c384caa7bab1228bdf7"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "160fe1e12f971f34778f16d6a0c3e290a9066db5921d44ef8c5cf58f52b8ee20",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "2014f02212dea2d254d89141a9eb827954730a083f56567941c6a3da8d01f1f0",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "3c06f094ecd0fc01349de9ebb498c42e0046e532cda3c7c1887d1aedc006354a"
+          }
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "develop",
+          "control"
+        ],
+        "build": "PYTHONPATH=src:/deps/lib python -m compileall -q src/werkzeug",
+        "cpu_pair": [
+          2,
+          3
+        ],
+        "deadline_seconds": 1200,
+        "dependencies_sha256": "11c189efdeabd5237e759b12e421f359881c0368000d9e5eff91de830e620825",
+        "fixture_sha256": "de3d3be9104fa50a7e4df09f135d43381cee649d77fd6439b72e9f5aa1fa4851",
+        "grader_native": "PYTHONPATH=src:/deps/lib python -m pytest -q -o addopts= tests/test_wrappers.py",
+        "independent_check": false,
+        "merged_patch_sha256": "3f714cffa2e1d3ee8c6a7ed4be949c102fc810a9cb779f58abab0ccef5e72b76",
+        "prompt_sha256": "9fed141c4b3ebc6721ee11976ef8291bc8fc554c5f67c7154989a281066a3688",
+        "worker_native": "PYTHONPATH=src:/deps/lib python -m pytest -q -o addopts= tests/test_wrappers.py",
+        "workers": {
+          "toolchain": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+          "worker": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3"
+        }
+      },
+      "domain": "WSGI HTTP responses",
+      "first_commit": "2026-10-12T18:45:18Z",
+      "id": "werkzeug",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used the full packet/A.md and A.patch, then B.md and B.patch, then C.md and C.patch, plus relevant starting response.py, wrapper tests and cached_property source. Candidate submissions were neither applied, edited nor executed.",
+            "The only execution evidence is packet/task.json: all labels have build, native, contract and preserve exit 0. The declared build is compileall and the native scope is tests/test_wrappers.py. Detailed logs, hidden check cases, base fail-to-pass traces, exact test counts, diff-check results, full-suite and documentation-build outcomes are unavailable. Static counterexamples above are reasoned from source and were not run.",
+            "Release timing, patch applicability logs and exact replay eligibility evidence are not supplied. No authorship or identity assumptions were used. Unsupported proposal verification/review claims were not treated as proven checks or as demonstrated integrity violations."
+          ],
+          "native_sha256": "89b87033f69694f8a95ce5e3d5ad762ebbc3ee2183f6694f32a7747df8551f1f",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 448256,
+            "inputTokens": 508631,
+            "outputTokens": 2933,
+            "reasoningOutputTokens": 444,
+            "totalTokens": 511564
+          },
+          "usd_estimate": 0.1949056,
+          "wall_seconds": 105.77927127620205
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only the frozen outcomes in packet/task.json are available execution evidence: all three submissions report exit 0 for build, native, contract and preserve. Candidate submissions were neither executed nor edited. Static counterexamples above were not run.",
+            "The documented build is compileall for src/werkzeug; the documented native scope is tests/test_wrappers.py. Contract/preserve check bodies, assertion logs, reached base mismatches, exact test counts, diff-check logs, and independent-review artifacts are unavailable. Broader suite and documentation-build success cannot be inferred.",
+            "Patch application timing, eligibility deadlines and historical execution details are not supplied. Scores concern the observed patches and present proposal text, without inferring authorship or treating issue references as verification."
+          ],
+          "native_sha256": "0b8082833f788c1424ef62f440623a68f2e0c2a5dc1571bad02c319cc3c5f482",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 374272,
+            "inputTokens": 443303,
+            "outputTokens": 2746,
+            "reasoningOutputTokens": 414,
+            "totalTokens": 446049
+          },
+          "usd_estimate": 0.20294920000000002,
+          "wall_seconds": 98.0408708571922
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment uses full packet/A, B, C proposal and patch files in supplied order and relevant starting response.py/docs source. Candidate code was neither executed nor edited.",
+            "Frozen observations provide only exit codes: build, wrapper-native, contract, and preserve are 0 for every submission. They contain no detailed test output, hidden-check definitions, or reached base mismatch, so they establish reported outcomes only, not exhaustive behavioral coverage or a verified fail-to-pass distinction.",
+            "Exact test counts, diff-check claims, and independent review claims lack supporting execution observations. Full-suite, documentation-build, patch-application, and deadline/eligibility evidence are unavailable. No identities or authorship cues were used.",
+            "Static public-interface counterexamples are identified in score evidence but were not run. No demonstrated validation bypass or critical regression warrants an integrity/safety flag; ordinary omissions and deleted regression coverage are scored independently."
+          ],
+          "native_sha256": "525cf406ff74dbf52872d977fca5cd04967b84f9df04ed0e45230864f2dcd061",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 386432,
+            "inputTokens": 442052,
+            "outputTokens": 2992,
+            "reasoningOutputTokens": 547,
+            "totalTokens": 445044
+          },
+          "usd_estimate": 0.17980320000000002,
+          "wall_seconds": 89.05855864984915
+        }
+      ],
+      "language": "Python",
+      "merged": "28360ef872ae984cc08209cb333db5649ce977bc",
+      "pr": 3325,
+      "pr_delta": [
+        3,
+        274,
+        155
+      ],
+      "pr_open_to_merge_seconds": 66152.0,
+      "prompt": "Update Response iterable handling. Recognize Sequence objects, recognize streamed non-sequences even if they have a length, and close the original iterable immediately on conversion. Deprecate mixed nonbytes chunks, Response.stream and automatically_set_content_length while preserving ordinary byte responses. Keep length calculation, warnings, user documentation and tests consistent.",
+      "repo": "pallets/werkzeug",
+      "split": "tuning",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "4088e1a84ef1cb8ba80aac4e75449459fc092c12",
+      "base_bytes": 7455842,
+      "base_files": 730,
+      "comparison": {
+        "control_upstream": {
+          "reason": "hard gates",
+          "verdict": "control"
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 21.25,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "develop_upstream": {
+          "reason": "hard gates",
+          "verdict": "develop"
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 33.75,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 21.25,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 55.0,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "576ad59927f469d0653bdc6f48bb566c1e0d425a0911ed9c83200cab33967463",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "c77cbd2a1945b7a81d165c93e0d1c1cd1e964465d4aa900542944e682c5ef06d"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "1cd0fc3ae6ae1a47ef901f4f94f5c987dfba0d10306705c55edd3a97f6c015c0",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "ae8a997f725fa9e597f4eec417ea164deb0c2074b7d349aad3faaa28bc1276b5",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "458450e2212273e4b36d71d34a3e8cbec08bc94d2fda929de7bb5604c189bf2e"
+          }
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "control",
+          "develop"
+        ],
+        "build": "PYTHONPATH=src:/deps/lib python -m compileall -q src/pytest src/_pytest/mark",
+        "cpu_pair": [
+          2,
+          3
+        ],
+        "deadline_seconds": 1200,
+        "dependencies_sha256": "3943d438ec411c91cbe477975e33cf4846643cd9a896e6f83e099a65e9561e72",
+        "fixture_sha256": "6982fe40dd04af226300a80eae3a2edf1b8f030d8de6de66959bd14c0f01103c",
+        "grader_native": "PYTHONPATH=src:/deps/lib python -m pytest -q -c /dev/null -p pytester testing/test_mark_expression.py",
+        "independent_check": true,
+        "merged_patch_sha256": "a99a7d0fb3b9ce80997a2236170e14e4d27161acdd1a897651bce1e630c6cce7",
+        "prompt_sha256": "588a8e210366c794e04007cc088bc428dd0c7f2a6d27616855541b2ef15df303",
+        "worker_native": "PYTHONPATH=src:/deps/lib python -m pytest -q -c /dev/null -p pytester testing/test_mark_expression.py",
+        "workers": {
+          "toolchain": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+          "worker": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3"
+        }
+      },
+      "domain": "test framework public API",
+      "first_commit": "2026-10-16T08:45:39Z",
+      "id": "pytest",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used the full A, B, C proposal and patch files in supplied order, starting source, and packet/task.json frozen outcomes. No candidate was executed, applied or edited; no agents or external services were used.",
+            "Frozen native execution covers only testing/test_mark_expression.py; build covers compileall of src/pytest and src/_pytest/mark. Contract, preserve and independent checks provide exits but no check source or detailed successful logs, so their exact boundary coverage and a distinguishing base mismatch cannot be verified.",
+            "No apply/timing logs, documentation build, static type-check output, or broader claimed suite logs are supplied. Eligibility timing and historical verification are unavailable, not scored as observed omissions. Static reconstruction analysis for A is separate from the frozen successful checks.",
+            "Flags are reserved for concrete integrity or critical regression concerns. The identified ordinary compatibility gap, missing behavior, prose contradictions and unrelated documentation exemption are reflected in scores without alleging intent or a critical regression."
+          ],
+          "native_sha256": "274967dbdf37069cf48e3a1d54d0bc00f7c9b0c519c7e57a79489d150fabba0b",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 254080,
+            "inputTokens": 296082,
+            "outputTokens": 2596,
+            "reasoningOutputTokens": 327,
+            "totalTokens": 298678
+          },
+          "usd_estimate": 0.135372,
+          "wall_seconds": 89.60478159599006
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Candidate code was neither executed nor edited. Assessment uses the complete A, B, C proposal/patch files, starting source, frozen observations, and static inspection of standard-library tuple reconstruction.",
+            "Frozen native verification is limited to testing/test_mark_expression.py. Contract, preserve, and independent check bodies and detailed output are unavailable except the independent failure message for A; their exact coverage cannot be inferred from exit codes.",
+            "No apply/timing logs, reached base behavioral mismatch, documentation build, static type-check results, or broader suite transcripts are supplied. Eligibility timing and hidden-check discrimination against the starting tree cannot be independently established.",
+            "C copying/unpickling warnings are a source-derived compatibility defect, not an observed critical regression or integrity violation. No critical-regression veto is asserted."
+          ],
+          "native_sha256": "0456110ed75b1f957492f4bb3f4cf5f7c37ddedaf24efa38ac32e9990fde2249",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 292992,
+            "inputTokens": 335072,
+            "outputTokens": 2814,
+            "reasoningOutputTokens": 480,
+            "totalTokens": 337886
+          },
+          "usd_estimate": 0.1415992,
+          "wall_seconds": 99.70328711601906
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment uses only packet/task.json, the complete A/B/C proposal and patch files, and relevant starting source. No candidate was executed or edited; frozen observations are the sole execution evidence.",
+            "The specified native verification covers testing/test_mark_expression.py only. Contract, preserve and independent checks have exit statuses but no commands or detailed logs, except the C independent output; their exact coverage cannot be reconstructed.",
+            "Proposal test totals, whitespace checks and review claims are not independently evidenced. Documentation builds and static typing are unobserved. Eligibility timing, patch-application logs and a reached baseline distinguishing result are unavailable in this packet.",
+            "B reconstruction warnings are a source-derived compatibility finding, not a demonstrated critical regression. C proposal/implementation discrepancies affect communication scoring; no intent or authorship is inferred. No concrete critical-regression or validation-bypass veto is established."
+          ],
+          "native_sha256": "5e146d84c104e406e0cd66130297c0725333aa780371ff8ffcf46fd2e7d32697",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 226688,
+            "inputTokens": 253843,
+            "outputTokens": 2420,
+            "reasoningOutputTokens": 402,
+            "totalTokens": 256263
+          },
+          "usd_estimate": 0.1011788,
+          "wall_seconds": 80.39033677894622
+        }
+      ],
+      "language": "Python",
+      "merged": "0f54d41bedf00505bb1ac2c724abf96ba6dcf48d",
+      "pr": 15193,
+      "pr_delta": [
+        6,
+        45,
+        24
+      ],
+      "pr_open_to_merge_seconds": 731248.0,
+      "prompt": "Expose ParameterSet as a documented public type in the pytest namespace for annotations of helpers returning pytest.param(). Keep factories working without warnings, identify the class as belonging to pytest, and warn on unsupported direct construction. Preserve values, marks and ids, and cover the public contract.",
+      "repo": "pytest-dev/pytest",
+      "split": "tuning",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "c807ce933836d0d99719bac82ee477f3d7eb4268",
+      "base_bytes": 1002752,
+      "base_files": 220,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 43.75,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "verdict": "tie",
+          "votes": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 43.75,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 36.25,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 0.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 36.25,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "8396d6989cba1a9045db52621d30211e761029609fe8613e023c4552ef6f94bf",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "bef86be80dd69bcb95e31f09228246cf4182c4d0cdbb0763f02d23293d8aa2c6"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "a8f4a520c887e990dc6126778d87a81fdfbba4458d1df7ecff361067177a5403",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "9474111cf9a3e696c611d44d8471348a9f0d56e5da695fb74e04b0ee2d41f211",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "e0c9391bd6805e0a0ac26b976a8b0884b487ae99e05013d8423943cd7cbe1f01"
+          }
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "develop",
+          "control"
+        ],
+        "build": "node --check lib/command.js",
+        "cpu_pair": [
+          4,
+          5
+        ],
+        "deadline_seconds": 1200,
+        "dependencies_sha256": "cfbd5a815d815c06315c6e9360a0f81e08f314732b6c68d110f330ccc2fee43a",
+        "fixture_sha256": "4336a487ab29aaf24ec998deaa844138a4ebc7f426cf50f54a5bfca302c93408",
+        "grader_native": "node --test tests/options.optsWithGlobals.test.js",
+        "independent_check": false,
+        "merged_patch_sha256": "cc928085fa2a84fb6e461238625ee3521fd34a85e011941d2fba189148d2e611",
+        "prompt_sha256": "8236b0709a795598dc4574b5efcf5bcf61bbc2c8004850665a2a21b3a6623240",
+        "worker_native": "node --test tests/options.optsWithGlobals.test.js",
+        "workers": {
+          "toolchain": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+          "worker": "sha256:ba131adedde43c7d8199f10740bbf95ec1f628cdbdcaf44accccd9e0100ae90c"
+        }
+      },
+      "domain": "CLI option resolution",
+      "first_commit": "2026-10-16T22:00:15Z",
+      "id": "commander",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only the supplied frozen observations are execution evidence. Every submission has build, native, contract and preserve exit 0; the named build is node --check lib/command.js and the named native scope is node --test tests/options.optsWithGlobals.test.js. Detailed outputs and contract/preserve check definitions are unavailable.",
+            "No submissions were executed, applied or edited. Static counterexamples are identified as such. Full-suite, lint, type, exact test-count, pre-fix-failure and diff-check outcomes are not established by the frozen records.",
+            "Eligibility timing, patch application logs and exact replay evidence are unavailable. No authorship information was used. No concrete integrity violation or critical regression was identified; the C finding is an incomplete behavioral repair, not a demonstrated new critical regression."
+          ],
+          "native_sha256": "5d4c8bfe424568b8c19cead2c6717c7b3765dcc17741c334605d17940fd9c303",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 172928,
+            "inputTokens": 241999,
+            "outputTokens": 2804,
+            "reasoningOutputTokens": 516,
+            "totalTokens": 244803
+          },
+          "usd_estimate": 0.1834748,
+          "wall_seconds": 106.42924597091042
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Execution evidence is limited to the frozen exit codes in packet/task.json: build, focused native suite, contract and preserve. Contract/preserve check bodies, assertion output, and a reached base behavioral mismatch are not supplied; their breadth cannot be independently established.",
+            "No candidate submission was executed or edited. Behavioral boundary analysis uses the full supplied patches and starting lib/command.js, tests/options.optsWithGlobals.test.js, docs/deprecated.md and package.json. The B property-storage counterexample is a static derivation, not an additional observed execution.",
+            "Pre-fix regression-run claims and git diff --check claims in proposal text have no supporting frozen logs. Full-suite, lint and type-check outcomes are unavailable. No concrete integrity bypass or critical regression was found."
+          ],
+          "native_sha256": "dd93c2839a0c138e6b8009f735af4844709b3ee487b84d28ef3611e8d343db39",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 172416,
+            "inputTokens": 204893,
+            "outputTokens": 2593,
+            "reasoningOutputTokens": 471,
+            "totalTokens": 207486
+          },
+          "usd_estimate": 0.1081256,
+          "wall_seconds": 86.62170097301714
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluated the full A, B, C patches and proposals in supplied order, relevant starting source and frozen observations. No candidate submissions were executed or edited.",
+            "packet/task.json reports build/native/contract/preserve exit 0 for each label, without detailed logs, hidden cases or reached base behavioral mismatches. Historical red-test counts and git diff --check claims cannot be independently confirmed from the frozen evidence.",
+            "The specified executable slice is node --check lib/command.js and node --test tests/options.optsWithGlobals.test.js. Full-suite, lint, type checks, timing and exact replay eligibility are not established by the packet.",
+            "A has a statically verifiable remaining contract defect with a public-interface counterexample in its contract evidence. This is not a demonstrated critical regression or integrity violation; no integrity flag is raised."
+          ],
+          "native_sha256": "3622045696cfc3775165bdeabc8916b94492a1196e61d5583d1589b40f1e4284",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 191488,
+            "inputTokens": 227242,
+            "outputTokens": 3862,
+            "reasoningOutputTokens": 355,
+            "totalTokens": 231104
+          },
+          "usd_estimate": 0.1292768,
+          "wall_seconds": 97.02218279102817
+        }
+      ],
+      "language": "JavaScript",
+      "merged": "1536d5bb9da38d1d94926aedfa31c8ece1f7dce5",
+      "pr": 2653,
+      "pr_delta": [
+        2,
+        17,
+        2
+      ],
+      "pr_open_to_merge_seconds": 256701.0,
+      "prompt": "Fix getOptionValueSourceWithGlobals when a parent has an option value with an unknown source. Its undefined source must mask a same-named child source, consistently with the value returned by optsWithGlobals. Preserve recognized global sources, child-only values and nesting. Add regression coverage.",
+      "repo": "tj/commander.js",
+      "split": "tuning",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "a8293b774e5c4bed720391d0453d5ad0239f66a5",
+      "base_bytes": 3167716,
+      "base_files": 145,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 17.5,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "verdict": "tie",
+          "votes": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 17.5,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 0.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "b8c58f240d55c6c8e9e0398462eccbb73f7ecdc0893e6eed8bca50f35b6cd48f",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "ade06ca33a02d956c00f8deb29cf9651ce1c7c9576ac5d3416a164010ad8d243"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "ec56c880276c14303552fddcb2db82b6d3c5ad56e33b066f2635689e4af1ad3a",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "fd9379a7341c36c2a5c1c46c447679c9e1560eddba545684d0fdbfa6f9c99826",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "7f001e8c38b327f92c0ec00b91aa8840937e1eecf5f7f231299182f75cdda1b7"
+          }
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "control",
+          "develop"
+        ],
+        "build": "/deps/lib/cmake/data/bin/cmake -S . -B build -DFMT_DOC=OFF -DFMT_TEST=ON && /deps/lib/cmake/data/bin/cmake --build build -j2 --target chrono-test",
+        "cpu_pair": [
+          4,
+          5
+        ],
+        "deadline_seconds": 1980,
+        "dependencies_sha256": "28ed69cf3a501fb714920645efe75f2497e0d6630ecde475d7e94bb570469101",
+        "fixture_sha256": "cb5d53bcf63edbecd40d42a3b0231f761ee373041d43c67ebec0273504853177",
+        "grader_native": "./build/bin/chrono-test --gtest_filter='chrono_test.*'",
+        "independent_check": false,
+        "merged_patch_sha256": "4933645005ef5fe1c0536a41c01c71e1a092d5060544abd7825c7b0b2289e321",
+        "prompt_sha256": "f560ec350343276dd83551c7586512b0dd07fb9396251e8fbd585636da51c1a8",
+        "worker_native": "./build/bin/chrono-test --gtest_filter='chrono_test.*'",
+        "workers": {
+          "toolchain": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+          "worker": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3"
+        }
+      },
+      "domain": "formatting library",
+      "first_commit": "2026-10-09T13:03:25Z",
+      "id": "fmt",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment used the supplied A, B, C full patches and proposals, packet/task.json frozen outcomes, and starting include/fmt/chrono.h and test/chrono-test.cc. No candidate was executed or edited.",
+            "Frozen observations contain exit codes rather than check sources or detailed logs. Contract/preserve pass outcomes are affirmative evidence, but their exact boundary coverage and base distinguishing outputs cannot be audited here. Pre-fix failures are supported by source reasoning, not supplied execution traces.",
+            "No supplied timing/apply logs establish historical eligibility details. Claimed extra checks, platform coverage, exact test counts and locale availability are not credited without supporting frozen evidence. No concrete integrity bypass or critical regression was found."
+          ],
+          "native_sha256": "a4e48836ee436e4e282935e5538a20b570aebceada1d8cc07358ccc1e8a96bb1",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 159872,
+            "inputTokens": 193581,
+            "outputTokens": 1979,
+            "reasoningOutputTokens": 462,
+            "totalTokens": 195560
+          },
+          "usd_estimate": 0.1031952,
+          "wall_seconds": 84.33226648904383
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment used full packet/A.md and A.patch, then B.md and B.patch, then C.md and C.patch, packet/task.json, packet/rubric.md, and relevant starting include/fmt/chrono.h and test/chrono-test.cc. No candidate was executed, applied or edited.",
+            "Frozen execution evidence consists of exit codes only. Detailed outputs, toolchain/platform provenance, apply/timing logs, pre-fix behavioral runs and immutable-control cases are unavailable. Success is recorded for the selected scope without inferring full-suite or cross-platform results. Static source and assertions support defect discrimination; a reached base mismatch cannot be independently confirmed from these artifacts.",
+            "Proposal-only verification claims are not additional execution evidence. Unsupported claims are assessed as communication limitations, not concrete integrity findings; no bypass, weakened protection or demonstrated critical regression was found."
+          ],
+          "native_sha256": "3f496796ff48ae5548c6f2430571aa49456f5dc3693d37610a4e678c4a0e4317",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 186112,
+            "inputTokens": 232086,
+            "outputTokens": 2358,
+            "reasoningOutputTokens": 224,
+            "totalTokens": 234444
+          },
+          "usd_estimate": 0.13413920000000001,
+          "wall_seconds": 89.93736941809766
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment uses only supplied full patches/proposals, starting source inspection and frozen observations. Candidate submissions were not executed or edited.",
+            "packet/task.json supplies exit statuses but no detailed build/test logs, hidden contract cases, preservation cases or reached baseline mismatch. Selected build/native/contract/preserve successes are recorded independently; broader suite/platform results and claimed pre-fix failures are not established.",
+            "No concrete integrity bypass, weakened protection or critical regression was found. Unsupported verification claims are assessed as communication evidence, not treated as proof of fabrication."
+          ],
+          "native_sha256": "41023968c2692312e8a0db14100bba91ca946f01e705ec2458b7357e47cf425e",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 153088,
+            "inputTokens": 186355,
+            "outputTokens": 2077,
+            "reasoningOutputTokens": 209,
+            "totalTokens": 188432
+          },
+          "usd_estimate": 0.1026128,
+          "wall_seconds": 75.34613816183992
+        }
+      ],
+      "language": "C++",
+      "merged": "434e30f81f8735d4c629acea485e6bb3e059e937",
+      "pr": 4981,
+      "pr_delta": [
+        2,
+        32,
+        5
+      ],
+      "pr_open_to_merge_seconds": 1311880.0,
+      "prompt": "Fix formatting the sign on negative floating-point chrono durations. Multiple specifiers in the same format must print the sign once, including seconds, count and compound time formats. Handle negative infinity without losing the sign or repeating it, preserve positive and integer duration output, and add tests.",
+      "repo": "fmtlib/fmt",
+      "split": "tuning",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "b8fedbbfd826c220dca5cd758816cc8be1b68897",
+      "base_bytes": 136387682,
+      "base_files": 232,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 26.25,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 40.0,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 66.25,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 18.75,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 36.25,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 55.0,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "788d09594bb03a410ff0166600df37a5094dff5133acfdd6afc64c67a7a5d650",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "d41e62871e7fa7908c81359d1f9ef9f6b11832fe4578cc5863b155bfa5905661"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "90d9a42070c4447a6f1eeece790b41368f15145ff2cb0139f5eb0c04ffc0dcdb",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "fc8e712c692033588013b63f34e4fbe677d38a82073b25f1fa92a28e625e0fb2",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "329724bd6b3722399d2aa9af950970dc76be3026018825a6f62a6770fdb1a54f"
+          }
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "develop",
+          "control"
+        ],
+        "build": "/deps/lib/cmake/data/bin/cmake -S expat -B build-panel -DEXPAT_BUILD_DOCS=OFF -DEXPAT_BUILD_TESTS=ON && /deps/lib/cmake/data/bin/cmake --build build-panel -j2",
+        "cpu_pair": [
+          2,
+          3
+        ],
+        "deadline_seconds": 1620,
+        "dependencies_sha256": "27fdc9d92cd00c1d49f4e2b23312f2aa38541d5346de04a873663bbb50266c62",
+        "fixture_sha256": "01f5f4e49a19ee126b95f44f33f5eee96a878e1fc5341e5628d8951715e9b227",
+        "grader_native": "/deps/lib/cmake/data/bin/ctest --test-dir build-panel --output-on-failure -R '^runtests$'",
+        "independent_check": false,
+        "merged_patch_sha256": "299f0cd339509d34d5ad00b2bd17444ae753b80c06cb1f944826400a6e3d420b",
+        "prompt_sha256": "6673e99bd4a3a51408399d3e8a2d5fa6a92221d28357ebb595ac36fd4c5754aa",
+        "worker_native": "/deps/lib/cmake/data/bin/ctest --test-dir build-panel --output-on-failure -R '^runtests$'",
+        "workers": {
+          "toolchain": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+          "worker": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3"
+        }
+      },
+      "domain": "streaming XML parser",
+      "first_commit": "2026-10-23T21:29:06Z",
+      "id": "expat",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used the supplied full A, B and C files in order and read-only inspection of the starting source. Candidate submissions were neither executed nor edited.",
+            "Frozen execution evidence consists of exit statuses only: build, native, contract and preserve are 0 for each label. The specified native slice is ctest -R ^runtests$; detailed logs, hidden-check inputs, base behavioral mismatches, timing and patch-application records are unavailable. Proposal-only verification claims were not treated as execution evidence.",
+            "The A/B parameter-entity accounting gap follows mechanically from unconditional markup skipping versus starting storeEntityValue semantics. It was not executed, and unchanged runtime checks prevent concluding that amplification or cycle protection can be bypassed. No concrete integrity or critical-regression veto is established."
+          ],
+          "native_sha256": "3c9b20a64071da8256ac297d4cfea5607031ff0ee69e6c0046a37447bc3b9599",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 309760,
+            "inputTokens": 358597,
+            "outputTokens": 2731,
+            "reasoningOutputTokens": 607,
+            "totalTokens": 361328
+          },
+          "usd_estimate": 0.15596,
+          "wall_seconds": 110.95801198109984
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment used the full A, B and C patch/proposal files in supplied order and relevant starting source. No candidate was executed, applied or edited; only judgment.json was written.",
+            "Frozen execution evidence consists of exit codes in packet/task.json. No raw test logs, hidden contract/control definitions, reached base mismatch, timing/apply logs, sanitizer runs or alternate-configuration outcomes are available. Passes are recorded as supplied and do not establish unobserved coverage or extra claimed checks.",
+            "The quoted parameter-value undercount in A and C follows mechanically from the changed scanner and existing storeEntityValue consumer. It has not been executed here. Runtime accounting and cycle checks remain intact, and no demonstrated critical regression, validation bypass or integrity violation is established; therefore no safety veto is asserted."
+          ],
+          "native_sha256": "36d2b78be175e3320f2f073f59bdd183b8eee0c45e1784ba2546dabd771ca13d",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 255488,
+            "inputTokens": 303807,
+            "outputTokens": 3270,
+            "reasoningOutputTokens": 798,
+            "totalTokens": 307077
+          },
+          "usd_estimate": 0.1548868,
+          "wall_seconds": 129.6797832758166
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only frozen execution observations in packet/task.json were used: build, selected runtests native suite, contract, and preserve exit 0 for each label. No candidate code was executed or edited. Check source, detailed output, timing/apply logs, base fail-to-pass output, and alternate-configuration or sanitizer results are unavailable; aggregate success does not establish every boundary or claimed check.",
+            "The B/C quoted-parameter-entity undercount follows mechanically from their unconditional literal-region skips and the starting storeEntityValue parameter-reference handling. It can be checked by tracing scanEntityText on a parameter replacement containing a quoted declaration with <!-- %e64; --> or <?pi %e64; ?>. A includes targeted quoted-declaration tests and quote tracking. No frozen outcome demonstrates a critical public regression or a bypass of the remaining runtime protections, so no critical-regression or integrity flag is asserted."
+          ],
+          "native_sha256": "d599e89c6db71d5ce20ec19d461800b973009a81a1c2038f768440daef20c067",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 274048,
+            "inputTokens": 322969,
+            "outputTokens": 3158,
+            "reasoningOutputTokens": 877,
+            "totalTokens": 326127
+          },
+          "usd_estimate": 0.1568268,
+          "wall_seconds": 111.32243731804192
+        }
+      ],
+      "language": "C",
+      "merged": "b665010ec7adb64933269df970a71e581f0d92d5",
+      "pr": 1439,
+      "pr_delta": [
+        5,
+        172,
+        0
+      ],
+      "pr_open_to_merge_seconds": 227774.0,
+      "prompt": "During internal entity expansion accounting, entity-looking text inside CDATA sections, comments or processing instructions is literal. Avoid counting or resolving references inside those regions. Real references outside those regions must still expand, and existing protection against amplification and cycles must remain effective. Add behavior tests.",
+      "repo": "libexpat/libexpat",
+      "split": "tuning",
+      "stratum": "external"
+    }
+  ],
+  "cohort": "primary",
+  "evaluator": {
+    "attempts": 36,
+    "complete_receipts": 36,
+    "observed_usd": 5.1569604
+  },
+  "format": "law-config.eval-run/v1",
+  "frozen_unix": 1793365469.6807632,
+  "groups": {
+    "all": {
+      "code_and_tokens": {
+        "complete_pair_tokens": {
+          "develop_sum": 31324431,
+          "interval": [
+            0.8632381243328351,
+            1.8055933642027
+          ],
+          "pairs": 10,
+          "pure_sum": 27876646,
+          "ratio": 1.1236800510362688
+        },
+        "diff_85": {
+          "control_upstream": {
+            "equal": 1,
+            "higher": 10,
+            "interval": [
+              5.729166666666667,
+              25.208333333333332
+            ],
+            "lower": 1,
+            "mean_delta_85": 15.9375,
+            "pairs": 12,
+            "reversals": 0
+          },
+          "develop_control": {
+            "equal": 5,
+            "higher": 4,
+            "interval": [
+              1.5,
+              18.625
+            ],
+            "lower": 1,
+            "mean_delta_85": 9.625,
+            "pairs": 10,
+            "reversals": 0
+          },
+          "develop_upstream": {
+            "equal": 1,
+            "higher": 9,
+            "interval": [
+              16.875,
+              42.125
+            ],
+            "lower": 0,
+            "mean_delta_85": 29.625,
+            "pairs": 10,
+            "reversals": 0
+          }
+        }
+      },
+      "n": 12,
+      "observed_by_arm": {
+        "control": {
+          "complete": 12,
+          "observed_proposal_wall_seconds": 12490.594841342652,
+          "timed_attempts": 12,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 32019584,
+            "inputTokens": 32806410,
+            "outputTokens": 128101,
+            "reasoningOutputTokens": 39817,
+            "totalTokens": 32934511
+          },
+          "usd_estimate": 6.0566204,
+          "usd_observations": 12
+        },
+        "develop": {
+          "complete": 10,
+          "observed_proposal_wall_seconds": 15182.506683930755,
+          "timed_attempts": 12,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 38882816,
+            "inputTokens": 40351168,
+            "outputTokens": 186504,
+            "reasoningOutputTokens": 62437,
+            "totalTokens": 40537672
+          },
+          "usd_estimate": 6.6976444,
+          "usd_observations": 10
+        }
+      },
+      "paired": {
+        "end_to_end_seconds": {
+          "develop_sum": 13067.019217107678,
+          "median_pair_ratio": 1.2357372271318061,
+          "pairs": 10,
+          "pure_sum": 11487.963716938859,
+          "ratio": 1.1374530368546099,
+          "ratio_interval": [
+            1.0593564298153673,
+            1.3068403720113482
+          ]
+        },
+        "proposal_wall_seconds": {
+          "develop_sum": 12700.970046614762,
+          "median_pair_ratio": 1.2428973585953837,
+          "pairs": 10,
+          "pure_sum": 11124.426278649596,
+          "ratio": 1.1417191078870221,
+          "ratio_interval": [
+            1.0609117423595162,
+            1.3176366196519527
+          ]
+        },
+        "quality_delta": {
+          "interval": [
+            1.125,
+            19.25
+          ],
+          "mean": 9.625,
+          "pairs": 10
+        },
+        "usd_estimate": {
+          "develop_sum": 6.6976444,
+          "median_pair_ratio": 1.573297059228883,
+          "pairs": 10,
+          "pure_sum": 5.0654664,
+          "ratio": 1.3222167261833975,
+          "ratio_interval": [
+            1.0608469127841123,
+            1.8130539827401777
+          ]
+        },
+        "wall_seconds": {
+          "develop_sum": 12295.096883883933,
+          "median_pair_ratio": 1.242846173071356,
+          "pairs": 10,
+          "pure_sum": 10809.61741950293,
+          "ratio": 1.1374220202928615,
+          "ratio_interval": [
+            1.0546075984152148,
+            1.3199770322011763
+          ]
+        }
+      },
+      "preferences": {
+        "control_upstream": {
+          "both failed": 1,
+          "control": 9,
+          "tie": 1,
+          "unresolved": 0,
+          "upstream": 1
+        },
+        "develop_control": {
+          "both failed": 2,
+          "control": 1,
+          "develop": 4,
+          "tie": 5,
+          "unresolved": 0
+        },
+        "develop_upstream": {
+          "both failed": 1,
+          "develop": 9,
+          "tie": 1,
+          "unresolved": 0,
+          "upstream": 1
+        }
+      },
+      "simultaneous": [
+        "fmt"
+      ],
+      "status_counts": {
+        "control": {
+          "failed": 2,
+          "pending": 0,
+          "ready": 10,
+          "unavailable": 0
+        },
+        "develop": {
+          "failed": 2,
+          "pending": 0,
+          "ready": 10,
+          "unavailable": 0
+        },
+        "upstream": {
+          "failed": 3,
+          "pending": 0,
+          "ready": 9,
+          "unavailable": 0
+        }
+      }
+    },
+    "confirmation": {
+      "code_and_tokens": {
+        "complete_pair_tokens": {
+          "develop_sum": 0,
+          "interval": null,
+          "pairs": 0,
+          "pure_sum": 0,
+          "ratio": null
+        },
+        "diff_85": {
+          "control_upstream": {
+            "equal": 0,
+            "higher": 0,
+            "interval": null,
+            "lower": 0,
+            "mean_delta_85": null,
+            "pairs": 0,
+            "reversals": 0
+          },
+          "develop_control": {
+            "equal": 0,
+            "higher": 0,
+            "interval": null,
+            "lower": 0,
+            "mean_delta_85": null,
+            "pairs": 0,
+            "reversals": 0
+          },
+          "develop_upstream": {
+            "equal": 0,
+            "higher": 0,
+            "interval": null,
+            "lower": 0,
+            "mean_delta_85": null,
+            "pairs": 0,
+            "reversals": 0
+          }
+        }
+      },
+      "n": 0,
+      "observed_by_arm": {
+        "control": {
+          "complete": 0,
+          "observed_proposal_wall_seconds": 0,
+          "timed_attempts": 0,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 0,
+            "inputTokens": 0,
+            "outputTokens": 0,
+            "reasoningOutputTokens": 0,
+            "totalTokens": 0
+          },
+          "usd_estimate": 0,
+          "usd_observations": 0
+        },
+        "develop": {
+          "complete": 0,
+          "observed_proposal_wall_seconds": 0,
+          "timed_attempts": 0,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 0,
+            "inputTokens": 0,
+            "outputTokens": 0,
+            "reasoningOutputTokens": 0,
+            "totalTokens": 0
+          },
+          "usd_estimate": 0,
+          "usd_observations": 0
+        }
+      },
+      "paired": {},
+      "preferences": {
+        "control_upstream": {
+          "both failed": 0,
+          "control": 0,
+          "tie": 0,
+          "unresolved": 0,
+          "upstream": 0
+        },
+        "develop_control": {
+          "both failed": 0,
+          "control": 0,
+          "develop": 0,
+          "tie": 0,
+          "unresolved": 0
+        },
+        "develop_upstream": {
+          "both failed": 0,
+          "develop": 0,
+          "tie": 0,
+          "unresolved": 0,
+          "upstream": 0
+        }
+      },
+      "simultaneous": [],
+      "status_counts": {
+        "control": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 0,
+          "unavailable": 0
+        },
+        "develop": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 0,
+          "unavailable": 0
+        },
+        "upstream": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 0,
+          "unavailable": 0
+        }
+      }
+    },
+    "external": {
+      "code_and_tokens": {
+        "complete_pair_tokens": {
+          "develop_sum": 29805786,
+          "interval": [
+            0.8592177551605968,
+            1.9910680966373102
+          ],
+          "pairs": 9,
+          "pure_sum": 26030418,
+          "ratio": 1.1450367796629313
+        },
+        "diff_85": {
+          "control_upstream": {
+            "equal": 1,
+            "higher": 9,
+            "interval": [
+              3.75,
+              23.40909090909091
+            ],
+            "lower": 1,
+            "mean_delta_85": 13.75,
+            "pairs": 11,
+            "reversals": 0
+          },
+          "develop_control": {
+            "equal": 5,
+            "higher": 4,
+            "interval": [
+              3.3333333333333335,
+              21.11111111111111
+            ],
+            "lower": 0,
+            "mean_delta_85": 11.38888888888889,
+            "pairs": 9,
+            "reversals": 0
+          },
+          "develop_upstream": {
+            "equal": 1,
+            "higher": 8,
+            "interval": [
+              15.0,
+              43.333333333333336
+            ],
+            "lower": 0,
+            "mean_delta_85": 29.166666666666668,
+            "pairs": 9,
+            "reversals": 0
+          }
+        }
+      },
+      "n": 11,
+      "observed_by_arm": {
+        "control": {
+          "complete": 11,
+          "observed_proposal_wall_seconds": 11918.872768217698,
+          "timed_attempts": 11,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 30230784,
+            "inputTokens": 30965859,
+            "outputTokens": 122424,
+            "reasoningOutputTokens": 39009,
+            "totalTokens": 31088283
+          },
+          "usd_estimate": 5.7174684,
+          "usd_observations": 11
+        },
+        "develop": {
+          "complete": 9,
+          "observed_proposal_wall_seconds": 14576.39094241662,
+          "timed_attempts": 11,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 37436800,
+            "inputTokens": 38841545,
+            "outputTokens": 177482,
+            "reasoningOutputTokens": 58966,
+            "totalTokens": 39019027
+          },
+          "usd_estimate": 6.3356088,
+          "usd_observations": 9
+        }
+      },
+      "paired": {
+        "end_to_end_seconds": {
+          "develop_sum": 12450.402971968753,
+          "median_pair_ratio": 1.3323031837777346,
+          "pairs": 9,
+          "pure_sum": 10906.381178605836,
+          "ratio": 1.141570496031415,
+          "ratio_interval": [
+            1.0601617426433885,
+            1.3300550364417836
+          ]
+        },
+        "proposal_wall_seconds": {
+          "develop_sum": 12094.854305100627,
+          "median_pair_ratio": 1.3393611708177886,
+          "pairs": 9,
+          "pure_sum": 10552.704205524642,
+          "ratio": 1.1461379064115742,
+          "ratio_interval": [
+            1.0616734624957076,
+            1.3431393762081925
+          ]
+        },
+        "quality_delta": {
+          "interval": [
+            2.5,
+            21.38888888888889
+          ],
+          "mean": 11.38888888888889,
+          "pairs": 9
+        },
+        "usd_estimate": {
+          "develop_sum": 6.3356088,
+          "median_pair_ratio": 1.7082828181200793,
+          "pairs": 9,
+          "pure_sum": 4.7263144,
+          "ratio": 1.3404966880747502,
+          "ratio_interval": [
+            1.0560590298715993,
+            1.8906749841037551
+          ]
+        },
+        "wall_seconds": {
+          "develop_sum": 11728.106005716138,
+          "median_pair_ratio": 1.3408285175698456,
+          "pairs": 9,
+          "pure_sum": 10267.720532676904,
+          "ratio": 1.1422307383991972,
+          "ratio_interval": [
+            1.0569077598200078,
+            1.3484295696300115
+          ]
+        }
+      },
+      "preferences": {
+        "control_upstream": {
+          "both failed": 1,
+          "control": 8,
+          "tie": 1,
+          "unresolved": 0,
+          "upstream": 1
+        },
+        "develop_control": {
+          "both failed": 2,
+          "control": 0,
+          "develop": 4,
+          "tie": 5,
+          "unresolved": 0
+        },
+        "develop_upstream": {
+          "both failed": 1,
+          "develop": 8,
+          "tie": 1,
+          "unresolved": 0,
+          "upstream": 1
+        }
+      },
+      "simultaneous": [
+        "fmt"
+      ],
+      "status_counts": {
+        "control": {
+          "failed": 2,
+          "pending": 0,
+          "ready": 9,
+          "unavailable": 0
+        },
+        "develop": {
+          "failed": 2,
+          "pending": 0,
+          "ready": 9,
+          "unavailable": 0
+        },
+        "upstream": {
+          "failed": 3,
+          "pending": 0,
+          "ready": 8,
+          "unavailable": 0
+        }
+      }
+    },
+    "owner-maintenance": {
+      "code_and_tokens": {
+        "complete_pair_tokens": {
+          "develop_sum": 1518645,
+          "interval": null,
+          "pairs": 1,
+          "pure_sum": 1846228,
+          "ratio": 0.8225663352522007
+        },
+        "diff_85": {
+          "control_upstream": {
+            "equal": 0,
+            "higher": 1,
+            "interval": null,
+            "lower": 0,
+            "mean_delta_85": 40.0,
+            "pairs": 1,
+            "reversals": 0
+          },
+          "develop_control": {
+            "equal": 0,
+            "higher": 0,
+            "interval": null,
+            "lower": 1,
+            "mean_delta_85": -6.25,
+            "pairs": 1,
+            "reversals": 0
+          },
+          "develop_upstream": {
+            "equal": 0,
+            "higher": 1,
+            "interval": null,
+            "lower": 0,
+            "mean_delta_85": 33.75,
+            "pairs": 1,
+            "reversals": 0
+          }
+        }
+      },
+      "n": 1,
+      "observed_by_arm": {
+        "control": {
+          "complete": 1,
+          "observed_proposal_wall_seconds": 571.7220731249545,
+          "timed_attempts": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 1788800,
+            "inputTokens": 1840551,
+            "outputTokens": 5677,
+            "reasoningOutputTokens": 808,
+            "totalTokens": 1846228
+          },
+          "usd_estimate": 0.339152,
+          "usd_observations": 1
+        },
+        "develop": {
+          "complete": 1,
+          "observed_proposal_wall_seconds": 606.1157415141352,
+          "timed_attempts": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 1446016,
+            "inputTokens": 1509623,
+            "outputTokens": 9022,
+            "reasoningOutputTokens": 3471,
+            "totalTokens": 1518645
+          },
+          "usd_estimate": 0.36203559999999996,
+          "usd_observations": 1
+        }
+      },
+      "paired": {
+        "end_to_end_seconds": {
+          "develop_sum": 616.6162451389246,
+          "median_pair_ratio": 1.0602385809352495,
+          "pairs": 1,
+          "pure_sum": 581.582538333023,
+          "ratio": 1.0602385809352495,
+          "ratio_interval": null
+        },
+        "proposal_wall_seconds": {
+          "develop_sum": 606.1157415141352,
+          "median_pair_ratio": 1.0601580208390233,
+          "pairs": 1,
+          "pure_sum": 571.7220731249545,
+          "ratio": 1.0601580208390233,
+          "ratio_interval": null
+        },
+        "quality_delta": {
+          "interval": null,
+          "mean": -6.25,
+          "pairs": 1
+        },
+        "usd_estimate": {
+          "develop_sum": 0.36203559999999996,
+          "median_pair_ratio": 1.0674729914610557,
+          "pairs": 1,
+          "pure_sum": 0.339152,
+          "ratio": 1.0674729914610557,
+          "ratio_interval": null
+        },
+        "wall_seconds": {
+          "develop_sum": 566.990878167795,
+          "median_pair_ratio": 1.0463076868530232,
+          "pairs": 1,
+          "pure_sum": 541.8968868260272,
+          "ratio": 1.0463076868530232,
+          "ratio_interval": null
+        }
+      },
+      "preferences": {
+        "control_upstream": {
+          "both failed": 0,
+          "control": 1,
+          "tie": 0,
+          "unresolved": 0,
+          "upstream": 0
+        },
+        "develop_control": {
+          "both failed": 0,
+          "control": 1,
+          "develop": 0,
+          "tie": 0,
+          "unresolved": 0
+        },
+        "develop_upstream": {
+          "both failed": 0,
+          "develop": 1,
+          "tie": 0,
+          "unresolved": 0,
+          "upstream": 0
+        }
+      },
+      "simultaneous": [],
+      "status_counts": {
+        "control": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 1,
+          "unavailable": 0
+        },
+        "develop": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 1,
+          "unavailable": 0
+        },
+        "upstream": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 1,
+          "unavailable": 0
+        }
+      }
+    },
+    "tuning": {
+      "code_and_tokens": {
+        "complete_pair_tokens": {
+          "develop_sum": 31324431,
+          "interval": [
+            0.8632381243328351,
+            1.8055933642027
+          ],
+          "pairs": 10,
+          "pure_sum": 27876646,
+          "ratio": 1.1236800510362688
+        },
+        "diff_85": {
+          "control_upstream": {
+            "equal": 1,
+            "higher": 10,
+            "interval": [
+              5.729166666666667,
+              25.208333333333332
+            ],
+            "lower": 1,
+            "mean_delta_85": 15.9375,
+            "pairs": 12,
+            "reversals": 0
+          },
+          "develop_control": {
+            "equal": 5,
+            "higher": 4,
+            "interval": [
+              1.5,
+              18.625
+            ],
+            "lower": 1,
+            "mean_delta_85": 9.625,
+            "pairs": 10,
+            "reversals": 0
+          },
+          "develop_upstream": {
+            "equal": 1,
+            "higher": 9,
+            "interval": [
+              16.875,
+              42.125
+            ],
+            "lower": 0,
+            "mean_delta_85": 29.625,
+            "pairs": 10,
+            "reversals": 0
+          }
+        }
+      },
+      "n": 12,
+      "observed_by_arm": {
+        "control": {
+          "complete": 12,
+          "observed_proposal_wall_seconds": 12490.594841342652,
+          "timed_attempts": 12,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 32019584,
+            "inputTokens": 32806410,
+            "outputTokens": 128101,
+            "reasoningOutputTokens": 39817,
+            "totalTokens": 32934511
+          },
+          "usd_estimate": 6.0566204,
+          "usd_observations": 12
+        },
+        "develop": {
+          "complete": 10,
+          "observed_proposal_wall_seconds": 15182.506683930755,
+          "timed_attempts": 12,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 38882816,
+            "inputTokens": 40351168,
+            "outputTokens": 186504,
+            "reasoningOutputTokens": 62437,
+            "totalTokens": 40537672
+          },
+          "usd_estimate": 6.6976444,
+          "usd_observations": 10
+        }
+      },
+      "paired": {
+        "end_to_end_seconds": {
+          "develop_sum": 13067.019217107678,
+          "median_pair_ratio": 1.2357372271318061,
+          "pairs": 10,
+          "pure_sum": 11487.963716938859,
+          "ratio": 1.1374530368546099,
+          "ratio_interval": [
+            1.0593564298153673,
+            1.3068403720113482
+          ]
+        },
+        "proposal_wall_seconds": {
+          "develop_sum": 12700.970046614762,
+          "median_pair_ratio": 1.2428973585953837,
+          "pairs": 10,
+          "pure_sum": 11124.426278649596,
+          "ratio": 1.1417191078870221,
+          "ratio_interval": [
+            1.0609117423595162,
+            1.3176366196519527
+          ]
+        },
+        "quality_delta": {
+          "interval": [
+            1.125,
+            19.25
+          ],
+          "mean": 9.625,
+          "pairs": 10
+        },
+        "usd_estimate": {
+          "develop_sum": 6.6976444,
+          "median_pair_ratio": 1.573297059228883,
+          "pairs": 10,
+          "pure_sum": 5.0654664,
+          "ratio": 1.3222167261833975,
+          "ratio_interval": [
+            1.0608469127841123,
+            1.8130539827401777
+          ]
+        },
+        "wall_seconds": {
+          "develop_sum": 12295.096883883933,
+          "median_pair_ratio": 1.242846173071356,
+          "pairs": 10,
+          "pure_sum": 10809.61741950293,
+          "ratio": 1.1374220202928615,
+          "ratio_interval": [
+            1.0546075984152148,
+            1.3199770322011763
+          ]
+        }
+      },
+      "preferences": {
+        "control_upstream": {
+          "both failed": 1,
+          "control": 9,
+          "tie": 1,
+          "unresolved": 0,
+          "upstream": 1
+        },
+        "develop_control": {
+          "both failed": 2,
+          "control": 1,
+          "develop": 4,
+          "tie": 5,
+          "unresolved": 0
+        },
+        "develop_upstream": {
+          "both failed": 1,
+          "develop": 9,
+          "tie": 1,
+          "unresolved": 0,
+          "upstream": 1
+        }
+      },
+      "simultaneous": [
+        "fmt"
+      ],
+      "status_counts": {
+        "control": {
+          "failed": 2,
+          "pending": 0,
+          "ready": 10,
+          "unavailable": 0
+        },
+        "develop": {
+          "failed": 2,
+          "pending": 0,
+          "ready": 10,
+          "unavailable": 0
+        },
+        "upstream": {
+          "failed": 3,
+          "pending": 0,
+          "ready": 9,
+          "unavailable": 0
+        }
+      }
+    }
+  },
+  "name": "iterate-entry-tuning-01",
+  "observations": [
+    {
+      "evidence": {
+        "develop": "unknown; timed-out partial not replayed",
+        "execution_environment": "Calibrated native grading toolchain image, not the QEMU participant transport worker",
+        "merged_patch_sha256": "ee9a6e9b1d712ad6be09bc4e98f56faee2d6f05d53aa389714b0e636308d1bb3",
+        "probe_sha256": "b745d1e8b643bdf71ee34ff7098d1818c85fc89dfe364381849e7eaadd48a29e",
+        "purpose": "Reporting-only sealed Black flag replay; no adjudication files changed",
+        "references": {
+          "admission": {
+            "path": "cache/calibration/black/1793364041169844582/admission.json",
+            "sha256": "dfb7cce0606148a255c08a2cc8ff1f9c29c4ae15c927177a93f0c346fcb5995d"
+          },
+          "base": "04afd895bf343e5dc41fc168ba3f8ac378a7ee5f",
+          "base_grade": {
+            "path": "cache/calibration/black/1793364041169844582/base/grade.json",
+            "sha256": "b4175afc93cc03b8fb768c608e45298f5ad279065e8bfd653a602074da1e0150"
+          },
+          "cold": {
+            "path": "cache/cold/black/1793203591803008876/receipt.json",
+            "sha256": "f442d191b270d1a5d543dbe1d939d9aa0aef941f848d52ab4f649d06ef62f030"
+          },
+          "deadline_seconds": 1200,
+          "deps_sha256": "2ba7345673123fec7b09d2a99a4e761c56a95d4865ec5ce6bdccad6727309740",
+          "gold": "062d76a492d7337f3de951bd7ef1af1096a439ee",
+          "gold_grade": {
+            "path": "cache/calibration/black/1793364041169844582/gold/grade.json",
+            "sha256": "57e1bd3f6ba12a2cb30e8caaf6e9a8d2c29f248b48f62ae3c8d729434afe7ec5"
+          },
+          "merged_patch_sha256": "ee9a6e9b1d712ad6be09bc4e98f56faee2d6f05d53aa389714b0e636308d1bb3",
+          "prompt_sha256": "2353acb044609c3a17adc4512f53ab57ad6053ab544676366c81d9ae7ae91399",
+          "split": "tuning",
+          "workers": {
+            "toolchain": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+            "worker": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3"
+          }
+        },
+        "replay_script_sha256": "ac7d3ec206c457c00c517ad06ff72f7eba5a1b87bbff8e4433ecfa64d1df7772",
+        "results": {
+          "actual-merge": {
+            "command": [
+              "docker",
+              "run",
+              "--rm",
+              "--init",
+              "--platform",
+              "linux/amd64",
+              "--read-only",
+              "--cap-drop",
+              "ALL",
+              "--security-opt",
+              "no-new-privileges",
+              "--pids-limit",
+              "512",
+              "--cpus",
+              "2",
+              "--cpuset-cpus",
+              "8,9",
+              "--memory",
+              "4g",
+              "--user",
+              "1000:1000",
+              "--network",
+              "none",
+              "--mount",
+              "type=bind,src=${R}/tmp/pr-quality-panel/iterate-entry-admission/flag-replay/black/actual-merge,dst=/work,readonly",
+              "--mount",
+              "type=bind,src=${R}/tmp/pr-quality-panel/cache/dependencies/black/cc9ef2c089673876,dst=/deps,readonly",
+              "--mount",
+              "type=bind,src=${R}/tmp/pr-quality-panel/iterate-entry-admission/flag-replay/black/probe.py,dst=/probe.py,readonly",
+              "--mount",
+              "type=bind,src=${R}/tmp/pr-quality-panel/iterate-entry-admission/flag-replay/black/temp/actual-merge,dst=/scratch",
+              "-w",
+              "/work",
+              "-e",
+              "TMPDIR=/scratch",
+              "-e",
+              "TMP=/scratch",
+              "-e",
+              "TEMP=/scratch",
+              "-e",
+              "HOME=/scratch",
+              "-e",
+              "PYTHONDONTWRITEBYTECODE=1",
+              "-e",
+              "PYTHONPATH=/work/src:/deps/lib",
+              "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+              "python",
+              "/probe.py"
+            ],
+            "exit": 0,
+            "git_tree": "932c2a06f6a4b3af539968b259ca991a272b8ce5",
+            "log_sha256": "07f8169bfb840fa17209fcd5b67e8b0db6e5398a58e8ba2e3a115ede5ca52808",
+            "probe": {
+              "black_module": "/work/src/black/__init__.py",
+              "black_version": "26.10.1",
+              "dependencies": {
+                "click": "8.3.0",
+                "mypy_extensions": "1.1.0",
+                "packaging": "25.0",
+                "pathspec": "1.0.4",
+                "platformdirs": "4.5.0",
+                "pytokens": "0.4.1"
+              },
+              "equivalent_and_stable": "PASS",
+              "format": "PASS",
+              "input_ast_parse": "PASS",
+              "input_black_parse": "PASS",
+              "output": "with -(  # fmt: skip\n    a\n).real and b:\n    pass\n",
+              "python": "3.13.18",
+              "source": "with -(  # fmt: skip\n    a\n).real and b:\n    pass\n",
+              "source_sha256": "583198303d2271d4808ebd0970d2a3169efa03d5aebce471c8a112cd2dbe9706"
+            },
+            "revision": "062d76a492d7337f3de951bd7ef1af1096a439ee",
+            "snapshot_has_stock_patch": false,
+            "snapshot_manifest_sha256": "6aa6b79479e4ebfa306e478117c99acfa331a23f2e4f39dbb1966d350f4d2799"
+          },
+          "base": {
+            "command": [
+              "docker",
+              "run",
+              "--rm",
+              "--init",
+              "--platform",
+              "linux/amd64",
+              "--read-only",
+              "--cap-drop",
+              "ALL",
+              "--security-opt",
+              "no-new-privileges",
+              "--pids-limit",
+              "512",
+              "--cpus",
+              "2",
+              "--cpuset-cpus",
+              "8,9",
+              "--memory",
+              "4g",
+              "--user",
+              "1000:1000",
+              "--network",
+              "none",
+              "--mount",
+              "type=bind,src=${R}/tmp/pr-quality-panel/iterate-entry-admission/flag-replay/black/base,dst=/work,readonly",
+              "--mount",
+              "type=bind,src=${R}/tmp/pr-quality-panel/cache/dependencies/black/cc9ef2c089673876,dst=/deps,readonly",
+              "--mount",
+              "type=bind,src=${R}/tmp/pr-quality-panel/iterate-entry-admission/flag-replay/black/probe.py,dst=/probe.py,readonly",
+              "--mount",
+              "type=bind,src=${R}/tmp/pr-quality-panel/iterate-entry-admission/flag-replay/black/temp/base,dst=/scratch",
+              "-w",
+              "/work",
+              "-e",
+              "TMPDIR=/scratch",
+              "-e",
+              "TMP=/scratch",
+              "-e",
+              "TEMP=/scratch",
+              "-e",
+              "HOME=/scratch",
+              "-e",
+              "PYTHONDONTWRITEBYTECODE=1",
+              "-e",
+              "PYTHONPATH=/work/src:/deps/lib",
+              "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+              "python",
+              "/probe.py"
+            ],
+            "exit": 0,
+            "git_tree": "6cb10dac2b9a839afb7b9f5ae713e003f19e5177",
+            "log_sha256": "686d7b124de886be83f76d0eaebe03b41d976ec1caf2692972b122726b1ad4bb",
+            "probe": {
+              "black_module": "/work/src/black/__init__.py",
+              "black_version": "26.10.1",
+              "dependencies": {
+                "click": "8.3.0",
+                "mypy_extensions": "1.1.0",
+                "packaging": "25.0",
+                "pathspec": "1.0.4",
+                "platformdirs": "4.5.0",
+                "pytokens": "0.4.1"
+              },
+              "exception_message": "INTERNAL ERROR: Black 26.10.1 on Python (CPython) 3.13.18 produced invalid code:\ncannot parse: 1:4\n    with\n       ^\nParseError: bad input\nPlease report a bug on https://github.com/psf/black/issues.  This invalid output might be helpful: /scratch/blk_jbpltwx0.log",
+              "exception_type": "InvalidInput",
+              "format": "FAIL",
+              "input_ast_parse": "PASS",
+              "input_black_parse": "PASS",
+              "python": "3.13.18",
+              "source": "with -(  # fmt: skip\n    a\n).real and b:\n    pass\n",
+              "source_sha256": "583198303d2271d4808ebd0970d2a3169efa03d5aebce471c8a112cd2dbe9706",
+              "traceback": "Traceback (most recent call last):\n  File \"/probe.py\", line 25, in <module>\n    output = black.format_str(source, mode=black.Mode())\n  File \"/work/src/black/__init__.py\", line 1404, in format_str\n    dst_contents = _format_str_once(dst_contents, mode=mode, lines=lines)\n  File \"/work/src/black/__init__.py\", line 1466, in _format_str_once\n    src_node = lib2to3_parse(\n        normalized_contents.lstrip(), target_versions=mode.target_versions\n    )\n  File \"/work/src/black/parsing.py\", line 140, in lib2to3_parse\n    raise exc from None\nblack.parsing.InvalidInput: INTERNAL ERROR: Black 26.10.1 on Python (CPython) 3.13.18 produced invalid code:\ncannot parse: 1:4\n    with\n       ^\nParseError: bad input\nPlease report a bug on https://github.com/psf/black/issues.  This invalid output might be helpful: /scratch/blk_jbpltwx0.log\n"
+            },
+            "revision": "04afd895bf343e5dc41fc168ba3f8ac378a7ee5f",
+            "snapshot_has_stock_patch": false,
+            "snapshot_manifest_sha256": "367a1f3fef1e78985a21d329b9d83c0ccc8c1a2ea4e7c0de3308d7efef65efe3"
+          },
+          "stock": {
+            "command": [
+              "docker",
+              "run",
+              "--rm",
+              "--init",
+              "--platform",
+              "linux/amd64",
+              "--read-only",
+              "--cap-drop",
+              "ALL",
+              "--security-opt",
+              "no-new-privileges",
+              "--pids-limit",
+              "512",
+              "--cpus",
+              "2",
+              "--cpuset-cpus",
+              "8,9",
+              "--memory",
+              "4g",
+              "--user",
+              "1000:1000",
+              "--network",
+              "none",
+              "--mount",
+              "type=bind,src=${R}/tmp/pr-quality-panel/iterate-entry-admission/flag-replay/black/stock,dst=/work,readonly",
+              "--mount",
+              "type=bind,src=${R}/tmp/pr-quality-panel/cache/dependencies/black/cc9ef2c089673876,dst=/deps,readonly",
+              "--mount",
+              "type=bind,src=${R}/tmp/pr-quality-panel/iterate-entry-admission/flag-replay/black/probe.py,dst=/probe.py,readonly",
+              "--mount",
+              "type=bind,src=${R}/tmp/pr-quality-panel/iterate-entry-admission/flag-replay/black/temp/stock,dst=/scratch",
+              "-w",
+              "/work",
+              "-e",
+              "TMPDIR=/scratch",
+              "-e",
+              "TMP=/scratch",
+              "-e",
+              "TEMP=/scratch",
+              "-e",
+              "HOME=/scratch",
+              "-e",
+              "PYTHONDONTWRITEBYTECODE=1",
+              "-e",
+              "PYTHONPATH=/work/src:/deps/lib",
+              "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+              "python",
+              "/probe.py"
+            ],
+            "exit": 0,
+            "git_tree": "e859900b64d98fa281e5bc6fdf087b65d04ffb00",
+            "log_sha256": "abd685d4f13c7a23d35d5a1bd926856f28acd6c6a0b1d466e70a4b8eea2c5c56",
+            "probe": {
+              "black_module": "/work/src/black/__init__.py",
+              "black_version": "26.10.1",
+              "dependencies": {
+                "click": "8.3.0",
+                "mypy_extensions": "1.1.0",
+                "packaging": "25.0",
+                "pathspec": "1.0.4",
+                "platformdirs": "4.5.0",
+                "pytokens": "0.4.1"
+              },
+              "exception_message": "not enough values to unpack (expected 2, got 1)",
+              "exception_type": "ValueError",
+              "format": "FAIL",
+              "input_ast_parse": "PASS",
+              "input_black_parse": "PASS",
+              "python": "3.13.18",
+              "source": "with -(  # fmt: skip\n    a\n).real and b:\n    pass\n",
+              "source_sha256": "583198303d2271d4808ebd0970d2a3169efa03d5aebce471c8a112cd2dbe9706",
+              "traceback": "Traceback (most recent call last):\n  File \"/probe.py\", line 25, in <module>\n    output = black.format_str(source, mode=black.Mode())\n  File \"/work/src/black/__init__.py\", line 1391, in format_str\n    dst_contents = _format_str_once(src_contents, mode=mode, lines=lines)\n  File \"/work/src/black/__init__.py\", line 1503, in _format_str_once\n    for current_line in line_generator.visit(src_node):\n                        ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^\n  File \"/work/src/black/nodes.py\", line 171, in visit\n    yield from self.visit_default(node)\n  File \"/work/src/black/linegen.py\", line 179, in visit_default\n    yield from super().visit_default(node)\n  File \"/work/src/black/nodes.py\", line 177, in visit_default\n    yield from self.visit(child)\n  File \"/work/src/black/nodes.py\", line 169, in visit\n    yield from visitf(node)\n  File \"/work/src/black/linegen.py\", line 264, in visit_stmt\n    yield from self.visit(child)\n  File \"/work/src/black/nodes.py\", line 171, in visit\n    yield from self.visit_default(node)\n  File \"/work/src/black/linegen.py\", line 179, in visit_default\n    yield from super().visit_default(node)\n  File \"/work/src/black/nodes.py\", line 177, in visit_default\n    yield from self.visit(child)\n  File \"/work/src/black/nodes.py\", line 169, in visit\n    yield from visitf(node)\n  File \"/work/src/black/linegen.py\", line 551, in visit_factor\n    _operator, operand = node.children\n    ^^^^^^^^^^^^^^^^^^\nValueError: not enough values to unpack (expected 2, got 1)\n"
+            },
+            "revision": "04afd895bf343e5dc41fc168ba3f8ac378a7ee5f",
+            "snapshot_has_stock_patch": true,
+            "snapshot_manifest_sha256": "4f24413fad2f415842ab5b0331a9b694695341b355581908fc71e370a9327d1a"
+          }
+        },
+        "run": "iterate-entry-tuning-01",
+        "stock_patch_sha256": "f4ff0a64366e01bcb0d9f03230e61444c257b11cd9d570f68732e31c9a630ba6",
+        "verified_dependencies_sha256": "2ba7345673123fec7b09d2a99a4e761c56a95d4865ec5ce6bdccad6727309740"
+      },
+      "id": "black-unary-fmt-skip",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "probe": "import ast\nimport hashlib\nimport importlib.metadata\nimport json\nimport platform\nimport traceback\nimport black\n\nsource = 'with -(  # fmt: skip\\n    a\\n).real and b:\\n    pass\\n'\nresult = {\n    'python': platform.python_version(),\n    'black_version': black.__version__,\n    'black_module': black.__file__,\n    'source': source,\n    'source_sha256': hashlib.sha256(source.encode()).hexdigest(),\n    'dependencies': {n: importlib.metadata.version(n) for n in ['click', 'mypy_extensions', 'packaging', 'pathspec', 'platformdirs', 'pytokens']},\n}\n# Establish validity before entering the formatter; no execution of context managers.\nast.parse(source)\nblack.lib2to3_parse(source)\nresult['input_ast_parse'] = 'PASS'\nresult['input_black_parse'] = 'PASS'\nprint('POSITIVE SANITY: exact multiline input passes ast.parse and black.lib2to3_parse', flush=True)\ntry:\n    output = black.format_str(source, mode=black.Mode())\n    result['output'] = output\n    black.assert_equivalent(source, output)\n    black.assert_stable(source, output, black.Mode())\n    result['format'] = 'PASS'\n    result['equivalent_and_stable'] = 'PASS'\nexcept Exception as exc:\n    result['format'] = 'FAIL'\n    result['exception_type'] = type(exc).__name__\n    result['exception_message'] = str(exc)\n    result['traceback'] = traceback.format_exc()\nprint(json.dumps(result, indent=2), flush=True)\n",
+      "receipt_sha256": "90778026ba814ab8710278b9693ed99091603aadd43d48058a0a59d7606c0f17"
+    },
+    {
+      "evidence": {
+        "base": "fc613377731e5211ab6e08e6fd6163f09ae67ce8",
+        "base_tree": "a7cfb04f26f624b52bccf36f885ca095d7c133c4",
+        "fixtures": {
+          "base": {
+            "archive_sha256": "747d1f82678f694256b855dfe360182723eba73d4d4d18df6e2a18991b70a912",
+            "command": [
+              "docker",
+              "run",
+              "--rm",
+              "--cpuset-cpus=10,11",
+              "--network=none",
+              "--read-only",
+              "--user",
+              "1000:1000",
+              "-v",
+              "${REPLAY_DIR}:/replay:rw",
+              "-e",
+              "TMPDIR=/replay/temp",
+              "-e",
+              "TMP=/replay/temp",
+              "-e",
+              "TEMP=/replay/temp",
+              "-e",
+              "PYTHONDONTWRITEBYTECODE=1",
+              "-e",
+              "PYTHONPATH=/replay/base/src",
+              "-w",
+              "/replay/base",
+              "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+              "python",
+              "/replay/probe.py"
+            ],
+            "commit": "fc613377731e5211ab6e08e6fd6163f09ae67ce8",
+            "every_archived_file_matches_git_blob": true,
+            "exit": 0,
+            "manifest_sha256": "6aa0e88170398cdbfe04ea33d879998bbcbf0e278769e9c925f50f65de4438fa",
+            "results": {
+              "cases": {
+                "invalid_prereleases": {
+                  "changes": {
+                    "prereleases": "yes"
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "exception": "AttributeError",
+                    "message": "'Specifier' object has no attribute '__replace__'",
+                    "original_unchanged": true,
+                    "outcome": "exception"
+                  }
+                },
+                "numeric_version": {
+                  "changes": {
+                    "version": 2
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "exception": "AttributeError",
+                    "message": "'Specifier' object has no attribute '__replace__'",
+                    "original_unchanged": true,
+                    "outcome": "exception"
+                  }
+                },
+                "operator_contains_version": {
+                  "changes": {
+                    "operator": ">=2"
+                  },
+                  "input": ">=1",
+                  "observation": {
+                    "exception": "AttributeError",
+                    "message": "'Specifier' object has no attribute '__replace__'",
+                    "original_unchanged": true,
+                    "outcome": "exception"
+                  }
+                },
+                "split_operator_version": {
+                  "changes": {
+                    "operator": ">",
+                    "version": "=2"
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "exception": "AttributeError",
+                    "message": "'Specifier' object has no attribute '__replace__'",
+                    "original_unchanged": true,
+                    "outcome": "exception"
+                  }
+                },
+                "valid_change": {
+                  "changes": {
+                    "operator": ">",
+                    "prereleases": false,
+                    "version": "2"
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "exception": "AttributeError",
+                    "message": "'Specifier' object has no attribute '__replace__'",
+                    "original_unchanged": true,
+                    "outcome": "exception"
+                  }
+                },
+                "valid_noop": {
+                  "changes": {},
+                  "input": ">=1",
+                  "observation": {
+                    "exception": "AttributeError",
+                    "message": "'Specifier' object has no attribute '__replace__'",
+                    "original_unchanged": true,
+                    "outcome": "exception"
+                  }
+                }
+              },
+              "module": "/replay/base/src/packaging/specifiers.py",
+              "python": "3.13.18"
+            },
+            "source_tree": "a7cfb04f26f624b52bccf36f885ca095d7c133c4",
+            "specifiers_sha256": "148611eab1005d9e39cbc2158bb4f93c9c0683130a0079447526df7b5d5c9f05",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_sha256": "5c200b19fd6fa6212224e97c195ba398f1ad15449ad96973336cd55dc181d4b0"
+          },
+          "control": {
+            "archive_sha256": "747d1f82678f694256b855dfe360182723eba73d4d4d18df6e2a18991b70a912",
+            "command": [
+              "docker",
+              "run",
+              "--rm",
+              "--cpuset-cpus=10,11",
+              "--network=none",
+              "--read-only",
+              "--user",
+              "1000:1000",
+              "-v",
+              "${REPLAY_DIR}:/replay:rw",
+              "-e",
+              "TMPDIR=/replay/temp",
+              "-e",
+              "TMP=/replay/temp",
+              "-e",
+              "TEMP=/replay/temp",
+              "-e",
+              "PYTHONDONTWRITEBYTECODE=1",
+              "-e",
+              "PYTHONPATH=/replay/control/src",
+              "-w",
+              "/replay/control",
+              "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+              "python",
+              "/replay/probe.py"
+            ],
+            "commit": "fc613377731e5211ab6e08e6fd6163f09ae67ce8",
+            "exit": 0,
+            "manifest_sha256": "a42fb6c2ccabe522270ef31866d3e9ad0d52507a50c614c0f03797f5265a6b0d",
+            "patch_sha256": "1f6d613eb33c2c4fd4627e2508c3542ab8005eb5544c330ad3de55848ef0af61",
+            "patch_source": "tmp/pr-quality-panel/runs/iterate-entry-tuning-01/attempts/packaging/control/candidate.patch",
+            "results": {
+              "cases": {
+                "invalid_prereleases": {
+                  "changes": {
+                    "prereleases": "yes"
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "exception": "TypeError",
+                    "message": "prereleases must be bool or None",
+                    "original_unchanged": true,
+                    "outcome": "exception"
+                  }
+                },
+                "numeric_version": {
+                  "changes": {
+                    "version": 2
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "exception": "TypeError",
+                    "message": "operator and version must be strings",
+                    "original_unchanged": true,
+                    "outcome": "exception"
+                  }
+                },
+                "operator_contains_version": {
+                  "changes": {
+                    "operator": ">=2"
+                  },
+                  "input": ">=1",
+                  "observation": {
+                    "exception": "InvalidSpecifier",
+                    "message": "Invalid operator: '>=2'",
+                    "original_unchanged": true,
+                    "outcome": "exception"
+                  }
+                },
+                "split_operator_version": {
+                  "changes": {
+                    "operator": ">",
+                    "version": "=2"
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "exception": "InvalidSpecifier",
+                    "message": "Replacement fields do not round-trip",
+                    "original_unchanged": true,
+                    "outcome": "exception"
+                  }
+                },
+                "valid_change": {
+                  "changes": {
+                    "operator": ">",
+                    "prereleases": false,
+                    "version": "2"
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "operator": ">",
+                    "original_unchanged": true,
+                    "outcome": "accepted",
+                    "prereleases": false,
+                    "prereleases_override": false,
+                    "same": false,
+                    "text": ">2",
+                    "version": "2"
+                  }
+                },
+                "valid_noop": {
+                  "changes": {},
+                  "input": ">=1",
+                  "observation": {
+                    "operator": ">=",
+                    "original_unchanged": true,
+                    "outcome": "accepted",
+                    "prereleases": false,
+                    "prereleases_override": null,
+                    "same": true,
+                    "text": ">=1",
+                    "version": "1"
+                  }
+                }
+              },
+              "module": "/replay/control/src/packaging/specifiers.py",
+              "python": "3.13.18"
+            },
+            "sealed_submission_sha256": "66ef568b549022d8faa2657c910bcbfe1dbea9357e3fcf9e442be043a112163c",
+            "source_tree": "a7cfb04f26f624b52bccf36f885ca095d7c133c4",
+            "specifiers_sha256": "4a52000d1b37bbdf28f8d97b175a159a2845a76de11c9860309803e0d877d344",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_sha256": "fb0f965db76b1912424cf6e7a7d8ee0fa71d4100dd212993bb6c135f1666e0e9"
+          },
+          "develop": {
+            "archive_sha256": "747d1f82678f694256b855dfe360182723eba73d4d4d18df6e2a18991b70a912",
+            "command": [
+              "docker",
+              "run",
+              "--rm",
+              "--cpuset-cpus=10,11",
+              "--network=none",
+              "--read-only",
+              "--user",
+              "1000:1000",
+              "-v",
+              "${REPLAY_DIR}:/replay:rw",
+              "-e",
+              "TMPDIR=/replay/temp",
+              "-e",
+              "TMP=/replay/temp",
+              "-e",
+              "TEMP=/replay/temp",
+              "-e",
+              "PYTHONDONTWRITEBYTECODE=1",
+              "-e",
+              "PYTHONPATH=/replay/develop/src",
+              "-w",
+              "/replay/develop",
+              "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+              "python",
+              "/replay/probe.py"
+            ],
+            "commit": "fc613377731e5211ab6e08e6fd6163f09ae67ce8",
+            "exit": 0,
+            "manifest_sha256": "f6f581e0f4be1695c73b25aebb9dd7983003c8f47504ac041326ac4b0ea86400",
+            "patch_sha256": "47f3fc1fe6f7ec9adffefa8e20c129ebcc52344d282a3025291528caa530bdc7",
+            "patch_source": "tmp/pr-quality-panel/runs/iterate-entry-tuning-01/attempts/packaging/develop/candidate.patch",
+            "results": {
+              "cases": {
+                "invalid_prereleases": {
+                  "changes": {
+                    "prereleases": "yes"
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "exception": "TypeError",
+                    "message": "prereleases must be True, False, or None",
+                    "original_unchanged": true,
+                    "outcome": "exception"
+                  }
+                },
+                "numeric_version": {
+                  "changes": {
+                    "version": 2
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "exception": "TypeError",
+                    "message": "operator and version must be strings",
+                    "original_unchanged": true,
+                    "outcome": "exception"
+                  }
+                },
+                "operator_contains_version": {
+                  "changes": {
+                    "operator": ">=2"
+                  },
+                  "input": ">=1",
+                  "observation": {
+                    "exception": "InvalidSpecifier",
+                    "message": "Invalid operator: '>=2'",
+                    "original_unchanged": true,
+                    "outcome": "exception"
+                  }
+                },
+                "split_operator_version": {
+                  "changes": {
+                    "operator": ">",
+                    "version": "=2"
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "exception": "InvalidSpecifier",
+                    "message": "Invalid version: '=2'",
+                    "original_unchanged": true,
+                    "outcome": "exception"
+                  }
+                },
+                "valid_change": {
+                  "changes": {
+                    "operator": ">",
+                    "prereleases": false,
+                    "version": "2"
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "operator": ">",
+                    "original_unchanged": true,
+                    "outcome": "accepted",
+                    "prereleases": false,
+                    "prereleases_override": false,
+                    "same": false,
+                    "text": ">2",
+                    "version": "2"
+                  }
+                },
+                "valid_noop": {
+                  "changes": {},
+                  "input": ">=1",
+                  "observation": {
+                    "operator": ">=",
+                    "original_unchanged": true,
+                    "outcome": "accepted",
+                    "prereleases": false,
+                    "prereleases_override": null,
+                    "same": true,
+                    "text": ">=1",
+                    "version": "1"
+                  }
+                }
+              },
+              "module": "/replay/develop/src/packaging/specifiers.py",
+              "python": "3.13.18"
+            },
+            "sealed_submission_sha256": "4b9b927fe207ea5abf3e45f35c51c40ea4511a43de7210cd8a062e03ed60f07d",
+            "source_tree": "a7cfb04f26f624b52bccf36f885ca095d7c133c4",
+            "specifiers_sha256": "3966bbd8df8c7971831f7db0a4b672c60a9fa38db055f21f7f6f0e00558697a7",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_sha256": "7f8e211bf90f77e663373366ec36d568f3b8ce04945544648df1bff0a369423b"
+          },
+          "merged": {
+            "archive_sha256": "a40468b461d5e39e7156e41a61f9f6f24350798256a6e569f1f3e79238326c9a",
+            "command": [
+              "docker",
+              "run",
+              "--rm",
+              "--cpuset-cpus=10,11",
+              "--network=none",
+              "--read-only",
+              "--user",
+              "1000:1000",
+              "-v",
+              "${REPLAY_DIR}:/replay:rw",
+              "-e",
+              "TMPDIR=/replay/temp",
+              "-e",
+              "TMP=/replay/temp",
+              "-e",
+              "TEMP=/replay/temp",
+              "-e",
+              "PYTHONDONTWRITEBYTECODE=1",
+              "-e",
+              "PYTHONPATH=/replay/merged/src",
+              "-w",
+              "/replay/merged",
+              "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+              "python",
+              "/replay/probe.py"
+            ],
+            "commit": "ffced26d0a30557a0e181dbaca561a0432ddec53",
+            "every_archived_file_matches_git_blob": true,
+            "exit": 0,
+            "manifest_sha256": "8a78a56b0af3f8cfa06207ff611db37829f06a315995874abd581540b5990a73",
+            "results": {
+              "cases": {
+                "invalid_prereleases": {
+                  "changes": {
+                    "prereleases": "yes"
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "operator": "==",
+                    "original_unchanged": true,
+                    "outcome": "accepted",
+                    "prereleases": "yes",
+                    "prereleases_override": "yes",
+                    "same": false,
+                    "text": "==1",
+                    "version": "1"
+                  }
+                },
+                "numeric_version": {
+                  "changes": {
+                    "version": 2
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "operator": "==",
+                    "original_unchanged": true,
+                    "outcome": "accepted",
+                    "prereleases": false,
+                    "prereleases_override": null,
+                    "same": false,
+                    "text": "==2",
+                    "version": "2"
+                  }
+                },
+                "operator_contains_version": {
+                  "changes": {
+                    "operator": ">=2"
+                  },
+                  "input": ">=1",
+                  "observation": {
+                    "operator": ">=",
+                    "original_unchanged": true,
+                    "outcome": "accepted",
+                    "prereleases": false,
+                    "prereleases_override": null,
+                    "same": false,
+                    "text": ">=21",
+                    "version": "21"
+                  }
+                },
+                "split_operator_version": {
+                  "changes": {
+                    "operator": ">",
+                    "version": "=2"
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "operator": ">=",
+                    "original_unchanged": true,
+                    "outcome": "accepted",
+                    "prereleases": false,
+                    "prereleases_override": null,
+                    "same": false,
+                    "text": ">=2",
+                    "version": "2"
+                  }
+                },
+                "valid_change": {
+                  "changes": {
+                    "operator": ">",
+                    "prereleases": false,
+                    "version": "2"
+                  },
+                  "input": "==1",
+                  "observation": {
+                    "operator": ">",
+                    "original_unchanged": true,
+                    "outcome": "accepted",
+                    "prereleases": false,
+                    "prereleases_override": false,
+                    "same": false,
+                    "text": ">2",
+                    "version": "2"
+                  }
+                },
+                "valid_noop": {
+                  "changes": {},
+                  "input": ">=1",
+                  "observation": {
+                    "operator": ">=",
+                    "original_unchanged": true,
+                    "outcome": "accepted",
+                    "prereleases": false,
+                    "prereleases_override": null,
+                    "same": true,
+                    "text": ">=1",
+                    "version": "1"
+                  }
+                }
+              },
+              "module": "/replay/merged/src/packaging/specifiers.py",
+              "python": "3.13.18"
+            },
+            "source_tree": "646a7fba4a8f591a835d2447aff1e35682a51b76",
+            "specifiers_sha256": "c7c95fa9ee74797e85d55020074b0a6e0e1ddafebea98102b0a97ebd4cc5f328",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stdout_sha256": "ee8a3384cc82398987f6f55040586fc1068b0b0af47a409b408516349e38d31b"
+          }
+        },
+        "gold": "ffced26d0a30557a0e181dbaca561a0432ddec53",
+        "gold_tree": "646a7fba4a8f591a835d2447aff1e35682a51b76",
+        "image": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+        "image_id": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+        "merged_patch_sha256": "5eb48d6d82ccc17b5493067cb7a88a2f79c3316e591a7e508dc31532ae312829",
+        "plan_sha256": "92e6c13f504c0deed819a16f88dc0ba44cc89e490a6183a6ef8cc8899b1e438d",
+        "probe_sha256": "66152cbe3971074cc39aae6e9faa9b39e8a0071546692c3e1fc4a10e4dcfe722",
+        "reference_checks": {
+          "admission": {
+            "matches_frozen": true,
+            "path": "cache/calibration/packaging/1793363732727467602/admission.json",
+            "sha256": "b4026fc58879479cab47143a8591a475b900035e2be185e2cdb660e412e42696"
+          },
+          "base_grade": {
+            "matches_frozen": true,
+            "path": "cache/calibration/packaging/1793363732727467602/base/grade.json",
+            "sha256": "9444c064526d0dfa88ee5481b5db59228dc42c383585b5a4876adb616d2fbd99"
+          },
+          "cold": {
+            "matches_frozen": true,
+            "path": "cache/cold/packaging/1793200302329263633/receipt.json",
+            "sha256": "249677ad0bec17294c8e81266c6b44de506f5a61f54a6089ce530f36e05bd3d4"
+          },
+          "gold_grade": {
+            "matches_frozen": true,
+            "path": "cache/calibration/packaging/1793363732727467602/gold/grade.json",
+            "sha256": "191efb0c9c05910609a593579b53fcc35fcf435440cc0998b1edcc85927eeb63"
+          }
+        },
+        "replay_script_sha256": "8865169fe122b9270e845799f2dfa725b195966b9f4e074462a777eb6888d5ee",
+        "run": "iterate-entry-tuning-01",
+        "scope": "Read-only sealed input replay; no evaluator/treatment/ruling mutation"
+      },
+      "id": "packaging-replacement-validation",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "probe": "import json\nimport platform\nimport packaging.specifiers\nfrom packaging.specifiers import Specifier\n\ncases = [\n    ('valid_noop', '>=1', {}),\n    ('valid_change', '==1', {'operator': '>', 'version': '2', 'prereleases': False}),\n    ('split_operator_version', '==1', {'operator': '>', 'version': '=2'}),\n    ('operator_contains_version', '>=1', {'operator': '>=2'}),\n    ('invalid_prereleases', '==1', {'prereleases': 'yes'}),\n    ('numeric_version', '==1', {'version': 2}),\n]\nresults = {}\nfor name, text, changes in cases:\n    original = Specifier(text)\n    before = (str(original), original._prereleases)\n    try:\n        result = original.__replace__(**changes)\n        observation = dict(outcome='accepted', text=str(result), operator=result.operator,\n                           version=result.version, prereleases=result.prereleases,\n                           prereleases_override=result._prereleases, same=result is original)\n    except Exception as exc:\n        observation = dict(outcome='exception', exception=type(exc).__name__, message=str(exc))\n    observation['original_unchanged'] = before == (str(original), original._prereleases)\n    results[name] = dict(input=text, changes=changes, observation=observation)\nprint(json.dumps(dict(python=platform.python_version(), module=packaging.specifiers.__file__, cases=results), indent=2))\n",
+      "receipt_sha256": "ce7dc120f6b94548b89de784a5b72e28d908c64b27c26610fa897514799bff25"
+    }
+  ],
+  "parent_plan_sha256": null,
+  "plan_sha256": "92e6c13f504c0deed819a16f88dc0ba44cc89e490a6183a6ef8cc8899b1e438d",
+  "protocol": "pr-quality-pytest-entry-natural-v1",
+  "runtime": {
+    "bwrap_sha256": "77360cb751ccedc5971391444ac86a8a33c15b04d6b4a6fe45f5d25496e62c4c",
+    "cli_sha256": "c1eecb4b2304cb0e077a673231e30c9d759dec8fea4a6b8818078865e392fa90",
+    "effort": "medium",
+    "executor": {
+      "boundary": {
+        "composite.py": "3513cf7d014028e1a09ea7ba789371b1973d7cbf8205b57b70c238aa5e4a4c55",
+        "controller.py": "dec3075ed51d52dc258e617c51929e8c840f5e9187048ab9db2a641d84e9ce7e",
+        "environment.py": "849e42e537410d3543696596b1a114bb6499d5c65cffacd73476cea632bcfc90",
+        "guest.py": "bdeb07468592fb2e3a78f6c3bb4e96d2f2d1c7b32a24c064e14fefd336e96db3",
+        "host.py": "64c98badd4a7b2d287434897a6b4df0733da33ee34f3d3f176d23cf8e1bd832c",
+        "lab.py": "5fb64b06a11a9bfa7999e9ac846f6eaa797c3da71d7b6372aac4eb261c62ba2f",
+        "platform.json": "703cede8f6c1b298f2fe00e30ad425224ae3ace5c06510b40f02868a2d81c1fa",
+        "run.py": "dc71754735620ce7ec3454182f1a7855b3f1eb52c04455021b78f0f8dbd5cd49",
+        "stock.py": "73f6a47ca2f4a55162514a1be7bb56b0f2130e6348eff99fe4de6f3e16dfa5b6"
+      },
+      "cpus_per_worker": 2,
+      "judge": {
+        "effort": "medium",
+        "entrypoint_sha256": "b694a1a18a13d6284cd2c6d71d57e2f0f19bd284ed6580ac113a530e934b7239",
+        "max_attempts_per_rotation": 2,
+        "model": "gpt-6.1-sol",
+        "rotations": 3
+      },
+      "lanes": 3,
+      "managed_hooks": {
+        "managed_hook_sha256": [
+          "sha256:a79f6a172423c70427168b961eda5f185d4846935c8187dc51528f46d43f4851",
+          "sha256:97fd1b8e1448bcf5a982080549b7a9fa05cf3dfecbe13ab34ccad635fc2881a2"
+        ],
+        "stock_cli_sha256": "c1eecb4b2304cb0e077a673231e30c9d759dec8fea4a6b8818078865e392fa90"
+      },
+      "memory": "4g"
+    },
+    "implementation_sha256": "8921ec6c57a3ffebc58deeb489215f3437096bd3247347cc7e01ff1ab4c18fa3",
+    "model": "gpt-6.1-sol",
+    "package_sha256": "1d6bdd9189ab5c076d825051201c17dda0627ad472ce11872f1c997cb257677c",
+    "qualifier": "1df5f24a53c1f954cd82688220415cc7d55097df2d98529e6d663d6db3daf821",
+    "rates_usd_per_million": {
+      "cached_input": 0.1,
+      "output": 10,
+      "uncached_input": 2
+    },
+    "rubric_sha256": "a47aa29e89ca55d12fd48031fa7ca5073d449caafefd1b17353a917ebe76a3c3",
+    "seed": 20261028,
+    "source_sha256": "51a4740fa2bc38f96e006d6c904b3ab9037f4151e3295c42a2293237b3c67691",
+    "treatment": {
+      "companion": {
+        "manifest_sha256": "18eb497a5c3c5aade93fe1982db0fbd2ab23d4a428fc552da6ee3cc520c9706d",
+        "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+        "skills": {
+          "brainstorming": "74edf03ea6d24ef53db48677b93558d14a979bdf052ca3f57ecdca0c66791608",
+          "dispatching-parallel-agents": "1968923066f3b707eb01d1992cdf4c42284c3855f70253b9cd5000ff45fca13c",
+          "executing-plans": "c4c3d8b628c51114cd165fb8246fe02744cd8be180032328391252e653028d9b",
+          "finishing-a-development-branch": "8db5a922b242dd4e1bf824cb91c13b3e8d8e8a86d6ceaf7f0774eb9cce909d65",
+          "receiving-code-review": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438",
+          "requesting-code-review": "d71cc01ba56d2325cf8af5f7c11837819b63ecd57de0bfdb812f7f3ff7751df8",
+          "subagent-driven-development": "8dd1b8e698edec3700c6d89517dbe96febd3bacd3f6ea21c1a3569c62ea104b5",
+          "systematic-debugging": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787",
+          "test-driven-development": "bf1b8216e523851a411e91d429a7c1c2a173e79d88957bc78e348218d50edd54",
+          "using-git-worktrees": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd",
+          "using-superpowers": "30f2ab78e20ddc27ee7158ae8d4a2abe161c360981c7cc3548070913142d3dc3",
+          "verification-before-completion": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+          "writing-plans": "48508f44bbfd7d24b029fbf3a314f3cd14c9615599059366e922f47b8dc08cf2",
+          "writing-skills": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b"
+        },
+        "source": "https://github.com/openai/plugins",
+        "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+        "source_path": "plugins/superpowers",
+        "version": "6.3.0"
+      },
+      "hook_sha256": {
+        "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c",
+        "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368"
+      },
+      "label": "iterate-entry-reduction-superpowers-v1",
+      "package_sha256": "1d6bdd9189ab5c076d825051201c17dda0627ad472ce11872f1c997cb257677c",
+      "plugin_hook_sha256": "64907841264f6cf6e0d5ff5823ca06427ad88c5c0f6719fb59a2708a97980650"
+    }
+  },
+  "selection": {
+    "cases": [
+      "commander",
+      "pytest",
+      "expat",
+      "packaging",
+      "marked",
+      "fmt",
+      "werkzeug",
+      "go-git",
+      "ripgrep",
+      "runner-space",
+      "black",
+      "jq"
+    ],
+    "declared_unix": 1793365469.695572,
+    "plan_sha256": "92e6c13f504c0deed819a16f88dc0ba44cc89e490a6183a6ef8cc8899b1e438d",
+    "sha256": "7bc537c02e43ee97f2d6bc0eff0053187c703605ceda7c22448f6173a17375cb",
+    "split": "tuning"
+  },
+  "source": {
+    "original_git_base": null,
+    "treatment_recipe": "treatments/1d6bdd9189ab/recipe.json"
+  },
+  "submission_span_seconds": 18154.132915496826,
+  "submissions": {
+    "path": "submissions.jsonl",
+    "rows": 36,
+    "sha256": "4134948b76d7141768b5eeeb8112831d412b885a865b9237e7020606d8933997"
+  }
+}

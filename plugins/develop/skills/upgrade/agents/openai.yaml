@@ -4,4 +4,6 @@ interface:
   icon_large: "./assets/icon.png"
   display_name: "Develop: Upgrade"
   short_description: "Review and upgrade dependencies and runtimes"
-  default_prompt: "Use $upgrade to assess my selected dependencies and implement authorized migrations through Iterate with one current plan/review. Preserve baseline/target/final evidence, rollback and justified deferrals."
+  default_prompt: "Use $upgrade to assess selected dependency and runtime upgrades and implement authorized changes."
+policy:
+  allow_implicit_invocation: false

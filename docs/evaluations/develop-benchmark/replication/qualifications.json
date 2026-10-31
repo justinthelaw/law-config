@@ -1,0 +1,358 @@
+{
+  "fmt": {
+    "fixture_origin": "Recovered historical 13-behavior fixture",
+    "candidate_scorer_sha256": "a13f21830a61f49de0334b08525db9ee42dc224515b4038af468f7aa2abf9edc",
+    "fixture_sha256": "0b04491ed2cf9b5ff963f36a4ce544b8af0f2b302744797d6eab1ae22e8f126b",
+    "reference_receipt_sha256": "20a99e8038ba7dbfa6a56ac372579efe8c0c536d750e4f944919d4f42ee9a61c",
+    "references": {
+      "base": "5/13 held-out",
+      "gold": "13/13 held-out"
+    },
+    "native": "Both references built and passed compile-test and format-test.",
+    "toolchain": "GCC 13.3.0, CMake 3.28.3",
+    "toolchain_mounts_sha256": "67ab5a0f7257232297af82f463e8993aca4b89983dc9bd1a0ca839be153f8800",
+    "case_archive_sha256": "1d0f71c4c4c313a01d8d5232f17792769dfceef4797a627520ab5284aa7c4344",
+    "case_archive_members": {
+      "portfolio/evaluator/fmtlib--fmt--4993/acceptance-v2-proposed.cc": "0b04491ed2cf9b5ff963f36a4ce544b8af0f2b302744797d6eab1ae22e8f126b"
+    },
+    "cohort": "recovered-fixture",
+    "base_archive_sha256": "0843247bdcb742eecc4984cc256444cda6607f6bacc54145aeb123b2ae1064a2",
+    "frozen_protocol_sha256": "7ed62a064ad93847539750116fef8d52ec8854f74f9612046c9f8ef2a3d88bb2",
+    "packet_sha256": "59adecab15ab192fcdc6356b6cad5325be55aa66bd440cb41443ffa865b8dcf1"
+  },
+  "svelte": {
+    "fixture_origin": "Eight recovered independent checks plus two recovered gold-derived checks",
+    "candidate_scorer_sha256": "70369f85a96bdbd7d01ad9ae7fbb1a04f936211f27b57fceeff5d3e54248e0b0",
+    "code_bundle_sha256": "c5d1dd5a20e08127002d544766cf2eba6e304991129a04ae25a4baffd42fffac",
+    "fixture_manifest_sha256": "4a31a03b871cb3866d3301badefce37448bafa10cabaf62c35dc44fb9f4867c7",
+    "reference_receipt_sha256": "1b29361f32b8e4c298a13d93a8d7a5279ebd1a793659839127ffaa9c301636a5",
+    "qualification_receipt_sha256": "bb4aa28f2712ef9ad02843605a1506355c370261237179db291367a0c85ebbbc",
+    "references": {
+      "base": "8/8 independent; 0/2 gold-derived",
+      "gold": "8/8 independent; 2/2 gold-derived"
+    },
+    "native": "Five named original native assertions in candidate scoring. A deliberately failing submitted test could not affect the authoritative suite.",
+    "toolchain": "Node 24.22.1 and pnpm 10.33.4; 493 integrity-checked public packages.",
+    "case_archive_sha256": "1d0f71c4c4c313a01d8d5232f17792769dfceef4797a627520ab5284aa7c4344",
+    "case_archive_members": {
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-eager-async-pending-commit/_config.js": "10e57d20d1b364484ba956a00f9d5dfad314a39e9362a88f35d9f1dce281ef5f",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-eager-async-pending-commit/main.svelte": "1d7147028c29154df996f45193bb93b2583baf0d9e9d1eea3b879161d74017d1",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-eager-async-pending-commit/shared.js": "25b40badfa2ba6591d01905f53244ef74711c4bc4bd56d29bce38413cd307996",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-eager-async-pending-discard/_config.js": "a9a26cbf572701081caa84506d489c0a5fd53538eaf86c29bf23d1f75eb0207b",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-eager-async-pending-discard/main.svelte": "1d7147028c29154df996f45193bb93b2583baf0d9e9d1eea3b879161d74017d1",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-eager-async-pending-discard/shared.js": "25b40badfa2ba6591d01905f53244ef74711c4bc4bd56d29bce38413cd307996",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-eager-pending-commit/_config.js": "5b9e9bd14be9b9fa5426c3c51a1931abaa0211f1f87c6369a9c3a39743f9d2ec",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-eager-pending-commit/main.svelte": "1d7147028c29154df996f45193bb93b2583baf0d9e9d1eea3b879161d74017d1",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-eager-pending-commit/shared.js": "25b40badfa2ba6591d01905f53244ef74711c4bc4bd56d29bce38413cd307996",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-eager-pending-discard/_config.js": "09e8c7072e8244a72e8429023f95437b6df8aea077585f03a3321d5d41053d28",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-eager-pending-discard/main.svelte": "1d7147028c29154df996f45193bb93b2583baf0d9e9d1eea3b879161d74017d1",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-eager-pending-discard/shared.js": "25b40badfa2ba6591d01905f53244ef74711c4bc4bd56d29bce38413cd307996",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-inspect-async-pending-commit/_config.js": "900346cb1081389b2d0a081c70287067c09491426a2ae9da95f9205caba049cf",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-inspect-async-pending-commit/main.svelte": "1d7147028c29154df996f45193bb93b2583baf0d9e9d1eea3b879161d74017d1",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-inspect-async-pending-commit/shared.js": "25b40badfa2ba6591d01905f53244ef74711c4bc4bd56d29bce38413cd307996",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-inspect-async-pending-discard/_config.js": "3921428600d0035b6a2247d46bba4d91af44c40a1dfbf22d7983755cdca4420b",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-inspect-async-pending-discard/main.svelte": "1d7147028c29154df996f45193bb93b2583baf0d9e9d1eea3b879161d74017d1",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-inspect-async-pending-discard/shared.js": "25b40badfa2ba6591d01905f53244ef74711c4bc4bd56d29bce38413cd307996",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-inspect-pending-commit/_config.js": "d3abfb6aa25096b74064d6fee7d373a11182cbcc1a211d1b3776640b460a2008",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-inspect-pending-commit/main.svelte": "1d7147028c29154df996f45193bb93b2583baf0d9e9d1eea3b879161d74017d1",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-inspect-pending-commit/shared.js": "25b40badfa2ba6591d01905f53244ef74711c4bc4bd56d29bce38413cd307996",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-inspect-pending-discard/_config.js": "d09d2769ee0ad8aa4b78317a4266b367b4d04ca17de2f55ceb69974d24aa5108",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-inspect-pending-discard/main.svelte": "1d7147028c29154df996f45193bb93b2583baf0d9e9d1eea3b879161d74017d1",
+      "matrix-evaluation/case-09-rep-1/acceptance-proposed-v2/samples/benchmark-fork-inspect-pending-discard/shared.js": "25b40badfa2ba6591d01905f53244ef74711c4bc4bd56d29bce38413cd307996"
+    },
+    "gold_overlay_root": "packages/svelte/tests/runtime-runes/samples/inspect-fork-discarded",
+    "gold_overlay_files_sha256": {
+      "_config.js": "1aa8ba2d5398721522dba3db7a1f5fdefc14d6d07e067513b7c4087d1e728d9f",
+      "main.svelte": "7d3faa2291f6045b7f29431d37b3d825ead5e18ea8b3a8db2408026293bc668b"
+    },
+    "cohort": "recovered-fixture",
+    "base_archive_sha256": "67f5d5bb8a5c7880e4434286c7e46cd38554aefc3ab1f2dba37e1064b0a84467",
+    "frozen_protocol_sha256": "2dce8be95d5c53e28cbcd597290f706f1dda71743c386c5c13c55f14f9da6039",
+    "packet_sha256": "cec1d339412cf606cf736741369fcabe16e79c71ed56474bdaac44784e57691a"
+  },
+  "law": {
+    "fixture_origin": "Recovered seven synthetic SQLite scenarios with candidate-documentation mapping",
+    "candidate_scorer_sha256": "1aec1c6cee295f95aff496180272b25dde878868d8ee9642ca3d6207d5852a12",
+    "fixture_sha256": "69fedbae177b913e4c5e409d28afa24a39808c5e7fde53105a18facb7b69dba3",
+    "reference_receipt_sha256": "68b38c439bf222d7d5f7e9c48c83813c143e0628fd8edea5de37cae84b42304b",
+    "references": {
+      "base": "2/7",
+      "gold": "7/7"
+    },
+    "reference_case_outcomes": {
+      "base": {
+        "assertion_differences": {},
+        "behavior_passes": 2,
+        "behaviors": {
+          "default_retry_bound": "fail",
+          "default_timeout": "fail",
+          "exhaustion_two": "fail",
+          "exhaustion_zero": "fail",
+          "nonlock_error": "pass",
+          "release_after_first_failure": "fail",
+          "uncontended": "pass"
+        },
+        "grade_sha256": "114053707ab89ad6b56fb41c91c4e0466f7a94c5cd10910aaf85170df020aa73",
+        "mapping_basis": "qualification_only_reference_adapter",
+        "syntax_passes": 2
+      },
+      "gold": {
+        "assertion_differences": {},
+        "behavior_passes": 7,
+        "behaviors": {
+          "default_retry_bound": "pass",
+          "default_timeout": "pass",
+          "exhaustion_two": "pass",
+          "exhaustion_zero": "pass",
+          "nonlock_error": "pass",
+          "release_after_first_failure": "pass",
+          "uncontended": "pass"
+        },
+        "grade_sha256": "8912f627d02a0492b4687dfb059833b8328107eacf49950a0f529a698f0723cf",
+        "mapping_basis": "candidate_documentation",
+        "syntax_passes": 2
+      }
+    },
+    "native": "Each reference passed both shell syntax checks. Timed database processes and all records use synthetic fixtures.",
+    "toolchain": "SQLite CLI 3.45.1",
+    "sqlite_binary_sha256": "04d261a472c6838700310da6c8abaec05534945c6fe1a2b3353e945313fc20b4",
+    "case_archive_sha256": "1d0f71c4c4c313a01d8d5232f17792769dfceef4797a627520ab5284aa7c4344",
+    "case_archive_members": {
+      "matrix-evaluation/case-19-rep-1/acceptance-v2.1-setup-recovery/acceptance.py": "69fedbae177b913e4c5e409d28afa24a39808c5e7fde53105a18facb7b69dba3"
+    },
+    "cohort": "recovered-fixture",
+    "base_archive_sha256": "f2479101d09169ca661373678e75281312fe04b09321152052e5d86beba927ba",
+    "frozen_protocol_sha256": "ed75dd9903caffdbacf5424b3e84f6e29ffe88e75c324bb8ce0d10ce5878c5ac",
+    "packet_sha256": "86275187ce6e7f1a27a18e2473da81970d72463a31a11beea747a95cfefee640"
+  },
+  "runner": {
+    "fixture_origin": "Prospective replacement; historical behavioral/output modules missing",
+    "candidate_scorer_sha256": "80f89a418bf3b7127c39e992df49d6a2a95783dfe028eb087d3201e1d9d56ba5",
+    "prospective_fixture_sha256": "c5c0c5a7b5289cdb569bba6cd7d699752e29eb35a9f8bc15acadecf2a3f430b2",
+    "reference_receipt_sha256": "6f76086df383a4910d4286a8f46e01faa2a2b439d256903f55dac36fd2a7d1f3",
+    "qualification_receipt_sha256": "1f79c62a93c0cbe31db491b0599a4b048d2769f19eb33e89ead15f5980d1c30a",
+    "references": {
+      "base": "4/11 replacement behavior checks",
+      "gold": "11/11 replacement behavior checks"
+    },
+    "reference_suites": {
+      "behavior": {
+        "base": {
+          "failed": 7,
+          "passed": 4,
+          "status": "complete",
+          "unobserved": []
+        },
+        "gold": {
+          "failed": 0,
+          "passed": 11,
+          "status": "complete",
+          "unobserved": []
+        }
+      },
+      "capability": {
+        "base": {
+          "failed": 0,
+          "passed": 1,
+          "status": "complete",
+          "unobserved": []
+        },
+        "gold": {
+          "failed": 0,
+          "passed": 1,
+          "status": "complete",
+          "unobserved": []
+        }
+      },
+      "native": {
+        "base": {
+          "failed": 0,
+          "passed": 119,
+          "status": "complete",
+          "unobserved": []
+        },
+        "gold": {
+          "failed": 0,
+          "passed": 119,
+          "status": "complete",
+          "unobserved": []
+        },
+        "shared_environment_titles": [],
+        "unexpected_titles": []
+      },
+      "outputs": {
+        "base": {
+          "failed": 0,
+          "passed": 2,
+          "status": "complete",
+          "unobserved": []
+        },
+        "gold": {
+          "failed": 0,
+          "passed": 2,
+          "status": "complete",
+          "unobserved": []
+        }
+      },
+      "protected-home-native": {
+        "base": {
+          "failed": 6,
+          "passed": 5,
+          "status": "complete",
+          "unobserved": []
+        },
+        "gold": {
+          "failed": 6,
+          "passed": 5,
+          "status": "complete",
+          "unobserved": []
+        },
+        "shared_environment_titles": [
+          "Linux Homebrew cleanup fails closed if its executable changes",
+          "Linux Homebrew cleanup fails closed if the verified file identity changes",
+          "Linux Homebrew cleanup fails closed when config directory creation fails",
+          "Linux Homebrew cleanup preserves the prefix and workflow-installed packages",
+          "Linux Homebrew cleanup rejects a config directory outside fixed temporary ownership",
+          "Linux Homebrew cleanup rejects configuration that can override safe paths"
+        ],
+        "unexpected_titles": []
+      }
+    },
+    "shared_environment": {
+      "native": [],
+      "protected-home-native": [
+        "Linux Homebrew cleanup fails closed if its executable changes",
+        "Linux Homebrew cleanup fails closed if the verified file identity changes",
+        "Linux Homebrew cleanup fails closed when config directory creation fails",
+        "Linux Homebrew cleanup preserves the prefix and workflow-installed packages",
+        "Linux Homebrew cleanup rejects a config directory outside fixed temporary ownership",
+        "Linux Homebrew cleanup rejects configuration that can override safe paths"
+      ]
+    },
+    "limit": "Linux source evaluation with synthetic operational adapters. Bundled distribution edits need scope review.",
+    "toolchain": "Node 24.22.1; 12 applicable Linux packages out of 31 lockfile entries, all verified by SHA-512.",
+    "closure_sha256": "cb4554a041ac42cf77592465c342c246e2080edee1bca3976a0b1dea35aac3c3",
+    "published_fixture_files_sha256": {
+      "PROSPECTIVE.json": "c5c0c5a7b5289cdb569bba6cd7d699752e29eb35a9f8bc15acadecf2a3f430b2",
+      "behavior.mjs": "3b53d2f92beacf26ecfddc70f033a6ce3f539cc7c21a7dc81f1fb31e9d206818",
+      "contract.json": "f24f895f17407b7292c199f7c0ac723df745145030d1c70c0fad3df947dde0eb",
+      "outputs.mjs": "7be1aeb016a4ab458b6a31069459ef1954e3b508b4d10ccc44f023edf35f4cc9",
+      "public-keys.json": "c783d4610f4e8903e59e5bac78e3fce4a06e6fe23e32e617a343a9a5db0b9db5",
+      "reporter.mjs": "fae52c2a84a0ef67d8a2820e8e4d404f679796d4c040f2c996c6acdf232d7437",
+      "smoke.mjs": "9d9d06e7630b24e1650e5bfdcc61e49b2c1d11f06bf948efb5cf5b22eb6404d0"
+    },
+    "cohort": "replacement-fixture",
+    "base_archive_sha256": "2658d9ccad9665efb3e65e3bbe33ed63cd02c7450eef08e619283609f269c19c",
+    "frozen_protocol_sha256": "f5d3a561e27b719dc9bd8c65bf682fa4e195188440f5538bd95950129fe77214",
+    "packet_sha256": "48c44cd78a4ef059c39f089829297c9ca4d470106959f16d87c83f1fcaf41fc6"
+  },
+  "site": {
+    "fixture_origin": "Recovered cross-origin spec on the official Playwright OCI runtime, separately versioned",
+    "fixture_sha256": "eb2f38568f3a930e851c8fcda9c70ef61f1fc17978cfd811ac6825070885096d",
+    "image_manifest_sha256": "bc72a8df40831ded821e3cbc79c318c21b44d6e51dff9fd89ace7a8249c5b462",
+    "reference_receipt_sha256": "428aa2f32e0198963360c85fc152cc6eb2e86d53537bf39ffb08c29dfd93e3fe",
+    "references": {
+      "base": {
+        "build_exit": 0,
+        "browser_projects": {
+          "chromium": "assertion failed",
+          "firefox": "assertion failed",
+          "webkit": "assertion failed",
+          "Mobile Chrome": "assertion failed",
+          "Mobile Safari": "assertion failed"
+        }
+      },
+      "gold": {
+        "build_exit": 0,
+        "browser_projects": {
+          "chromium": "pass",
+          "firefox": "pass",
+          "webkit": "assertion failed",
+          "Mobile Chrome": "pass",
+          "Mobile Safari": "assertion failed"
+        }
+      }
+    },
+    "toolchain": "Node 24.21.0, npm 12.2.0, Playwright 1.64.0, 405 unique integrity-verified npm tarballs.",
+    "constraint": "The neutral diagnostic recorded seven Firefox PID denials at the initial cap and zero OOM events. At the prospectively selected 512-task cap, all ten reference/project runs reached the exact final assertion. Both gold WebKit failures remain behavioral comparisons.",
+    "initial_reference_attempt": {
+      "base": {
+        "build_exit": 0,
+        "browser_projects": {
+          "chromium": "assertion failed",
+          "firefox": "environmental/inconclusive",
+          "webkit": "assertion failed",
+          "Mobile Chrome": "assertion failed",
+          "Mobile Safari": "assertion failed"
+        }
+      },
+      "gold": {
+        "build_exit": 0,
+        "browser_projects": {
+          "chromium": "pass",
+          "firefox": "environmental/inconclusive",
+          "webkit": "assertion failed",
+          "Mobile Chrome": "pass",
+          "Mobile Safari": "assertion failed"
+        }
+      }
+    },
+    "initial_reference_receipt_sha256": "23f96a8d15bd0f14f1af7c73f8e2f4055a627fe14bf7510352c84fda34e9db38",
+    "repair_decision_sha256": "a66bfde0fffa9044b7ff85b604537ee6959af8e14918d1a21712cb19afd06064",
+    "assertion_qualification_sha256": "e9898de677471b046046a0c21752ad2c859064d907fed32732e81289fc2c3844",
+    "candidate_scorer_sha256": "eef1fd7bfdbf4bbfe2c60530cda0b5b54d5e514cb5fc181ef4ae696b05114b5d",
+    "code_bundle_sha256": "a5fad772f2bd26cd9334fdf608b93bef96bbd3b9cab631995cf9fd132f8237d3",
+    "qualification_receipt_sha256": "6a6f9263641aa2f7da601956842707f34168e2dc4db820fa869ca984029896cb",
+    "reference_matrix_sha256": "c04565309e0b2bc7797b7f21061d4160b7053cd7c15223d5077587983718ebbb",
+    "reference_native": {
+      "base": [
+        10,
+        0
+      ],
+      "gold": [
+        10,
+        0
+      ]
+    },
+    "strict_reference_total": {
+      "base": "10/15",
+      "gold": "13/15"
+    },
+    "qualification": "The patched base-equivalent synthetic matched all 15 base outcomes. Its separate authored-test lane passed 85/90 and recorded five intended failures. An invalid path was rejected before build.",
+    "case_archive_sha256": "1d0f71c4c4c313a01d8d5232f17792769dfceef4797a627520ab5284aa7c4344",
+    "case_archive_members": {
+      "matrix-evaluation/case-18-rep-1/acceptance-v1/bridge-roundtrip.spec.ts": "eb2f38568f3a930e851c8fcda9c70ef61f1fc17978cfd811ac6825070885096d"
+    },
+    "cohort": "recovered-fixture",
+    "base_archive_sha256": "2afb2f9558ef959301d898674911a49cbaf9160789219a79109b83a2087d3b80",
+    "frozen_protocol_sha256": "4bc6440e12c96bbde59891afccc513e7bf33efdf7da10db44e38f60ed117f3d1",
+    "packet_sha256": "4ccdd3c44116c77c4a0b5efcde37869da72b84f461e73ce57a81abdc47c2170c"
+  },
+  "tokio": {
+    "fixture_origin": "Prospective replacement; original generated Cargo.lock and Rust probe missing.",
+    "fixture_version": "tokio-set-once-req-v1-20261027",
+    "candidate_scorer_sha256": "13437702fae351a3478300ec055ebbbe4c037469e0d6e31791ae2c5de4cf2df2",
+    "prospective_fixture_sha256": "33ab96b23516ca944afd65128086fbebc41fb304a6e29df431242810582e3134",
+    "qualification_receipt_sha256": "4f0fae6bba54318636caf94c2bf69f5519e0bd1268f521a26d7d91cb114d84a4",
+    "extra_sensitivity_receipt_sha256": "a5c459c59f895a5877bded1d3e9f6aae110fceca5613d430c28dd6d854e8c1f8",
+    "input_guard_sha256": "dd5856a680d2f84511f16a88a224de95e9bc51571984a4f4f2cf7ccbfbf8402b",
+    "original_lock_sha256": "3d7cba5399414f5b5c61fd20314070908f422e699e9dc9981332c71e1ecdf2c1",
+    "replacement_lock_sha256": "01210570e675c258852353aafbd89d5260bf03a25c74c553a4452164ff20d8c3",
+    "toolchain": "Rust 1.96.0 compiler, standard library and Cargo checked against the official SHA-256 manifest. Fresh resolution contains 204 packages and 151 verified Linux-target crate archives.",
+    "references": {
+      "base": "26/26 unchanged baseline; compile-negative E0599 at the new API, zero runtime assertions executed",
+      "gold": "26/26 unchanged baseline; 4/4 new runtime checks, shared borrow rejected E0596, 29/29 gold-native"
+    },
+    "preparation_exclusion": "The first harness could not link a native binary. A read-only GCC tool directory and independent link preflight were added before the accepted reference calibration.",
+    "published_fixture_files_sha256": {
+      "Cargo.lock": "01210570e675c258852353aafbd89d5260bf03a25c74c553a4452164ff20d8c3",
+      "FIXTURE-PREREG-v1.json": "33ab96b23516ca944afd65128086fbebc41fb304a6e29df431242810582e3134",
+      "set_once_mut_v1.rs": "5676957f636779d862fe91203a32edb4734b25322f8d1f3294dce7e64e58c741",
+      "shared_owner_v1.rs": "5c6066306ba30e1d25746731ec7588cd8ea4b2c6aeaf880d98b7b599903259ab"
+    },
+    "cohort": "replacement-fixture",
+    "base_archive_sha256": "85316ea951aefa5f2fd5f071db3489c6a34f9d8a0b15d1a6cef5c924482f7623",
+    "frozen_protocol_sha256": "d632890ebc82c5f264b73138a7db499b1d4614b2efb16845ef4c369ea6b42fc7",
+    "packet_sha256": "730146f3922b70b59f48bdf5c8dc6147e178f13d83c6cc365fc3032fa5cdfee6"
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "id": "reuse-native-review-records",
+  "previous": "fb6b2eacbc6ae3a94fb237d6a54c4166ecbbb7d5678ae9b3273fdaf072c6b372",
+  "targets": [
+    "plugins/develop/skills/adversarial-loop/SKILL.md"
+  ],
+  "evidence": [
+    {
+      "case": "pytest",
+      "source": "runs/tuning/public-result-pytest-01/result.json",
+      "source_sha256": "2877f04236ade4d162b9645cc3697174852098bfd5afae551198b683df5c21cb",
+      "registration_sha256": "a3d287d45834d80373e87e66808b8903102e0f52ec4352722dc8554954122e8f",
+      "receipts": {
+        "entry-review-and-proposal": "aa2b3cd40d8e1950d126f66900750c6adae70494321df9be3f2013765d575c0d",
+        "final-review-revision": "049b37b15d7ab0446d3bda3fa53719c669de5f18c4d2a02bccaaf9ffa11a5813",
+        "pytest-param-tuple": "a4963020ad332309aca3b0afcd0ab9e0a67aa8b33f03a720e0849639606078e6",
+        "copy-pickle-compatibility": "2cb36fe5d7404a47842ad3d52fee686611af85f97bf0f36b2d56e4d5c551c0af",
+        "import-order": "3f76b1e55c3e6da16a6dcf737e1a8f6603b2246ab962e21ba77b00eda1b02335",
+        "runtime-type-hints": "b0a10523f5204cd0974dec96f6d617df9072bc79b49baf48e9f7f49da7c7a5f2"
+      },
+      "observation": "The parent won all three blind votes, 96.25 to 60, but cost $0.626 versus $0.535 and linked a worker-local review file. Its predecessor\u2019s independent reviewer named all six submitted file hashes. A coordinator\u2019s record could not bind the parent reviewer to a later test assertion."
+    },
+    {
+      "case": "black",
+      "source": "runs/tuning/command-waits-black-01/result.json",
+      "source_sha256": "9e5f0417b9694e1a8251760f22d9a1ab64f7b99937fb1b2e8c2c53bdd2acd5e9",
+      "registration_sha256": "1d7dbb1eec4f5154635fa2721c5231b43a4f2e897808fa4781b7afa8a8a1844a",
+      "receipts": {
+        "review-and-proposal": "ef57dcc675e0a138054691d9bc658dc660b2aa7c66ddf4147c05f76fd80e2234",
+        "final-formatter-fixtures": "75957bacf9ace9139939c18271b3e6aebe0bfa4e50c8df5e02882efde2579447",
+        "unary-trailer-and-prefix": "0f0dcf298537d07a8fb97a5dca66e97b7c1f6f5ba74f30ede59260a692a1d7f1"
+      },
+      "observation": "The candidate also linked a worker-local review file. Its final reviewer named all changed file hashes. Both generated diffs scored 55/85. Stock timed out without a full PR."
+    }
+  ],
+  "change": "Replace only the 163-word Report with 141 words. Reuse complete private native evidence. Preserve required durable handoffs, missing facts and fresh verdicts on material changes. Give PR readers direct verification and accessible links.",
+  "prediction": "Fewer duplicate review records and inaccessible links reduce proposal cost and time while preserving verifiable reviews.",
+  "sequence": [
+    "Run pytest only after the preceding branches, including the shorter-entry Werkzeug candidate and any eligible guards, fail to nominate a treatment.",
+    "Run Black with the same package only after pytest passes every screen criterion."
+  ],
+  "falsifier": "Require all frozen gates, independent pre-edit intent and fresh reviews of material revisions, a ready higher-quality full PR at no greater complete cost than stock, and lower cost and checkout-to-proposal time than the matched parent. Pytest must preserve tuple unpacking, warning-free copying and pickling, public helper and class annotation lookup, and both import orders. Black must preserve both stored fixtures and handle the registered unary/trailer operation with stable, equivalent syntax and preserved directive text. Reject an inaccessible review link, an unverified required gate or a lost required handoff. A ceiling or missing measure cannot establish the target.",
+  "measurement": {
+    "inputs": "Verify sealed participants with campaign.read_attempt. Apply native_query with jq -c to native.json and proposal_query with jq -Rs to proposal.md. Leave missing inputs unknown. Inspect actual independent verdicts, revision bindings and checks. Verify PR-reader access to proposed evidence links.",
+    "native_query": ".root as $root | [.commands[] | select(.thread == $root and .exit == 0) | .command | select(test(\"(^|[^[:word:]/])/tmp/[[:word:].-]*(review|ledger|packet)[[:word:].-]*\"; \"i\"))] | length",
+    "proposal_query": "[scan(\"\\\\]\\\\((/tmp/[^)]+)\\\\)\") | .[]]",
+    "interpretation": "Compare counts against the matched parent. Zero matching commands for both arms leaves the file-creation mechanism untested. Naming a path does not establish avoidable time or spend. Use complete proposal cost for the comparison.",
+    "historical_results": {
+      "caller-review-pytest-01": "6a3893e6a7e3240e38a05e8731e9622895f3cd580303d6a13fad47b33be91939",
+      "caller-werkzeug-01": "f46fcd947213399255a6f0a0f6bdf540a393017aef61a2f8605214013fbce4d5",
+      "command-waits-black-01": "9e5f0417b9694e1a8251760f22d9a1ab64f7b99937fb1b2e8c2c53bdd2acd5e9",
+      "focused-review-pytest-01": "53f15b93e1aa1f349f2ef31432c447f364486e791ccee9bc01f54dc7025e7fb6",
+      "public-result-pytest-01": "2877f04236ade4d162b9645cc3697174852098bfd5afae551198b683df5c21cb",
+      "restore-contract-black-01": "fd263568703f4b2fb1ce06a792553c9ebe3b530b19359820bac54f69ebe40a21",
+      "same-check-black-01": "44747b8361e9d516cd3666e5bd5408aeed81efcc6496c559d88ab40f47eae86a",
+      "scoped-pytest-01": "3a856110cb6fb56287b983118e3a3a194753dcba8d7ebcf3e01f80d63451452c"
+    },
+    "develop_roots": 16,
+    "develop_roots_naming_worker_record": 8,
+    "develop_matching_commands": 24,
+    "develop_prs_with_worker_links": 2,
+    "stock_roots": 8,
+    "stock_matching_commands": 0,
+    "stock_prs_with_worker_links": 0
+  },
+  "black_probes": {
+    "supplementary_fixtures": {
+      "fmtskip_nested_with.py": "056f1a7f94c4d0cad54477b1ac0399f6ed5fc8f4cf4c415e3bccd95b1f5fe517",
+      "fmtskip_nested_yield.py": "95767a80084d8c7b352156ece4aa8fe59caf641606f2e689691c49e9a92e9181"
+    },
+    "operand_probe_sha256": "9d60db767d27257ed12de3cb2fb2c62246a7129c18ea92c7af1a58ddd15817b6",
+    "operand_source_sha256": "c5a881ddb51233346a12c1b2d0c89dc7272a1ce3681fe230983259435b63fb73"
+  }
+}

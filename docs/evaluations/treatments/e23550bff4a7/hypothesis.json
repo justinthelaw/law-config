@@ -1,0 +1,49 @@
+{
+  "id": "reuse-the-caller-check",
+  "previous": "a4465fb131805a9f7674f0d131c8f7a3abc0dfc73546ff4cf74df215a84f1c61",
+  "targets": [
+    "plugins/develop/skills/iterate/references/local-changes.md"
+  ],
+  "evidence": [
+    {
+      "case": "black",
+      "baseline": "runs/pr-quality-panel-v2/baseline-53a8bd549c93/submissions.jsonl",
+      "native_sha256": {
+        "control": "94e739eba2d590b4860dbd3137c56343c26800a7b741d308e1b3488ee93dc2ba",
+        "develop": "b7e84ef83261d503816faeb806470e9e937431805e8b60a968246f6638612af3"
+      },
+      "commands": {
+        "control": 18,
+        "develop": 37
+      },
+      "estimates_usd": {
+        "control": 0.322308,
+        "develop": 0.47375880000000004
+      },
+      "diff_points_85": {
+        "control": 25.0,
+        "develop": 55.0
+      },
+      "readiness": {
+        "control": "failed",
+        "develop": "ready"
+      },
+      "native_gate_sha256": "c6404d78c39195b3b05636b0a6d6097549136ccc2a3545be595daf19ddfc5ae3",
+      "observation": "Develop exercised several transient formatter examples before adding its fixture, then reran overlapping checks. Its patch passed the existing grammar gate; pure produced invalid Python."
+    },
+    {
+      "case": "werkzeug",
+      "source": "runs/tuning/caller-werkzeug-01/result.json",
+      "source_sha256": "f46fcd947213399255a6f0a0f6bdf540a393017aef61a2f8605214013fbce4d5",
+      "timing_receipt_sha256": "a0d1b377efd95cc5057c6baaa6c205e0df9d5f26dd32e3bb574892e10d7eac17",
+      "observation": "Revised Develop had spent $0.381872 at its first artifact review against $0.328794 for the entire matched raw proposal. Re-review savings alone cannot close this observed gap."
+    }
+  ],
+  "change": "Use one caller check for base reproduction and patch verification. Retain useful coverage and run affected caller suites before final diff review.",
+  "sequence": [
+    "black",
+    "werkzeug only if Black meets the strict comparison and prior efficiency criteria"
+  ],
+  "prediction": "Fewer throwaway probes and verification turns, lower completely metered proposal cost and less wall time than the matched prior, with higher full PR quality at or below pure Codex cost.",
+  "falsifier": "Stop if the candidate loses the Black grammar or preservation gate, an applicable review, readiness, matched prior cost or speed, or the strict comparison to raw. Check actual use of the same caller test on the base and patch. On Werkzeug also check the registered UTF-8 stream and warnings, distinguishing message wording from behavior. Tuning never establishes a panel-wide win."
+}

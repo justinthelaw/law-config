@@ -1,0 +1,239 @@
+{
+  "format": "law-config.tuning-hypotheses/v1",
+  "state": "proposed",
+  "run": "baseline-53a8bd549c93/run.json",
+  "plan_sha256": "53a8bd549c93423b9ac7b889702be24b7b8823baaaba439a965e7ba6685975ad",
+  "submissions_sha256": "a3b37b03a7ce07ebe6a72bd3aa33b96284b6708d15b6957eddc158452b25a136",
+  "evidence_split": "tuning",
+  "experiments": [
+    {
+      "id": "reuse-intent-review-on-stable-scope",
+      "targets": [
+        "plugins/develop/skills/develop/references/contract.md",
+        "plugins/develop/skills/adversarial-loop/SKILL.md"
+      ],
+      "change": "For an already-reviewed intent contract, carry its intent verdict into the evidence checkpoint when scope, authority, assumptions and acceptance criteria are unchanged. Review the new diff with a fresh artifact reviewer. Reopen the intent lane when any bound input changes. Keep user- or repository-required reviews.",
+      "evidence": [
+        {
+          "case": "go-git",
+          "pure_native_sha256": "82f531dd34450eca79dc89c1ac8eb64c7b0f8c04797ac1cf6bc2c5456d457503",
+          "develop_native_sha256": "67d58b29c077306d9c7483b2b45881114a50f502a37b8f7a82fb1bc34b148670",
+          "quality_delta_85": 0.0,
+          "commands_pure_develop": [
+            20,
+            47
+          ],
+          "children_pure_develop": [
+            0,
+            4
+          ],
+          "coverage_pure_develop": [
+            "complete",
+            "complete"
+          ],
+          "usd_pure_develop": [
+            0.45231920000000003,
+            1.1887416000000002
+          ],
+          "proposal_seconds_pure_develop": [
+            483.7535289770458,
+            1520.9608991041314
+          ]
+        },
+        {
+          "case": "werkzeug",
+          "pure_native_sha256": "36588692569c3537ee5983de7562aa28973fbe6387041195ce3cb01d0156e58f",
+          "develop_native_sha256": "2c47f99b8b862300a3a7b2d48c7d99ee4fd56c6f5455d41f1d6d4b17cefc0d22",
+          "quality_delta_85": -21.25,
+          "commands_pure_develop": [
+            18,
+            48
+          ],
+          "children_pure_develop": [
+            0,
+            6
+          ],
+          "coverage_pure_develop": [
+            "complete",
+            "complete"
+          ],
+          "usd_pure_develop": [
+            0.2843692,
+            0.7022088
+          ],
+          "proposal_seconds_pure_develop": [
+            278.78686581598595,
+            456.0259761130437
+          ]
+        },
+        {
+          "case": "pytest",
+          "pure_native_sha256": "2a10181ace51512d57e06fa04827e52061d88d0714137bbcfe7cc4455c304318",
+          "develop_native_sha256": "b98f763b1eea407cda3dee14ee6ead71b816124d6edbc1f987660006d59e3c82",
+          "quality_delta_85": -36.25,
+          "commands_pure_develop": [
+            24,
+            50
+          ],
+          "children_pure_develop": [
+            0,
+            4
+          ],
+          "coverage_pure_develop": [
+            "complete",
+            "complete"
+          ],
+          "usd_pure_develop": [
+            0.338172,
+            0.716884
+          ],
+          "proposal_seconds_pure_develop": [
+            529.005148014985,
+            663.6740824980661
+          ]
+        }
+      ],
+      "observed_activity": {
+        "go-git": [
+          "intent_review",
+          "design_review",
+          "evidence_intent",
+          "evidence_artifact"
+        ],
+        "werkzeug": [
+          "intent_review",
+          "design_review",
+          "final_intent",
+          "final_artifact",
+          "recheck_intent",
+          "recheck_artifact"
+        ],
+        "pytest": [
+          "intent_review",
+          "design_review",
+          "evidence_intent",
+          "evidence_artifact"
+        ]
+      },
+      "prediction": "Fewer repeated intent lanes and fewer total tokens. Require measured reductions in proposal cost and checkout-to-proposal time. Check total effort because the root also accounts for substantial spend.",
+      "falsifier": "Reject if any unchanged-scope case loses a previously verified behavior or required independent check, or if the eligible tuning pairs do not improve on both cost and wall time."
+    },
+    {
+      "id": "replay-one-public-boundary",
+      "targets": [
+        "plugins/develop/skills/iterate/references/validation.md"
+      ],
+      "change": "When changing a public representation or behavior shared across contexts, choose one adjacent consumer or input boundary from the owning code. Execute a minimal example on the proposed patch, compare it with the starting behavior or explicit contract, and keep the regression test if it distinguishes the implementations.",
+      "evidence": [
+        {
+          "case": "pytest",
+          "pure_native_sha256": "2a10181ace51512d57e06fa04827e52061d88d0714137bbcfe7cc4455c304318",
+          "develop_native_sha256": "b98f763b1eea407cda3dee14ee6ead71b816124d6edbc1f987660006d59e3c82",
+          "quality_delta_85": -36.25,
+          "commands_pure_develop": [
+            24,
+            50
+          ],
+          "children_pure_develop": [
+            0,
+            4
+          ],
+          "coverage_pure_develop": [
+            "complete",
+            "complete"
+          ],
+          "usd_pure_develop": [
+            0.338172,
+            0.716884
+          ],
+          "proposal_seconds_pure_develop": [
+            529.005148014985,
+            663.6740824980661
+          ],
+          "observation": "pytest-param-tuple"
+        },
+        {
+          "case": "werkzeug",
+          "pure_native_sha256": "36588692569c3537ee5983de7562aa28973fbe6387041195ce3cb01d0156e58f",
+          "develop_native_sha256": "2c47f99b8b862300a3a7b2d48c7d99ee4fd56c6f5455d41f1d6d4b17cefc0d22",
+          "quality_delta_85": -21.25,
+          "commands_pure_develop": [
+            18,
+            48
+          ],
+          "children_pure_develop": [
+            0,
+            6
+          ],
+          "coverage_pure_develop": [
+            "complete",
+            "complete"
+          ],
+          "usd_pure_develop": [
+            0.2843692,
+            0.7022088
+          ],
+          "proposal_seconds_pure_develop": [
+            278.78686581598595,
+            456.0259761130437
+          ],
+          "observation": "werkzeug-stream-length"
+        },
+        {
+          "case": "expat",
+          "pure_native_sha256": "a56225a5cbc53c79929a33fda210bb71d5f7e24fd2ea49dc37050cae9737236c",
+          "develop_native_sha256": "becd8596a14e3678d79ee6e240164284b1e2a40b2ef5c390f6ba16f46f30a126",
+          "quality_delta_85": -15.0,
+          "commands_pure_develop": [
+            27,
+            67
+          ],
+          "children_pure_develop": [
+            0,
+            5
+          ],
+          "coverage_pure_develop": [
+            "complete",
+            "complete"
+          ],
+          "usd_pure_develop": [
+            0.6515608,
+            0.9337396
+          ],
+          "proposal_seconds_pure_develop": [
+            1376.1433785569388,
+            1348.9253676910885
+          ],
+          "observation": "expat-parameter-literals"
+        }
+      ],
+      "prediction": "Preserve tuple unpacking, UTF-8 byte positions and literal parameter-entity handling on the studied cases. Preserve the Black grammar fix. Improve matched code scores without losing readiness.",
+      "falsifier": "Reject if the three executable counterexamples persist or a previously passing preservation gate regresses. Treat improved scores on exposed tasks as regression evidence."
+    }
+  ],
+  "measurement_repairs": [
+    {
+      "id": "logical-dependency-ledger-entry",
+      "case": "runner-space",
+      "observation": "runner-space-soft-wrap",
+      "scope": "Version the evaluator independently of any plugin change.",
+      "evidence": "Only a Markdown soft wrap separated pure Codex from a passing contract gate. The candidate checker in the observation rejects base and accepts both proposals and the merge.",
+      "sensitivity": "If the control becomes ready and the original judge votes are held fixed, all three prefer Develop with a median 8.75 proposal-point advantage. A changed judge packet would need fresh assessment.",
+      "comparison": "Do not compare the changed grader with the original grader as a treatment effect."
+    }
+  ],
+  "promotion": {
+    "primary_comparator": "plugin-free Codex on the same fresh tasks; use the prior Develop version to assess the effect of the change",
+    "scope": "Preregister one change, a seed set, task selection, hard gates, cost policy and thresholds before releasing either arm. The published confirmation split is exposed.",
+    "required_metrics": [
+      "readiness and critical regressions",
+      "paired code delta out of 85 and proposal delta out of 100",
+      "total tokens and cost with complete metering",
+      "checkout-to-proposal wall time",
+      "joint quality, cost and speed wins",
+      "unknown or interrupted slots and assessor budget"
+    ],
+    "strict_operating_target": "For a panel-wide efficiency claim require no critical regressions, quality at least as good, and both cost and time ratios below 1 against the comparator. For a per-case claim require these conditions on every eligible pair and disclose exclusions. Use fresh unexposed tasks, report paired intervals, and repeat seeds when uncertainty crosses the threshold.",
+    "upstream": "Compare proposal quality to each pinned merge. Original author labor, model usage and cost are unobserved."
+  }
+}

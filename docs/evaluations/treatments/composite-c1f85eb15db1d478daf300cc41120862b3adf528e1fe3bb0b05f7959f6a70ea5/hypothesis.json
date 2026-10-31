@@ -1,0 +1,64 @@
+{
+  "id": "partial-result-identity",
+  "previous": "239dccfc0fe4c090a777d8cf46216c99c57bc2bebc08eca013402215b65c7c28",
+  "candidate_package_sha256": "5acc5df6c74850c8d355aa7506e6e91917fbae8f7a162fca0c6da877f88d77d9",
+  "common_companion": {
+    "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+    "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+  },
+  "composite_identities": {
+    "prior": "7ed91df07062b0a88cab8cd5b5e74ee8a7c7e258afa2a42645b60e793ea68791",
+    "candidate": "c1f85eb15db1d478daf300cc41120862b3adf528e1fe3bb0b05f7959f6a70ea5"
+  },
+  "targets": [
+    "plugins/develop/skills/iterate/references/local-changes.md"
+  ],
+  "change": {
+    "replace": "Bound interacting values or stateful commands and minimize failures to a tiny replay.",
+    "with": "Bound interacting values or stateful commands, including partial results returned with errors. Shrink failures to a caller replay that checks the value and error identity.",
+    "following_unchanged": "Implement green and keep the replay green through needed refactoring."
+  },
+  "evidence": [
+    {
+      "case": "go-git",
+      "source": "docs/evaluations/runs/tuning/intent-go-git-01.json",
+      "sha256": "25581efc87e9fac829e9fa504fa64f63ef68d36cd25e84fed1d9c728425e08a7",
+      "diagnostic": "docs/evaluations/runs/tuning/intent-go-git-01/error-precedence-witness.json",
+      "diagnostic_sha256": "22cc2d9ed0af3bbdff4b91ae81383d28895e1ac10ecc119c1d657936c052787c"
+    }
+  ],
+  "selection": "One already exposed Go-git tuning case only. Freeze unchanged parent, revised Develop and pure Codex under the existing matched operator, original authority, model/effort, resources, base, dependencies, grader and blind rotations. Both Develop arms keep the same pinned common Superpowers; stock has no plugins/apps/MCP or special instructions. No conditional additional case or fresh cohort.",
+  "mechanism": "At the changed existing API boundary, select a bounded case where a partial result and failure coexist; compare the actual caller value/state and propagated error identity with the intended contract, before claiming preservation. Reuse a matching existing test/injector and minimize its relevant overlapping input. This narrows behavior selection, not test count or review count. No blanket cross-product or infinite testing. Do not expose the private diagnostic witness to producers. If parent already makes the same decision, candidate omits overlap, or only instruction text changes, no distinct observed mechanism is demonstrated.",
+  "prediction": "A targeted overlapping-outcome case can reveal boundary-ordering regressions missed by separate success and failure cases before broader verification and final review. Whether this lowers complete proposal price or wall time is unknown; historical price partitions support no saving.",
+  "measurement": {
+    "method": "Assessor-only manual replay using the small witness embedded in the published diagnostic and existing native Go Docker/rebuild path. No new evaluator, scanner, package, framework, rubric, fixture or participant instruction beyond the one sentence replacement.",
+    "timing": "After proposals and blind rotations seal, record separate diagnostic evidence before the screen decision. Preserve original blind packets, score records and merged reference. No extra model assessor is required for the manual witness result.",
+    "trees": "Reconstruct each exact published base or sealed proposal patch with existing snapshot/grade verification, outside actual participant trees. Bind full source bytes, executable bits and symlinks to the verified base/patch/digest. Use read-only source and dependency mounts. Verify source identity before and after replay; never edit actual participants, overlay test assertions or add the witness to their tree.",
+    "witness": "Verify the published diagnostic and its execution.witness_go SHA-256 before extracting it to private assessor evidence. Mount that evidence read-only separately from /work; from the verified module root run go run /evidence/witness.go with the existing pinned image, offline dependency cache and toolchain. Put GOCACHE, GOPATH, TMPDIR and outputs only in isolated writable task scratch. Rebuild against the actual selected source; no stale binary substitution.",
+    "receipt": "Record source/patch/full-tree identities, image/dependency identities, witness hash, exact command/cwd, start/end wall, exit and raw log hash. Manually check all seven named rows plus ReadSlice instrumentation. Exit 0 alone cannot pass: the witness intentionally prints both positive and negative classifications. Missing rows, unexpected identities, changed source, build/setup error, timeout or inconsistent fields are unsupported, never pass.",
+    "highest_relevance": "For sentinel-invalid, simultaneous returned byte 8 and a non-EOF sentinel must retain errors.Is(error,sentinel)=true with entries=0 and no ErrMalformedTree classification. This preserves an observed go-git caller contract; do not infer a universal rule to prioritize all errors over data.",
+    "other_controls": "Preserve sentinel identity for empty prefix, 100 and 1000 zeros; keep ordinary terminated invalid input classified malformed and normal valid entry decoded successfully. For 9000 zeros plus fault, the requested long-mode change legitimately replaces the base buffer-limit error with propagated sentinel; do not freeze that old internal limit. Keep all original public-mode, canonicalization, uint32 range/overflow, malformed-input, roundtrip, build/native and other frozen gates.",
+    "reviews": "Retain all applicable independent pre-edit intent and final tested-artifact reviews, original model/effort matching, affected suites/required commands and material-revision reviews. A diagnostic witness never substitutes for them.",
+    "economics": "Require complete root plus transitive descendant proposal price strictly below matched parent and checkout-to-proposal wall strictly shorter. Require ready full PR strictly higher than stock under the unchanged registered win rule and complete candidate proposal price <= complete stock. Report merged full PR under the original rotations. Preserve every allocation, timeout, partial meter and original score; record assessor cost separately."
+  },
+  "model_free_calibration": {
+    "source": "docs/evaluations/runs/tuning/intent-go-git-01/error-precedence-witness.json",
+    "sha256": "22cc2d9ed0af3bbdff4b91ae81383d28895e1ac10ecc119c1d657936c052787c",
+    "witness_sha256": "8dd4197a314957fd02aac18903601e5ae5cafd8250a05812cab369d23c6b220a",
+    "image": "golang@sha256:88750ccdd0f2a77fcc00a14b1a48d6409bd8ddb5d7c2dd6ec0b4a2e916daf9d9",
+    "positive": "Published base, merged, prior Develop and stock all propagate the sentinel for sentinel-invalid; the historical revised implementation alone loses it. Each tree has independently verified exact source identity in source_verification.trees.",
+    "regression_negative": "Published matrix.revised_develop.sentinel-invalid has sentinel=false, malformed=true and entries=0. Expected regression rejection despite successful process exit.",
+    "legitimate_task_change": "Base sentinel-zeros-9000 reports bufio.ErrBufferFull; merged/prior/stock/revised reach the sentinel. This longer-prefix difference is not a preservation regression.",
+    "scope": "These five historical source controls calibrate the observation only. They are not prospective proposals or an additional independent case; official scores remain unchanged."
+  },
+  "acceptance": "All existing required gates, public behavior and reviews retained; overlapping partial-result/error behavior and exact diagnostic output established without weakening test inputs. Candidate ready, strictly higher full PR than stock at <= complete stock price, strictly cheaper and faster than matched parent. Unknown economics and incomplete evidence do not qualify.",
+  "falsifier": "Reject lost sentinel identity on the highest-relevance overlap, lost normal/malformed/mode/overflow/roundtrip behavior, omission of a required command/review, non-ready result, full-PR stock tie/loss or insufficient registered win margin, cost above stock, or price/wall not strictly below parent. Missing setup, tree identity, output rows, meters or review proof is unestablished, never green. Equivalent parent behavior cannot establish a distinct observed selection mechanism.",
+  "limits": [
+    "One exposed Go-git boundary; occurrence in production and cross-repository transfer are unknown.",
+    "Historical revised and stock blind scores tied at 96.25 under a different protocol; the old five-point margin exceeds remaining recorded headroom. Historical score/cost comparisons cannot qualify this trial.",
+    "No historical savings or claim that another implementation would cost less. Measure matched prospective complete proposals.",
+    "Direct Reader consumers may need to process returned data before the error. This targets preserving the selected caller contract, not imposing universal error precedence.",
+    "Existing guidance already covers generic interactions/stateful checks; actual selection and decision differences must be observed.",
+    "Do not broaden into unrelated failure combinations or treat sequential success followed by a later failure as proof of simultaneous returned data/error."
+  ]
+}

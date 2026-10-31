@@ -1,0 +1,304 @@
+{
+  "format": "law-config.fmt-sign-property-postscore/v1",
+  "case": "fmt",
+  "pr": 4981,
+  "scope": "One exposed historical tuning case; assessor-only addendum. Original submissions, scores, gates, cost estimates and denominators unchanged. No product change, paid calls or fresh confirmation.",
+  "finding": "A bounded sign relation plus six fixed examples detects both authentic pre-fix hunks with fewer assertion lines. It does not establish exhaustive test equivalence, lower PR cost or a blind win.",
+  "source": {
+    "repository": "https://github.com/fmtlib/fmt",
+    "base": "a8293b774e5c4bed720391d0453d5ad0239f66a5",
+    "merged": "434e30f81f8735d4c629acea485e6bb3e059e937",
+    "archive": "baseline-53a8bd549c93/submissions.jsonl",
+    "archive_sha256": "a3b37b03a7ce07ebe6a72bd3aa33b96284b6708d15b6957eddc158452b25a136",
+    "patches": {
+      "control": "e4c68e5c6900d2949421ff32daa7676cd360100169f2cb5a66e46f96119d795c",
+      "develop": "89bce91fd108fe81286a4ec283bfa12ca7075d8bc8cc926db863f06736ce89df",
+      "upstream": "4933645005ef5fe1c0536a41c01c71e1a092d5060544abd7825c7b0b2289e321"
+    },
+    "added_tests": {
+      "control": [
+        "duration_sign",
+        "infinite_duration_sign"
+      ],
+      "develop": [
+        "floating_duration_sign",
+        "infinite_duration_sign"
+      ],
+      "upstream": [
+        "negative_floating_duration_sign",
+        "negative_infinite_duration_sign"
+      ]
+    },
+    "base_header_blobs_verified": 16,
+    "stock_develop_production_byte_identity": true,
+    "merge_difference": "Same sign changes; retains the old infinity comment."
+  },
+  "property": {
+    "relation": "format(-magnitude, spec) == \"-\" + format(magnitude, spec)",
+    "domain": "Positive magnitudes; numeric-first pairs of the listed specifiers; no leading literal, unit-only format or outer width/alignment. Ordinary specifier zero-padding is retained.",
+    "types": [
+      "float",
+      "double",
+      "long double"
+    ],
+    "specifiers": [
+      "%S",
+      "%Q",
+      "%R",
+      "%T",
+      "%H",
+      "%M"
+    ],
+    "precisions": [
+      "",
+      ".2"
+    ],
+    "magnitudes": [
+      1,
+      1.25,
+      61.25,
+      3601.5,
+      "+infinity"
+    ],
+    "source_cpp": "template <typename Rep> void numeric_sign_property() {\n  using duration = std::chrono::duration<Rep>;\n  for (const char* a : {\"%S\", \"%Q\", \"%R\", \"%T\", \"%H\", \"%M\"})\n    for (const char* b : {\"%S\", \"%Q\", \"%R\", \"%T\", \"%H\", \"%M\"})\n      for (const char* precision : {\"\", \".2\"})\n        for (Rep magnitude : {Rep(1), Rep(1.25), Rep(61.25), Rep(3601.5),\n                              std::numeric_limits<Rep>::infinity()}) {\n          auto pattern = std::string(\"{:\") + precision + a + \" \" + b + \"}\";\n          EXPECT_EQ(\"-\" + fmt::format(fmt::runtime(pattern), duration(magnitude)),\n                    fmt::format(fmt::runtime(pattern), duration(-magnitude)));\n        }\n}\nTEST(property, numeric_first_unpadded_sign) {\n  numeric_sign_property<float>();\n  numeric_sign_property<double>();\n  numeric_sign_property<long double>();\n}\nTEST(property, independent_oracles) {\n  using duration = std::chrono::duration<double>;\n  EXPECT_EQ(\"01.250000 61.25\", fmt::format(\"{:%S %Q}\", duration(61.25)));\n  EXPECT_EQ(\"-01.250000 61.25\", fmt::format(\"{:%S %Q}\", duration(-61.25)));\n  EXPECT_EQ(\"inf inf\", fmt::format(\"{:%Q %S}\", duration(INFINITY)));\n  EXPECT_EQ(\"-inf inf\", fmt::format(\"{:%Q %S}\", duration(-INFINITY)));\n  EXPECT_EQ(\"01 61 00:01:01\", fmt::format(\"{:%S %Q %T}\", std::chrono::seconds(61)));\n  EXPECT_EQ(\"-01 61 00:01:01\", fmt::format(\"{:%S %Q %T}\", std::chrono::seconds(-61)));\n}\n",
+    "source_sha256": "c618de9d252def802646ee3d5b291f5f0718c8fa8b16fbbef87a136d1d74f4db",
+    "limits": "Six independent expected examples anchor finite/infinite and integer behavior; they are not independent positive oracles for every matrix element. NaN, negative zero, extreme ranges and locale variants are outside this assay."
+  },
+  "comparison": {
+    "counting": "Complete newly added TEST bodies; property includes its helper and six examples. Assertion lines include wrapped macro bodies. Stock already has a table-driven infinity test.",
+    "sources": {
+      "control": {
+        "assertion_sites": 13,
+        "assertion_lines": 21,
+        "whole_test_lines": 43,
+        "added_test_source_sha256": "d5a32660b1309c1c97e54e46fa4fffca3539c96f2d64d1511ead7ba18ea38841"
+      },
+      "develop": {
+        "assertion_sites": 19,
+        "assertion_lines": 25,
+        "whole_test_lines": 33,
+        "added_test_source_sha256": "523174f28b7cf1d6831b03f8147e2347d9e247dab796221b193ab42cc61ed421"
+      },
+      "upstream": {
+        "assertion_sites": 18,
+        "assertion_lines": 20,
+        "whole_test_lines": 28,
+        "added_test_source_sha256": "8d53ad6f7bbd46363e12b6df330293db61bab9693324c49765917a688f13a2b5"
+      },
+      "property": {
+        "assertion_sites": 7,
+        "assertion_lines": 8,
+        "whole_test_lines": 26,
+        "matrix_assertions": 1080,
+        "fixed_examples": 6
+      }
+    },
+    "not_replaced": [
+      "%j",
+      "%r",
+      "longer sequences",
+      "outer alignment"
+    ],
+    "coverage_limit": "Equal detection of two real regression classes only. Retaining separate boundary examples can erase the small whole-file line advantage over the merge."
+  },
+  "outcomes": {
+    "column_order": [
+      "property",
+      "archive_control",
+      "archive_develop",
+      "archive_upstream"
+    ],
+    "test_blocks_per_column": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "rows": {
+      "base": {
+        "failed_test_blocks": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "initial_process_exit": 1,
+        "chrono_sha256": "28dcc3b63f8cdc0e3f13dee7b7f0ca8de9f00b5fe13410938fbae674e2cc4545",
+        "xml_sha256": "890101c972f7ae803b8f98c8cb756d24136ac029dc645e05120cc848110bbf92",
+        "log_sha256": "ad4139cd7e7a55926075c9fc0074e1f9a1af2c75968f2b4ea1e384c2c0742768"
+      },
+      "control": {
+        "failed_test_blocks": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "initial_process_exit": 1,
+        "chrono_sha256": "16eaa885e384fb05c7cd336eb8283bea745fdfea32326f422fd9a8fa81dc16f5",
+        "xml_sha256": "38afcd229e75ed9eab535cacc7b4020c49d049d053c9ed0eb090582b2aac0c1d",
+        "log_sha256": "166d701e9744b88d62d194085188155df5fc8ada357d7414dd2b59241548ce4f"
+      },
+      "develop": {
+        "failed_test_blocks": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "initial_process_exit": 1,
+        "chrono_sha256": "16eaa885e384fb05c7cd336eb8283bea745fdfea32326f422fd9a8fa81dc16f5",
+        "xml_sha256": "ec99cbad8ce5698f310be7f4415d1b395cdcbef200423dbaa76015a04d3a10fa",
+        "log_sha256": "166d701e9744b88d62d194085188155df5fc8ada357d7414dd2b59241548ce4f"
+      },
+      "upstream": {
+        "failed_test_blocks": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "initial_process_exit": 1,
+        "chrono_sha256": "0b68e4d4b70d936575fc1cb777264ec915b9242fe269e5478af481f0c4fed2e2",
+        "xml_sha256": "0bdb186d4ed77053e4a20e9753baa5dfa7e928ef627c9ad8c0bcf0cd60f24c6b",
+        "log_sha256": "166d701e9744b88d62d194085188155df5fc8ada357d7414dd2b59241548ce4f"
+      },
+      "revert-finite": {
+        "failed_test_blocks": [
+          2,
+          1,
+          1,
+          1
+        ],
+        "initial_process_exit": 1,
+        "chrono_sha256": "3b1030bc5eef6fa5510cd4e310219b99c5d88eccf203eacad95a6fa772ece6f7",
+        "xml_sha256": "5334a6d52bbf8bb2f4b4d1df8a195692bba6a62c20586882d9bb8f986f5f058a",
+        "log_sha256": "857297d7997ff60ab57b4c4adc4f6bf81542251238b241d922527d0738a755a6"
+      },
+      "revert-infinite": {
+        "failed_test_blocks": [
+          2,
+          1,
+          1,
+          1
+        ],
+        "initial_process_exit": 1,
+        "chrono_sha256": "1dedb0f99b2e18bd6403ea953d158f29685000f5320c9b185812278c614f7d64",
+        "xml_sha256": "05485fbe21edfa04ba2e511c6b2f0cb14ae36d635a77a4cc4c93217710b7ef36",
+        "log_sha256": "452c1901d6ce93421e9eef6cbcdfb29f6eb52e26b51a6fe1e5bf025165143850"
+      }
+    },
+    "interpretation": "Zero means every block in that group passed; positive counts are actual failed blocks. All initial processes exit1 because a separate invalid-x boundary expectation fails; a passing property group is not a whole-process pass."
+  },
+  "negative_controls": {
+    "starting_source": "merged",
+    "revert-finite": {
+      "file": "include/fmt/chrono.h",
+      "owner": "duration_formatter::on_second floating-point branch",
+      "replace": "        write_sign();\n        if (buf.size() < 2 || buf[1] == '.')",
+      "with": "        if (negative) *out++ = '-';\n        if (buf.size() < 2 || buf[1] == '.')",
+      "patch_sha256": "57ef009363de5d6352f62bf3b5abbdaa56cd963e79728e80387f50b9d76fe520",
+      "witness": {
+        "expected": "-01 01",
+        "actual": "-01 -01"
+      }
+    },
+    "revert-infinite": {
+      "file": "include/fmt/chrono.h",
+      "owner": "duration_formatter::handle_nan_inf",
+      "replace": "    write_sign();\n    std::copy_n(\"inf\", 3, out);\n    return true;",
+      "with": "    if (val > 0)\n      std::copy_n(\"inf\", 3, out);\n    else\n      std::copy_n(\"-inf\", 4, out);\n    return true;",
+      "patch_sha256": "9f6ea2f41204d830b76f523441bed7de655357daf7c8ca9fd345cd9ed4007b1f",
+      "witness": {
+        "expected": "-inf inf",
+        "actual": "inf inf"
+      }
+    },
+    "rule": "Apply one unique replacement at a time to a fresh merged copy; verify the restored lines against the base. These are the two original production hunks, not invented mutations."
+  },
+  "boundary": {
+    "source": "control",
+    "cases": [
+      {
+        "format": "{:%n%Q}",
+        "positive_count": 61.25,
+        "positive": "\n61.25",
+        "negative": "\n-61.25",
+        "prefix_relation": false
+      },
+      {
+        "format": "{:%q}",
+        "positive_count": 61.25,
+        "positive": "s",
+        "negative": "s",
+        "prefix_relation": false
+      },
+      {
+        "format": "{:>6%Q}",
+        "negative_count": "-infinity",
+        "negative": "  -inf",
+        "prefix_relation": false
+      }
+    ],
+    "corrected_run": {
+      "tests": 1,
+      "failures": 0,
+      "process_exit": 0,
+      "source_sha256": "0ed4f8e802d22cf4e52336c662905048ae2570a9c9279272c9068d2ebbbf334b",
+      "xml_sha256": "931a6b677b9837b0c9aa8cf8ae27ac28dfa0c2beddc67ff2bb61889f6a997392",
+      "log_sha256": "b60cff5bdc7fdabd03faad661441931af9a5ce06277e60ac553b3f1a0ab0b801"
+    },
+    "initial_invalid_input": {
+      "format": "{:x%Q}",
+      "negative_count": -61.25,
+      "actual": "fmt::format_error: invalid format",
+      "classification": "Assay expectation error, not a valid sign counterexample. The initial failed boundary block and receipts are retained; corrected boundary checks also assert this exception."
+    }
+  },
+  "replay": {
+    "runtime": {
+      "image": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+      "compiler": "g++ (Debian 12.2.0-14+deb12u1) 12.2.0",
+      "mode": "C++17, normal header-only fmt, freshly compiled original assertions, upstream GoogleTest entry",
+      "network": "none",
+      "container_cpu_cap": 1,
+      "container_memory": "2g",
+      "prepared_gtest_library_sha256": "8b78f7e904785348abf15f6f51137a03d0e60e7cf224682abfe1c46eb3281c31"
+    },
+    "steps": [
+      "Materialize literal base Git blobs from the pinned repository, including include/ and bundled test/gtest/. Verify all16 base headers against their blobs.",
+      "For each archived role select case_id=fmt and that role, verify UTF-8 patch bytes against source.patches, then apply from an independent Git root. Verify merged chrono.h against the pinned merged blob.",
+      "Extract only the two added TEST(chrono_test, name) blocks named in source.added_tests, preserving assertions. Rename suite chrono_test to archive_<role>. Combine all three suites with the property and a GoogleTest main.",
+      "Build each implementation from its own include/ directory. Link the prepared GoogleTest scaffolding; alternatively rebuild the bundled gmock-gtest-all.cc with the same pinned toolchain. Do not link a stale fmt binary.",
+      "Repeat with each authentic one-hunk reversion in a separate merged copy. Check group outcomes separately; the original mixed driver also included the documented invalid-x boundary expectation.",
+      "Independently check the corrected boundary cases and invalid-format exception on archived control headers. No outcome here replaces an original benchmark stage."
+    ],
+    "preamble_cpp": "#define FMT_HEADER_ONLY\n#include \"fmt/chrono.h\"\n#include \"gtest/gtest.h\"\n#include <chrono>\n#include <cmath>\n#include <limits>\n#include <string>\nusing fmt::runtime;\n",
+    "main_cpp": "int main(int argc,char**argv){::testing::InitGoogleTest(&argc,argv);return RUN_ALL_TESTS();}\n",
+    "compile_argv": [
+      "g++",
+      "-std=c++17",
+      "-O0",
+      "-DGTEST_HAS_STD_WSTRING=1",
+      "-I<SOURCE>/include",
+      "-I<BASE>/test/gtest",
+      "<DRIVER.cc>",
+      "<PREPARED_LIBGTEST.a>",
+      "-pthread",
+      "-o",
+      "<ASSAY>"
+    ],
+    "run_argv": [
+      "<ASSAY>",
+      "--gtest_output=xml:<RESULTS.xml>"
+    ],
+    "initial_combined_driver_sha256": "2ecd902fed2674da89182ef61c0892479ffd871ee0157714e72f038279322653",
+    "receipt_hashes": "Hashes identify retained original bytes; source/status replay is portable, while binary hashes or byte-identical logs across different build paths are not required."
+  },
+  "limitations": [
+    "Deterministic finite enumeration illustrates property testing; no JavaScript fast-check dependency, random generation or shrinking was used.",
+    "Full upstream chrono suite was not rebuilt or reexecuted.",
+    "An interrupted lease-wait controller later repeated base and overwrote the aggregate receipt. Outcomes were recovered from each retained XML/log; no complete allocation/timing ledger or time/cost saving is claimed.",
+    "Only disjoint existing CPU leases0-1/4-5 were used; CPUs6-7 were left to the ongoing workload. No product/proposal/score edits or paid calls."
+  ]
+}

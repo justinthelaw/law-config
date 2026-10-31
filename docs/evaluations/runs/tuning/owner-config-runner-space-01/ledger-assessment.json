@@ -1,0 +1,1829 @@
+{
+  "format": "law-config.runner-ledger-assessment/v1",
+  "pilot": "owner-config-runner-space-01",
+  "kind": "post_blind_manual_evidence_supplement",
+  "protocol": "pr-quality-runner-v3",
+  "scope": "Apply only the preregistered ledger_assessor_supplement to the four exact sealed artifacts. No participant testing, causal uptake evaluation, new judge/provider allocation or score/readiness change.",
+  "truth_values": "true=the recorded statement is supported within its stated scope by the supplied source; false=source contradicts it; null=missing/ambiguous evidence. A qualified historical record can be accurately documented while current external graph truth is null.",
+  "sealed_bindings": {
+    "result_sha256": "97fecf417168c55bfac25f5a3437d8f258ab1cfe9b6a7013a37a9f847093ec8f",
+    "registration_sha256": "d07ad46854f02d4f032bc848cbf07b77b117a2be7568315ae468e5930c4487b3",
+    "hypothesis_sha256": "d433a8249108ee4a727f1a5dbee266cdb8cc8a48d8fc4e918583a6e63bfb8d67",
+    "evaluator_binding": {
+      "protocol": "pr-quality-runner-v3",
+      "source_sha256": "0d6c18d4c59b10d4ef17ccb21e666671761718f4f996f1069ddc7bc14bc5b6ac",
+      "case": "runner-space",
+      "fixture_sha256": "502782e97e3bd55c8708331f6ed1617842baa5440a5c7f77af20e6be848092be"
+    },
+    "plans": {
+      "prior": {
+        "sha256": "8b8cf47b9bde82b4686c5a0c38623a8d46d91b00db4acbd9c8d87fbd7a5c8ccf"
+      },
+      "candidate": {
+        "sha256": "e8e73b7c121336b93246546d447cd8e7e409e0db7bb4aede5db073bb38114c4f"
+      }
+    },
+    "base_commit": "a2f3ac8c38982d83e3d02e89342d856a7e026268",
+    "merged_commit": "bbaad53e5c844645ef54d9309adf96be46ab159e",
+    "base_source_manifest_sha256": "97c182fa6d76466a1871976f238c0e84939d69165ecf8682100f1007124a8ac9",
+    "runtime": {
+      "toolchain": "sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+      "worker": "sha256:ba131adedde43c7d8199f10740bbf95ec1f628cdbdcaf44accccd9e0100ae90c"
+    },
+    "dependencies_sha256": "1569eb231fe0417185952682f25b71ad512aae30961e17aa8e9eaf483d3bd6af",
+    "blind_scores_sealed_and_role_bindings_verified": [
+      {
+        "rotation": 0,
+        "judgment_sha256": "711ec749160118e6599ada6e70af8b6954227527c059a3fd161f1e95d06cab0a",
+        "mapping_sha256": "7f8275dc6f1029577a225c5a8531468efcc977dca24aca11340497612ecba445",
+        "packet_sha256": "cdf6507ef3a23ee4975c74fc7120f5170db0e2d1caad3ffb91f7d9a64ec14cf6",
+        "displayed_task_sha256": "72ea8b1249269be737f4fe3968a0ca625d1a5b540a188fbf931bbc78a5bacfc8",
+        "task_identity_sha256": "415b1b6dad9b378e114a0e4c3f3130e48ee97d668fbb56ef8612108f282e8d93",
+        "labels": {
+          "A": "develop",
+          "B": "control",
+          "C": "upstream"
+        },
+        "neutral_scope_note_identical": true
+      },
+      {
+        "rotation": 1,
+        "judgment_sha256": "f300dc6e0d52d1d3c98df92f0ffdd354cd9dd6fcb6f6d5c6e53cc0fa66cace20",
+        "mapping_sha256": "443c5cfdb2e9e98b3703115833d11c03760e21a2380fc227007dc1e433ae3bce",
+        "packet_sha256": "51baa6a6b22a1f91d4b516377f2a04009ad64f2578dd7c90864f36c646a06691",
+        "displayed_task_sha256": "782e8c55887f45a845660fccccad2a0609b856c160a670627e0c9d714a01b773",
+        "task_identity_sha256": "be2b07130db061a762c0ed586bf7112fce1eec9fbf40a78448878571c4a4c3a5",
+        "labels": {
+          "A": "control",
+          "B": "upstream",
+          "C": "develop"
+        },
+        "neutral_scope_note_identical": true
+      },
+      {
+        "rotation": 2,
+        "judgment_sha256": "a12cd2bb453544d7b4175ec37ccfa56a01332594750ef53da9589153a2d00023",
+        "mapping_sha256": "1f96648c237ab0e1ce6e387f33a9a16d30713c2476260556bb3e251e351372f7",
+        "packet_sha256": "328f0ab56d9f1b9b3d04d43089a412008884941360721f9df7884017e7cb7add",
+        "displayed_task_sha256": "e7bed22f042d97a1381ff57768860562d6828270162090a46f17dc83366792be",
+        "task_identity_sha256": "891de48b015c217b1f0f00996ac5820d10ed4bc9248eeac44229bef0d83dc2e9",
+        "labels": {
+          "A": "upstream",
+          "B": "develop",
+          "C": "control"
+        },
+        "neutral_scope_note_identical": true
+      }
+    ],
+    "neutral_ledger_scope_note": "The mechanical contract gate verifies pins, preserved files and a changed nonempty regular Markdown ledger. Assess under the contract axis whether the ledger accurately records both changes and any actual deferrals.",
+    "base_git_tree": "f7ed8e51e5b068fcbeb1fc8d8e92640aef3253e4",
+    "merged_git_tree": "e1242225521610bd86124a589247d1e78d05d43d",
+    "task_prompt_sha256": "45306b80a27be37dbb59e776ad3a7732bbe29e15bc39c7a5a6903c4fdcaa7b17",
+    "fixture_sha256": "502782e97e3bd55c8708331f6ed1617842baa5440a5c7f77af20e6be848092be",
+    "admission_receipt_sha256": "87d97450722098ef72144656594b4218c4a6125d7d3f17d483ba19c7a5b31216"
+  },
+  "subjects": {
+    "pure": {
+      "patch_sha256": "6bfbd68196b73da873868db52e2043e84867727a366f7a10b5f450d56c651656",
+      "grade_receipt_sha256": "ba5e40e398ec3e05cae328cfc90d2208ee426982a70e73d9a96e2320885644d5",
+      "source_manifest_sha256_before": "888d21587834f9c5fb352c28af24776c3c23dc49516f8253087cea9ef74b6a68",
+      "source_manifest_sha256_after": "888d21587834f9c5fb352c28af24776c3c23dc49516f8253087cea9ef74b6a68",
+      "source_entry_count": 71,
+      "fresh_reconstruction_matches_sealed_source": true,
+      "ledger_file": "docs/dependency-upgrades/2026-10-30.md",
+      "ledger_sha256": "b7b6276e0baf0d27e22d975a8b2f0ce3781d7092b3c89cd89d7d77eb1a7e86d5",
+      "changed_files": [
+        ".github/workflows/lint.yml",
+        ".pre-commit-config.yaml",
+        "docs/dependency-upgrades/2026-10-30.md",
+        "test/metadata.test.ts"
+      ],
+      "protected_manifest_sha256": "852a109cf526560b7aa589df7daa54773fdc0440e3e99f2484062e57b12bf0f5",
+      "protected_file_count": 21,
+      "protected_files_equal_base": true,
+      "old_ledgers_equal_base": true,
+      "protected_selected_sha256": {
+        "action.yml": "7a5d7c1b2915f5cb113c0ac8085cb3a8ad939b6878bb37ca97528d277d3e1135",
+        "package.json": "e3098122a7843658449b7d89a6515e8ea9e30367926fa42a70303f2a6039de24",
+        "package-lock.json": "e84771dc62928f50fd6ccafd2aefea5672e5d15c4445383252733cb0bdb8f1a5"
+      },
+      "git_base": "a2f3ac8c38982d83e3d02e89342d856a7e026268",
+      "git_merged": null,
+      "requested_upgrade_records": {
+        "actions_setup_python": {
+          "accurately_documented": true,
+          "requested": "v7.1.0 @6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "evidence": [
+            "pure_ledger",
+            "pure_active_setup_python"
+          ],
+          "confidence": "high"
+        },
+        "markdownlint_cli2": {
+          "accurately_documented": true,
+          "requested": "v0.24.0",
+          "evidence": [
+            "pure_ledger",
+            "pure_active_markdown_hook"
+          ],
+          "confidence": "high"
+        }
+      },
+      "deferred_upgrades": [
+        {
+          "deferred_upgrade": "@types/node newer major families",
+          "accurately_documented": true,
+          "evidence": [
+            "pure_ledger",
+            "node_floor",
+            "declaration_contract",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "finding_ref": "f01"
+        },
+        {
+          "deferred_upgrade": "undici-types newer declaration family",
+          "accurately_documented": true,
+          "evidence": [
+            "pure_ledger",
+            "declaration_contract",
+            "resolved_undici",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "finding_ref": "f02"
+        },
+        {
+          "deferred_upgrade": "project Undici 8.x major upgrade",
+          "accurately_documented": true,
+          "evidence": [
+            "pure_ledger",
+            "toolkit_range",
+            "resolved_undici",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "material_inaccuracy": false,
+          "finding_ref": "f03"
+        },
+        {
+          "deferred_upgrade": "Node action runtime migration",
+          "accurately_documented": true,
+          "evidence": [
+            "pure_ledger",
+            "action_runtime",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "current_release_status_verified": null,
+          "finding_ref": "f04"
+        },
+        {
+          "deferred_upgrade": "mandatory npm version pin",
+          "accurately_documented": true,
+          "evidence": [
+            "pure_ledger",
+            "historical_npm_deferral",
+            "node_floor"
+          ],
+          "confidence": "high",
+          "restated_in_new_ledger": true,
+          "current_external_npm_metadata_verified": null,
+          "finding_ref": "f05"
+        },
+        {
+          "deferred_upgrade": "setup-node smol-toml",
+          "accurately_documented": true,
+          "evidence": [
+            "pure_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "checkout Undici",
+          "accurately_documented": true,
+          "evidence": [
+            "pure_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "setup-python Undici",
+          "accurately_documented": true,
+          "evidence": [
+            "pure_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "setup-python brace-expansion",
+          "accurately_documented": true,
+          "evidence": [
+            "pure_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "setup-python fast-xml-parser",
+          "accurately_documented": true,
+          "evidence": [
+            "pure_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "Markdown hook braces",
+          "accurately_documented": true,
+          "evidence": [
+            "pure_ledger",
+            "historical_hook_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "Markdown hook smol-toml",
+          "accurately_documented": true,
+          "evidence": [
+            "pure_ledger",
+            "historical_hook_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "Markdown hook KaTeX",
+          "accurately_documented": true,
+          "evidence": [
+            "pure_ledger",
+            "historical_hook_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        }
+      ],
+      "substantive_accuracy_on_available_evidence": true,
+      "verdict": "No material inaccuracy found in the requested pin records or bounded local/historically-qualified deferrals. Current external graph facts remain unknown.",
+      "confidence": "high for the explicit local facts; unknown for unavailable external claims",
+      "ledger_verification_and_participant_process_claims": "Out of scope: another assessor owns participant testing/uptake and verification chronology."
+    },
+    "prior": {
+      "patch_sha256": "ac72e352ac237a80c15cb2827bffb6a6f133a699949ee993d7bfcb8b65e49de0",
+      "grade_receipt_sha256": "a19f3e27ab53269dcbbc7492a0f5af3dc3efad18181ba1b750fd9c82d5217e99",
+      "source_manifest_sha256_before": "5afa6e76a3fca7dcb56e2b1eaf1c016f976a989edd37a898c9c3c4f6fdbcdbab",
+      "source_manifest_sha256_after": "5afa6e76a3fca7dcb56e2b1eaf1c016f976a989edd37a898c9c3c4f6fdbcdbab",
+      "source_entry_count": 72,
+      "fresh_reconstruction_matches_sealed_source": true,
+      "ledger_file": "docs/dependency-upgrades/2026-10-30.md",
+      "ledger_sha256": "5a8b986801ca3196c19ceeb6eabbe51d761067115c23ac78473305cc42d7afc2",
+      "changed_files": [
+        ".github/workflows/lint.yml",
+        ".pre-commit-config.yaml",
+        "docs/dependency-upgrades/2026-10-30.md",
+        "test/lint-tooling.test.ts"
+      ],
+      "protected_manifest_sha256": "852a109cf526560b7aa589df7daa54773fdc0440e3e99f2484062e57b12bf0f5",
+      "protected_file_count": 21,
+      "protected_files_equal_base": true,
+      "old_ledgers_equal_base": true,
+      "protected_selected_sha256": {
+        "action.yml": "7a5d7c1b2915f5cb113c0ac8085cb3a8ad939b6878bb37ca97528d277d3e1135",
+        "package.json": "e3098122a7843658449b7d89a6515e8ea9e30367926fa42a70303f2a6039de24",
+        "package-lock.json": "e84771dc62928f50fd6ccafd2aefea5672e5d15c4445383252733cb0bdb8f1a5"
+      },
+      "git_base": "a2f3ac8c38982d83e3d02e89342d856a7e026268",
+      "git_merged": null,
+      "requested_upgrade_records": {
+        "actions_setup_python": {
+          "accurately_documented": true,
+          "requested": "v7.1.0 @6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "evidence": [
+            "prior_ledger",
+            "prior_active_setup_python"
+          ],
+          "confidence": "high"
+        },
+        "markdownlint_cli2": {
+          "accurately_documented": true,
+          "requested": "v0.24.0",
+          "evidence": [
+            "prior_ledger",
+            "prior_active_markdown_hook"
+          ],
+          "confidence": "high"
+        }
+      },
+      "deferred_upgrades": [
+        {
+          "deferred_upgrade": "@types/node newer major families",
+          "accurately_documented": true,
+          "evidence": [
+            "prior_ledger",
+            "node_floor",
+            "declaration_contract",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "finding_ref": "f01"
+        },
+        {
+          "deferred_upgrade": "undici-types newer declaration family",
+          "accurately_documented": true,
+          "evidence": [
+            "prior_ledger",
+            "declaration_contract",
+            "resolved_undici",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "finding_ref": "f02"
+        },
+        {
+          "deferred_upgrade": "project Undici 8.x major upgrade",
+          "accurately_documented": true,
+          "evidence": [
+            "prior_ledger",
+            "toolkit_range",
+            "resolved_undici",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "material_inaccuracy": false,
+          "finding_ref": "f03"
+        },
+        {
+          "deferred_upgrade": "Node action runtime migration",
+          "accurately_documented": true,
+          "evidence": [
+            "prior_ledger",
+            "action_runtime",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "current_release_status_verified": null,
+          "finding_ref": "f04"
+        },
+        {
+          "deferred_upgrade": "mandatory npm version pin",
+          "accurately_documented": true,
+          "evidence": [
+            "prior_ledger",
+            "historical_npm_deferral",
+            "node_floor"
+          ],
+          "confidence": "high",
+          "restated_in_new_ledger": true,
+          "current_external_npm_metadata_verified": null,
+          "finding_ref": "f05"
+        },
+        {
+          "deferred_upgrade": "setup-node smol-toml",
+          "accurately_documented": true,
+          "evidence": [
+            "prior_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "checkout Undici",
+          "accurately_documented": true,
+          "evidence": [
+            "prior_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "setup-python Undici",
+          "accurately_documented": true,
+          "evidence": [
+            "prior_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "setup-python brace-expansion",
+          "accurately_documented": true,
+          "evidence": [
+            "prior_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "setup-python fast-xml-parser",
+          "accurately_documented": true,
+          "evidence": [
+            "prior_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "Markdown hook braces",
+          "accurately_documented": true,
+          "evidence": [
+            "prior_ledger",
+            "historical_hook_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "Markdown hook smol-toml",
+          "accurately_documented": true,
+          "evidence": [
+            "prior_ledger",
+            "historical_hook_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "Markdown hook KaTeX",
+          "accurately_documented": true,
+          "evidence": [
+            "prior_ledger",
+            "historical_hook_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        }
+      ],
+      "substantive_accuracy_on_available_evidence": true,
+      "verdict": "No material inaccuracy found in the requested pin records or bounded local/historically-qualified deferrals. Current external graph facts remain unknown.",
+      "confidence": "high for the explicit local facts; unknown for unavailable external claims",
+      "ledger_verification_and_participant_process_claims": "Out of scope: another assessor owns participant testing/uptake and verification chronology."
+    },
+    "candidate": {
+      "patch_sha256": "df725606190417e542230f977c777d5a2ff3c6eb648dc521eb7f5addc4b88e32",
+      "grade_receipt_sha256": "f51ebc08e73dad5a9bebae2a6d349a479da8969292734773b363abb3f76d97c5",
+      "source_manifest_sha256_before": "03444179933c81908bfc9e41c18376a1c8eed46c2bbc15c99e93484dda1c7033",
+      "source_manifest_sha256_after": "03444179933c81908bfc9e41c18376a1c8eed46c2bbc15c99e93484dda1c7033",
+      "source_entry_count": 71,
+      "fresh_reconstruction_matches_sealed_source": true,
+      "ledger_file": "docs/dependency-upgrades/2026-10-30.md",
+      "ledger_sha256": "88aaa16403c3d00c85ff15325fc850f95e2a9da68608a48240da8052a13819e0",
+      "changed_files": [
+        ".github/workflows/lint.yml",
+        ".pre-commit-config.yaml",
+        "docs/dependency-upgrades/2026-10-30.md",
+        "test/metadata.test.ts"
+      ],
+      "protected_manifest_sha256": "852a109cf526560b7aa589df7daa54773fdc0440e3e99f2484062e57b12bf0f5",
+      "protected_file_count": 21,
+      "protected_files_equal_base": true,
+      "old_ledgers_equal_base": true,
+      "protected_selected_sha256": {
+        "action.yml": "7a5d7c1b2915f5cb113c0ac8085cb3a8ad939b6878bb37ca97528d277d3e1135",
+        "package.json": "e3098122a7843658449b7d89a6515e8ea9e30367926fa42a70303f2a6039de24",
+        "package-lock.json": "e84771dc62928f50fd6ccafd2aefea5672e5d15c4445383252733cb0bdb8f1a5"
+      },
+      "git_base": "a2f3ac8c38982d83e3d02e89342d856a7e026268",
+      "git_merged": null,
+      "requested_upgrade_records": {
+        "actions_setup_python": {
+          "accurately_documented": true,
+          "requested": "v7.1.0 @6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "evidence": [
+            "candidate_ledger",
+            "candidate_active_setup_python"
+          ],
+          "confidence": "high"
+        },
+        "markdownlint_cli2": {
+          "accurately_documented": true,
+          "requested": "v0.24.0",
+          "evidence": [
+            "candidate_ledger",
+            "candidate_active_markdown_hook"
+          ],
+          "confidence": "high"
+        }
+      },
+      "deferred_upgrades": [
+        {
+          "deferred_upgrade": "@types/node newer major families",
+          "accurately_documented": true,
+          "evidence": [
+            "candidate_ledger",
+            "node_floor",
+            "declaration_contract",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "finding_ref": "f01"
+        },
+        {
+          "deferred_upgrade": "undici-types newer declaration family",
+          "accurately_documented": true,
+          "evidence": [
+            "candidate_ledger",
+            "declaration_contract",
+            "resolved_undici",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "finding_ref": "f02"
+        },
+        {
+          "deferred_upgrade": "project Undici 8.x major upgrade",
+          "accurately_documented": false,
+          "evidence": [
+            "candidate_wrong_current_undici",
+            "candidate_ledger",
+            "toolkit_range",
+            "resolved_undici",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "material_inaccuracy": true,
+          "finding_ref": "f07"
+        },
+        {
+          "deferred_upgrade": "Node action runtime migration",
+          "accurately_documented": true,
+          "evidence": [
+            "candidate_ledger",
+            "action_runtime",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "current_release_status_verified": null,
+          "finding_ref": "f04"
+        },
+        {
+          "deferred_upgrade": "mandatory npm version pin",
+          "accurately_documented": true,
+          "evidence": [
+            "candidate_ledger",
+            "historical_npm_deferral",
+            "node_floor"
+          ],
+          "confidence": "high",
+          "restated_in_new_ledger": true,
+          "current_external_npm_metadata_verified": null,
+          "finding_ref": "f05"
+        },
+        {
+          "deferred_upgrade": "setup-node smol-toml",
+          "accurately_documented": true,
+          "evidence": [
+            "candidate_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "checkout Undici",
+          "accurately_documented": true,
+          "evidence": [
+            "candidate_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "setup-python Undici",
+          "accurately_documented": true,
+          "evidence": [
+            "candidate_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "setup-python brace-expansion",
+          "accurately_documented": true,
+          "evidence": [
+            "candidate_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "setup-python fast-xml-parser",
+          "accurately_documented": true,
+          "evidence": [
+            "candidate_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "Markdown hook braces",
+          "accurately_documented": true,
+          "evidence": [
+            "candidate_ledger",
+            "historical_hook_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "Markdown hook smol-toml",
+          "accurately_documented": true,
+          "evidence": [
+            "candidate_ledger",
+            "historical_hook_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "Markdown hook KaTeX",
+          "accurately_documented": true,
+          "evidence": [
+            "candidate_ledger",
+            "historical_hook_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        }
+      ],
+      "substantive_accuracy_on_available_evidence": false,
+      "verdict": "Material current-version inaccuracy: project Undici 6.29.0 versus actual 6.29.1.",
+      "confidence": "high for the explicit local facts; unknown for unavailable external claims",
+      "ledger_verification_and_participant_process_claims": "Out of scope: another assessor owns participant testing/uptake and verification chronology."
+    },
+    "merged": {
+      "patch_sha256": "bcec41059a146bbfa3b4c42bfd0bff825b81cc6497c2003e00ddcfb6c92be56a",
+      "grade_receipt_sha256": "d7609639c6b8cd27c274a58e10f8111a6fc72e89ed3cd59b4fe708b1ab23fdfc",
+      "source_manifest_sha256_before": "e65944cf6587dbf5584a5b0439852fb62787ec940ca3b20b20ae133e59494078",
+      "source_manifest_sha256_after": "e65944cf6587dbf5584a5b0439852fb62787ec940ca3b20b20ae133e59494078",
+      "source_entry_count": 71,
+      "fresh_reconstruction_matches_sealed_source": true,
+      "ledger_file": "docs/dependency-upgrades/2026-10-25.md",
+      "ledger_sha256": "dc98c9f7dc7e59dae5178893ded47bf97fe5e8dcdc52bae469aa36420e3115c9",
+      "changed_files": [
+        ".github/workflows/lint.yml",
+        ".pre-commit-config.yaml",
+        "docs/dependency-upgrades/2026-10-25.md"
+      ],
+      "protected_manifest_sha256": "852a109cf526560b7aa589df7daa54773fdc0440e3e99f2484062e57b12bf0f5",
+      "protected_file_count": 21,
+      "protected_files_equal_base": true,
+      "old_ledgers_equal_base": true,
+      "protected_selected_sha256": {
+        "action.yml": "7a5d7c1b2915f5cb113c0ac8085cb3a8ad939b6878bb37ca97528d277d3e1135",
+        "package.json": "e3098122a7843658449b7d89a6515e8ea9e30367926fa42a70303f2a6039de24",
+        "package-lock.json": "e84771dc62928f50fd6ccafd2aefea5672e5d15c4445383252733cb0bdb8f1a5"
+      },
+      "git_base": "a2f3ac8c38982d83e3d02e89342d856a7e026268",
+      "git_merged": "bbaad53e5c844645ef54d9309adf96be46ab159e",
+      "requested_upgrade_records": {
+        "actions_setup_python": {
+          "accurately_documented": true,
+          "requested": "v7.1.0 @6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+          "evidence": [
+            "merged_ledger",
+            "merged_active_setup_python"
+          ],
+          "confidence": "high"
+        },
+        "markdownlint_cli2": {
+          "accurately_documented": true,
+          "requested": "v0.24.0",
+          "evidence": [
+            "merged_ledger",
+            "merged_active_markdown_hook"
+          ],
+          "confidence": "high"
+        }
+      },
+      "deferred_upgrades": [
+        {
+          "deferred_upgrade": "@types/node newer major families",
+          "accurately_documented": true,
+          "evidence": [
+            "merged_ledger",
+            "node_floor",
+            "declaration_contract",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "finding_ref": "f01"
+        },
+        {
+          "deferred_upgrade": "undici-types newer declaration family",
+          "accurately_documented": true,
+          "evidence": [
+            "merged_ledger",
+            "declaration_contract",
+            "resolved_undici",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "finding_ref": "f02"
+        },
+        {
+          "deferred_upgrade": "project Undici 8.x major upgrade",
+          "accurately_documented": true,
+          "evidence": [
+            "merged_ledger",
+            "toolkit_range",
+            "resolved_undici",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "material_inaccuracy": false,
+          "finding_ref": "f03"
+        },
+        {
+          "deferred_upgrade": "Node action runtime migration",
+          "accurately_documented": true,
+          "evidence": [
+            "merged_ledger",
+            "action_runtime",
+            "historical_boundaries"
+          ],
+          "confidence": "high",
+          "current_release_status_verified": null,
+          "finding_ref": "f04"
+        },
+        {
+          "deferred_upgrade": "mandatory npm version pin",
+          "accurately_documented": null,
+          "evidence": [
+            "merged_ledger",
+            "historical_npm_deferral",
+            "node_floor"
+          ],
+          "confidence": "unknown",
+          "restated_in_new_ledger": false,
+          "current_external_npm_metadata_verified": null,
+          "finding_ref": "f08"
+        },
+        {
+          "deferred_upgrade": "setup-node smol-toml",
+          "accurately_documented": true,
+          "evidence": [
+            "merged_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "checkout Undici",
+          "accurately_documented": true,
+          "evidence": [
+            "merged_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "setup-python Undici",
+          "accurately_documented": null,
+          "evidence": [
+            "merged_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "unknown",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f09"
+        },
+        {
+          "deferred_upgrade": "setup-python brace-expansion",
+          "accurately_documented": null,
+          "evidence": [
+            "merged_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "unknown",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f09"
+        },
+        {
+          "deferred_upgrade": "setup-python fast-xml-parser",
+          "accurately_documented": null,
+          "evidence": [
+            "merged_ledger",
+            "historical_action_deferrals"
+          ],
+          "confidence": "unknown",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f09"
+        },
+        {
+          "deferred_upgrade": "Markdown hook braces",
+          "accurately_documented": true,
+          "evidence": [
+            "merged_ledger",
+            "historical_hook_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        },
+        {
+          "deferred_upgrade": "Markdown hook smol-toml",
+          "accurately_documented": null,
+          "evidence": [
+            "merged_ledger",
+            "historical_hook_deferrals"
+          ],
+          "confidence": "unknown",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f09"
+        },
+        {
+          "deferred_upgrade": "Markdown hook KaTeX",
+          "accurately_documented": true,
+          "evidence": [
+            "merged_ledger",
+            "historical_hook_deferrals"
+          ],
+          "confidence": "high",
+          "current_external_graph_verified": null,
+          "previous_record_preserved": true,
+          "finding_ref": "f06"
+        }
+      ],
+      "substantive_accuracy_on_available_evidence": null,
+      "verdict": "Unestablished: locally checkable pin/retention records agree, but fresh upstream graph/latest and superseded-deferral claims lack fixture evidence.",
+      "confidence": "high for the explicit local facts; unknown for unavailable external claims",
+      "ledger_verification_and_participant_process_claims": "Out of scope: another assessor owns participant testing/uptake and verification chronology.",
+      "additional_unverifiable_claims": [
+        {
+          "claim": "setup-python 7.1.0 upstream lock advances Undici to 6.29.0, brace-expansion to 5.0.12 and fast-xml-parser to 5.11.2",
+          "verified": null,
+          "evidence": [
+            "merged_ledger"
+          ],
+          "confidence": "unknown"
+        },
+        {
+          "claim": "markdownlint-cli2 0.24.0 published manifest advances smol-toml/js-yaml/markdown-it/markdownlint and supersedes the old smol-toml deferral",
+          "verified": null,
+          "evidence": [
+            "merged_ledger"
+          ],
+          "confidence": "unknown"
+        },
+        {
+          "claim": "registry metadata for every lock package was checked; direct families and other tools are latest; specified Node patches have stated release phases",
+          "verified": null,
+          "evidence": [
+            "merged_ledger"
+          ],
+          "confidence": "unknown"
+        }
+      ]
+    }
+  },
+  "evidence": {
+    "node_floor": {
+      "subject": "base",
+      "file": "package.json",
+      "file_sha256": "e3098122a7843658449b7d89a6515e8ea9e30367926fa42a70303f2a6039de24",
+      "lines": [
+        6,
+        9
+      ],
+      "excerpt": "  \"type\": \"module\",\n  \"engines\": {\n    \"node\": \">=22\"\n  },"
+    },
+    "declaration_contract": {
+      "subject": "base",
+      "file": "package-lock.json",
+      "file_sha256": "e84771dc62928f50fd6ccafd2aefea5672e5d15c4445383252733cb0bdb8f1a5",
+      "lines": [
+        58,
+        66
+      ],
+      "excerpt": "    \"node_modules/@types/node\": {\n      \"version\": \"22.20.5\",\n      \"resolved\": \"https://registry.npmjs.org/@types/node/-/node-22.20.5.tgz\",\n      \"integrity\": \"sha512-U2+DNr+wSjpsTS/wZGYHq7GcwfuSmKiKvoPvK22zwTlRhU91yOniN4qRR5KhIjvif7ysw/dz/hKmfDH0Ris4aA==\",\n      \"dev\": true,\n      \"license\": \"MIT\",\n      \"dependencies\": {\n        \"undici-types\": \"~6.21.0\"\n      }"
+    },
+    "toolkit_range": {
+      "subject": "base",
+      "file": "package-lock.json",
+      "file_sha256": "e84771dc62928f50fd6ccafd2aefea5672e5d15c4445383252733cb0bdb8f1a5",
+      "lines": [
+        42,
+        50
+      ],
+      "excerpt": "    \"node_modules/@actions/http-client\": {\n      \"version\": \"4.0.1\",\n      \"resolved\": \"https://registry.npmjs.org/@actions/http-client/-/http-client-4.0.1.tgz\",\n      \"integrity\": \"sha512-+Nvd1ImaOZBSoPbsUtEhv+1z99H12xzncCkz0a3RuehINE81FZSe2QTj3uvAPTcJX/SCzUQHQ0D1GrPMbrPitg==\",\n      \"license\": \"MIT\",\n      \"dependencies\": {\n        \"tunnel\": \"^0.0.6\",\n        \"undici\": \"^6.23.0\"\n      }"
+    },
+    "resolved_undici": {
+      "subject": "base",
+      "file": "package-lock.json",
+      "file_sha256": "e84771dc62928f50fd6ccafd2aefea5672e5d15c4445383252733cb0bdb8f1a5",
+      "lines": [
+        478,
+        493
+      ],
+      "excerpt": "    \"node_modules/undici\": {\n      \"version\": \"6.29.1\",\n      \"resolved\": \"https://registry.npmjs.org/undici/-/undici-6.29.1.tgz\",\n      \"integrity\": \"sha512-EvRlUt/QqAEvXdQeRMYUfwOQsfzpDztykrG2owGEE/rBOBoYv9uF39ZzsNDh4lTFHhTr2XOZjKkYgueD12ZmGA==\",\n      \"license\": \"MIT\",\n      \"engines\": {\n        \"node\": \">=18.17\"\n      }\n    },\n    \"node_modules/undici-types\": {\n      \"version\": \"6.21.0\",\n      \"resolved\": \"https://registry.npmjs.org/undici-types/-/undici-types-6.21.0.tgz\",\n      \"integrity\": \"sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==\",\n      \"dev\": true,\n      \"license\": \"MIT\"\n    }"
+    },
+    "action_runtime": {
+      "subject": "base",
+      "file": "action.yml",
+      "file_sha256": "7a5d7c1b2915f5cb113c0ac8085cb3a8ad939b6878bb37ca97528d277d3e1135",
+      "lines": [
+        257,
+        260
+      ],
+      "excerpt": "runs:\n  using: \"node24\"\n  main: \"dist/index.js\""
+    },
+    "historical_npm_deferral": {
+      "subject": "base",
+      "file": "docs/dependency-upgrades/2026-10-12.md",
+      "file_sha256": "47acc0c7e82e07cd8a60863ca2349101d75b24a58b8fee8ec59ad518d0a7d1df",
+      "lines": [
+        62,
+        62
+      ],
+      "excerpt": "| npm | unpinned | 12.2.0 | unpinned; 12.2.0 verifier | Deferred mandatory pin: npm 12 requires 22.22.2+/24.15.0+; excludes earlier supported >=22 patches. Isolated install passes. [Engines](https://registry.npmjs.org/npm/12.2.0) |"
+    },
+    "historical_boundaries": {
+      "subject": "base",
+      "file": "docs/dependency-upgrades/2026-10-12.md",
+      "file_sha256": "47acc0c7e82e07cd8a60863ca2349101d75b24a58b8fee8ec59ad518d0a7d1df",
+      "lines": [
+        208,
+        212
+      ],
+      "excerpt": "## Retained boundaries\n\n- Upgrade deferred: undici 8.11.2 breaks the toolkit's supported ^6.23.0 dependency contract; retain 6.29.0. Latest parent 4.0.1 is already installed; retry when its range advances. No forced override. [Parent](https://registry.npmjs.org/%40actions%2Fhttp-client/4.0.1)\n- Upgrade deferred: Node 24/26 declarations expose APIs absent from the documented Node 22 floor; retain 22.20.5 and its undici-types 6.21.0 family. Retry with an approved support-policy migration. [Policy](../CONTRIBUTING.md#prerequisites)\n- Upgrade deferred: Node 26 remains Current until 2026-10-28; retain supported Node 24 action runtime. Retry when LTS and Actions metadata support align. [Schedule](https://github.com/nodejs/Release/blob/main/schedule.json)"
+    },
+    "historical_action_deferrals": {
+      "subject": "base",
+      "file": "docs/dependency-upgrades/2026-10-12-actions.md",
+      "file_sha256": "2064a364f4eae76f5602af42682329e7954c89688771298b78c288caf12be7aa",
+      "lines": [
+        42,
+        53
+      ],
+      "excerpt": "| Retained dependency | Considered fix | Outcome / retry condition |\n| --- | --- | --- |\n| setup-node: smol-toml 1.7.1 | 1.9.0+; latest 1.9.1 | Deferred: latest action bundles affected code; retry a supported rebuilt action. |\n| checkout/setup-python: Undici 6.27.0 | 6.28.1+; supported 6.x latest 6.29.0 | Deferred: action-owned bundle; retry upstream release. [Advisory](https://github.com/advisories/GHSA-rfgv-xxqx-mfg5) |\n| setup-python: brace-expansion 1.1.15/5.0.6 | 1.1.21 / 5.0.12 | Deferred: both bundled families need upstream refresh. [Advisory](https://github.com/advisories/GHSA-mh99-v99m-4gvg) |\n| setup-python: fast-xml-parser 5.9.3 | 5.10.1+ | Deferred: latest parent retains affected implementation; retry supported rebuild. [Advisory](https://github.com/advisories/GHSA-8r6m-32jq-jx6q) |\n\nCurrent parent releases are already selected. Forcing leaves in this repository\nwould leave downloaded action bundles untouched. Replacing setup/checkout with\ncustom shell code would introduce a new authentication/cache/platform maintenance\nsurface rather than a supported dependency migration. CI success does not clear\nthese upstream security deferrals; they remain explicit release risks."
+    },
+    "historical_hook_deferrals": {
+      "subject": "base",
+      "file": "docs/dependency-upgrades/2026-10-12.md",
+      "file_sha256": "47acc0c7e82e07cd8a60863ca2349101d75b24a58b8fee8ec59ad518d0a7d1df",
+      "lines": [
+        224,
+        237
+      ],
+      "excerpt": "## Tooling security deferrals\n\nThe committed action graph reports zero npm advisories. The upstream Markdown\nhook graph has three advisories; it is development/CI tooling, not bundled runtime.\n\n| Dependency | Before | Considered target | Final | Outcome and evidence |\n| --- | --- | --- | --- | --- |\n| braces | 3.0.3 | patched release unavailable | 3.0.3 | Deferred: latest stable is affected; the latest supported hook still depends on it. Retry when upstream publishes a patch or supported graph replacement. [High-severity advisory](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) |\n| smol-toml | 1.8.0 | 1.9.1 | 1.8.0 | Deferred: latest markdownlint-cli2 pins 1.8.0 exactly. No maintained parent upgrade exists; retry its dependency refresh rather than patch private hook installs. [Moderate advisory](https://github.com/advisories/GHSA-r4xh-jqrq-34v2) |\n| katex | 0.16.47 | 0.18.2 fix; 0.19.0 latest | 0.16.47 | Deferred: latest micromark-extension-math 3.1.0 requires ^0.16.0; patched versions exceed its contract. Retry a supported parent migration. [Low-severity advisory](https://github.com/advisories/GHSA-238p-pmpm-9mq7) |\n\nUntrusted deep brace patterns/TOML can deny service; KaTeX requires pre-existing\nprototype pollution. No exploitability claim is made. These remain disclosed\nupstream risks; successful lint does not make them patched. Hook replacement"
+    },
+    "pure_ledger": {
+      "subject": "pure",
+      "file": "docs/dependency-upgrades/2026-10-30.md",
+      "file_sha256": "b7b6276e0baf0d27e22d975a8b2f0ce3781d7092b3c89cd89d7d77eb1a7e86d5",
+      "lines": [
+        1,
+        30
+      ],
+      "excerpt": "# Lint dependency update - 2026-10-30\n\nThis scoped update supplements the [previous ledger](2026-10-12.md) and its\n[action dependency review](2026-10-12-actions.md). It updates the requested lint\nparents without changing supported runtimes or cleanup behavior.\n\n## Dependency ledger\n\n| Dependency | Before | Target and final | Outcome and evidence |\n| --- | --- | --- | --- |\n| actions/setup-python | v7.0.0 @ 5fda3b95a4ea91299a34e894583c3862153e4b97 | v7.1.0 @ 6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 | Upgraded immutable lint-workflow pin using the upstream tag commit supplied in the task. [Release](https://github.com/actions/setup-python/releases/tag/v7.1.0) |\n| markdownlint-cli2 | v0.23.3 | v0.24.0 | Upgraded native pre-commit hook; existing arguments, configuration and stages retained. [Release](https://github.com/DavidAnson/markdownlint-cli2/releases/tag/v0.24.0) |\n\n## Deferred upgrades and preserved contracts\n\n- Retain Python 3.15 for lint, Node.js >=22 for development, Node 22 type\n  declarations and the Node 24 published action runtime. Runtime and type-major\n  migrations require a separate support-policy review; this update does not\n  reassess the earlier ledger's time-dependent Node release status.\n- Retain the npm lockfile and generated `dist/` unchanged. The toolkit's Undici\n  major upgrade and a mandatory npm version pin remain deferred for the\n  compatibility reasons in the previous ledger.\n- Earlier action-bundle and Markdown-hook transitive deferrals remain pending\n  revalidation against these new parent releases. Their old resolved versions\n  and advisory counts are historical evidence, not measurements of the new\n  parents. Defer forced leaf overrides; retry through supported upstream graph\n  updates and fresh native hook installation.\n- Other tooling pins are outside this scoped update. No claim of latest-version\n  status or advisory remediation is made without upstream verification.\n"
+    },
+    "pure_active_setup_python": {
+      "subject": "pure",
+      "file": ".github/workflows/lint.yml",
+      "file_sha256": "48e9674f77ac748beb62b5ca63b920ce0cad913caf458370fb52eb354173b6b8",
+      "lines": [
+        32,
+        34
+      ],
+      "excerpt": "        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0\n        with:\n          python-version: \"3.15\""
+    },
+    "pure_active_markdown_hook": {
+      "subject": "pure",
+      "file": ".pre-commit-config.yaml",
+      "file_sha256": "3cfdee2c9280db88e3989bc279a95c50384ebf599af2565df47623978520d2e8",
+      "lines": [
+        41,
+        48
+      ],
+      "excerpt": "  - repo: https://github.com/DavidAnson/markdownlint-cli2\n    rev: v0.24.0\n    hooks:\n      - id: markdownlint-cli2\n        name: Markdown Lint\n        args: [\"--fix\", \"--config=.markdownlint-cli2.jsonc\"]\n        exclude: ^CHANGELOG\\.md$\n        stages: [pre-commit, pre-push]"
+    },
+    "prior_ledger": {
+      "subject": "prior",
+      "file": "docs/dependency-upgrades/2026-10-30.md",
+      "file_sha256": "5a8b986801ca3196c19ceeb6eabbe51d761067115c23ac78473305cc42d7afc2",
+      "lines": [
+        1,
+        32
+      ],
+      "excerpt": "# Lint dependency update - 2026-10-30\n\nUpdate only the two requested lint tools. This entry supersedes their\n\"already current\" dispositions in the [previous ledger](2026-10-12.md).\nVersion targets and the setup-python commit come from the task; upstream\nrelease metadata and dependency graphs were not fetched during this offline run.\n\n## Tool ledger\n\n| Dependency | Before | Final | Outcome and evidence |\n| --- | --- | --- | --- |\n| actions/setup-python | v7.0.0 (`5fda3b95a4ea91299a34e894583c3862153e4b97`) | v7.1.0 (`6d4fd22b20465ccc0f7354476588e8df7c9ca0e0`) | Updated immutable workflow pin and version comment. [Requested release](https://github.com/actions/setup-python/releases/tag/v7.1.0). |\n| markdownlint-cli2 | v0.23.3 | v0.24.0 | Updated pre-commit revision; hook ID, arguments, exclusions and stages stay unchanged. [Requested release](https://github.com/DavidAnson/markdownlint-cli2/releases/tag/v0.24.0). |\n\n## Deferred upgrades and preserved boundaries\n\n- Retain Node development `>=22`, Node 22 declarations and their undici-types\n  family. Newer declaration majors require a separate support-policy review.\n- Retain the action's `node24` runtime. A Node 26 migration is outside this\n  tooling update; the earlier date-based LTS deferral is not a current blocker.\n- Retain Python lint selector `3.15`, pre-commit `4.7.0`, and the remaining hook\n  pins. Other tool upgrades and a mandatory npm pin are outside this scope;\n  the previous npm engine-floor concern remains relevant to Node `>=22` support.\n- Retain the npm manifest, lockfile and generated distribution. Undici major\n  upgrades remain subject to the owning toolkit's supported dependency range.\n- Upstream hook and action transitive upgrades remain parent-owned. The earlier\n  [hook advisory deferrals](2026-10-12.md#tooling-security-deferrals) and\n  [action graph review](2026-10-12-actions.md) describe the old pins only.\n  Reassess those graphs with the new releases when online verification is\n  available; this update does not claim to resolve their advisories or preserve\n  their exact transitive versions. No leaf overrides or private bundle edits.\n"
+    },
+    "prior_active_setup_python": {
+      "subject": "prior",
+      "file": ".github/workflows/lint.yml",
+      "file_sha256": "48e9674f77ac748beb62b5ca63b920ce0cad913caf458370fb52eb354173b6b8",
+      "lines": [
+        32,
+        34
+      ],
+      "excerpt": "        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0\n        with:\n          python-version: \"3.15\""
+    },
+    "prior_active_markdown_hook": {
+      "subject": "prior",
+      "file": ".pre-commit-config.yaml",
+      "file_sha256": "3cfdee2c9280db88e3989bc279a95c50384ebf599af2565df47623978520d2e8",
+      "lines": [
+        41,
+        48
+      ],
+      "excerpt": "  - repo: https://github.com/DavidAnson/markdownlint-cli2\n    rev: v0.24.0\n    hooks:\n      - id: markdownlint-cli2\n        name: Markdown Lint\n        args: [\"--fix\", \"--config=.markdownlint-cli2.jsonc\"]\n        exclude: ^CHANGELOG\\.md$\n        stages: [pre-commit, pre-push]"
+    },
+    "candidate_ledger": {
+      "subject": "candidate",
+      "file": "docs/dependency-upgrades/2026-10-30.md",
+      "file_sha256": "88aaa16403c3d00c85ff15325fc850f95e2a9da68608a48240da8052a13819e0",
+      "lines": [
+        1,
+        40
+      ],
+      "excerpt": "# Lint dependency update - 2026-10-30\n\nThis scoped offline update supersedes the setup-python and markdownlint-cli2\nparent selections in the [previous ledger](2026-10-12.md). Targets and the\nsetup-python tag commit were supplied in the task; upstream release metadata,\nbundles and fresh hook resolution were not independently fetched or verified.\n\n## Dependency ledger\n\n| Dependency | Before | Requested target | Final | Outcome |\n| --- | --- | --- | --- | --- |\n| actions/setup-python | v7.0.0 @ 5fda3b95a4ea91299a34e894583c3862153e4b97 | v7.1.0 @ 6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 | v7.1.0 @ 6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 | Upgraded the immutable lint workflow pin; Python stays 3.15. [Release](https://github.com/actions/setup-python/releases/tag/v7.1.0) |\n| DavidAnson/markdownlint-cli2 | v0.23.3 | v0.24.0 | v0.24.0 | Upgraded the pre-commit hook; ID, arguments, exclusions and stages are unchanged. [Release](https://github.com/DavidAnson/markdownlint-cli2/releases/tag/v0.24.0) |\n\n## Retained boundaries and deferred upgrades\n\n- Keep the Node development floor at >=22, Node 22 type declarations and\n  `undici-types` 6.21.0. Newer declaration families require a support-policy\n  change; this lint update does not authorize one.\n- Keep the action runtime at `node24`. A runtime migration requires a separate\n  review of Actions support; the old ledger's time-based Node 26 prerelease/LTS\n  rationale is not reasserted here.\n- Keep `undici` 6.29.0 under `@actions/http-client` 4.0.1's supported range.\n  Defer the previously considered 8.11.2 until the parent supports it; no leaf\n  overrides or lockfile changes are introduced.\n- Retain other tooling and transitive upgrade deferrals recorded in the\n  [previous ledger](2026-10-12.md) and\n  [action bundle review](2026-10-12-actions.md). Those are historical findings,\n  not a verified inventory of setup-python v7.1.0 or markdownlint-cli2 v0.24.0.\n  In particular, the prior setup-python Undici, brace-expansion and XML-parser\n  findings and Markdown hook braces, smol-toml and KaTeX findings need a fresh\n  upstream graph/bundle review when online verification is available. This\n  update claims neither remediation nor continued presence in the new parents.\n  Do not patch private hook installs or immutable action bundles with project\n  overrides; retry through supported upstream releases.\n\nPython 3.15, pre-commit 4.7.0, action inputs/outputs, cleanup behavior and the\ncommitted `dist/` remain unchanged. These lint-only configuration changes do\nnot alter project dependencies or distribution inputs.\n"
+    },
+    "candidate_active_setup_python": {
+      "subject": "candidate",
+      "file": ".github/workflows/lint.yml",
+      "file_sha256": "48e9674f77ac748beb62b5ca63b920ce0cad913caf458370fb52eb354173b6b8",
+      "lines": [
+        32,
+        34
+      ],
+      "excerpt": "        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0\n        with:\n          python-version: \"3.15\""
+    },
+    "candidate_active_markdown_hook": {
+      "subject": "candidate",
+      "file": ".pre-commit-config.yaml",
+      "file_sha256": "3cfdee2c9280db88e3989bc279a95c50384ebf599af2565df47623978520d2e8",
+      "lines": [
+        41,
+        48
+      ],
+      "excerpt": "  - repo: https://github.com/DavidAnson/markdownlint-cli2\n    rev: v0.24.0\n    hooks:\n      - id: markdownlint-cli2\n        name: Markdown Lint\n        args: [\"--fix\", \"--config=.markdownlint-cli2.jsonc\"]\n        exclude: ^CHANGELOG\\.md$\n        stages: [pre-commit, pre-push]"
+    },
+    "candidate_wrong_current_undici": {
+      "subject": "candidate",
+      "file": "docs/dependency-upgrades/2026-10-30.md",
+      "file_sha256": "88aaa16403c3d00c85ff15325fc850f95e2a9da68608a48240da8052a13819e0",
+      "lines": [
+        23,
+        25
+      ],
+      "excerpt": "- Keep `undici` 6.29.0 under `@actions/http-client` 4.0.1's supported range.\n  Defer the previously considered 8.11.2 until the parent supports it; no leaf\n  overrides or lockfile changes are introduced."
+    },
+    "merged_ledger": {
+      "subject": "merged",
+      "file": "docs/dependency-upgrades/2026-10-25.md",
+      "file_sha256": "dc98c9f7dc7e59dae5178893ded47bf97fe5e8dcdc52bae469aa36420e3115c9",
+      "lines": [
+        1,
+        41
+      ],
+      "excerpt": "# Dependency upgrade \u2014 2026-10-25\n\nThis review uses main `a2f3ac8c38982d83e3d02e89342d856a7e026268`.\n\n| Group | Before | Target / selected | Decision |\n| --- | --- | --- | --- |\n| actions/setup-python | 7.0.0 | 7.1.0 | Upgrade; incorporates Dependabot #67. |\n| markdownlint-cli2 | 0.23.3 | 0.24.0 | Upgrade; incorporates Dependabot #68. |\n| Direct npm dependencies and TypeScript optional platform packages | Committed lock | Unchanged | Registry latest within supported families. |\n| @types/node / undici-types | 22.20.5 / 6.21.0 | Unchanged | Preserve Node 22 development API floor and its declaration range. |\n| undici | 6.29.1 | 6.29.1 | Latest 6.x; 8.12.3 exceeds the parent contract. |\n| checkout / setup-node | 7.0.1 / 7.1.0 | Unchanged | Latest official stable releases. |\n| pre-commit / hooks / texthooks | 4.7.0 / 6.0.0 / 1.0.0 | Unchanged | Latest stable upstream releases. |\n| yamllint / actionlint | 1.38.0 / 1.7.12 | Unchanged | Latest stable upstream releases. |\n| Node development / action | >=22 / node24 | Unchanged | Keep supported floor and Actions runtime contract. |\n| Python lint | 3.15 | Unchanged | Stable Python 3.15.0 used for hook validation. |\n\n## Compatibility and existing deferrals\n\n[setup-python 7.1.0](https://github.com/actions/setup-python/releases/tag/v7.1.0)\nresolves to `6d4fd22b20465ccc0f7354476588e8df7c9ca0e0`.\nIts upstream lock advances Undici to 6.29.0, brace-expansion to 5.0.12,\nand fast-xml-parser to 5.11.2. These supersede older declarations recorded in\nthe October 12 review; declarations alone do not certify compiled bundle safety.\n\n[markdownlint-cli2 0.24.0](https://github.com/DavidAnson/markdownlint-cli2/releases/tag/v0.24.0)\nrequires Node >=22, compatible with this repository. Its published manifest\nadvances smol-toml to 1.9.1, js-yaml to 5.4.3, markdown-it to 15.0.3 and\nmarkdownlint to 0.42.0. The old hook's smol-toml deferral is superseded.\nUpstream-owned graphs remain upstream-owned: no private hook edits or leaf overrides.\nThe unchanged checkout and setup-node pins retain the security deferrals in\n[the prior action review](2026-10-12-actions.md); retry supported rebuilt parents.\nUnchanged hook transitive security deferrals from the prior review are not\ncertified resolved by this change.\n\nRegistry metadata for every package in the committed npm lock was checked on\n2026-10-25. The only newer major families were Node declarations and Undici;\ntheir parent constraints and runtime support justify retention. Official Node\nrelease data lists 22.23.4 and 24.22.1 as supported LTS patches; Node 26.12.1 is\nstill Current. No runtime support-policy migration is needed for these pins.\n"
+    },
+    "merged_active_setup_python": {
+      "subject": "merged",
+      "file": ".github/workflows/lint.yml",
+      "file_sha256": "48e9674f77ac748beb62b5ca63b920ce0cad913caf458370fb52eb354173b6b8",
+      "lines": [
+        32,
+        34
+      ],
+      "excerpt": "        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0\n        with:\n          python-version: \"3.15\""
+    },
+    "merged_active_markdown_hook": {
+      "subject": "merged",
+      "file": ".pre-commit-config.yaml",
+      "file_sha256": "3cfdee2c9280db88e3989bc279a95c50384ebf599af2565df47623978520d2e8",
+      "lines": [
+        41,
+        48
+      ],
+      "excerpt": "  - repo: https://github.com/DavidAnson/markdownlint-cli2\n    rev: v0.24.0\n    hooks:\n      - id: markdownlint-cli2\n        name: Markdown Lint\n        args: [\"--fix\", \"--config=.markdownlint-cli2.jsonc\"]\n        exclude: ^CHANGELOG\\.md$\n        stages: [pre-commit, pre-push]"
+    }
+  },
+  "historical_deferral_inventory": {
+    "file": "docs/dependency-upgrades/2026-10-12.md",
+    "sha256": "47acc0c7e82e07cd8a60863ca2349101d75b24a58b8fee8ec59ad518d0a7d1df",
+    "note": "Historical deferred rows are preserved in every subject. They do not prove that each leaf remains present in changed upstream parents, or that this scoped proposal newly considered every dependency.",
+    "groups": [
+      {
+        "file": "docs/dependency-upgrades/2026-10-12.md",
+        "file_sha256": "47acc0c7e82e07cd8a60863ca2349101d75b24a58b8fee8ec59ad518d0a7d1df",
+        "scope": "npm ledger",
+        "members": [
+          [
+            "undici",
+            42
+          ],
+          [
+            "undici-types",
+            43
+          ]
+        ],
+        "record_preserved_in_all_four": true,
+        "current_external_graph_truth": null
+      },
+      {
+        "file": "docs/dependency-upgrades/2026-10-12.md",
+        "file_sha256": "47acc0c7e82e07cd8a60863ca2349101d75b24a58b8fee8ec59ad518d0a7d1df",
+        "scope": "Tool and runtime ledger",
+        "members": [
+          [
+            "npm",
+            62
+          ]
+        ],
+        "record_preserved_in_all_four": true,
+        "current_external_graph_truth": null
+      },
+      {
+        "file": "docs/dependency-upgrades/2026-10-12.md",
+        "file_sha256": "47acc0c7e82e07cd8a60863ca2349101d75b24a58b8fee8ec59ad518d0a7d1df",
+        "scope": "Markdown hook graph",
+        "members": [
+          [
+            "@nodelib/fs.scandir",
+            97
+          ],
+          [
+            "@nodelib/fs.stat",
+            98
+          ],
+          [
+            "@nodelib/fs.walk",
+            99
+          ],
+          [
+            "@types/unist",
+            104
+          ],
+          [
+            "argparse",
+            106
+          ],
+          [
+            "commander",
+            111
+          ],
+          [
+            "glob-parent",
+            121
+          ],
+          [
+            "js-yaml",
+            132
+          ],
+          [
+            "katex",
+            135
+          ],
+          [
+            "markdown-it",
+            137
+          ],
+          [
+            "micromark",
+            143
+          ],
+          [
+            "micromark-core-commonmark",
+            144
+          ],
+          [
+            "micromark-extension-gfm-table",
+            148
+          ],
+          [
+            "micromark-util-types",
+            167
+          ],
+          [
+            "picomatch",
+            171
+          ],
+          [
+            "smol-toml",
+            177
+          ],
+          [
+            "string-width",
+            178
+          ]
+        ],
+        "record_preserved_in_all_four": true,
+        "current_external_graph_truth": null
+      },
+      {
+        "file": "docs/dependency-upgrades/2026-10-12.md",
+        "file_sha256": "47acc0c7e82e07cd8a60863ca2349101d75b24a58b8fee8ec59ad518d0a7d1df",
+        "scope": "Actionlint module graph",
+        "members": [
+          [
+            "github.com/bmatcuk/doublestar/v4",
+            193
+          ],
+          [
+            "github.com/mattn/go-colorable",
+            196
+          ],
+          [
+            "github.com/mattn/go-runewidth",
+            197
+          ],
+          [
+            "github.com/mattn/go-shellwords",
+            198
+          ],
+          [
+            "github.com/yuin/goldmark",
+            200
+          ],
+          [
+            "go.yaml.in/yaml/v4",
+            201
+          ],
+          [
+            "golang.org/x/net",
+            202
+          ],
+          [
+            "golang.org/x/sync",
+            203
+          ],
+          [
+            "golang.org/x/sys",
+            204
+          ],
+          [
+            "github.com/mattn/go-isatty",
+            206
+          ]
+        ],
+        "record_preserved_in_all_four": true,
+        "current_external_graph_truth": null
+      },
+      {
+        "file": "docs/dependency-upgrades/2026-10-12.md",
+        "file_sha256": "47acc0c7e82e07cd8a60863ca2349101d75b24a58b8fee8ec59ad518d0a7d1df",
+        "scope": "Tooling security deferrals",
+        "members": [
+          [
+            "braces",
+            231
+          ],
+          [
+            "smol-toml",
+            232
+          ],
+          [
+            "katex",
+            233
+          ]
+        ],
+        "record_preserved_in_all_four": true,
+        "current_external_graph_truth": null
+      },
+      {
+        "file": "docs/dependency-upgrades/2026-10-12.md",
+        "file_sha256": "47acc0c7e82e07cd8a60863ca2349101d75b24a58b8fee8ec59ad518d0a7d1df",
+        "scope": "Optional npm verifier bundle",
+        "members": [
+          [
+            "brace-expansion` (npm bundle)",
+            249
+          ],
+          [
+            "ip-address` (npm bundle)",
+            250
+          ],
+          [
+            "undici` (npm bundle)",
+            251
+          ],
+          [
+            "http-cache-semantics` (npm bundle)",
+            252
+          ],
+          [
+            "postcss-selector-parser` (npm bundle)",
+            253
+          ]
+        ],
+        "record_preserved_in_all_four": true,
+        "current_external_graph_truth": null
+      },
+      {
+        "file": "docs/dependency-upgrades/2026-10-12-actions.md",
+        "file_sha256": "2064a364f4eae76f5602af42682329e7954c89688771298b78c288caf12be7aa",
+        "scope": "Shipped code and security",
+        "members": [
+          [
+            "setup-node: smol-toml 1.7.1",
+            44
+          ],
+          [
+            "checkout/setup-python: Undici 6.27.0",
+            45
+          ],
+          [
+            "setup-python: brace-expansion 1.1.15/5.0.6",
+            46
+          ],
+          [
+            "setup-python: fast-xml-parser 5.9.3",
+            47
+          ]
+        ],
+        "record_preserved_in_all_four": true,
+        "current_external_graph_truth": null
+      },
+      {
+        "file": "docs/dependency-upgrades/2026-10-12-actions.md",
+        "file_sha256": "2064a364f4eae76f5602af42682329e7954c89688771298b78c288caf12be7aa",
+        "scope": "setup-node",
+        "members": [
+          [
+            "@actions/http-client",
+            66
+          ],
+          [
+            "@azure/abort-controller",
+            69
+          ],
+          [
+            "@azure/core-auth",
+            70
+          ],
+          [
+            "@azure/core-client",
+            71
+          ],
+          [
+            "@azure/core-http-compat",
+            72
+          ],
+          [
+            "@azure/core-lro",
+            73
+          ],
+          [
+            "@azure/core-paging",
+            74
+          ],
+          [
+            "@azure/core-rest-pipeline",
+            75
+          ],
+          [
+            "@azure/core-tracing",
+            76
+          ],
+          [
+            "@azure/core-util",
+            77
+          ],
+          [
+            "@azure/core-xml",
+            78
+          ],
+          [
+            "@azure/logger",
+            79
+          ],
+          [
+            "@azure/storage-blob",
+            80
+          ],
+          [
+            "@azure/storage-common",
+            81
+          ],
+          [
+            "@nodable/entities",
+            82
+          ],
+          [
+            "@octokit/core",
+            84
+          ],
+          [
+            "@octokit/endpoint",
+            85
+          ],
+          [
+            "@octokit/graphql",
+            86
+          ],
+          [
+            "@octokit/openapi-types",
+            87
+          ],
+          [
+            "@octokit/plugin-paginate-rest",
+            88
+          ],
+          [
+            "@octokit/plugin-rest-endpoint-methods",
+            89
+          ],
+          [
+            "@octokit/request",
+            90
+          ],
+          [
+            "@octokit/request-error",
+            91
+          ],
+          [
+            "@octokit/types",
+            92
+          ],
+          [
+            "@typespec/ts-http-runtime",
+            95
+          ],
+          [
+            "agent-base",
+            96
+          ],
+          [
+            "fast-content-type-parse",
+            103
+          ],
+          [
+            "fast-xml-builder",
+            104
+          ],
+          [
+            "fast-xml-parser",
+            105
+          ],
+          [
+            "http-proxy-agent",
+            106
+          ],
+          [
+            "https-proxy-agent",
+            107
+          ],
+          [
+            "json-with-bigint",
+            108
+          ],
+          [
+            "path-expression-matcher",
+            111
+          ],
+          [
+            "smol-toml",
+            113
+          ],
+          [
+            "strnum",
+            114
+          ],
+          [
+            "xml-naming",
+            119
+          ]
+        ],
+        "record_preserved_in_all_four": true,
+        "current_external_graph_truth": null
+      },
+      {
+        "file": "docs/dependency-upgrades/2026-10-12-actions.md",
+        "file_sha256": "2064a364f4eae76f5602af42682329e7954c89688771298b78c288caf12be7aa",
+        "scope": "checkout",
+        "members": [
+          [
+            "@actions/http-client",
+            130
+          ],
+          [
+            "@octokit/core",
+            134
+          ],
+          [
+            "@octokit/endpoint",
+            135
+          ],
+          [
+            "@octokit/graphql",
+            136
+          ],
+          [
+            "@octokit/openapi-types",
+            137
+          ],
+          [
+            "@octokit/plugin-paginate-rest",
+            138
+          ],
+          [
+            "@octokit/plugin-rest-endpoint-methods",
+            139
+          ],
+          [
+            "@octokit/request",
+            140
+          ],
+          [
+            "@octokit/request-error",
+            141
+          ],
+          [
+            "@octokit/types",
+            142
+          ],
+          [
+            "content-type",
+            144
+          ],
+          [
+            "json-with-bigint",
+            145
+          ],
+          [
+            "semver",
+            146
+          ],
+          [
+            "undici",
+            148
+          ]
+        ],
+        "record_preserved_in_all_four": true,
+        "current_external_graph_truth": null
+      },
+      {
+        "file": "docs/dependency-upgrades/2026-10-12-actions.md",
+        "file_sha256": "2064a364f4eae76f5602af42682329e7954c89688771298b78c288caf12be7aa",
+        "scope": "setup-python",
+        "members": [
+          [
+            "@actions/cache",
+            157
+          ],
+          [
+            "@actions/glob",
+            160
+          ],
+          [
+            "@azure/abort-controller",
+            164
+          ],
+          [
+            "@azure/core-auth",
+            165
+          ],
+          [
+            "@azure/core-client",
+            166
+          ],
+          [
+            "@azure/core-http-compat",
+            167
+          ],
+          [
+            "@azure/core-lro",
+            168
+          ],
+          [
+            "@azure/core-paging",
+            169
+          ],
+          [
+            "@azure/core-rest-pipeline",
+            170
+          ],
+          [
+            "@azure/core-tracing",
+            171
+          ],
+          [
+            "@azure/core-util",
+            172
+          ],
+          [
+            "@azure/core-xml",
+            173
+          ],
+          [
+            "@azure/logger",
+            174
+          ],
+          [
+            "@azure/storage-blob",
+            175
+          ],
+          [
+            "@azure/storage-common",
+            176
+          ],
+          [
+            "@iarna/toml",
+            177
+          ],
+          [
+            "@nodable/entities",
+            178
+          ],
+          [
+            "@typespec/ts-http-runtime",
+            181
+          ],
+          [
+            "agent-base",
+            182
+          ],
+          [
+            "balanced-match",
+            184
+          ],
+          [
+            "brace-expansion",
+            185
+          ],
+          [
+            "concat-map",
+            186
+          ],
+          [
+            "fast-xml-builder",
+            189
+          ],
+          [
+            "fast-xml-parser",
+            190
+          ],
+          [
+            "http-proxy-agent",
+            191
+          ],
+          [
+            "https-proxy-agent",
+            192
+          ],
+          [
+            "is-unsafe",
+            193
+          ],
+          [
+            "minimatch",
+            194
+          ],
+          [
+            "path-expression-matcher",
+            196
+          ],
+          [
+            "strnum",
+            198
+          ],
+          [
+            "undici",
+            201
+          ],
+          [
+            "xml-naming",
+            202
+          ]
+        ],
+        "record_preserved_in_all_four": true,
+        "current_external_graph_truth": null
+      }
+    ],
+    "member_columns": [
+      "historically_deferred_dependency",
+      "source_line"
+    ]
+  },
+  "protected_source_check": "All four fresh base-plus-sealed-patch reconstructions match grade source bytes, Git executable modes and symlink targets. action.yml, package.json, package-lock.json, src/, scripts/, dist/ and earlier ledgers are unchanged across all four.",
+  "fixture_limit": "The frozen repository contains its own current lock and historical ledger claims, but not the new upstream action lockfiles/bundles, new hook package manifests/fresh resolver graph, registry response captures or Node release-status captures. A release URL or human ledger assertion alone cannot verify these external facts. The merged claims are unknown, not proven false. No external sources were fetched.",
+  "omission_rule": "No dependency is required merely because it was suggested. Retained files, old records and scoped new decisions are distinguished. The merged npm-pin restatement omission is explicit; no newly deferred npm upgrade is inferred. Historical leaf rows are inventory/provenance, not a list of invented new participant decisions.",
+  "decision": {
+    "candidate_material_inaccuracy": true,
+    "candidate_promotion_or_pilot_advancement": "Rejected by the preregistered separate ledger rule; official structural readiness and blind scores remain unchanged.",
+    "prior_material_inaccuracy_found": false,
+    "pure_material_inaccuracy_found": false,
+    "merged_accuracy_fully_established": null,
+    "official_scores_changed": false,
+    "official_readiness_changed": false,
+    "other_assay_or_economic_criteria": "Not evaluated by this supplement."
+  },
+  "effort_and_cost": {
+    "assessor": "Existing independent GPT-6.1 Sol High agent performing a manual source review; no additional judge/model participant was launched.",
+    "task_received_utc": "2026-10-30T09:20:14+00:00",
+    "assessment_completed_utc": "2026-10-30T09:28:25.652502+00:00",
+    "observed_task_wall_window_seconds": 491.653,
+    "wall_window_is": "Observed task elapsed window, not measured active human labor or a billable-token estimate.",
+    "static_binding_script_seconds": 0.2236024138983339,
+    "agent_token_usage": null,
+    "agent_estimated_usd": null,
+    "agent_billed_usd": null,
+    "cost_status": "This agent turn has no supplied complete usage/invoice receipt yet; parent may add its exact separately reconciled meter. Do not call unknown cost zero.",
+    "human_assessor_labor_seconds": null,
+    "merged_human_labor_seconds": null,
+    "merged_human_cost_usd": null,
+    "new_provider_or_judge_allocations": 0,
+    "participant_test_executions": 0,
+    "cpu_lease": [
+      2,
+      3
+    ]
+  },
+  "publication_target": "docs/evaluations/runs/tuning/owner-config-runner-space-01/ledger-assessment.json",
+  "bindings_proof_sha256": "671e69219b061f158aa21479d3e0875e1ca2c006924b70511a98eb8a6ad390a8",
+  "requested_targets": {
+    "actions/setup-python": "v7.1.0 @ 6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+    "DavidAnson/markdownlint-cli2": "v0.24.0",
+    "recording_scope": "Accuracy against the frozen requested targets and applied source, not independent upstream tag authenticity."
+  },
+  "finding_explanations": {
+    "f01": "The ledger retains the Node 22 declaration family and development floor; package.json and the unchanged lock agree. This checks the local retention policy, not a current registry-latest claim.",
+    "f02": "Retention of the Node 22 declaration family is documented directly or through the preserved prior ledger. The lock requires ~6.21.0 and resolves 6.21.0; no special stock wording or repeated dependency name is required.",
+    "f03": "The ledger retains the toolkit-owned 6.x family rather than forcing an 8.x override; the actual project lock resolves 6.29.1 under ^6.23.0. Pure/prior do not reassert the historical 6.29.0 as current; merged explicitly records 6.29.1.",
+    "f04": "node24 is retained consistently with action.yml. The existence of a required support-policy migration is a local scope/contract decision. Current Node release/LTS status is not independently established by this fixture.",
+    "f05": "The mandatory npm pin is retained as a prior compatibility/scope deferral, directly or by explicit carry-forward. No npm pin is added, and the recorded Node development floor is unchanged. The historical external npm engine/latest metadata is not independently revalidated.",
+    "f06": "The ledger retains this earlier upstream-owned deferral by reference and does not claim that it was remediated. Its historical record and continued parent ownership are accurately represented; this does not independently verify the external graph.",
+    "f07": "The present-tense instruction to keep project Undici 6.29.0 contradicts unchanged package-lock.json, which resolves 6.29.1. The ^6.23.0 parent range justifies declining 8.x, but does not repair the wrong current-version record.",
+    "f08": "The new merged ledger does not restate this deferral or directly link the main prior ledger, but the unchanged prior record remains in the repository; its linked action ledger also links the main ledger. The patch does not evidence a newly considered mandatory npm upgrade. This omission alone does not prove false documentation or authorize an invented dependency requirement.",
+    "f09": "The merged ledger records a new parent-graph version or supersedes this old deferral without an upstream lock/manifest/bundle or resolver record in the fixture. Current presence, version, remediation and latest-release assertions remain unknown."
+  },
+  "confidence_scope": "High confidence is limited to the documented local statement or explicit contradiction. Null entries have unknown substantive truth; absence of supplied external proof is not a demonstrated falsehood."
+}

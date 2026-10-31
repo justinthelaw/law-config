@@ -1,0 +1,159 @@
+{
+  "format": "law-config.packaging-contrast-check/v1",
+  "disposition": "stop",
+  "finding": "One public caller-level test distinguishes both outcome classes against genuine historical alternatives. It is useful conditional contract evidence, but does not establish an economically distinct Develop treatment or a redundant check safely replaceable under current accepted semantics.",
+  "source": {
+    "historical_plan_sha256": "53a8bd549c93423b9ac7b889702be24b7b8823baaaba439a965e7ba6685975ad",
+    "receipt_sha256": "1c656f4ecb32b95f868f64db360e41d146dbefb91499753fde2850460034dfb7",
+    "historical_filter_receipt_sha256": "8310ee6728497b9f71920c2f3cbffcf35a1b1eb30cb30006e6100c4ed1610600",
+    "qualified_constructive_receipt_sha256": "4ca31792a46f139273b676af76fb2dfe94a2c3f952f7d8a1ae14d45384f7bd2e",
+    "relation_test_sha256": "361817a55b5a7d554cb292c300772c5d8fbf29e1dfd41931f65e677b1fffe016",
+    "patches": {
+      "merge": "5eb48d6d82ccc17b5493067cb7a88a2f79c3316e591a7e508dc31532ae312829",
+      "control": "e6d4467904908d0c404371017a926e7c6c7d4dc4dfbc573727b6175d4fc229cf",
+      "develop": "739e6601e71f4d95f84dcd9453a3f18b5bd29c64eaf69ffde05446a4f979706e",
+      "constructive": "739e6601e71f4d95f84dcd9453a3f18b5bd29c64eaf69ffde05446a4f979706e"
+    },
+    "source_sha256": {
+      "merge": "c7c95fa9ee74797e85d55020074b0a6e0e1ddafebea98102b0a97ebd4cc5f328",
+      "control": "ed7c7249210ed22ae1d4f674a00a9bae631f7a6cf22856f8631d60c8226e4cf1",
+      "develop": "891c0c2e25c8fedd37a63a9957d7beeb3fad64ae3b9277be1c0ecbbc1eb1a9c5",
+      "constructive": "cf3ca3dba8d26e949f5db5da509f8a99e0cf2c7de5c168a2c3284f1c4b66b57e"
+    },
+    "original_pyproject_sha256": {
+      "merge": "cf7d2c48c03ad211906aded4cb1b9d1f5bcb686c84fd32904c73f1f07d97aeb5",
+      "control": "cf7d2c48c03ad211906aded4cb1b9d1f5bcb686c84fd32904c73f1f07d97aeb5",
+      "develop": "cf7d2c48c03ad211906aded4cb1b9d1f5bcb686c84fd32904c73f1f07d97aeb5",
+      "constructive": "cf7d2c48c03ad211906aded4cb1b9d1f5bcb686c84fd32904c73f1f07d97aeb5"
+    },
+    "original_conftest_sha256": {
+      "merge": "8364ae2493cf29ea273d11d3ac82817c874df4de66fc016c466e6ae3b578c371",
+      "control": "8364ae2493cf29ea273d11d3ac82817c874df4de66fc016c466e6ae3b578c371",
+      "develop": "8364ae2493cf29ea273d11d3ac82817c874df4de66fc016c466e6ae3b578c371",
+      "constructive": "8364ae2493cf29ea273d11d3ac82817c874df4de66fc016c466e6ae3b578c371"
+    }
+  },
+  "single_relation": {
+    "node": "tests/test_replace_relation.py::test_explicit_equivalence_and_changed_filter",
+    "code": "import copy\n\nfrom packaging.specifiers import Specifier, SpecifierSet\n\n\ndef test_explicit_equivalence_and_changed_filter():\n    versions = [\"1.1a1\", \"1.1\"]\n    original = SpecifierSet([Specifier(\">=1\", prereleases=False)])\n    equivalent_members = [Specifier(\">=1.0\", prereleases=False)]\n    changed_members = [Specifier(\">=1\", prereleases=True)]\n\n    # Observe both replacements before the assertion, including on negatives.\n    equivalent = copy.replace(original, specifiers=equivalent_members)\n    changed = copy.replace(original, specifiers=changed_members)\n    actual = (equivalent is original, list(changed.filter(versions)))\n    expected = (True, list(SpecifierSet(changed_members).filter(versions)))\n\n    # Existing-constructor and preservation controls use public operations only.\n    assert expected[1] == versions\n    assert list(original.filter(versions)) == [\"1.1\"]\n    assert type(equivalent) is type(original) is type(changed)\n    assert actual == expected\n",
+    "explanation": "Both copy.replace calls execute before the combined assertion. Explicit same-policy canonical-equivalent supplied members must reuse original; changed element policy must match the existing public constructor plus mixed prerelease/final filter. Public constructor-output, original-preservation and exact runtime-type controls run in the same node. No private implementation field is read by the test.",
+    "observed_matrix": {
+      "merge": {
+        "explicit_equivalent_same_object": false,
+        "changed_filter": [
+          "1.1a1",
+          "1.1"
+        ],
+        "exit": 1
+      },
+      "control": {
+        "explicit_equivalent_same_object": true,
+        "changed_filter": [
+          "1.1"
+        ],
+        "exit": 1
+      },
+      "develop": {
+        "explicit_equivalent_same_object": true,
+        "changed_filter": [
+          "1.1"
+        ],
+        "exit": 1
+      },
+      "constructive": {
+        "explicit_equivalent_same_object": true,
+        "changed_filter": [
+          "1.1a1",
+          "1.1"
+        ],
+        "exit": 0
+      }
+    }
+  },
+  "real_authored_tests": {
+    "stock": "Six selected original nodes pass: four explicit-equivalent input representations, changed-set fields/cache/outer-policy preservation, and copy.replace SpecifierSet. They do not exercise policy-different equal element replacement through mixed-version filter.",
+    "develop": "Five selected original nodes pass: all three outer-policy no-op cases, explicit equivalent-member prerelease test, and copy.replace SpecifierSet. The equivalent-member test explicitly asserts policy-different elements return self, enforcing the opposite semantic choice.",
+    "constructive": "Four of those five exact Develop nodes pass; only TestSpecifierSet::test_replace_equivalent_member_prereleases fails. The earlier constructive qualification covers the specified public filter relation, not compatibility with every original authored test.",
+    "test_source_locations": {
+      "develop": "tests/test_specifiers.py:1373 no-op matrix; :1382 equivalent_member_prereleases; :89 copy.replace",
+      "stock": "tests/test_specifiers.py:3811 explicit-equivalent matrix; :3818 changed set fields; :3903 copy.replace"
+    }
+  },
+  "replacement_audit": {
+    "safe_redundant_outcome_identified": false,
+    "reason": "Replacing the opposite-policy Develop test changes an explicit authored/documented contract, rather than eliminating redundancy. Existing no-op tests additionally cover omitted fields, outer explicit/automatic state and string/list/iterator/SpecifierSet representations. Existing copy.replace checks cover omitted identity and outer-policy changes. Existing changed-field tests cover distinct constraints, cache invalidation, invalid inputs and original preservation. The new single-member nested-policy relation does not subsume these unique paths.",
+    "allowed_next_step": "Keep the small witness only as exposed-case evidence. A public equivalence definition must be clarified prospectively before changing the opposing test; no new treatment or paid trial is nominated."
+  },
+  "overlap_audit": {
+    "pytest_authored_test_sensitivity": {
+      "source": "docs/evaluations/runs/tuning/public-result-pytest-01/authored-test-sensitivity.json",
+      "sha256": "c03fe920944060d24af06e936dc622031be5b06cf0331821a55e54d82bc51820",
+      "distinction": "That study exposed strict-config noncollection, stripped-config false green and representation-specific expectations. Here every relation node actually executes under original packaging policy, and the obstacle is an explicit competing semantic contract. Both studies already require executable discriminating controls; this alone is not a new cost mechanism."
+    },
+    "same_caller": {
+      "source": "docs/evaluations/treatments/e23550bff4a7/hypothesis.json",
+      "sha256": "23fd1900cf0518956131d6208c6da106182f48d9ddb5a983b46e9a2e91d406ea",
+      "overlap": "Reusing a single public caller check across actual alternatives is already the same-caller mechanism. No observed throwaway probe or uniquely redundant original outcome has been identified for removal."
+    },
+    "compare_interacting_rules": {
+      "source": "docs/evaluations/treatments/81b11159e5ff/hypothesis.json",
+      "sha256": "961c1def29aba7d1bfa2af847fa147ab45718eff808dfce77da922b443d9e175",
+      "overlap": "This is a bounded equality/prerelease-policy interaction with an existing constructor control. It is a concrete new consumer example, not a new instruction beyond bounded interacting-value comparison. Merge alone is not an oracle because it fails equivalent identity."
+    }
+  },
+  "execution": {
+    "physical_cpu_lease": [
+      0,
+      1
+    ],
+    "network": "none",
+    "source_and_test_mounts": "read-only; new test only in owned overlay; constructive source only pre-existing owned copy",
+    "original_configuration": "Original pyproject options and original tests/conftest.py retained; no addopts/strictness/warning override; pytest plugin autoload disabled as in historical worker.",
+    "relation_rows": {
+      "merge": {
+        "executed_nodes": 1,
+        "exit": 1,
+        "pytest_case_seconds": 0.001,
+        "whole_guest_command_wall_seconds": 1.2051142810378224,
+        "terminal_sha256": "ae16eedf67d0f112cf259f9733ef1bd57ec68a96afb64ac9316041383d604c3e",
+        "xml_sha256": "eb95004da064a86d3b97cd15de0b48dc3230edb048625d0b7911ef90d2c3e434"
+      },
+      "control": {
+        "executed_nodes": 1,
+        "exit": 1,
+        "pytest_case_seconds": 0.001,
+        "whole_guest_command_wall_seconds": 1.2235290620010346,
+        "terminal_sha256": "7476873b9d67d1f6ef3b8b20f50f2de844949e1cbb6c6e00856af277a72f6912",
+        "xml_sha256": "dbe1feb2cae01219e574f8655432bea9972bfb3e8f68dffb0a56ed3ed5d4e27e"
+      },
+      "develop": {
+        "executed_nodes": 1,
+        "exit": 1,
+        "pytest_case_seconds": 0.001,
+        "whole_guest_command_wall_seconds": 1.2098958098795265,
+        "terminal_sha256": "2d5cfc78ce035c9a66a6174178780ba8ada38bd35fcace8182f5a59dab99633c",
+        "xml_sha256": "3e268d43d520fafedd5432057c4a3a7f477801fca03ea92f4ad29d9c826a7b6e"
+      },
+      "constructive": {
+        "executed_nodes": 1,
+        "exit": 0,
+        "pytest_case_seconds": 0.001,
+        "whole_guest_command_wall_seconds": 1.1965791890397668,
+        "terminal_sha256": "d1a354580737cb4bb9e183e2a8471dba3bcb5ac5e083f0cb87295e2092a15b7b",
+        "xml_sha256": "5cfa612354fdd6916d513c38517c79ffbabfd02df519010864273946ec94f4b6"
+      }
+    },
+    "all_valid_guest_runs": 7,
+    "all_executed_outer_nodes": 20,
+    "sum_whole_guest_command_wall_seconds": 9.70923242205754,
+    "failed_setup_attempt": "Initial host orchestration invoked live plan_for without BENCHMARK_CODEX and stopped before lease/test execution. Original run.log retained. Retry reads and verifies the authentic frozen plan hash; no setup failure is counted as a behavior negative.",
+    "new_paid_calls": 0
+  },
+  "cost_quality_limits": {
+    "node_timing_scope": "One timing observation per source; JUnit 0.001s precision and approximately 1.2s whole-command startup are real observations, not a benchmark of relative performance. No proposal saving is inferred from node count, LOC or duration.",
+    "historical_price_scope": "Stock USD 0.241636 is complete; Develop USD 0.8666584 is a lower bound. No new complete paired proposal-cost or wall comparison exists.",
+    "score_headroom": "Historical stock and Develop both scored 96.25; unchanged recorded stock leaves 3.75 points, below the five-point win margin.",
+    "public_ambiguity": "Constructor-as-is supports honoring supplied element policy, but historical Develop explicitly defines equivalence using Specifier equality, ignoring that policy. New test preference is conditional on clarified semantic intent, not a retroactive failure ruling.",
+    "generalization": "Single exposed supported-input witness; no universal observational-equivalence, subtype/constructor-side-effect guarantee, full-suite success, model-effort saving or general transfer claim."
+  }
+}

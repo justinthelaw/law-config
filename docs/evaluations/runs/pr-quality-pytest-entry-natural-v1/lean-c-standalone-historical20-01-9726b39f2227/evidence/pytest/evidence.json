@@ -1,0 +1,12 @@
+{
+  "subject_patch_changed_test_files": false,
+  "parameter_set_defines_new": false,
+  "public_direct_constructor_warning_types": [],
+  "public_direct_constructor_values": [
+    1
+  ],
+  "worker": "law-benchmark-python:workflow-v1",
+  "python": "3.11.2",
+  "limitations": "One copied generated _version.py was needed for runtime import; AST and patch evidence are independent of this fixture. No inference about author intent.",
+  "witness_sha256": "ab6be96dcada22f028d56cd0e1f8a6973dbb2ae5d19a188db33880a28487fc98"
+}

@@ -17,6 +17,7 @@
 - `scripts/sanitize-shell-hist`: utility to sanitize shell history files safely.
 - `docs/setup-linux.md` and `docs/setup-macos.md`: environment-specific bootstrap docs.
 - `plugins/`: distributable packages, including the Develop plugin.
+- `docs/evaluations/`: benchmark environments, machine-readable results and [maintenance rules](docs/evaluations/AGENTS.md).
 - `plugins/develop/hooks/`: Codex context guard; see its [runtime requirements and behavior](plugins/develop/docs/context-guard.md).
 - `.agents/plugins/marketplace.json`: repository-root catalog; follow [.agents/AGENTS.md](.agents/AGENTS.md).
 - `.github/workflows/plugins.test.yml`: package and helper checks on Linux, Windows, and macOS.

@@ -1,0 +1,205 @@
+{
+  "id": "black-callers",
+  "source_sha256": "fd263568703f4b2fb1ce06a792553c9ebe3b530b19359820bac54f69ebe40a21",
+  "receipt_sha256": "73d119ab940e27619b017390a8834ccedaeaa62b264a4d7c29f663b22b10c932",
+  "evidence": {
+    "case": "black",
+    "registration_sha256": "713a3bd754d808b481ea33ed95cf113b65d80b914ef0a368b9bf81443de846f3",
+    "probe_sha256": "5c31308e131b91c1d894b783bb34787cae8496c956cc9e5642495cb0f7f166f8",
+    "roles": {
+      "base": {
+        "patch_sha256": null,
+        "stages": {
+          "operand": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "448d3c13892e44a7257bac9da291436267c17d12ffe0870d6599cd20a74c6b64",
+            "output": "{\"checks\": {\"0\": false, \"1\": false}, \"outcome\": \"behavioral-red\"}\n"
+          },
+          "conditional": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "40642718d2a6d7b00a6b28bde547ff871381d0a39cf29045dfed0229bfddbddd",
+            "output": "{\"checks\": {\"0\": false, \"whitespace\": false}, \"outcome\": \"behavioral-red\"}\n"
+          },
+          "suffix": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 0,
+            "log_sha256": "f1af66c0351c957c9eef5fa6a6359a55c98f0101850eede12e8e8d2e7f8201e3",
+            "output": "{\"checks\": {\"ast_stable\": true}, \"outcome\": \"pass\"}\n"
+          },
+          "fmtskip_nested_with.py": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "8dca356c94e295c2aff606fc69b8f43f13c269015281eee1fa58270c9e9d27fa",
+            "output": "{\"error_type\": \"InvalidInput\", \"outcome\": \"behavioral-red\"}\n"
+          },
+          "fmtskip_nested_yield.py": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "8dca356c94e295c2aff606fc69b8f43f13c269015281eee1fa58270c9e9d27fa",
+            "output": "{\"error_type\": \"InvalidInput\", \"outcome\": \"behavioral-red\"}\n"
+          }
+        }
+      },
+      "gold": {
+        "patch_sha256": "ee9a6e9b1d712ad6be09bc4e98f56faee2d6f05d53aa389714b0e636308d1bb3",
+        "stages": {
+          "operand": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 0,
+            "log_sha256": "d29e6d51da10cb2bb562a1a2752ef22fd46073bada6fd11d7a0d45ab407c8456",
+            "output": "{\"checks\": {\"0\": true, \"1\": true}, \"outcome\": \"pass\"}\n"
+          },
+          "conditional": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "40642718d2a6d7b00a6b28bde547ff871381d0a39cf29045dfed0229bfddbddd",
+            "output": "{\"checks\": {\"0\": false, \"whitespace\": false}, \"outcome\": \"behavioral-red\"}\n"
+          },
+          "suffix": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "8dca356c94e295c2aff606fc69b8f43f13c269015281eee1fa58270c9e9d27fa",
+            "output": "{\"error_type\": \"InvalidInput\", \"outcome\": \"behavioral-red\"}\n"
+          },
+          "fmtskip_nested_with.py": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 0,
+            "log_sha256": "590246677ee47d6cd2579fd169630814d0852e1ed9c8fa6cdc8ca0ac3c7a0dd7",
+            "output": "{\"checks\": {\"expected_output\": true}, \"outcome\": \"pass\"}\n"
+          },
+          "fmtskip_nested_yield.py": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 0,
+            "log_sha256": "590246677ee47d6cd2579fd169630814d0852e1ed9c8fa6cdc8ca0ac3c7a0dd7",
+            "output": "{\"checks\": {\"expected_output\": true}, \"outcome\": \"pass\"}\n"
+          }
+        }
+      },
+      "candidate-develop": {
+        "patch_sha256": "0f1424c3b68bec88df4093c47db6fc998f369a92b1a406838cc8a636558e5a6b",
+        "stages": {
+          "operand": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "2706863a00dd856b74ef6eefb8870f8dcd423bf98a0f55af7601f06c58776c6c",
+            "output": "{\"checks\": {\"0\": false, \"1\": true}, \"outcome\": \"behavioral-red\"}\n"
+          },
+          "conditional": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 0,
+            "log_sha256": "9fb124a1dbac83b55e3ee58f4a0c06ad571a60f0aaebbb7c21d6156e09929bd7",
+            "output": "{\"checks\": {\"0\": true, \"whitespace\": true}, \"outcome\": \"pass\"}\n"
+          },
+          "suffix": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 0,
+            "log_sha256": "f1af66c0351c957c9eef5fa6a6359a55c98f0101850eede12e8e8d2e7f8201e3",
+            "output": "{\"checks\": {\"ast_stable\": true}, \"outcome\": \"pass\"}\n"
+          },
+          "fmtskip_nested_with.py": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 0,
+            "log_sha256": "590246677ee47d6cd2579fd169630814d0852e1ed9c8fa6cdc8ca0ac3c7a0dd7",
+            "output": "{\"checks\": {\"expected_output\": true}, \"outcome\": \"pass\"}\n"
+          },
+          "fmtskip_nested_yield.py": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "7df431d0be5db8defe3b5297d8f25870356c79bcd576ff4daa2d5d6327c5b982",
+            "output": "{\"error_type\": \"AssertionError\", \"outcome\": \"behavioral-red\"}\n"
+          }
+        }
+      },
+      "candidate-control": {
+        "patch_sha256": "a9d8de19a7975bf0fccbcac7744b5a6da9e8e22b66eb17fe09edf29e85c2c8c7",
+        "stages": {
+          "operand": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "2706863a00dd856b74ef6eefb8870f8dcd423bf98a0f55af7601f06c58776c6c",
+            "output": "{\"checks\": {\"0\": false, \"1\": true}, \"outcome\": \"behavioral-red\"}\n"
+          },
+          "conditional": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "68d77a4332dcfc04226eaf52969def9d3b6216dfb7b58bc8554e3e1dde99aae5",
+            "output": "{\"checks\": {\"0\": true, \"whitespace\": false}, \"outcome\": \"behavioral-red\"}\n"
+          },
+          "suffix": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "8dca356c94e295c2aff606fc69b8f43f13c269015281eee1fa58270c9e9d27fa",
+            "output": "{\"error_type\": \"InvalidInput\", \"outcome\": \"behavioral-red\"}\n"
+          },
+          "fmtskip_nested_with.py": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 0,
+            "log_sha256": "590246677ee47d6cd2579fd169630814d0852e1ed9c8fa6cdc8ca0ac3c7a0dd7",
+            "output": "{\"checks\": {\"expected_output\": true}, \"outcome\": \"pass\"}\n"
+          },
+          "fmtskip_nested_yield.py": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 0,
+            "log_sha256": "590246677ee47d6cd2579fd169630814d0852e1ed9c8fa6cdc8ca0ac3c7a0dd7",
+            "output": "{\"checks\": {\"expected_output\": true}, \"outcome\": \"pass\"}\n"
+          }
+        }
+      },
+      "prior-develop": {
+        "patch_sha256": "49700d1122fff00bdab6f544cba2fb3de31fe3eeab7a82094cdb638db382dcfd",
+        "stages": {
+          "operand": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "2706863a00dd856b74ef6eefb8870f8dcd423bf98a0f55af7601f06c58776c6c",
+            "output": "{\"checks\": {\"0\": false, \"1\": true}, \"outcome\": \"behavioral-red\"}\n"
+          },
+          "conditional": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "40642718d2a6d7b00a6b28bde547ff871381d0a39cf29045dfed0229bfddbddd",
+            "output": "{\"checks\": {\"0\": false, \"whitespace\": false}, \"outcome\": \"behavioral-red\"}\n"
+          },
+          "suffix": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 42,
+            "log_sha256": "8dca356c94e295c2aff606fc69b8f43f13c269015281eee1fa58270c9e9d27fa",
+            "output": "{\"error_type\": \"InvalidInput\", \"outcome\": \"behavioral-red\"}\n"
+          },
+          "fmtskip_nested_with.py": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 0,
+            "log_sha256": "590246677ee47d6cd2579fd169630814d0852e1ed9c8fa6cdc8ca0ac3c7a0dd7",
+            "output": "{\"checks\": {\"expected_output\": true}, \"outcome\": \"pass\"}\n"
+          },
+          "fmtskip_nested_yield.py": {
+            "command": "PYTHONPATH=src:/deps/lib python3 -B /oracle/probe.py",
+            "exit": 0,
+            "log_sha256": "590246677ee47d6cd2579fd169630814d0852e1ed9c8fa6cdc8ca0ac3c7a0dd7",
+            "output": "{\"checks\": {\"expected_output\": true}, \"outcome\": \"pass\"}\n"
+          }
+        }
+      }
+    },
+    "scope": "Model-free calibration on exposed historical patches; not a new participant result.",
+    "source_bindings": {
+      "docs/evaluations/runs/tuning/same-check-black-01/result.json": "44747b8361e9d516cd3666e5bd5408aeed81efcc6496c559d88ab40f47eae86a",
+      "docs/evaluations/runs/tuning/same-check-black-01/operand-replay.json": "c5a881ddb51233346a12c1b2d0c89dc7272a1ce3681fe230983259435b63fb73",
+      "docs/evaluations/runs/tuning/restore-contract-black-01/result.json": "fd263568703f4b2fb1ce06a792553c9ebe3b530b19359820bac54f69ebe40a21",
+      "docs/evaluations/runs/tuning/restore-contract-black-01/conditional-tail-replay.json": "daf2ade25e3f575a0bfc520edd41a6a55afc4ab461465f7ec0e57b89ef732709"
+    },
+    "provenance_sha256": {
+      "alpha_probe": "b5b854de8f9599a481fa1ee78277eef67849642320676436cd046de5fd6a3653",
+      "alpha_receipt": "8f52e31818e4f04bdac7ac4ee454a50660d56b8ac318685f51f9b39cfe733d55",
+      "alpha_tree_verification": "d956832faffe952ca600175bea7a7687dcdf740de16a62c03b2a7e6e7fd4f5df"
+    },
+    "calibrated_behavioral_error": {
+      "stage": "operand",
+      "case": "unary_trailer",
+      "error_type": "ValueError",
+      "message": "not enough values to unpack (expected 2, got 1)"
+    }
+  }
+}

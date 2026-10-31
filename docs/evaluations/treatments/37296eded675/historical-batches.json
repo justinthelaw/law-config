@@ -1,0 +1,17 @@
+{
+  "historical_registration_sha256": "7ab1473a6aec3fc9a64db002cab40f08efb8b0cc686c84cb46b9d3457802036f",
+  "trigger": "The ripgrep transfer screen passes and sufficient free space is verified.",
+  "batches": [
+    {
+      "split": "tuning",
+      "repositories": 12
+    },
+    {
+      "split": "confirmation",
+      "repositories": 8
+    }
+  ],
+  "allocation": "One fresh pair per repository across both batches under the registered protocol. Once the first batch starts, complete the second with the same treatment, grader and resource policy regardless of the first scores.",
+  "capacity": "Check disk before each batch and keep 20 GiB of planned reserve. After verification, reclaim only proved disposable replicas between batches. A capacity hold does not change the sample, thresholds or scores.",
+  "report": "Combine both verified bundles with the inherited comparison method. Count all 20 repositories, report qualification and assessor usage separately, and label the exposed historical tasks."
+}

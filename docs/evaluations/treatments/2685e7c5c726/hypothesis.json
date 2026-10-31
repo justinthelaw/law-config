@@ -1,0 +1,20 @@
+{
+  "id": "lean-native-orchestration-v1",
+  "previous": "1d6bdd9189ab5c076d825051201c17dda0627ad472ce11872f1c997cb257677c",
+  "change": "Lean seven-skill Develop uses native Codex capabilities and common companion guidance with proportional workflow.",
+  "evidence": [
+    {
+      "case": "black",
+      "reason": "Previous Develop timed out and stock failed preservation; verify functionality and expense."
+    },
+    {
+      "case": "commander",
+      "reason": "Fast routine fix with previous equal quality; isolate overhead and regressions."
+    }
+  ],
+  "falsifier": "Reject lost verified behavior, non-ready submission, full-PR loss, missing pricing, or absent prior cost/wall improvement. No unobserved panel claim.",
+  "common_companion": {
+    "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+    "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+  }
+}

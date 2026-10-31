@@ -1,0 +1,142 @@
+diff --git a/plugins/develop/AGENTS.md b/plugins/develop/AGENTS.md
+index 2849160..6893769 100644
+--- a/plugins/develop/AGENTS.md
++++ b/plugins/develop/AGENTS.md
+@@ -10,7 +10,7 @@
+ 
+ ## Review guidelines
+ 
+-When a passing test could miss the behavior it claims to cover, check whether it catches a plausible defect and still passes after a harmless refactor. Tie findings to the observed results and identify any untested case. The [test-quality controls](tests/evaluations/quality.md) give a bounded example.
++When a passing test could miss the behavior it claims to cover, check whether it catches a plausible defect and still passes after a harmless refactor. Tie findings to the observed results and identify any untested case.
+ 
+ ## Verify and release
+ 
+@@ -26,7 +26,7 @@ python -m unittest discover -s skills/deep-clean/tests -p 'test_*.py'
+ 
+ Run `git diff --check` and the [contribution checks](../../docs/CONTRIBUTING.md#validation) from the repository root. Commit the source metadata and generated manifest together. For detached installed payloads, omit `--marketplace-root`; run fixture-writing package tests on a disposable copy outside the installed cache.
+ 
+-For Develop changes, follow [behavioral testing](AGENTS.test.md): observe fresh ephemeral agents on affected scenarios before relying on unit-test results. Before publication, also check affected packaged references/helpers from an unrelated working directory and changed artwork at actual display sizes. Inspect actual artifacts; structure checks, text matching and simulated decisions do not prove agent behavior, installation, live publication or deployment. Commit only scoped changes, update the plugin version when releasing, and verify the same Git revision on each installed surface.
++For changes to workflow behavior, observe fresh agents on the affected tasks. Before publication, also check affected packaged references/helpers from an unrelated working directory and changed artwork at actual display sizes. Inspect actual artifacts; structure checks, text matching and simulated decisions do not prove agent behavior, installation, live publication or deployment. Commit only scoped changes, update the plugin version when releasing, and verify the same Git revision on each installed surface.
+ 
+ ## Host metadata and activation
+ 
+@@ -36,7 +36,7 @@ Use each host's supported installer and update flow. Checkout, publication, inst
+ 
+ The [context guard](docs/context-guard.md) additionally requires native hook review/trust and supported local orchestration and execution. Cloud orchestration does not run plugin command hooks, even with local tools. Keep hook-bearing distribution in the existing Git marketplace; it is not eligible for the public plugin directory. Skill portability does not establish hook support on another host. Do not install, enable or trust hooks as a side effect of source validation.
+ 
+-In Codex, installed invocation uses `$develop:develop` or the exact `/skills` entry; an unnamespaced repository-local copy uses `$develop`. Put whitespace before task text; a trailing colon becomes part of the skill name. Catalog metadata does not prove instruction/reference consumption. Follow the [native activation trials](tests/evaluations/native-hosts.md), including positive and unrelated-task controls. Repository-local `.agents/skills` authoring tests loading separately from marketplace installation.
++In Codex, installed invocation uses `$develop:develop` or the exact `/skills` entry; an unnamespaced repository-local copy uses `$develop`. Put whitespace before task text; a trailing colon becomes part of the skill name. Catalog metadata does not prove instruction/reference consumption. Check native activation on both an explicitly invoked task and an unrelated task. Repository-local `.agents/skills` authoring tests loading separately from marketplace installation.
+ 
+ Other hosts use their documented loading and account/workspace distribution flows. Verify filesystem access, native provider tools and fresh independent reviewer capability; do not assume another host's commands or permissions. Report required reviewer matching as unverified when the runtime cannot establish it.
+ 
+diff --git a/plugins/develop/README.md b/plugins/develop/README.md
+index fe5a99e..15a2cf2 100644
+--- a/plugins/develop/README.md
++++ b/plugins/develop/README.md
+@@ -4,7 +4,7 @@ Ten skills for development, planning, review and maintenance. [Install in Codex]
+ 
+ Supply your development standards in the prompt, an attached `AGENTS.md` or a named connector source. Develop applies them within the selected scope and existing authority, using a shared [standards, presentation and unattended-continuation contract](skills/develop/references/contract.md). Reports use concise prose, tables or supported visuals according to the task; unattended work retains its budget and pending human decisions across handoffs.
+ 
+-For repository reviews, put guidelines or guardrails in the `AGENTS.md` that governs the affected files. Both reviewers apply them alongside the usual evidence checks. See [Develop's example for weak tests](AGENTS.md#review-guidelines).
++For repository reviews, put guidelines or guardrails in the `AGENTS.md` that governs the affected files. Reviewers apply them alongside the usual evidence checks. See [Develop's example for weak tests](AGENTS.md#review-guidelines).
+ 
+ The shared Codex context guard requires reviewed, trusted hooks and supported local orchestration and execution. Its default threshold is **20,000 counted bytes** (UTF-8 text plus JSON structure, not tokens).
+ 
+diff --git a/plugins/develop/docs/context-guard.md b/plugins/develop/docs/context-guard.md
+index 60939d5..c53ab7a 100644
+--- a/plugins/develop/docs/context-guard.md
++++ b/plugins/develop/docs/context-guard.md
+@@ -98,8 +98,7 @@ The documented `continue:false` path avoids `decision:block`'s nested code-mode
+ promise rejection. The contract does **not** guarantee the resolved value/type:
+ field access, aggregation and explicit printing require actual host testing, and
+ scripts may re-emit large data. Synthetic tests prove handler/storage behavior,
+-not native activation or code-mode compatibility. See the
+-[native trials](../tests/evaluations/native-hosts.md#context-hook-trials).
++not native activation or code-mode compatibility.
+ 
+ The sole runtime manifest is `.codex-plugin/plugin.json`; root `plugin.json`
+ would suppress native hooks. Hook commands use `-I -B` and a fixed bootstrap;
+diff --git a/plugins/develop/skills/AGENTS.md b/plugins/develop/skills/AGENTS.md
+index 8772b90..6db9066 100644
+--- a/plugins/develop/skills/AGENTS.md
++++ b/plugins/develop/skills/AGENTS.md
+@@ -4,5 +4,5 @@
+ - Put shared defaults and handoffs in `develop/references/contract.md`, and domain mechanics in their owning skills.
+ - Repository entry points reuse the shared invocation and adversarial gates. Standalone Kaizen, adversarial reviews and audit-only `upgrade-codex` follow their entrypoint's completion policy; requested implementation uses the shared gates. Avoid recursive reviews.
+ - Preserve original/steering user intent, fresh non-forked review, and original model/effort matching. Never turn review into permission to bypass host controls.
+-- Update `agents/openai.yaml` with each skill's behavior; keep references relative and packaged. Test changes with fresh-context [scenarios](../tests/scenarios.md).
++- Update `agents/openai.yaml` with each skill's behavior; keep references relative and packaged. Test changed behavior in a fresh context.
+ - Keep each `assets/icon.png` square and transparent. Match existing Roux icons' chocolate/cream palette, character proportions and crisp pixel edges; vary only the clear task prop. Declare the asset in both `icon_small` and `icon_large` in `agents/openai.yaml`. Preserve approved pixels and verify the whole set together at 48 px and smaller.
+diff --git a/plugins/develop/skills/adversarial-loop/SKILL.md b/plugins/develop/skills/adversarial-loop/SKILL.md
+index 544633f..e0c1cba 100644
+--- a/plugins/develop/skills/adversarial-loop/SKILL.md
++++ b/plugins/develop/skills/adversarial-loop/SKILL.md
+@@ -25,10 +25,10 @@ In every review, apply supplied criteria alongside the usual evidence checks. Ne
+ 
+ 1. **Ground.** Build a bounded, self-contained [review packet](references/review-packet.md) with literal relevant intent, applicable instructions, criteria, actual artifacts, named evidence authority and supplied optional inputs. Record intent/contract revision and checkpoint (`intent` or `evidence`); identify artifacts by current SHA plus dirty-diff hashes, file/image hashes, document versions or source URLs/dates. Define each lane's question, scope, allowed tools/sources and stop condition. Exclude conversation history, private reasoning, desired verdicts, suspected fixes and prior review conclusions.
+ 2. **Match.** Use the original coordinator's model class and reasoning effort, preferably its exact model ID. Set exposed matching controls or rely on documented non-forked inheritance; record the basis. Never guess defaults or substitute cheaper/lower-effort reviewers. If matching or fresh agents cannot be established, report blocked/unverified and do not certify.
+-3. **Spawn.** Start two fresh, non-forked reviewers (`fork_turns: "none"` where supported): an **intent** lens for scope/steering/authorization and an **artifact** lens for correctness and evidence. Run concurrently when possible, otherwise in separate fresh contexts. Never reuse implementers or prior-round transcripts as independent reviews.
++3. **Spawn.** Use fresh, non-forked reviewers (`fork_turns: "none"` where supported) for intent and artifact. At a workflow evidence checkpoint, apply the [shared reuse rule](../develop/references/contract.md#review-gates). If the intent verdict still applies, link it and start only the fresh artifact lane. Standalone reviews and required fresh pairs use both. Each new lane starts independently of implementers and prior reviewer transcripts.
+ 4. **Specialize.** Give both reviewers the same relevant user intent before their verdicts; a selected blind artifact stage receives it only after its initial comprehension response. Assign artifact expertise from the table; use an available registered specialist when it fits, without depending on private agent names. Add specialists only for distinct material risks. Reviewers may inspect authorized artifacts and perform safe read-only checks; they cannot edit, stage, commit, publish, clean, message others or grant action authority.
+ 5. **Assess.** Require reviewed revisions, coverage/limitations, `aligned | changes required | blocked`, and evidence-backed findings with severity, location, violated criterion, impact, smallest sufficient correction and verification needed. State no material findings explicitly. Maintain a coordinator-owned lane ledger with responsibility, round, reviewed contract/artifact revisions, verdict, evidence limitations and finding dispositions. Verify each finding against sources and reconcile duplicates/conflicts without forcing agreement.
+-6. **Repair and repeat.** Fix material gaps only when authorized; otherwise finish with proposed corrections. Rerun affected checks. Any material artifact or review-contract change makes **all active lane approvals for that checkpoint stale**; fresh reviewers must assess the updated complete packet/artifacts before a pass. Do not relabel old approvals with a new revision. Material steering or scope/design changes also invalidate the intent checkpoint. After two stagnant rounds on the same disagreement, use a distinct specialist or focused reproduction within the remaining budget; stop if it cannot resolve the disagreement. Close superseded lanes with a recorded reason, preserve their outstanding findings, and assign their relevant coverage to replacement lanes.
++6. **Repair and repeat.** Fix material gaps only when authorized; otherwise finish with proposed corrections. Rerun affected checks. A material artifact change requires fresh review of the revised artifact. Recheck the intent bindings after a repair. A material review-contract change invalidates every affected verdict. Record which review covers each revision before a pass. After two stagnant rounds on the same disagreement, use a distinct specialist or focused reproduction within the remaining budget; stop if it cannot resolve the disagreement. Close superseded lanes with a recorded reason, preserve their outstanding findings, and assign their relevant coverage to replacement lanes.
+ 
+ | Artifact/risk | Specialist lens |
+ | --- | --- |
+@@ -54,6 +54,6 @@ For code or architecture, assess intended behavior against supplied plans, files
+ 
+ ## Report
+ 
+-Use the shared [presentation policy](../develop/references/contract.md#presentation), including for standalone reviews. Lead with the verdict, material findings and remaining gate. Preserve checkpoint, reviewed revisions, rounds used/budget, coverage, lane statuses and finding dispositions in the linked review record; summarize relevant limits without repeating the full ledger. Pass only when **every active lane**, including both default lenses and any specialists, has an aligned result on the current contract/artifacts, fresh-context/model matching is established and no material finding remains. Missing artifacts, silence, timeout, stale approvals or queued work cannot establish success.
++Use the shared [presentation policy](../develop/references/contract.md#presentation), including for standalone reviews. Lead with the verdict, material findings and remaining gate. Preserve checkpoint, reviewed revisions, rounds used/budget, coverage, lane statuses and finding dispositions in the linked review record; summarize relevant limits without repeating the full ledger. Pass only when both lenses and any required specialists are covered, each new lane has an aligned result on its current inputs, any reused intent verdict still meets the shared rule, model/effort matching is established and no material finding remains. Missing artifacts, silence, timeout, stale approvals or queued work cannot establish success.
+ 
+ A read-only review can finish with `changes required` without certifying or repairing the artifact. Report `blocked` and stopped without full approval when missing evidence, unavailable tools, exhausted budget or unresolved disagreement prevents closure. Distinguish completing a findings-only review from approving the artifact. In a workflow, continue the authorized next step after a pass; preserve real host approvals and missing user decisions. A review verdict never authorizes an action.
+diff --git a/plugins/develop/skills/adversarial-loop/agents/openai.yaml b/plugins/develop/skills/adversarial-loop/agents/openai.yaml
+index 7028c2c..aac8d98 100644
+--- a/plugins/develop/skills/adversarial-loop/agents/openai.yaml
++++ b/plugins/develop/skills/adversarial-loop/agents/openai.yaml
+@@ -4,4 +4,4 @@ interface:
+   icon_large: "./assets/icon.png"
+   display_name: "Develop: Adversarial loop"
+   short_description: "Independently review artifacts and evidence"
+-  default_prompt: "Use $adversarial-loop for bounded independent review. Apply scoped AGENTS.md guidance alongside the usual evidence checks. For repository changes, check affected docs and tests. Preserve authority and approval gates."
++  default_prompt: "Use $adversarial-loop for bounded independent review. Apply scoped AGENTS.md guidance alongside the usual evidence checks. At evidence, reuse eligible intent and review the current artifact independently. Check affected docs and tests. Preserve authority and approval gates."
+diff --git a/plugins/develop/skills/adversarial-loop/references/review-packet.md b/plugins/develop/skills/adversarial-loop/references/review-packet.md
+index 0514422..2b9fc66 100644
+--- a/plugins/develop/skills/adversarial-loop/references/review-packet.md
++++ b/plugins/develop/skills/adversarial-loop/references/review-packet.md
+@@ -1,6 +1,6 @@
+ # Fresh reviewer packet
+ 
+-Fill task-relevant fields with a bounded review contract. Pass relevant literal user messages with secrets and unrelated private content redacted, not a paraphrase alone or a conversation dump. Mark absent optional inputs as not provided. Use an explicit fresh-context tool option and documented original-model/effort matching outside the prompt as well; prose cannot configure the runtime.
++Fill task-relevant fields with a bounded review contract. Pass relevant literal user messages with secrets and unrelated private content redacted, not a paraphrase alone or a conversation dump. Group absent optional inputs once. When a reviewer can open the pinned source, send its path and the relevant check result. Include excerpts when the reviewer needs them to reproduce a finding. Use an explicit fresh-context tool option and documented original-model/effort matching outside the prompt as well; prose cannot configure the runtime.
+ 
+ ```text
+ Role: [intent reviewer | artifact reviewer, specialty]
+diff --git a/plugins/develop/skills/develop/references/contract.md b/plugins/develop/skills/develop/references/contract.md
+index 1c3d5c8..58c55e8 100644
+--- a/plugins/develop/skills/develop/references/contract.md
++++ b/plugins/develop/skills/develop/references/contract.md
+@@ -101,7 +101,7 @@ Planning still applies when the user is unavailable. Separate optional design fe
+ 
+ ## Review gates
+ 
+-Use the bounded [adversarial protocol](../../adversarial-loop/SKILL.md) for explicitly requested independent reviews, delegated unattended planning review, repository/host-required reviews and consequential changes: public contracts, migrations/persistent data, security, destructive operations or publication. The coordinator reviews **intent** before consequential work and **evidence** before completion; reuse the planning review for the same intent and revision.
++Use the bounded [adversarial protocol](../../adversarial-loop/SKILL.md) for explicitly requested independent reviews, delegated unattended planning review, repository/host-required reviews and consequential changes: public contracts, migrations/persistent data, security, destructive operations or publication. Review **intent** before consequential work and **evidence** on the actual result. At evidence, reuse an aligned independent intent verdict from this invocation if the literal intent and steering, authority, repository/base, applicable instructions, scope, design and acceptance criteria still match. Record the verdict and its bindings. Run a fresh artifact reviewer on the current diff and checks. Reopen intent when any binding changes, a finding calls scope into question, or the binding cannot be verified. An explicit or binding requirement for a fresh pair takes precedence.
+ 
+ Routine read-only answers, unchanged/no-op assessments and ordinary Kaizen findings require source-backed validation, not automatic reviewer pairs. Small reversible work uses proportionate checks; add independent review for an identified risk or explicit requirement. A blocked/no-op result does not erase an already-required review of a consequential proposal. Never claim independent review when none ran.
+ 
+diff --git a/plugins/develop/skills/iterate/references/implementation.md b/plugins/develop/skills/iterate/references/implementation.md
+index fdbf6f8..4540c27 100644
+--- a/plugins/develop/skills/iterate/references/implementation.md
++++ b/plugins/develop/skills/iterate/references/implementation.md
+@@ -5,7 +5,7 @@ Use for authorized changes; review-only and prepared-change publication retain t
+ 1. Establish the requested behavior, affected owners/interfaces and a concrete success check. Resolve [user standards](../../develop/references/contract.md#user-standards) once, then read current source using [focused source reading](documentation.md#focused-source-reading): start with the owner, one caller and a relevant test. Widen the search to resolve a specific question or meet a coverage requirement. Preserve complete coverage where required. For material requirements, connect each acceptance criterion to the evidence that will establish it; keep missing evidence explicit. Separate user requirements from assumptions; ask only when a missing decision materially changes the solution.
+ 2. Apply [applicable planning](../../develop/references/contract.md#applicable-planning), including on direct invocation. Consume one current accepted, explicitly waived or delegated-review brief; combine engineering/interface decisions. Choose the smallest complete readable change and preserve its owners, contracts, invariants and acceptance checks. Revalidate changed assumptions rather than repeat planning or human approval at handoffs.
+ 3. Reuse a suitable checkout/branch. Isolate work when concurrent or unrelated changes could interfere, using native workspace tools or worktrees. Preserve existing work and keep writers on disjoint files; parallelize only independent tasks.
+-4. Reproduce a defect before changing it. Compare a known-good baseline and trace the actual failing contract. For rendered surfaces, use [visual validation](visual-validation.md) to inspect the actual DOM or native structure and screenshots, reproduce the selected issue and preserve unrelated views and host controls. For behavior changes, use a regression that fails for the relevant behavior and passes after the smallest fix. Test the outcome a caller can observe. Use a unit test for a pure rule and the real boundary for integration behavior, such as selecting a literal filename in a Git patch. Run changed documentation examples against safe fixtures. Reversible prose/metadata changes need proportionate artifact checks.
++4. Reproduce a defect before changing it. Compare a known-good baseline and trace the actual failing contract. For rendered surfaces, use [visual validation](visual-validation.md) to inspect the actual DOM or native structure and screenshots, reproduce the selected issue and preserve unrelated views and host controls. For behavior changes, use a regression that fails for the relevant behavior and passes after the smallest fix. Trace each affected public entry point to an observable check. As soon as the edit is runnable, build the changed code and its tests together, repair the first actionable failure and rerun before handing the patch to reviewers. Run changed documentation examples against safe fixtures. Reversible prose/metadata changes need proportionate artifact checks.
+ 5. Apply DRY and SOLID through clear responsibilities and stable contracts with their existing owners. Give each shared rule one owner; trace decisions to its real consumers, preserved invariants and actual tests, including affected failure paths. Maintainability applies even when planning is waived. For example, a CLI and an API can reuse a retry limit while keeping their input parsers separate. Check the supported runtime, lockfile and current maintainer guide before choosing a library or syntax. Prefer a standard library when it supports the required behavior across that range. Use [bounded refactoring](refactoring.md) when requested or justified within the affected scope, not as automatic polishing. Preserve APIs and security controls; investigate unexpected failures before stacking retries or workarounds.
+ 6. Follow [validation evidence](validation.md) and the shared review checkpoints. A fresh result establishes only the artifact and environment actually tested. Hand authorized publication to [publication](publication.md); local completion does not imply deployment.
+ 

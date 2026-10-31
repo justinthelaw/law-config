@@ -1,0 +1,3050 @@
+{
+  "campaign_elapsed_seconds": 17988.569519996643,
+  "cases": [
+    {
+      "authorship": "author explicitly reports no AI use",
+      "base": "e9414948e9660ee4c167eebb187710ee3031d9d8",
+      "base_bytes": 46255476,
+      "base_files": 7089,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 43.75,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": -46.25,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": true,
+          "reason": "blinded rubric",
+          "score_delta": 3.75,
+          "verdict": "tie",
+          "votes": [
+            "upstream",
+            "develop",
+            "develop"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 36.25,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": -42.5,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 0.0,
+            "reversal": true
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "2979781c4b2df69aec3f72de049cf8509674aeecb7e16188cd0923314206b000",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "55fee89ba5185b6a2e303a7a4d66dd5734d4408555e02dcbb17062c70128fdaa"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "project",
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "d0e739b03a95a58595fffab4202504bd36c117d14c8f38f0772787a03360430f",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "75b1fa29823f9c61d7628664f553cd7cce1e26074cab483e6a08c6f1bcbca9fc",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "f2907747515fb37602342ce858d80360e72103d0a7404df7e9296af1e524ff62"
+          }
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "develop",
+          "control"
+        ],
+        "build": "PYTHONPATH=.:/deps/lib python -m compileall -q django/db/models/sql",
+        "cpu_pair": [
+          4,
+          5
+        ],
+        "deadline_seconds": 1200,
+        "dependencies_sha256": "75bdf98b64728fd7a8ec109f93848c669b8ba2bea23f1ba2b3c9b5a3007e45a4",
+        "fixture_sha256": "f231acf48aef0b341b024da0757a8bb763f8d8e4c62b92b0d5830504994eb1d0",
+        "grader_native": "PYTHONPATH=.:/deps/lib python tests/runtests.py queries.tests.Queries1Tests --parallel=1 --verbosity=0",
+        "independent_check": false,
+        "merged_patch_sha256": "6b92439cf9edeefdee82d813f27b648238b83278f6593a343130bc1e1326b68c",
+        "prompt_sha256": "ba1677babc3665d76db490f34c8fb304db221b8d6758838ed854036d7f11dfb0",
+        "worker_native": "PYTHONPATH=.:/deps/lib python tests/runtests.py queries.tests.Queries1Tests --parallel=1 --verbosity=0",
+        "workers": {
+          "toolchain": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+          "worker": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3"
+        }
+      },
+      "domain": "ORM and SQLite",
+      "first_commit": "2026-10-18T14:55:41Z",
+      "id": "django",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only the supplied frozen exit statuses are execution evidence. No candidate patch was applied, executed or edited; counterexamples and join-type deductions above are static analysis of the full patches and starting source.",
+            "Frozen build covers django/db/models/sql compilation; frozen native covers only queries.tests.Queries1Tests. Contract and preserve commands, assertions and detailed outputs are unavailable, so their successful exits do not establish coverage of the identified boundaries.",
+            "Eligibility timing and exact replay/apply logs are unavailable. No credit is assigned to unsupported proposal claims about baseline runs, exact test counts or whitespace checks. Other database backends and the full suite are not established by the packet."
+          ],
+          "native_sha256": "2fa571c940d3510e20da861114c1a55376f1323a792e64b1224b8e0d617d501c",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 174336,
+            "inputTokens": 201745,
+            "outputTokens": 2792,
+            "reasoningOutputTokens": 762,
+            "totalTokens": 204537
+          },
+          "usd_estimate": 0.1001716,
+          "wall_seconds": 85.32728830818087
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only the supplied frozen exit statuses are execution evidence. No candidate was executed or edited. Build covers django/db/models/sql compilation; the selected native slice is queries.tests.Queries1Tests. Full-suite, other-backend, exact test-count, baseline-failure and whitespace-check logs are unavailable. Contract/preserve case inventories and eligibility/apply/timing logs are not supplied.",
+            "Source inspection identifies an additional pre-existing SQL NULL boundary shared by all three patches, distinct from join promotion: with the starting t1 fixture (parent absent, category Generic), Tag.objects.filter(~(~Q(parent__name=\"t1\") ^ Q(category__name=\"Generic\"))) should include t1 under Boolean absent-relation semantics. _add_q() cancels current_negated for the inner ~Q, so build_filter() adds no equality NULL guard. Once the parent join is outer, WhereNode.as_sql() on the emulated-XOR path treats NOT(NULL equality) as UNKNOWN, its CASE contributes 0, and the true category operand makes XOR true; outer negation excludes t1. None of the patches changes this SQL construction. This counterexample is a static derivation, not an additional frozen execution result; B discloses the limitation. It is recorded as a contract boundary, not an integrity or demonstrated critical-regression flag.",
+            "The shared even/odd voting findings are derived from the supplied patches and starting source, not new test runs. Missing requested behavior and unnecessary join promotion are scored directly; no concrete validation bypass or critical regression is established, so flags remain empty."
+          ],
+          "native_sha256": "9b9a9490138412c4cd19503241f6940fad6348090c02ab3e335b1e59fdc92805",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 196864,
+            "inputTokens": 224966,
+            "outputTokens": 4058,
+            "reasoningOutputTokens": 1596,
+            "totalTokens": 229024
+          },
+          "usd_estimate": 0.11647039999999999,
+          "wall_seconds": 124.37095280480571
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only the supplied frozen exit statuses are execution evidence. No candidate submission was executed or edited. Source-derived counterexamples are identified as static deductions, not observed runtime failures.",
+            "Frozen native verification selects queries.tests.Queries1Tests only. Detailed hidden contract/preserve cases, reached baseline mismatches, timing/apply logs, exact test counts, and whitespace-check output are unavailable; passing statuses do not establish exhaustive coverage or eligibility timing.",
+            "No other database backend or full-suite evidence is supplied. No concrete integrity bypass or demonstrated critical regression was found; ordinary contract and join-preservation failures are reflected in scores rather than integrity flags."
+          ],
+          "native_sha256": "cc9d830ab71c9696bff51337d7a66f2a4716749d2671e65b2558cdb0cb06da8b",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 220032,
+            "inputTokens": 248109,
+            "outputTokens": 2887,
+            "reasoningOutputTokens": 677,
+            "totalTokens": 250996
+          },
+          "usd_estimate": 0.1070272,
+          "wall_seconds": 108.07457431708463
+        }
+      ],
+      "language": "Python",
+      "merged": "77eea99b455396145188305c31284720751df6f5",
+      "pr": 22169,
+      "pr_delta": [
+        2,
+        53,
+        5
+      ],
+      "pr_open_to_merge_seconds": 709298.0,
+      "prompt": "Fix XOR join promotion in the Django ORM. Positive and negated XOR across nullable relations must retain rows whose truth value depends on an absent related row. Preserve AND, OR and existing INNER JOIN behavior where promotion is unnecessary. Add a query regression.",
+      "repo": "django/django",
+      "split": "confirmation",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "65c7920cb5e5c8958872c11f3ce1b3ba6c3e3395",
+      "base_bytes": 33982088,
+      "base_files": 2094,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 41.25,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "reason": "hard gates",
+          "verdict": "control"
+        },
+        "develop_upstream": {
+          "reason": "hard gates",
+          "verdict": "upstream"
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 33.75,
+            "reversal": false
+          },
+          "develop_control": null,
+          "develop_upstream": null
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "3f4ea1bbcdc7f8fb09e9c680394033be19ee0693aa2e489d1c4f8fd2449eda80",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "e1e75f565bc415daf270066618f61825530856d216cff8fb4a30f3c7ae334f80",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {
+              "AGENTS.md": "df4a1e6194d908aef2535b1ba9a551fdcc4ac943447bc9629b5cd97194ef4655"
+            },
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "75c770ec4029d9c9426330e5ac8dd5a5e305256f080ea18b1f76c9bb33771d0b"
+          },
+          "develop": null
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "control",
+          "develop"
+        ],
+        "build": "PYTHONPATH=.:/deps/lib python -m compileall -q sympy/geometry",
+        "cpu_pair": [
+          0,
+          1
+        ],
+        "deadline_seconds": 1200,
+        "dependencies_sha256": "14b5b7a59e820d99c14155e5721b8c7da42b44250f721d8071536fbd677033e5",
+        "fixture_sha256": "35f251b3538833291a0842b5178be28d9960aa8a422a522de9daa0ecf72f873b",
+        "grader_native": "PYTHONPATH=.:/deps/lib python -m pytest -q -o addopts= sympy/geometry/tests/test_plane.py",
+        "independent_check": false,
+        "merged_patch_sha256": "343eecad7f1e860d5e8e7469b932c517118fb61ac15c824c68dec2cd12524c78",
+        "prompt_sha256": "bf09b095e774294a272890e10fb32ec2193c37920ce3756c49d052799acccb98",
+        "worker_native": "PYTHONPATH=.:/deps/lib python -m pytest -q -o addopts= sympy/geometry/tests/test_plane.py",
+        "workers": {
+          "toolchain": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+          "worker": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3"
+        }
+      },
+      "domain": "symbolic geometry",
+      "first_commit": "2026-10-24T14:37:22Z",
+      "id": "sympy",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Candidate submissions were read in A, B, C order and were neither applied, executed nor edited. Assessment uses static inspection of full packet files, relevant starting source and frozen execution observations only.",
+            "Frozen check records contain exit statuses and one preserve traceback, not full test inventories, hidden probe sources, base fail-to-pass logs, timing or patch-application logs. Passing records support only their reported scope; eligibility timing and distinguishing base execution cannot be independently established.",
+            "The recorded native verification slice is sympy/geometry/tests/test_plane.py; compilation covers sympy/geometry. Broader geometry tests, doctests, quality and Ruff outcomes are unavailable. Proposal verification claims do not supply additional execution evidence.",
+            "No concrete validation bypass or critical regression was established. A has a demonstrated tuple-input compatibility regression, reflected in its contract score; this ordinary compatibility failure is not classified as a critical integrity finding."
+          ],
+          "native_sha256": "e9c01ec5beec5cf6fc9e36e4d48158d476125bb6320553f4a0434a2369182268",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 270336,
+            "inputTokens": 305080,
+            "outputTokens": 2405,
+            "reasoningOutputTokens": 433,
+            "totalTokens": 307485
+          },
+          "usd_estimate": 0.1205716,
+          "wall_seconds": 88.47219708980992
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only supplied frozen execution observations were used; no candidate patch was applied, executed or edited. Source and patch inspection supplement those observations.",
+            "Frozen checks provide exit statuses and only the C preserve traceback, not full build/native/contract logs or probe definitions. No independent base fail-to-pass trace, patch-application log or timing evidence is supplied, so those gate details cannot be independently established.",
+            "The stated native verification scope is sympy/geometry/tests/test_plane.py and the build scope is geometry compilation. Broader geometry tests, doctests, quality checks and Ruff success are not established."
+          ],
+          "native_sha256": "ada87b71d66dce1ebf62e41998077993d22178096f8645a8466caa92d7c4509e",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 306432,
+            "inputTokens": 341776,
+            "outputTokens": 3114,
+            "reasoningOutputTokens": 611,
+            "totalTokens": 344890
+          },
+          "usd_estimate": 0.1324712,
+          "wall_seconds": 107.62645391607657
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only supplied frozen observations were used as execution evidence; no candidate patch was executed, applied or edited. Build/native scope is geometry compilation and sympy/geometry/tests/test_plane.py, not the full geometry suite or doctests.",
+            "Contract and preserve checks are supplied as exit statuses, with a traceback only for B preserve; their complete probes and base fail-to-pass observations are unavailable. No additional hidden-check coverage is inferred.",
+            "C changes two direct-zero assertions to simplified-zero assertions. This is a concrete reduction in result-form coverage, but mathematical equality remains checked; it is not evidence of an integrity bypass or a critical numerical regression. B has a concrete compatibility failure recorded above; no separate critical-regression or integrity flag is inferred.",
+            "Eligibility timing and apply/replay logs are not supplied. B proposal evidence is explicitly unavailable. Uncorroborated proposal claims receive no execution credit."
+          ],
+          "native_sha256": "b0761a41f0a1b5ecef4b9d409ed1e65c91f90fc95356b46c96b7c565c21006ed",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 230656,
+            "inputTokens": 263851,
+            "outputTokens": 3018,
+            "reasoningOutputTokens": 857,
+            "totalTokens": 266869
+          },
+          "usd_estimate": 0.11963560000000001,
+          "wall_seconds": 98.06283267284743
+        }
+      ],
+      "language": "Python",
+      "merged": "9a1e9e24af36d4c190ce7981727340de7110a663",
+      "pr": 30827,
+      "pr_delta": [
+        3,
+        87,
+        25
+      ],
+      "pr_open_to_merge_seconds": 20396.0,
+      "prompt": "Make Plane.distance compute exact symbolic distances for 3-D points, lines, rays, segments and planes without undecidable intersection checks. Preserve numerical distances, symmetry where defined and results for crossing, parallel and coincident entities. Add regression coverage that substitutes numeric values into symbolic results.",
+      "repo": "sympy/sympy",
+      "split": "confirmation",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "b262b00e42d5fccda2afd7792cfb1f39f65adc70",
+      "base_bytes": 2706994,
+      "base_files": 213,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 10.0,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "verdict": "tie",
+          "votes": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 10.0,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 0.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "b5d5e877d6890d620192324faa189aa1ebbd926c1af342aba0ee8446b6542edd",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "90b69d5a09ef63a133f17ba6c7195b0887adc70582b2d683e2f2353348b5cc74",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {
+              "AGENTS.md": "4638f219ee1bc51e5eeae75079bebc3f72827139491cd2698c154bf862515537"
+            },
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "5bad425bdb5c63a7a8a289a4d71119247f74fafbceb7af23ce5b6375da6d8027"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "9b10e94342f1c19de2df9bdb1c4c72c0508b438d2403d17c2ede13123af9b93b",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "7326e4e58b3d2d1fe0523a037d9a191568a68367e1f37c0c4cc94b890ad8ff2f",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {
+              "AGENTS.md": "4638f219ee1bc51e5eeae75079bebc3f72827139491cd2698c154bf862515537"
+            },
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "6c8ce08297149d1c7c53f076630387d1d4469609b5d35a2da7faff8b7bfa5def"
+          }
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "control",
+          "develop"
+        ],
+        "build": "go build ./api/prometheus/v1",
+        "cpu_pair": [
+          2,
+          3
+        ],
+        "deadline_seconds": 2400,
+        "dependencies_sha256": "2ad482154926899347ed53c311245ed81871cb14daabc02b04243a63a7bf815f",
+        "fixture_sha256": "4f26a1087d4a6d295ef61b18f84456baed31e04cff369e66ee4571fbe1cdd3e7",
+        "grader_native": "go test ./api/prometheus/v1",
+        "independent_check": false,
+        "merged_patch_sha256": "f65f3d4abbcd468850fc04d0f0fd4e32cec17ef8ec03b8e7c2a424fbb9fdba8e",
+        "prompt_sha256": "c98edb15e8ca5b25b6cdf646a9d1b252dd87dcfa7c11060b18af4f51857a6e85",
+        "worker_native": "go test ./api/prometheus/v1",
+        "workers": {
+          "toolchain": "sha256:88750ccdd0f2a77fcc00a14b1a48d6409bd8ddb5d7c2dd6ec0b4a2e916daf9d9",
+          "worker": "sha256:b0eddd7cf3f3a45640730d621d22870d9d02cf1acf56176f5357888eb9915a53"
+        }
+      },
+      "domain": "HTTP metrics client",
+      "first_commit": "2026-10-22T07:26:00Z",
+      "id": "prometheus",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used full packet/A.patch and A.md, then B.patch and B.md, then C.patch and C.md, packet/task.json, the rubric and relevant starting source. No candidate was executed or modified.",
+            "Frozen execution evidence consists of exit codes only: build, native, contract and preserve are 0 for each submission. The declared build/native scope is ./api/prometheus/v1; detailed outputs, hidden-check cases, baseline distinguishing runs, timing/apply records and full lint results are unavailable. No broader suite success or proposal-only check claim is inferred.",
+            "All patches are additive in the inspected hunks; no deleted or weakened protections or concrete integrity/critical-regression concerns were found. Existing limitations in the starting test harness are not candidate-introduced regressions."
+          ],
+          "native_sha256": "83f9cb324c65b6a0749500aab79f180822dc904b7c34f58b4f58b4acf0ea32d8",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 240384,
+            "inputTokens": 279705,
+            "outputTokens": 2162,
+            "reasoningOutputTokens": 144,
+            "totalTokens": 281867
+          },
+          "usd_estimate": 0.12430039999999999,
+          "wall_seconds": 77.26739811012521
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment uses the supplied complete patches and proposals, relevant starting source, and packet/task.json frozen observations only. No candidate was applied, executed or edited.",
+            "Frozen evidence supplies exit codes, not command output, hidden-check definitions or base-versus-patch traces. Build/native scope is api/prometheus/v1; broader module tests and lint are not evidenced. Contract/preserve exit 0 is recorded without inferring undocumented coverage.",
+            "The proposals are present for all labels. Claims of pre-fix failures, routing experiments, formatting and diff checks are not independently substantiated. Eligibility timing and exact replay evidence are unavailable and were not inferred."
+          ],
+          "native_sha256": "e313f160954c3f83183d3aef44786fe75cc88e8609231941a189d5975be00fc3",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 235008,
+            "inputTokens": 265672,
+            "outputTokens": 2171,
+            "reasoningOutputTokens": 191,
+            "totalTokens": 267843
+          },
+          "usd_estimate": 0.1065388,
+          "wall_seconds": 70.79708409891464
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "No candidate submissions were executed or edited. Execution evidence is limited to the frozen build, native, contract and preserve exit statuses in packet/task.json; build/native scope is api/prometheus/v1, not the full repository or other modules.",
+            "The packet provides no detailed contract/preserve logs or reached base-mismatch output, so their exact coverage and the proposals' claimed before-fix runs cannot be independently established. Static inspection confirms the added affected-name assertions distinguish the starting path construction.",
+            "Timing/applicability logs, separate end-to-end runs, formatter output and lint logs are unavailable. No eligibility timing or full-lint success is inferred. Proposal text is present for all three submissions."
+          ],
+          "native_sha256": "b2d7dd982f99a44c26e932d4be1109c37644ae239c31487bd44c1717f4fa8537",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 272896,
+            "inputTokens": 312615,
+            "outputTokens": 2234,
+            "reasoningOutputTokens": 231,
+            "totalTokens": 314849
+          },
+          "usd_estimate": 0.1290676,
+          "wall_seconds": 82.94661455717869
+        }
+      ],
+      "language": "Go",
+      "merged": "595b65527a90a8c3a07ebfd557ff135bdf542ffb",
+      "pr": 2182,
+      "pr_delta": [
+        2,
+        34,
+        0
+      ],
+      "pr_open_to_merge_seconds": 359302.0,
+      "prompt": "Fix LabelValues requests for label names containing a slash, or equal to a dot or double dot. Send those as Prometheus Values Escaping names so the server sees one intact path segment. Keep other label names, query parameters and output decoding compatible. Add regression coverage.",
+      "repo": "prometheus/client_golang",
+      "split": "confirmation",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "c44735ec0f130c2486afe9c976937c03b57a8c62",
+      "base_bytes": 591765,
+      "base_files": 60,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 10.0,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "verdict": "tie",
+          "votes": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 10.0,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 0.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "d93ea5f6734d0608d23eaaebe7324a3fe1bd45c02b5394201513fbbe5aff3db7",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "b497e3a17426c46dc25697f64af3d3e9f2f0fbf67a02da107a4ecba1bfde3953"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "d9f13ae362e4df9dd1610c4545bdbba69cfc644766550a3b1e9f3f7bbe5c79df",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "a1b3021e4a281dacc12e319b5fa85d5e34e2217768a4c469c44e133ef22fc7d7",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "dd6ad59d29aaa7849abb6624ffb48eb5ccfb14182836a85e013cd77ffe7962e6"
+          }
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "develop",
+          "control"
+        ],
+        "build": "cargo build --offline --locked --bin fd",
+        "cpu_pair": [
+          2,
+          3
+        ],
+        "deadline_seconds": 9540,
+        "dependencies_sha256": "e6145be78552a0bce29c9f6cac40d6b50d8a678226409fe11416ac52686f2861",
+        "fixture_sha256": "4293197c03a4964de6d5c8b63356aab8d14c39ac490880caf57a12a95ad90073",
+        "grader_native": "cargo test --offline --locked --bin fd filter::size",
+        "independent_check": false,
+        "merged_patch_sha256": "241d16a90d2c1bf5f4cfff40f7ee0c7c268779b8a6d9dcb9ef0b6d3eeab195d5",
+        "prompt_sha256": "7f95df7d4919125ea76aba2bce76a492317007632400ede6fc8812440b2a14aa",
+        "worker_native": "cargo test --offline --locked --bin fd filter::size",
+        "workers": {
+          "toolchain": "sha256:4ec71e955e6c08aeb238885083222ddff79d82eb87654a96c76e38e94da1a53b",
+          "worker": "sha256:589cb05c68a702e350eb7c51c9a9072d8df598c2f13252ec64f7330ed7454c1b"
+        }
+      },
+      "domain": "filesystem CLI",
+      "first_commit": "2026-10-26T23:08:28Z",
+      "id": "fd",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Execution evidence is limited to per-label build/native/contract/preserve exit codes in packet/task.json. No command output, hidden-check definitions, separate optimized-build logs, or reached base behavioral mismatch is supplied; these cannot be independently audited.",
+            "Proposal-specific historical command counts, feature configurations, interruptions and formatting availability are not independently observable. Present proposal text was scored; unsupported check claims were not treated as additional execution evidence.",
+            "No candidate was executed or edited. Eligibility timing, patch-application logs and exact replay evidence are unavailable. Assessment uses the complete supplied patches and relevant starting source."
+          ],
+          "native_sha256": "80205e7f7710f96286a6bc98fd0b00118ddc8fef6bd0ff9be0334034aed7a438",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 132224,
+            "inputTokens": 153154,
+            "outputTokens": 1888,
+            "reasoningOutputTokens": 131,
+            "totalTokens": 155042
+          },
+          "usd_estimate": 0.0739624,
+          "wall_seconds": 61.85362781700678
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Execution evidence is limited to packet/task.json aggregate exit statuses for build, native, contract and preserve. No detailed command output, base behavioral mismatch, optimized-run transcript, eligibility/apply log or timing record is supplied; these details cannot be independently established.",
+            "Review used the complete A, B and C proposal and patch files in supplied order and relevant starting source. Candidate code was neither executed nor edited. Proposal-only check claims were not treated as execution evidence."
+          ],
+          "native_sha256": "cb0fb08046501790380645d2b678eb75a0db0a4f7fd0bfa6a0a252960af32b2e",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 130304,
+            "inputTokens": 160723,
+            "outputTokens": 1778,
+            "reasoningOutputTokens": 164,
+            "totalTokens": 162501
+          },
+          "usd_estimate": 0.09164839999999999,
+          "wall_seconds": 57.79205585992895
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only packet/task.json aggregate exit codes are available as execution evidence. No candidate was executed or edited; detailed public-interface cases, base fail-to-pass output, optimized-run logs, formatting output and patch-application/timing evidence are unavailable.",
+            "Proposal observations are present for A, B and C and were scored separately from implementation. Unsupported proposal check claims were not treated as observed passes; reported interrupted historical runs cannot be independently assessed.",
+            "The supplied verification scope covers the fd binary build and filter::size native tests. It does not establish a full repository test-suite pass. No concrete integrity concern or critical regression was found in the complete patches."
+          ],
+          "native_sha256": "72b433bbfb51bc8690afb201afb6d6c524f7293c731bf781654ecf8e9d54ad54",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 164864,
+            "inputTokens": 188367,
+            "outputTokens": 2012,
+            "reasoningOutputTokens": 134,
+            "totalTokens": 190379
+          },
+          "usd_estimate": 0.08361239999999999,
+          "wall_seconds": 72.09740916802548
+        }
+      ],
+      "language": "Rust",
+      "merged": "d76b4e3e5b380081f01c4e6c1caaf688038679a9",
+      "pr": 2196,
+      "pr_delta": [
+        2,
+        41,
+        1
+      ],
+      "pr_open_to_merge_seconds": 101767.0,
+      "prompt": "Reject size constraints whose numeric quantity fits in u64 but whose multiplication by the decimal or binary unit multiplier would overflow. The fd CLI should report an invalid size in both debug and optimized builds, preserve valid values and bounds, and handle signed filter prefixes. Add regression tests.",
+      "repo": "sharkdp/fd",
+      "split": "confirmation",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "e7df91677193f1a525757d027c197166e881dec4",
+      "base_bytes": 3191705,
+      "base_files": 320,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 10.0,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "verdict": "tie",
+          "votes": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 10.0,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 0.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 6.25,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "0b60bb84e9194b875f257e9ce8e60f076ba0ca293ec8ba09d1ba3942fc9f76e8",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "c327422c172e4b050e61d7694b62b4187d440a374d460ee03c95e117faf1817e",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "skills",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {
+              "AGENTS.md": "79b937e2622bb36d0c6b7130c4e04dd2a4ede73ed5419eb3acd5dab42cf65195"
+            },
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "31aacfe2f18886564109c551ffc204419c1c5e592ee24b9dd7ae69100653a2ad"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "70287320163705eef2f8498d3b317013b30bf88dfb8de5f03ee26930c6a32faa",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "de9cfa980fe96b1f768702148cc314f17bab67bc73f401ad3d495a8a261db10e",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "skills",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {
+              "AGENTS.md": "79b937e2622bb36d0c6b7130c4e04dd2a4ede73ed5419eb3acd5dab42cf65195"
+            },
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "10781d3d3a1d42c6800fadc92ca7dcabdcd3bbd2a1d5a8e75086600d1338dbd8"
+          }
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "develop",
+          "control"
+        ],
+        "build": "g++ -std=c++17 -Iinclude -fsyntax-only examples/positional_validation.cpp",
+        "cpu_pair": [
+          4,
+          5
+        ],
+        "deadline_seconds": 1200,
+        "dependencies_sha256": "340d4a9ebab74d95605225425472469cc2abd3341bbe9a5587757c9c206bc2d4",
+        "fixture_sha256": "f0f4625e94a2c649cf562092827c8539f227571fb19669c09f56afe687ac8d07",
+        "grader_native": "g++ -std=c++17 -Iinclude examples/positional_validation.cpp -o /tmp/cli-example && /tmp/cli-example --help >/dev/null",
+        "independent_check": false,
+        "merged_patch_sha256": "e4c93119f0c28240eb39101b11b56a78f94ae4e114d3f30b5258c504ee213d35",
+        "prompt_sha256": "2f619c4ed1cd795bc5c4a9a9b8cc3286632fb87a423ff1a3023f1de03974aae1",
+        "worker_native": "g++ -std=c++17 -Iinclude examples/positional_validation.cpp -o /tmp/cli-example && /tmp/cli-example --help >/dev/null",
+        "workers": {
+          "toolchain": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+          "worker": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3"
+        }
+      },
+      "domain": "header-only CLI parser",
+      "first_commit": "2026-10-19T13:42:06Z",
+      "id": "cli11",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used packet/task.json, packet/rubric.md, the complete A/B/C proposal and patch files in supplied order, and relevant starting TypeTools.hpp and NewParseTest.cpp source. No candidate was applied, executed or edited.",
+            "Frozen execution evidence consists only of exit statuses for build, native, contract and preserve. The specified build/native commands exercise examples/positional_validation.cpp and its help path; contract/preserve commands, input lists, output logs and a reached base mismatch are unavailable. Passing statuses do not establish full-suite or lint coverage.",
+            "No supporting logs are available for proposal-only harness, before-fix, CTest, C++11 or formatting/lint claims. Missing corroboration is not treated as proof of fabricated results. Eligibility timing and exact patch replay are not independently evidenced.",
+            "No concrete integrity bypass or critical regression was established. Existing full-consumption numeric and stream protections and all unchanged test assertions were inspected; no readiness veto is inferred from unsupported suspicions."
+          ],
+          "native_sha256": "b5e68087ea7df506ec3f89a4f725732804841787fc57368dbc0cbc270e09ad2c",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 168064,
+            "inputTokens": 196260,
+            "outputTokens": 2503,
+            "reasoningOutputTokens": 488,
+            "totalTokens": 198763
+          },
+          "usd_estimate": 0.0982284,
+          "wall_seconds": 77.17260351707228
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Evaluation used the full A, B and C proposal/patch files in supplied order, the starting converter and CLI tests, and frozen observations only. Candidate code was not executed or edited.",
+            "packet/task.json supplies successful exit codes for build, native, contract and preserve but no contract/preserve commands, assertions, output, or distinguishing base-run records. The documented example build and --help run are a narrow consumer smoke check, not execution of the added Catch2 tests.",
+            "No supplied execution records substantiate the additional suite, standalone harness, lint or diff-check claims in proposal text. Patch applicability, historical timing and full-suite results are not independently established. No concrete integrity bypass or demonstrated critical regression was found."
+          ],
+          "native_sha256": "bf610ba02e85277ee2ddf622da347a581512de2114d5ca98da6ff39f43875f6c",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 180224,
+            "inputTokens": 216745,
+            "outputTokens": 2650,
+            "reasoningOutputTokens": 672,
+            "totalTokens": 219395
+          },
+          "usd_estimate": 0.1175644,
+          "wall_seconds": 90.61136201489717
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only frozen execution evidence was used; no candidate submission was applied, executed or edited. The recorded build/native commands compile and run examples/positional_validation.cpp, not the changed Catch2 tests.",
+            "Contract and preserve checks have successful exit codes but no supplied commands, input cases, output logs or reached base mismatch. Their detailed behavioral coverage cannot be independently audited.",
+            "Proposal-only harness, suite, lint and before/after claims were not counted as executed verification. Missing logs do not establish that those claims are false.",
+            "No patch-application, timing or exact-tree replay records are supplied, so those eligibility properties remain unverified. No concrete integrity violation or demonstrated critical regression was found."
+          ],
+          "native_sha256": "7b27b1fdabef6e69dbeaa77ba66e3ac2d23000ea9422653a3901416155b0484c",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 215936,
+            "inputTokens": 257942,
+            "outputTokens": 2765,
+            "reasoningOutputTokens": 712,
+            "totalTokens": 260707
+          },
+          "usd_estimate": 0.1332556,
+          "wall_seconds": 91.96024265303276
+        }
+      ],
+      "language": "C++",
+      "merged": "aadf04162574e65acb490605af2f634a7d27cf7c",
+      "pr": 1479,
+      "pr_delta": [
+        2,
+        47,
+        7
+      ],
+      "pr_open_to_merge_seconds": 295733.0,
+      "prompt": "Allow a complex-number option passed as one argument to parse decimal scientific notation in either component, including signed exponents and pure imaginary numbers. Preserve valid real, parenthesized and hexadecimal representations and reject malformed expressions. Add focused CLI parsing tests.",
+      "repo": "CLIUtils/CLI11",
+      "split": "confirmation",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "8876abff15187b992a540dbadb6ad38f5be0ec8a",
+      "base_bytes": 10692155,
+      "base_files": 719,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 37.5,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "verdict": "tie",
+          "votes": [
+            "tie",
+            "tie",
+            "tie"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 37.5,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 30.0,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": 0.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 30.0,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "e88ab420fa1c08adbce8289c2c58b03bb21c3c827546284b7ae7d3d95dee59ce",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "a3de371c4cf03555f0c821686363694d50542e1014e505a33ca98d7d5aa3da17"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "project",
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "8d1b95e14b538faa6b53bfcd1f6006299587fe88d726d1f5165d384c670bbda5",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "b17cd705a9f831af441c5863820f82ea08c6930b6ba98ba29ef15b293f0fe53f",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "e9743135990a15917c2a33cd06fcf72e7e6862c23491f12997deff271afcc55d"
+          }
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "control",
+          "develop"
+        ],
+        "build": "mkdir -p target/panel-classes && javac -encoding UTF-8 -d target/panel-classes -sourcepath src/main/java src/main/java/org/apache/commons/lang3/concurrent/TimedSemaphore.java",
+        "cpu_pair": [
+          0,
+          1
+        ],
+        "deadline_seconds": 1200,
+        "dependencies_sha256": "c80978835607f37c4b5e8d45bfd262113296317cd9ffe3c0b0f4cd9f870348b5",
+        "fixture_sha256": "9c969952557ab0ae3e60f03276cae458181a66eda5e3a6ea8af2bede866bacf5",
+        "grader_native": "java -cp target/panel-classes /deps/public/Legacy.java",
+        "independent_check": false,
+        "merged_patch_sha256": "ec20a269a74f3a9f1f6c7af0e64ed824e0e5d0a5830bd59b08cafa5b3d0fac12",
+        "prompt_sha256": "ce8bb016b1d4933b1525cf964631449536dc4933f8a0701ff14db78435f4e01e",
+        "worker_native": "java -cp target/panel-classes /deps/public/Legacy.java",
+        "workers": {
+          "toolchain": "sha256:c951baec7fb8c2997e8c2c64f6bf2fd47284e44389b6c1dd85237148dcdecc94",
+          "worker": "sha256:ccf75185aaf686e54aeb8e71d9a7cb1d1c147bb3a806468d3d0afaf148cd96a4"
+        }
+      },
+      "domain": "concurrency library",
+      "first_commit": "2026-10-25T17:37:10Z",
+      "id": "commons-lang",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only supplied frozen execution summaries were used; candidate submissions were neither executed nor edited. All labels have build/native/contract/preserve exit 0 in packet/task.json, but detailed outputs and contract/preserve check bodies are absent.",
+            "The documented build compiles TimedSemaphore.java and its source dependencies; the documented native regression runs Legacy.java. These results do not establish full Maven/JUnit suite success, JUnit integration, or the claimed temporary harness repetitions.",
+            "No reached behavioral mismatch on the base, patch-application log, deadline evidence, or exact-tree replay evidence is supplied. Eligibility timing and the requested-behavior distinguishing gate cannot be independently established from these artifacts.",
+            "No concrete integrity bypass or critical regression was found. B has a concrete missing requested limit-change wakeup, scored under contract and regression protection; it is not classified as an integrity violation."
+          ],
+          "native_sha256": "f4ce4dba7287bb9c3c99ffd0fd38af4f924f204b9ae482e17ed86146a38156e8",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 374784,
+            "inputTokens": 425168,
+            "outputTokens": 2583,
+            "reasoningOutputTokens": 449,
+            "totalTokens": 427751
+          },
+          "usd_estimate": 0.16407639999999998,
+          "wall_seconds": 86.61382173816673
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only packet/task.json exit summaries are available as execution evidence: build, native, contract and preserve report 0 for every label. Detailed outputs, hidden-check definitions, reached base behavioral mismatches and eligibility/apply/timing records are unavailable; these gates cannot be independently reconstructed.",
+            "The selected build compiles production TimedSemaphore.java and the named native command runs Legacy.java. Neither establishes execution of the added JUnit tests or the full repository suite. Proposal-only temporary-runner and repetition claims were not treated as observed passes.",
+            "Submissions were read in supplied A, B, C order and assessed statically against starting source. No candidate code was executed or edited. Missing requested notification in A is an ordinary contract omission, not a demonstrated critical regression or integrity bypass."
+          ],
+          "native_sha256": "130b3fee84937c2594716ef9e93f962b1112f7cb25de310f3a03ff6392f0e7e7",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 376832,
+            "inputTokens": 428537,
+            "outputTokens": 2722,
+            "reasoningOutputTokens": 553,
+            "totalTokens": 431259
+          },
+          "usd_estimate": 0.16831320000000002,
+          "wall_seconds": 88.97526217601262
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment used packet files and relevant starting source only; no candidate was applied, edited, or executed. Full patches and proposals were read in A, B, C order.",
+            "Frozen observations contain only build/native/contract/preserve exit statuses. The documented javac/Legacy.java slice does not establish full JUnit execution, hidden-check coverage, or a reached behavioral mismatch on the base. Apply/timing logs and exact-tree replay evidence are unavailable.",
+            "Temporary assertion runners, repetition counts, whitespace checks, and base API comparisons asserted in proposals have no supporting execution artifacts in this packet and were not credited as observed checks.",
+            "All patch deletions were inspected: none removes period validation, scheduler ownership protections, shutdown notification/checks, or existing test assertions. C has a concrete requested-behavior omission, not evidence of a newly introduced critical regression or integrity bypass; no integrity flags are raised."
+          ],
+          "native_sha256": "631bc61a550b57359b3ec356ef39932bfb6951bcfde72bb9620d40ee7a82ea86",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 372480,
+            "inputTokens": 422763,
+            "outputTokens": 2629,
+            "reasoningOutputTokens": 422,
+            "totalTokens": 425392
+          },
+          "usd_estimate": 0.164104,
+          "wall_seconds": 86.80019666394219
+        }
+      ],
+      "language": "Java",
+      "merged": "e5f7f1b56776fb2f6a77fc3a64bc47f7e849a425",
+      "pr": 1840,
+      "pr_delta": [
+        3,
+        433,
+        8
+      ],
+      "pr_open_to_merge_seconds": 1146.0,
+      "prompt": "Add opt-in FIFO fairness to TimedSemaphore using a public builder with period, time unit, limit, optional scheduler and fairness. Preserve old constructors and nonfair defaults, immediate tryAcquire semantics and unlimited mode. Queue blocked acquire calls in arrival order, remove interrupted waiters and wake waiters at shutdown or limit changes. Add tests for public behavior and accounting. Support TimedSemaphore.builder().setPeriod(...).setTimeUnit(...).setLimit(...).setFair(true).get() and setService(...).",
+      "repo": "apache/commons-lang",
+      "split": "confirmation",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "bad49b7819853023d8f6a7181951108750d14ae0",
+      "base_bytes": 20972218,
+      "base_files": 1582,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 18.75,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "control"
+          ]
+        },
+        "develop_control": {
+          "reason": "hard gates",
+          "verdict": "control"
+        },
+        "develop_upstream": {
+          "reason": "hard gates",
+          "verdict": "upstream"
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 15.0,
+            "reversal": false
+          },
+          "develop_control": {
+            "delta": -42.5,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": -27.5,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "15331624f3651bfdb55cbbfa2bf495dc0bc5c838853c6f34a7ae071c4d15110c",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "605dda579a340522672599f008a75077dffce9c98c2834cb4604b8ad20b7a55a"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "a6c1b501c5dc0852493b33dc434895cba4850dba6f89fdf6478dbb5a5cbce8ea",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "aa795828ad35fc5e83df4e3d353c41f785c05e7c4df165fcbd17185af7eaafce",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "64a67ade3aaa5548e2fee6a0042e34c50fa5b14b195aae0c41e63bbf7ef477e9"
+          }
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "control",
+          "develop"
+        ],
+        "build": "/deps/lib/cmake/data/bin/cmake -S . -B build-panel -DENABLE_TEST=ON -DENABLE_CPIO=OFF -DENABLE_CAT=OFF && /deps/lib/cmake/data/bin/cmake --build build-panel -j2 --target bsdtar libarchive_test",
+        "cpu_pair": [
+          0,
+          1
+        ],
+        "deadline_seconds": 14040,
+        "dependencies_sha256": "f3fac19cb045d9f788cb39476f3efe604630a792d3658720c3b176c63322a870",
+        "fixture_sha256": "6a8ccc900fc03523c686cc40708268714ac1838b7b6f9775d6cdf579508f64b0",
+        "grader_native": "./build-panel/bin/libarchive_test test_read_data_large test_read_data_into_fd_sparse",
+        "independent_check": false,
+        "merged_patch_sha256": "bc070b611217b0e21de63df6c22a1fce52a5dc131113a3722f064e2c129765c0",
+        "prompt_sha256": "d8f75ba3b38d2fff0a98b0cbb6d3d6a8bc9173f5b335c2e8a54e53ba359a4b13",
+        "worker_native": "./build-panel/bin/libarchive_test test_read_data_large test_read_data_into_fd_sparse",
+        "workers": {
+          "toolchain": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+          "worker": "sha256:0cbce7c1793c4c29d1dc45ae47c72ee7b0f9c21a4c8901d6c24af2447e2cc0b3"
+        }
+      },
+      "domain": "archive reader and CLI",
+      "first_commit": "2026-10-21T17:32:12Z",
+      "id": "libarchive",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment used packet/task.json, packet/rubric.md, the full A/B/C proposal and patch files in supplied order, and the starting archive_read_data_into_fd.c and test_read_data_large.c. No candidate was applied, executed or edited; no agents or external sources were used.",
+            "Frozen execution evidence consists only of exit codes: all submissions have build/native/contract/preserve exit 0. Native scope is test_read_data_large and test_read_data_into_fd_sparse. Contract and preserve commands, detailed assertions, platform coverage, baseline mismatches, sanitizer logs and separate new-test execution logs are unavailable. Proposal claims do not expand that evidence.",
+            "Sparse boundary failures described above are mechanical source-level counterexamples, not new observed runtime failures. The non-append prefix seek problem predates all three patches; A addresses it, B and C retain it. No concrete integrity violation or demonstrated newly introduced critical regression warrants a flag."
+          ],
+          "native_sha256": "8066649e598b9f6c03a4118e1dae34573ab7dd8d531264c879f08950881f2d0f",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 122496,
+            "inputTokens": 148160,
+            "outputTokens": 2874,
+            "reasoningOutputTokens": 761,
+            "totalTokens": 151034
+          },
+          "usd_estimate": 0.0923176,
+          "wall_seconds": 84.40217497688718
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only the supplied frozen execution observations were used; no candidate was executed, applied or edited. The packet provides successful aggregate check exits, but no individual contract/preserve cases, output logs or reached baseline mismatches.",
+            "The stated native verification selects test_read_data_large and test_read_data_into_fd_sparse. It does not establish execution of A or B's newly named append regression, or any CLI regression. C's sparse additions are within the selected existing test.",
+            "Sanitizer, full-suite, baseline-failure, platform and additional harness claims in proposal text are not execution evidence. Non-Linux runtime compatibility and eligibility timing/application logs are unavailable.",
+            "Remaining sparse failures identified for A and B follow directly from the supplied patches and starting pad_to implementation. B's positioned non-append failure is inherited. Neither these limitations nor the inspected check removals establish an integrity violation or a demonstrated critical new regression."
+          ],
+          "native_sha256": "ce631ce8fa64ebb577809f3a775256534cc1f528bb9d91248540d32bb0b3a1fd",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 151808,
+            "inputTokens": 178765,
+            "outputTokens": 3079,
+            "reasoningOutputTokens": 1020,
+            "totalTokens": 181844
+          },
+          "usd_estimate": 0.09988480000000001,
+          "wall_seconds": 98.95606025494635
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only packet/task.json frozen exit statuses are available as execution evidence; there are no detailed command outputs, baseline mismatch logs, sanitizer records or full-suite/platform results. No candidate was executed or edited during this evaluation.",
+            "The specified native command selects test_read_data_large and test_read_data_into_fd_sparse. It does not by itself establish execution of newly named append tests or tar/test/test_option_O_upper.c. Contract and preserve checks have successful exits but their exact cases are not supplied.",
+            "Eligibility timing and exact patch-application or merged-tree replay records are unavailable. Scores evaluate the supplied patches and present proposal text without inferring identities.",
+            "Sparse positioned-output and sparse append counterexamples are derived from the starting source and patches. They are distinguished from the successful frozen observations, whose case coverage is unspecified."
+          ],
+          "native_sha256": "5f2c2d0c3fa2c90ab995676ad4f8f94bf0c4d10a34001444af35c1dff0ef5fcc",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 150912,
+            "inputTokens": 201844,
+            "outputTokens": 2936,
+            "reasoningOutputTokens": 706,
+            "totalTokens": 204780
+          },
+          "usd_estimate": 0.1463152,
+          "wall_seconds": 89.24984983587638
+        }
+      ],
+      "language": "C",
+      "merged": "7bf74d481dbfdf72b90f3dab949c1eedb09c6dd0",
+      "pr": 3737,
+      "pr_delta": [
+        2,
+        117,
+        2
+      ],
+      "pr_open_to_merge_seconds": 524745.0,
+      "prompt": "Fix extracting archive data to a nonempty file opened with O_APPEND. Appending entries through bsdtar -xO must preserve the prefix and append all entries without a spurious seek failure. Keep ordinary extraction, pipe output and sparse file handling working. Add a regression.",
+      "repo": "libarchive/libarchive",
+      "split": "confirmation",
+      "stratum": "external"
+    },
+    {
+      "authorship": "public author identified; assistance unverified",
+      "base": "4af3571a456974bb03982aa30c59239bee661c9b",
+      "base_bytes": 4067909,
+      "base_files": 797,
+      "comparison": {
+        "control_upstream": {
+          "order_sensitive": true,
+          "reason": "blinded rubric",
+          "score_delta": 12.5,
+          "verdict": "control",
+          "votes": [
+            "control",
+            "control",
+            "upstream"
+          ]
+        },
+        "develop_control": {
+          "order_sensitive": true,
+          "reason": "blinded rubric",
+          "score_delta": 0.0,
+          "verdict": "tie",
+          "votes": [
+            "tie",
+            "tie",
+            "develop"
+          ]
+        },
+        "develop_upstream": {
+          "order_sensitive": false,
+          "reason": "blinded rubric",
+          "score_delta": 12.5,
+          "verdict": "develop",
+          "votes": [
+            "develop",
+            "develop",
+            "develop"
+          ]
+        },
+        "diff_85": {
+          "control_upstream": {
+            "delta": 12.5,
+            "reversal": true
+          },
+          "develop_control": {
+            "delta": 0.0,
+            "reversal": false
+          },
+          "develop_upstream": {
+            "delta": 12.5,
+            "reversal": false
+          }
+        },
+        "profiles": {
+          "control": {
+            "apps": [],
+            "config_layers": [
+              "project",
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "02f6f73db7d48abf5f82559ac2887d0cbaff47d3cc91c5b6ea9d80d598baa04c",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+            "mcp": [],
+            "plugins": [],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "95d97b6849d6c21120689e5c34f7804b6fa7f765956bfad46e38d4889ebc19df"
+          },
+          "develop": {
+            "apps": [],
+            "config_layers": [
+              "project",
+              "user",
+              "enterpriseManaged",
+              "system"
+            ],
+            "config_sha256": "88437965f32e5830dcbf71c377078ed31efaf6a865e71729c81b47d39ed199ed",
+            "ephemeral": false,
+            "global_instructions": [],
+            "inventory_sha256": "a51d332b422ddb3bd6ef374afd1de92dd3e37c96dc7b8b40aae43391ac6cbc1f",
+            "mcp": [],
+            "plugins": [
+              "develop@law-config",
+              "superpowers@superpowers-local"
+            ],
+            "profile_keys": [
+              "approval_policy",
+              "features",
+              "hooks",
+              "marketplaces",
+              "model",
+              "model_reasoning_effort",
+              "plugins",
+              "projects",
+              "sandbox_mode",
+              "web_search"
+            ],
+            "repository_instructions_sha256": {},
+            "stock_skills": [
+              "imagegen",
+              "openai-docs",
+              "review-agent",
+              "skill-creator",
+              "skill-installer"
+            ],
+            "turn_sha256": "624ec35612c2b08adcd358d3270e684e4323a0a348dfc219bf070164e49d2d87"
+          }
+        }
+      },
+      "complexity": null,
+      "controls": {
+        "arm_order": [
+          "develop",
+          "control"
+        ],
+        "build": "ruby -c rspec-core/lib/rspec/core/configuration.rb",
+        "cpu_pair": [
+          4,
+          5
+        ],
+        "deadline_seconds": 1200,
+        "dependencies_sha256": "be5abe05b8004f2070ef6e85aafcecbf8aafafa2df5787d65480120ec3784ce7",
+        "fixture_sha256": "cb6f45e432e38ba7423b95b4785500b143101fe8ff35dd557f4c23b61ee702d9",
+        "grader_native": "RUBYLIB=rspec-core/lib:rspec-support/lib:rspec-expectations/lib:rspec-mocks/lib:/deps/public ruby /deps/public/legacy_rspec.rb",
+        "independent_check": false,
+        "merged_patch_sha256": "e5368d3fd433474742988d4a78752cc78cad8725b42d82ad216cfd91df77a60e",
+        "prompt_sha256": "79b6f0f42df3133d9ead6272f1e7a7f9d677ae23103086e308871777b43c92cd",
+        "worker_native": "RUBYLIB=rspec-core/lib:rspec-support/lib:rspec-expectations/lib:rspec-mocks/lib:/deps/public ruby /deps/public/legacy_rspec.rb",
+        "workers": {
+          "toolchain": "sha256:7456f1f4e0231f63aaf91187e396339b6ce2496fead7b2cecda7e6adbfbb6529",
+          "worker": "sha256:0d54896eeab0fda2ce1bcdf718b3d90d9a8518590f130871085e8218179db02a"
+        }
+      },
+      "domain": "RSpec configuration",
+      "first_commit": "2026-10-19T18:49:38Z",
+      "id": "rspec",
+      "judge_attempts": [
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment uses the full A, B and C proposal/patch files in supplied order, relevant starting source, and packet/task.json frozen observations. No candidate was executed or edited.",
+            "Frozen observations supply only exit statuses for build, native, contract and preserve; no detailed check output, base behavioral mismatch trace, individual new-spec runs, eligibility/apply logs or timing evidence is supplied. Passing statuses are recorded as available evidence, without inferring full-suite coverage or independently establishing fail-to-pass execution.",
+            "A and B report isolated regression execution and an aruba/api dependency blocker, but supporting logs are unavailable. These claims receive no execution credit; absence of corroboration alone is not an integrity finding."
+          ],
+          "native_sha256": "c159b055d17281a24e9a46e832ada887e5902c47a36e53f9a3fcc453bdaf1387",
+          "rotation": 0,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 164864,
+            "inputTokens": 195169,
+            "outputTokens": 2370,
+            "reasoningOutputTokens": 185,
+            "totalTokens": 197539
+          },
+          "usd_estimate": 0.1007964,
+          "wall_seconds": 84.16239192779176
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Assessment uses the supplied full patches/proposals, starting source and frozen packet/task.json outcomes only. No candidate was executed, applied or edited.",
+            "Frozen checks expose exit codes only; detailed output, hidden-check assertions, base behavioral failures, patch-application logs and timing evidence are unavailable. Passing exits establish only the supplied selected-check outcomes, not a full-suite pass or independently verified eligibility history.",
+            "The isolated regression runs, extra existing-example runs, whitespace checks and missing aruba/api reports in proposal text have no supporting execution artifacts in the packet. They are not treated as observed execution evidence or proven falsehoods."
+          ],
+          "native_sha256": "247af69dec49e48f6b622557e0a337429908c5d9b27f0f79538e337dc864affd",
+          "rotation": 1,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 174976,
+            "inputTokens": 195923,
+            "outputTokens": 2200,
+            "reasoningOutputTokens": 166,
+            "totalTokens": 198123
+          },
+          "usd_estimate": 0.08139160000000001,
+          "wall_seconds": 78.72133717313409
+        },
+        {
+          "accepted": true,
+          "attempt": 0,
+          "coverage": "complete",
+          "limitations": [
+            "Only the frozen exit statuses in packet/task.json are execution evidence. No candidate code or tests were executed or edited. Check implementations, output logs, base behavioral mismatch, eligibility timing and patch-application logs are unavailable.",
+            "The selected native command is the supplied legacy_rspec.rb smoke check, not evidence that the full configuration suite or added regressions ran. Additional verification statements in proposals are uncorroborated unless supported by the frozen observations.",
+            "B callback-spec failure is established by its registration sequence and the starting source immediate-application path, not by a new execution. No concrete validation bypass, weakened protection or critical production regression was found."
+          ],
+          "native_sha256": "14f8467331bbe1ff598bc460485fea6b4c2770cdaa88a4bd6ba0558b136fe2a3",
+          "rotation": 2,
+          "state": "completed",
+          "threads": 1,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 385152,
+            "inputTokens": 412696,
+            "outputTokens": 2968,
+            "reasoningOutputTokens": 405,
+            "totalTokens": 415664
+          },
+          "usd_estimate": 0.12328320000000001,
+          "wall_seconds": 129.70263780816458
+        }
+      ],
+      "language": "Ruby",
+      "merged": "7e24934a12474161eecf1bb16d7f33c596691315",
+      "pr": 353,
+      "pr_delta": [
+        3,
+        23,
+        1
+      ],
+      "pr_open_to_merge_seconds": 50382.0,
+      "prompt": "Apply config.extend modules to an example group before config.include modules and config.include_context callbacks run. Shared contexts configured for the group should be able to call methods from matching extension modules. Preserve metadata filtering, ordinary includes and inherited group behavior. Add a regression.",
+      "repo": "rspec/rspec",
+      "split": "confirmation",
+      "stratum": "external"
+    }
+  ],
+  "cohort": "primary",
+  "evaluator": {
+    "attempts": 24,
+    "complete_receipts": 24,
+    "observed_usd": 2.7950084
+  },
+  "format": "law-config.eval-run/v1",
+  "frozen_unix": 1793385866.8113518,
+  "groups": {
+    "all": {
+      "code_and_tokens": {
+        "complete_pair_tokens": {
+          "develop_sum": 43293575,
+          "interval": [
+            0.8609362484258539,
+            1.9690603810646587
+          ],
+          "pairs": 7,
+          "pure_sum": 37754707,
+          "ratio": 1.1467066874601888
+        },
+        "diff_85": {
+          "control_upstream": {
+            "equal": 0,
+            "higher": 8,
+            "interval": [
+              10.0,
+              27.03125
+            ],
+            "lower": 0,
+            "mean_delta_85": 18.28125,
+            "pairs": 8,
+            "reversals": 1
+          },
+          "develop_control": {
+            "equal": 5,
+            "higher": 0,
+            "interval": [
+              -30.357142857142858,
+              0.0
+            ],
+            "lower": 2,
+            "mean_delta_85": -12.142857142857142,
+            "pairs": 7,
+            "reversals": 0
+          },
+          "develop_upstream": {
+            "equal": 1,
+            "higher": 5,
+            "interval": [
+              -8.214285714285714,
+              15.714285714285714
+            ],
+            "lower": 1,
+            "mean_delta_85": 4.821428571428571,
+            "pairs": 7,
+            "reversals": 1
+          }
+        }
+      },
+      "n": 8,
+      "observed_by_arm": {
+        "control": {
+          "complete": 8,
+          "observed_proposal_wall_seconds": 12491.809165631887,
+          "timed_attempts": 8,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 38307200,
+            "inputTokens": 38912355,
+            "outputTokens": 142933,
+            "reasoningOutputTokens": 67502,
+            "totalTokens": 39055288
+          },
+          "usd_estimate": 6.47036,
+          "usd_observations": 8
+        },
+        "develop": {
+          "complete": 7,
+          "observed_proposal_wall_seconds": 16677.3667270469,
+          "timed_attempts": 8,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 46896896,
+            "inputTokens": 48053004,
+            "outputTokens": 176864,
+            "reasoningOutputTokens": 87207,
+            "totalTokens": 48229868
+          },
+          "usd_estimate": 7.4959644,
+          "usd_observations": 7
+        }
+      },
+      "paired": {
+        "end_to_end_seconds": {
+          "develop_sum": 15909.862658735598,
+          "median_pair_ratio": 1.3164590850385822,
+          "pairs": 7,
+          "pure_sum": 12473.160173903685,
+          "ratio": 1.2755278082632318,
+          "ratio_interval": [
+            1.1395318168603716,
+            1.4311153383659925
+          ]
+        },
+        "proposal_wall_seconds": {
+          "develop_sum": 15436.993326436728,
+          "median_pair_ratio": 1.3354881526496047,
+          "pairs": 7,
+          "pure_sum": 11991.45122158085,
+          "ratio": 1.2873332043960604,
+          "ratio_interval": [
+            1.1498302742165185,
+            1.4461046658496468
+          ]
+        },
+        "quality_delta": {
+          "interval": [
+            -30.892857142857142,
+            0.0
+          ],
+          "mean": -12.678571428571429,
+          "pairs": 7
+        },
+        "usd_estimate": {
+          "develop_sum": 7.4959644,
+          "median_pair_ratio": 1.4611001751810315,
+          "pairs": 7,
+          "pure_sum": 6.1605868,
+          "ratio": 1.216761429284626,
+          "ratio_interval": [
+            1.0047723551873446,
+            1.6967963187332151
+          ]
+        },
+        "wall_seconds": {
+          "develop_sum": 15148.555459860712,
+          "median_pair_ratio": 1.335613919417949,
+          "pairs": 7,
+          "pure_sum": 11769.854089946719,
+          "ratio": 1.287063997913103,
+          "ratio_interval": [
+            1.1464070861332742,
+            1.4579061731529046
+          ]
+        }
+      },
+      "preferences": {
+        "control_upstream": {
+          "both failed": 0,
+          "control": 8,
+          "tie": 0,
+          "unresolved": 0,
+          "upstream": 0
+        },
+        "develop_control": {
+          "both failed": 0,
+          "control": 3,
+          "develop": 0,
+          "tie": 5,
+          "unresolved": 0
+        },
+        "develop_upstream": {
+          "both failed": 0,
+          "develop": 5,
+          "tie": 1,
+          "unresolved": 0,
+          "upstream": 2
+        }
+      },
+      "simultaneous": [],
+      "status_counts": {
+        "control": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 8,
+          "unavailable": 0
+        },
+        "develop": {
+          "failed": 2,
+          "pending": 0,
+          "ready": 6,
+          "unavailable": 0
+        },
+        "upstream": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 8,
+          "unavailable": 0
+        }
+      }
+    },
+    "confirmation": {
+      "code_and_tokens": {
+        "complete_pair_tokens": {
+          "develop_sum": 43293575,
+          "interval": [
+            0.8609362484258539,
+            1.9690603810646587
+          ],
+          "pairs": 7,
+          "pure_sum": 37754707,
+          "ratio": 1.1467066874601888
+        },
+        "diff_85": {
+          "control_upstream": {
+            "equal": 0,
+            "higher": 8,
+            "interval": [
+              10.0,
+              27.03125
+            ],
+            "lower": 0,
+            "mean_delta_85": 18.28125,
+            "pairs": 8,
+            "reversals": 1
+          },
+          "develop_control": {
+            "equal": 5,
+            "higher": 0,
+            "interval": [
+              -30.357142857142858,
+              0.0
+            ],
+            "lower": 2,
+            "mean_delta_85": -12.142857142857142,
+            "pairs": 7,
+            "reversals": 0
+          },
+          "develop_upstream": {
+            "equal": 1,
+            "higher": 5,
+            "interval": [
+              -8.214285714285714,
+              15.714285714285714
+            ],
+            "lower": 1,
+            "mean_delta_85": 4.821428571428571,
+            "pairs": 7,
+            "reversals": 1
+          }
+        }
+      },
+      "n": 8,
+      "observed_by_arm": {
+        "control": {
+          "complete": 8,
+          "observed_proposal_wall_seconds": 12491.809165631887,
+          "timed_attempts": 8,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 38307200,
+            "inputTokens": 38912355,
+            "outputTokens": 142933,
+            "reasoningOutputTokens": 67502,
+            "totalTokens": 39055288
+          },
+          "usd_estimate": 6.47036,
+          "usd_observations": 8
+        },
+        "develop": {
+          "complete": 7,
+          "observed_proposal_wall_seconds": 16677.3667270469,
+          "timed_attempts": 8,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 46896896,
+            "inputTokens": 48053004,
+            "outputTokens": 176864,
+            "reasoningOutputTokens": 87207,
+            "totalTokens": 48229868
+          },
+          "usd_estimate": 7.4959644,
+          "usd_observations": 7
+        }
+      },
+      "paired": {
+        "end_to_end_seconds": {
+          "develop_sum": 15909.862658735598,
+          "median_pair_ratio": 1.3164590850385822,
+          "pairs": 7,
+          "pure_sum": 12473.160173903685,
+          "ratio": 1.2755278082632318,
+          "ratio_interval": [
+            1.1395318168603716,
+            1.4311153383659925
+          ]
+        },
+        "proposal_wall_seconds": {
+          "develop_sum": 15436.993326436728,
+          "median_pair_ratio": 1.3354881526496047,
+          "pairs": 7,
+          "pure_sum": 11991.45122158085,
+          "ratio": 1.2873332043960604,
+          "ratio_interval": [
+            1.1498302742165185,
+            1.4461046658496468
+          ]
+        },
+        "quality_delta": {
+          "interval": [
+            -30.892857142857142,
+            0.0
+          ],
+          "mean": -12.678571428571429,
+          "pairs": 7
+        },
+        "usd_estimate": {
+          "develop_sum": 7.4959644,
+          "median_pair_ratio": 1.4611001751810315,
+          "pairs": 7,
+          "pure_sum": 6.1605868,
+          "ratio": 1.216761429284626,
+          "ratio_interval": [
+            1.0047723551873446,
+            1.6967963187332151
+          ]
+        },
+        "wall_seconds": {
+          "develop_sum": 15148.555459860712,
+          "median_pair_ratio": 1.335613919417949,
+          "pairs": 7,
+          "pure_sum": 11769.854089946719,
+          "ratio": 1.287063997913103,
+          "ratio_interval": [
+            1.1464070861332742,
+            1.4579061731529046
+          ]
+        }
+      },
+      "preferences": {
+        "control_upstream": {
+          "both failed": 0,
+          "control": 8,
+          "tie": 0,
+          "unresolved": 0,
+          "upstream": 0
+        },
+        "develop_control": {
+          "both failed": 0,
+          "control": 3,
+          "develop": 0,
+          "tie": 5,
+          "unresolved": 0
+        },
+        "develop_upstream": {
+          "both failed": 0,
+          "develop": 5,
+          "tie": 1,
+          "unresolved": 0,
+          "upstream": 2
+        }
+      },
+      "simultaneous": [],
+      "status_counts": {
+        "control": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 8,
+          "unavailable": 0
+        },
+        "develop": {
+          "failed": 2,
+          "pending": 0,
+          "ready": 6,
+          "unavailable": 0
+        },
+        "upstream": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 8,
+          "unavailable": 0
+        }
+      }
+    },
+    "external": {
+      "code_and_tokens": {
+        "complete_pair_tokens": {
+          "develop_sum": 43293575,
+          "interval": [
+            0.8609362484258539,
+            1.9690603810646587
+          ],
+          "pairs": 7,
+          "pure_sum": 37754707,
+          "ratio": 1.1467066874601888
+        },
+        "diff_85": {
+          "control_upstream": {
+            "equal": 0,
+            "higher": 8,
+            "interval": [
+              10.0,
+              27.03125
+            ],
+            "lower": 0,
+            "mean_delta_85": 18.28125,
+            "pairs": 8,
+            "reversals": 1
+          },
+          "develop_control": {
+            "equal": 5,
+            "higher": 0,
+            "interval": [
+              -30.357142857142858,
+              0.0
+            ],
+            "lower": 2,
+            "mean_delta_85": -12.142857142857142,
+            "pairs": 7,
+            "reversals": 0
+          },
+          "develop_upstream": {
+            "equal": 1,
+            "higher": 5,
+            "interval": [
+              -8.214285714285714,
+              15.714285714285714
+            ],
+            "lower": 1,
+            "mean_delta_85": 4.821428571428571,
+            "pairs": 7,
+            "reversals": 1
+          }
+        }
+      },
+      "n": 8,
+      "observed_by_arm": {
+        "control": {
+          "complete": 8,
+          "observed_proposal_wall_seconds": 12491.809165631887,
+          "timed_attempts": 8,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 38307200,
+            "inputTokens": 38912355,
+            "outputTokens": 142933,
+            "reasoningOutputTokens": 67502,
+            "totalTokens": 39055288
+          },
+          "usd_estimate": 6.47036,
+          "usd_observations": 8
+        },
+        "develop": {
+          "complete": 7,
+          "observed_proposal_wall_seconds": 16677.3667270469,
+          "timed_attempts": 8,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 46896896,
+            "inputTokens": 48053004,
+            "outputTokens": 176864,
+            "reasoningOutputTokens": 87207,
+            "totalTokens": 48229868
+          },
+          "usd_estimate": 7.4959644,
+          "usd_observations": 7
+        }
+      },
+      "paired": {
+        "end_to_end_seconds": {
+          "develop_sum": 15909.862658735598,
+          "median_pair_ratio": 1.3164590850385822,
+          "pairs": 7,
+          "pure_sum": 12473.160173903685,
+          "ratio": 1.2755278082632318,
+          "ratio_interval": [
+            1.1395318168603716,
+            1.4311153383659925
+          ]
+        },
+        "proposal_wall_seconds": {
+          "develop_sum": 15436.993326436728,
+          "median_pair_ratio": 1.3354881526496047,
+          "pairs": 7,
+          "pure_sum": 11991.45122158085,
+          "ratio": 1.2873332043960604,
+          "ratio_interval": [
+            1.1498302742165185,
+            1.4461046658496468
+          ]
+        },
+        "quality_delta": {
+          "interval": [
+            -30.892857142857142,
+            0.0
+          ],
+          "mean": -12.678571428571429,
+          "pairs": 7
+        },
+        "usd_estimate": {
+          "develop_sum": 7.4959644,
+          "median_pair_ratio": 1.4611001751810315,
+          "pairs": 7,
+          "pure_sum": 6.1605868,
+          "ratio": 1.216761429284626,
+          "ratio_interval": [
+            1.0047723551873446,
+            1.6967963187332151
+          ]
+        },
+        "wall_seconds": {
+          "develop_sum": 15148.555459860712,
+          "median_pair_ratio": 1.335613919417949,
+          "pairs": 7,
+          "pure_sum": 11769.854089946719,
+          "ratio": 1.287063997913103,
+          "ratio_interval": [
+            1.1464070861332742,
+            1.4579061731529046
+          ]
+        }
+      },
+      "preferences": {
+        "control_upstream": {
+          "both failed": 0,
+          "control": 8,
+          "tie": 0,
+          "unresolved": 0,
+          "upstream": 0
+        },
+        "develop_control": {
+          "both failed": 0,
+          "control": 3,
+          "develop": 0,
+          "tie": 5,
+          "unresolved": 0
+        },
+        "develop_upstream": {
+          "both failed": 0,
+          "develop": 5,
+          "tie": 1,
+          "unresolved": 0,
+          "upstream": 2
+        }
+      },
+      "simultaneous": [],
+      "status_counts": {
+        "control": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 8,
+          "unavailable": 0
+        },
+        "develop": {
+          "failed": 2,
+          "pending": 0,
+          "ready": 6,
+          "unavailable": 0
+        },
+        "upstream": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 8,
+          "unavailable": 0
+        }
+      }
+    },
+    "owner-maintenance": {
+      "code_and_tokens": {
+        "complete_pair_tokens": {
+          "develop_sum": 0,
+          "interval": null,
+          "pairs": 0,
+          "pure_sum": 0,
+          "ratio": null
+        },
+        "diff_85": {
+          "control_upstream": {
+            "equal": 0,
+            "higher": 0,
+            "interval": null,
+            "lower": 0,
+            "mean_delta_85": null,
+            "pairs": 0,
+            "reversals": 0
+          },
+          "develop_control": {
+            "equal": 0,
+            "higher": 0,
+            "interval": null,
+            "lower": 0,
+            "mean_delta_85": null,
+            "pairs": 0,
+            "reversals": 0
+          },
+          "develop_upstream": {
+            "equal": 0,
+            "higher": 0,
+            "interval": null,
+            "lower": 0,
+            "mean_delta_85": null,
+            "pairs": 0,
+            "reversals": 0
+          }
+        }
+      },
+      "n": 0,
+      "observed_by_arm": {
+        "control": {
+          "complete": 0,
+          "observed_proposal_wall_seconds": 0,
+          "timed_attempts": 0,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 0,
+            "inputTokens": 0,
+            "outputTokens": 0,
+            "reasoningOutputTokens": 0,
+            "totalTokens": 0
+          },
+          "usd_estimate": 0,
+          "usd_observations": 0
+        },
+        "develop": {
+          "complete": 0,
+          "observed_proposal_wall_seconds": 0,
+          "timed_attempts": 0,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 0,
+            "inputTokens": 0,
+            "outputTokens": 0,
+            "reasoningOutputTokens": 0,
+            "totalTokens": 0
+          },
+          "usd_estimate": 0,
+          "usd_observations": 0
+        }
+      },
+      "paired": {},
+      "preferences": {
+        "control_upstream": {
+          "both failed": 0,
+          "control": 0,
+          "tie": 0,
+          "unresolved": 0,
+          "upstream": 0
+        },
+        "develop_control": {
+          "both failed": 0,
+          "control": 0,
+          "develop": 0,
+          "tie": 0,
+          "unresolved": 0
+        },
+        "develop_upstream": {
+          "both failed": 0,
+          "develop": 0,
+          "tie": 0,
+          "unresolved": 0,
+          "upstream": 0
+        }
+      },
+      "simultaneous": [],
+      "status_counts": {
+        "control": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 0,
+          "unavailable": 0
+        },
+        "develop": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 0,
+          "unavailable": 0
+        },
+        "upstream": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 0,
+          "unavailable": 0
+        }
+      }
+    },
+    "tuning": {
+      "code_and_tokens": {
+        "complete_pair_tokens": {
+          "develop_sum": 0,
+          "interval": null,
+          "pairs": 0,
+          "pure_sum": 0,
+          "ratio": null
+        },
+        "diff_85": {
+          "control_upstream": {
+            "equal": 0,
+            "higher": 0,
+            "interval": null,
+            "lower": 0,
+            "mean_delta_85": null,
+            "pairs": 0,
+            "reversals": 0
+          },
+          "develop_control": {
+            "equal": 0,
+            "higher": 0,
+            "interval": null,
+            "lower": 0,
+            "mean_delta_85": null,
+            "pairs": 0,
+            "reversals": 0
+          },
+          "develop_upstream": {
+            "equal": 0,
+            "higher": 0,
+            "interval": null,
+            "lower": 0,
+            "mean_delta_85": null,
+            "pairs": 0,
+            "reversals": 0
+          }
+        }
+      },
+      "n": 0,
+      "observed_by_arm": {
+        "control": {
+          "complete": 0,
+          "observed_proposal_wall_seconds": 0,
+          "timed_attempts": 0,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 0,
+            "inputTokens": 0,
+            "outputTokens": 0,
+            "reasoningOutputTokens": 0,
+            "totalTokens": 0
+          },
+          "usd_estimate": 0,
+          "usd_observations": 0
+        },
+        "develop": {
+          "complete": 0,
+          "observed_proposal_wall_seconds": 0,
+          "timed_attempts": 0,
+          "tokens": {
+            "cacheWriteInputTokens": 0,
+            "cachedInputTokens": 0,
+            "inputTokens": 0,
+            "outputTokens": 0,
+            "reasoningOutputTokens": 0,
+            "totalTokens": 0
+          },
+          "usd_estimate": 0,
+          "usd_observations": 0
+        }
+      },
+      "paired": {},
+      "preferences": {
+        "control_upstream": {
+          "both failed": 0,
+          "control": 0,
+          "tie": 0,
+          "unresolved": 0,
+          "upstream": 0
+        },
+        "develop_control": {
+          "both failed": 0,
+          "control": 0,
+          "develop": 0,
+          "tie": 0,
+          "unresolved": 0
+        },
+        "develop_upstream": {
+          "both failed": 0,
+          "develop": 0,
+          "tie": 0,
+          "unresolved": 0,
+          "upstream": 0
+        }
+      },
+      "simultaneous": [],
+      "status_counts": {
+        "control": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 0,
+          "unavailable": 0
+        },
+        "develop": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 0,
+          "unavailable": 0
+        },
+        "upstream": {
+          "failed": 0,
+          "pending": 0,
+          "ready": 0,
+          "unavailable": 0
+        }
+      }
+    }
+  },
+  "name": "iterate-entry-historical-rest-01",
+  "observations": [
+    {
+      "evidence": {
+        "base": "bad49b7819853023d8f6a7181951108750d14ae0",
+        "build": "CMake with ENABLE_TEST=ON, ENABLE_CPIO=OFF and ENABLE_CAT=OFF; freshly built bsdtar target",
+        "case": "libarchive",
+        "dependencies_sha256": "f3fac19cb045d9f788cb39476f3efe604630a792d3658720c3b176c63322a870",
+        "merged": "7bf74d481dbfdf72b90f3dab949c1eedb09c6dd0",
+        "merged_patch_sha256": "bc070b611217b0e21de63df6c22a1fce52a5dc131113a3722f064e2c129765c0",
+        "offline_grading_image": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+        "plan_sha256": "00f8ed9d08e78cabdef2b8f429daf30fa178bc37170fa4788708ec2fe34f4697",
+        "probe_sha256": "25a4786c0432d08c0d041f0dd8309a4909c0c85cd2451398b315aeeb2a4fa7b1",
+        "results": {
+          "base": {
+            "binary_sha256": "f8f2eef6b3b6227608a1891551fa514b08f5575c75f137bf4cbfb3fc33a2a0d2",
+            "observed": {
+              "data_extents": [
+                [
+                  4096,
+                  4096
+                ]
+              ],
+              "entry_size": 8192,
+              "results": {
+                "append": {
+                  "bytes": 4103,
+                  "exact_match": false,
+                  "exit": 1,
+                  "expected_bytes": 8199,
+                  "expected_sha256": "e80a7c8c1be417045aad11bc4ef2c4730948a01363c7c336f45377556bb99dc3",
+                  "prefix_and_data_without_hole": true,
+                  "sha256": "4d766c512966a5ccb50dce41b596fa4ec60c69f30cfcaa0ddc7cf710f2a90c57",
+                  "stderr": "sparse.bin: Seek error: Unknown error -1\nbsdtar: Error exit delayed from previous errors"
+                },
+                "ordinary": {
+                  "bytes": 8192,
+                  "exact_match": true,
+                  "exit": 0,
+                  "expected_bytes": 8192,
+                  "expected_sha256": "fd864a175731bd31bd135c01efcb5a3cc9100a9f1c1ca457c52c9b95395edde0",
+                  "prefix_and_data_without_hole": false,
+                  "sha256": "fd864a175731bd31bd135c01efcb5a3cc9100a9f1c1ca457c52c9b95395edde0",
+                  "stderr": ""
+                }
+              }
+            },
+            "source_sha256": "cd2d73e2bef966e286c5b7dcf2e79a72eec68d0a65003dd79c69a436d5e5b901",
+            "tree": "640e75529a5bebf1f99e9c9e490e22893f0cf689"
+          },
+          "control": {
+            "binary_sha256": "6c64b51607ad7ef344622d44bf21fb61bdf684be7600671f9b45d88155e7572b",
+            "observed": {
+              "data_extents": [
+                [
+                  4096,
+                  4096
+                ]
+              ],
+              "entry_size": 8192,
+              "results": {
+                "append": {
+                  "bytes": 8199,
+                  "exact_match": true,
+                  "exit": 0,
+                  "expected_bytes": 8199,
+                  "expected_sha256": "e80a7c8c1be417045aad11bc4ef2c4730948a01363c7c336f45377556bb99dc3",
+                  "prefix_and_data_without_hole": false,
+                  "sha256": "e80a7c8c1be417045aad11bc4ef2c4730948a01363c7c336f45377556bb99dc3",
+                  "stderr": ""
+                },
+                "ordinary": {
+                  "bytes": 8192,
+                  "exact_match": true,
+                  "exit": 0,
+                  "expected_bytes": 8192,
+                  "expected_sha256": "fd864a175731bd31bd135c01efcb5a3cc9100a9f1c1ca457c52c9b95395edde0",
+                  "prefix_and_data_without_hole": false,
+                  "sha256": "fd864a175731bd31bd135c01efcb5a3cc9100a9f1c1ca457c52c9b95395edde0",
+                  "stderr": ""
+                }
+              }
+            },
+            "sealed_patch_sha256": "e0f49b9c94273d66125dc4c0c181f344cbb9a0c07ca2933d911b4c8f389d9c6c",
+            "source_sha256": "723c0b296a3749b42abbdce338cb7589e35ee620c6ef33a2fc80a79f3bb11e9d",
+            "tree": "5d3a94d5afa067885177c89ce5a77b302ea6a515"
+          },
+          "develop": {
+            "binary_sha256": "bd4cc849da937c842fe204805ef674b2cc62e4956570f10b1759dab44e0e2d39",
+            "observed": {
+              "data_extents": [
+                [
+                  4096,
+                  4096
+                ]
+              ],
+              "entry_size": 8192,
+              "results": {
+                "append": {
+                  "bytes": 4103,
+                  "exact_match": false,
+                  "exit": 0,
+                  "expected_bytes": 8199,
+                  "expected_sha256": "e80a7c8c1be417045aad11bc4ef2c4730948a01363c7c336f45377556bb99dc3",
+                  "prefix_and_data_without_hole": true,
+                  "sha256": "4d766c512966a5ccb50dce41b596fa4ec60c69f30cfcaa0ddc7cf710f2a90c57",
+                  "stderr": ""
+                },
+                "ordinary": {
+                  "bytes": 8192,
+                  "exact_match": true,
+                  "exit": 0,
+                  "expected_bytes": 8192,
+                  "expected_sha256": "fd864a175731bd31bd135c01efcb5a3cc9100a9f1c1ca457c52c9b95395edde0",
+                  "prefix_and_data_without_hole": false,
+                  "sha256": "fd864a175731bd31bd135c01efcb5a3cc9100a9f1c1ca457c52c9b95395edde0",
+                  "stderr": ""
+                }
+              }
+            },
+            "sealed_patch_sha256": "64811fe9257685c847f3ae8759d930574b4086c506cf8b0c81c25f52ec254ccd",
+            "source_sha256": "89e7bc90725f9bea93a7999eca7c970fc388dcdc2c03059fb7992b590c4c49b3",
+            "tree": "fad7db19bff8f005c62c37ae0f2f51e0edd8c5f8"
+          },
+          "upstream": {
+            "binary_sha256": "d9f0ef3eacca17362477eb142b072b516db1d16a36317b38b489563e0bcb32ab",
+            "observed": {
+              "data_extents": [
+                [
+                  4096,
+                  4096
+                ]
+              ],
+              "entry_size": 8192,
+              "results": {
+                "append": {
+                  "bytes": 8199,
+                  "exact_match": true,
+                  "exit": 0,
+                  "expected_bytes": 8199,
+                  "expected_sha256": "e80a7c8c1be417045aad11bc4ef2c4730948a01363c7c336f45377556bb99dc3",
+                  "prefix_and_data_without_hole": false,
+                  "sha256": "e80a7c8c1be417045aad11bc4ef2c4730948a01363c7c336f45377556bb99dc3",
+                  "stderr": ""
+                },
+                "ordinary": {
+                  "bytes": 8192,
+                  "exact_match": true,
+                  "exit": 0,
+                  "expected_bytes": 8192,
+                  "expected_sha256": "fd864a175731bd31bd135c01efcb5a3cc9100a9f1c1ca457c52c9b95395edde0",
+                  "prefix_and_data_without_hole": false,
+                  "sha256": "fd864a175731bd31bd135c01efcb5a3cc9100a9f1c1ca457c52c9b95395edde0",
+                  "stderr": ""
+                }
+              }
+            },
+            "source_sha256": "46192eecaabf3ed0a15fa767c26c41afcb302955ac14b542f2da515fc933f89d",
+            "tree": "9e938af5ca711eabf4622e56861d62e4b05aaeea"
+          }
+        },
+        "run": "iterate-entry-historical-rest-01"
+      },
+      "id": "libarchive-sparse-append",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "probe": "\"\"\"Build a one-extent sparse pax entry and test extraction to append and ordinary fds.\"\"\"\nfrom hashlib import sha256\nfrom pathlib import Path\nimport json\nimport os\nimport subprocess\nimport sys\nimport tarfile\n\nbinary = Path(sys.argv[1]).resolve()\nout = Path(os.environ[\"TMPDIR\"])\npayload = b\"D\" * 4096\nsource = out / \"sparse.bin\"\nwith source.open(\"wb\") as stream:\n    stream.seek(4096)\n    stream.write(payload)\narchive = out / \"sparse.pax\"\nsubprocess.run([\"tar\",\"--format=pax\",\"--sparse\",\"--sparse-version=1.0\",\"-cf\",archive,\"-C\",out,source.name],check=True)\nwith tarfile.open(archive) as tar:\n    member = tar.getmember(source.name)\n    assert member.size == 8192 and [(o,n) for o,n in member.sparse if n] == [(4096,4096)]\n    assert tar.extractfile(member).read() == bytes(4096) + payload\nobserved = {}\nfor mode in (\"append\", \"ordinary\"):\n    path = out / (mode + \".out\")\n    prefix = b\"PREFIX!\" if mode == \"append\" else b\"\"\n    path.write_bytes(prefix)\n    fd = os.open(path, os.O_WRONLY | (os.O_APPEND if mode == \"append\" else 0))\n    try:\n        assert os.lseek(fd, 0, os.SEEK_CUR) == 0\n        result = subprocess.run([binary,\"-xOf\",archive], stdout=fd, stderr=subprocess.PIPE)\n    finally:\n        os.close(fd)\n    data = path.read_bytes()\n    expected = prefix + bytes(4096) + payload\n    observed[mode] = {\"exit\":result.returncode, \"stderr\":result.stderr.decode(errors=\"replace\").strip(),\n                      \"bytes\":len(data), \"expected_bytes\":len(expected),\n                      \"exact_match\":data == expected, \"prefix_and_data_without_hole\":data == prefix + payload,\n                      \"sha256\":sha256(data).hexdigest(), \"expected_sha256\":sha256(expected).hexdigest()}\nprint(json.dumps({\"entry_size\":member.size,\"data_extents\":[[4096,4096]],\"results\":observed}, sort_keys=True))\n",
+      "receipt_sha256": "57789b9cb5f950184618a47e0deaf3b7fa951a3094ec8a8b09b4c558eb04a1e8"
+    },
+    {
+      "evidence": {
+        "base": "65c7920cb5e5c8958872c11f3ce1b3ba6c3e3395",
+        "case": "sympy",
+        "dependencies_sha256": "14b5b7a59e820d99c14155e5721b8c7da42b44250f721d8071536fbd677033e5",
+        "merged": "9a1e9e24af36d4c190ce7981727340de7110a663",
+        "merged_patch_sha256": "343eecad7f1e860d5e8e7469b932c517118fb61ac15c824c68dec2cd12524c78",
+        "offline_grading_image": "sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+        "plan_sha256": "00f8ed9d08e78cabdef2b8f429daf30fa178bc37170fa4788708ec2fe34f4697",
+        "probe_sha256": "b3badcb85957a280bee5b40552f9e5637d5017ad40db0268fdd7178061ac8717",
+        "results": {
+          "base": {
+            "observed": {
+              "point_above_plane": {
+                "value": "2"
+              },
+              "point_on_plane": {
+                "value": "0"
+              },
+              "tuple_on_plane": {
+                "value": "0"
+              }
+            },
+            "source_sha256": "2339f22bfede941dd7f9205d422e98c0b87a86318f23c9f618351157f22a49da",
+            "tree": "2e481653c37c60fe6956055077cdeff9327fd143"
+          },
+          "control": {
+            "observed": {
+              "point_above_plane": {
+                "value": "2"
+              },
+              "point_on_plane": {
+                "value": "0"
+              },
+              "tuple_on_plane": {
+                "value": "0"
+              }
+            },
+            "sealed_patch_sha256": "de35222a0cbe3b2cc7fb775efd27b8786b65b44870db9d43db943996154ab82f",
+            "source_sha256": "a4f7eb5ef718d360e06baac4ec4a476d824b0aa22ba158493f8a226f2cf668ea",
+            "tree": "9e9b551fe7280d3f130e62aa8a92e5234f4a4fab"
+          },
+          "develop": {
+            "observed": {
+              "point_above_plane": {
+                "value": "2"
+              },
+              "point_on_plane": {
+                "value": "0"
+              },
+              "tuple_on_plane": {
+                "exception": "AttributeError",
+                "message": "'tuple' object has no attribute 'p1'"
+              }
+            },
+            "sealed_patch_sha256": "bb5e1bd7d7b51e4d79da0c2f5f7f90b3d422e534e1dce887a51e6680bbeb2d90",
+            "source_sha256": "9effeeb9dc8faff426acf969c68960405434cd6b5bd9dc091a86ab0ad711b950",
+            "tree": "031d8045f989b85dfb0cddd2860a0b46e06e3e68"
+          },
+          "upstream": {
+            "observed": {
+              "point_above_plane": {
+                "value": "2"
+              },
+              "point_on_plane": {
+                "value": "0"
+              },
+              "tuple_on_plane": {
+                "value": "0"
+              }
+            },
+            "source_sha256": "afc22611e68287d09d294fe236a25148fb66c043298fe725b4ce2f5fdfdc56fb",
+            "tree": "f2690d77c013fd16a0f72e5425602f84d88b7a93"
+          }
+        },
+        "run": "iterate-entry-historical-rest-01"
+      },
+      "id": "sympy-plane-tuple-distance",
+      "kind": "post_freeze_probe",
+      "primary_scores_changed": false,
+      "probe": "\"\"\"Exercise the numeric tuple and Point3D entry points on the frozen SymPy trees.\"\"\"\nimport json\nfrom sympy import Plane, Point3D\n\nplane = Plane((0, 0, 0), normal_vector=(0, 0, 1))\ninputs = {\"tuple_on_plane\": (1, 1, 0), \"point_on_plane\": Point3D(1, 1, 0),\n          \"point_above_plane\": Point3D(1, 1, 2)}\nobserved = {}\nfor name, entity in inputs.items():\n    try:\n        observed[name] = {\"value\": str(plane.distance(entity))}\n    except Exception as exc:\n        observed[name] = {\"exception\": type(exc).__name__, \"message\": str(exc)}\nprint(json.dumps(observed, sort_keys=True))\n",
+      "receipt_sha256": "30c39c8a0d92adf503d1f313ff453936134ca3a58019e953a79c7ea4e56f97ce"
+    }
+  ],
+  "parent_plan_sha256": null,
+  "plan_sha256": "00f8ed9d08e78cabdef2b8f429daf30fa178bc37170fa4788708ec2fe34f4697",
+  "protocol": "pr-quality-pytest-entry-natural-v1",
+  "runtime": {
+    "bwrap_sha256": "77360cb751ccedc5971391444ac86a8a33c15b04d6b4a6fe45f5d25496e62c4c",
+    "cli_sha256": "c1eecb4b2304cb0e077a673231e30c9d759dec8fea4a6b8818078865e392fa90",
+    "effort": "medium",
+    "executor": {
+      "boundary": {
+        "composite.py": "3513cf7d014028e1a09ea7ba789371b1973d7cbf8205b57b70c238aa5e4a4c55",
+        "controller.py": "dec3075ed51d52dc258e617c51929e8c840f5e9187048ab9db2a641d84e9ce7e",
+        "environment.py": "849e42e537410d3543696596b1a114bb6499d5c65cffacd73476cea632bcfc90",
+        "guest.py": "bdeb07468592fb2e3a78f6c3bb4e96d2f2d1c7b32a24c064e14fefd336e96db3",
+        "host.py": "64c98badd4a7b2d287434897a6b4df0733da33ee34f3d3f176d23cf8e1bd832c",
+        "lab.py": "5fb64b06a11a9bfa7999e9ac846f6eaa797c3da71d7b6372aac4eb261c62ba2f",
+        "platform.json": "703cede8f6c1b298f2fe00e30ad425224ae3ace5c06510b40f02868a2d81c1fa",
+        "run.py": "dc71754735620ce7ec3454182f1a7855b3f1eb52c04455021b78f0f8dbd5cd49",
+        "stock.py": "73f6a47ca2f4a55162514a1be7bb56b0f2130e6348eff99fe4de6f3e16dfa5b6"
+      },
+      "cpus_per_worker": 2,
+      "judge": {
+        "effort": "medium",
+        "entrypoint_sha256": "b694a1a18a13d6284cd2c6d71d57e2f0f19bd284ed6580ac113a530e934b7239",
+        "max_attempts_per_rotation": 2,
+        "model": "gpt-6.1-sol",
+        "rotations": 3
+      },
+      "lanes": 3,
+      "managed_hooks": {
+        "managed_hook_sha256": [
+          "sha256:a79f6a172423c70427168b961eda5f185d4846935c8187dc51528f46d43f4851",
+          "sha256:97fd1b8e1448bcf5a982080549b7a9fa05cf3dfecbe13ab34ccad635fc2881a2"
+        ],
+        "stock_cli_sha256": "c1eecb4b2304cb0e077a673231e30c9d759dec8fea4a6b8818078865e392fa90"
+      },
+      "memory": "4g"
+    },
+    "implementation_sha256": "8921ec6c57a3ffebc58deeb489215f3437096bd3247347cc7e01ff1ab4c18fa3",
+    "model": "gpt-6.1-sol",
+    "package_sha256": "1d6bdd9189ab5c076d825051201c17dda0627ad472ce11872f1c997cb257677c",
+    "qualifier": "b947aa7f5ace85bdb217377e9f2ba6e103a4e7e1868242b665edf0b3dfe39edf",
+    "rates_usd_per_million": {
+      "cached_input": 0.1,
+      "output": 10,
+      "uncached_input": 2
+    },
+    "rubric_sha256": "a47aa29e89ca55d12fd48031fa7ca5073d449caafefd1b17353a917ebe76a3c3",
+    "seed": 20261028,
+    "source_sha256": "51a4740fa2bc38f96e006d6c904b3ab9037f4151e3295c42a2293237b3c67691",
+    "treatment": {
+      "companion": {
+        "manifest_sha256": "18eb497a5c3c5aade93fe1982db0fbd2ab23d4a428fc552da6ee3cc520c9706d",
+        "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+        "skills": {
+          "brainstorming": "74edf03ea6d24ef53db48677b93558d14a979bdf052ca3f57ecdca0c66791608",
+          "dispatching-parallel-agents": "1968923066f3b707eb01d1992cdf4c42284c3855f70253b9cd5000ff45fca13c",
+          "executing-plans": "c4c3d8b628c51114cd165fb8246fe02744cd8be180032328391252e653028d9b",
+          "finishing-a-development-branch": "8db5a922b242dd4e1bf824cb91c13b3e8d8e8a86d6ceaf7f0774eb9cce909d65",
+          "receiving-code-review": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438",
+          "requesting-code-review": "d71cc01ba56d2325cf8af5f7c11837819b63ecd57de0bfdb812f7f3ff7751df8",
+          "subagent-driven-development": "8dd1b8e698edec3700c6d89517dbe96febd3bacd3f6ea21c1a3569c62ea104b5",
+          "systematic-debugging": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787",
+          "test-driven-development": "bf1b8216e523851a411e91d429a7c1c2a173e79d88957bc78e348218d50edd54",
+          "using-git-worktrees": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd",
+          "using-superpowers": "30f2ab78e20ddc27ee7158ae8d4a2abe161c360981c7cc3548070913142d3dc3",
+          "verification-before-completion": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+          "writing-plans": "48508f44bbfd7d24b029fbf3a314f3cd14c9615599059366e922f47b8dc08cf2",
+          "writing-skills": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b"
+        },
+        "source": "https://github.com/openai/plugins",
+        "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+        "source_path": "plugins/superpowers",
+        "version": "6.3.0"
+      },
+      "hook_sha256": {
+        "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c",
+        "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368"
+      },
+      "label": "iterate-entry-reduction-superpowers-v1",
+      "package_sha256": "1d6bdd9189ab5c076d825051201c17dda0627ad472ce11872f1c997cb257677c",
+      "plugin_hook_sha256": "64907841264f6cf6e0d5ff5823ca06427ad88c5c0f6719fb59a2708a97980650"
+    }
+  },
+  "selection": {
+    "cases": [
+      "rspec",
+      "sympy",
+      "cli11",
+      "libarchive",
+      "django",
+      "prometheus",
+      "fd",
+      "commons-lang"
+    ],
+    "declared_unix": 1793385866.8271337,
+    "plan_sha256": "00f8ed9d08e78cabdef2b8f429daf30fa178bc37170fa4788708ec2fe34f4697",
+    "sha256": "8853919bf0d49324ce639530c4f1eeb3eda46bc2cd7b6abf9097ecff71dd22ae",
+    "split": "confirmation"
+  },
+  "source": {
+    "original_git_base": null,
+    "treatment_recipe": "treatments/1d6bdd9189ab/recipe.json"
+  },
+  "submission_span_seconds": 16901.5253405571,
+  "submissions": {
+    "path": "submissions.jsonl",
+    "rows": 24,
+    "sha256": "0a353905226a764d98fd7bb82f44cb49cd6a2490a7c71c9c67a57e1afdd8715a"
+  }
+}

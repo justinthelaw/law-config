@@ -1,0 +1,821 @@
+{
+  "format": "law-config.configured-authored-tests-postscore/v1",
+  "pilot": "configured-tests-pytest-01",
+  "scope": "Separate model-free assessor diagnostic after all three proposals and blind rotations sealed, before screen decision. Original scores, prices, gate outputs, submitted patches and immutable raw result unchanged. No treatment/harness/scorer/scanner change or promotion.",
+  "verdict": "Registered screen unsuccessful. Candidate executes its authored cases under original configuration, but fails preserved tuple/import/class-annotation behavior, complete before-edit/before-final-review ordering, strict quality win and stock-cost ceiling. Parent authored execution cannot collect under strict policy.",
+  "bindings": {
+    "registration_sha256": "2c5ead5990b02fe54e565a8b3d65970862dadfd2509631981b84827a7148a084",
+    "raw_result_sha256": "d20c8148d59def9ce7c326df249c3d4db18e93920a492228698647e0ce8bf99c",
+    "official_result_sha256": "b6987fb36fc41b922d878530e57f2e21e5edf219c3d645ea6e15e489aaa82bca",
+    "descriptor_sha256": "368a37904b2124aa42db85b8c38bda1295d3ea08e11716168fc24d306ac74d9f",
+    "base_commit": "4088e1a84ef1cb8ba80aac4e75449459fc092c12",
+    "merged_commit": "0f54d41bedf00505bb1ac2c724abf96ba6dcf48d",
+    "manual_inventory_sha256": "cb71f7ee2121bf56adf5f940e0071df0bd40c2c5df49397660b1ab0374e81551",
+    "replay_receipt_sha256": "85f9d0e5570ec52f032b6aa588229bbb677bdd78c0dc180f040b73df6d2fa636",
+    "independent_native_process_sha256": "502fa569ea61a7e4f855c1876439a9da941ac2f58bfb91e5fa636db1c6f1e058",
+    "source_identities": {
+      "base": {
+        "grade_sha256": "25dc55a86aab6e80cd28d8e77f81bfe82b6339a3887ceb46a081312760828449",
+        "patch_sha256": null,
+        "expected_tree": "5672c2c4bcece9d1136230efe62c12208b03c38a",
+        "source_manifest_sha256": "3fefd116106e5e95f8ee1a2dae63e1c32a2c1f958fe9e2eb44f05f786735aee5",
+        "generated_version_sha256": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e"
+      },
+      "merge": {
+        "grade_sha256": "b9c43d9768fbb818e7d9216396324ce23ba26792c4f54b908c5d42f6579106ea",
+        "patch_sha256": "a99a7d0fb3b9ce80997a2236170e14e4d27161acdd1a897651bce1e630c6cce7",
+        "expected_tree": "d2ab21025cac52250c44e21140d0c468a33ca253",
+        "source_manifest_sha256": "77c2c7321a8616de365b1995a90a3917970b200e4475ef8758b47285bb5cd561",
+        "generated_version_sha256": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e"
+      },
+      "stock": {
+        "grade_sha256": "2d2df866dd85aec7e30c2afca62775557cedde22aa998d59c7a12c5a992c7e11",
+        "patch_sha256": "ca835110f0736935332b648f9df2f51b808e021867656e2f8ac2a92a45879725",
+        "expected_tree": "084db0109f961144168cd77ee063ef0631d3532d",
+        "source_manifest_sha256": "511a2dc79a1b86f39f73df5612e85782f357d3b3cffb35d0df35eac22a2df8c7",
+        "generated_version_sha256": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e"
+      },
+      "prior": {
+        "grade_sha256": "a496b752d96e2b09cc53d23069082f368bb91687393ad9bb3ea5cf7a2879bf01",
+        "patch_sha256": "72921d7af0b75c45ec22d4a0fe96690aa5b688435cd67efcae1f9c0e08fe0519",
+        "expected_tree": "fd330742b067a0f7dd02c9aa3cc489e3bc5a849a",
+        "source_manifest_sha256": "1b2b68cc662fac218567407297900d4a0a3653b4cc99a2a8b9f20a293c10762d",
+        "generated_version_sha256": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e"
+      },
+      "candidate": {
+        "grade_sha256": "49c75c5d235432030810a10a7e3826f467efec45bce961fcd035d6d6e32a8fa0",
+        "patch_sha256": "3957f3a6ce11fece3667db79295050f01124f7dfbd95573de53e23d44b69c653",
+        "expected_tree": "e6bed7a310e6fd134b73a6788e1855b8484784fa",
+        "source_manifest_sha256": "96423b2925280a2562e8697caec079e2e183e040b7c3e6f98a8fcda2870d4259",
+        "generated_version_sha256": "adb9b4ee3687303fae560ddfa54717aa8bc80dd23daafec4de6f6a6f6f7ead9e"
+      }
+    }
+  },
+  "runtime": {
+    "image": "python@sha256:67880b3941e3604e6bbf9ab36982f4bf78ba6a9e5206c44c9330da11db4b03a9",
+    "dependencies_sha256": "3943d438ec411c91cbe477975e33cf4846643cd9a896e6f83e099a65e9561e72",
+    "physical_cpu_lease": [
+      4,
+      5
+    ],
+    "guest_cwd": "/work",
+    "source_mount": "read-only",
+    "environment": {
+      "PYTHONPATH": "/work/src:/deps/lib",
+      "PYTEST_DISABLE_PLUGIN_AUTOLOAD": "1",
+      "PYTHONDONTWRITEBYTECODE": "1",
+      "TMPDIR": "/evidence",
+      "TMP": "/evidence",
+      "TEMP": "/evidence"
+    },
+    "normal_policy": {
+      "addopts": [
+        "-rfEX",
+        "-p",
+        "pytester"
+      ],
+      "filterwarnings_sha256": "dbbfbaf7cbe07a3086ee9d7aa156dd33d84c94b8026ee189ecfc351f37adfb9f",
+      "inipath": "/work/pyproject.toml",
+      "pytest": "/work/src/pytest/__init__.py",
+      "pytester_loaded": true,
+      "rootpath": "/work",
+      "strict": true,
+      "strict_parametrization_ids": null,
+      "structures": "/work/src/_pytest/mark/structures.py"
+    },
+    "original_config_conftest_sha256": {
+      "pyproject.toml": "9f7f69ac0a2a77f329e0689306ab1b904059acc67ddaaecec18ee0582cc7f2e9",
+      "tox.ini": "14aaa094ae0306cfc7a35efc5df0ede9afc3acd2f19dc2b8c98da990203a7c3e",
+      "testing/conftest.py": "595b9deba2ba383523ce794edab22ef1fc42222f7b42b63d0d26b6baf8b86211",
+      ".github/workflows/test.yml": "b880bb9f2beb5c896b04ede7f42895bd17641e767b9ca2bb3eeee44941f35561"
+    },
+    "configuration_identity": "All five source trees load /work/pyproject.toml, original strict=true, declared pytester and identical warning policy; no -c override or deselection. Source/index verification covers src, actual modules, original conftest, native expression module and owning configuration. Same generated version exception bound separately.",
+    "temporary_storage_limit": "Existing host environment helper resets its managed temporary directory during configure; task-scoped TMP/tempfile state immediately restored. Existing Docker helper retains its normal /tmp tmpfs and HOME=/tmp; actual test temp/JUnit paths use assessor evidence mount."
+  },
+  "calibration": {
+    "historical_sensitivity_sha256": "c03fe920944060d24af06e936dc622031be5b06cf0331821a55e54d82bc51820",
+    "independent_direct_command_receipt_sha256": "204071818aa7cb8d6d114c4dc9d84c86c675f2b5113b296b2a583951ec76790d",
+    "interpretation": "Historical strict 15/15 positive, duplicate-ID zero-execution negative, stripped-config false green, tuple-regression negative and incomplete 7/7 projection remain separate calibrated controls. Historical 15 is not imposed on fresh inventories."
+  },
+  "manual_inventory": {
+    "stock": {
+      "patch_sha256": "ca835110f0736935332b648f9df2f51b808e021867656e2f8ac2a92a45879725",
+      "complete_modules": [
+        "testing/test_mark.py"
+      ],
+      "expected_authored_or_changed_cases": 12,
+      "new_cases": 10,
+      "cases": [
+        {
+          "test": "test_parameter_set_public_type",
+          "axes": {
+            "multiple_marks": [
+              false,
+              true
+            ],
+            "id": [
+              "None",
+              "case",
+              "pytest.HIDDEN_PARAM"
+            ]
+          },
+          "expanded": 6,
+          "assertions": "Warning-free pytest.param and direct public classmethod factory; isinstance, helper runtime annotation, public module, object/value fields, scalar-versus-list marks normalization, ID identity."
+        },
+        {
+          "test": "test_parameter_set_direct_construction_warns",
+          "axes": {
+            "keyword": [
+              false,
+              true
+            ]
+          },
+          "expanded": 2,
+          "assertions": "Positional and keyword public constructors emit PytestDeprecationWarning; supplied values/marks identities and ID preserved."
+        },
+        {
+          "test": "test_parameter_set_parametrize_without_warnings",
+          "axes": {},
+          "expanded": 1,
+          "assertions": "Nested pytester warning-error run passes four pair/single cases and skips one intentional empty case; named pair node asserted. Nested counts belong to this one outer assertion, not the outer denominator."
+        },
+        {
+          "test": "TestMark::test_pytest_exists_in_namespace_all",
+          "axes": {
+            "attr": [
+              "mark",
+              "param",
+              "ParameterSet"
+            ]
+          },
+          "expanded": 3,
+          "new_axis_values": [
+            "ParameterSet"
+          ],
+          "assertions": "Each requested public name appears in pytest.__all__; mark and param were already covered on base and remain included as changed-method cases."
+        }
+      ],
+      "excluded_changed_files": [
+        {
+          "path": "testing/typing_checks.py",
+          "reason": "check_parameter_set_helper is a static typing fixture, not a pytest test. Complete source is bound; pytest cannot establish assert_type correctness. No static checker completion claimed."
+        }
+      ],
+      "prior_case_mapping": "Stock is an independent natural comparator, not subject to preserving parent Develop's authored inventory. It covers both construction forms and list/scalar marks, but lacks tuple/copy/class-annotation/import-order probes; these remain separately required behavior evidence."
+    },
+    "prior": {
+      "patch_sha256": "72921d7af0b75c45ec22d4a0fe96690aa5b688435cd67efcae1f9c0e08fe0519",
+      "complete_modules": [
+        "testing/test_parameterset.py"
+      ],
+      "expected_authored_or_changed_cases": 14,
+      "new_cases": 14,
+      "cases": [
+        {
+          "test": "test_public_type",
+          "axes": {},
+          "expanded": 1,
+          "assertions": "Public/internal identity, __all__, public module, helper result/value and helper plus pytest.param runtime return annotation."
+        },
+        {
+          "test": "test_factories",
+          "axes": {
+            "factory": [
+              "pytest.param",
+              "ParameterSet.param"
+            ],
+            "id": [
+              "None",
+              "empty string",
+              "greeting",
+              "h\u00e9llo",
+              "pytest.HIDDEN_PARAM"
+            ]
+          },
+          "expanded": 10,
+          "assertions": "Both factories warning-free; public ParameterSet type, value tuple, scalar-mark tuple and ID identity. Original automatic factory display IDs are both param, potentially blocking strict collection; no naming-only repair is applied to this sealed proposal."
+        },
+        {
+          "test": "test_direct_construction_warns",
+          "axes": {},
+          "expanded": 1,
+          "assertions": "Keyword public constructor deprecation and supplied values/marks identity plus ID."
+        },
+        {
+          "test": "test_extract_from",
+          "axes": {},
+          "expanded": 1,
+          "assertions": "Warning-free factory/extraction; existing ParameterSet returned by identity, list marks identity, legacy tuple values identity and empty marks/None ID, force_tuple nesting, empty param defaults."
+        },
+        {
+          "test": "test_collection_without_warnings",
+          "axes": {},
+          "expanded": 1,
+          "assertions": "Nested pytester -W error run produces two passes, one intentional empty skip and one intentional xfail from a marked generated parameter. These are asserted nested outcomes, not skipped/xfail outer authored tests."
+        }
+      ],
+      "excluded_changed_files": [],
+      "prior_case_mapping": "All authored cases are in the single new complete module. No prior assertion is changed during assessor replay; collection failure cannot be repaired into an acceptance result."
+    },
+    "candidate": {
+      "patch_sha256": "3957f3a6ce11fece3667db79295050f01124f7dfbd95573de53e23d44b69c653",
+      "complete_modules": [
+        "testing/test_mark.py"
+      ],
+      "expected_authored_or_changed_cases": 9,
+      "new_cases": 7,
+      "cases": [
+        {
+          "test": "TestParameterSet::test_public_annotation",
+          "axes": {},
+          "expanded": 1,
+          "assertions": "Helper runtime return annotation, public isinstance and public module."
+        },
+        {
+          "test": "TestParameterSet::test_factory",
+          "axes": {
+            "id": [
+              "None",
+              "example",
+              "pytest.HIDDEN_PARAM"
+            ]
+          },
+          "expanded": 3,
+          "assertions": "Warning-free public factory; object/value tuple, list marks identity, ID identity, scalar-mark tuple normalization and empty-param defaults."
+        },
+        {
+          "test": "TestParameterSet::test_direct_construction_warns",
+          "axes": {},
+          "expanded": 1,
+          "assertions": "Public/internal mark-module identity, positional public constructor deprecation, supplied values/marks identity and ID."
+        },
+        {
+          "test": "TestParameterSet::test_parametrization_factories",
+          "axes": {},
+          "expanded": 1,
+          "assertions": "Nested pytester -W error run passes three single/pair cases and intentionally skips one empty case; named helper node asserted. One outer test."
+        },
+        {
+          "test": "TestMark::test_pytest_exists_in_namespace_all",
+          "axes": {
+            "attr": [
+              "mark",
+              "param",
+              "ParameterSet"
+            ]
+          },
+          "expanded": 3,
+          "new_axis_values": [
+            "ParameterSet"
+          ],
+          "assertions": "Each name appears in pytest.__all__; two retained pre-existing axis values included."
+        }
+      ],
+      "excluded_changed_files": [],
+      "prior_case_mapping": "Equivalent coverage is established for public identity/export/module, helper annotation, main None/string/HIDDEN_PARAM inputs, warning-free factory normalization, supplied constructor fields and empty-parameter integration. Candidate has no explicit corresponding test for parent pytest.param runtime return annotation, direct ParameterSet.param entry point with five-ID axis (empty/non-ASCII missing), direct extract_from identity/legacy/force_tuple contracts, or marked-xfail nested integration. Complete testing/test_mark.py retains existing general extraction/mark-configuration/integration coverage, but does not assert those exact parent identities/annotation or five-ID factory cross-product. These gaps are disclosed; 9 passing changed cases never imply equivalence to 14 parent cases. No literal base test/assertion is deleted by either patch."
+    }
+  },
+  "configured_module_replay": {
+    "stock": {
+      "patch_sha256": "ca835110f0736935332b648f9df2f51b808e021867656e2f8ac2a92a45879725",
+      "grade_sha256": "2d2df866dd85aec7e30c2afca62775557cedde22aa998d59c7a12c5a992c7e11",
+      "expected_tree": "084db0109f961144168cd77ee063ef0631d3532d",
+      "source_manifest_sha256": "511a2dc79a1b86f39f73df5612e85782f357d3b3cffb35d0df35eac22a2df8c7",
+      "source_files_verified": 91,
+      "complete_modules": [
+        "testing/test_mark.py"
+      ],
+      "module_sha256": {
+        "testing/test_mark.py": "f9517cc4c5171a921b8557018c190c3b7080dbf2ec4e8f97f5374fcf76602abf"
+      },
+      "exit": 0,
+      "module_outcomes": {
+        "passed": 138,
+        "failed": 0,
+        "error": 0,
+        "skipped": 1
+      },
+      "junit_record_count": 139,
+      "executed_authored_cases": 12,
+      "expected_authored_cases": 12,
+      "all_authored_executed_and_passed": true,
+      "authored_node_ids": [
+        "testing/test_mark.py::TestMark::test_pytest_exists_in_namespace_all[mark]",
+        "testing/test_mark.py::TestMark::test_pytest_exists_in_namespace_all[param]",
+        "testing/test_mark.py::TestMark::test_pytest_exists_in_namespace_all[ParameterSet]",
+        "testing/test_mark.py::test_parameter_set_public_type[False-None]",
+        "testing/test_mark.py::test_parameter_set_public_type[False-case]",
+        "testing/test_mark.py::test_parameter_set_public_type[False-_HiddenParam.token]",
+        "testing/test_mark.py::test_parameter_set_public_type[True-None]",
+        "testing/test_mark.py::test_parameter_set_public_type[True-case]",
+        "testing/test_mark.py::test_parameter_set_public_type[True-_HiddenParam.token]",
+        "testing/test_mark.py::test_parameter_set_direct_construction_warns[False]",
+        "testing/test_mark.py::test_parameter_set_direct_construction_warns[True]",
+        "testing/test_mark.py::test_parameter_set_parametrize_without_warnings"
+      ],
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "--tb=short",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=/evidence/configured-tests-temp",
+        "--junitxml=/evidence/configured-tests.xml",
+        "testing/test_mark.py"
+      ],
+      "cwd": "/work",
+      "start_utc": "2026-10-30T06:38:03.182685+00:00",
+      "end_utc": "2026-10-30T06:38:09.837733+00:00",
+      "wall_seconds": 6.655032037990168,
+      "terminal_sha256": "cafe5bed509a6e5073047b5a6ea335b7b9a2529a5e8b2ffe2f37e9a3c586fd27",
+      "junit_sha256": "db6ff3c7d99109160c4a41264b38a9d6138eee22f9c0033e315bcd806c0e4700",
+      "qualification": "Complete module passes with one pre-existing unrelated xfail; every inventoried authored/changed case passes."
+    },
+    "prior": {
+      "patch_sha256": "72921d7af0b75c45ec22d4a0fe96690aa5b688435cd67efcae1f9c0e08fe0519",
+      "grade_sha256": "a496b752d96e2b09cc53d23069082f368bb91687393ad9bb3ea5cf7a2879bf01",
+      "expected_tree": "fd330742b067a0f7dd02c9aa3cc489e3bc5a849a",
+      "source_manifest_sha256": "1b2b68cc662fac218567407297900d4a0a3653b4cc99a2a8b9f20a293c10762d",
+      "source_files_verified": 92,
+      "complete_modules": [
+        "testing/test_parameterset.py"
+      ],
+      "module_sha256": {
+        "testing/test_parameterset.py": "5e411dec2fa5cf019f4ce6bfd1605921ac87fda55f5f15fc3cf622367d1d804c"
+      },
+      "exit": 2,
+      "module_outcomes": {
+        "passed": 0,
+        "failed": 0,
+        "error": 1,
+        "skipped": 0
+      },
+      "junit_record_count": 1,
+      "executed_authored_cases": 0,
+      "expected_authored_cases": 14,
+      "all_authored_executed_and_passed": false,
+      "authored_node_ids": [],
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "--tb=short",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=/evidence/configured-tests-temp",
+        "--junitxml=/evidence/configured-tests.xml",
+        "testing/test_parameterset.py"
+      ],
+      "cwd": "/work",
+      "start_utc": "2026-10-30T06:38:17.351106+00:00",
+      "end_utc": "2026-10-30T06:38:18.907033+00:00",
+      "wall_seconds": 1.555910584051162,
+      "terminal_sha256": "883cc44d7b464e9cf555c920fc463e7afafe1820a3cc1e82214124c4384437f4",
+      "junit_sha256": "13826e02e40ff3747dd5c47f8df0cbd452e14728fbdb90ed530050cb1441914a",
+      "qualification": "Collection fails before any authored case executes. One JUnit error record is not an executed test; 14 intended cases are unestablished, not 14 behavior failures."
+    },
+    "candidate": {
+      "patch_sha256": "3957f3a6ce11fece3667db79295050f01124f7dfbd95573de53e23d44b69c653",
+      "grade_sha256": "49c75c5d235432030810a10a7e3826f467efec45bce961fcd035d6d6e32a8fa0",
+      "expected_tree": "e6bed7a310e6fd134b73a6788e1855b8484784fa",
+      "source_manifest_sha256": "96423b2925280a2562e8697caec079e2e183e040b7c3e6f98a8fcda2870d4259",
+      "source_files_verified": 91,
+      "complete_modules": [
+        "testing/test_mark.py"
+      ],
+      "module_sha256": {
+        "testing/test_mark.py": "f2f0b14226eecdf29b19d5962ada49d24d9211dbde2fe0bee1480e3398486f27"
+      },
+      "exit": 0,
+      "module_outcomes": {
+        "passed": 135,
+        "failed": 0,
+        "error": 0,
+        "skipped": 1
+      },
+      "junit_record_count": 136,
+      "executed_authored_cases": 9,
+      "expected_authored_cases": 9,
+      "all_authored_executed_and_passed": true,
+      "authored_node_ids": [
+        "testing/test_mark.py::TestParameterSet::test_public_annotation",
+        "testing/test_mark.py::TestParameterSet::test_factory[None]",
+        "testing/test_mark.py::TestParameterSet::test_factory[example]",
+        "testing/test_mark.py::TestParameterSet::test_factory[_HiddenParam.token]",
+        "testing/test_mark.py::TestParameterSet::test_direct_construction_warns",
+        "testing/test_mark.py::TestParameterSet::test_parametrization_factories",
+        "testing/test_mark.py::TestMark::test_pytest_exists_in_namespace_all[mark]",
+        "testing/test_mark.py::TestMark::test_pytest_exists_in_namespace_all[param]",
+        "testing/test_mark.py::TestMark::test_pytest_exists_in_namespace_all[ParameterSet]"
+      ],
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "--tb=short",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp=/evidence/configured-tests-temp",
+        "--junitxml=/evidence/configured-tests.xml",
+        "testing/test_mark.py"
+      ],
+      "cwd": "/work",
+      "start_utc": "2026-10-30T06:38:26.253775+00:00",
+      "end_utc": "2026-10-30T06:38:33.067664+00:00",
+      "wall_seconds": 6.813875687075779,
+      "terminal_sha256": "e81a3828345ff58c22c009379a3f920555c00ef1153342d8b735f25c975ec18e",
+      "junit_sha256": "199f1de0b8d9644ddb79b3a8db2991eccf57cec12663f88525d46f10354147e9",
+      "qualification": "Complete module passes with one pre-existing unrelated xfail; every inventoried authored/changed case passes."
+    }
+  },
+  "required_public_behavior_replay": {
+    "base": {
+      "tuple_unpacks": true,
+      "tuple_error": null,
+      "warning_free_copy_deepcopy_default_pickle": true,
+      "helper_annotation": "requested export absent on base",
+      "class_annotation_fields": [
+        "id",
+        "marks",
+        "values"
+      ],
+      "class_annotation_error": null,
+      "fresh_internal_first": true,
+      "internal_import_error": null,
+      "fresh_public_first": true,
+      "preserves_all_named_base_supported_behaviors": true
+    },
+    "merge": {
+      "tuple_unpacks": true,
+      "tuple_error": null,
+      "warning_free_copy_deepcopy_default_pickle": true,
+      "helper_annotation": "pass",
+      "class_annotation_fields": null,
+      "class_annotation_error": "NameError",
+      "fresh_internal_first": true,
+      "internal_import_error": null,
+      "fresh_public_first": true,
+      "preserves_all_named_base_supported_behaviors": false
+    },
+    "stock": {
+      "tuple_unpacks": false,
+      "tuple_error": "TypeError",
+      "warning_free_copy_deepcopy_default_pickle": true,
+      "helper_annotation": "pass",
+      "class_annotation_fields": null,
+      "class_annotation_error": "NameError",
+      "fresh_internal_first": false,
+      "internal_import_error": "AttributeError",
+      "fresh_public_first": true,
+      "preserves_all_named_base_supported_behaviors": false
+    },
+    "prior": {
+      "tuple_unpacks": false,
+      "tuple_error": "TypeError",
+      "warning_free_copy_deepcopy_default_pickle": true,
+      "helper_annotation": "pass",
+      "class_annotation_fields": null,
+      "class_annotation_error": "NameError",
+      "fresh_internal_first": false,
+      "internal_import_error": "AttributeError",
+      "fresh_public_first": true,
+      "preserves_all_named_base_supported_behaviors": false
+    },
+    "candidate": {
+      "tuple_unpacks": false,
+      "tuple_error": "TypeError",
+      "warning_free_copy_deepcopy_default_pickle": true,
+      "helper_annotation": "pass",
+      "class_annotation_fields": null,
+      "class_annotation_error": "NameError",
+      "fresh_internal_first": false,
+      "internal_import_error": "AttributeError",
+      "fresh_public_first": true,
+      "preserves_all_named_base_supported_behaviors": false
+    }
+  },
+  "public_probe_receipts": {
+    "fields": [
+      "exit",
+      "wall_seconds",
+      "terminal_sha256"
+    ],
+    "commands": {
+      "configuration": {
+        "command": [
+          "python",
+          "-B",
+          "/assessor/configuration.py"
+        ],
+        "extra_env": {}
+      },
+      "pytest-param-tuple": {
+        "command": [
+          "python",
+          "-B",
+          "/assessor/pytest-param-tuple.py"
+        ],
+        "extra_env": {}
+      },
+      "copy-pickle-compatibility": {
+        "command": [
+          "python",
+          "-B",
+          "/assessor/copy-pickle-compatibility.py"
+        ],
+        "extra_env": {}
+      },
+      "runtime-type-hints": {
+        "command": [
+          "python",
+          "-B",
+          "/assessor/runtime-type-hints.py"
+        ],
+        "extra_env": {}
+      },
+      "import-internal-first": {
+        "command": [
+          "python",
+          "-B",
+          "/assessor/import-order.py"
+        ],
+        "extra_env": {
+          "PANEL_STAGE": "internal-first"
+        }
+      },
+      "import-public-first": {
+        "command": [
+          "python",
+          "-B",
+          "/assessor/import-order.py"
+        ],
+        "extra_env": {
+          "PANEL_STAGE": "public-first"
+        }
+      }
+    },
+    "rows": {
+      "base": {
+        "configuration": [
+          0,
+          1.4723925201687962,
+          "d4242198b026c398cb2f78ee264a10110c58fea767444c28709c5be06d17f72c"
+        ],
+        "pytest-param-tuple": [
+          0,
+          1.287681857822463,
+          "8276242bda72930412c7dc656ed33d975602af473eed52ef2725a786f40fe120"
+        ],
+        "copy-pickle-compatibility": [
+          0,
+          1.4358790228143334,
+          "9973e85513458e6fcc20a362235c7b90d38b280b5213fa5f4511545333061b72"
+        ],
+        "runtime-type-hints": [
+          0,
+          2.1870165879372507,
+          "09a9613049880b9daa68f817790e1a092a40a9ec65c0c959a4db31e33d7d2303"
+        ],
+        "import-internal-first": [
+          0,
+          1.3225253419950604,
+          "05410861ef6fb6b0822e3948e9b4bbdeb6e9cfcf51208942501b22bb831c126f"
+        ],
+        "import-public-first": [
+          0,
+          1.296230745036155,
+          "05410861ef6fb6b0822e3948e9b4bbdeb6e9cfcf51208942501b22bb831c126f"
+        ]
+      },
+      "merge": {
+        "configuration": [
+          0,
+          1.4596209810115397,
+          "d4242198b026c398cb2f78ee264a10110c58fea767444c28709c5be06d17f72c"
+        ],
+        "pytest-param-tuple": [
+          0,
+          1.27349330089055,
+          "8276242bda72930412c7dc656ed33d975602af473eed52ef2725a786f40fe120"
+        ],
+        "copy-pickle-compatibility": [
+          0,
+          1.2835507960990071,
+          "9973e85513458e6fcc20a362235c7b90d38b280b5213fa5f4511545333061b72"
+        ],
+        "runtime-type-hints": [
+          0,
+          1.2534408180508763,
+          "fd9877ec6b6cbc590dfc50a9facf2cf74c10a658cb7be6532a6f7f3ccae3d9ab"
+        ],
+        "import-internal-first": [
+          0,
+          1.255780071951449,
+          "d8a262c0c4feabd36b7f603a5010dc14135be50fa8536d8e3c40bf75a9f85bd2"
+        ],
+        "import-public-first": [
+          0,
+          1.2132178810425103,
+          "d8a262c0c4feabd36b7f603a5010dc14135be50fa8536d8e3c40bf75a9f85bd2"
+        ]
+      },
+      "stock": {
+        "configuration": [
+          0,
+          1.4373502018861473,
+          "d4242198b026c398cb2f78ee264a10110c58fea767444c28709c5be06d17f72c"
+        ],
+        "pytest-param-tuple": [
+          0,
+          1.2835206598974764,
+          "0da4215cfd4b298c05c76d4fd4a8f6822b86d5d2596a6dcc661a8dc2dabe2c26"
+        ],
+        "copy-pickle-compatibility": [
+          0,
+          1.28736263490282,
+          "9973e85513458e6fcc20a362235c7b90d38b280b5213fa5f4511545333061b72"
+        ],
+        "runtime-type-hints": [
+          0,
+          1.2352645839564502,
+          "fd9877ec6b6cbc590dfc50a9facf2cf74c10a658cb7be6532a6f7f3ccae3d9ab"
+        ],
+        "import-internal-first": [
+          42,
+          1.05943345814012,
+          "ba93aa3d9623da1e32ca373a7f48d27f9ea8cbe9bb91dc6141be1855db50c7b8"
+        ],
+        "import-public-first": [
+          0,
+          1.2619123309850693,
+          "d8a262c0c4feabd36b7f603a5010dc14135be50fa8536d8e3c40bf75a9f85bd2"
+        ]
+      },
+      "prior": {
+        "configuration": [
+          0,
+          1.3769238439854234,
+          "d4242198b026c398cb2f78ee264a10110c58fea767444c28709c5be06d17f72c"
+        ],
+        "pytest-param-tuple": [
+          0,
+          1.2549085938371718,
+          "0da4215cfd4b298c05c76d4fd4a8f6822b86d5d2596a6dcc661a8dc2dabe2c26"
+        ],
+        "copy-pickle-compatibility": [
+          0,
+          1.2544280420988798,
+          "9973e85513458e6fcc20a362235c7b90d38b280b5213fa5f4511545333061b72"
+        ],
+        "runtime-type-hints": [
+          0,
+          1.2173335158731788,
+          "fd9877ec6b6cbc590dfc50a9facf2cf74c10a658cb7be6532a6f7f3ccae3d9ab"
+        ],
+        "import-internal-first": [
+          42,
+          0.9886026671156287,
+          "ba93aa3d9623da1e32ca373a7f48d27f9ea8cbe9bb91dc6141be1855db50c7b8"
+        ],
+        "import-public-first": [
+          0,
+          1.26037862803787,
+          "d8a262c0c4feabd36b7f603a5010dc14135be50fa8536d8e3c40bf75a9f85bd2"
+        ]
+      },
+      "candidate": {
+        "configuration": [
+          0,
+          1.362361571053043,
+          "d4242198b026c398cb2f78ee264a10110c58fea767444c28709c5be06d17f72c"
+        ],
+        "pytest-param-tuple": [
+          0,
+          1.3365660980343819,
+          "0da4215cfd4b298c05c76d4fd4a8f6822b86d5d2596a6dcc661a8dc2dabe2c26"
+        ],
+        "copy-pickle-compatibility": [
+          0,
+          1.2388203900773078,
+          "9973e85513458e6fcc20a362235c7b90d38b280b5213fa5f4511545333061b72"
+        ],
+        "runtime-type-hints": [
+          0,
+          1.239464574959129,
+          "fd9877ec6b6cbc590dfc50a9facf2cf74c10a658cb7be6532a6f7f3ccae3d9ab"
+        ],
+        "import-internal-first": [
+          42,
+          1.0143589039798826,
+          "ba93aa3d9623da1e32ca373a7f48d27f9ea8cbe9bb91dc6141be1855db50c7b8"
+        ],
+        "import-public-first": [
+          0,
+          1.21095651993528,
+          "d8a262c0c4feabd36b7f603a5010dc14135be50fa8536d8e3c40bf75a9f85bd2"
+        ]
+      }
+    }
+  },
+  "frozen_executable_gates": {
+    "stock": {
+      "build": 0,
+      "native": 0,
+      "contract": 0,
+      "preserve": 0,
+      "independent": 0
+    },
+    "prior": {
+      "build": 0,
+      "native": 0,
+      "contract": 0,
+      "preserve": 0,
+      "independent": 0
+    },
+    "candidate": {
+      "build": 0,
+      "native": 0,
+      "contract": 0,
+      "preserve": 0,
+      "independent": 0
+    }
+  },
+  "behavior_interpretation": "All three proposals replace the returned namedtuple with a dataclass. Fresh helper annotations resolve, and selected authored cases can pass, while base-supported tuple unpacking, class-field get_type_hints and internal-first fresh imports regress. The annotation/tuple probes intentionally report JSON at exit zero, so successful process exit alone is not a behavior pass. Merge is not an overall oracle: it also loses base class-field annotation lookup. No automatic critical-severity classification or retroactive rescoring follows.",
+  "independent_process_review": {
+    "source_sha256": "502fa569ea61a7e4f855c1876439a9da941ac2f58bfb91e5fa636db1c6f1e058",
+    "stock_normal_config_authored": "not observed in participant; later assessor replay is separate",
+    "prior_normal_config_authored": "not observed in participant; later strict assay cannot collect",
+    "candidate_normal_config_authored": "observed eventual complete configured participant pass; independent full-module assay corroborates actual cases",
+    "distinct_observed_mechanism": true,
+    "causal_or_avoided_work_claim": false,
+    "model_effort_matching": "Recorded roots and reviewer contexts use gpt-6.1-sol medium; installed source, pinned companion, control inventory and original config bound by independent native audit.",
+    "candidate_intent_before_production": true,
+    "candidate_intent_before_any_authored_edit": false,
+    "candidate_first_test_edit_utc": "2026-10-30T06:18:56.170Z",
+    "candidate_intent_final_utc": "2026-10-30T06:19:22.486Z",
+    "candidate_final_source_revision_reviewed": true,
+    "candidate_completed_configured_outputs_reviewed": false,
+    "candidate_last_artifact_final_utc": "2026-10-30T06:23:42.884Z",
+    "candidate_focused_complete_utc": "2026-10-30T06:24:42.083Z",
+    "candidate_full_complete_utc": "2026-10-30T06:27:13.962Z",
+    "limit": "Exact encrypted reviewer brief wording is unknown; no waiver is inferred. Before-production review does not establish the stricter frozen pre-edit requirement; source review preceding completed green does not establish review of the tested evidence."
+  },
+  "official_economics_quality": {
+    "proposal_effort": {
+      "stock": {
+        "estimated_usd": 0.4834036,
+        "coverage": "complete",
+        "checkout_to_proposal_seconds": 577.5025043929927,
+        "billed_usd": null
+      },
+      "prior": {
+        "estimated_usd": 0.6908864,
+        "coverage": "complete",
+        "checkout_to_proposal_seconds": 898.6744120239746,
+        "billed_usd": null
+      },
+      "candidate": {
+        "estimated_usd": 0.5842736,
+        "coverage": "complete",
+        "checkout_to_proposal_seconds": 685.8325612850022,
+        "billed_usd": null
+      }
+    },
+    "stock_pr_points": 81.25,
+    "candidate_pr_points": 81.25,
+    "prior_pr_points": null,
+    "official_goal_win": false,
+    "candidate_cost_below_parent": true,
+    "candidate_wall_below_parent": true,
+    "candidate_cost_at_most_stock": false,
+    "candidate_strict_quality_win": false,
+    "scope": "Complete root and transitive descendant estimated proposal prices retained. Lower candidate spend/wall than parent does not establish a joint win: stock quality tie and higher candidate stock-relative cost reject it. Diagnostic execution and missing review work are not subtracted or priced as savings."
+  },
+  "pending_raw_adjudication_flags": {
+    "submission": "upstream",
+    "count": 2,
+    "issue": "Two blind flags cite PR claims of guarded __new__ and added warning/pickle tests absent from full merged patch. Coordinator notified; full unchanged flags remain in bound authentic raw/official result. No owning adjudication or score changed by this assay."
+  },
+  "diagnostic_expense": {
+    "new_native_model_calls": 0,
+    "guest_command_count": 33,
+    "sum_guest_command_wall_seconds": 54.08559545269236,
+    "billed_usd": null,
+    "monetary_estimate": null,
+    "scope": "Model-free Docker/configuration/test/probe execution only. Source verification, manual assessment and elapsed coordination are separate/unpriced; guest wall sum is not total human or assessor time."
+  },
+  "limits": [
+    "Complete authored/changed pytest modules only, not the full repository, tox/CI matrix, documentation build or static typing. Stock changed typing_checks.py is a static fixture and remains unverified by pytest.",
+    "One pre-existing unrelated xfail in stock/candidate full mark module is excluded from authored execution claims. Nested pytester intentional skips/xfails are asserted integration results, not outer skipped/xfail authored cases.",
+    "Candidate nine passing changed cases do not establish equivalence to fourteen parent cases; missing parent factory/extraction/annotation assertions are mapped explicitly. No base test is literally deleted.",
+    "Exact original participant trees and raw result remained unchanged. No no-op, empty, omitted, skipped/xfail authored case, wrong receipt, policy weakening or setup error is accepted as pass.",
+    "One exposed tuning task; no causal/general efficiency or promotion conclusion."
+  ]
+}

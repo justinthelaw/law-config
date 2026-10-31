@@ -1,0 +1,38 @@
+{
+  "id": "read-the-applicable-contract-once",
+  "previous": "fdc34c55ece9fd9e61e3476408f4d378f16b2771796c104af5d5f3b469501b80",
+  "targets": [
+    "plugins/develop/skills/iterate/references/local-changes.md"
+  ],
+  "evidence": [
+    {
+      "case": "pytest",
+      "source": "runs/tuning/boundary-pytest-install-02.json",
+      "result_file_sha256": "93fbaa011b697255e6b3b3ec22a821a12e23df697c33510cea9bd5f2a17d3b53",
+      "raw_root_usd": 0.4888224,
+      "develop_guidance": [
+        {
+          "role": "prior Develop",
+          "native_sha256": "7da88ab7b8331f5c53be8159e579e63b5ee8d6a0a4a18c3e08968598e36e9629",
+          "guide_count": 5,
+          "guide_references_in_commands": 7,
+          "root_usd": 0.78863
+        },
+        {
+          "role": "revised Develop",
+          "native_sha256": "01496e45bbbf8d4c0a1d55e7903b84f77b8173e6c3aa34b50dcc5b935313a314",
+          "guide_count": 5,
+          "guide_references_in_commands": 5,
+          "root_usd": 0.6380708
+        }
+      ],
+      "words_in_five_guides": 5280
+    }
+  ],
+  "change": "Keep the review requirements. For a bounded public contract, direct the coordinator to the planning and review sections and return it to the local change after those decisions.",
+  "prediction": "Relative to the prior package, fewer unrelated guide reads, lower complete coordinator and proposal cost, and shorter checkout-to-proposal time. Preserve the working tuple caller and consequential review.",
+  "sequence": [
+    "pytest"
+  ],
+  "falsifier": "Reject if the existing public tuple caller breaks, a required independent design or final artifact review cannot be verified, the candidate fails readiness or does not strictly improve full PR quality at equal or lower complete cost against pure. If cost or wall time rises against prior Develop, reject the efficiency improvement. Retain all attempts and use a fresh confirmation panel for any promotion."
+}

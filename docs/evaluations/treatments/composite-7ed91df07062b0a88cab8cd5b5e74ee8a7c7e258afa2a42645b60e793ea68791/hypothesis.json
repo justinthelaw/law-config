@@ -1,0 +1,59 @@
+{
+  "id": "observable-red-green-replay",
+  "previous": "3b0bd70d20a63dbf66750151ef0730b26032ecf30e0f4bf3599256ab1398cbb5",
+  "candidate_package_sha256": "239dccfc0fe4c090a777d8cf46216c99c57bc2bebc08eca013402215b65c7c28",
+  "targets": [
+    "plugins/develop/skills/iterate/references/local-changes.md"
+  ],
+  "common_companion": {
+    "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+    "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c"
+  },
+  "companion_content_sha256": "b7e4c51895564211f3fea4a3259a180d222ed0ac7d152d9515c56c463f740767",
+  "composite_identities": {
+    "prior": "6885dd085133250a524251e7dd0bfbb0302a841e5d08464c580890c9055f71aa",
+    "candidate": "7ed91df07062b0a88cab8cd5b5e74ee8a7c7e258afa2a42645b60e793ea68791"
+  },
+  "change": "Use the same public caller on base and patch. Expected behavioral red precedes requested changes. Preservation starts green. Unsupported inputs or setup leave a gap, not red/pass. Retain a bounded replay and one workflow owner.",
+  "evidence": [
+    {
+      "case": "werkzeug",
+      "source": "runs/tuning/review-entry-werkzeug-01/result.json",
+      "source_sha256": "1aa59088427787cc88fc2314d959e4cf3fed286f442f7470b59cf0419a284dd5"
+    },
+    {
+      "case": "expat",
+      "source": "runs/pr-quality-panel-v2/baseline-53a8bd549c93/run.json",
+      "source_sha256": "79d1eac46f473ecaf3d2620ddae08a903de6d9b3a9d93c64ee155364c2042160"
+    }
+  ],
+  "controls": "evidence/controls.json",
+  "controls_sha256": "418e182e8b948f9e694fac352f07d2779857097536e188b7c056cc5c6fd6b27a",
+  "sources": "evidence/source-links.json",
+  "sources_sha256": "d772962b44aca1a3e44e9c2f0a2723912f54bc28c088b00b68efc2b3559a3f48",
+  "bound_files": {
+    "measure_caller.py": "a6e0b258107a595e914aa8d0e1bbded90727e4dc116eec82d8924c60e1199e12",
+    "calibrate.py": "7acba3f1a23460897f761ee93705c39780a9229783d8f10b6f2b12b4f498a7e8",
+    "probes/werkzeug_stream_model.py": "24bb35b1c130ac4e93f75b07dc382328b8d3bc10d8a18371eec16a19ccf876df",
+    "probes/expat_literal_model.py": "274c02149c2b36a9793561d4d19e34fd876bb080db16180ded2343cf7583a842",
+    "probes/expat_parameter_entities.py": "c9959ec8fed9bd5b06ea14706d5ed40ca29a69c92f4d605b6604e609a581f7e8"
+  },
+  "measurement_program_sha256": "a6e0b258107a595e914aa8d0e1bbded90727e4dc116eec82d8924c60e1199e12",
+  "measure_with": "python3 -B docs/evaluations/treatments/composite-7ed91df07062b0a88cab8cd5b5e74ee8a7c7e258afa2a42645b60e793ea68791/measure_caller.py RUN",
+  "measurement": "After all three grades and before report export, measure_with RUN replays base, merge and three submissions through verified grades. Missing grades are unsupported. It validates registered hypothesis, exact composites, source files and logs, including receipt reuse. Use taskset to select two disjoint CPUs.",
+  "repeat_controls": "taskset -c 0,1 python3 -B docs/evaluations/treatments/composite-7ed91df07062b0a88cab8cd5b5e74ee8a7c7e258afa2a42645b60e793ea68791/calibrate.py --werkzeug-only",
+  "calibration_scope": "Run from repository root on two available CPUs. Werkzeug reconstructs five exposed trees from published sealed patches with a prepared repository/dependency cache; no historical private workers, pilot state or profiles. Expat controls are archival; calibrate.py does not rerun Expat.",
+  "acceptance": "Reject candidate supplemental Werkzeug failures above 0/144. Require every mandatory audit/check, full timing and complete metered proposal cost for all three arms. Ready requires strictly higher complete PR quality than stock at no greater complete metered cost, plus lower cost AND faster completion than prior Develop. Unsupported data cannot establish readiness. Start Expat only after the entire matched Werkzeug screen passes.",
+  "sequence": [
+    "Werkzeug first.",
+    "Expat only after the complete matched Werkzeug screen succeeds. Exposed tuning only."
+  ],
+  "evidence_states": {
+    "requested_change": "Intended base red before production edits, then green on the same patch caller.",
+    "preservation": "Green base and patch caller.",
+    "unsupported": "Missing inputs, prerequisites or grade. Report the gap and continue independent authorized work. Mandatory gates remain open."
+  },
+  "prediction": "Earlier observable counterexamples reduce corrective repeats without duplicate workflows. Cost, time and strict full-PR quality improvement remain unmeasured.",
+  "falsifier": "Reject a missing base/patch caller replay, absent intended red before requested behavior edits, missing green preservation baseline, setup errors counted as behavioral evidence, irreproducible replay, lost neighboring behavior, duplicate workflows, or any missing mandatory audit/check. Unsupported evidence is unestablished and never waives gates.",
+  "limits": "The original Werkzeug merge also fails this supplemental legacy-text invariant. It does not replace frozen gates or change scores. Expat must preserve recursion error12 and amplification error43. No promotion claim from exposed tuning."
+}

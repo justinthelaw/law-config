@@ -1,0 +1,19 @@
+{
+  "registered_utc": "2026-10-31T14:15:13.564723+00:00",
+  "source_commit": "ede7b64",
+  "package_sha256": "37296eded675c55087986da8386d576970b38973e6c5b77880a8ae529bbaa251",
+  "pilot_registration_sha256": "ebbeaeb70184239712c3ac6220ebc6880eceb1a16ab5537add1e43dec052b1ac",
+  "eligibility": "Run once only if the registered ripgrep transfer screen meets its criteria. Preserve its result either way.",
+  "inherits": {
+    "path": "../0085f2ad8d61/historical-tuning.json",
+    "sha256": "87cb05429aab0ea991a5775d6e557171fe39cc50499cf0a4a349a6983a78fcad",
+    "fields": [
+      "cohort",
+      "cases",
+      "metrics",
+      "stop_rule"
+    ]
+  },
+  "hypothesis": "Explicit outer waits at point of use lower paid wait-only turns and proposal cost, while coordinated build ownership and focused real callers preserve quality and coverage.",
+  "selection": "Use all 20 historical repositories with one fresh standalone Develop attempt and one fresh stock attempt each. Score every allocation under the inherited policy. Keep pilots and earlier cohorts separate."
+}

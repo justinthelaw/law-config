@@ -1,0 +1,10 @@
+{
+  "format": "law-config.treatment-recipe/v1",
+  "git_base": "0b81d80a0e2bec323711eb0c0718f38915992b12",
+  "patch": "package.patch",
+  "patch_sha256": "6c8e1ced47818468811712d99c84f8299f5eb12332a61344f85a5a2362b4452b",
+  "package_sha256": "c619be0cc2668f45fc51c3a8582af64581a83c993b83981e776fa45f90e10fbb",
+  "files": 205,
+  "scope": "plugins/develop",
+  "treatment_lock": "../../develop-benchmark/panel/treatment.json"
+}

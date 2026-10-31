@@ -1,0 +1,4214 @@
+{
+  "format": "law-config.historical-functional-pr-comparison/v1",
+  "scope": {
+    "registered_scope_sha256": "2de079bcd9ceaed35ab1cb9e5f30affa616cd152d03cc02a3916df7b8bb1f84f",
+    "plans": [
+      {
+        "name": "iterate-entry-tuning-01",
+        "split": "tuning",
+        "cases": [
+          "commander",
+          "pytest",
+          "expat",
+          "packaging",
+          "marked",
+          "fmt",
+          "werkzeug",
+          "go-git",
+          "ripgrep",
+          "runner-space",
+          "black",
+          "jq"
+        ],
+        "plan_sha256": "92e6c13f504c0deed819a16f88dc0ba44cc89e490a6183a6ef8cc8899b1e438d",
+        "selection_sha256": "7bc537c02e43ee97f2d6bc0eff0053187c703605ceda7c22448f6173a17375cb",
+        "qualification_sha256": "1df5f24a53c1f954cd82688220415cc7d55097df2d98529e6d663d6db3daf821"
+      },
+      {
+        "name": "iterate-entry-historical-rest-01",
+        "split": "confirmation",
+        "cases": [
+          "rspec",
+          "sympy",
+          "cli11",
+          "libarchive",
+          "django",
+          "prometheus",
+          "fd",
+          "commons-lang"
+        ],
+        "plan_sha256": "00f8ed9d08e78cabdef2b8f429daf30fa178bc37170fa4788708ec2fe34f4697",
+        "selection_sha256": "8853919bf0d49324ce639530c4f1eeb3eda46bc2cd7b6abf9097ecff71dd22ae",
+        "qualification_sha256": "b947aa7f5ace85bdb217377e9f2ba6e103a4e7e1868242b665edf0b3dfe39edf"
+      }
+    ],
+    "case_count": 20,
+    "equal_plan_fields": [
+      "protocol",
+      "runtime",
+      "seed",
+      "order",
+      "schedule",
+      "rubric_sha256",
+      "judge_rotations",
+      "cost_usd_per_million"
+    ],
+    "same_cpu_queues": true,
+    "same_fixture_identities": true,
+    "unchanged_reference_receipts": true,
+    "shared_with_original": [
+      "repo",
+      "pr",
+      "base",
+      "merged",
+      "prompt",
+      "prompt_sha256",
+      "merged_patch_sha256",
+      "workers",
+      "dependencies_sha256",
+      "deadline_seconds",
+      "arm_order"
+    ],
+    "matching_fixture_fingerprints_between_current_batches": true
+  },
+  "functional_quality_policy": {
+    "format": "law-config.full-historical-report-quality/v1",
+    "scope_sha256": "2de079bcd9ceaed35ab1cb9e5f30affa616cd152d03cc02a3916df7b8bb1f84f",
+    "population": "20 historical repositories with equal weight, separately for stock, Develop and the actual merged change",
+    "functional_mean": "Sum each functional, ready proposal’s observed blinded full-PR score out of 100 and divide by 20. An observed absent or incomplete PR, an empty patch, a failed mandatory executable behavior check or a confirmed critical defect contributes zero. Preserve native scores unchanged.",
+    "missing_measurement": "When a submitted PR lacks decisive functionality or valid judge evidence, retain unknown and show the possible all-20 mean interval. Do not substitute zero for a missing measurement.",
+    "scored_pr_mean": "Also report the ordinary mean of available complete blinded full-PR scores and its denominator, including scored failures.",
+    "precision": "Calculate with unrounded full values. Three accepted rotations and the frozen aggregate axis medians determine each displayed full-PR score.",
+    "native_status": "The additional functionality-weighted descriptive metric does not modify any native gate, adjudication, price, pairwise decision or confirmation criterion.",
+    "user_rule_received_utc": "2026-10-30T15:49:06Z",
+    "recorded_utc": "2026-10-30T15:50:37.717407+00:00"
+  },
+  "quality_policy_sha256": "5d817cf73c1b2ea284ac16db1fbb4c937763b9dca4c934dfabfa92f49b2ae032",
+  "original": {
+    "bundle": "pr-quality-panel-v2/baseline-53a8bd549c93/run.json",
+    "summary": {
+      "repositories": 20,
+      "ready": {
+        "control": {
+          "ready": 15,
+          "failed": 3,
+          "unavailable": 2
+        },
+        "develop": {
+          "ready": 15,
+          "unavailable": 3,
+          "failed": 2
+        },
+        "upstream": {
+          "failed": 3,
+          "ready": 17
+        }
+      },
+      "states": {
+        "control": {
+          "completed": 18,
+          "blocked": 2
+        },
+        "develop": {
+          "completed": 17,
+          "blocked": 3
+        }
+      },
+      "strict_blind_quality": {
+        "tie": 9,
+        "unknown": 5,
+        "develop": 2,
+        "control": 4
+      },
+      "mean_displayed_full_pr_delta": -4.833333333333333,
+      "quality_pairs": 15,
+      "blind_vs_merge": {
+        "control": {
+          "control": 15,
+          "tie": 1,
+          "upstream": 2,
+          "unknown": 2
+        },
+        "develop": {
+          "develop": 14,
+          "unknown": 3,
+          "tie": 1,
+          "upstream": 2
+        }
+      },
+      "numeric_joint": {
+        "unknown": 6,
+        "false": 13,
+        "true": 1
+      },
+      "profile_verified_joint": null,
+      "numeric_joint_cases": [
+        "runner-space"
+      ],
+      "score_ceiling_cases": [
+        "cli11",
+        "commander",
+        "expat",
+        "fmt",
+        "go-git",
+        "jq",
+        "packaging",
+        "prometheus",
+        "pytest",
+        "ripgrep",
+        "rspec",
+        "sympy",
+        "werkzeug"
+      ],
+      "paired": {
+        "usd": {
+          "cases": [
+            "black",
+            "cli11",
+            "commander",
+            "commons-lang",
+            "expat",
+            "fmt",
+            "go-git",
+            "prometheus",
+            "pytest",
+            "ripgrep",
+            "rspec",
+            "runner-space",
+            "sympy",
+            "werkzeug"
+          ],
+          "control": 4.7943272,
+          "develop": 8.1828708,
+          "ratio": 1.706781881720547,
+          "ratio_interval_95": [
+            1.4083115512311624,
+            2.043726547898263
+          ]
+        },
+        "tokens": {
+          "cases": [
+            "black",
+            "cli11",
+            "commander",
+            "commons-lang",
+            "expat",
+            "fmt",
+            "go-git",
+            "prometheus",
+            "pytest",
+            "ripgrep",
+            "rspec",
+            "runner-space",
+            "sympy",
+            "werkzeug"
+          ],
+          "control": 23666138,
+          "develop": 40251505,
+          "ratio": 1.7008058095494922,
+          "ratio_interval_95": [
+            1.4264618866963323,
+            2.0194156326103223
+          ]
+        },
+        "checkout_s": {
+          "cases": [
+            "black",
+            "cli11",
+            "commander",
+            "commons-lang",
+            "expat",
+            "fmt",
+            "go-git",
+            "packaging",
+            "prometheus",
+            "pytest",
+            "ripgrep",
+            "rspec",
+            "runner-space",
+            "sympy",
+            "werkzeug"
+          ],
+          "control": 8628.440207619686,
+          "develop": 11926.589738957351,
+          "ratio": 1.3822416858640458,
+          "ratio_interval_95": [
+            1.1732640453708103,
+            1.7125999228832582
+          ]
+        },
+        "through_grading_s": {
+          "cases": [
+            "black",
+            "cli11",
+            "commander",
+            "commons-lang",
+            "expat",
+            "fmt",
+            "go-git",
+            "packaging",
+            "prometheus",
+            "pytest",
+            "ripgrep",
+            "rspec",
+            "runner-space",
+            "sympy",
+            "werkzeug"
+          ],
+          "control": 9100.260586282006,
+          "develop": 12393.154071684694,
+          "ratio": 1.3618460651958133,
+          "ratio_interval_95": [
+            1.1672699525028325,
+            1.6534800564423127
+          ]
+        }
+      },
+      "quality": {
+        "control": {
+          "repositories": 20,
+          "functional_scores": {
+            "packaging": 96.25,
+            "ripgrep": 100.0,
+            "jq": 100.0,
+            "go-git": 96.25,
+            "django": 53.75,
+            "werkzeug": 100.0,
+            "sympy": 96.25,
+            "pytest": 100.0,
+            "commander": 96.25,
+            "prometheus": 100.0,
+            "fmt": 96.25,
+            "cli11": 96.25,
+            "commons-lang": 90.0,
+            "expat": 100.0,
+            "rspec": 96.25
+          },
+          "nonfunctional": [
+            "black",
+            "marked",
+            "runner-space"
+          ],
+          "no_pr": [
+            "fd",
+            "libarchive"
+          ],
+          "unknown": [],
+          "functional_mean_100": 70.875,
+          "possible_functional_mean_100": [
+            70.875,
+            70.875
+          ],
+          "raw_pr_scores": {
+            "packaging": 96.25,
+            "ripgrep": 100.0,
+            "jq": 100.0,
+            "marked": 56.25,
+            "go-git": 96.25,
+            "runner-space": 76.25,
+            "django": 53.75,
+            "black": 32.5,
+            "werkzeug": 100.0,
+            "sympy": 96.25,
+            "pytest": 100.0,
+            "commander": 96.25,
+            "prometheus": 100.0,
+            "fmt": 96.25,
+            "cli11": 96.25,
+            "commons-lang": 90.0,
+            "expat": 100.0,
+            "rspec": 96.25
+          },
+          "scored_pr_mean_100": 87.91666666666667
+        },
+        "develop": {
+          "repositories": 20,
+          "functional_scores": {
+            "packaging": 96.25,
+            "ripgrep": 100.0,
+            "go-git": 96.25,
+            "runner-space": 85.0,
+            "black": 66.25,
+            "werkzeug": 75.0,
+            "pytest": 63.75,
+            "commander": 96.25,
+            "prometheus": 100.0,
+            "fd": 96.25,
+            "fmt": 96.25,
+            "cli11": 96.25,
+            "commons-lang": 90.0,
+            "expat": 76.25,
+            "rspec": 96.25
+          },
+          "nonfunctional": [
+            "libarchive",
+            "sympy"
+          ],
+          "no_pr": [
+            "django",
+            "jq",
+            "marked"
+          ],
+          "unknown": [],
+          "functional_mean_100": 66.5,
+          "possible_functional_mean_100": [
+            66.5,
+            66.5
+          ],
+          "raw_pr_scores": {
+            "packaging": 96.25,
+            "ripgrep": 100.0,
+            "go-git": 96.25,
+            "runner-space": 85.0,
+            "black": 66.25,
+            "werkzeug": 75.0,
+            "sympy": 66.25,
+            "pytest": 63.75,
+            "commander": 96.25,
+            "prometheus": 100.0,
+            "fd": 96.25,
+            "fmt": 96.25,
+            "cli11": 96.25,
+            "commons-lang": 90.0,
+            "libarchive": 60.0,
+            "expat": 76.25,
+            "rspec": 96.25
+          },
+          "scored_pr_mean_100": 85.66176470588235
+        },
+        "upstream": {
+          "repositories": 20,
+          "functional_scores": {
+            "ripgrep": 83.75,
+            "jq": 82.5,
+            "go-git": 96.25,
+            "runner-space": 67.5,
+            "django": 71.25,
+            "black": 81.25,
+            "werkzeug": 43.75,
+            "sympy": 65.0,
+            "commander": 56.25,
+            "prometheus": 90.0,
+            "fd": 90.0,
+            "fmt": 78.75,
+            "cli11": 80.0,
+            "commons-lang": 56.25,
+            "libarchive": 86.25,
+            "expat": 48.75,
+            "rspec": 83.75
+          },
+          "nonfunctional": [
+            "marked",
+            "packaging",
+            "pytest"
+          ],
+          "no_pr": [],
+          "unknown": [],
+          "functional_mean_100": 63.0625,
+          "possible_functional_mean_100": [
+            63.0625,
+            63.0625
+          ],
+          "raw_pr_scores": {
+            "packaging": 50.0,
+            "ripgrep": 83.75,
+            "jq": 82.5,
+            "marked": 53.75,
+            "go-git": 96.25,
+            "runner-space": 67.5,
+            "django": 71.25,
+            "black": 81.25,
+            "werkzeug": 43.75,
+            "sympy": 65.0,
+            "pytest": 30.0,
+            "commander": 56.25,
+            "prometheus": 90.0,
+            "fd": 90.0,
+            "fmt": 78.75,
+            "cli11": 80.0,
+            "commons-lang": 56.25,
+            "libarchive": 86.25,
+            "expat": 48.75,
+            "rspec": 83.75
+          },
+          "scored_pr_mean_100": 69.75
+        }
+      },
+      "quality_delta_interval_95": [
+        -24.3125,
+        16.625
+      ],
+      "elapsed_attempts": {
+        "control": {
+          "count": 20,
+          "sum_checkout_to_terminal_s": 16840.49021989829
+        },
+        "develop": {
+          "count": 20,
+          "sum_checkout_to_terminal_s": 25031.211499478202
+        }
+      },
+      "observed_cost": {
+        "control": {
+          "complete": 18,
+          "known_amounts": 20,
+          "lower_bound_usd": 8.2587108,
+          "total_usd": null
+        },
+        "develop": {
+          "complete": 16,
+          "known_amounts": 20,
+          "lower_bound_usd": 13.4067796,
+          "total_usd": null
+        }
+      }
+    }
+  },
+  "recovery": {
+    "bundle": "pr-quality-panel-v2/capacity-recovery-10864a781080/run.json",
+    "summary": {
+      "repositories": 5,
+      "ready": {
+        "control": {
+          "failed": 2,
+          "ready": 3
+        },
+        "develop": {
+          "ready": 4,
+          "failed": 1
+        },
+        "upstream": {
+          "ready": 4,
+          "failed": 1
+        }
+      },
+      "states": {
+        "control": {
+          "completed": 5
+        },
+        "develop": {
+          "completed": 5
+        }
+      },
+      "strict_blind_quality": {
+        "develop": 1,
+        "tie": 4
+      },
+      "mean_displayed_full_pr_delta": 3.0,
+      "quality_pairs": 5,
+      "blind_vs_merge": {
+        "control": {
+          "upstream": 2,
+          "tie": 1,
+          "control": 2
+        },
+        "develop": {
+          "upstream": 2,
+          "tie": 1,
+          "develop": 2
+        }
+      },
+      "numeric_joint": {
+        "true": 1,
+        "false": 4
+      },
+      "profile_verified_joint": null,
+      "numeric_joint_cases": [
+        "libarchive"
+      ],
+      "score_ceiling_cases": [
+        "fd",
+        "jq"
+      ],
+      "paired": {
+        "usd": {
+          "cases": [
+            "django",
+            "fd",
+            "jq",
+            "libarchive",
+            "marked"
+          ],
+          "control": 5.6841428,
+          "develop": 3.6399168000000004,
+          "ratio": 0.6403633631442195,
+          "ratio_interval_95": [
+            0.349205232671225,
+            1.003447324810347
+          ]
+        },
+        "tokens": {
+          "cases": [
+            "django",
+            "fd",
+            "jq",
+            "libarchive",
+            "marked"
+          ],
+          "control": 32606097,
+          "develop": 20517340,
+          "ratio": 0.6292485727439258,
+          "ratio_interval_95": [
+            0.32199927723429045,
+            0.9817598196469508
+          ]
+        },
+        "checkout_s": {
+          "cases": [
+            "django",
+            "fd",
+            "jq",
+            "libarchive",
+            "marked"
+          ],
+          "control": 14978.752700641751,
+          "develop": 9711.348223958863,
+          "ratio": 0.6483415821093561,
+          "ratio_interval_95": [
+            0.3207785020745217,
+            1.039605250186395
+          ]
+        },
+        "through_grading_s": {
+          "cases": [
+            "django",
+            "fd",
+            "jq",
+            "libarchive",
+            "marked"
+          ],
+          "control": 15381.341209309641,
+          "develop": 10114.73450451577,
+          "ratio": 0.6575976936519536,
+          "ratio_interval_95": [
+            0.3361429163272318,
+            1.0387508075270218
+          ]
+        }
+      },
+      "quality": {
+        "control": {
+          "repositories": 5,
+          "functional_scores": {
+            "django": 60.0,
+            "fd": 96.25,
+            "jq": 100.0
+          },
+          "nonfunctional": [
+            "libarchive",
+            "marked"
+          ],
+          "no_pr": [],
+          "unknown": [],
+          "functional_mean_100": 51.25,
+          "possible_functional_mean_100": [
+            51.25,
+            51.25
+          ],
+          "raw_pr_scores": {
+            "libarchive": 60.0,
+            "marked": 56.25,
+            "django": 60.0,
+            "fd": 96.25,
+            "jq": 100.0
+          },
+          "scored_pr_mean_100": 74.5
+        },
+        "develop": {
+          "repositories": 5,
+          "functional_scores": {
+            "libarchive": 75.0,
+            "django": 60.0,
+            "fd": 96.25,
+            "jq": 100.0
+          },
+          "nonfunctional": [
+            "marked"
+          ],
+          "no_pr": [],
+          "unknown": [],
+          "functional_mean_100": 66.25,
+          "possible_functional_mean_100": [
+            66.25,
+            66.25
+          ],
+          "raw_pr_scores": {
+            "libarchive": 75.0,
+            "marked": 56.25,
+            "django": 60.0,
+            "fd": 96.25,
+            "jq": 100.0
+          },
+          "scored_pr_mean_100": 77.5
+        },
+        "upstream": {
+          "repositories": 5,
+          "functional_scores": {
+            "libarchive": 86.25,
+            "django": 71.25,
+            "fd": 86.25,
+            "jq": 86.25
+          },
+          "nonfunctional": [
+            "marked"
+          ],
+          "no_pr": [],
+          "unknown": [],
+          "functional_mean_100": 66.0,
+          "possible_functional_mean_100": [
+            66.0,
+            66.0
+          ],
+          "raw_pr_scores": {
+            "libarchive": 86.25,
+            "marked": 53.75,
+            "django": 71.25,
+            "fd": 86.25,
+            "jq": 86.25
+          },
+          "scored_pr_mean_100": 76.75
+        }
+      },
+      "quality_delta_interval_95": [
+        0.0,
+        45.0
+      ],
+      "elapsed_attempts": {
+        "control": {
+          "count": 5,
+          "sum_checkout_to_terminal_s": 14978.752700641751
+        },
+        "develop": {
+          "count": 5,
+          "sum_checkout_to_terminal_s": 9711.348223958863
+        }
+      },
+      "observed_cost": {
+        "control": {
+          "complete": 5,
+          "known_amounts": 5,
+          "lower_bound_usd": 5.6841428,
+          "total_usd": 5.6841428
+        },
+        "develop": {
+          "complete": 5,
+          "known_amounts": 5,
+          "lower_bound_usd": 3.6399168000000004,
+          "total_usd": 3.6399168000000004
+        }
+      }
+    }
+  },
+  "current": {
+    "batches": [
+      {
+        "name": "iterate-entry-tuning-01",
+        "protocol": "pr-quality-pytest-entry-natural-v1",
+        "plan_sha256": "92e6c13f504c0deed819a16f88dc0ba44cc89e490a6183a6ef8cc8899b1e438d",
+        "manifest_sha256": "02ae504bf113136a2d4b16d2c008245a98f3e242ba718518d546944faf933fca",
+        "submission_sha256": "4134948b76d7141768b5eeeb8112831d412b885a865b9237e7020606d8933997",
+        "campaign_elapsed_s": 20005.83911371231,
+        "assessors": {
+          "attempts": 36,
+          "complete_receipts": 36,
+          "observed_usd": 5.1569604
+        },
+        "submission_span_s": 18154.132915496826,
+        "manifest": "pr-quality-pytest-entry-natural-v1/iterate-entry-tuning-01-92e6c13f504c/run.json",
+        "frozen_unix": 1793365469.6807632,
+        "qualification": {
+          "control": {
+            "coverage": "complete",
+            "usd": 0.04298079999999999,
+            "tokens": 86468
+          },
+          "develop": {
+            "coverage": "complete",
+            "usd": 0.0389764,
+            "tokens": 137657
+          }
+        },
+        "judge_rotations": 36,
+        "retained_profile_verification": {
+          "name": "iterate-entry-tuning-01",
+          "plan_sha256": "92e6c13f504c0deed819a16f88dc0ba44cc89e490a6183a6ef8cc8899b1e438d",
+          "pre_release_config_sha256": {
+            "black/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "black/develop": "a9cbd51abce280fac5dbe7e6288ed57c117fca120800fc9a787e2226ee7830d1",
+            "commander/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "commander/develop": "81d688850fbae17a78e871a4aa896b59db2c3d8eed4169c49649bdfb1f4581fa",
+            "expat/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "expat/develop": "abdc98393574214c1a360e851f73082837e9a1a76a43fa97a60e7916525685c8",
+            "fmt/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "fmt/develop": "4db64fdab7340c89aaa94e3633edf6a0e167058fcfe5313a5b4ac9af533b8495",
+            "go-git/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "go-git/develop": "ebcc6f9f85977330886a4afbdf1a662fdf7c53ad451a0c1784ba363006baef7e",
+            "jq/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "jq/develop": "0703e4dc15aabea2df5d06f92689c80b5850a2819c7af05d2d643276118e820c",
+            "marked/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "marked/develop": "df6945d81081e5a7da94244e323c6606a22cc479cd104d938ae42592d4b61a39",
+            "packaging/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "packaging/develop": "ffa3f2f4208dc21adc21785ec446da2c9def6b48a27a759f64446b4cd643d4e6",
+            "pytest/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "pytest/develop": "3d47f46eae1c85e388ab7e5562095316e1dfda4b9d845dbfe006b87ba064b74c",
+            "ripgrep/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "ripgrep/develop": "f09cfeba80ae966d79f585b53a64b51a29681fb054e27b2c48108c55b4f4904a",
+            "runner-space/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "runner-space/develop": "4a17dacd0b00585d3e1ea1047e381951eacebbc26fc1669be99193ae4fa1d4f0",
+            "werkzeug/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "werkzeug/develop": "77479b425da8c04118d29efc12c529739a39ee6182a199c9a75379bcf94f7c54"
+          },
+          "companion_package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+          "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+          "marketplace_sha256": "14cfc3a538ef8c78c84a5a26bd57ffacbbd2a797e3d3ff05ef2e4fc238a2bf87",
+          "finalizer": "native_panel.finalize"
+        },
+        "operator_start_unix": 1793365255,
+        "pre_freeze_s": 214.6807632446289,
+        "operator_start_through_last_measurement_s": 20220.51987695694
+      },
+      {
+        "name": "iterate-entry-historical-rest-01",
+        "protocol": "pr-quality-pytest-entry-natural-v1",
+        "plan_sha256": "00f8ed9d08e78cabdef2b8f429daf30fa178bc37170fa4788708ec2fe34f4697",
+        "manifest_sha256": "bc662f0f2c8a836fa96f43cfb4a0a429d332b507fb76925b3771e1525082a276",
+        "submission_sha256": "0a353905226a764d98fd7bb82f44cb49cd6a2490a7c71c9c67a57e1afdd8715a",
+        "campaign_elapsed_s": 17988.569519996643,
+        "assessors": {
+          "attempts": 24,
+          "complete_receipts": 24,
+          "observed_usd": 2.7950084
+        },
+        "submission_span_s": 16901.5253405571,
+        "manifest": "pr-quality-pytest-entry-natural-v1/iterate-entry-historical-rest-01-00f8ed9d08e7/run.json",
+        "frozen_unix": 1793385866.8113518,
+        "qualification": {
+          "control": {
+            "coverage": "complete",
+            "usd": 0.04260679999999999,
+            "tokens": 86433
+          },
+          "develop": {
+            "coverage": "complete",
+            "usd": 0.03426,
+            "tokens": 118794
+          }
+        },
+        "judge_rotations": 24,
+        "retained_profile_verification": {
+          "name": "iterate-entry-historical-rest-01",
+          "plan_sha256": "00f8ed9d08e78cabdef2b8f429daf30fa178bc37170fa4788708ec2fe34f4697",
+          "pre_release_config_sha256": {
+            "cli11/control": "557ffe6c14566fda2808ba150d9596d8e3c73e15f19961f3a7d0732ed92b8cd2",
+            "cli11/develop": "b691f77dde51d237fc615c155a4e873bf4d08de9598f2466165fe5a2a8d34cd1",
+            "commons-lang/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "commons-lang/develop": "74358b39b319fecb3fcbfa593ec407374828a2295caeb50df64f81b6c9284c84",
+            "django/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "django/develop": "9301eaacaae8a5f4a8d5b68ed276a907c3eed8977dd31eea8ffac06e15f31db7",
+            "fd/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "fd/develop": "0337dea1cefe788f02ca315510c3abc1ce0c8d935b1457998d8931099a707c73",
+            "libarchive/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "libarchive/develop": "7325beea3a09b0fa40d19caaaa3e1fff8e02c5ce7220698935ac1c19f5e1bdeb",
+            "prometheus/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "prometheus/develop": "30baa4415e71a6410d1001f4fbf18d0acbb74c80feee513787f562de76630343",
+            "rspec/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "rspec/develop": "67d7fa99134c60587469467dc8c90801e952bf06e4536ecfd77db73bda1f9635",
+            "sympy/control": "f20006bcfb853f14a93d20fec6916d0590da6d596610eb2b92dddab1f2f0fc89",
+            "sympy/develop": "f33ac34edb45794cee818ec73b1955c6ec3da58753368d28239e5b3041891b0f"
+          },
+          "companion_package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+          "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+          "marketplace_sha256": "14cfc3a538ef8c78c84a5a26bd57ffacbbd2a797e3d3ff05ef2e4fc238a2bf87",
+          "finalizer": "native_panel.finalize"
+        },
+        "operator_start_unix": 1793385653.1855927,
+        "pre_freeze_s": 213.62575912475586,
+        "operator_start_through_last_measurement_s": 18202.1952791214
+      }
+    ],
+    "summary": {
+      "repositories": 20,
+      "ready": {
+        "control": {
+          "ready": 18,
+          "failed": 2
+        },
+        "develop": {
+          "ready": 16,
+          "failed": 4
+        },
+        "upstream": {
+          "failed": 3,
+          "ready": 17
+        }
+      },
+      "states": {
+        "control": {
+          "completed": 20
+        },
+        "develop": {
+          "completed": 17,
+          "timeout": 3
+        }
+      },
+      "strict_blind_quality": {
+        "develop": 4,
+        "tie": 10,
+        "unknown": 3,
+        "control": 3
+      },
+      "mean_displayed_full_pr_delta": 0.4411764705882353,
+      "quality_pairs": 17,
+      "blind_vs_merge": {
+        "control": {
+          "control": 18,
+          "tie": 1,
+          "upstream": 1
+        },
+        "develop": {
+          "develop": 14,
+          "unknown": 3,
+          "tie": 2,
+          "upstream": 1
+        }
+      },
+      "numeric_joint": {
+        "false": 17,
+        "unknown": 3
+      },
+      "profile_verified_joint": {
+        "false": 17,
+        "unknown": 3
+      },
+      "numeric_joint_cases": [],
+      "score_ceiling_cases": [
+        "cli11",
+        "commander",
+        "django",
+        "fd",
+        "fmt",
+        "go-git",
+        "jq",
+        "libarchive",
+        "prometheus",
+        "ripgrep",
+        "rspec",
+        "runner-space",
+        "sympy"
+      ],
+      "paired": {
+        "usd": {
+          "cases": [
+            "cli11",
+            "commander",
+            "commons-lang",
+            "django",
+            "expat",
+            "fd",
+            "fmt",
+            "go-git",
+            "jq",
+            "libarchive",
+            "packaging",
+            "prometheus",
+            "pytest",
+            "ripgrep",
+            "rspec",
+            "runner-space",
+            "werkzeug"
+          ],
+          "control": 11.2260532,
+          "develop": 14.1936088,
+          "ratio": 1.2643454068077995,
+          "ratio_interval_95": [
+            1.069532308679073,
+            1.6316593011810165
+          ]
+        },
+        "tokens": {
+          "cases": [
+            "cli11",
+            "commander",
+            "commons-lang",
+            "django",
+            "expat",
+            "fd",
+            "fmt",
+            "go-git",
+            "jq",
+            "libarchive",
+            "packaging",
+            "prometheus",
+            "pytest",
+            "ripgrep",
+            "rspec",
+            "runner-space",
+            "werkzeug"
+          ],
+          "control": 65631353,
+          "develop": 74618006,
+          "ratio": 1.1369262187844886,
+          "ratio_interval_95": [
+            0.9067450686521086,
+            1.6723398856639584
+          ]
+        },
+        "checkout_s": {
+          "cases": [
+            "cli11",
+            "commander",
+            "commons-lang",
+            "django",
+            "expat",
+            "fd",
+            "fmt",
+            "go-git",
+            "jq",
+            "libarchive",
+            "packaging",
+            "prometheus",
+            "pytest",
+            "ripgrep",
+            "rspec",
+            "runner-space",
+            "werkzeug"
+          ],
+          "control": 23115.877500230446,
+          "develop": 28137.96337305149,
+          "ratio": 1.217256985929735,
+          "ratio_interval_95": [
+            1.119924312646806,
+            1.325221699268273
+          ]
+        },
+        "through_grading_s": {
+          "cases": [
+            "cli11",
+            "commander",
+            "commons-lang",
+            "django",
+            "expat",
+            "fd",
+            "fmt",
+            "go-git",
+            "jq",
+            "libarchive",
+            "packaging",
+            "prometheus",
+            "pytest",
+            "ripgrep",
+            "rspec",
+            "runner-space",
+            "werkzeug"
+          ],
+          "control": 23961.123890842544,
+          "develop": 28976.881875843275,
+          "ratio": 1.209328995077633,
+          "ratio_interval_95": [
+            1.1151632730650358,
+            1.3148793564059844
+          ]
+        }
+      },
+      "quality": {
+        "control": {
+          "repositories": 20,
+          "functional_scores": {
+            "packaging": 66.25,
+            "ripgrep": 96.25,
+            "jq": 100.0,
+            "go-git": 96.25,
+            "runner-space": 96.25,
+            "django": 100.0,
+            "werkzeug": 85.0,
+            "sympy": 100.0,
+            "pytest": 75.0,
+            "commander": 100.0,
+            "prometheus": 100.0,
+            "fd": 96.25,
+            "fmt": 96.25,
+            "cli11": 96.25,
+            "commons-lang": 93.75,
+            "libarchive": 96.25,
+            "expat": 60.0,
+            "rspec": 96.25
+          },
+          "nonfunctional": [
+            "black",
+            "marked"
+          ],
+          "no_pr": [],
+          "unknown": [],
+          "functional_mean_100": 82.5,
+          "possible_functional_mean_100": [
+            82.5,
+            82.5
+          ],
+          "raw_pr_scores": {
+            "packaging": 66.25,
+            "ripgrep": 96.25,
+            "jq": 100.0,
+            "marked": 62.5,
+            "go-git": 96.25,
+            "runner-space": 96.25,
+            "django": 100.0,
+            "black": 70.0,
+            "werkzeug": 85.0,
+            "sympy": 100.0,
+            "pytest": 75.0,
+            "commander": 100.0,
+            "prometheus": 100.0,
+            "fd": 96.25,
+            "fmt": 96.25,
+            "cli11": 96.25,
+            "commons-lang": 93.75,
+            "libarchive": 96.25,
+            "expat": 60.0,
+            "rspec": 96.25
+          },
+          "scored_pr_mean_100": 89.125
+        },
+        "develop": {
+          "repositories": 20,
+          "functional_scores": {
+            "packaging": 96.25,
+            "ripgrep": 96.25,
+            "jq": 100.0,
+            "go-git": 96.25,
+            "runner-space": 90.0,
+            "django": 53.75,
+            "werkzeug": 96.25,
+            "pytest": 96.25,
+            "commander": 100.0,
+            "prometheus": 100.0,
+            "fd": 96.25,
+            "fmt": 96.25,
+            "cli11": 96.25,
+            "commons-lang": 93.75,
+            "expat": 100.0,
+            "rspec": 96.25
+          },
+          "nonfunctional": [
+            "libarchive"
+          ],
+          "no_pr": [
+            "black",
+            "marked",
+            "sympy"
+          ],
+          "unknown": [],
+          "functional_mean_100": 75.1875,
+          "possible_functional_mean_100": [
+            75.1875,
+            75.1875
+          ],
+          "raw_pr_scores": {
+            "packaging": 96.25,
+            "ripgrep": 96.25,
+            "jq": 100.0,
+            "go-git": 96.25,
+            "runner-space": 90.0,
+            "django": 53.75,
+            "werkzeug": 96.25,
+            "pytest": 96.25,
+            "commander": 100.0,
+            "prometheus": 100.0,
+            "fd": 96.25,
+            "fmt": 96.25,
+            "cli11": 96.25,
+            "commons-lang": 93.75,
+            "libarchive": 53.75,
+            "expat": 100.0,
+            "rspec": 96.25
+          },
+          "scored_pr_mean_100": 91.61764705882354
+        },
+        "upstream": {
+          "repositories": 20,
+          "functional_scores": {
+            "ripgrep": 83.75,
+            "jq": 82.5,
+            "go-git": 96.25,
+            "runner-space": 52.5,
+            "django": 50.0,
+            "black": 81.25,
+            "werkzeug": 43.75,
+            "sympy": 58.75,
+            "commander": 56.25,
+            "prometheus": 90.0,
+            "fd": 86.25,
+            "fmt": 78.75,
+            "cli11": 86.25,
+            "commons-lang": 56.25,
+            "libarchive": 77.5,
+            "expat": 33.75,
+            "rspec": 83.75
+          },
+          "nonfunctional": [
+            "marked",
+            "packaging",
+            "pytest"
+          ],
+          "no_pr": [],
+          "unknown": [],
+          "functional_mean_100": 59.875,
+          "possible_functional_mean_100": [
+            59.875,
+            59.875
+          ],
+          "raw_pr_scores": {
+            "packaging": 50.0,
+            "ripgrep": 83.75,
+            "jq": 82.5,
+            "marked": 53.75,
+            "go-git": 96.25,
+            "runner-space": 52.5,
+            "django": 50.0,
+            "black": 81.25,
+            "werkzeug": 43.75,
+            "sympy": 58.75,
+            "pytest": 30.0,
+            "commander": 56.25,
+            "prometheus": 90.0,
+            "fd": 86.25,
+            "fmt": 78.75,
+            "cli11": 86.25,
+            "commons-lang": 56.25,
+            "libarchive": 77.5,
+            "expat": 33.75,
+            "rspec": 83.75
+          },
+          "scored_pr_mean_100": 66.5625
+        }
+      },
+      "quality_delta_interval_95": [
+        -24.1875,
+        6.4375
+      ],
+      "elapsed_attempts": {
+        "control": {
+          "count": 20,
+          "sum_checkout_to_terminal_s": 24982.40400697454
+        },
+        "develop": {
+          "count": 20,
+          "sum_checkout_to_terminal_s": 31859.873410977656
+        }
+      },
+      "observed_cost": {
+        "control": {
+          "complete": 20,
+          "known_amounts": 20,
+          "lower_bound_usd": 12.5269804,
+          "total_usd": 12.5269804
+        },
+        "develop": {
+          "complete": 17,
+          "known_amounts": 19,
+          "lower_bound_usd": 15.037868,
+          "total_usd": null
+        }
+      }
+    },
+    "cases": {
+      "packaging": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 55.0,
+            "full_pr_100": 66.25,
+            "meter": "complete",
+            "usd": 0.27908479999999997,
+            "known_usd_lower_bound": 0.27908479999999997,
+            "tokens": 977996,
+            "token_coverage": "complete",
+            "checkout_s": 405.190040940186,
+            "through_grading_s": 415.1692924189847
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 0.502488,
+            "known_usd_lower_bound": 0.502488,
+            "tokens": 1890628,
+            "token_coverage": "complete",
+            "checkout_s": 426.6811558259651,
+            "through_grading_s": 437.4047705659177
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "failed",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": false,
+            "failed_stages": [
+              "independent"
+            ],
+            "adjudication": "confirmed",
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 42.5,
+            "full_pr_100": 50.0,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "develop",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": false,
+            "reason": "blinded rubric",
+            "score_delta": 30.0,
+            "verdict": "develop",
+            "votes": [
+              "develop",
+              "develop",
+              "develop"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "develop",
+            "reason": "blinded rubric",
+            "score_delta": 30.0,
+            "votes": [
+              "develop",
+              "develop",
+              "develop"
+            ],
+            "order_sensitive": false
+          },
+          "equal_or_lower_complete_cost": false,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "packaging",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            66.25,
+            66.25,
+            66.25
+          ],
+          "maximum_median_lead": 33.75,
+          "strict_win_route": "soft margin"
+        },
+        "verified_joint_win": false
+      },
+      "ripgrep": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 0.2711388,
+            "known_usd_lower_bound": 0.2711388,
+            "tokens": 1344591,
+            "token_coverage": "complete",
+            "checkout_s": 470.2694469920825,
+            "through_grading_s": 490.60516098188236
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 0.389982,
+            "known_usd_lower_bound": 0.389982,
+            "tokens": 1539311,
+            "token_coverage": "complete",
+            "checkout_s": 741.7335542980582,
+            "through_grading_s": 762.1884064050391
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 72.5,
+            "full_pr_100": 83.75,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "develop",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": false,
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "verdict": "tie",
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "tie",
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ],
+            "order_sensitive": false
+          },
+          "equal_or_lower_complete_cost": false,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "ripgrep",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            96.25,
+            100.0,
+            96.25
+          ],
+          "maximum_median_lead": 3.75,
+          "strict_win_route": "score ceiling"
+        },
+        "verified_joint_win": false
+      },
+      "jq": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 100.0,
+            "meter": "complete",
+            "usd": 1.1060596,
+            "known_usd_lower_bound": 1.1060596,
+            "tokens": 7621273,
+            "token_coverage": "complete",
+            "checkout_s": 3847.1806419140194,
+            "through_grading_s": 3919.20660693408
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 100.0,
+            "meter": "complete",
+            "usd": 0.9385391999999999,
+            "known_usd_lower_bound": 0.9385391999999999,
+            "tokens": 5091916,
+            "token_coverage": "complete",
+            "checkout_s": 3969.155356169911,
+            "through_grading_s": 4041.1922563719563
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 78.75,
+            "full_pr_100": 82.5,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "develop",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": false,
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "verdict": "tie",
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "tie",
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ],
+            "order_sensitive": false
+          },
+          "equal_or_lower_complete_cost": true,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "jq",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            100.0,
+            100.0,
+            100.0
+          ],
+          "maximum_median_lead": 0.0,
+          "strict_win_route": "score ceiling"
+        },
+        "verified_joint_win": false
+      },
+      "marked": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "failed",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": false,
+            "failed_stages": [
+              "independent"
+            ],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 55.0,
+            "full_pr_100": 62.5,
+            "meter": "complete",
+            "usd": 0.524574,
+            "known_usd_lower_bound": 0.524574,
+            "tokens": 2625307,
+            "token_coverage": "complete",
+            "checkout_s": 811.3921788970474,
+            "through_grading_s": 830.7146531611215
+          },
+          "develop": {
+            "state": "timeout",
+            "readiness": "failed",
+            "has_proposal": false,
+            "has_patch": true,
+            "proposal_observation": "unavailable",
+            "executable_pass": false,
+            "failed_stages": [
+              "independent",
+              "native"
+            ],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 40.0,
+            "full_pr_100": null,
+            "meter": "lower bound",
+            "usd": null,
+            "known_usd_lower_bound": 0.4910544,
+            "tokens": 6225779,
+            "token_coverage": "lower bound",
+            "checkout_s": 1241.6674567239825,
+            "through_grading_s": 1260.0476071368903
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "failed",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": false,
+            "failed_stages": [
+              "independent"
+            ],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 42.5,
+            "full_pr_100": 53.75,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "reason": "hard gates",
+            "verdict": "both failed"
+          },
+          "blinded_full_pr": {
+            "verdict": null,
+            "reason": "missing proposal"
+          },
+          "equal_or_lower_complete_cost": null,
+          "ready_blind_win_at_no_more_cost": null
+        },
+        "control_headroom": {
+          "case": "marked",
+          "control_readiness": "failed",
+          "complete_control": true,
+          "rotation_scores_100": [
+            62.5,
+            56.25,
+            66.25
+          ],
+          "maximum_median_lead": 37.5,
+          "strict_win_route": "hard gates"
+        },
+        "verified_joint_win": null
+      },
+      "go-git": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 1.4077924,
+            "known_usd_lower_bound": 1.4077924,
+            "tokens": 8989521,
+            "token_coverage": "complete",
+            "checkout_s": 2552.1325337300077,
+            "through_grading_s": 2682.534665650921
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 1.5972924,
+            "known_usd_lower_bound": 1.5972924,
+            "tokens": 8374303,
+            "token_coverage": "complete",
+            "checkout_s": 2925.8503514579497,
+            "through_grading_s": 3055.8664231919684
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "tie",
+          "control_upstream": "tie"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": false,
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "verdict": "tie",
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "tie",
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ],
+            "order_sensitive": false
+          },
+          "equal_or_lower_complete_cost": false,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "go-git",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            96.25,
+            96.25,
+            96.25
+          ],
+          "maximum_median_lead": 3.75,
+          "strict_win_route": "score ceiling"
+        },
+        "verified_joint_win": false
+      },
+      "runner-space": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 0.339152,
+            "known_usd_lower_bound": 0.339152,
+            "tokens": 1846228,
+            "token_coverage": "complete",
+            "checkout_s": 571.7220731249545,
+            "through_grading_s": 581.582538333023
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 78.75,
+            "full_pr_100": 90.0,
+            "meter": "complete",
+            "usd": 0.36203559999999996,
+            "known_usd_lower_bound": 0.36203559999999996,
+            "tokens": 1518645,
+            "token_coverage": "complete",
+            "checkout_s": 606.1157415141352,
+            "through_grading_s": 616.6162451389246
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 45.0,
+            "full_pr_100": 52.5,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "develop",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": true,
+            "reason": "blinded rubric",
+            "score_delta": -6.25,
+            "verdict": "control",
+            "votes": [
+              "tie",
+              "control",
+              "control"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "control",
+            "reason": "blinded rubric",
+            "score_delta": -6.25,
+            "votes": [
+              "tie",
+              "control",
+              "control"
+            ],
+            "order_sensitive": true
+          },
+          "equal_or_lower_complete_cost": false,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "runner-space",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            96.25,
+            96.25,
+            100.0
+          ],
+          "maximum_median_lead": 3.75,
+          "strict_win_route": "score ceiling"
+        },
+        "verified_joint_win": false
+      },
+      "django": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 100.0,
+            "meter": "complete",
+            "usd": 0.45978280000000005,
+            "known_usd_lower_bound": 0.45978280000000005,
+            "tokens": 1962953,
+            "token_coverage": "complete",
+            "checkout_s": 700.7701811480802,
+            "through_grading_s": 722.0414544378873
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 42.5,
+            "full_pr_100": 53.75,
+            "meter": "complete",
+            "usd": 0.7542028000000001,
+            "known_usd_lower_bound": 0.7542028000000001,
+            "tokens": 3556399,
+            "token_coverage": "complete",
+            "checkout_s": 1182.5704806619324,
+            "through_grading_s": 1202.1418502209708
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 42.5,
+            "full_pr_100": 50.0,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "tie",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": false,
+            "reason": "blinded rubric",
+            "score_delta": -46.25,
+            "verdict": "control",
+            "votes": [
+              "control",
+              "control",
+              "control"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "control",
+            "reason": "blinded rubric",
+            "score_delta": -46.25,
+            "votes": [
+              "control",
+              "control",
+              "control"
+            ],
+            "order_sensitive": false
+          },
+          "equal_or_lower_complete_cost": false,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "django",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            100.0,
+            85.0,
+            100.0
+          ],
+          "maximum_median_lead": 0.0,
+          "strict_win_route": "score ceiling"
+        },
+        "verified_joint_win": false
+      },
+      "black": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "failed",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": "confirmed",
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 55.0,
+            "full_pr_100": 70.0,
+            "meter": "complete",
+            "usd": 0.46658,
+            "known_usd_lower_bound": 0.46658,
+            "tokens": 2432558,
+            "token_coverage": "complete",
+            "checkout_s": 554.7763837960083,
+            "through_grading_s": 565.1261184408795
+          },
+          "develop": {
+            "state": "timeout",
+            "readiness": "failed",
+            "has_proposal": false,
+            "has_patch": true,
+            "proposal_observation": "unavailable",
+            "executable_pass": false,
+            "failed_stages": [
+              "contract"
+            ],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 25.0,
+            "full_pr_100": null,
+            "meter": "unknown",
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": 2987462,
+            "token_coverage": "lower bound",
+            "checkout_s": 1239.8691805920098,
+            "through_grading_s": 1248.5661980060395
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 70.0,
+            "full_pr_100": 81.25,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "control_upstream": "upstream"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "reason": "hard gates",
+            "verdict": "both failed"
+          },
+          "blinded_full_pr": {
+            "verdict": null,
+            "reason": "missing proposal"
+          },
+          "equal_or_lower_complete_cost": null,
+          "ready_blind_win_at_no_more_cost": null
+        },
+        "control_headroom": {
+          "case": "black",
+          "control_readiness": "failed",
+          "complete_control": true,
+          "rotation_scores_100": [
+            85.0,
+            70.0,
+            60.0
+          ],
+          "maximum_median_lead": 30.0,
+          "strict_win_route": "hard gates"
+        },
+        "verified_joint_win": null
+      },
+      "werkzeug": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 70.0,
+            "full_pr_100": 85.0,
+            "meter": "complete",
+            "usd": 0.2846808,
+            "known_usd_lower_bound": 0.2846808,
+            "tokens": 851338,
+            "token_coverage": "complete",
+            "checkout_s": 342.1925697720144,
+            "through_grading_s": 350.10786413005553
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 0.5306072,
+            "known_usd_lower_bound": 0.5306072,
+            "tokens": 2059866,
+            "token_coverage": "complete",
+            "checkout_s": 458.319440894993,
+            "through_grading_s": 466.4498220460955
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 36.25,
+            "full_pr_100": 43.75,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "develop",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": false,
+            "reason": "blinded rubric",
+            "score_delta": 15.0,
+            "verdict": "develop",
+            "votes": [
+              "develop",
+              "develop",
+              "develop"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "develop",
+            "reason": "blinded rubric",
+            "score_delta": 15.0,
+            "votes": [
+              "develop",
+              "develop",
+              "develop"
+            ],
+            "order_sensitive": false
+          },
+          "equal_or_lower_complete_cost": false,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "werkzeug",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            81.25,
+            85.0,
+            78.75
+          ],
+          "maximum_median_lead": 18.75,
+          "strict_win_route": "soft margin"
+        },
+        "verified_joint_win": false
+      },
+      "sympy": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 100.0,
+            "meter": "complete",
+            "usd": 0.3097732,
+            "known_usd_lower_bound": 0.3097732,
+            "tokens": 1300581,
+            "token_coverage": "complete",
+            "checkout_s": 500.3579440510366,
+            "through_grading_s": 519.1057115278672
+          },
+          "develop": {
+            "state": "timeout",
+            "readiness": "failed",
+            "has_proposal": false,
+            "has_patch": true,
+            "proposal_observation": "unavailable",
+            "executable_pass": false,
+            "failed_stages": [
+              "preserve"
+            ],
+            "adjudication": "confirmed",
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 48.75,
+            "full_pr_100": null,
+            "meter": "lower bound",
+            "usd": null,
+            "known_usd_lower_bound": 0.3532048,
+            "tokens": 4936293,
+            "token_coverage": "lower bound",
+            "checkout_s": 1240.3734006101731,
+            "through_grading_s": 1257.7169934741687
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 51.25,
+            "full_pr_100": 58.75,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "reason": "hard gates",
+            "verdict": "control"
+          },
+          "blinded_full_pr": {
+            "verdict": null,
+            "reason": "missing proposal"
+          },
+          "equal_or_lower_complete_cost": null,
+          "ready_blind_win_at_no_more_cost": null
+        },
+        "control_headroom": {
+          "case": "sympy",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            96.25,
+            100.0,
+            100.0
+          ],
+          "maximum_median_lead": 0.0,
+          "strict_win_route": "score ceiling"
+        },
+        "verified_joint_win": null
+      },
+      "pytest": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 63.75,
+            "full_pr_100": 75.0,
+            "meter": "complete",
+            "usd": 0.2658912,
+            "known_usd_lower_bound": 0.2658912,
+            "tokens": 949920,
+            "token_coverage": "complete",
+            "checkout_s": 429.5864299570676,
+            "through_grading_s": 442.87262059096247
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 0.644062,
+            "known_usd_lower_bound": 0.644062,
+            "tokens": 2082459,
+            "token_coverage": "complete",
+            "checkout_s": 645.3902021117974,
+            "through_grading_s": 658.7393750548363
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "failed",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": false,
+            "failed_stages": [
+              "independent"
+            ],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 30.0,
+            "full_pr_100": 30.0,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "develop",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": false,
+            "reason": "blinded rubric",
+            "score_delta": 21.25,
+            "verdict": "develop",
+            "votes": [
+              "develop",
+              "develop",
+              "develop"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "develop",
+            "reason": "blinded rubric",
+            "score_delta": 21.25,
+            "votes": [
+              "develop",
+              "develop",
+              "develop"
+            ],
+            "order_sensitive": false
+          },
+          "equal_or_lower_complete_cost": false,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "pytest",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            75.0,
+            75.0,
+            75.0
+          ],
+          "maximum_median_lead": 25.0,
+          "strict_win_route": "soft margin"
+        },
+        "verified_joint_win": false
+      },
+      "commander": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 100.0,
+            "meter": "complete",
+            "usd": 0.079514,
+            "known_usd_lower_bound": 0.079514,
+            "tokens": 151997,
+            "token_coverage": "complete",
+            "checkout_s": 133.31598010403104,
+            "through_grading_s": 138.09687230782583
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 100.0,
+            "meter": "complete",
+            "usd": 0.1358324,
+            "known_usd_lower_bound": 0.1358324,
+            "tokens": 450165,
+            "token_coverage": "complete",
+            "checkout_s": 216.58710492611863,
+            "through_grading_s": 221.63381513091736
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 48.75,
+            "full_pr_100": 56.25,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "develop",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": false,
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "verdict": "tie",
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "tie",
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ],
+            "order_sensitive": false
+          },
+          "equal_or_lower_complete_cost": false,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "commander",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            100.0,
+            100.0,
+            100.0
+          ],
+          "maximum_median_lead": 0.0,
+          "strict_win_route": "score ceiling"
+        },
+        "verified_joint_win": false
+      },
+      "prometheus": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 100.0,
+            "meter": "complete",
+            "usd": 0.6683372,
+            "known_usd_lower_bound": 0.6683372,
+            "tokens": 4020359,
+            "token_coverage": "complete",
+            "checkout_s": 1728.0761841919739,
+            "through_grading_s": 1843.4438931350596
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 100.0,
+            "meter": "complete",
+            "usd": 0.9765076,
+            "known_usd_lower_bound": 0.9765076,
+            "tokens": 6322821,
+            "token_coverage": "complete",
+            "checkout_s": 1846.6447853920981,
+            "through_grading_s": 1959.7208214891143
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 78.75,
+            "full_pr_100": 90.0,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "develop",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": false,
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "verdict": "tie",
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "tie",
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ],
+            "order_sensitive": false
+          },
+          "equal_or_lower_complete_cost": false,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "prometheus",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            100.0,
+            100.0,
+            100.0
+          ],
+          "maximum_median_lead": 0.0,
+          "strict_win_route": "score ceiling"
+        },
+        "verified_joint_win": false
+      },
+      "fd": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 0.7033416000000001,
+            "known_usd_lower_bound": 0.7033416000000001,
+            "tokens": 4353758,
+            "token_coverage": "complete",
+            "checkout_s": 2584.622643830953,
+            "through_grading_s": 2808.184580449946
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 1.3232316000000002,
+            "known_usd_lower_bound": 1.3232316000000002,
+            "tokens": 9594511,
+            "token_coverage": "complete",
+            "checkout_s": 2958.806435141014,
+            "through_grading_s": 3182.3334381319582
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 78.75,
+            "full_pr_100": 86.25,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "develop",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": false,
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "verdict": "tie",
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "tie",
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ],
+            "order_sensitive": false
+          },
+          "equal_or_lower_complete_cost": false,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "fd",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            96.25,
+            96.25,
+            96.25
+          ],
+          "maximum_median_lead": 3.75,
+          "strict_win_route": "score ceiling"
+        },
+        "verified_joint_win": false
+      },
+      "fmt": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 0.5468031999999999,
+            "known_usd_lower_bound": 0.5468031999999999,
+            "tokens": 2982244,
+            "token_coverage": "complete",
+            "checkout_s": 1414.976207086118,
+            "through_grading_s": 1469.5569337031338
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 0.48541,
+            "known_usd_lower_bound": 0.48541,
+            "tokens": 2645209,
+            "token_coverage": "complete",
+            "checkout_s": 1373.3428244129755,
+            "through_grading_s": 1427.4500508620404
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 78.75,
+            "full_pr_100": 78.75,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "develop",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": false,
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "verdict": "tie",
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "tie",
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ],
+            "order_sensitive": false
+          },
+          "equal_or_lower_complete_cost": true,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "fmt",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            96.25,
+            96.25,
+            96.25
+          ],
+          "maximum_median_lead": 3.75,
+          "strict_win_route": "score ceiling"
+        },
+        "verified_joint_win": false
+      },
+      "cli11": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 0.26789959999999996,
+            "known_usd_lower_bound": 0.26789959999999996,
+            "tokens": 1164113,
+            "token_coverage": "complete",
+            "checkout_s": 359.61061158101074,
+            "through_grading_s": 382.0029990298208
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 0.343144,
+            "known_usd_lower_bound": 0.343144,
+            "tokens": 1432240,
+            "token_coverage": "complete",
+            "checkout_s": 480.6902170428075,
+            "through_grading_s": 502.8913185847923
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 78.75,
+            "full_pr_100": 86.25,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "develop",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": false,
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "verdict": "tie",
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "tie",
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ],
+            "order_sensitive": false
+          },
+          "equal_or_lower_complete_cost": false,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "cli11",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            96.25,
+            96.25,
+            96.25
+          ],
+          "maximum_median_lead": 3.75,
+          "strict_win_route": "score ceiling"
+        },
+        "verified_joint_win": false
+      },
+      "commons-lang": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 78.75,
+            "full_pr_100": 93.75,
+            "meter": "complete",
+            "usd": 0.441814,
+            "known_usd_lower_bound": 0.441814,
+            "tokens": 1363447,
+            "token_coverage": "complete",
+            "checkout_s": 563.4455671808682,
+            "through_grading_s": 581.5308294850402
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 78.75,
+            "full_pr_100": 93.75,
+            "meter": "complete",
+            "usd": 0.6551624,
+            "known_usd_lower_bound": 0.6551624,
+            "tokens": 2650870,
+            "token_coverage": "complete",
+            "checkout_s": 905.9141944178846,
+            "through_grading_s": 921.7693477799185
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 48.75,
+            "full_pr_100": 56.25,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "develop",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": false,
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "verdict": "tie",
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "tie",
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "votes": [
+              "tie",
+              "tie",
+              "tie"
+            ],
+            "order_sensitive": false
+          },
+          "equal_or_lower_complete_cost": false,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "commons-lang",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            93.75,
+            96.25,
+            93.75
+          ],
+          "maximum_median_lead": 6.25,
+          "strict_win_route": "soft margin"
+        },
+        "verified_joint_win": false
+      },
+      "libarchive": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 3.4022912,
+            "known_usd_lower_bound": 3.4022912,
+            "tokens": 23953916,
+            "token_coverage": "complete",
+            "checkout_s": 5771.756424517138,
+            "through_grading_s": 5847.135262731928
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "failed",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": "confirmed",
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 42.5,
+            "full_pr_100": 53.75,
+            "meter": "complete",
+            "usd": 3.1353396,
+            "known_usd_lower_bound": 3.1353396,
+            "tokens": 18841553,
+            "token_coverage": "complete",
+            "checkout_s": 7708.11232492188,
+            "through_grading_s": 7781.3069668828975
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 70.0,
+            "full_pr_100": 77.5,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "upstream",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "reason": "hard gates",
+            "verdict": "control"
+          },
+          "blinded_full_pr": {
+            "verdict": "control",
+            "reason": "blinded rubric",
+            "score_delta": -42.5,
+            "votes": [
+              "control",
+              "control",
+              "control"
+            ],
+            "order_sensitive": false
+          },
+          "equal_or_lower_complete_cost": true,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "libarchive",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            96.25,
+            96.25,
+            96.25
+          ],
+          "maximum_median_lead": 3.75,
+          "strict_win_route": "score ceiling"
+        },
+        "verified_joint_win": false
+      },
+      "expat": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 48.75,
+            "full_pr_100": 60.0,
+            "meter": "complete",
+            "usd": 0.4853496,
+            "known_usd_lower_bound": 0.4853496,
+            "tokens": 2161538,
+            "token_coverage": "complete",
+            "checkout_s": 957.8603550291155,
+            "through_grading_s": 998.2311618879903
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 100.0,
+            "meter": "complete",
+            "usd": 1.1113956,
+            "known_usd_lower_bound": 1.1113956,
+            "tokens": 5671929,
+            "token_coverage": "complete",
+            "checkout_s": 1337.7943150028586,
+            "through_grading_s": 1379.4780523399822
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 30.0,
+            "full_pr_100": 33.75,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "develop",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": false,
+            "reason": "blinded rubric",
+            "score_delta": 40.0,
+            "verdict": "develop",
+            "votes": [
+              "develop",
+              "develop",
+              "develop"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "develop",
+            "reason": "blinded rubric",
+            "score_delta": 40.0,
+            "votes": [
+              "develop",
+              "develop",
+              "develop"
+            ],
+            "order_sensitive": false
+          },
+          "equal_or_lower_complete_cost": false,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "expat",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            70.0,
+            60.0,
+            53.75
+          ],
+          "maximum_median_lead": 40.0,
+          "strict_win_route": "soft margin"
+        },
+        "verified_joint_win": false
+      },
+      "rspec": {
+        "arms": {
+          "control": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 0.21712040000000002,
+            "known_usd_lower_bound": 0.21712040000000002,
+            "tokens": 936161,
+            "token_coverage": "complete",
+            "checkout_s": 283.16960913082585,
+            "through_grading_s": 288.8211546340026
+          },
+          "develop": {
+            "state": "completed",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 85.0,
+            "full_pr_100": 96.25,
+            "meter": "complete",
+            "usd": 0.30837640000000005,
+            "known_usd_lower_bound": 0.30837640000000005,
+            "tokens": 895181,
+            "token_coverage": "complete",
+            "checkout_s": 354.2548888591118,
+            "through_grading_s": 359.6989156459458
+          },
+          "upstream": {
+            "state": "merged",
+            "readiness": "ready",
+            "has_proposal": true,
+            "has_patch": true,
+            "proposal_observation": "present",
+            "executable_pass": true,
+            "failed_stages": [],
+            "adjudication": null,
+            "assessment_rotations": [
+              0,
+              1,
+              2
+            ],
+            "diff_85": 72.5,
+            "full_pr_100": 83.75,
+            "meter": null,
+            "usd": null,
+            "known_usd_lower_bound": null,
+            "tokens": null,
+            "token_coverage": null,
+            "checkout_s": null,
+            "through_grading_s": null
+          }
+        },
+        "against_merge": {
+          "develop_upstream": "develop",
+          "control_upstream": "control"
+        },
+        "signal": {
+          "readiness_first_pair": {
+            "order_sensitive": true,
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "verdict": "tie",
+            "votes": [
+              "tie",
+              "tie",
+              "develop"
+            ]
+          },
+          "blinded_full_pr": {
+            "verdict": "tie",
+            "reason": "blinded rubric",
+            "score_delta": 0.0,
+            "votes": [
+              "tie",
+              "tie",
+              "develop"
+            ],
+            "order_sensitive": true
+          },
+          "equal_or_lower_complete_cost": false,
+          "ready_blind_win_at_no_more_cost": false
+        },
+        "control_headroom": {
+          "case": "rspec",
+          "control_readiness": "ready",
+          "complete_control": true,
+          "rotation_scores_100": [
+            96.25,
+            96.25,
+            70.0
+          ],
+          "maximum_median_lead": 3.75,
+          "strict_win_route": "score ceiling"
+        },
+        "verified_joint_win": false
+      }
+    },
+    "resource_breakdown": {
+      "setup": {
+        "pairs": 17,
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "django",
+          "expat",
+          "fd",
+          "fmt",
+          "go-git",
+          "jq",
+          "libarchive",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 501.71539447573014,
+        "develop": 658.0910109216347
+      },
+      "prompt_to_terminal": {
+        "pairs": 17,
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "django",
+          "expat",
+          "fd",
+          "fmt",
+          "go-git",
+          "jq",
+          "libarchive",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 22579.47150944965,
+        "develop": 27443.652343744645
+      },
+      "checkout_to_proposal": {
+        "pairs": 17,
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "django",
+          "expat",
+          "fd",
+          "fmt",
+          "go-git",
+          "jq",
+          "libarchive",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 23115.877500230446,
+        "develop": 28137.96337305149
+      },
+      "grading": {
+        "pairs": 17,
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "django",
+          "expat",
+          "fd",
+          "fmt",
+          "go-git",
+          "jq",
+          "libarchive",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 820.2652075588703,
+        "develop": 813.6757514616475
+      },
+      "checkout_through_grading": {
+        "pairs": 17,
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "django",
+          "expat",
+          "fd",
+          "fmt",
+          "go-git",
+          "jq",
+          "libarchive",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 23961.123890842544,
+        "develop": 28976.881875843275
+      },
+      "estimated_usd": {
+        "pairs": 17,
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "django",
+          "expat",
+          "fd",
+          "fmt",
+          "go-git",
+          "jq",
+          "libarchive",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 11.2260532,
+        "develop": 14.1936088
+      },
+      "totalTokens": {
+        "pairs": 17,
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "django",
+          "expat",
+          "fd",
+          "fmt",
+          "go-git",
+          "jq",
+          "libarchive",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 65631353,
+        "develop": 74618006
+      },
+      "inputTokens": {
+        "pairs": 17,
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "django",
+          "expat",
+          "fd",
+          "fmt",
+          "go-git",
+          "jq",
+          "libarchive",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 65392037,
+        "develop": 74331244
+      },
+      "cachedInputTokens": {
+        "pairs": 17,
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "django",
+          "expat",
+          "fd",
+          "fmt",
+          "go-git",
+          "jq",
+          "libarchive",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 64184832,
+        "develop": 72282368
+      },
+      "cacheWriteInputTokens": {
+        "pairs": 17,
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "django",
+          "expat",
+          "fd",
+          "fmt",
+          "go-git",
+          "jq",
+          "libarchive",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 0,
+        "develop": 0
+      },
+      "outputTokens": {
+        "pairs": 17,
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "django",
+          "expat",
+          "fd",
+          "fmt",
+          "go-git",
+          "jq",
+          "libarchive",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 239316,
+        "develop": 286762
+      },
+      "reasoningOutputTokens": {
+        "pairs": 17,
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "django",
+          "expat",
+          "fd",
+          "fmt",
+          "go-git",
+          "jq",
+          "libarchive",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 97599,
+        "develop": 118150
+      },
+      "uncachedInputTokens": {
+        "pairs": 17,
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "django",
+          "expat",
+          "fd",
+          "fmt",
+          "go-git",
+          "jq",
+          "libarchive",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 1207205,
+        "develop": 2048876
+      }
+    },
+    "first_start_through_last_measurement_s": 38600.380871772766,
+    "between_batches_s": 177.6657156944275
+  },
+  "common_case_before_after": {
+    "usd": {
+      "before": {
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "expat",
+          "fmt",
+          "go-git",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 4.0485112,
+        "develop": 6.6314684,
+        "ratio": 1.6380017424677003
+      },
+      "after": {
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "expat",
+          "fmt",
+          "go-git",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 5.2754932,
+        "develop": 7.5398076,
+        "ratio": 1.4292137842202128
+      }
+    },
+    "tokens": {
+      "before": {
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "expat",
+          "fmt",
+          "go-git",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 20465194,
+        "develop": 33212367,
+        "ratio": 1.6228708606427087
+      },
+      "after": {
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "expat",
+          "fmt",
+          "go-git",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 26761457,
+        "develop": 35642999,
+        "ratio": 1.3318781185942155
+      }
+    },
+    "checkout_s": {
+      "before": {
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "expat",
+          "fmt",
+          "go-git",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 7458.958733008709,
+        "develop": 10093.597226499347,
+        "ratio": 1.353218001036977
+      },
+      "after": {
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "expat",
+          "fmt",
+          "go-git",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 10211.547608820256,
+        "develop": 12319.318776156753,
+        "ratio": 1.2064105508861265
+      }
+    },
+    "through_grading_s": {
+      "before": {
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "expat",
+          "fmt",
+          "go-git",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 7900.316012529889,
+        "develop": 10532.545575540513,
+        "ratio": 1.3331802878310073
+      },
+      "after": {
+        "cases": [
+          "cli11",
+          "commander",
+          "commons-lang",
+          "expat",
+          "fmt",
+          "go-git",
+          "packaging",
+          "prometheus",
+          "pytest",
+          "ripgrep",
+          "rspec",
+          "runner-space",
+          "werkzeug"
+        ],
+        "control": 10664.555986288702,
+        "develop": 12769.907364235492,
+        "ratio": 1.1974157555789118
+      }
+    }
+  },
+  "repositories": {
+    "packaging": {
+      "repo": "pypa/packaging",
+      "pr": 1457,
+      "base": "fc613377731e5211ab6e08e6fd6163f09ae67ce8",
+      "merge": "ffced26d0a30557a0e181dbaca561a0432ddec53"
+    },
+    "ripgrep": {
+      "repo": "BurntSushi/ripgrep",
+      "pr": 3578,
+      "base": "d19650f4fca84c0f65f4ec024b16200bf3d41c33",
+      "merge": "65e072fab262fdaaa19ef788bbb468ae6f8e4f8e"
+    },
+    "jq": {
+      "repo": "jqlang/jq",
+      "pr": 3694,
+      "base": "da4da65c0cfffe0481ebf26ad64346eb45e4f34d",
+      "merge": "bd56a745624a5246fac7fe80d11a9cd6fb361ddb"
+    },
+    "marked": {
+      "repo": "markedjs/marked",
+      "pr": 4145,
+      "base": "3a11ad148397b7628256f5e5d76a454213480c63",
+      "merge": "5d8e2340d78c25c611e1d8215b302fd48f01a601"
+    },
+    "go-git": {
+      "repo": "go-git/go-git",
+      "pr": 2538,
+      "base": "e59664470f3644a3114c6760086892dbcd0d7ac9",
+      "merge": "41c3e4d6c870cafea5c4343623d2e3a8ffa31d05"
+    },
+    "runner-space": {
+      "repo": "justinthelaw/maximize-github-runner-space",
+      "pr": 69,
+      "base": "a2f3ac8c38982d83e3d02e89342d856a7e026268",
+      "merge": "bbaad53e5c844645ef54d9309adf96be46ab159e"
+    },
+    "black": {
+      "repo": "psf/black",
+      "pr": 5620,
+      "base": "04afd895bf343e5dc41fc168ba3f8ac378a7ee5f",
+      "merge": "062d76a492d7337f3de951bd7ef1af1096a439ee"
+    },
+    "werkzeug": {
+      "repo": "pallets/werkzeug",
+      "pr": 3325,
+      "base": "15fc22b699ecacd04824092453c0cd2a8c4a3a67",
+      "merge": "28360ef872ae984cc08209cb333db5649ce977bc"
+    },
+    "pytest": {
+      "repo": "pytest-dev/pytest",
+      "pr": 15193,
+      "base": "4088e1a84ef1cb8ba80aac4e75449459fc092c12",
+      "merge": "0f54d41bedf00505bb1ac2c724abf96ba6dcf48d"
+    },
+    "commander": {
+      "repo": "tj/commander.js",
+      "pr": 2653,
+      "base": "c807ce933836d0d99719bac82ee477f3d7eb4268",
+      "merge": "1536d5bb9da38d1d94926aedfa31c8ece1f7dce5"
+    },
+    "fmt": {
+      "repo": "fmtlib/fmt",
+      "pr": 4981,
+      "base": "a8293b774e5c4bed720391d0453d5ad0239f66a5",
+      "merge": "434e30f81f8735d4c629acea485e6bb3e059e937"
+    },
+    "expat": {
+      "repo": "libexpat/libexpat",
+      "pr": 1439,
+      "base": "b8fedbbfd826c220dca5cd758816cc8be1b68897",
+      "merge": "b665010ec7adb64933269df970a71e581f0d92d5"
+    },
+    "django": {
+      "repo": "django/django",
+      "pr": 22169,
+      "base": "e9414948e9660ee4c167eebb187710ee3031d9d8",
+      "merge": "77eea99b455396145188305c31284720751df6f5"
+    },
+    "sympy": {
+      "repo": "sympy/sympy",
+      "pr": 30827,
+      "base": "65c7920cb5e5c8958872c11f3ce1b3ba6c3e3395",
+      "merge": "9a1e9e24af36d4c190ce7981727340de7110a663"
+    },
+    "prometheus": {
+      "repo": "prometheus/client_golang",
+      "pr": 2182,
+      "base": "b262b00e42d5fccda2afd7792cfb1f39f65adc70",
+      "merge": "595b65527a90a8c3a07ebfd557ff135bdf542ffb"
+    },
+    "fd": {
+      "repo": "sharkdp/fd",
+      "pr": 2196,
+      "base": "c44735ec0f130c2486afe9c976937c03b57a8c62",
+      "merge": "d76b4e3e5b380081f01c4e6c1caaf688038679a9"
+    },
+    "cli11": {
+      "repo": "CLIUtils/CLI11",
+      "pr": 1479,
+      "base": "e7df91677193f1a525757d027c197166e881dec4",
+      "merge": "aadf04162574e65acb490605af2f634a7d27cf7c"
+    },
+    "commons-lang": {
+      "repo": "apache/commons-lang",
+      "pr": 1840,
+      "base": "8876abff15187b992a540dbadb6ad38f5be0ec8a",
+      "merge": "e5f7f1b56776fb2f6a77fc3a64bc47f7e849a425"
+    },
+    "libarchive": {
+      "repo": "libarchive/libarchive",
+      "pr": 3737,
+      "base": "bad49b7819853023d8f6a7181951108750d14ae0",
+      "merge": "7bf74d481dbfdf72b90f3dab949c1eedb09c6dd0"
+    },
+    "rspec": {
+      "repo": "rspec/rspec",
+      "pr": 353,
+      "base": "4af3571a456974bb03982aa30c59239bee661c9b",
+      "merge": "7e24934a12474161eecf1bb16d7f33c596691315"
+    }
+  },
+  "registered_plan": {
+    "format": "law-config.historical-panel-report-scope/v1",
+    "registered_utc": "2026-10-30T13:32:42.063395+00:00",
+    "purpose": "Complete one current comparison across the 20 historical repositories after the optimization goal was paused. Fit no additional treatment.",
+    "baseline_manifest_sha256": "79d1eac46f473ecaf3d2620ddae08a903de6d9b3a9d93c64ee155364c2042160",
+    "historical_case_manifest_sha256": "05419f4dc3ad14cf7dcb9805ca3f4b10f825d2c31bceb264ef220c6daaa61bf0",
+    "cohort": "pr-quality-pytest-entry-natural-v1",
+    "evaluator_commit": "dce3d69307fc579dbbdf7f18cdc1dd3834512fad",
+    "evaluator_runtime_sha256": "51a4740fa2bc38f96e006d6c904b3ab9037f4151e3295c42a2293237b3c67691",
+    "develop_package_sha256": "1d6bdd9189ab5c076d825051201c17dda0627ad472ce11872f1c997cb257677c",
+    "treatment_lock_sha256": "dae3bdcab229509cb85640f63eed7983d1a35fc2291f15d862c92152b47d7285",
+    "first": {
+      "name": "iterate-entry-tuning-01",
+      "plan_sha256": "92e6c13f504c0deed819a16f88dc0ba44cc89e490a6183a6ef8cc8899b1e438d",
+      "split": "tuning",
+      "cases": [
+        "commander",
+        "pytest",
+        "expat",
+        "packaging",
+        "marked",
+        "fmt",
+        "werkzeug",
+        "go-git",
+        "ripgrep",
+        "runner-space",
+        "black",
+        "jq"
+      ],
+      "selection_sha256": "7bc537c02e43ee97f2d6bc0eff0053187c703605ceda7c22448f6173a17375cb",
+      "initial_preregistration_sha256": "97d7c50be2d718ddbe8179747a979aa7d34782712cee38535ee481bf1389ef04"
+    },
+    "second": {
+      "name": "iterate-entry-historical-rest-01",
+      "split": "confirmation",
+      "cases": [
+        "django",
+        "sympy",
+        "prometheus",
+        "fd",
+        "cli11",
+        "commons-lang",
+        "libarchive",
+        "rspec"
+      ],
+      "start_after": "First plan has closed all 24 proposal allocations and 36 assessments. Run the same native historical cohort and package with 3 lanes."
+    },
+    "coverage": "Two disjoint historical splits with independent plan and qualification receipts. Every repository in the historical panel gets one stock allocation, one Develop allocation and three blinded rotations against the actual merge. Preserve every attempt and flag unmeasured outcomes. Previously exposed tasks only.",
+    "comparison": "Require the same task/base/merge, executable fixtures, rubric, participant and assessor settings, treatment and seeded arm order across both plans. Publish the plan hashes and report setup, the operators’ elapsed times, per-proposal tokens, complete Standard cost, checkout and through-grading wall time. Keep qualification and assessor cost separate.",
+    "decision": "Report progress and stop after the full historical benchmark. A ready Develop PR with a strict blind win and complete cost at or below stock is a joint win. State uncertain outcomes separately. Historical results do not establish fresh promotion."
+  }
+}
