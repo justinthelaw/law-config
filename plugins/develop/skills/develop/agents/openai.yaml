@@ -1,7 +1,0 @@
----
-interface:
-  icon_small: "./assets/icon.png"
-  icon_large: "./assets/icon.png"
-  display_name: "Develop"
-  short_description: "Route development, incidents and workflow tasks"
-  default_prompt: "Use $develop to route my outcome through one execution owner, applicable engineering/interface planning and proportionate review. Preserve scope and real approval requirements."

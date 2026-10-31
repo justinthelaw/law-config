@@ -1,7 +1,0 @@
----
-interface:
-  icon_small: "./assets/icon.png"
-  icon_large: "./assets/icon.png"
-  display_name: "Develop: Clean"
-  short_description: "Clean this thread's disposable resources"
-  default_prompt: "Use $clean to clean verified disposable artifacts and hanging processes attributable to this thread, using the host's system Trash for eligible files and preserving shared resources."

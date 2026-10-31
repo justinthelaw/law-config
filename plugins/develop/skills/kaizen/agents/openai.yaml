@@ -1,7 +1,0 @@
----
-interface:
-  icon_small: "./assets/icon.png"
-  icon_large: "./assets/icon.png"
-  display_name: "Develop: Kaizen"
-  short_description: "Improve workflows from selected sessions"
-  default_prompt: "Use $kaizen to analyze my selected sessions and report distinct sessions, coverage gaps and testable improvements."

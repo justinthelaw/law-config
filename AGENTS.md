@@ -3,8 +3,7 @@
 ## Purpose
 
 - Maintain shared development environment configuration for `law-*` machines.
-- Maintain the canonical Develop plugin source and `law-config` Git marketplace.
-- Scope is dotfiles, helper scripts, portable development skills, and the native Codex context guard.
+- Scope is dotfiles and helper scripts.
 
 ## Repo Layout
 
@@ -16,10 +15,6 @@
 - `configs/gpg/*`: baseline GPG config snippets for signing setup.
 - `scripts/sanitize-shell-hist`: utility to sanitize shell history files safely.
 - `docs/setup-linux.md` and `docs/setup-macos.md`: environment-specific bootstrap docs.
-- `plugins/`: distributable packages, including the Develop plugin.
-- `plugins/develop/hooks/`: Codex context guard; see its [runtime requirements and behavior](plugins/develop/docs/context-guard.md).
-- `.agents/plugins/marketplace.json`: repository-root catalog; follow [.agents/AGENTS.md](.agents/AGENTS.md).
-- `.github/workflows/plugins.test.yml`: package and helper checks on Linux, Windows, and macOS.
 - `README.md`: high-level setup and config selection model.
 
 ## Scripts
@@ -31,7 +26,7 @@
 
 ## Important Development Notes
 
-- Before planning or editing, read this guide and each child `AGENTS.md` on the path to the affected files. For a Develop skill, continue through [plugins](plugins/AGENTS.md), [Develop](plugins/develop/AGENTS.md) and [skills](plugins/develop/skills/AGENTS.md) in order. Add a child guide only for rules specific to that directory.
+- Before planning or editing, read this guide and each child `AGENTS.md` on the path to the affected files. Add a child guide only for rules specific to that directory.
 - `main` is the single canonical branch.
 - Keep OS-specific behavior in `docs/setup-linux.md`, `docs/setup-macos.md`, `configs/zsh/linux.zsh`, and `configs/zsh/macos.zsh`.
 - `configs/.gitconfig` must be personalized before use (`<INSERT ...>` fields for identity, key, token).
@@ -39,12 +34,10 @@
 - Keep shell/script changes portable for Linux and macOS (`scripts/sanitize-shell-hist` branches by `$OSTYPE`).
 - `.zshrc.zwc` is a compiled artifact; update it only when intentionally recompiling.
 - Do not commit secrets, personal tokens, or host-specific credentials.
-- Keep Develop self-contained and install it from this repository's Git marketplace; see [installation](plugins/develop/INSTALL.md).
-- Keep root documentation concise and link to the owning plugin guides for workflow, runtime, and hook trust details.
-- Preserve the repository's MIT license and Develop's separate Apache-2.0 [package license](plugins/develop/LICENSE).
+- Preserve the repository's MIT license.
 
 ## Quick Validation
 
 - Shell syntax check: `bash -n scripts/sanitize-shell-hist`
 - Optional smoke test: run script against a temp copy of a history file, not your only live history file.
-- Run the [contribution checks](docs/CONTRIBUTING.md#validation), including package validation and bundled helper tests after plugin changes.
+- Run the [contribution checks](docs/CONTRIBUTING.md#validation), including shell syntax checks and helper tests.
