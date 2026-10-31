@@ -1,0 +1,9 @@
+# D matched fmt pilot
+
+Register before proposal allocation. The exposed tuning case is fmt. Compare one D standalone proposal with one standalone C proposal and one fresh stock proposal, all started at GPT-6.1 Sol Medium under the native matched pilot. Use the unchanged historical evaluator, case, task, gates, frozen prices and three rotated blind candidate/stock/merge assessments. Prior Develop soft PR quality is unknown. Retain every allocation, timeout, failure and incomplete meter.
+
+D is commit `2ca7031c9468e3309efc009b2c6e6904a39f9d30`, package `a848ecd8a72a435415dd4fb7754efe5e7b8cbad7308a26b5b114ca5249e90d2e`. The prior standalone C package is `0085f2ad8d61c0b153d7909f12b2e80f320676494e2bbe2fe83d1e6f07a7bd04`. No companion is installed in either Develop arm. The candidate hypothesis is `await-native-checks-d-v1`.
+
+C's historical fmt attempt used 91 pure poll calls, estimated at roughly $0.50 of a $0.65 proposal. Hypothesis: bounded waiting in one native tool cell and reuse of suitable existing build state reduce fully metered cost and elapsed time while retaining real focused proof, required coverage and functional quality. This is a process observation and a prospective hypothesis, not a causal estimate.
+
+Compare D with C on fully measured proposal cost, checkout-to-proposal time, tests actually run and verified behavior. Compare D with fresh stock and the merge through the canonical blind full-PR rubric. Reject lost prior verified behavior or coverage, required review, non-ready D, full-PR loss to stock, or failure to improve both cost and elapsed time over C. Missing measures or unverifiable review leave the comparison unestablished. Prior soft PR quality remains unknown. One exposed case cannot establish a full-panel outcome. No grader, case, task or scoring changes are authorized.
