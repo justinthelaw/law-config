@@ -1,0 +1,1276 @@
+{
+  "format": "law-config.eval-pilot/v1",
+  "name": "lean-e-ripgrep-01",
+  "case": "ripgrep",
+  "repository": "BurntSushi/ripgrep",
+  "pr": 3578,
+  "evaluator_protocol": "pr-quality-pytest-entry-natural-v1",
+  "registration": {
+    "protocol": "develop-efficiency-pilot-v1",
+    "name": "lean-e-ripgrep-01",
+    "case": "ripgrep",
+    "plans": {
+      "prior": {
+        "path": "runs/lean-e-ripgrep-01-prior/plan.json",
+        "sha256": "95ff1b4ea14d926efb44d2e0003ae2354076252a6660719921d687f9353d98dd"
+      },
+      "candidate": {
+        "path": "runs/lean-e-ripgrep-01-candidate/plan.json",
+        "sha256": "66fddf3352a25a4d240d8b62c46e713337d0ec70355ec72e8b51b6d988edee3a"
+      }
+    },
+    "evaluator_protocol": "pr-quality-pytest-entry-natural-v1",
+    "operator_sha256": "f1d19e987d916272efe8c9302527a114759af9dcc95c6bd9f9e0d18c38945dd2",
+    "cpus": [
+      0,
+      1
+    ],
+    "order": [
+      [
+        "prior",
+        "develop"
+      ],
+      [
+        "candidate",
+        "develop"
+      ],
+      [
+        "candidate",
+        "control"
+      ]
+    ],
+    "hypothesis": "inline-waits-e-v1",
+    "tuning_policy_sha256": "589902e5ac1b940405e6f65707f3890987e02e4cc0986132382143fb494cce11",
+    "hypothesis_sha256": "b8beadfd8b7d51d0b1fb7b7602cd8354e8ee964876d29a79dbd1671bae4202ee",
+    "falsifier": "Require ready E and all executable gates, no confirmed preservation regression or material lost verified coverage versus D, no blind full-PR loss to fresh stock, complete meters, fewer total poll-only model responses and lower estimated proposal cost than D. Report all allocations, exact checks, stock comparison and checkout time. Prior soft PR quality is unknown. A passing exposed-case screen does not establish panel success. Reject lost prior verified behavior or required review, failure of either strict prior cost or wall improvement, non-ready candidate, or full-PR loss to pure. Missing measures or unverifiable review leave the comparison unestablished.",
+    "quality": "Three blind candidate/pure/merge rotations. Prior Develop soft PR quality is unknown.",
+    "goal": "A ready Develop PR strictly wins the full rubric against a terminal pure proposal at complete cost <= pure.",
+    "attempts": "One proposal per registered slot. All allocations including technical failures remain in the ledger."
+  },
+  "registration_sha256": "ec2e7ae968765c99097505fee2a27448cb8456843d0b1700b40c84f999882708",
+  "result_sha256": "9282516e3fbb19c9be5c9ad099baacf1b46da518ec34a3ec781642b57ac831f5",
+  "treatments": {
+    "prior": "a848ecd8a72a435415dd4fb7754efe5e7b8cbad7308a26b5b114ca5249e90d2e",
+    "candidate": "37296eded675c55087986da8386d576970b38973e6c5b77880a8ae529bbaa251"
+  },
+  "base": "d19650f4fca84c0f65f4ec024b16200bf3d41c33",
+  "merged": "65e072fab262fdaaa19ef788bbb468ae6f8e4f8e",
+  "prompt": "Implement the following task in this checkout and add relevant tests. Use your natural local workflow and verification tools. I waive interactive review of the local implementation plan and authorize you to proceed unattended. Follow all applicable repository requirements and complete any required independent review of consequential design or public contracts. Work offline and leave the proposed changes in the checkout. In your final message, put a concise PR title on the first line, followed by a blank line and a PR body explaining the change, motivation, verification actually performed and any material gaps.\n\nWhen the ignore walker is configured to apply Git excludes without requiring a Git repository, linked worktrees should honor the shared repository's info/exclude. Preserve behavior for ordinary directories and when Git excludes are disabled. Add regression coverage.\n\nAvailable offline verification commands:\ncargo build --locked --offline -p ignore\ncargo test --locked --offline -p ignore --lib",
+  "prompt_sha256": "a91ec3d9a960fd503409ec5986e16e046abd9073658a75c0bad861510d763d83",
+  "runtime_sha256": "51a4740fa2bc38f96e006d6c904b3ab9037f4151e3295c42a2293237b3c67691",
+  "rubric_sha256": "a47aa29e89ca55d12fd48031fa7ca5073d449caafefd1b17353a917ebe76a3c3",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "rates": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "profiles": {
+    "prior/develop": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "hooks",
+        "marketplaces",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {},
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [
+        "develop@law-config"
+      ],
+      "ephemeral": false,
+      "inventory_sha256": "07c547d66daea93ab086427cb65dc401aecc4da5a884e3a719fdb908e2893cbe",
+      "input_sha256": "5f4e3868a79faecc4a6c77365e41434bb4be297bf6a4868aeba51b689cd30997",
+      "config_sha256": "872bbca940b572b42591aaa7620f4879a329b23b565285da4471b8998438ea40"
+    },
+    "candidate/develop": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "hooks",
+        "marketplaces",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {},
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [
+        "develop@law-config"
+      ],
+      "ephemeral": false,
+      "inventory_sha256": "7ed736cab901dda70cfbd6f475e2a06a402740f89cd2590c3f52284ab6807678",
+      "input_sha256": "69a4b79d80954f1e877922be58e32ac0ac17068e40557a72529a0332cf198428",
+      "config_sha256": "0b99ccb5bc39151af2d930cbcfe0d8e7189a8ead1f7662d0fb83478587c74eb2"
+    },
+    "candidate/control": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {},
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [],
+      "ephemeral": false,
+      "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+      "input_sha256": "c3df3f2a911e8242eb543eb01510d9ccb358704db79a1ed7a8ab845cf68fa181",
+      "config_sha256": "e35f76876f897124baee5dfa5a22f19ffb7b07a1fdc2ec0acd3f2d95b1a3d77f"
+    }
+  },
+  "comparisons": {
+    "develop_control": {
+      "verdict": "tie",
+      "reason": "blinded rubric",
+      "score_delta": 0.0,
+      "votes": [
+        "tie",
+        "tie",
+        "tie"
+      ],
+      "order_sensitive": false
+    },
+    "develop_upstream": {
+      "verdict": "develop",
+      "reason": "blinded rubric",
+      "score_delta": 12.5,
+      "votes": [
+        "develop",
+        "develop",
+        "develop"
+      ],
+      "order_sensitive": false
+    },
+    "control_upstream": {
+      "verdict": "control",
+      "reason": "blinded rubric",
+      "score_delta": 12.5,
+      "votes": [
+        "control",
+        "control",
+        "control"
+      ],
+      "order_sensitive": false
+    }
+  },
+  "goal_win": false,
+  "submissions": {
+    "control": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "66fddf3352a25a4d240d8b62c46e713337d0ec70355ec72e8b51b6d988edee3a",
+      "case_id": "ripgrep",
+      "role": "control",
+      "state": "completed",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "2e7181f7cf0538638fb5dc3661a054cdc74b045e572edbe2a7c441eaf0cdc28c",
+          "command": "cargo build --locked --offline -p ignore",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "7fb133212d42683b2a132860bfcd789ecf3fe4e7cd25db9b51f5fe1c5522c210",
+          "command": "cargo test --locked --offline -p ignore --lib",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "mkdir -p crates/ignore/examples && cp /oracle/check.rs crates/ignore/examples/panel_case.rs && cargo run --locked --offline -q -p ignore --example panel_case",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "sh /oracle/probe.sh",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/crates/ignore/src/dir.rs b/crates/ignore/src/dir.rs\nindex 61cd879..3a0279f 100644\n--- a/crates/ignore/src/dir.rs\n+++ b/crates/ignore/src/dir.rs\n@@ -373,7 +373,8 @@ impl Ignore {\n     ) -> (IgnoreInner, Option<Error>) {\n         let check_vcs_dir = self.inner.opts.require_git\n             && (self.inner.opts.git_ignore || self.inner.opts.git_exclude);\n-        let git_type = if check_vcs_dir\n+        let check_git = check_vcs_dir || self.inner.opts.git_exclude;\n+        let git_type = if check_git\n             && ignore_files_list.is_none_or(|i| i.has_git_dir)\n         {\n             dir.join(\".git\").metadata().ok().map(|md| md.file_type())\ndiff --git a/crates/ignore/src/walk.rs b/crates/ignore/src/walk.rs\nindex f04f53a..1ecd645 100644\n--- a/crates/ignore/src/walk.rs\n+++ b/crates/ignore/src/walk.rs\n@@ -2360,6 +2360,77 @@ mod tests {\n         );\n     }\n \n+    #[test]\n+    fn git_exclude_linked_worktree() {\n+        let td = tmpdir();\n+        let git_dir = td.path().join(\"repo/.git\");\n+        let worktree_git_dir = git_dir.join(\"worktrees/linked\");\n+        let root = td.path().join(\"linked\");\n+        mkdirp(git_dir.join(\"info\"));\n+        mkdirp(&worktree_git_dir);\n+        mkdirp(root.join(\"sub\"));\n+        wfile(git_dir.join(\"info/exclude\"), \"foo\\n\");\n+        wfile(\n+            root.join(\".git\"),\n+            &format!(\"gitdir: {}\\n\", worktree_git_dir.display()),\n+        );\n+        wfile(root.join(\"foo\"), \"\");\n+        wfile(root.join(\"bar\"), \"\");\n+        wfile(root.join(\"sub/foo\"), \"\");\n+        wfile(root.join(\"sub/bar\"), \"\");\n+\n+        for commondir in [\"../..\", git_dir.to_str().unwrap()] {\n+            wfile(worktree_git_dir.join(\"commondir\"), commondir);\n+            for require_git in [true, false] {\n+                for git_exclude in [true, false] {\n+                    let mut builder = WalkBuilder::new(&root);\n+                    builder\n+                        .parents(false)\n+                        .git_global(false)\n+                        .require_git(require_git)\n+                        .git_exclude(git_exclude);\n+                    let expected: &[&str] = if git_exclude {\n+                        &[\"bar\", \"sub\", \"sub/bar\"]\n+                    } else {\n+                        &[\"bar\", \"foo\", \"sub\", \"sub/bar\", \"sub/foo\"]\n+                    };\n+                    assert_paths(&root, &builder, expected);\n+                }\n+            }\n+        }\n+    }\n+\n+    #[test]\n+    fn git_exclude_ordinary_directory() {\n+        let td = tmpdir();\n+        mkdirp(td.path().join(\"sub\"));\n+        wfile(td.path().join(\"foo\"), \"\");\n+        wfile(td.path().join(\"sub/foo\"), \"\");\n+\n+        for has_git in [false, true] {\n+            if has_git {\n+                mkdirp(td.path().join(\".git/info\"));\n+                wfile(td.path().join(\".git/info/exclude\"), \"foo\\n\");\n+            }\n+            for require_git in [true, false] {\n+                for git_exclude in [true, false] {\n+                    let mut builder = WalkBuilder::new(td.path());\n+                    builder\n+                        .parents(false)\n+                        .git_global(false)\n+                        .require_git(require_git)\n+                        .git_exclude(git_exclude);\n+                    let expected: &[&str] = if has_git && git_exclude {\n+                        &[\"sub\"]\n+                    } else {\n+                        &[\"foo\", \"sub\", \"sub/foo\"]\n+                    };\n+                    assert_paths(td.path(), &builder, expected);\n+                }\n+            }\n+        }\n+    }\n+\n     #[test]\n     fn explicit_ignore() {\n         let td = tmpdir();\n",
+      "patch_sha256": "e446e063bf1eac2b8d9b8dfd16f1ed1629126eeb6ce87a49e6bd9704b443fde1",
+      "proposal": "Fix shared Git excludes in linked worktrees\n\nInspect `.git` metadata whenever Git excludes are enabled so linked worktrees honor the shared repository\u2019s `info/exclude` with `require_git(false)`.\n\nAdd serial and parallel regression coverage for relative and absolute `commondir` paths, ordinary directories, and disabled excludes.\n\nVerification passed:\n\n- `cargo build --locked --offline -p ignore`\n- `cargo test --locked --offline -p ignore --lib` \u2014 193 tests\n- `git diff --check`\n\nFormatting verification was unavailable because `rustfmt` is not installed.",
+      "proposal_sha256": "11da37612823fcc13a0aa371291e1ead0300a76684b57317cb1bd941080bd560",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "e446e063bf1eac2b8d9b8dfd16f1ed1629126eeb6ce87a49e6bd9704b443fde1",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "patch_sha256": "e446e063bf1eac2b8d9b8dfd16f1ed1629126eeb6ce87a49e6bd9704b443fde1",
+            "proposal_sha256": "11da37612823fcc13a0aa371291e1ead0300a76684b57317cb1bd941080bd560",
+            "judgment_sha256": "99ddd000c4cdecbad78fd64d1592c5a473a21f1a91a63830efb1a24689ff7471",
+            "mapping_sha256": "0e9709a09eb7c659b8b16c862762d16366cc2e80661b7c422b5c8c0b988f2c66",
+            "assessor_sha256": "5cfb890655d338f146585e4561e4866d37e8c4821584713d689c8f66de710406",
+            "packet_sha256": "6f95f49e73a1e6c34216156625e5ff9a853b722769e1c5f4d308adeeb3c5668e",
+            "prompt_sha256": "926cf07c0f24345d19ffc050a253abbbb25162c1319b9802843b8f037a6cdf31"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "patch_sha256": "e446e063bf1eac2b8d9b8dfd16f1ed1629126eeb6ce87a49e6bd9704b443fde1",
+            "proposal_sha256": "11da37612823fcc13a0aa371291e1ead0300a76684b57317cb1bd941080bd560",
+            "judgment_sha256": "0d68646e59cab40538600748b9b41ed4e6d2bb8f74e5f4e5705b52270122ad97",
+            "mapping_sha256": "603de3cfda1d735cbca36eb0075032e4ca7b4c695d3a81eb76689dc456381e4d",
+            "assessor_sha256": "1df66a747d02ab27d21c16db6e77eb1173ffe1a2d1ae38fcc211f7042d64b6a8",
+            "packet_sha256": "d2711c38fb0a9a931b1ff61da8f4b2c0b45c04eb8dee6c9abbad70e0cb18a25e",
+            "prompt_sha256": "c22d0fbd8b66786d3652601442e1680ece3d8d6a487b48cccd011178d5f16533"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "patch_sha256": "e446e063bf1eac2b8d9b8dfd16f1ed1629126eeb6ce87a49e6bd9704b443fde1",
+            "proposal_sha256": "11da37612823fcc13a0aa371291e1ead0300a76684b57317cb1bd941080bd560",
+            "judgment_sha256": "d6320adf4cce8fc7535a91cf45dc33ed6a3b0a2f559f70bd88c4fa752e252186",
+            "mapping_sha256": "e21f0b273e15cc59ab1831addb789d5c7f1706ec35c068de64f69aa2b222f5f4",
+            "assessor_sha256": "b34d475cd60e886dec7d4e6678a0cfa338e2b04cccd64a92434453cc2db1f874",
+            "packet_sha256": "eff7c808de47faf26e9e29b2b10b9674db43846e39dd19a1b3a64ae82bfc5e81",
+            "prompt_sha256": "af0b0b648d399746da9241d9f49b33aa3bcb623dcc8fa1ac508c05c942ac596c"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 4
+        },
+        "proposal_points_100": 100.0,
+        "diff_points_85": 85.0,
+        "rotation_points_85": {
+          "0": 85.0,
+          "1": 85.0,
+          "2": 85.0
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native, contract and preserve exits of 0 for C; the stated native scope is ignore's library suite. In packet/C.patch, crates/ignore/src/dir.rs probes .git when git_exclude is enabled, allowing resolve_git_commondir to read the linked worktree's shared info/exclude with require_git(false). The ordinary .git-directory fallback, has_git/check_vcs_dir semantics and git_exclude(false) matcher guard remain unchanged. These provide affirmative evidence for the requested behavior and compatibility.",
+              "tests": "packet/C.patch adds git_exclude_linked_worktree in crates/ignore/src/walk.rs with relative/absolute commondir crossed with require_git and git_exclude true/false. Root and nested ignored/retained files check rule propagation. git_exclude_ordinary_directory crosses repository presence with the same options. Existing assert_paths checks both serial and parallel traversal. The original probe would fail linked-worktree require_git(false) filtering. Frozen native/contract/preserve exits are 0 and all existing assertions remain.",
+              "design": "packet/C.patch changes only the metadata-probe condition in crates/ignore/src/dir.rs and adds focused tests. It reuses resolve_git_commondir rather than introducing another resolver. Explicit inspection of the removed check_vcs_dir-only condition shows it is broadened only for enabled Git excludes; the discovered-file guard, repository-requirement logic, disabled-exclude guard and all existing test assertions are retained. No weakened protection or unrelated edit is present.",
+              "proposal": "packet/C.md precisely describes the fix and configuration, and its serial/parallel, commondir, ordinary-directory and disabled-exclude coverage claims match the patch and assert_paths helper. Frozen build/native exits support its principal verification results. The exact 193-test count and git diff --check claim lack supporting frozen detail and receive no verification credit. The unavailable formatting verification is explicitly disclosed."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 4
+            },
+            "evidence": {
+              "contract": "B.patch supplies .git metadata whenever git_exclude is enabled while retaining the existing require_git repository-detection condition and disabled-exclude gate. packet/task.json records build, native, contract and preserve exits of 0. walk.rs regressions affirm relative/absolute common directories, both repository-requirement settings and ordinary directories with and without .git.",
+              "tests": "B.patch adds walk.rs::git_exclude_linked_worktree and git_exclude_ordinary_directory. Their matrices cover require_git and git_exclude on/off, relative/absolute commondir, root and descendant matches, and kept files. The existing assert_paths helper at walk.rs:2287 checks both serial and parallel walkers. The require_git(false), git_exclude(true) worktree case distinguishes the base defect. Native checks have frozen exit 0.",
+              "design": "The check_git local in dir.rs names the expanded metadata-probe condition without changing repository-boundary detection. It reuses the existing common-directory resolver and walker test helper. No unrelated production edits, removed tests, weakened assertions or bypassed guards appear in the full patch.",
+              "proposal": "B.md has a precise title, explains shared excludes under require_git(false), and accurately describes the serial/parallel tests through assert_paths. Frozen observations support the listed offline build and native success. It explicitly states the formatting limitation. The exact 193-test count, diff-check result and rustfmt availability are not independently recorded and receive no additional credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 4
+            },
+            "evidence": {
+              "contract": "crates/ignore/src/dir.rs:374 broadens only the .git metadata probe to check_vcs_dir || git_exclude, allowing resolve_git_commondir to read linked-worktree metadata with require_git(false). The has_git/check_vcs_dir gate, found-file filter, and disabled-excludes matcher guard remain intact; ordinary .git directories still resolve to the same exclude path. packet/task.json records build, native, contract and preserve exit 0 for this submission.",
+              "tests": "packet/A.patch adds git_exclude_linked_worktree and git_exclude_ordinary_directory in crates/ignore/src/walk.rs. Relative/absolute commondir, require_git true/false, excludes enabled/disabled, directories with/without .git, and nested matching are asserted. Existing assert_paths runs both serial and parallel walkers. The linked-worktree require_git(false) enabled-excludes case would retain foo on the starting code and therefore distinguishes the defect. Frozen native, contract and preserve checks exit 0.",
+              "design": "The production change in crates/ignore/src/dir.rs addresses the skipped metadata probe and reuses resolve_git_commondir without changing parsing or matching APIs. Only focused regression tests accompany it. Inspection of the full patch finds no deleted tests, weakened assertions, disabled checks or removed behavior guards.",
+              "proposal": "packet/A.md gives a precise title, identifies the metadata probe and shared info/exclude behavior, and accurately describes the visible regression matrix. Its build/native pass report is supported by packet/task.json, and it states the formatting limitation. The precise test count, diff check and rustfmt availability are not independently evidenced and receive no verification credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 1837924,
+          "cachedInputTokens": 1796352,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 7045,
+          "reasoningOutputTokens": 1691,
+          "totalTokens": 1844969
+        },
+        "estimated_usd": 0.3332292,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 615.9694089549594,
+        "prompt_to_terminal_seconds": 586.2456111970823,
+        "through_grading_seconds": 635.1469596128445,
+        "setup_seconds": 28.587761394912377,
+        "grading_seconds": 17.736534836003557,
+        "thread_count": 1,
+        "child_count": 0,
+        "root_tokens": {
+          "totalTokens": 1844969,
+          "inputTokens": 1837924,
+          "cachedInputTokens": 1796352,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 7045,
+          "reasoningOutputTokens": 1691
+        },
+        "descendant_tokens": {
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 0,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 0
+        },
+        "pricing": {
+          "policy": "natural-standard-v2",
+          "rate_card": {
+            "source": "https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing",
+            "verified_utc": "2026-10-30T12:41:43Z",
+            "basis": "Codex Standard USD per 1M tokens; estimate, not invoice",
+            "rates": {
+              "gpt-6.1-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.1,
+                "output": 10
+              },
+              "gpt-6.1-terra": {
+                "uncached_input": 1,
+                "cached_input": 0.05,
+                "output": 5
+              },
+              "gpt-6-astra": {
+                "uncached_input": 10,
+                "cached_input": 1,
+                "output": 50
+              },
+              "gpt-6-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 10
+              },
+              "gpt-6-luna": {
+                "uncached_input": 0.1,
+                "cached_input": 0.01,
+                "output": 0.5
+              },
+              "gpt-5.6-sol": {
+                "uncached_input": 4,
+                "cached_input": 0.4,
+                "output": 20
+              },
+              "gpt-5.6-terra": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 12
+              },
+              "gpt-5.6-luna": {
+                "uncached_input": 0.2,
+                "cached_input": 0.02,
+                "output": 1.2
+              },
+              "gpt-6-astra-law": {
+                "uncached_input": 12.5,
+                "cached_input": 1.25,
+                "output": 62.5
+              }
+            }
+          },
+          "model_tokens": {
+            "gpt-6.1-sol": {
+              "threads": 1,
+              "tokens": {
+                "totalTokens": 1844969,
+                "inputTokens": 1837924,
+                "cachedInputTokens": 1796352,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 7045,
+                "reasoningOutputTokens": 1691
+              }
+            }
+          },
+          "root_start": {
+            "thread": "fe3b6827327678c64f895b4c60dc8f7575e7de668cad07d1182ae69f6fcbe967",
+            "requested_model": "gpt-6.1-sol",
+            "effective_model": "gpt-6.1-sol",
+            "requested_effort": "medium"
+          },
+          "root_default_verified": true,
+          "token_coverage": "complete",
+          "priced_tokens": {
+            "inputTokens": 1837924,
+            "cachedInputTokens": 1796352,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 7045,
+            "reasoningOutputTokens": 1691,
+            "totalTokens": 1844969
+          },
+          "unpriced_tokens": {
+            "inputTokens": 0,
+            "cachedInputTokens": 0,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 0,
+            "reasoningOutputTokens": 0,
+            "totalTokens": 0
+          },
+          "priced_threads": 1,
+          "unpriced_threads": 0,
+          "unpriced_reasons": {},
+          "known_usd_lower_bound": 0.3332292,
+          "terminal_proof": [
+            {
+              "thread": "fe3b6827327678c64f895b4c60dc8f7575e7de668cad07d1182ae69f6fcbe967",
+              "bound": true,
+              "meter_consistent": true,
+              "model": "gpt-6.1-sol",
+              "tokens": {
+                "totalTokens": 1844969,
+                "inputTokens": 1837924,
+                "cachedInputTokens": 1796352,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 7045,
+                "reasoningOutputTokens": 1691
+              },
+              "start": {
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "parent": null
+              },
+              "trace_sha256": "9662011ee2b52ac1e05e692516acd96a0b583a477683d9b2e18f62b5863e66b0",
+              "turns": [
+                {
+                  "turn": "7174ab3ccdf6048723a374a809efbb988d57d10440e5cc99da1d2be35a96377f",
+                  "model": "gpt-6.1-sol",
+                  "effort": "medium",
+                  "message_seq": 1307,
+                  "usage_seq": 1308,
+                  "terminal_seq": 1313,
+                  "status": "completed",
+                  "total": {
+                    "totalTokens": 1844969,
+                    "inputTokens": 1837924,
+                    "cachedInputTokens": 1796352,
+                    "cacheWriteInputTokens": 0,
+                    "outputTokens": 7045,
+                    "reasoningOutputTokens": 1691
+                  }
+                }
+              ]
+            }
+          ],
+          "native_sha256": "991595b5192558bf591ce7221b4887cc85dc7547d4ed69db277c885c99cae454"
+        },
+        "observed_commands": 18,
+        "native_hook_receipts": 0
+      },
+      "receipt_sha256": {
+        "grade": "eaab43d030726e373a05e94d8c1350be49e76b44fd3e4d756d6736013b0dd3a1",
+        "release": "be9b4031bfb81c261c4a1a2fa0fcfdf1c09b893e080480377471f32652102e13",
+        "native": "991595b5192558bf591ce7221b4887cc85dc7547d4ed69db277c885c99cae454",
+        "submission": "e3210ba5f5dd51458b61c53e5169dfa33dc5628926a13c186c9ae41931d63556",
+        "result": "bd12fabdc41b8347d1d20c84c808f48e445d97b6118de75e21cab034398d5111",
+        "inventory": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+        "turn-input": "c3df3f2a911e8242eb543eb01510d9ccb358704db79a1ed7a8ab845cf68fa181"
+      }
+    },
+    "develop": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "66fddf3352a25a4d240d8b62c46e713337d0ec70355ec72e8b51b6d988edee3a",
+      "case_id": "ripgrep",
+      "role": "develop",
+      "state": "completed",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "5bfcdbeb724b29ebe414c4aca08dff61856ae6d4145dc8e7ca0c92489a43228f",
+          "command": "cargo build --locked --offline -p ignore",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "0a78f3767619924c9d9ed2add9e537152e72a1d0895bcef7fd3887ea9da31474",
+          "command": "cargo test --locked --offline -p ignore --lib",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "mkdir -p crates/ignore/examples && cp /oracle/check.rs crates/ignore/examples/panel_case.rs && cargo run --locked --offline -q -p ignore --example panel_case",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "sh /oracle/probe.sh",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/crates/ignore/src/dir.rs b/crates/ignore/src/dir.rs\nindex 61cd879..2f6d761 100644\n--- a/crates/ignore/src/dir.rs\n+++ b/crates/ignore/src/dir.rs\n@@ -373,7 +373,7 @@ impl Ignore {\n     ) -> (IgnoreInner, Option<Error>) {\n         let check_vcs_dir = self.inner.opts.require_git\n             && (self.inner.opts.git_ignore || self.inner.opts.git_exclude);\n-        let git_type = if check_vcs_dir\n+        let git_type = if (check_vcs_dir || self.inner.opts.git_exclude)\n             && ignore_files_list.is_none_or(|i| i.has_git_dir)\n         {\n             dir.join(\".git\").metadata().ok().map(|md| md.file_type())\ndiff --git a/crates/ignore/src/walk.rs b/crates/ignore/src/walk.rs\nindex f04f53a..6abc641 100644\n--- a/crates/ignore/src/walk.rs\n+++ b/crates/ignore/src/walk.rs\n@@ -2360,6 +2360,59 @@ mod tests {\n         );\n     }\n \n+    #[test]\n+    fn git_exclude_linked_worktree() {\n+        let td = tmpdir();\n+        let git_dir = td.path().join(\"repo/.git\");\n+        let worktree = td.path().join(\"worktree\");\n+        let private_dir = git_dir.join(\"worktrees/worktree\");\n+        mkdirp(git_dir.join(\"info\"));\n+        mkdirp(&private_dir);\n+        mkdirp(&worktree);\n+        wfile(git_dir.join(\"info/exclude\"), \"ignored\");\n+        wfile(\n+            worktree.join(\".git\"),\n+            &format!(\"gitdir: {}\", private_dir.display()),\n+        );\n+        wfile(worktree.join(\"ignored\"), \"\");\n+        wfile(worktree.join(\"kept\"), \"\");\n+\n+        for commondir in [\"../..\", git_dir.to_str().unwrap()] {\n+            wfile(private_dir.join(\"commondir\"), commondir);\n+            for require_git in [true, false] {\n+                let mut builder = WalkBuilder::new(&worktree);\n+                builder\n+                    .git_global(false)\n+                    .parents(false)\n+                    .require_git(require_git);\n+                assert_paths(&worktree, &builder, &[\"kept\"]);\n+\n+                builder.git_exclude(false);\n+                assert_paths(&worktree, &builder, &[\"ignored\", \"kept\"]);\n+            }\n+        }\n+    }\n+\n+    #[test]\n+    fn git_exclude_without_require_git() {\n+        let td = tmpdir();\n+        wfile(td.path().join(\".gitignore\"), \"gitignored\");\n+        wfile(td.path().join(\"gitignored\"), \"\");\n+        wfile(td.path().join(\"excluded\"), \"\");\n+        wfile(td.path().join(\"kept\"), \"\");\n+        let mut builder = WalkBuilder::new(td.path());\n+        builder.git_global(false).parents(false).require_git(false);\n+\n+        assert_paths(td.path(), &builder, &[\"excluded\", \"kept\"]);\n+\n+        mkdirp(td.path().join(\".git/info\"));\n+        wfile(td.path().join(\".git/info/exclude\"), \"excluded\");\n+        assert_paths(td.path(), &builder, &[\"kept\"]);\n+\n+        builder.git_exclude(false);\n+        assert_paths(td.path(), &builder, &[\"excluded\", \"kept\"]);\n+    }\n+\n     #[test]\n     fn explicit_ignore() {\n         let td = tmpdir();\n",
+      "patch_sha256": "02f30960f0f20eaa200be9b7a50cba0c960d9b684e4af5d73295564c4ebc6cbd",
+      "proposal": "Fix shared Git excludes in linked worktrees\n\nRead `.git` metadata when Git excludes are enabled so linked worktrees honor shared `info/exclude` with `require_git(false)`. Preserve ordinary-directory behavior and disabled excludes.\n\nAdded serial and parallel walker regressions covering relative and absolute common directories, repository requirements, and disabled excludes. Confirmed the regression failed before the fix.\n\nVerification passed offline:\n\n- `cargo build --locked --offline -p ignore`\n- `cargo test --locked --offline -p ignore --lib` \u2014 193 passed\n- `git diff --check`\n\nFormatting was checked manually because `rustfmt` is unavailable. Changes remain in the checkout.",
+      "proposal_sha256": "ea420390162dd0e4d2317c333373fc0b6ed14207c08a19331bd09c510fd8ba77",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "02f30960f0f20eaa200be9b7a50cba0c960d9b684e4af5d73295564c4ebc6cbd",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "patch_sha256": "02f30960f0f20eaa200be9b7a50cba0c960d9b684e4af5d73295564c4ebc6cbd",
+            "proposal_sha256": "ea420390162dd0e4d2317c333373fc0b6ed14207c08a19331bd09c510fd8ba77",
+            "judgment_sha256": "99ddd000c4cdecbad78fd64d1592c5a473a21f1a91a63830efb1a24689ff7471",
+            "mapping_sha256": "0e9709a09eb7c659b8b16c862762d16366cc2e80661b7c422b5c8c0b988f2c66",
+            "assessor_sha256": "5cfb890655d338f146585e4561e4866d37e8c4821584713d689c8f66de710406",
+            "packet_sha256": "6f95f49e73a1e6c34216156625e5ff9a853b722769e1c5f4d308adeeb3c5668e",
+            "prompt_sha256": "926cf07c0f24345d19ffc050a253abbbb25162c1319b9802843b8f037a6cdf31"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "patch_sha256": "02f30960f0f20eaa200be9b7a50cba0c960d9b684e4af5d73295564c4ebc6cbd",
+            "proposal_sha256": "ea420390162dd0e4d2317c333373fc0b6ed14207c08a19331bd09c510fd8ba77",
+            "judgment_sha256": "0d68646e59cab40538600748b9b41ed4e6d2bb8f74e5f4e5705b52270122ad97",
+            "mapping_sha256": "603de3cfda1d735cbca36eb0075032e4ca7b4c695d3a81eb76689dc456381e4d",
+            "assessor_sha256": "1df66a747d02ab27d21c16db6e77eb1173ffe1a2d1ae38fcc211f7042d64b6a8",
+            "packet_sha256": "d2711c38fb0a9a931b1ff61da8f4b2c0b45c04eb8dee6c9abbad70e0cb18a25e",
+            "prompt_sha256": "c22d0fbd8b66786d3652601442e1680ece3d8d6a487b48cccd011178d5f16533"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "patch_sha256": "02f30960f0f20eaa200be9b7a50cba0c960d9b684e4af5d73295564c4ebc6cbd",
+            "proposal_sha256": "ea420390162dd0e4d2317c333373fc0b6ed14207c08a19331bd09c510fd8ba77",
+            "judgment_sha256": "d6320adf4cce8fc7535a91cf45dc33ed6a3b0a2f559f70bd88c4fa752e252186",
+            "mapping_sha256": "e21f0b273e15cc59ab1831addb789d5c7f1706ec35c068de64f69aa2b222f5f4",
+            "assessor_sha256": "b34d475cd60e886dec7d4e6678a0cfa338e2b04cccd64a92434453cc2db1f874",
+            "packet_sha256": "eff7c808de47faf26e9e29b2b10b9674db43846e39dd19a1b3a64ae82bfc5e81",
+            "prompt_sha256": "af0b0b648d399746da9241d9f49b33aa3bcb623dcc8fa1ac508c05c942ac596c"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 4
+        },
+        "proposal_points_100": 100.0,
+        "diff_points_85": 85.0,
+        "rotation_points_85": {
+          "0": 85.0,
+          "1": 85.0,
+          "2": 85.0
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native, contract and preserve exits of 0 for A; the stated native scope is ignore's library suite. In packet/A.patch, crates/ignore/src/dir.rs probes .git when git_exclude is enabled, allowing resolve_git_commondir to read the linked worktree's shared info/exclude with require_git(false). The ordinary .git-directory fallback, has_git/check_vcs_dir semantics and git_exclude(false) matcher guard remain unchanged. These provide affirmative evidence for the requested behavior and compatibility.",
+              "tests": "packet/A.patch adds git_exclude_linked_worktree in crates/ignore/src/walk.rs, checking relative and absolute commondir, require_git true/false, enabled/disabled excludes, and both ignored and retained files. git_exclude_without_require_git also preserves .gitignore behavior outside a repository and tests ordinary .git/info/exclude plus disabled excludes. Existing assert_paths invokes both serial and parallel walkers. The original probe would leave git_type=None and fail the new linked-worktree require_git(false) expectations. Frozen native/contract/preserve exits are 0; no existing assertions are deleted.",
+              "design": "packet/A.patch changes only the metadata-probe condition in crates/ignore/src/dir.rs and adds focused tests. It reuses resolve_git_commondir rather than introducing another resolver. Explicit inspection of the removed check_vcs_dir-only condition shows it is broadened only for enabled Git excludes; the discovered-file guard, repository-requirement logic, disabled-exclude guard and all existing test assertions are retained. No weakened protection or unrelated edit is present.",
+              "proposal": "packet/A.md gives a precise title, mechanism, affected configuration and preservation scope; the patch supports its serial/parallel and path-variant coverage description. Frozen build/native exits support the two main offline check results. The packet does not substantiate the claimed before-fix run, exact 193-test count, git diff --check result or manual formatting check; these claims receive no verification credit. The formatting-tool limitation is clearly disclosed."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 4
+            },
+            "evidence": {
+              "contract": "C.patch expands metadata probing in dir.rs to check_vcs_dir || git_exclude, allowing the existing resolver to find shared info/exclude without requiring Git. Repository detection and disabled-exclude behavior remain gated as before. packet/task.json records exit 0 for build, native, contract and preserve; added public walker tests affirm worktree and ordinary-directory behavior.",
+              "tests": "C.patch adds walk.rs::git_exclude_linked_worktree covering relative/absolute commondir, require_git true/false and enabled/disabled excludes, with ignored and retained files. git_exclude_without_require_git checks ordinary directories before and after adding .git/info/exclude and verifies .gitignore remains effective when excludes are disabled. assert_paths at walk.rs:2287 exercises both serial and parallel walkers. The enabled-exclude worktree case with require_git(false) distinguishes the defect; frozen native exit is 0.",
+              "design": "The one-condition production edit reuses resolve_git_commondir and preserves ignore_files_list gating, check_vcs_dir repository detection and the git_exclude matcher gate. Tests use the existing WalkBuilder/assert_paths idiom and stay within the requested behavior. Full-patch inspection shows no deleted tests or weakened protections.",
+              "proposal": "C.md gives a precise title, explains the behavior and preservation requirements, and accurately summarizes the added walker regressions. Frozen observations support its offline build and native successes. It identifies the formatting limitation. Its claimed pre-fix failure, exact test count, diff-check result and manual formatting check lack separate frozen evidence and receive no additional verification credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 4
+            },
+            "evidence": {
+              "contract": "crates/ignore/src/dir.rs:374 broadens only the .git metadata probe to check_vcs_dir || git_exclude, allowing resolve_git_commondir to read linked-worktree metadata with require_git(false). The has_git/check_vcs_dir gate, found-file filter, and disabled-excludes matcher guard remain intact; ordinary .git directories still resolve to the same exclude path. packet/task.json records build, native, contract and preserve exit 0 for this submission.",
+              "tests": "packet/B.patch adds git_exclude_linked_worktree and git_exclude_without_require_git in crates/ignore/src/walk.rs. It checks relative/absolute commondir, both repository requirements, disabled excludes, ordinary directories before/after .git creation, and .gitignore interaction. Existing assert_paths checks serial and parallel output. The linked-worktree require_git(false) case distinguishes the skipped probe on the base. Frozen native, contract and preserve checks exit 0.",
+              "design": "The production change in crates/ignore/src/dir.rs addresses the skipped metadata probe and reuses resolve_git_commondir without changing parsing or matching APIs. Only focused regression tests accompany it. Inspection of the full patch finds no deleted tests, weakened assertions, disabled checks or removed behavior guards.",
+              "proposal": "packet/B.md precisely explains the behavior change and preservation requirements and describes the visible serial/parallel coverage. Build/native success is supported by packet/task.json; the formatting limitation is stated. The claimed pre-fix failure, exact test count, diff check and manual formatting check have no independent observation and receive no verification credit; no contradictory result is supplied."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 2230906,
+          "cachedInputTokens": 2188032,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 7114,
+          "reasoningOutputTokens": 1555,
+          "totalTokens": 2238020
+        },
+        "estimated_usd": 0.3756912,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 680.0404801031109,
+        "prompt_to_terminal_seconds": 646.3675001040101,
+        "through_grading_seconds": 699.0902098841034,
+        "setup_seconds": 32.47149945399724,
+        "grading_seconds": 17.510950633091852,
+        "thread_count": 1,
+        "child_count": 0,
+        "root_tokens": {
+          "totalTokens": 2238020,
+          "inputTokens": 2230906,
+          "cachedInputTokens": 2188032,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 7114,
+          "reasoningOutputTokens": 1555
+        },
+        "descendant_tokens": {
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 0,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 0
+        },
+        "pricing": {
+          "policy": "natural-standard-v2",
+          "rate_card": {
+            "source": "https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing",
+            "verified_utc": "2026-10-30T12:41:43Z",
+            "basis": "Codex Standard USD per 1M tokens; estimate, not invoice",
+            "rates": {
+              "gpt-6.1-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.1,
+                "output": 10
+              },
+              "gpt-6.1-terra": {
+                "uncached_input": 1,
+                "cached_input": 0.05,
+                "output": 5
+              },
+              "gpt-6-astra": {
+                "uncached_input": 10,
+                "cached_input": 1,
+                "output": 50
+              },
+              "gpt-6-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 10
+              },
+              "gpt-6-luna": {
+                "uncached_input": 0.1,
+                "cached_input": 0.01,
+                "output": 0.5
+              },
+              "gpt-5.6-sol": {
+                "uncached_input": 4,
+                "cached_input": 0.4,
+                "output": 20
+              },
+              "gpt-5.6-terra": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 12
+              },
+              "gpt-5.6-luna": {
+                "uncached_input": 0.2,
+                "cached_input": 0.02,
+                "output": 1.2
+              },
+              "gpt-6-astra-law": {
+                "uncached_input": 12.5,
+                "cached_input": 1.25,
+                "output": 62.5
+              }
+            }
+          },
+          "model_tokens": {
+            "gpt-6.1-sol": {
+              "threads": 1,
+              "tokens": {
+                "totalTokens": 2238020,
+                "inputTokens": 2230906,
+                "cachedInputTokens": 2188032,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 7114,
+                "reasoningOutputTokens": 1555
+              }
+            }
+          },
+          "root_start": {
+            "thread": "4fb131bf73607c8250a44c341f6cd65047244577946501f0b62e85dc7069ffbe",
+            "requested_model": "gpt-6.1-sol",
+            "effective_model": "gpt-6.1-sol",
+            "requested_effort": "medium"
+          },
+          "root_default_verified": true,
+          "token_coverage": "complete",
+          "priced_tokens": {
+            "inputTokens": 2230906,
+            "cachedInputTokens": 2188032,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 7114,
+            "reasoningOutputTokens": 1555,
+            "totalTokens": 2238020
+          },
+          "unpriced_tokens": {
+            "inputTokens": 0,
+            "cachedInputTokens": 0,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 0,
+            "reasoningOutputTokens": 0,
+            "totalTokens": 0
+          },
+          "priced_threads": 1,
+          "unpriced_threads": 0,
+          "unpriced_reasons": {},
+          "known_usd_lower_bound": 0.3756912,
+          "terminal_proof": [
+            {
+              "thread": "4fb131bf73607c8250a44c341f6cd65047244577946501f0b62e85dc7069ffbe",
+              "bound": true,
+              "meter_consistent": true,
+              "model": "gpt-6.1-sol",
+              "tokens": {
+                "totalTokens": 2238020,
+                "inputTokens": 2230906,
+                "cachedInputTokens": 2188032,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 7114,
+                "reasoningOutputTokens": 1555
+              },
+              "start": {
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "parent": null
+              },
+              "trace_sha256": "4a5d48874811babf9461dcd9cb915b70ed3cccf2ae9f8b14bc47d6ebefefd0f8",
+              "turns": [
+                {
+                  "turn": "ee70b7fb3d70f9dd085b17c52fb46d81a4d46841a7199903c1158cc8c83e8c4f",
+                  "model": "gpt-6.1-sol",
+                  "effort": "medium",
+                  "message_seq": 1553,
+                  "usage_seq": 1554,
+                  "terminal_seq": 1559,
+                  "status": "completed",
+                  "total": {
+                    "totalTokens": 2238020,
+                    "inputTokens": 2230906,
+                    "cachedInputTokens": 2188032,
+                    "cacheWriteInputTokens": 0,
+                    "outputTokens": 7114,
+                    "reasoningOutputTokens": 1555
+                  }
+                }
+              ]
+            }
+          ],
+          "native_sha256": "9641975a57e8b40ae7b1429814e5794b8c921f5d15384663434c014f14d9d3c7"
+        },
+        "observed_commands": 20,
+        "native_hook_receipts": 46
+      },
+      "receipt_sha256": {
+        "grade": "bbe83b1d366b61d1db11cddb60e6f7dcf8a17d94c920990b105241db890c5061",
+        "release": "3b649734adf7d74fffd2cba0b2e6745ff958c0a7a9b307e0069276d520871f5c",
+        "native": "9641975a57e8b40ae7b1429814e5794b8c921f5d15384663434c014f14d9d3c7",
+        "submission": "138e110e3605840ab02aab4ef72c7e8fddfd61d09eb88b6e210b1a683b4f6347",
+        "result": "b99522c501fe03b04c2b563c2ed6b7489fc46234912923084e07447088c128d0",
+        "inventory": "7ed736cab901dda70cfbd6f475e2a06a402740f89cd2590c3f52284ab6807678",
+        "turn-input": "69a4b79d80954f1e877922be58e32ac0ac17068e40557a72529a0332cf198428"
+      }
+    },
+    "upstream": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "66fddf3352a25a4d240d8b62c46e713337d0ec70355ec72e8b51b6d988edee3a",
+      "case_id": "ripgrep",
+      "role": "upstream",
+      "state": "merged",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "97b1dd4e37fc5981e6ec4a1380c7a4a3982bcb85f8008a4d719ffad2022098a4",
+          "command": "cargo build --locked --offline -p ignore",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "213987deb47255ddd85fcae74645c4884395d250a73dc9cc4b3bcc046573e017",
+          "command": "cargo test --locked --offline -p ignore --lib",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "mkdir -p crates/ignore/examples && cp /oracle/check.rs crates/ignore/examples/panel_case.rs && cargo run --locked --offline -q -p ignore --example panel_case",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "sh /oracle/probe.sh",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/crates/ignore/src/dir.rs b/crates/ignore/src/dir.rs\nindex 61cd879..a4fb51a 100644\n--- a/crates/ignore/src/dir.rs\n+++ b/crates/ignore/src/dir.rs\n@@ -373,7 +373,7 @@ impl Ignore {\n     ) -> (IgnoreInner, Option<Error>) {\n         let check_vcs_dir = self.inner.opts.require_git\n             && (self.inner.opts.git_ignore || self.inner.opts.git_exclude);\n-        let git_type = if check_vcs_dir\n+        let git_type = if (check_vcs_dir || self.inner.opts.git_exclude)\n             && ignore_files_list.is_none_or(|i| i.has_git_dir)\n         {\n             dir.join(\".git\").metadata().ok().map(|md| md.file_type())\n@@ -1669,6 +1669,13 @@ mod tests {\n         assert!(err.is_none());\n         assert!(ignore.matched(\"ignore_me\", false).is_ignore());\n \n+        let without_required_git =\n+            IgnoreBuilder::new().require_git(false).build();\n+        let (ignore, err) =\n+            without_required_git.add_child(td.path().join(\"linked-worktree\"));\n+        assert!(err.is_none());\n+        assert!(ignore.matched(\"ignore_me\", false).is_ignore());\n+\n         // absolute commondir\n         wfile(commondir_path(), git_dir.to_str().unwrap());\n         let (ignore, err) = ib.add_child(td.path().join(\"linked-worktree\"));\n",
+      "patch_sha256": "47ad08316405d168fdd97e4dc5409755b79fc07e4103c798acc640ea2a22e6e0",
+      "proposal": "ignore: respect linked worktree excludes without requiring Git\n\n## Summary\n\nWith `require_git(false)`, the `ignore` crate does not apply the common Git directory's `info/exclude` rules when traversing a linked worktree. It skips probing the worktree's `.git` file, so it cannot resolve the shared repository directory that owns those excludes.\n\nProbe `.git` whenever Git excludes are enabled, even when repository detection is not required. The existing linked-worktree resolution then finds the shared `info/exclude` file. Extend the existing linked-worktree regression to cover `require_git(false)`.\n\n## Verification\n\nVerified against `ignore` 0.4.33.\n\n- [x] The added `require_git(false)` assertion fails before the fix.\n- [x] The existing linked-worktree test passes with the fix, including the new assertion.\n\n```sh\ncargo nextest run -p ignore --lib -E 'test(git_info_exclude_in_linked_worktree)'\n```\n\nThe focused test failed before the fix and passed afterward (one test, 0.003 seconds).",
+      "proposal_sha256": "d9fbd80e4b67ca3ae3dcb0a373aa4be9a7cbbfd6c58decd8ec04624d35035c01",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "47ad08316405d168fdd97e4dc5409755b79fc07e4103c798acc640ea2a22e6e0",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "patch_sha256": "47ad08316405d168fdd97e4dc5409755b79fc07e4103c798acc640ea2a22e6e0",
+            "proposal_sha256": "d9fbd80e4b67ca3ae3dcb0a373aa4be9a7cbbfd6c58decd8ec04624d35035c01",
+            "judgment_sha256": "99ddd000c4cdecbad78fd64d1592c5a473a21f1a91a63830efb1a24689ff7471",
+            "mapping_sha256": "0e9709a09eb7c659b8b16c862762d16366cc2e80661b7c422b5c8c0b988f2c66",
+            "assessor_sha256": "5cfb890655d338f146585e4561e4866d37e8c4821584713d689c8f66de710406",
+            "packet_sha256": "6f95f49e73a1e6c34216156625e5ff9a853b722769e1c5f4d308adeeb3c5668e",
+            "prompt_sha256": "926cf07c0f24345d19ffc050a253abbbb25162c1319b9802843b8f037a6cdf31"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "patch_sha256": "47ad08316405d168fdd97e4dc5409755b79fc07e4103c798acc640ea2a22e6e0",
+            "proposal_sha256": "d9fbd80e4b67ca3ae3dcb0a373aa4be9a7cbbfd6c58decd8ec04624d35035c01",
+            "judgment_sha256": "0d68646e59cab40538600748b9b41ed4e6d2bb8f74e5f4e5705b52270122ad97",
+            "mapping_sha256": "603de3cfda1d735cbca36eb0075032e4ca7b4c695d3a81eb76689dc456381e4d",
+            "assessor_sha256": "1df66a747d02ab27d21c16db6e77eb1173ffe1a2d1ae38fcc211f7042d64b6a8",
+            "packet_sha256": "d2711c38fb0a9a931b1ff61da8f4b2c0b45c04eb8dee6c9abbad70e0cb18a25e",
+            "prompt_sha256": "c22d0fbd8b66786d3652601442e1680ece3d8d6a487b48cccd011178d5f16533"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "patch_sha256": "47ad08316405d168fdd97e4dc5409755b79fc07e4103c798acc640ea2a22e6e0",
+            "proposal_sha256": "d9fbd80e4b67ca3ae3dcb0a373aa4be9a7cbbfd6c58decd8ec04624d35035c01",
+            "judgment_sha256": "d6320adf4cce8fc7535a91cf45dc33ed6a3b0a2f559f70bd88c4fa752e252186",
+            "mapping_sha256": "e21f0b273e15cc59ab1831addb789d5c7f1706ec35c068de64f69aa2b222f5f4",
+            "assessor_sha256": "b34d475cd60e886dec7d4e6678a0cfa338e2b04cccd64a92434453cc2db1f874",
+            "packet_sha256": "eff7c808de47faf26e9e29b2b10b9674db43846e39dd19a1b3a64ae82bfc5e81",
+            "prompt_sha256": "af0b0b648d399746da9241d9f49b33aa3bcb623dcc8fa1ac508c05c942ac596c"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 4,
+          "tests": 2,
+          "design": 4,
+          "proposal": 3
+        },
+        "proposal_points_100": 83.75,
+        "diff_points_85": 72.5,
+        "rotation_points_85": {
+          "0": 72.5,
+          "1": 72.5,
+          "2": 72.5
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 2,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native, contract and preserve exits of 0 for B; the stated native scope is ignore's library suite. In packet/B.patch, crates/ignore/src/dir.rs probes .git when git_exclude is enabled, allowing resolve_git_commondir to read the linked worktree's shared info/exclude with require_git(false). The ordinary .git-directory fallback, has_git/check_vcs_dir semantics and git_exclude(false) matcher guard remain unchanged. These provide affirmative evidence for the requested behavior and compatibility.",
+              "tests": "packet/B.patch adds a discriminating require_git(false) assertion to crates/ignore/src/dir.rs::git_info_exclude_in_linked_worktree for relative commondir. The original git_type=None path would miss ignore_me. Existing absolute-commondir, missing-commondir and malformed-.git checks remain, and frozen native/contract/preserve exits are 0. However, the new configuration is not tested with absolute commondir, disabled excludes or ordinary directories, and the addition does not exercise either walker. This protects the main defect but leaves important requested preservation paths without focused regression coverage.",
+              "design": "packet/B.patch changes only the metadata-probe condition in crates/ignore/src/dir.rs and adds focused tests. It reuses resolve_git_commondir rather than introducing another resolver. Explicit inspection of the removed check_vcs_dir-only condition shows it is broadened only for enabled Git excludes; the discovered-file guard, repository-requirement logic, disabled-exclude guard and all existing test assertions are retained. No weakened protection or unrelated edit is present.",
+              "proposal": "packet/B.md clearly explains the missing .git probe, shared-directory resolution and focused test addition. Its coverage description matches the patch. However, the supplied frozen evidence contains no nextest transcript, baseline test result or timing supporting the claimed before/after focused run and 0.003-second result. Those claims receive no verification credit; the separately recorded successful build/native/contract/preserve outcomes are not reported in this proposal."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 2,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/A.patch changes dir.rs metadata probing to check_vcs_dir || git_exclude, supplying the file type needed by resolve_git_commondir for linked worktrees with require_git(false). The existing ordinary-directory fallback and disabled-exclude gate remain intact. packet/task.json records exit 0 for build, native, contract and preserve checks.",
+              "tests": "A.patch extends dir.rs::git_info_exclude_in_linked_worktree with a discriminating require_git(false) assertion for relative commondir. Existing absolute-commondir and malformed/missing metadata assertions remain. The new coverage does not exercise either walker, absolute commondir with require_git(false), or disabled excludes and ordinary-directory compatibility.",
+              "design": "The one-condition production change in crates/ignore/src/dir.rs addresses the missing metadata at its source and reuses resolve_git_commondir. The ignore_files_list presence optimization, check_vcs_dir-based repository detection, and git_exclude matcher gate are preserved. No existing tests or protections are deleted or weakened.",
+              "proposal": "packet/A.md precisely explains the cause, fix and focused regression in its title and body. Its verification discussion is limited to a claimed nextest run and gives no walker or preservation validation. The exact before/after result, version and timing are not corroborated by frozen observations and receive no verification credit; the independently recorded build/native successes are assessed separately."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 2,
+              "design": 4,
+              "proposal": 4
+            },
+            "evidence": {
+              "contract": "crates/ignore/src/dir.rs:374 broadens only the .git metadata probe to check_vcs_dir || git_exclude, allowing resolve_git_commondir to read linked-worktree metadata with require_git(false). The has_git/check_vcs_dir gate, found-file filter, and disabled-excludes matcher guard remain intact; ordinary .git directories still resolve to the same exclude path. packet/task.json records build, native, contract and preserve exit 0 for this submission.",
+              "tests": "packet/C.patch adds an error-free ignored-match assertion with require_git(false) to crates/ignore/src/dir.rs::git_info_exclude_in_linked_worktree while commondir is relative. This distinguishes the main defect. The existing absolute-commondir and malformed/missing metadata assertions remain intact, but the new configuration is not checked with absolute commondir, disabled excludes, ordinary directories or either public walker. Frozen native, contract and preserve checks pass, but do not add durable regression cases to this patch.",
+              "design": "The production change in crates/ignore/src/dir.rs addresses the skipped metadata probe and reuses resolve_git_commondir without changing parsing or matching APIs. Only focused regression tests accompany it. Inspection of the full patch finds no deleted tests, weakened assertions, disabled checks or removed behavior guards.",
+              "proposal": "packet/C.md gives a precise title and clearly explains the skipped probe, its consequence, the reused resolver and the added assertion. Its verification claim is narrowly scoped and includes a command. The reported nextest pre/post runs, duration and version are not supplied as frozen observations and receive no verification credit; packet/task.json separately supports successful selected build/native and contract/preserve checks."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": null,
+      "receipt_sha256": {
+        "grade": "18860383295713c36b0b564ced5ad9e502c745659a1c958933796b350528febc"
+      }
+    }
+  },
+  "route_review": "Requires inspection of the recorded independent review events.",
+  "prior_develop": {
+    "state": "completed",
+    "effort": {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 1694415,
+        "cachedInputTokens": 1653376,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 6285,
+        "reasoningOutputTokens": 1437,
+        "totalTokens": 1700700
+      },
+      "estimated_usd": 0.3102656,
+      "billed_usd": null,
+      "checkout_to_proposal_seconds": 623.2327190949582,
+      "prompt_to_terminal_seconds": 588.3236651718616,
+      "through_grading_seconds": 643.1777057151776,
+      "setup_seconds": 33.701187001075596,
+      "grading_seconds": 18.50085016619414,
+      "thread_count": 1,
+      "child_count": 0,
+      "root_tokens": {
+        "totalTokens": 1700700,
+        "inputTokens": 1694415,
+        "cachedInputTokens": 1653376,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 6285,
+        "reasoningOutputTokens": 1437
+      },
+      "descendant_tokens": {
+        "inputTokens": 0,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 0,
+        "reasoningOutputTokens": 0,
+        "totalTokens": 0
+      },
+      "pricing": {
+        "policy": "natural-standard-v2",
+        "rate_card": {
+          "source": "https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing",
+          "verified_utc": "2026-10-30T12:41:43Z",
+          "basis": "Codex Standard USD per 1M tokens; estimate, not invoice",
+          "rates": {
+            "gpt-6.1-sol": {
+              "uncached_input": 2,
+              "cached_input": 0.1,
+              "output": 10
+            },
+            "gpt-6.1-terra": {
+              "uncached_input": 1,
+              "cached_input": 0.05,
+              "output": 5
+            },
+            "gpt-6-astra": {
+              "uncached_input": 10,
+              "cached_input": 1,
+              "output": 50
+            },
+            "gpt-6-sol": {
+              "uncached_input": 2,
+              "cached_input": 0.2,
+              "output": 10
+            },
+            "gpt-6-luna": {
+              "uncached_input": 0.1,
+              "cached_input": 0.01,
+              "output": 0.5
+            },
+            "gpt-5.6-sol": {
+              "uncached_input": 4,
+              "cached_input": 0.4,
+              "output": 20
+            },
+            "gpt-5.6-terra": {
+              "uncached_input": 2,
+              "cached_input": 0.2,
+              "output": 12
+            },
+            "gpt-5.6-luna": {
+              "uncached_input": 0.2,
+              "cached_input": 0.02,
+              "output": 1.2
+            },
+            "gpt-6-astra-law": {
+              "uncached_input": 12.5,
+              "cached_input": 1.25,
+              "output": 62.5
+            }
+          }
+        },
+        "model_tokens": {
+          "gpt-6.1-sol": {
+            "threads": 1,
+            "tokens": {
+              "totalTokens": 1700700,
+              "inputTokens": 1694415,
+              "cachedInputTokens": 1653376,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 6285,
+              "reasoningOutputTokens": 1437
+            }
+          }
+        },
+        "root_start": {
+          "thread": "f44f3f377d7514e59e8452d20b719bba2979e717c775dcd360e8da5c058c3d6d",
+          "requested_model": "gpt-6.1-sol",
+          "effective_model": "gpt-6.1-sol",
+          "requested_effort": "medium"
+        },
+        "root_default_verified": true,
+        "token_coverage": "complete",
+        "priced_tokens": {
+          "inputTokens": 1694415,
+          "cachedInputTokens": 1653376,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 6285,
+          "reasoningOutputTokens": 1437,
+          "totalTokens": 1700700
+        },
+        "unpriced_tokens": {
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 0,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 0
+        },
+        "priced_threads": 1,
+        "unpriced_threads": 0,
+        "unpriced_reasons": {},
+        "known_usd_lower_bound": 0.3102656,
+        "terminal_proof": [
+          {
+            "thread": "f44f3f377d7514e59e8452d20b719bba2979e717c775dcd360e8da5c058c3d6d",
+            "bound": true,
+            "meter_consistent": true,
+            "model": "gpt-6.1-sol",
+            "tokens": {
+              "totalTokens": 1700700,
+              "inputTokens": 1694415,
+              "cachedInputTokens": 1653376,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 6285,
+              "reasoningOutputTokens": 1437
+            },
+            "start": {
+              "model": "gpt-6.1-sol",
+              "effort": "medium",
+              "parent": null
+            },
+            "trace_sha256": "8758ebde5c894532d696bc37d5b3bb6bf7c13ae44416552e58e0d0840c7ec2a9",
+            "turns": [
+              {
+                "turn": "7d8e4dd7e9b424ba9c9f84dc2dbeefb86d8f7e11951333d323dd00810853e6ce",
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "message_seq": 1366,
+                "usage_seq": 1367,
+                "terminal_seq": 1372,
+                "status": "completed",
+                "total": {
+                  "totalTokens": 1700700,
+                  "inputTokens": 1694415,
+                  "cachedInputTokens": 1653376,
+                  "cacheWriteInputTokens": 0,
+                  "outputTokens": 6285,
+                  "reasoningOutputTokens": 1437
+                }
+              }
+            ]
+          }
+        ],
+        "native_sha256": "7babec689ce3bac245145001243c56a2e678e4cde3c1ca2002eb09fab8128071"
+      },
+      "observed_commands": 18,
+      "native_hook_receipts": 40
+    },
+    "stage_exits": {
+      "build": 0,
+      "native": 0,
+      "contract": 0,
+      "preserve": 0
+    },
+    "patch_sha256": "6d9523a1c2ad7fa646490711f0b7d158f75130e49e2545d7f3b6ad6df31f3e5a",
+    "proposal_sha256": "969cf47a1e573ec9082d87b8f836e96565353901d5ff5489a80897b9caaa8452",
+    "full_pr_score": null,
+    "patch": "diff --git a/crates/ignore/src/dir.rs b/crates/ignore/src/dir.rs\nindex 61cd879..2f6d761 100644\n--- a/crates/ignore/src/dir.rs\n+++ b/crates/ignore/src/dir.rs\n@@ -373,7 +373,7 @@ impl Ignore {\n     ) -> (IgnoreInner, Option<Error>) {\n         let check_vcs_dir = self.inner.opts.require_git\n             && (self.inner.opts.git_ignore || self.inner.opts.git_exclude);\n-        let git_type = if check_vcs_dir\n+        let git_type = if (check_vcs_dir || self.inner.opts.git_exclude)\n             && ignore_files_list.is_none_or(|i| i.has_git_dir)\n         {\n             dir.join(\".git\").metadata().ok().map(|md| md.file_type())\ndiff --git a/crates/ignore/src/walk.rs b/crates/ignore/src/walk.rs\nindex f04f53a..4367a77 100644\n--- a/crates/ignore/src/walk.rs\n+++ b/crates/ignore/src/walk.rs\n@@ -2360,6 +2360,90 @@ mod tests {\n         );\n     }\n \n+    #[test]\n+    fn git_exclude_linked_worktree() {\n+        let td = tmpdir();\n+        let git_dir = td.path().join(\"repo/.git\");\n+        let worktree_git_dir = git_dir.join(\"worktrees/linked\");\n+        let trees = td.path().join(\"trees\");\n+        let worktree = trees.join(\"linked\");\n+        mkdirp(git_dir.join(\"info\"));\n+        mkdirp(&worktree_git_dir);\n+        mkdirp(worktree.join(\"sub\"));\n+        wfile(git_dir.join(\"info/exclude\"), \"ignored\\n\");\n+        wfile(\n+            worktree.join(\".git\"),\n+            &format!(\"gitdir: {}\\n\", worktree_git_dir.display()),\n+        );\n+        wfile(worktree.join(\"ignored\"), \"\");\n+        wfile(worktree.join(\"kept\"), \"\");\n+        wfile(worktree.join(\"sub/ignored\"), \"\");\n+        wfile(worktree.join(\"sub/kept\"), \"\");\n+\n+        for commondir in [\"../..\".to_string(), git_dir.display().to_string()] {\n+            wfile(worktree_git_dir.join(\"commondir\"), &commondir);\n+            for require_git in [true, false] {\n+                for git_exclude in [true, false] {\n+                    for root in [&worktree, &trees] {\n+                        let mut builder = WalkBuilder::new(root);\n+                        builder\n+                            .parents(false)\n+                            .git_global(false)\n+                            .git_ignore(false)\n+                            .require_git(require_git)\n+                            .git_exclude(git_exclude);\n+                        let expected = match (root == &trees, git_exclude) {\n+                            (false, true) => &[\"kept\", \"sub\", \"sub/kept\"][..],\n+                            (false, false) => &[\n+                                \"ignored\",\n+                                \"kept\",\n+                                \"sub\",\n+                                \"sub/ignored\",\n+                                \"sub/kept\",\n+                            ][..],\n+                            (true, true) => &[\n+                                \"linked\",\n+                                \"linked/kept\",\n+                                \"linked/sub\",\n+                                \"linked/sub/kept\",\n+                            ][..],\n+                            (true, false) => &[\n+                                \"linked\",\n+                                \"linked/ignored\",\n+                                \"linked/kept\",\n+                                \"linked/sub\",\n+                                \"linked/sub/ignored\",\n+                                \"linked/sub/kept\",\n+                            ][..],\n+                        };\n+                        assert_paths(root, &builder, expected);\n+                    }\n+                }\n+            }\n+        }\n+    }\n+\n+    #[test]\n+    fn git_exclude_without_requiring_git() {\n+        let td = tmpdir();\n+        wfile(td.path().join(\"ignored\"), \"\");\n+        wfile(td.path().join(\"kept\"), \"\");\n+        let mut builder = WalkBuilder::new(td.path());\n+        builder\n+            .parents(false)\n+            .git_global(false)\n+            .git_ignore(false)\n+            .require_git(false);\n+        assert_paths(td.path(), &builder, &[\"ignored\", \"kept\"]);\n+\n+        mkdirp(td.path().join(\".git/info\"));\n+        wfile(td.path().join(\".git/info/exclude\"), \"ignored\\n\");\n+        assert_paths(td.path(), &builder, &[\"kept\"]);\n+\n+        builder.git_exclude(false);\n+        assert_paths(td.path(), &builder, &[\"ignored\", \"kept\"]);\n+    }\n+\n     #[test]\n     fn explicit_ignore() {\n         let td = tmpdir();\n",
+    "proposal": "Honor shared Git excludes in linked worktrees\n\nInspect `.git` metadata when Git excludes are enabled so linked worktrees honor the shared repository\u2019s `info/exclude` with `require_git(false)`.\n\nAdd serial and parallel regression coverage for relative and absolute common directories, ordinary directories, and disabled excludes. Confirmed the regression fails before the fix.\n\nVerification passed:\n\n- `cargo build --locked --offline -p ignore`\n- `cargo test --locked --offline -p ignore --lib` \u2014 193 tests\n- `git diff --check`\n\nFormatting verification was unavailable because rustfmt is not installed. Changes remain in the checkout."
+  },
+  "assessor_costs": [
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 237100,
+        "cachedInputTokens": 204288,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1829,
+        "reasoningOutputTokens": 265,
+        "totalTokens": 238929
+      },
+      "threads": 1,
+      "usd_estimate": 0.1043428
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 216071,
+        "cachedInputTokens": 194816,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1960,
+        "reasoningOutputTokens": 271,
+        "totalTokens": 218031
+      },
+      "threads": 1,
+      "usd_estimate": 0.0815916
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 180018,
+        "cachedInputTokens": 159232,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 1988,
+        "reasoningOutputTokens": 173,
+        "totalTokens": 182006
+      },
+      "threads": 1,
+      "usd_estimate": 0.07737519999999999
+    }
+  ],
+  "observations": []
+}

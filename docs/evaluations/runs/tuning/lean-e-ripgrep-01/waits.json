@@ -1,0 +1,174 @@
+{
+  "method": "owned-turn-poll-responses-v1",
+  "method_sha256": "57d3bddb989307f0039bedeeb220f8109140ca6c3bc02b7b727c7306892543bc",
+  "pricing_sha256": "2cf710d65db4000f3f4905286d03260eddff3d711285535eceb16fe8e1d7a4fb",
+  "rate_card": {
+    "source": "https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing",
+    "verified_utc": "2026-10-30T12:41:43Z",
+    "basis": "Codex Standard USD per 1M tokens; estimate, not invoice",
+    "rates": {
+      "gpt-6.1-sol": {
+        "uncached_input": 2,
+        "cached_input": 0.1,
+        "output": 10
+      },
+      "gpt-6.1-terra": {
+        "uncached_input": 1,
+        "cached_input": 0.05,
+        "output": 5
+      },
+      "gpt-6-astra": {
+        "uncached_input": 10,
+        "cached_input": 1,
+        "output": 50
+      },
+      "gpt-6-sol": {
+        "uncached_input": 2,
+        "cached_input": 0.2,
+        "output": 10
+      },
+      "gpt-6-luna": {
+        "uncached_input": 0.1,
+        "cached_input": 0.01,
+        "output": 0.5
+      },
+      "gpt-5.6-sol": {
+        "uncached_input": 4,
+        "cached_input": 0.4,
+        "output": 20
+      },
+      "gpt-5.6-terra": {
+        "uncached_input": 2,
+        "cached_input": 0.2,
+        "output": 12
+      },
+      "gpt-5.6-luna": {
+        "uncached_input": 0.2,
+        "cached_input": 0.02,
+        "output": 1.2
+      },
+      "gpt-6-astra-law": {
+        "uncached_input": 12.5,
+        "cached_input": 1.25,
+        "output": 62.5
+      }
+    }
+  },
+  "limits": "Tool-only response classification, not avoidable cost. Ambiguous ownership excluded. Fork history fenced by native-owned task/context turn IDs. No reasoning content inspected.",
+  "attempts": [
+    {
+      "attempt": "D",
+      "native_sha256": "7babec689ce3bac245145001243c56a2e678e4cde3c1ca2002eb09fab8128071",
+      "result_sha256": "ff4dbceeae72a260f2a7d843fa2e606250b3ffa62f9b4a554b7d9c59fe737364",
+      "threads": [
+        {
+          "thread_sha256": "f44f3f377d7514e59e8452d20b719bba2979e717c775dcd360e8da5c058c3d6d",
+          "trace_sha256": "8758ebde5c894532d696bc37d5b3bb6bf7c13ae44416552e58e0d0840c7ec2a9",
+          "model": "gpt-6.1-sol",
+          "responses": 52,
+          "usd": 0.3102656000000001,
+          "ambiguous_responses": 0
+        }
+      ],
+      "responses": 52,
+      "usd": 0.31026560000000003,
+      "categories": {
+        "unproven_or_work": {
+          "responses": 17,
+          "usd": 0.13638520000000004
+        },
+        "write_stdin_only": {
+          "responses": 11,
+          "usd": 0.055483199999999996
+        },
+        "outer_wait_only": {
+          "responses": 23,
+          "usd": 0.11234880000000001
+        },
+        "no_tool_call": {
+          "responses": 1,
+          "usd": 0.0060484
+        }
+      },
+      "poll_only_responses": 34,
+      "poll_only_usd": 0.167832,
+      "ambiguous_responses": 0
+    },
+    {
+      "attempt": "E",
+      "native_sha256": "9641975a57e8b40ae7b1429814e5794b8c921f5d15384663434c014f14d9d3c7",
+      "result_sha256": "b99522c501fe03b04c2b563c2ed6b7489fc46234912923084e07447088c128d0",
+      "threads": [
+        {
+          "thread_sha256": "4fb131bf73607c8250a44c341f6cd65047244577946501f0b62e85dc7069ffbe",
+          "trace_sha256": "4a5d48874811babf9461dcd9cb915b70ed3cccf2ae9f8b14bc47d6ebefefd0f8",
+          "model": "gpt-6.1-sol",
+          "responses": 73,
+          "usd": 0.37569119999999995,
+          "ambiguous_responses": 0
+        }
+      ],
+      "responses": 73,
+      "usd": 0.3756912,
+      "categories": {
+        "unproven_or_work": {
+          "responses": 18,
+          "usd": 0.12350639999999999
+        },
+        "write_stdin_only": {
+          "responses": 16,
+          "usd": 0.07926200000000001
+        },
+        "outer_wait_only": {
+          "responses": 38,
+          "usd": 0.1618824
+        },
+        "no_tool_call": {
+          "responses": 1,
+          "usd": 0.011040399999999999
+        }
+      },
+      "poll_only_responses": 54,
+      "poll_only_usd": 0.24114440000000004,
+      "ambiguous_responses": 0
+    },
+    {
+      "attempt": "stock",
+      "native_sha256": "991595b5192558bf591ce7221b4887cc85dc7547d4ed69db277c885c99cae454",
+      "result_sha256": "bd12fabdc41b8347d1d20c84c808f48e445d97b6118de75e21cab034398d5111",
+      "threads": [
+        {
+          "thread_sha256": "fe3b6827327678c64f895b4c60dc8f7575e7de668cad07d1182ae69f6fcbe967",
+          "trace_sha256": "9662011ee2b52ac1e05e692516acd96a0b583a477683d9b2e18f62b5863e66b0",
+          "model": "gpt-6.1-sol",
+          "responses": 59,
+          "usd": 0.3332292,
+          "ambiguous_responses": 0
+        }
+      ],
+      "responses": 59,
+      "usd": 0.3332292,
+      "categories": {
+        "unproven_or_work": {
+          "responses": 18,
+          "usd": 0.112312
+        },
+        "write_stdin_only": {
+          "responses": 34,
+          "usd": 0.1769328
+        },
+        "sleep_only": {
+          "responses": 6,
+          "usd": 0.0379652
+        },
+        "no_tool_call": {
+          "responses": 1,
+          "usd": 0.006019200000000001
+        }
+      },
+      "poll_only_responses": 40,
+      "poll_only_usd": 0.214898,
+      "ambiguous_responses": 0
+    }
+  ]
+}
