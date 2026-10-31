@@ -1,0 +1,9 @@
+{
+  "label": "develop-d-await-native-checks-v1",
+  "package_sha256": "a848ecd8a72a435415dd4fb7754efe5e7b8cbad7308a26b5b114ca5249e90d2e",
+  "plugin_hook_sha256": "c11f99f50ac9b8a842af8d504f3df7a19cf3353085bd609dc670e3ecaa759e1a",
+  "hook_sha256": {
+    "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+    "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+  }
+}
