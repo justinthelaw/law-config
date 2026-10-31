@@ -8,6 +8,8 @@ For all validated pilots, run `python3 -B docs/evaluations/tools/records.py tuni
 
 ## Lean workflow pilots
 
+In the [matched fmt pilot](lean-d-fmt-01/README.md), D cost $0.724 and took 1,408.52 seconds versus C's $0.669 and 1,426.22 seconds; D failed the joint efficiency screen.
+
 The seven-skill Develop revision lost the blind Commander comparison and failed Black's public behavior check. Both cases used the same Superpowers companion in prior and lean Develop. Stock had neither plugin.
 
 | Case and measure | Stock | Lean Develop | Prior Develop |
