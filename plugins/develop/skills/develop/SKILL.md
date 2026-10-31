@@ -5,8 +5,10 @@ description: Implement and verify repository changes through their callers.
 
 # Develop
 
-Trace the requested behavior to its smallest owner. Reproduce bugs through a real caller. When extending a condition or replacing a representation, preserve an input the old path accepted that the new one might lose.
+Reproduce bugs through a real caller. Change the smallest owner and retain existing conversions and fallbacks. Check alternate definitions of dependencies you introduce. Verify the result or written state for the new case and an old input the edit could break.
 
-Make the change and run the focused regression with the project's configuration. Exercise changed entry points as users invoke them. For writes and cleanup, check the resulting state. Complete required checks and report what ran.
+Start with the cheapest check that executes the changed code. Reuse the project's toolchain, build tree and results. If setup fails, try the documented entry point and a focused executable equivalent. Run required checks and report material gaps.
 
-Handle a local, verifiable change directly. Use [design or review](references/planning-and-review.md) for a requested review, repository requirement, or consequential uncertainty the checks cannot settle. [Iterate](../iterate/SKILL.md) covers delivery.
+For long builds and tests, [wait on the running command](references/long-checks.md). Do independent work while it runs. Otherwise let one tool call wait for its exit and diagnostics.
+
+Handle verifiable changes directly. Use [design or review](references/planning-and-review.md) when requested, required, or needed to settle consequential uncertainty. [Iterate](../iterate/SKILL.md) covers delivery.
