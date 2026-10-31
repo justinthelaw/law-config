@@ -10,7 +10,7 @@
 
 - Put benchmark environments, fixtures, scoring and portable results under `docs/evaluations/`.
 - The marketplace installs `plugins/develop/`. Keep evaluator assets and links to private run state outside that package.
-- Put raw profiles, logs, caches and workspaces under the repository’s ignored task directory.
+- Put raw profiles, logs, caches and workspaces under the repository's ignored task directory.
 - Before publishing a bundle, verify hashes and check for credentials and private host paths.
 
 ## Run a fair comparison

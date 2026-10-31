@@ -1,6 +1,6 @@
 # Develop evaluations
 
-On the historical 20-repository panel, Codex and Develop each produced 15 ready proposals. Seventeen merged PRs passed the same gates. Develop cost 1.71× as much across 14 fully metered pairs and took 1.38× as long from checkout to proposal across 15 completed pairs. The primary campaign took 10h 23m through assessment, including interruptions. Five recovery pairs took 2h 52m. [Results and case evidence](runs/pr-quality-panel-v2/README.md)
+Stock Codex averaged **82.50/100** across 20 historical PR tasks. Develop with Superpowers averaged **75.19/100** and the actual merges averaged **59.88/100**. Stock delivered 18 functional PRs and Develop delivered 16. On the 17 completed, fully metered pairs, Develop took 21.7% longer and cost 26.4% more. [Current results and per-repository table](runs/pr-quality-pytest-entry-natural-v1/README.md) · [Earlier primary benchmark and recovery](runs/pr-quality-panel-v2/README.md)
 
 ## Read results offline
 
@@ -38,7 +38,7 @@ Default runs compare stock Codex with reference Develop and pinned Superpowers 6
 | Goal | Path |
 | --- | --- |
 | Test one change on a tuning case | [Matched efficiency pilot](develop-benchmark/panel/README.md#run-a-matched-efficiency-pilot) · [Published tuning results](runs/tuning/) |
-| Test a fixed package on fresh cases | Set `DEVELOP_EVAL_COHORT=pr-quality-confirmation-natural-v1` and `PANEL_TREATMENT_LOCK` to the candidate’s `treatment.json`, then run a newly named full panel. Inspect progress with `status NAME`. |
+| Test a fixed package on fresh cases | Set `DEVELOP_EVAL_COHORT=pr-quality-confirmation-natural-v1` and `PANEL_TREATMENT_LOCK` to the candidate's `treatment.json`, then run a newly named full panel. Inspect progress with `status NAME`. |
 | Freeze a candidate | `python3 -B "$e/benchmark.py" capture-treatment --previous RECIPE --label NAME`. Add `--source CHECKOUT` for another checkout. |
 | Replay a published caller check | `python3 -B "$e/tools/replay_caller.py" caller-werkzeug-01 public-warnings`. Add `--run NAME` for another pilot on the same task. |
 | Recover primary capacity failures | `python3 -B "$e/benchmark.py" recover PRIMARY NEW_NAME`. Report recovery pairs separately. |

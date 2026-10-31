@@ -1,5 +1,7 @@
 """Preflight and resume the frozen native runner. Imported only for live operations."""
 from pathlib import Path
+from contextlib import contextmanager
+from hashlib import sha256
 import math
 import os
 import re
@@ -8,6 +10,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import tomllib
 
 # The CLI script is also importable by the offline tests.
 import benchmark as B
@@ -21,6 +24,41 @@ from verify_treatment import omissions, verify
 E = C.E
 RECIPE = B.HERE / "treatments/c619be0cc266/recipe.json"
 CURRENT = B.HERE / B.read(B.HERE / "catalog.json")["current_treatment"]
+
+
+@contextmanager
+def replay_companion(home, inventory, installed):
+    """Bind only the receipted launch source while checking a retained profile."""
+    if not installed or not E.host.COMPANION:
+        yield
+        return
+    import composite
+    raw = (home / "config.toml").read_bytes()
+    # Native project trust may append one terminal table after release.
+    candidates = {raw, raw.split(b"[projects.", 1)[0].rstrip() + b"\n"}
+    matches = [b for b in candidates if sha256(b).hexdigest() == inventory["config_sha256"]]
+    if len(matches) != 1:
+        raise ValueError("retained launch configuration differs from its receipt")
+    entry = tomllib.loads(matches[0].decode())["marketplaces"]["superpowers-local"]
+    source = Path(entry["source"])
+    if (entry["source_type"] != "local" or source.resolve(strict=True) != source
+            or source.parent != B.STATE / "volatile" or not source.name.startswith("companion-source-")
+            or any((source / p).is_symlink() for p in
+                   (".agents", ".agents/plugins", "plugins", "plugins/superpowers"))):
+        raise ValueError("unexpected retained companion source")
+    if git(source, "rev-parse", "HEAD").decode().strip() != E.host.COMPANION["source_commit"]:
+        raise ValueError("retained companion commit differs")
+    composite.verify_component(source / "plugins/superpowers", E.host.COMPANION)
+    composite.verify_marketplace(source)
+    original = E.host.COMPANION_SOURCE
+    catalog = ".agents/plugins/marketplace.json"
+    if (source / catalog).read_bytes() != (Path(original) / catalog).read_bytes():
+        raise ValueError("retained companion catalog differs from fresh pin")
+    try:
+        E.host.COMPANION_SOURCE = str(source)
+        yield
+    finally:
+        E.host.COMPANION_SOURCE = original
 
 
 def git(root, *args):

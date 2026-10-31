@@ -7,7 +7,7 @@ Both workflows finished on five of the six repositories. Pure Codex stopped at p
 | Earlier result | Change in this experiment |
 | --- | --- |
 | Both source-packet arms passed 7 of 13 fmt checks. Six affected call paths still failed. | Iterate asks for an observable check at each affected public entry point. |
-| Both runner-space patches failed compilation. Develop’s tests also had four type errors. | Iterate asks for the cheapest real compiler or typecheck before final review. |
+| Both runner-space patches failed compilation. Develop's tests also had four type errors. | Iterate asks for the cheapest real compiler or typecheck before final review. |
 | Develop used 23.5% more tokens on recovered fixtures and 25.7% more on replacements. | Shorter review packets group absent fields. Each workflow chooses its own reviewers. |
 | Historical and replacement fixtures measured different behaviors. One browser suite timed out. | Grade each proposal against the same starting tree and compare it with its actual merge. |
 
@@ -38,7 +38,7 @@ From the repository root, restore the historical package and runner.
 python3 -B docs/evaluations/benchmark.py restore-six
 ```
 
-Change to the printed workflow directory. Its private checkout contains the verified 205-file treatment. All raw data stays under that checkout’s ignored `tmp/six-repo-workflow/`. Docker manages its own image layers.
+Change to the printed workflow directory. Its private checkout contains the verified 205-file treatment. All raw data stays under that checkout's ignored `tmp/six-repo-workflow/`. Docker manages its own image layers.
 
 ```sh
 export PYTHONDONTWRITEBYTECODE=1
@@ -76,7 +76,7 @@ python3 -B resume.py run
 python3 -B resume.py report
 ```
 
-Freeze retains the primary report and its released receipts. Resume qualifies the root, child and hooks before releasing the remaining slots. A second capacity error pauses the supplement. The primary’s five allocations and the supplement’s seven stay in separate cohorts. The original jq stop stays in its primary row.
+Freeze retains the primary report and its released receipts. Resume qualifies the root, child and hooks before releasing the remaining slots. A second capacity error pauses the supplement. The primary's five allocations and the supplement's seven stay in separate cohorts. The original jq stop stays in its primary row.
 
 ## Read the measurements
 

@@ -1,0 +1,30 @@
+{
+  "format": "law-config.distribution-replay/v1",
+  "pilot": "owner-config-runner-space-01",
+  "result_file_sha256": "035bbc6b80f5ae26c818f88d52d7cc8a2dba79a6027fd527996f56a2af875fbe",
+  "replay_receipt_sha256": "e45ca6aca2e4988d767a291e5bcf30b1a18a5a080f95922900ce3965f94c8d4c",
+  "base": "a2f3ac8c38982d83e3d02e89342d856a7e026268",
+  "candidate_patch_sha256": "df725606190417e542230f977c777d5a2ff3c6eb648dc521eb7f5addc4b88e32",
+  "command": "npm run check-dist",
+  "image": "node@sha256:de636e50060a9908cf40a20a50d027ed74a99b2e31d2635f3b13e9e4e5e97e74",
+  "offline_dependencies_sha256": "ee527a973e51a0e829abfab373d091753b0c592b36d17edfe8ef0e8b0f39a8a4",
+  "runs": {
+    "base": {
+      "git_tree": "f7ed8e51e5b068fcbeb1fc8d8e92640aef3253e4",
+      "exit": 1,
+      "wall_seconds": 7.023,
+      "terminal_sha256": "a704c0adc05c3acab057ac6f1b68cd60a01d1ec64c6530c238ace7d0c4104400"
+    },
+    "candidate": {
+      "git_tree": "961b359afbbbe9c783cad04746739a90e81d5f3b",
+      "exit": 1,
+      "wall_seconds": 6.464,
+      "terminal_sha256": "40ba746a9287e5cb6a458e518e54efe48954ee25f9c0d75feb3b259a893fc8b8"
+    }
+  },
+  "committed_bundle_sha256": "5a9aafdcb54d39697c79ee9a6b982e04b85f0e381cd24cb295b5368640054c37",
+  "paired_rebuilt_bundle_sha256": "2a887eeef91b40a8d48b0bed93f1244a63e800b5df1d83772b6567498c3dd411",
+  "original_native_rebuilt_bundle_sha256": "8e646f0661e74c5171628b042e4ce44e7382e0c0a57ca9ac056dabf56d0903be",
+  "finding": "The base and candidate built identical files in the matched replay. Both failed when the repository compared the rebuilt index.js with its committed bytes. The original worker produced different bytes. The cause of that difference remains unresolved.",
+  "primary_results_changed": false
+}

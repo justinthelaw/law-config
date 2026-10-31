@@ -78,4 +78,3 @@ def capture(args):
     restored = N.restore_source(target / "recipe.json")
     print("Restored", pin, "from", target.relative_to(N.B.ROOT), "into", restored)
     return 0
-

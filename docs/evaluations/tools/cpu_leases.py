@@ -43,4 +43,3 @@ def lease(state, cpus):
             file=stack.enter_context((locks/(group+".lock")).open("a"))
             fcntl.flock(file,fcntl.LOCK_EX)
         yield
-

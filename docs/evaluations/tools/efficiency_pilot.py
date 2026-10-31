@@ -130,7 +130,8 @@ def check_input(name, key, arm):
         server.inventory(installed)
         listed = server.rpc("skills/list", {"cwds": [str(work)]})["data"]
         skills = [s for group in listed for s in group["skills"] if s["enabled"]]
-        terminal = stock.inventory(server, installed, skills, disabled)
+        with N.replay_companion(home, inv, installed):
+            terminal = stock.inventory(server, installed, skills, disabled)
         if (sorted(s["name"] for s in skills) != sorted(inv["skills"]) or
                 terminal["repository_instructions_sha256"] != inv["stock"]["repository_instructions_sha256"]):
             raise ValueError("final skill catalog or repository instructions differ from release")
@@ -161,7 +162,7 @@ def load_hypothesis(args):
                 raise ValueError("hypothesis does not match the selected treatments")
             args.hypothesis_sha256 = hashlib.sha256(data).hexdigest()
         if args.case not in {row["case"] for row in args.experiment["evidence"]}:
-            raise ValueError("case is outside this hypothesis’s registered tuning evidence")
+            raise ValueError("case is outside this hypothesis\u2019s registered tuning evidence")
         sys.path.insert(0, str(B.PANEL.parent))
         from confirmation.cohort import AUTHORITY
         C.PROMPT = C.PROMPT.replace("Design and unattended implementation are approved.", AUTHORITY)

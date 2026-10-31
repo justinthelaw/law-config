@@ -10,6 +10,14 @@ repos:
       - id: check-added-large-files
         name: Large Files Check
         args: ["--maxkb=1024"]
+        # Exact immutable archives are verified by public-archive-integrity.
+        exclude: |
+          (?x)^docs/evaluations/(?:
+            treatments/(?:
+              fdc34c55ece9|6f23f7f98c26|a4465fb13180|a826a2341b6c|5b59b578a1bc
+            )/package[.]patch
+            |runs/pr-quality-panel-v2/baseline-53a8bd549c93/submissions[.]jsonl
+          )$
         stages: [pre-push]
 
       - id: check-ast
@@ -29,6 +37,8 @@ repos:
         stages: [pre-commit, pre-push]
 
       - id: trailing-whitespace
+        # Unified diff context lines and indentation are patch data.
+        exclude: '^docs/evaluations/(?:runs|treatments)/.*[.]patch$'
         name: Whitespace Cleaning Check
         args: [--markdown-linebreak-ext=md]
         stages: [pre-commit, pre-push]
@@ -37,6 +47,8 @@ repos:
     rev: 1.0.0
     hooks:
       - id: fix-smartquotes
+        # Preserve patch syntax and frozen machine evidence byte for byte.
+        exclude: "^docs/evaluations/(?:(?:runs|treatments)/.*\\.(?:patch|json|jsonl)|develop-benchmark/panel/upstream\\.json)$"
         name: Fix Quotes
         stages: [pre-commit, pre-push]
 
@@ -84,6 +96,14 @@ repos:
 
   - repo: local
     hooks:
+      - id: public-archive-integrity
+        name: Public Archive Integrity
+        language: python
+        entry: python docs/evaluations/tools/check_public_archives.py
+        pass_filenames: false
+        always_run: true
+        stages: [pre-commit, pre-push]
+
       - id: shell-script-syntax
         name: Shell Script Syntax Check
         language: system

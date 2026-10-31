@@ -1,6 +1,6 @@
 # Validation evidence
 
-Use the repository’s instructions, manifests, CI and pinned tools to choose affected and required checks.
+Use the repository's instructions, manifests, CI and pinned tools to choose affected and required checks.
 
 - Record the command, directory, revision, exit status and cases that ran. Report installation and service readiness separately. Identify skipped tests and missing jobs.
 - Keep raw logs in a private, uniquely named evidence directory outside distributable source. Include start/end times and one result per attempt. Do not overwrite the failure with a retry. Limit permissions where supported; do not copy credentials, private transcripts or full logs into a PR.

@@ -26,7 +26,7 @@ New runs install the 106-file reference Develop package with official Superpower
 | Reference Develop alone | Set `PANEL_TREATMENT_LOCK` to the [106-file lock](../../treatments/3b0bd70d20a6/treatment.json). Leave `PANEL_PLUGIN_CHECKOUT` unset to restore its source. |
 | Historical Develop treatment | Set `PANEL_TREATMENT_LOCK` to the absolute path of `treatment.json`. The operator reconstructs the package from the [recipe](../../treatments/c619be0cc266/recipe.json) and its Git base. |
 | New candidate | Set `PANEL_PLUGIN_CHECKOUT` to the candidate checkout. Set `PANEL_TREATMENT_LOCK` to its reviewed lock. Choose a new run name. |
-| Historical report with raw receipts | Use `report NAME`. The operator selects the plan’s historical treatment automatically. |
+| Historical report with raw receipts | Use `report NAME`. The operator selects the plan's historical treatment automatically. |
 
 The operator reconstructs each package in the ignored task directory. New recipes store the difference from one verified full package. Restoration checks both package hashes. Changes to the hook command boundary need a separate isolation review.
 
@@ -42,13 +42,13 @@ The operator reconstructs each package in the ignored task directory. New recipe
 | `report NAME` | Regenerate the results after adjudication. A published result verifies offline. |
 | `recover PRIMARY NEW_NAME` | Run fresh pairs only for primary service-capacity failures. |
 
-New historical runs use `pr-quality-pytest-entry-natural-v1`. It includes the Pytest console check and Runner Space’s structural ledger check. Each arm starts on Sol Medium and can choose its own workers. For a new 20-repository confirmation, set `DEVELOP_EVAL_COHORT=pr-quality-confirmation-natural-v1`. Resume from the original evaluator source and treatment. The operator restores the named cohort. The qualifier uses Sol Medium. Unpriced worker usage leaves total proposal cost unknown.
+New historical runs use `pr-quality-pytest-entry-natural-v1`. It includes the Pytest console check and Runner Space's structural ledger check. Each arm starts on Sol Medium and can choose its own workers. For a new 20-repository confirmation, set `DEVELOP_EVAL_COHORT=pr-quality-confirmation-natural-v1`. Resume from the original evaluator source and treatment. The operator restores the named cohort. The qualifier uses Sol Medium. Unpriced worker usage leaves total proposal cost unknown.
 
-The `natural-standard-v2` estimate counts each participant’s final meter once at its verified model’s frozen rate. Missing proof or a model change within a single meter leaves total USD unknown. The estimate excludes contract discounts, regional and speed multipliers, and feature charges. [Frozen rates](pricing.py) · [Codex Standard rate card](https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing)
+The `natural-standard-v2` estimate counts each participant's final meter once at its verified model's frozen rate. Missing proof or a model change within a single meter leaves total USD unknown. The estimate excludes contract discounts, regional and speed multipliers, and feature charges. [Frozen rates](pricing.py) · [Codex Standard rate card](https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing)
 
 Before proposal or assessor calls, the operator checks the reader package versions. Each case receives one native proposal from pure Codex and one from Develop. Each arm uses the same starting tree, task, tools, resources and deadline. Develop adds its installed skills and trusted hooks. Pure uses five stock skills. Both arms inherit the same two organization-managed protections and disable optional repository skills. Built-in repository instructions remain available.
 
-The plan fixes each arm’s order. Each lane runs both arms consecutively on one CPU pair. The operator serializes runs that share cache and CPU lanes. It preserves every allocation, including empty submissions and service failures. After a technical stop, inspect `status NAME`. Rerun the same name to requalify the service and release only remaining slots.
+The plan fixes each arm's order. Each lane runs both arms consecutively on one CPU pair. The operator serializes runs that share cache and CPU lanes. It preserves every allocation, including empty submissions and service failures. After a technical stop, inspect `status NAME`. Rerun the same name to requalify the service and release only remaining slots.
 
 Three fresh, plugin-free judges each see all three submissions. The display order rotates. A primary rotation allows one technical repair. Recovery allows one assessor call per rotation and one fresh pair per affected case. It uses the original CPU pairs and records its parent plan. A named recovery pauses new releases if a proposal is blocked. In-flight proposals finish. Resume the same name to qualify the service before spending the remaining calls. The bundle records the release policy and any slots allocated before it took effect.
 
@@ -58,7 +58,7 @@ A command exits with code 0 when the report has complete assessments. Code 2 ind
 
 ## Run a matched efficiency pilot
 
-Select a tuning case and both treatment locks. Use `--hypothesis ID` for a case in the published tuning policy or the candidate’s `hypothesis.json`. The latter binds the previous package and is hashed at registration. Each arm receives the same waiver of interactive plan review. All three proposal slots share the CPU pair, task, deadline, grader and prices. Pure Codex exposes only stock skills and organization protections inside the common offline boundary.
+Select a tuning case and both treatment locks. Use `--hypothesis ID` for a case in the published tuning policy or the candidate's `hypothesis.json`. The latter binds the previous package and is hashed at registration. Each arm receives the same waiver of interactive plan review. All three proposal slots share the CPU pair, task, deadline, grader and prices. Pure Codex exposes only stock skills and organization protections inside the common offline boundary.
 
 ```sh
 e=docs/evaluations
@@ -69,7 +69,7 @@ python3 -B "$e/benchmark.py" pilot intent-go-git-01 --case go-git \
 
 Three blinded judges compare the candidate, pure Codex and the merge. A strict win requires a ready candidate, higher full-PR quality and complete proposal cost at or below pure. A tie misses the target. Confirmation exports preserve the readiness-first `win` and separately record `strict_quality_win` from the three blinded rotations, complete cost and verified profiles. Published status reports the strict result across observed cases and separately across the frozen 20 distinct historical panel repositories. A known miss is false; an incomplete roster or missing evidence is null. The strict claim also requires one declared plan, GPT-6.1 Sol Medium producers and judges, the frozen common price rates, pinned native CLI/bwrap and a consistent package/treatment identity. Portable records corroborate these declared fields; raw native execution and configuration still require their sealed attestations. Neither result establishes an outcome for unobserved repositories. Compare prior Develop on verified behavior, required reviews, cost and checkout-to-proposal time. Its soft PR quality stays unknown. The pilot records every allocation under `tmp/pr-quality-panel/`. Resume the same name after interruption.
 
-After grading, run the candidate hypothesis’s `measure_with` command if present. Keep its JSON receipt under `tmp/pr-quality-panel/pilots/NAME/sensitivity/MEASURE/receipt.json`. Then run `python3 -B "$e/benchmark.py" report NAME` to export all four submissions, the three proposal costs and separate assessor costs. The same command verifies `runs/tuning/NAME/result.json` offline in a fresh checkout.
+After grading, run the candidate hypothesis's `measure_with` command if present. Keep its JSON receipt under `tmp/pr-quality-panel/pilots/NAME/sensitivity/MEASURE/receipt.json`. Then run `python3 -B "$e/benchmark.py" report NAME` to export all four submissions, the three proposal costs and separate assessor costs. The same command verifies `runs/tuning/NAME/result.json` offline in a fresh checkout.
 
 ## Prospective runner protocol
 

@@ -3,7 +3,7 @@
 Sealed #19 facts under the unchanged preregistered PLAN. This supplement does not change grades, judges, readiness, token accounting or goal verdicts.
 
 | Producer criterion | Stock | Prior | Candidate |
-|---|---:|---:|---:|
+| --- | ---: | ---: | ---: |
 | Retained the representation before editing | false | false | true |
 | Inspected before representation replacement | false | false | null: no replacement |
 | Exact-final outward operation pass | null | null | null |
