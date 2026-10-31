@@ -1,0 +1,16 @@
+{
+  "script": "../../tools/measure_waits.py",
+  "sha256": "57d3bddb989307f0039bedeeb220f8109140ca6c3bc02b7b727c7306892543bc",
+  "pricing_sha256": "2cf710d65db4000f3f4905286d03260eddff3d711285535eceb16fe8e1d7a4fb",
+  "input": "Sealed participant attempt directories for every arm; sum root and descendant model responses.",
+  "field": "poll_only_responses",
+  "rule": "Compare exclusive polling turns using the same frozen counter. If ownership or an unclassified dynamic tool call could reverse the comparison, the mechanism result remains unestablished. Retain canonical grades and costs independently.",
+  "control_check": {
+    "pilot": "lean-d-fmt-01",
+    "counts": {
+      "prior": 97,
+      "stock": 78,
+      "candidate": 101
+    }
+  }
+}
