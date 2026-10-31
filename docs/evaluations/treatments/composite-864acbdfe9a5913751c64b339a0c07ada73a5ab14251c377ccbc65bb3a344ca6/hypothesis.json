@@ -1,0 +1,18 @@
+{
+  "id": "c-optional-companion-diagnostic-v1",
+  "previous": "0085f2ad8d61c0b153d7909f12b2e80f320676494e2bbe2fe83d1e6f07a7bd04",
+  "change": "Hold frozen C package constant and add official Superpowers 6.3.0 as an available companion; native skill invocation and case input otherwise unchanged.",
+  "evidence": [
+    {
+      "case": "commander",
+      "reason": "Exposed routine tuning case selected before broad primary results; independent canonical control and pilot waiver, distinct from historical primary."
+    }
+  ],
+  "evaluator_binding": {
+    "protocol": "pr-quality-pytest-entry-natural-v1",
+    "source_sha256": "51a4740fa2bc38f96e006d6c904b3ab9037f4151e3295c42a2293237b3c67691",
+    "case": "commander",
+    "fixture_sha256": "4336a487ab29aaf24ec998deaa844138a4ebc7f426cf50f54a5bfca302c93408"
+  },
+  "falsifier": "A companion efficiency benefit is unestablished if required behavior regresses, metering is incomplete or either complete proposal cost or checkout time fails to improve over standalone C. Soft prior quality remains unknown; n=1 does not establish broad benefit."
+}
