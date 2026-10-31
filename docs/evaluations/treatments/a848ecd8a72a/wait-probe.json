@@ -1,0 +1,67 @@
+{
+  "format": "law-config.pinned-native-wait-fixture/v1",
+  "status": "PASS",
+  "source_summary_sha256": "d6551b94788568476ef8e7c91f74d744f40ff864d707bbc75820a2178794498c",
+  "cli_sha256": "c1eecb4b2304cb0e077a673231e30c9d759dec8fea4a6b8818078865e392fa90",
+  "outer_yield_ms_requested": 300000,
+  "native_empty_wait_ms_requested": 300000,
+  "one_code_cell_three_commands": true,
+  "model_generated_decisions": 0,
+  "external_model_calls": 0,
+  "local_mock_requests": 2,
+  "observed": [
+    {
+      "case": "success",
+      "result": {
+        "exit_code": 0,
+        "still_running": false,
+        "waits": 1,
+        "elapsed_ms": 9338,
+        "initial": "",
+        "tail": "success-startsuccess-done",
+        "error": null
+      }
+    },
+    {
+      "case": "failure",
+      "result": {
+        "exit_code": 7,
+        "still_running": false,
+        "waits": 1,
+        "elapsed_ms": 4762,
+        "initial": "",
+        "tail": "failure-startfailure-diagnostic",
+        "error": null
+      }
+    },
+    {
+      "case": "already_terminal",
+      "result": {
+        "exit_code": 9,
+        "still_running": false,
+        "waits": 1,
+        "elapsed_ms": 2884,
+        "initial": "",
+        "tail": "early-failure",
+        "error": null
+      }
+    }
+  ],
+  "checks": {
+    "success_exit": true,
+    "delayed_failure_exit": true,
+    "immediate_failure_exit": true,
+    "success_waited": true,
+    "delayed_failure_waited": true,
+    "failure_diagnostic_retained": true,
+    "no_pending_handles": true,
+    "success_early_and_final_combined": true,
+    "immediate_command_diagnostic_retained": true
+  },
+  "limitations": [
+    "Original strict initial-chunk assertion is false because remote executor returned empty initial output and both early and final output in its wait chunk; combined output correctly retains both. Original raw fixture result preserved.",
+    "Instantaneous failing command still returned a native handle and completed via one wait because of remote transport latency; already-terminal-in-initial-call branch was not observed in this pinned guest run.",
+    "300000ms requests accepted and commands returned on completion; this short fixture does not measure the maximum supported elapsed wait or any treatment savings.",
+    "Same pinned native app-server and guest sandbox; no sandbox weakening. Prior host socket guard and remote unsupported explicit shell fixture failures retained separately."
+  ]
+}
