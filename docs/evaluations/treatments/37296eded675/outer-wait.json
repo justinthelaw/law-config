@@ -1,0 +1,34 @@
+{
+  "checks": {
+    "first_exec_yielded": true,
+    "one_outer_wait_and_final_ack": true,
+    "one_native_wait": true,
+    "actual_exit_7": true,
+    "all_diagnostics_retained": true,
+    "returned_before_requested_wait": true,
+    "no_inference": true
+  },
+  "passed": true,
+  "cli_sha256": "c1eecb4b2304cb0e077a673231e30c9d759dec8fea4a6b8818078865e392fa90",
+  "fixture_sha256": "d42f9f612c116e286ebf052fa0b303311bd5e46e2b6d0edcefc702f2eba3d71c",
+  "native_wait_requested_ms": 300000,
+  "outer_wait_requested_ms": 300000,
+  "initial_cell_yield_ms": 1000,
+  "shell_sleep_seconds": 15,
+  "command_exit": 7,
+  "combined_output": "outer-startouter-doneouter-diagnostic",
+  "native_wait_count": 1,
+  "command_cell_elapsed_ms": 18278,
+  "outer_wait_observed_seconds": 17.2,
+  "total_fixture_seconds": 44.153393507003784,
+  "mock_response_requests": 3,
+  "model_tool_returns": 2,
+  "final_mock_acknowledgements": 1,
+  "inference_calls": 0,
+  "remaining_owned_containers": 0,
+  "limits": [
+    "Short fixture proves accepted 300000ms requests and early return on completion, not full-duration blocking or benchmark savings.",
+    "CLI process exit 0 acknowledges fixture completion; command exit 7 is intentionally preserved.",
+    "Uses original evaluator guest sandbox and pinned CLI; no task authentication or trust settings changed."
+  ]
+}
