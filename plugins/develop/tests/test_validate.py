@@ -565,10 +565,10 @@ class PackageValidation(unittest.TestCase):
                               if policy else original.partition("policy:")[0])
                     path.write_text(broken, encoding="utf-8")
                     result = self.validate()
-                    self.assertNotEqual(result.returncode, 0)
-                    self.assertIn(f"skills/{skill}/agents/openai.yaml", result.stdout + result.stderr)
-                    self.assertIn("allow_implicit_invocation", result.stdout + result.stderr)
                     path.write_text(original, encoding="utf-8")
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn(str(path.relative_to(self.package)), result.stdout + result.stderr)
+                    self.assertIn("allow_implicit_invocation", result.stdout + result.stderr)
 
     def test_missing_deep_clean_entrypoint_fails(self):
         (self.package / "skills/deep-clean/SKILL.md").unlink()
