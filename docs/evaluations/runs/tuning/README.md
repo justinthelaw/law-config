@@ -1,10 +1,28 @@
 # Develop tuning
 
-Across 19 pilots on six repositories, Develop met the joint quality and cost target in zero of 15 measured comparisons. Four remain unresolved. Among 14 pairs where both proposals were ready and fully metered, Develop won blind full-PR quality six times, tied four and lost four. It cost more in all 14. In the remaining measured pair, Develop beat a failed stock proposal on quality and cost more.
+Across the first 19 pilots on six repositories, Develop met the joint quality and cost target in zero of 15 measured comparisons. Four remain unresolved. Among 14 pairs where both proposals were ready and fully metered, Develop won blind full-PR quality six times, tied four and lost four. It cost more in all 14. In the remaining measured pair, Develop beat a failed stock proposal on quality and cost more.
 
 Choose a released pilot by name. Run `python3 -B docs/evaluations/benchmark.py status NAME` from the repository root for readiness, quality, proposal cost, tokens and time. Each `result.json` binds the proposals to their task, treatment, checks and three rotated judge assessments. [How to run and score a pilot](../../README.md)
 
 For all validated pilots, run `python3 -B docs/evaluations/tools/records.py tuning`. The JSON separates evaluation contexts and exclusions, with the strict joint target counted independently of the ready/ready table. Repeated tasks and changed treatments remain diagnostic.
+
+## Lean workflow pilots
+
+The seven-skill Develop revision lost the blind Commander comparison and failed Black's public behavior check. Both cases used the same Superpowers companion in prior and lean Develop. Stock had neither plugin.
+
+| Case and measure | Stock | Lean Develop | Prior Develop |
+| --- | ---: | ---: | ---: |
+| Commander full PR /100 | 96.25 | 75.00 | Unscored |
+| Commander checkout to PR | 3m 16s | 6m 34s | 6m 30s |
+| Commander proposal cost | $0.109 | $0.340 | $0.464 |
+| Black checkout to terminal | 20m 31s, timeout | 10m 51s, blocked | 13m 14s |
+| Black proposal cost | Unknown | ≥$0.570 | $1.038 |
+
+On Commander, stock and prior Develop preserved an existing option source that lean Develop lost. Lean Develop read six Superpowers skills and two references. Its one review worker cost $0.080 and missed the regression. The actual merge scored 56.25 and preserved the existing behavior. [Pilot](lean-commander-01/result.json) · [Public API replay](lean-commander-01/evidence.json) · [Companion reads](lean-commander-01/companion-reads.json)
+
+On Black, stock timed out without a complete PR. A descendant hook in lean Develop timed out after five seconds. The runner blocked the attempt before grading. Replaying the identical patch passed build, native and preservation checks, but a valid formatter input produced invalid Python. Prior Develop passed all four checks. The actual merge scored 86.25. Neither measured participant qualified for a full-PR comparison. [Pilot](lean-black-01/result.json) · [Hook receipts](lean-black-01/hook-evidence.json) · [Supplemental check](lean-black-01/supplemental-grade.json)
+
+The next revision handles a verifiable local edit directly and checks a previously accepted input when extending a condition. Its historical 20-repository comparison uses standalone Develop. A separate Commander pilot isolates the optional companion. [Frozen treatment and stopping rule](../../treatments/0085f2ad8d61/historical-tuning.json) · [Native context measurements](../../treatments/0085f2ad8d61/context.json)
 
 ## Practices under test
 

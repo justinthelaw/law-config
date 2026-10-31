@@ -1,0 +1,1420 @@
+{
+  "format": "law-config.eval-pilot/v1",
+  "name": "lean-black-01",
+  "case": "black",
+  "repository": "psf/black",
+  "pr": 5620,
+  "evaluator_protocol": "pr-quality-pytest-entry-natural-v1",
+  "registration": {
+    "protocol": "develop-efficiency-pilot-v1",
+    "name": "lean-black-01",
+    "case": "black",
+    "plans": {
+      "prior": {
+        "path": "runs/lean-black-01-prior/plan.json",
+        "sha256": "ea48c6c107318548124e68bd2d1db4c752b8d8f244846e1cb8d2623b048adac1"
+      },
+      "candidate": {
+        "path": "runs/lean-black-01-candidate/plan.json",
+        "sha256": "5b477263b3332904ff253f574ad7f74a1a0bdeab73c353b279208ce5bf475220"
+      }
+    },
+    "evaluator_protocol": "pr-quality-pytest-entry-natural-v1",
+    "operator_sha256": "f1d19e987d916272efe8c9302527a114759af9dcc95c6bd9f9e0d18c38945dd2",
+    "cpus": [
+      0,
+      1
+    ],
+    "order": [
+      [
+        "candidate",
+        "develop"
+      ],
+      [
+        "candidate",
+        "control"
+      ],
+      [
+        "prior",
+        "develop"
+      ]
+    ],
+    "hypothesis": "lean-native-orchestration-v1",
+    "tuning_policy_sha256": "589902e5ac1b940405e6f65707f3890987e02e4cc0986132382143fb494cce11",
+    "hypothesis_sha256": "bd6ca69367e0105e3dc650616876e1965444c4e10ce93aeb38d752ae7ebd2522",
+    "falsifier": "Reject lost verified behavior, non-ready submission, full-PR loss, missing pricing, or absent prior cost/wall improvement. No unobserved panel claim. Reject lost prior verified behavior or required review, failure of either strict prior cost or wall improvement, non-ready candidate, or full-PR loss to pure. Missing measures or unverifiable review leave the comparison unestablished.",
+    "quality": "Three blind candidate/pure/merge rotations. Prior Develop soft PR quality is unknown.",
+    "goal": "A ready Develop PR strictly wins the full rubric against a terminal pure proposal at complete cost <= pure.",
+    "attempts": "One proposal per registered slot. All allocations including technical failures remain in the ledger."
+  },
+  "registration_sha256": "4420d441c3e6a0dd43f1cc03d74ddd7de53613a086eb04b3986f07219657a84f",
+  "result_sha256": "0a5ac88f49aaae67c99e3610ed4012b40619aac41e2b098d129cd59e1e50dde7",
+  "treatments": {
+    "prior": "0fc66bb5a2e2e81926cd8357158d80056d8bc995d5236cfec4a4e609017c7a63",
+    "candidate": "cd92b3e889e718e1b404495ad6d03ba8efe5316426a906463cd8ae1787653299"
+  },
+  "treatment_components": {
+    "prior": {
+      "label": "iterate-entry-reduction-superpowers-v1",
+      "package_sha256": "1d6bdd9189ab5c076d825051201c17dda0627ad472ce11872f1c997cb257677c",
+      "plugin_hook_sha256": "64907841264f6cf6e0d5ff5823ca06427ad88c5c0f6719fb59a2708a97980650",
+      "hook_sha256": {
+        "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+        "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+      },
+      "companion": {
+        "source": "https://github.com/openai/plugins",
+        "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+        "source_path": "plugins/superpowers",
+        "version": "6.3.0",
+        "manifest_sha256": "18eb497a5c3c5aade93fe1982db0fbd2ab23d4a428fc552da6ee3cc520c9706d",
+        "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+        "skills": {
+          "brainstorming": "74edf03ea6d24ef53db48677b93558d14a979bdf052ca3f57ecdca0c66791608",
+          "dispatching-parallel-agents": "1968923066f3b707eb01d1992cdf4c42284c3855f70253b9cd5000ff45fca13c",
+          "executing-plans": "c4c3d8b628c51114cd165fb8246fe02744cd8be180032328391252e653028d9b",
+          "finishing-a-development-branch": "8db5a922b242dd4e1bf824cb91c13b3e8d8e8a86d6ceaf7f0774eb9cce909d65",
+          "receiving-code-review": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438",
+          "requesting-code-review": "d71cc01ba56d2325cf8af5f7c11837819b63ecd57de0bfdb812f7f3ff7751df8",
+          "subagent-driven-development": "8dd1b8e698edec3700c6d89517dbe96febd3bacd3f6ea21c1a3569c62ea104b5",
+          "systematic-debugging": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787",
+          "test-driven-development": "bf1b8216e523851a411e91d429a7c1c2a173e79d88957bc78e348218d50edd54",
+          "using-git-worktrees": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd",
+          "using-superpowers": "30f2ab78e20ddc27ee7158ae8d4a2abe161c360981c7cc3548070913142d3dc3",
+          "verification-before-completion": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+          "writing-plans": "48508f44bbfd7d24b029fbf3a314f3cd14c9615599059366e922f47b8dc08cf2",
+          "writing-skills": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b"
+        }
+      }
+    },
+    "candidate": {
+      "label": "lean-native-superpowers-v1",
+      "package_sha256": "2685e7c5c726d941046005816e1d4bcc7162994a74e73eae6b1acbe65b32f35a",
+      "plugin_hook_sha256": "5829d4d05ae8341ca7725db7566ffaf43de3b9f1f3722658c9e26c320d28f31c",
+      "hook_sha256": {
+        "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+        "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+      },
+      "companion": {
+        "source": "https://github.com/openai/plugins",
+        "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+        "source_path": "plugins/superpowers",
+        "version": "6.3.0",
+        "manifest_sha256": "18eb497a5c3c5aade93fe1982db0fbd2ab23d4a428fc552da6ee3cc520c9706d",
+        "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+        "skills": {
+          "brainstorming": "74edf03ea6d24ef53db48677b93558d14a979bdf052ca3f57ecdca0c66791608",
+          "dispatching-parallel-agents": "1968923066f3b707eb01d1992cdf4c42284c3855f70253b9cd5000ff45fca13c",
+          "executing-plans": "c4c3d8b628c51114cd165fb8246fe02744cd8be180032328391252e653028d9b",
+          "finishing-a-development-branch": "8db5a922b242dd4e1bf824cb91c13b3e8d8e8a86d6ceaf7f0774eb9cce909d65",
+          "receiving-code-review": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438",
+          "requesting-code-review": "d71cc01ba56d2325cf8af5f7c11837819b63ecd57de0bfdb812f7f3ff7751df8",
+          "subagent-driven-development": "8dd1b8e698edec3700c6d89517dbe96febd3bacd3f6ea21c1a3569c62ea104b5",
+          "systematic-debugging": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787",
+          "test-driven-development": "bf1b8216e523851a411e91d429a7c1c2a173e79d88957bc78e348218d50edd54",
+          "using-git-worktrees": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd",
+          "using-superpowers": "30f2ab78e20ddc27ee7158ae8d4a2abe161c360981c7cc3548070913142d3dc3",
+          "verification-before-completion": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+          "writing-plans": "48508f44bbfd7d24b029fbf3a314f3cd14c9615599059366e922f47b8dc08cf2",
+          "writing-skills": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b"
+        }
+      }
+    }
+  },
+  "base": "04afd895bf343e5dc41fc168ba3f8ac378a7ee5f",
+  "merged": "062d76a492d7337f3de951bd7ef1af1096a439ee",
+  "prompt": "Implement the following task in this checkout and add relevant tests. Use your natural local workflow and verification tools. I waive interactive review of the local implementation plan and authorize you to proceed unattended. Follow all applicable repository requirements and complete any required independent review of consequential design or public contracts. Work offline and leave the proposed changes in the checkout. In your final message, put a concise PR title on the first line, followed by a blank line and a PR body explaining the change, motivation, verification actually performed and any material gaps.\n\nFix Black's handling of a fmt: skip directive on an opening bracket nested in a longer with, async with, or yield expression. Preserve skipped text, format surrounding code normally, and preserve the AST and idempotence. Add focused formatter fixtures.\n\nAvailable offline verification commands:\nPYTHONPATH=src:/deps/lib python -m compileall -q src/black\nPYTHONPATH=.:src:/deps/lib python -m pytest -q -o addopts= tests/test_format.py -k fmtskip",
+  "prompt_sha256": "e699289f16756572885112a6aadaf33acff744a5f4000803d47ca4957807562b",
+  "runtime_sha256": "51a4740fa2bc38f96e006d6c904b3ab9037f4151e3295c42a2293237b3c67691",
+  "rubric_sha256": "a47aa29e89ca55d12fd48031fa7ca5073d449caafefd1b17353a917ebe76a3c3",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "rates": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "profiles": {
+    "candidate/develop": null,
+    "candidate/control": null,
+    "prior/develop": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "hooks",
+        "marketplaces",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {},
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [
+        "develop@law-config",
+        "superpowers@superpowers-local"
+      ],
+      "ephemeral": false,
+      "inventory_sha256": "a3bd277d6b3a60fa1b8aee1f25424c0792399000a10df05d48b692d975ea43d1",
+      "input_sha256": "f3f28dbd72ec60aa9f832f38f2d74d0b980eda2ce8fe6ff0b68c9c8092e2cadb",
+      "config_sha256": "ab0492f233d34f36c204dd1b367470ce25839ac9d840edc530be1f595815f1c6"
+    }
+  },
+  "comparisons": {
+    "develop_control": {
+      "verdict": "unresolved",
+      "reason": "missing or disputed evidence"
+    },
+    "develop_upstream": {
+      "verdict": "unresolved",
+      "reason": "missing or disputed evidence"
+    },
+    "control_upstream": {
+      "verdict": "upstream",
+      "reason": "hard gates"
+    }
+  },
+  "goal_win": false,
+  "submissions": {
+    "control": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "5b477263b3332904ff253f574ad7f74a1a0bdeab73c353b279208ce5bf475220",
+      "case_id": "black",
+      "role": "control",
+      "state": "timeout",
+      "readiness": "failed",
+      "executable_pass": false,
+      "failure_kind": "timeout",
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=src:/deps/lib python -m compileall -q src/black",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "e54c5317ca8daebeed30c9fd8f3baad2bb5ce0110d7d4bed4bda2cbf4a74c6c5",
+          "command": "PYTHONPATH=.:src:/deps/lib python -m pytest -q -o addopts= tests/test_format.py -k fmtskip",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/CHANGES.md b/CHANGES.md\nindex 5b6fa77..1e76c67 100644\n--- a/CHANGES.md\n+++ b/CHANGES.md\n@@ -13,6 +13,9 @@\n \n <!-- Changes that affect Black's stable style -->\n \n+- Fix invalid or inequivalent output when `# fmt: skip` is on an opening bracket\n+  nested in a longer `with`, `async with`, or `yield` expression.\n+\n - Fix crash when `# fmt: skip` follows the closing bracket of a multi-line call or\n   subscript that isn't the last element of a collection or argument list (#5522)\n - Normalize hex codes in unicode escape sequences in f-strings (#5526)\ndiff --git a/src/black/comments.py b/src/black/comments.py\nindex 1ae8e6e..ef35302 100644\n--- a/src/black/comments.py\n+++ b/src/black/comments.py\n@@ -919,13 +919,24 @@ def _generate_ignored_nodes_from_fmt_skip(\n             current_node = current_node.parent\n \n         ignored_nodes = [current_node]\n-        if current_node.prev_sibling is None and current_node.parent is not None:\n-            current_node = current_node.parent\n-\n         # Track seen nodes to detect cycles that can occur after tree modifications\n         seen_nodes = {id(current_node)}\n \n-        while \"\\n\" not in current_node.prefix and current_node.prev_sibling is not None:\n+        while True:\n+            # Walk past every ancestor without a previous sibling, even if only\n+            # part of it is ignored. Otherwise a nested expression can hide an\n+            # earlier `with` or `yield` on the same physical line.\n+            while current_node.prev_sibling is None and current_node.parent is not None:\n+                current_node = current_node.parent\n+                # Collapse fully captured nodes so removing their children does\n+                # not leave empty containers behind. Apply this to the initial\n+                # node too, before collecting any preceding leaves.\n+                if _children_lead_ignored_nodes(current_node, ignored_nodes):\n+                    ignored_nodes[: len(current_node.children)] = [current_node]\n+\n+            if \"\\n\" in current_node.prefix or current_node.prev_sibling is None:\n+                break\n+\n             leaf_nodes = list(current_node.prev_sibling.leaves())\n             next_node = leaf_nodes[-1] if leaf_nodes else current_node\n \n@@ -967,45 +978,8 @@ def _generate_ignored_nodes_from_fmt_skip(\n             if current_node.type == token.DEDENT:\n                 break\n \n-            # Special case for with expressions\n-            # Without this, we can stuck inside the asexpr_test's children's children\n-            if (\n-                current_node.parent\n-                and current_node.parent.type == syms.asexpr_test\n-                and current_node.parent.parent\n-                and current_node.parent.parent.type == syms.with_stmt\n-            ):\n-                current_node = current_node.parent\n-\n             ignored_nodes.insert(0, current_node)\n \n-            if current_node.prev_sibling is None and current_node.parent is not None:\n-                current_node = current_node.parent\n-                # Every child of the node we are climbing out of is now ignored, so\n-                # take the node itself instead. Converting only its leaves would\n-                # leave the emptied node in the tree, and visitors that expect\n-                # children, like the one for PEP 695 type parameters, crash on it.\n-                # Children collapsed on an earlier climb are already nodes here, so\n-                # compare against children rather than leaves.\n-                if _children_lead_ignored_nodes(current_node, ignored_nodes):\n-                    ignored_nodes[: len(current_node.children)] = [current_node]\n-                    # The collapsed node can be the first child of a parent that\n-                    # is now fully ignored as well (`a + b` in `a + b if c else d`).\n-                    # Collapse that parent too and keep walking from it. Stopping\n-                    # one level short leaves the parent's children in the list next\n-                    # to a sibling from the enclosing node, and the standalone\n-                    # comment then lands inside the parent while that sibling is\n-                    # removed from around it, turning e.g. a tuple into a call.\n-                    while (\n-                        current_node.prev_sibling is None\n-                        and current_node.parent is not None\n-                        and _children_lead_ignored_nodes(\n-                            current_node.parent, ignored_nodes\n-                        )\n-                    ):\n-                        current_node = current_node.parent\n-                        ignored_nodes[: len(current_node.children)] = [current_node]\n-\n         # Special handling for compound statements with semicolon-separated bodies\n         if isinstance(parent, Node):\n             body_node = _find_compound_statement_context(parent)\ndiff --git a/tests/data/cases/fmtskip_nested_with.py b/tests/data/cases/fmtskip_nested_with.py\nnew file mode 100644\nindex 0000000..e64eeed\n--- /dev/null\n+++ b/tests/data/cases/fmtskip_nested_with.py\n@@ -0,0 +1,46 @@\n+before  =  0\n+with left  + (  # fmt: skip\n+    right  +  other\n+) as  resource:\n+    value  =  1\n+\n+with (  # fmt: skip\n+    first  +  second\n+) +  third as  resource:\n+    value  =  2\n+\n+async def f():\n+    async with left  + (  # fmt: skip\n+        right  +  other\n+    ) as  resource:\n+        value  =  3\n+    async with (  # fmt: skip\n+        first  +  second\n+    ) +  third as  resource:\n+        value  =  4\n+    after  =  5\n+\n+# output\n+\n+before = 0\n+with left  + (  # fmt: skip\n+    right  +  other\n+) as resource:\n+    value = 1\n+\n+with (  # fmt: skip\n+    first  +  second\n+) + third as resource:\n+    value = 2\n+\n+\n+async def f():\n+    async with left  + (  # fmt: skip\n+        right  +  other\n+    ) as resource:\n+        value = 3\n+    async with (  # fmt: skip\n+        first  +  second\n+    ) + third as resource:\n+        value = 4\n+    after = 5\ndiff --git a/tests/data/cases/fmtskip_nested_yield.py b/tests/data/cases/fmtskip_nested_yield.py\nnew file mode 100644\nindex 0000000..af2634a\n--- /dev/null\n+++ b/tests/data/cases/fmtskip_nested_yield.py\n@@ -0,0 +1,28 @@\n+def f():\n+    before  =  0\n+    yield (  # fmt: skip\n+        first  +  second\n+    ) +  third,  fourth\n+    yield left  + (  # fmt: skip\n+        right  +  other\n+    ),  last\n+    yield from (  # fmt: skip\n+        first  +  second\n+    ) +  third\n+    after  =  1\n+\n+# output\n+\n+\n+def f():\n+    before = 0\n+    yield (  # fmt: skip\n+        first  +  second\n+    ) + third, fourth\n+    yield left  + (  # fmt: skip\n+        right  +  other\n+    ), last\n+    yield from (  # fmt: skip\n+        first  +  second\n+    ) + third\n+    after = 1\n",
+      "patch_sha256": "40864fb839bcb6e0dc83486f3cca102f9a7830926fe5ece0745d4b4797c2e29c",
+      "proposal": "",
+      "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "proposal_observation": "unavailable",
+      "bindings": {
+        "grade_patch_sha256": "40864fb839bcb6e0dc83486f3cca102f9a7830926fe5ece0745d4b4797c2e29c",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "patch_sha256": "40864fb839bcb6e0dc83486f3cca102f9a7830926fe5ece0745d4b4797c2e29c",
+            "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "judgment_sha256": "eb13f7c0e122a9a31d6beaabc2a14c75d4a6ee7a48cb374965cdf55fb0f6111c",
+            "mapping_sha256": "e1aa23e2c6c3f7ffa419220bb6efc700b88285f43d75d1701b22d90446252d1a",
+            "assessor_sha256": "e637b9badccfc0b0c570debfba209ac860593bd1c33792c98ad74ec5d019f225",
+            "packet_sha256": "7eed8772f196e515f59e06c27b7d9dca43419c529772453d90bf8529adeef101",
+            "prompt_sha256": "a044c9b8ede67ea1fe4512716f62ad22d9d110acd01c601c3f48bf23fdb69b8f"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "patch_sha256": "40864fb839bcb6e0dc83486f3cca102f9a7830926fe5ece0745d4b4797c2e29c",
+            "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "judgment_sha256": "be2fcc72ab965d518ccce5f6c4ee26c11059625e8035ba1edc81beacf8b7ae1c",
+            "mapping_sha256": "789e1e301926d3ca18d84174769612bc5814cecdfec7b38740ffabc669e4d25b",
+            "assessor_sha256": "9f75fc0a5ba1f8e96b658ea89926149eb71f60bea9b7cf3e4c0489ce198f37fe",
+            "packet_sha256": "1642e4227037e483243bc690aa403d43b8ba7a690e25f646d7c89e064a687fa3",
+            "prompt_sha256": "1e69323177719a1a409db66a6e1f88aa8cf2a23b8c9d443628ba64ce97c82f38"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "patch_sha256": "40864fb839bcb6e0dc83486f3cca102f9a7830926fe5ece0745d4b4797c2e29c",
+            "proposal_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "judgment_sha256": "019b3f0b6796c9fad322e87df8b73d76218546a1562dfaf0c08887d9b010bf85",
+            "mapping_sha256": "cbb687145fcf0acc5c84a7fcd9f75116c876c00f974736da999052b1f9f5c79a",
+            "assessor_sha256": "21db47b1a9470b2a2a5518acd3abee2758ca5ab03e5927ecf7abbd66b1ef077c",
+            "packet_sha256": "988ae9696ade9213314ac4ade7211235b231e8c28238d825529ef7813f01faf3",
+            "prompt_sha256": "ffad61bb7275106562d924ebc4e842275fac7ee38bf3e0087392327368aef4bd"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 3,
+          "tests": 3,
+          "design": 3,
+          "proposal": null
+        },
+        "proposal_points_100": null,
+        "diff_points_85": 63.75,
+        "rotation_points_85": {
+          "0": 63.75,
+          "1": 63.75,
+          "2": 42.5
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "scores": {
+              "contract": 3,
+              "tests": 3,
+              "design": 3,
+              "proposal": null
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native fmtskip, contract, and preserve exits of 0. fmtskip_nested_with.py and fmtskip_nested_yield.py preserve deliberately irregular skipped text while formatting bodies, following operands, and neighboring assignments across with, async with, yield, and yield from. A remaining unary boundary is visible statically: with -( # fmt: skip followed by a newline, a, then ).real and b: leaves the factor with its power operand after the minus is hidden; unchanged src/black/linegen.py:visit_factor still unpacks exactly two children. Frozen passes do not establish this boundary.",
+              "tests": "The two added tests/data/cases/fmtskip_nested_*.py fixtures cover initial and later operands, async contexts, tuple-valued yields, yield from, and surrounding formatting. tests/test_format.py discovers these cases automatically; tests/util.py checks expected output, AST equivalence, and stability when output changes, also exercising preview and line-length=1. Frozen native exit is 0. Unary operators with trailers and deeper boolean/comparison nesting are absent.",
+              "design": "src/black/comments.py consolidates both ancestor climbs into one repeated walk and applies _children_lead_ignored_nodes on the initial climb as well. The removed with-specific branch is replaced by generic ascent, and the deleted conditional collapse loop is subsumed by the new loop. Cycle detection, newline/indent/dedent boundaries, full-child collapse, and downstream compound-statement/open-bracket protections remain. The change fits the existing tree API but does not accommodate the partially consumed factor shape in visit_factor.",
+              "proposal": "packet/task.json marks proposal_observation unavailable and has_proposal false; packet/A.md is empty. Historical proposal quality cannot be scored; the CHANGES.md entry is implementation documentation, not a supplied proposal."
+            },
+            "flags": [],
+            "confidence": "medium"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "scores": {
+              "contract": 3,
+              "tests": 3,
+              "design": 3,
+              "proposal": null
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native, contract and preserve exits of 0. C.patch handles both initial and subsequent ancestor climbs and fixtures cover both operand positions for with/async with plus yield/yield from. A remaining unary/trailer edge is visible statically: with -(  # fmt: skip\n    a\n).real and b:\n    pass captures minus and the atom but leaves the power trailer in factor. Unchanged src/black/linegen.py:551 still unpacks exactly two factor children and cannot handle the resulting one-child factor. This edge was not executed in this assessment and is not contradicted by the supplied passing slice.",
+              "tests": "tests/data/cases/fmtskip_nested_with.py tests bracket-first and left + (...) positions for both with and async with. fmtskip_nested_yield.py adds both operand positions, tuple-valued yield, and yield from. Deliberately irregular skipped spacing and formatted surrounding assignments make preservation and ordinary formatting observable. The existing tests/util.py harness checks AST equivalence and idempotence when output changes, plus preview and short-line variants. Frozen native checks pass, but no unary/trailer fixture protects the remaining visitor edge.",
+              "design": "src/black/comments.py centralizes ancestor traversal at the loop head and collapses fully captured nodes even on the initial climb. The deleted with-specific ancestor shortcut is replaced by general traversal; the deleted collapse loops retain their protection through _children_lead_ignored_nodes in the replacement. Cycle detection, physical-line stops, compound-header handling and unmatched-bracket preservation are retained. This is a compact root-cause design, but it does not accommodate partially emptied unary factors in the existing line generator.",
+              "proposal": "packet/task.json marks proposal_observation unavailable and has_proposal false; C.md contains no proposal. Historical proposal quality cannot be assessed, so this score is null rather than an omission score."
+            },
+            "flags": [],
+            "confidence": "medium"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "scores": {
+              "contract": 2,
+              "tests": 2,
+              "design": 2,
+              "proposal": null
+            },
+            "evidence": {
+              "contract": "packet/task.json records build/native/contract/preserve exit 0. packet/B.patch generalizes the initial and subsequent ancestor climbs, preserving skipped text while its fixtures normalize surrounding assignments, as clauses and yield tails. A material unhandled boundary remains in unchanged src/black/linegen.py:551: with -(  # fmt: skip\n    a\n).real and b:\n    pass\n causes the traversal to collect the minus and bracket atom while leaving the power trailer .real. The factor then has only its operand, but visit_factor still unpacks two children. This follows mechanically from Grammar.txt:161-162 and comments.py removal of ignored nodes; it was not executed and the frozen passing slice does not establish coverage of it.",
+              "tests": "tests/data/cases/fmtskip_nested_with.py covers left and right arithmetic operands for with and async with, with irregular skipped spacing and formatted adjacent code. fmtskip_nested_yield.py covers tuple yields, left/right operands and yield from. Automatic fixture checks retain AST and stability assertions in tests/util.py. Native and preservation checks have frozen exit 0. Missing multi-precedence and unary-with-trailer fixtures leave a material path, including the visit_factor failure, unprotected.",
+              "design": "Centralizing ascent and fully captured-node collapse at the loop head is a coherent root-cause change. The deleted with-specific shortcut is replaced by general ancestor traversal, and the deleted collapse loop is replaced by the same identity-based helper at each ascent, including the initial one. Seen-node, standalone-comment, newline/indent/dedent and enclosing-statement protections remain. However, the changed tree shapes require a compatible visit_factor adjustment that this patch omits; the approach is viable but incomplete.",
+              "proposal": "packet/task.json marks proposal_observation unavailable and has_proposal false; packet/B.md contains no proposal text. Historical communication is unavailable, so this dimension is null rather than an observed-omission zero."
+            },
+            "flags": [],
+            "confidence": "medium"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "unknown",
+        "tokens": {
+          "inputTokens": 3320536,
+          "cachedInputTokens": 3251072,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 14643,
+          "reasoningOutputTokens": 5355,
+          "totalTokens": 3335179
+        },
+        "estimated_usd": null,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 1231.0739575449843,
+        "prompt_to_terminal_seconds": 1200.0008541049901,
+        "through_grading_seconds": 1239.8898385618813,
+        "setup_seconds": 29.397425642004237,
+        "grading_seconds": 7.341939606005326,
+        "thread_count": 1,
+        "child_count": 0,
+        "root_tokens": {
+          "totalTokens": 3335179,
+          "inputTokens": 3320536,
+          "cachedInputTokens": 3251072,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 14643,
+          "reasoningOutputTokens": 5355
+        },
+        "descendant_tokens": null,
+        "pricing": {
+          "policy": "natural-standard-v2",
+          "rate_card": {
+            "source": "https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing",
+            "verified_utc": "2026-10-30T12:41:43Z",
+            "basis": "Codex Standard USD per 1M tokens; estimate, not invoice",
+            "rates": {
+              "gpt-6.1-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.1,
+                "output": 10
+              },
+              "gpt-6.1-terra": {
+                "uncached_input": 1,
+                "cached_input": 0.05,
+                "output": 5
+              },
+              "gpt-6-astra": {
+                "uncached_input": 10,
+                "cached_input": 1,
+                "output": 50
+              },
+              "gpt-6-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 10
+              },
+              "gpt-6-luna": {
+                "uncached_input": 0.1,
+                "cached_input": 0.01,
+                "output": 0.5
+              },
+              "gpt-5.6-sol": {
+                "uncached_input": 4,
+                "cached_input": 0.4,
+                "output": 20
+              },
+              "gpt-5.6-terra": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 12
+              },
+              "gpt-5.6-luna": {
+                "uncached_input": 0.2,
+                "cached_input": 0.02,
+                "output": 1.2
+              },
+              "gpt-6-astra-law": {
+                "uncached_input": 12.5,
+                "cached_input": 1.25,
+                "output": 62.5
+              }
+            }
+          },
+          "model_tokens": {},
+          "root_start": {
+            "thread": "08f6f105156d9f958d6ba396d5f00ce0f9080c9b756502be02149fd96bb830e5",
+            "requested_model": "gpt-6.1-sol",
+            "effective_model": "gpt-6.1-sol",
+            "requested_effort": "medium"
+          },
+          "root_default_verified": true,
+          "token_coverage": "lower bound",
+          "priced_tokens": {
+            "inputTokens": 0,
+            "cachedInputTokens": 0,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 0,
+            "reasoningOutputTokens": 0,
+            "totalTokens": 0
+          },
+          "unpriced_tokens": {
+            "inputTokens": 3320536,
+            "cachedInputTokens": 3251072,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 14643,
+            "reasoningOutputTokens": 5355,
+            "totalTokens": 3335179
+          },
+          "priced_threads": 0,
+          "unpriced_threads": 1,
+          "unpriced_reasons": {
+            "unpriced or unbound thread": 1
+          },
+          "known_usd_lower_bound": null,
+          "terminal_proof": [
+            {
+              "thread": "08f6f105156d9f958d6ba396d5f00ce0f9080c9b756502be02149fd96bb830e5",
+              "bound": true,
+              "meter_consistent": false,
+              "model": "gpt-6.1-sol",
+              "tokens": {
+                "totalTokens": 3335179,
+                "inputTokens": 3320536,
+                "cachedInputTokens": 3251072,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 14643,
+                "reasoningOutputTokens": 5355
+              },
+              "start": {
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "parent": null
+              },
+              "trace_sha256": "6c54a3319332786639617cbac5d64bf21112e0868ff2f87f5581281f76c00f6a",
+              "turns": [
+                {
+                  "turn": "e8a91ab5655106763fcbe9a7d5f29df8c559efd97d26977c07e3712f72b9c4ce",
+                  "model": "gpt-6.1-sol",
+                  "effort": "medium",
+                  "message_seq": 1778,
+                  "usage_seq": 1736,
+                  "terminal_seq": null,
+                  "status": null,
+                  "total": {
+                    "totalTokens": 3335179,
+                    "inputTokens": 3320536,
+                    "cachedInputTokens": 3251072,
+                    "cacheWriteInputTokens": 0,
+                    "outputTokens": 14643,
+                    "reasoningOutputTokens": 5355
+                  }
+                }
+              ]
+            }
+          ],
+          "native_sha256": "9c654f303eaea4dc99549c64f4d579522acc2a2a9adcd286f88e307fa80fa954"
+        },
+        "observed_commands": 24,
+        "native_hook_receipts": 0
+      },
+      "receipt_sha256": {
+        "grade": "610e5eec3d9947a6c6a8af3d54e352a7210a27887cde361883d5fa7a0c72467e",
+        "release": "6dc1cde1d717d052407172e89e37d617f7d9e2ebc54d39259f9a59caab73cb59",
+        "native": "9c654f303eaea4dc99549c64f4d579522acc2a2a9adcd286f88e307fa80fa954",
+        "submission": "8e9bc51af3c37179ae5da5c2ff7b02f44dbd50ced7c87df315b1b35cb2caeb7e",
+        "result": "d2dbce001af87185b92a74427bcec2e4ad46184951d97903061b3df73875b8c2",
+        "inventory": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+        "turn-input": "e313bfd87e8df0d2e2fcdadaa578d7324f2506d12bb5ee1697ee16f150528147"
+      }
+    },
+    "develop": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "5b477263b3332904ff253f574ad7f74a1a0bdeab73c353b279208ce5bf475220",
+      "case_id": "black",
+      "role": "develop",
+      "state": "blocked",
+      "readiness": "unavailable",
+      "executable_pass": false,
+      "failure_kind": "blocked",
+      "stages": {},
+      "patch": "diff --git a/CHANGES.md b/CHANGES.md\nindex 5b6fa77..99a72ec 100644\n--- a/CHANGES.md\n+++ b/CHANGES.md\n@@ -13,6 +13,9 @@\n \n <!-- Changes that affect Black's stable style -->\n \n+- Fix invalid formatting when `# fmt: skip` is on an opening bracket nested in a\n+  longer `with`, `async with`, or `yield` expression.\n+\n - Fix crash when `# fmt: skip` follows the closing bracket of a multi-line call or\n   subscript that isn't the last element of a collection or argument list (#5522)\n - Normalize hex codes in unicode escape sequences in f-strings (#5526)\ndiff --git a/src/black/comments.py b/src/black/comments.py\nindex 1ae8e6e..90a47a3 100644\n--- a/src/black/comments.py\n+++ b/src/black/comments.py\n@@ -979,32 +979,15 @@ def _generate_ignored_nodes_from_fmt_skip(\n \n             ignored_nodes.insert(0, current_node)\n \n-            if current_node.prev_sibling is None and current_node.parent is not None:\n+            while current_node.prev_sibling is None and current_node.parent is not None:\n                 current_node = current_node.parent\n-                # Every child of the node we are climbing out of is now ignored, so\n-                # take the node itself instead. Converting only its leaves would\n-                # leave the emptied node in the tree, and visitors that expect\n-                # children, like the one for PEP 695 type parameters, crash on it.\n-                # Children collapsed on an earlier climb are already nodes here, so\n-                # compare against children rather than leaves.\n+                # Keep walking through ancestors even when only their leading\n+                # children are ignored: the physical line can begin outside\n+                # them, e.g. `with a + (  # fmt: skip` or `yield a + (`.\n+                # Collapse fully ignored nodes so visitors do not encounter\n+                # emptied containers after the ignored nodes are removed.\n                 if _children_lead_ignored_nodes(current_node, ignored_nodes):\n                     ignored_nodes[: len(current_node.children)] = [current_node]\n-                    # The collapsed node can be the first child of a parent that\n-                    # is now fully ignored as well (`a + b` in `a + b if c else d`).\n-                    # Collapse that parent too and keep walking from it. Stopping\n-                    # one level short leaves the parent's children in the list next\n-                    # to a sibling from the enclosing node, and the standalone\n-                    # comment then lands inside the parent while that sibling is\n-                    # removed from around it, turning e.g. a tuple into a call.\n-                    while (\n-                        current_node.prev_sibling is None\n-                        and current_node.parent is not None\n-                        and _children_lead_ignored_nodes(\n-                            current_node.parent, ignored_nodes\n-                        )\n-                    ):\n-                        current_node = current_node.parent\n-                        ignored_nodes[: len(current_node.children)] = [current_node]\n \n         # Special handling for compound statements with semicolon-separated bodies\n         if isinstance(parent, Node):\ndiff --git a/tests/data/cases/fmtskip_nested_opening_bracket.py b/tests/data/cases/fmtskip_nested_opening_bracket.py\nnew file mode 100644\nindex 0000000..70e5d53\n--- /dev/null\n+++ b/tests/data/cases/fmtskip_nested_opening_bracket.py\n@@ -0,0 +1,51 @@\n+with left + (  # fmt: skip\n+    right,  other\n+) as   value:\n+    result=  1\n+\n+after=  2\n+\n+\n+async def contexts():\n+    async with left + (  # fmt: skip\n+        right,  other\n+    ) as   value:\n+        result=  1\n+    after=  2\n+\n+\n+def values():\n+    yield left + (  # fmt: skip\n+        right,  other\n+    ) if condition else  fallback\n+    after=  2\n+    yield from left + (  # fmt: skip\n+        right,  other\n+    ) if condition else  fallback\n+\n+# output\n+\n+with left + (  # fmt: skip\n+    right,  other\n+) as value:\n+    result = 1\n+\n+after = 2\n+\n+\n+async def contexts():\n+    async with left + (  # fmt: skip\n+        right,  other\n+    ) as value:\n+        result = 1\n+    after = 2\n+\n+\n+def values():\n+    yield left + (  # fmt: skip\n+        right,  other\n+    ) if condition else fallback\n+    after = 2\n+    yield from left + (  # fmt: skip\n+        right,  other\n+    ) if condition else fallback\n",
+      "patch_sha256": "847bf2b2967c0387923d0005a1f16a6c0b250e47d3a73e63e7ffa44cb2a8a1bf",
+      "proposal": "Fix fmt: skip handling in nested with and yield expressions\n\nContinue ancestor traversal so Black preserves skipped opening lines inside longer `with`, `async with`, and `yield` expressions while formatting surrounding code normally.\n\nAdd focused fixtures covering conditional `yield` and `yield from`, skipped-text preservation, AST equivalence, and idempotence.\n\nVerification: all 36 `fmtskip` tests passed, plus compilation, changed-file formatting, and whitespace checks. Independent review found no blocking issues.\n\nGaps: broader formatter tests and repository formatting checks were interrupted due to slow progress. `tox` and `pre-commit` were unavailable offline.",
+      "proposal_sha256": "418829d900dad33187ecef45fda31228705bd5453831a8eca7207c7c05dd79de",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": null,
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "patch_sha256": "847bf2b2967c0387923d0005a1f16a6c0b250e47d3a73e63e7ffa44cb2a8a1bf",
+            "proposal_sha256": "418829d900dad33187ecef45fda31228705bd5453831a8eca7207c7c05dd79de",
+            "judgment_sha256": "eb13f7c0e122a9a31d6beaabc2a14c75d4a6ee7a48cb374965cdf55fb0f6111c",
+            "mapping_sha256": "e1aa23e2c6c3f7ffa419220bb6efc700b88285f43d75d1701b22d90446252d1a",
+            "assessor_sha256": "e637b9badccfc0b0c570debfba209ac860593bd1c33792c98ad74ec5d019f225",
+            "packet_sha256": "7eed8772f196e515f59e06c27b7d9dca43419c529772453d90bf8529adeef101",
+            "prompt_sha256": "a044c9b8ede67ea1fe4512716f62ad22d9d110acd01c601c3f48bf23fdb69b8f"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "patch_sha256": "847bf2b2967c0387923d0005a1f16a6c0b250e47d3a73e63e7ffa44cb2a8a1bf",
+            "proposal_sha256": "418829d900dad33187ecef45fda31228705bd5453831a8eca7207c7c05dd79de",
+            "judgment_sha256": "be2fcc72ab965d518ccce5f6c4ee26c11059625e8035ba1edc81beacf8b7ae1c",
+            "mapping_sha256": "789e1e301926d3ca18d84174769612bc5814cecdfec7b38740ffabc669e4d25b",
+            "assessor_sha256": "9f75fc0a5ba1f8e96b658ea89926149eb71f60bea9b7cf3e4c0489ce198f37fe",
+            "packet_sha256": "1642e4227037e483243bc690aa403d43b8ba7a690e25f646d7c89e064a687fa3",
+            "prompt_sha256": "1e69323177719a1a409db66a6e1f88aa8cf2a23b8c9d443628ba64ce97c82f38"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "patch_sha256": "847bf2b2967c0387923d0005a1f16a6c0b250e47d3a73e63e7ffa44cb2a8a1bf",
+            "proposal_sha256": "418829d900dad33187ecef45fda31228705bd5453831a8eca7207c7c05dd79de",
+            "judgment_sha256": "019b3f0b6796c9fad322e87df8b73d76218546a1562dfaf0c08887d9b010bf85",
+            "mapping_sha256": "cbb687145fcf0acc5c84a7fcd9f75116c876c00f974736da999052b1f9f5c79a",
+            "assessor_sha256": "21db47b1a9470b2a2a5518acd3abee2758ca5ab03e5927ecf7abbd66b1ef077c",
+            "packet_sha256": "988ae9696ade9213314ac4ade7211235b231e8c28238d825529ef7813f01faf3",
+            "prompt_sha256": "ffad61bb7275106562d924ebc4e842275fac7ee38bf3e0087392327368aef4bd"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 2,
+          "tests": 2,
+          "design": 2,
+          "proposal": 2
+        },
+        "proposal_points_100": 50.0,
+        "diff_points_85": 42.5,
+        "rotation_points_85": {
+          "0": 42.5,
+          "1": 48.75,
+          "2": 42.5
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "scores": {
+              "contract": 2,
+              "tests": 2,
+              "design": 2,
+              "proposal": 2
+            },
+            "evidence": {
+              "contract": "src/black/comments.py extends only the climb after ignored_nodes.insert, supporting the later-operand left + ( shapes in fmtskip_nested_opening_bracket.py. The initial climb at the starting-source lines 919-923 remains single-level: for with ( # fmt: skip, newline a, newline ) == 1 and b:, the atom climbs only to comparison, whose absent previous sibling prevents entering the walk and reaching with. The analogous initial-operand yield path remains incomplete. packet/task.json supplies no frozen checks for C, so compilation, preservation, and idempotence are not established by execution evidence.",
+              "tests": "tests/data/cases/fmtskip_nested_opening_bracket.py covers with, async with, conditional yield, and conditional yield from, with expected skipped interior whitespace and formatted bodies/following assignments. Automatic fixture discovery and tests/util.py provide meaningful expected-output, AST, and stability assertions when run. All new examples use left + ( and miss the distinct initial-operand climb as well as unary/trailer cases. No frozen native outcome is available; the proposal claim of 36 passing tests is not a check result.",
+              "design": "The repeated inner ancestor ascent in src/black/comments.py is idiomatic and retains _children_lead_ignored_nodes. The deleted fully-ignored-parent loop is subsumed by the new while loop, rather than removing collapse protection; cycle and newline/indent/dedent guards are untouched. However, leaving the separate initial single-level climb intact fixes only one of the two traversal entry paths. A maintainer must extend the same correction to initialization to address the stated general case.",
+              "proposal": "packet/C.md clearly describes preservation and surrounding formatting and explicitly lists interrupted broader testing and unavailable tools. However, its claims of 36 fmtskip passes, compilation, formatting, whitespace checks, and independent review have no supporting frozen observations in packet/task.json. Those claims receive no verification credit; the text also does not identify the remaining initial-operand limitation."
+            },
+            "flags": [],
+            "confidence": "medium"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "scores": {
+              "contract": 2,
+              "tests": 2,
+              "design": 3,
+              "proposal": 2
+            },
+            "evidence": {
+              "contract": "B.patch repairs repeated climbs after collecting preceding leaves, supporting left + (...) forms, but leaves the initial one-level climb at src/black/comments.py:922 unchanged. For with (  # fmt: skip\n    a\n) == 1 and b:\n    pass, the initial atom climbs only to comparison; comparison has no previous sibling inside and_test, so the traversal loop never reaches with. This is a primary bracket-first variant left unrepaired by source inspection. packet/task.json supplies no frozen execution outcomes for B; the proposal claims are not execution evidence.",
+              "tests": "tests/data/cases/fmtskip_nested_opening_bracket.py covers with, async with, conditional yield and yield from, preserves irregular tuple spacing, and checks formatting of trailing syntax and adjacent assignments. The existing fixture harness supplies AST/stability assertions. Every added expression uses left + (...) before the bracket, so the tests miss the initial-climb defect and unary/trailer boundary. No frozen native or contract outcome is available.",
+              "design": "The post-insertion while loop is a small, idiomatic root-cause improvement and retains _children_lead_ignored_nodes collapse at each ancestor; deletion of the inner collapse loop does not itself remove that protection. Cycle, line-boundary, bracket and compound-header protections remain intact. The avoidable asymmetry with the untouched initial climb makes the approach incomplete rather than requiring a wholesale replacement.",
+              "proposal": "B.md clearly states intended behavior and fixture scope and explicitly lists interrupted broader checks and unavailable tools. Its claimed 36 passing tests, compilation, formatting, whitespace checks and independent review have no supporting frozen observations in packet/task.json and receive no credit. The broad description also omits the bracket-first limitation visible in comments.py."
+            },
+            "flags": [],
+            "confidence": "medium"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "scores": {
+              "contract": 2,
+              "tests": 2,
+              "design": 2,
+              "proposal": 2
+            },
+            "evidence": {
+              "contract": "packet/A.patch improves the repeated climb after collecting preceding leaves, and its fixture specifies preserved bracket contents plus normalized bodies and conditional yield/yield-from tails. However, src/black/comments.py:922 retains the initial single-level climb. For with (  # fmt: skip\n    a\n) == 1 and b:\n    pass\n, the atom climbs only to comparison, whose previous sibling is absent inside and_test; the collection loop never reaches with. A also leaves src/black/linegen.py:551 unchanged: consuming the unary minus in with -(  # fmt: skip\n    a\n).real and b:\n    pass\n leaves a one-child factor that the two-child unpack cannot handle. These are static counterexamples, not executed observations. packet/task.json records no check outcomes for A.",
+              "tests": "tests/data/cases/fmtskip_nested_opening_bracket.py adds discriminating with, async-with, conditional yield and yield-from cases, preserving irregular bracket contents while formatting surrounding code. tests/test_format.py automatically discovers these fixtures; tests/util.py:182-183 checks AST equivalence and stability when formatting changes. Coverage omits a leading bracket under multiple expression ancestors and unary operands with trailers, the two implementation gaps. No frozen test pass is available.",
+              "design": "The comments.py change is small and retains _children_lead_ignored_nodes collapsing on every repeated climb, so removal of the old nested collapse loop does not itself remove empty-container protection. Cycle detection, standalone-comment stops, line boundaries and bracket fallback remain intact. Nevertheless, updating only the later climb leaves the root traversal fix incomplete, and unchanged visit_factor assumes a tree arity the expanded traversal can violate.",
+              "proposal": "packet/A.md gives a precise title, describes ancestor traversal and fixture intent, and identifies interrupted broader checks. Its claims of 36 passing tests, compilation, formatting, whitespace checks and independent review have no supporting frozen observations in packet/task.json; they receive no verification credit. The described fix also omits the remaining initial-climb and unary-visitor limitations."
+            },
+            "flags": [],
+            "confidence": "medium"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "lower bound",
+        "tokens": {
+          "inputTokens": 2710724,
+          "cachedInputTokens": 2624640,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 13511,
+          "reasoningOutputTokens": 4621,
+          "totalTokens": 2724235
+        },
+        "estimated_usd": null,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 650.5704753960017,
+        "prompt_to_terminal_seconds": 612.7982844000217,
+        "through_grading_seconds": 652.0855741810519,
+        "setup_seconds": 36.36775203910656,
+        "grading_seconds": null,
+        "thread_count": 2,
+        "child_count": 1,
+        "root_tokens": {
+          "totalTokens": 2257503,
+          "inputTokens": 2246763,
+          "cachedInputTokens": 2187392,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 10740,
+          "reasoningOutputTokens": 4165
+        },
+        "descendant_tokens": {
+          "inputTokens": 463961,
+          "cachedInputTokens": 437248,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 2771,
+          "reasoningOutputTokens": 456,
+          "totalTokens": 466732
+        },
+        "pricing": {
+          "policy": "natural-standard-v2",
+          "rate_card": {
+            "source": "https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing",
+            "verified_utc": "2026-10-30T12:41:43Z",
+            "basis": "Codex Standard USD per 1M tokens; estimate, not invoice",
+            "rates": {
+              "gpt-6.1-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.1,
+                "output": 10
+              },
+              "gpt-6.1-terra": {
+                "uncached_input": 1,
+                "cached_input": 0.05,
+                "output": 5
+              },
+              "gpt-6-astra": {
+                "uncached_input": 10,
+                "cached_input": 1,
+                "output": 50
+              },
+              "gpt-6-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 10
+              },
+              "gpt-6-luna": {
+                "uncached_input": 0.1,
+                "cached_input": 0.01,
+                "output": 0.5
+              },
+              "gpt-5.6-sol": {
+                "uncached_input": 4,
+                "cached_input": 0.4,
+                "output": 20
+              },
+              "gpt-5.6-terra": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 12
+              },
+              "gpt-5.6-luna": {
+                "uncached_input": 0.2,
+                "cached_input": 0.02,
+                "output": 1.2
+              },
+              "gpt-6-astra-law": {
+                "uncached_input": 12.5,
+                "cached_input": 1.25,
+                "output": 62.5
+              }
+            }
+          },
+          "model_tokens": {
+            "gpt-6.1-sol": {
+              "threads": 2,
+              "tokens": {
+                "totalTokens": 2724235,
+                "inputTokens": 2710724,
+                "cachedInputTokens": 2624640,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 13511,
+                "reasoningOutputTokens": 4621
+              }
+            }
+          },
+          "root_start": {
+            "thread": "b6e2bccaf0d21c2cfea0cd4e92d7d0e34c042a6c2d1c65a92cac2370bf0bf6e2",
+            "requested_model": "gpt-6.1-sol",
+            "effective_model": "gpt-6.1-sol",
+            "requested_effort": "medium"
+          },
+          "root_default_verified": true,
+          "token_coverage": "lower bound",
+          "priced_tokens": {
+            "inputTokens": 2710724,
+            "cachedInputTokens": 2624640,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 13511,
+            "reasoningOutputTokens": 4621,
+            "totalTokens": 2724235
+          },
+          "unpriced_tokens": {
+            "inputTokens": 0,
+            "cachedInputTokens": 0,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 0,
+            "reasoningOutputTokens": 0,
+            "totalTokens": 0
+          },
+          "priced_threads": 2,
+          "unpriced_threads": 0,
+          "unpriced_reasons": {},
+          "known_usd_lower_bound": 0.569742,
+          "terminal_proof": [
+            {
+              "thread": "b6e2bccaf0d21c2cfea0cd4e92d7d0e34c042a6c2d1c65a92cac2370bf0bf6e2",
+              "bound": true,
+              "meter_consistent": true,
+              "model": "gpt-6.1-sol",
+              "tokens": {
+                "totalTokens": 2257503,
+                "inputTokens": 2246763,
+                "cachedInputTokens": 2187392,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 10740,
+                "reasoningOutputTokens": 4165
+              },
+              "start": {
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "parent": null
+              },
+              "trace_sha256": "598a7cd2b090d9dbf0846f8cd87bf9544493975eb1ea5d81f881fc712c0ac59b",
+              "turns": [
+                {
+                  "turn": "1b483b2046de8695ab07abfa94c678128096853eab6b99109f44fc7998d8de2a",
+                  "model": "gpt-6.1-sol",
+                  "effort": "medium",
+                  "message_seq": 1934,
+                  "usage_seq": 1935,
+                  "terminal_seq": 1939,
+                  "status": "completed",
+                  "total": {
+                    "totalTokens": 2257503,
+                    "inputTokens": 2246763,
+                    "cachedInputTokens": 2187392,
+                    "cacheWriteInputTokens": 0,
+                    "outputTokens": 10740,
+                    "reasoningOutputTokens": 4165
+                  }
+                }
+              ]
+            },
+            {
+              "thread": "2d1ae9b54a50d00922cf8bc37875190215b605bf6639840c6cae8431af21ae55",
+              "bound": true,
+              "meter_consistent": true,
+              "model": "gpt-6.1-sol",
+              "tokens": {
+                "totalTokens": 466732,
+                "inputTokens": 463961,
+                "cachedInputTokens": 437248,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 2771,
+                "reasoningOutputTokens": 456
+              },
+              "start": {
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "parent": "b6e2bccaf0d21c2cfea0cd4e92d7d0e34c042a6c2d1c65a92cac2370bf0bf6e2"
+              },
+              "trace_sha256": "c4150be701900b7a942a0014e8b7eee8806a2d017e8d793c48febad1df93644d",
+              "turns": [
+                {
+                  "turn": "2a99fab838a3f0a19ecd79971731778eb60117a74e94010df94689461635c4c1",
+                  "model": "gpt-6.1-sol",
+                  "effort": "medium",
+                  "message_seq": 1086,
+                  "usage_seq": 1087,
+                  "terminal_seq": 1090,
+                  "status": "completed",
+                  "total": {
+                    "totalTokens": 246339,
+                    "inputTokens": 244546,
+                    "cachedInputTokens": 221568,
+                    "cacheWriteInputTokens": 0,
+                    "outputTokens": 1793,
+                    "reasoningOutputTokens": 381
+                  }
+                },
+                {
+                  "turn": "077b41eb6558a9c752cae9b75c77ea955fea3b95c25424b670c04d95f6eada0f",
+                  "model": "gpt-6.1-sol",
+                  "effort": "medium",
+                  "message_seq": 1418,
+                  "usage_seq": 1419,
+                  "terminal_seq": 1422,
+                  "status": "completed",
+                  "total": {
+                    "totalTokens": 466732,
+                    "inputTokens": 463961,
+                    "cachedInputTokens": 437248,
+                    "cacheWriteInputTokens": 0,
+                    "outputTokens": 2771,
+                    "reasoningOutputTokens": 456
+                  }
+                }
+              ]
+            }
+          ],
+          "native_sha256": "685e2578a52a4d3f00925895ececb2e96caa463326521d200c10b750421d88bf"
+        },
+        "observed_commands": 34,
+        "native_hook_receipts": 79
+      },
+      "receipt_sha256": {
+        "release": "e1972a691f32651ddbb9ee2ec2a936de265b12240b1971b065688467d70fd760",
+        "native": "685e2578a52a4d3f00925895ececb2e96caa463326521d200c10b750421d88bf",
+        "submission": "1137d5b954c59eb5901b57c7d3b2b4e02f5c53084de6ecb3205b478c458a8c27",
+        "result": "fe6d0e2a04fbeb03a8632c73acb72d8a0236eefbd9877423c0a3420d13d47791",
+        "inventory": "6acc099018f7ae91d63005039de1ccba896c4001d071f91854fceffd20067fe0",
+        "turn-input": "024a7ec575ce28f700f2e1802d22560105428301ffd6c4bf94a12b7fad1f0a5c"
+      }
+    },
+    "upstream": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "5b477263b3332904ff253f574ad7f74a1a0bdeab73c353b279208ce5bf475220",
+      "case_id": "black",
+      "role": "upstream",
+      "state": "merged",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=src:/deps/lib python -m compileall -q src/black",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "40861308fd6a588d2534e702d5bc0a6dd6846c9b37ad139ab94da6f3465729ca",
+          "command": "PYTHONPATH=.:src:/deps/lib python -m pytest -q -o addopts= tests/test_format.py -k fmtskip",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "PYTHONPATH=.:src:/deps/lib python3 /oracle/probe.py",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/CHANGES.md b/CHANGES.md\nindex 5b6fa77..4cf1736 100644\n--- a/CHANGES.md\n+++ b/CHANGES.md\n@@ -54,6 +54,8 @@\n - Fix crash on an assignment whose target is split over lines inside redundant\n   parentheses and doesn't fit on one line with the value, such as `(a.b(c)` ...\n   `.d[e]) = f` (#5606, #5621)\n+- Fix crash when `# fmt: skip` is on an opening bracket that starts an operand of a\n+  longer expression after `with` or `yield` (#5620)\n - Fix crash on a method chain with multiple `# type: ignore` comments when another\n   comment sits between them, which put a `# type: ignore` after the other comment on one\n   line, where it no longer applies (#5618)\ndiff --git a/src/black/comments.py b/src/black/comments.py\nindex 1ae8e6e..22187d7 100644\n--- a/src/black/comments.py\n+++ b/src/black/comments.py\n@@ -919,7 +919,7 @@ def _generate_ignored_nodes_from_fmt_skip(\n             current_node = current_node.parent\n \n         ignored_nodes = [current_node]\n-        if current_node.prev_sibling is None and current_node.parent is not None:\n+        while current_node.prev_sibling is None and current_node.parent is not None:\n             current_node = current_node.parent\n \n         # Track seen nodes to detect cycles that can occur after tree modifications\n@@ -979,7 +979,7 @@ def _generate_ignored_nodes_from_fmt_skip(\n \n             ignored_nodes.insert(0, current_node)\n \n-            if current_node.prev_sibling is None and current_node.parent is not None:\n+            while current_node.prev_sibling is None and current_node.parent is not None:\n                 current_node = current_node.parent\n                 # Every child of the node we are climbing out of is now ignored, so\n                 # take the node itself instead. Converting only its leaves would\n@@ -987,24 +987,17 @@ def _generate_ignored_nodes_from_fmt_skip(\n                 # children, like the one for PEP 695 type parameters, crash on it.\n                 # Children collapsed on an earlier climb are already nodes here, so\n                 # compare against children rather than leaves.\n+                # The collapsed node can be the first child of a parent that is now\n+                # fully ignored as well (`a + b` in `a + b if c else d`), so keep\n+                # climbing and collapse that parent too. Stopping one level short\n+                # leaves the parent's children in the list next to a sibling from\n+                # the enclosing node, and the standalone comment then lands inside\n+                # the parent while that sibling is removed from around it, turning\n+                # e.g. a tuple into a call. Climbing also has to go on past parents\n+                # that aren't fully ignored, or the walk stops before reaching the\n+                # start of the line (`with` in `with not (  # fmt: skip`).\n                 if _children_lead_ignored_nodes(current_node, ignored_nodes):\n                     ignored_nodes[: len(current_node.children)] = [current_node]\n-                    # The collapsed node can be the first child of a parent that\n-                    # is now fully ignored as well (`a + b` in `a + b if c else d`).\n-                    # Collapse that parent too and keep walking from it. Stopping\n-                    # one level short leaves the parent's children in the list next\n-                    # to a sibling from the enclosing node, and the standalone\n-                    # comment then lands inside the parent while that sibling is\n-                    # removed from around it, turning e.g. a tuple into a call.\n-                    while (\n-                        current_node.prev_sibling is None\n-                        and current_node.parent is not None\n-                        and _children_lead_ignored_nodes(\n-                            current_node.parent, ignored_nodes\n-                        )\n-                    ):\n-                        current_node = current_node.parent\n-                        ignored_nodes[: len(current_node.children)] = [current_node]\n \n         # Special handling for compound statements with semicolon-separated bodies\n         if isinstance(parent, Node):\ndiff --git a/src/black/linegen.py b/src/black/linegen.py\nindex ca3961e..456946e 100644\n--- a/src/black/linegen.py\n+++ b/src/black/linegen.py\n@@ -548,9 +548,13 @@ class LineGenerator(Visitor[Line]):\n \n         -2 ** 8 -> -(2 ** 8)\n         \"\"\"\n-        _operator, operand = node.children\n+        # The operator is gone when a `# fmt: skip` on the operand's opening bracket\n+        # hides it and the operand goes on after the closing bracket, as in\n+        # `x = -(  # fmt: skip` ... `).y`.\n+        operand = node.children[-1]\n         if (\n-            operand.type == syms.power\n+            len(node.children) == 2\n+            and operand.type == syms.power\n             and len(operand.children) == 3\n             and operand.children[1].type == token.DOUBLESTAR\n         ):\ndiff --git a/tests/data/cases/fmtskip_opening_bracket_operand.py b/tests/data/cases/fmtskip_opening_bracket_operand.py\nnew file mode 100644\nindex 0000000..f33db4f\n--- /dev/null\n+++ b/tests/data/cases/fmtskip_opening_bracket_operand.py\n@@ -0,0 +1,95 @@\n+# `# fmt: skip` on an opening bracket that starts an operand of a longer expression\n+# hides the whole line, including the code before the bracket.\n+\n+with (  # fmt: skip\n+    a\n+) == 1 and b:\n+    x  =  1\n+\n+with not (  # fmt: skip\n+    a\n+) or b as c:\n+    pass\n+\n+with -(  # fmt: skip\n+    a\n+).real and b:\n+    pass\n+\n+x = (  # fmt: skip\n+    a\n+) + 1 or b\n+\n+y = not [  # fmt: skip\n+    1, 2] and c\n+\n+assert (  # fmt: skip\n+    a\n+) * 2 + 1 == b\n+\n+\n+async def f():\n+    async with (  # fmt: skip\n+        a\n+    ) in b and c:\n+        pass\n+\n+\n+def g():\n+    yield (  # fmt: skip\n+        a\n+    ) == 1 and b\n+    yield not (  # fmt: skip\n+        a\n+    ) or b\n+    return -{  # fmt: skip\n+        \"a\": 1}.keys or b\n+\n+# output\n+\n+# `# fmt: skip` on an opening bracket that starts an operand of a longer expression\n+# hides the whole line, including the code before the bracket.\n+\n+with (  # fmt: skip\n+    a\n+) == 1 and b:\n+    x = 1\n+\n+with not (  # fmt: skip\n+    a\n+) or b as c:\n+    pass\n+\n+with -(  # fmt: skip\n+    a\n+).real and b:\n+    pass\n+\n+x = (  # fmt: skip\n+    a\n+) + 1 or b\n+\n+y = not [  # fmt: skip\n+    1, 2] and c\n+\n+assert (  # fmt: skip\n+    a\n+) * 2 + 1 == b\n+\n+\n+async def f():\n+    async with (  # fmt: skip\n+        a\n+    ) in b and c:\n+        pass\n+\n+\n+def g():\n+    yield (  # fmt: skip\n+        a\n+    ) == 1 and b\n+    yield not (  # fmt: skip\n+        a\n+    ) or b\n+    return -{  # fmt: skip\n+        \"a\": 1}.keys or b\n",
+      "patch_sha256": "ee9a6e9b1d712ad6be09bc4e98f56faee2d6f05d53aa389714b0e636308d1bb3",
+      "proposal": "Fix crash on `# fmt: skip` on a nested bracket after `with` or `yield`\n\n### Description\n\n`# fmt: skip` on an opening bracket crashes Black when the bracket starts an operand that's nested inside a longer expression after `with` or `yield`:\n\n```python\nwith (  # fmt: skip\n    a\n) == 1 and b:\n    pass\n```\n\nfails with \"INTERNAL ERROR: Black produced invalid code: cannot parse: 1:4\". The same happens with `) + 1 == 2:`, `with not (  # fmt: skip` ... `) or b:`, `async with`, and `with ... as c`. After `yield` the output still parses but means something else (`yield` ends up on its own line), so Black reports \"produced code that is not equivalent to the source\". 26.10.1 crashes on these too.\n\nTo find the code before the bracket on the same line, the walk in `_generate_ignored_nodes_from_fmt_skip` climbs to the parent when a node has no previous sibling, but only by one level. Here the bracket is the first leaf of a `comparison` inside an `and_test`, so the walk stops at the `comparison` and `with` is never added to the skipped line. The skipped code then becomes a standalone comment after `with`, which gets split onto its own line.\n\nBoth climbs (the one before the walk and the one inside it) now keep going up while the node is the first child of its parent. The inner loop that collapsed fully ignored parents is folded into the outer one, since it did the same climb with an extra condition.\n\nWith the whole line skipped, a unary operator before the bracket can be hidden while its operand goes on after the closing bracket (`with -(  # fmt: skip` ... `).y and b:`). That leaves a `factor` node with only the operand, so `visit_factor` now checks the number of children instead of unpacking two.\n\nIn other statements this didn't crash, but the line wasn't kept as is either. For example `x = (  # fmt: skip` ... `) == 1 and b` was turned into `x = (` followed by the bracket on its own line. Those lines are now left unchanged. Code that was already formatted by Black stays the same: I ran ~19k generated variants (`x =`, `return`, `yield`, `with`, `if`, `assert`, lambdas, unary operators, trailers, and/or/comparison/arithmetic operands) and the output of `main` for each one is unchanged with this branch, in stable, preview and unstable. None of them crash now.\n\n### Checklist - did you ...\n\n- [x] Implement any code style changes under the `--preview` style, following the stability policy?\n- [x] Add an entry in `CHANGES.md` if necessary?\n- [x] Add / update tests if necessary?\n- [x] Add new / update outdated documentation?\n",
+      "proposal_sha256": "a06384c83cc4f32f48f765d7438ab401dce82a27f889874f2667b2ca5a057985",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "ee9a6e9b1d712ad6be09bc4e98f56faee2d6f05d53aa389714b0e636308d1bb3",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "patch_sha256": "ee9a6e9b1d712ad6be09bc4e98f56faee2d6f05d53aa389714b0e636308d1bb3",
+            "proposal_sha256": "a06384c83cc4f32f48f765d7438ab401dce82a27f889874f2667b2ca5a057985",
+            "judgment_sha256": "eb13f7c0e122a9a31d6beaabc2a14c75d4a6ee7a48cb374965cdf55fb0f6111c",
+            "mapping_sha256": "e1aa23e2c6c3f7ffa419220bb6efc700b88285f43d75d1701b22d90446252d1a",
+            "assessor_sha256": "e637b9badccfc0b0c570debfba209ac860593bd1c33792c98ad74ec5d019f225",
+            "packet_sha256": "7eed8772f196e515f59e06c27b7d9dca43419c529772453d90bf8529adeef101",
+            "prompt_sha256": "a044c9b8ede67ea1fe4512716f62ad22d9d110acd01c601c3f48bf23fdb69b8f"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "patch_sha256": "ee9a6e9b1d712ad6be09bc4e98f56faee2d6f05d53aa389714b0e636308d1bb3",
+            "proposal_sha256": "a06384c83cc4f32f48f765d7438ab401dce82a27f889874f2667b2ca5a057985",
+            "judgment_sha256": "be2fcc72ab965d518ccce5f6c4ee26c11059625e8035ba1edc81beacf8b7ae1c",
+            "mapping_sha256": "789e1e301926d3ca18d84174769612bc5814cecdfec7b38740ffabc669e4d25b",
+            "assessor_sha256": "9f75fc0a5ba1f8e96b658ea89926149eb71f60bea9b7cf3e4c0489ce198f37fe",
+            "packet_sha256": "1642e4227037e483243bc690aa403d43b8ba7a690e25f646d7c89e064a687fa3",
+            "prompt_sha256": "1e69323177719a1a409db66a6e1f88aa8cf2a23b8c9d443628ba64ce97c82f38"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "patch_sha256": "ee9a6e9b1d712ad6be09bc4e98f56faee2d6f05d53aa389714b0e636308d1bb3",
+            "proposal_sha256": "a06384c83cc4f32f48f765d7438ab401dce82a27f889874f2667b2ca5a057985",
+            "judgment_sha256": "019b3f0b6796c9fad322e87df8b73d76218546a1562dfaf0c08887d9b010bf85",
+            "mapping_sha256": "cbb687145fcf0acc5c84a7fcd9f75116c876c00f974736da999052b1f9f5c79a",
+            "assessor_sha256": "21db47b1a9470b2a2a5518acd3abee2758ca5ab03e5927ecf7abbd66b1ef077c",
+            "packet_sha256": "988ae9696ade9213314ac4ade7211235b231e8c28238d825529ef7813f01faf3",
+            "prompt_sha256": "ffad61bb7275106562d924ebc4e842275fac7ee38bf3e0087392327368aef4bd"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 4,
+          "tests": 3,
+          "design": 4,
+          "proposal": 2
+        },
+        "proposal_points_100": 86.25,
+        "diff_points_85": 78.75,
+        "rotation_points_85": {
+          "0": 78.75,
+          "1": 78.75,
+          "2": 85.0
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 3,
+              "design": 4,
+              "proposal": 2
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native fmtskip, contract, and preserve exits of 0. src/black/comments.py repeats both ancestor climbs, reaching with/yield through comparison and boolean parents; src/black/linegen.py:visit_factor tolerates an operand whose unary operator was hidden. fmtskip_opening_bracket_operand.py provides affirmative examples for with, async with, yield, unary operators, trailers, comparisons, and skipped-text preservation, with normal body formatting. Contract and preserve passes support requested behavior and existing consumers within the frozen check scope.",
+              "tests": "tests/data/cases/fmtskip_opening_bracket_operand.py adds discriminating cases for first operands in longer boolean/comparison expressions, not, minus with a trailer, and list/dictionary brackets, including with/as, async with, and yield. Existing tests/test_format.py and tests/util.py supply output, AST, stability, preview, and narrow-line checks without weakened assertions. Frozen native exit is 0. The new fixture omits yield from and the later-operand left + ( case, so focused coverage is not complete.",
+              "design": "src/black/comments.py changes the two single ancestor climbs to while loops, preserving _children_lead_ignored_nodes and subsuming the deleted conditional parent-collapse loop. Seen-node and physical-line boundary protections remain, as do downstream compound-statement and unmatched-bracket handling. src/black/linegen.py retains the power-parenthesization rule for two-child factors while allowing the one-child factor produced by skipping a unary operator. The extra visitor edit addresses a concrete consequence of the traversal change; other edits are a focused fixture and changelog.",
+              "proposal": "packet/B.md gives a precise reproducer, explains invalid versus inequivalent output, traces the ancestor-walk cause, and explains the factor visitor change. Its claim of approximately 19,000 generated comparisons in stable, preview, and unstable modes has no supporting frozen observations and earns no verification credit. The supplied proposal does not report the selected build/native commands or bound the documented verification to the available evidence, leaving verification accuracy and limitations unclear."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 3,
+              "design": 4,
+              "proposal": 2
+            },
+            "evidence": {
+              "contract": "packet/task.json records build, native, contract and preserve exits of 0. A.patch changes both ancestor climbs in src/black/comments.py, covering bracket-first and preceding-operand traversal. Its src/black/linegen.py guard handles a factor whose unary operator was captured by fmt: skip. The fixture covers with, async with, yield, boolean/comparison nesting and unary operators with trailers, while formatting the body assignment.",
+              "tests": "tests/data/cases/fmtskip_opening_bracket_operand.py adds discriminating bracket-first with/async-with/yield cases, unary/trailer cases, and an assignment that must still format. tests/test_format.py discovers the fixture; tests/util.py checks exact output, AST equivalence and stability when output changes, including preview and line-length-1 variants. Frozen native and preservation checks pass. Coverage does not explicitly include yield from or the left + (...) variant in the new fixture.",
+              "design": "The two repeated ancestor climbs in src/black/comments.py address the root traversal problem without changing public APIs. The removed nested collapse loop is subsumed by the new while loop, which still calls _children_lead_ignored_nodes at each ancestor. Cycle detection, physical-line stopping, compound-header handling and unmatched-bracket preservation remain. The small visit_factor change preserves the ordinary two-child power-parenthesizing rule while accommodating the partially ignored unary node; its new fixture exercises that need.",
+              "proposal": "A.md gives a precise failure example, explains the traversal cause and the unary-visitor change, and describes the wider behavior affected. However, its approximately 19,000 generated-variant and cross-mode compatibility claims have no supporting frozen results; those claims receive no verification credit. It does not identify the recorded fmtskip check or give a clear verification limitation, so verification reporting falls short of the full anchor."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/task.json records build/native/contract/preserve exit 0. packet/C.patch changes both ancestor climbs in comments.py, covering opening operands nested under comparison/boolean expressions as well as preceding operators. linegen.py:visit_factor explicitly handles an operand surviving removal of its unary operator. fmtskip_opening_bracket_operand.py specifies preserved skipped text for with, async with and yield, unary trailers, and adjacent expression consumers, with ordinary body formatting. The fixture harness supplies AST equivalence and idempotence checks; frozen preservation and native results support existing behavior within the recorded slice.",
+              "tests": "tests/data/cases/fmtskip_opening_bracket_operand.py includes comparison plus boolean nesting, not, unary minus with .real, with-as, async-with membership, yield comparison/not, assignment/list/assert and return/dictionary-trailer boundaries. The x assignment in the with body must change spacing, so surrounding formatting is exercised. tests/test_format.py discovers the fixture and tests/util.py:93-183 checks expected output, equivalence, stability, preview variants and line-length-one behavior. No fast flag or existing assertion is weakened; frozen native and preservation checks exit 0.",
+              "design": "Both climbs are generalized without replacing the surrounding traversal. Removing the old nested collapse loop retains its protection through _children_lead_ignored_nodes on every ascent; existing cycle, comment, line-boundary and bracket fallback checks remain. visit_factor uses the final operand and restricts power-parenthesization to the original two-child shape, accommodating the concrete partially hidden unary factor while preserving normal unary-power handling. The changelog and focused fixture fit the requested scope; no validation bypass is introduced.",
+              "proposal": "packet/C.md gives a precise title, concrete invalid-output and AST-mismatch examples, explains both traversal sites, and motivates the unary-factor compatibility change. These explanations match the patch. The claimed approximately 19,000 generated variants, cross-mode differential results and version-specific reproduction have no supporting frozen logs, so receive no check credit. The proposal does not clearly distinguish those claims from the limited recorded verification or state broader validation limits, preventing full communication credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": null,
+      "receipt_sha256": {
+        "grade": "57e1bd3f6ba12a2cb30e8caaf6e9a8d2c29f248b48f62ae3c8d729434afe7ec5"
+      }
+    }
+  },
+  "route_review": "Requires inspection of the recorded independent review events.",
+  "prior_develop": {
+    "state": "completed",
+    "effort": {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 4594321,
+        "cachedInputTokens": 4411264,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 23099,
+        "reasoningOutputTokens": 5664,
+        "totalTokens": 4617420
+      },
+      "estimated_usd": 1.0382304,
+      "billed_usd": null,
+      "checkout_to_proposal_seconds": 793.5163255159277,
+      "prompt_to_terminal_seconds": 754.5416289512068,
+      "through_grading_seconds": 803.2592456059065,
+      "setup_seconds": 37.456832540920004,
+      "grading_seconds": 8.23918357398361,
+      "thread_count": 4,
+      "child_count": 3,
+      "root_tokens": {
+        "totalTokens": 3566617,
+        "inputTokens": 3549594,
+        "cachedInputTokens": 3423104,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 17023,
+        "reasoningOutputTokens": 5069
+      },
+      "descendant_tokens": {
+        "inputTokens": 1044727,
+        "cachedInputTokens": 988160,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 6076,
+        "reasoningOutputTokens": 595,
+        "totalTokens": 1050803
+      },
+      "pricing": {
+        "policy": "natural-standard-v2",
+        "rate_card": {
+          "source": "https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing",
+          "verified_utc": "2026-10-30T12:41:43Z",
+          "basis": "Codex Standard USD per 1M tokens; estimate, not invoice",
+          "rates": {
+            "gpt-6.1-sol": {
+              "uncached_input": 2,
+              "cached_input": 0.1,
+              "output": 10
+            },
+            "gpt-6.1-terra": {
+              "uncached_input": 1,
+              "cached_input": 0.05,
+              "output": 5
+            },
+            "gpt-6-astra": {
+              "uncached_input": 10,
+              "cached_input": 1,
+              "output": 50
+            },
+            "gpt-6-sol": {
+              "uncached_input": 2,
+              "cached_input": 0.2,
+              "output": 10
+            },
+            "gpt-6-luna": {
+              "uncached_input": 0.1,
+              "cached_input": 0.01,
+              "output": 0.5
+            },
+            "gpt-5.6-sol": {
+              "uncached_input": 4,
+              "cached_input": 0.4,
+              "output": 20
+            },
+            "gpt-5.6-terra": {
+              "uncached_input": 2,
+              "cached_input": 0.2,
+              "output": 12
+            },
+            "gpt-5.6-luna": {
+              "uncached_input": 0.2,
+              "cached_input": 0.02,
+              "output": 1.2
+            },
+            "gpt-6-astra-law": {
+              "uncached_input": 12.5,
+              "cached_input": 1.25,
+              "output": 62.5
+            }
+          }
+        },
+        "model_tokens": {
+          "gpt-6.1-sol": {
+            "threads": 4,
+            "tokens": {
+              "totalTokens": 4617420,
+              "inputTokens": 4594321,
+              "cachedInputTokens": 4411264,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 23099,
+              "reasoningOutputTokens": 5664
+            }
+          }
+        },
+        "root_start": {
+          "thread": "da7ffab32940d4ba1a3186b9f813ceb1622ac92d884940e15420e6eb9a204169",
+          "requested_model": "gpt-6.1-sol",
+          "effective_model": "gpt-6.1-sol",
+          "requested_effort": "medium"
+        },
+        "root_default_verified": true,
+        "token_coverage": "complete",
+        "priced_tokens": {
+          "inputTokens": 4594321,
+          "cachedInputTokens": 4411264,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 23099,
+          "reasoningOutputTokens": 5664,
+          "totalTokens": 4617420
+        },
+        "unpriced_tokens": {
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 0,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 0
+        },
+        "priced_threads": 4,
+        "unpriced_threads": 0,
+        "unpriced_reasons": {},
+        "known_usd_lower_bound": 1.0382304,
+        "terminal_proof": [
+          {
+            "thread": "da7ffab32940d4ba1a3186b9f813ceb1622ac92d884940e15420e6eb9a204169",
+            "bound": true,
+            "meter_consistent": true,
+            "model": "gpt-6.1-sol",
+            "tokens": {
+              "totalTokens": 3566617,
+              "inputTokens": 3549594,
+              "cachedInputTokens": 3423104,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 17023,
+              "reasoningOutputTokens": 5069
+            },
+            "start": {
+              "model": "gpt-6.1-sol",
+              "effort": "medium",
+              "parent": null
+            },
+            "trace_sha256": "26a5ef5ade60eb3908f5562e4ab50301579813f7dbfd4e2321d5bce3b8c1c668",
+            "turns": [
+              {
+                "turn": "335c15a7f2d78b52a3a2196177f85a1befbe0eddfdc3d48f7de313e67aa06d37",
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "message_seq": 3250,
+                "usage_seq": 3251,
+                "terminal_seq": 3255,
+                "status": "completed",
+                "total": {
+                  "totalTokens": 3566617,
+                  "inputTokens": 3549594,
+                  "cachedInputTokens": 3423104,
+                  "cacheWriteInputTokens": 0,
+                  "outputTokens": 17023,
+                  "reasoningOutputTokens": 5069
+                }
+              }
+            ]
+          },
+          {
+            "thread": "524f34b1351dc1aad11a5bc40f04782b2d9934b51ba5405b27134eb75b5e5fe2",
+            "bound": true,
+            "meter_consistent": true,
+            "model": "gpt-6.1-sol",
+            "tokens": {
+              "totalTokens": 281218,
+              "inputTokens": 280094,
+              "cachedInputTokens": 251648,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 1124,
+              "reasoningOutputTokens": 78
+            },
+            "start": {
+              "model": "gpt-6.1-sol",
+              "effort": "medium",
+              "parent": "da7ffab32940d4ba1a3186b9f813ceb1622ac92d884940e15420e6eb9a204169"
+            },
+            "trace_sha256": "d026b207a98c5d13863310a1959e6af698c6fd55165992919a765688e4c9b3e7",
+            "turns": [
+              {
+                "turn": "f3a12b9b871daefc3e5e75f35c22317d2ca8f1593041a18072c4aa33fe0ff450",
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "message_seq": 478,
+                "usage_seq": 479,
+                "terminal_seq": 482,
+                "status": "completed",
+                "total": {
+                  "totalTokens": 156946,
+                  "inputTokens": 156256,
+                  "cachedInputTokens": 132736,
+                  "cacheWriteInputTokens": 0,
+                  "outputTokens": 690,
+                  "reasoningOutputTokens": 34
+                }
+              },
+              {
+                "turn": "0b98c0caa5ac4a9c85cab2fcd80e23a44c70011f6d99522eace3d091eb123183",
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "message_seq": 2289,
+                "usage_seq": 2290,
+                "terminal_seq": 2293,
+                "status": "completed",
+                "total": {
+                  "totalTokens": 281218,
+                  "inputTokens": 280094,
+                  "cachedInputTokens": 251648,
+                  "cacheWriteInputTokens": 0,
+                  "outputTokens": 1124,
+                  "reasoningOutputTokens": 78
+                }
+              }
+            ]
+          },
+          {
+            "thread": "cd3c3ec5f1fe8e7e0c6fae0aaf3db89ea33e3a04391b1fbf4824e342f0c5b9cf",
+            "bound": true,
+            "meter_consistent": true,
+            "model": "gpt-6.1-sol",
+            "tokens": {
+              "totalTokens": 669811,
+              "inputTokens": 665538,
+              "cachedInputTokens": 646784,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 4273,
+              "reasoningOutputTokens": 478
+            },
+            "start": {
+              "model": "gpt-6.1-sol",
+              "effort": "medium",
+              "parent": "da7ffab32940d4ba1a3186b9f813ceb1622ac92d884940e15420e6eb9a204169"
+            },
+            "trace_sha256": "355111e7a716a848313327d0d774b4e8be4766ee28a9384350594eac5b565ce0",
+            "turns": [
+              {
+                "turn": "7776599682f5e236412fb2fdd80126bea964910785bc7f26eb8d06bff2a64251",
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "message_seq": 2019,
+                "usage_seq": 2020,
+                "terminal_seq": 2023,
+                "status": "completed",
+                "total": {
+                  "totalTokens": 585915,
+                  "inputTokens": 582111,
+                  "cachedInputTokens": 564864,
+                  "cacheWriteInputTokens": 0,
+                  "outputTokens": 3804,
+                  "reasoningOutputTokens": 478
+                }
+              },
+              {
+                "turn": "0e6971b39fe975222559a05d9aeb9ec2543dc0f0c2d7f4fefe5d1c89be958e86",
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "message_seq": 2218,
+                "usage_seq": 2252,
+                "terminal_seq": 2255,
+                "status": "completed",
+                "total": {
+                  "totalTokens": 669811,
+                  "inputTokens": 665538,
+                  "cachedInputTokens": 646784,
+                  "cacheWriteInputTokens": 0,
+                  "outputTokens": 4273,
+                  "reasoningOutputTokens": 478
+                }
+              }
+            ]
+          },
+          {
+            "thread": "15d315fee4870ba36f8a74e2d35fbac36d73ff2955afa896390f0ba127b238fb",
+            "bound": true,
+            "meter_consistent": true,
+            "model": "gpt-6.1-sol",
+            "tokens": {
+              "totalTokens": 99774,
+              "inputTokens": 99095,
+              "cachedInputTokens": 89728,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 679,
+              "reasoningOutputTokens": 39
+            },
+            "start": {
+              "model": "gpt-6.1-sol",
+              "effort": "medium",
+              "parent": "da7ffab32940d4ba1a3186b9f813ceb1622ac92d884940e15420e6eb9a204169"
+            },
+            "trace_sha256": "e78be6c2ace0a352ecfaa7512ca05b71023bb0185ec02c66a3e0b31be6ac2fc0",
+            "turns": [
+              {
+                "turn": "ad4f3841a4f85627e32b31e3c6ec27a580e8064f8dc8e1d4e92ebe0574ffa420",
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "message_seq": 2971,
+                "usage_seq": 2972,
+                "terminal_seq": 2975,
+                "status": "completed",
+                "total": {
+                  "totalTokens": 99774,
+                  "inputTokens": 99095,
+                  "cachedInputTokens": 89728,
+                  "cacheWriteInputTokens": 0,
+                  "outputTokens": 679,
+                  "reasoningOutputTokens": 39
+                }
+              }
+            ]
+          }
+        ],
+        "native_sha256": "f3883f63648b79971eac47101009ea8f217884b195e3bf6c8245fb2c05d826f0"
+      },
+      "observed_commands": 59,
+      "native_hook_receipts": 158
+    },
+    "stage_exits": {
+      "build": 0,
+      "native": 0,
+      "contract": 0,
+      "preserve": 0
+    },
+    "patch_sha256": "633e18eb36d44f56f2ecde98e6a90ef31b865a6c4aba1dfae43088483afa1ee9",
+    "proposal_sha256": "0865d76a47ca5733ce7f841357982222108573503ca2886b8920fb06b5817d79",
+    "full_pr_score": null,
+    "patch": "diff --git a/CHANGES.md b/CHANGES.md\nindex 5b6fa77..3e11b2d 100644\n--- a/CHANGES.md\n+++ b/CHANGES.md\n@@ -13,6 +13,9 @@\n \n <!-- Changes that affect Black's stable style -->\n \n+- Fix invalid or semantically changed output when `# fmt: skip` is on an opening\n+  bracket nested in a longer `with`, `async with`, or `yield` expression.\n+\n - Fix crash when `# fmt: skip` follows the closing bracket of a multi-line call or\n   subscript that isn't the last element of a collection or argument list (#5522)\n - Normalize hex codes in unicode escape sequences in f-strings (#5526)\ndiff --git a/src/black/comments.py b/src/black/comments.py\nindex 1ae8e6e..736f69b 100644\n--- a/src/black/comments.py\n+++ b/src/black/comments.py\n@@ -919,8 +919,12 @@ def _generate_ignored_nodes_from_fmt_skip(\n             current_node = current_node.parent\n \n         ignored_nodes = [current_node]\n-        if current_node.prev_sibling is None and current_node.parent is not None:\n+        # Climb to a previous sibling even through partially ignored expressions.\n+        # Only replace children with their parent when all of them are ignored.\n+        while current_node.prev_sibling is None and current_node.parent is not None:\n             current_node = current_node.parent\n+            if _children_lead_ignored_nodes(current_node, ignored_nodes):\n+                ignored_nodes[: len(current_node.children)] = [current_node]\n \n         # Track seen nodes to detect cycles that can occur after tree modifications\n         seen_nodes = {id(current_node)}\n@@ -967,19 +971,9 @@ def _generate_ignored_nodes_from_fmt_skip(\n             if current_node.type == token.DEDENT:\n                 break\n \n-            # Special case for with expressions\n-            # Without this, we can stuck inside the asexpr_test's children's children\n-            if (\n-                current_node.parent\n-                and current_node.parent.type == syms.asexpr_test\n-                and current_node.parent.parent\n-                and current_node.parent.parent.type == syms.with_stmt\n-            ):\n-                current_node = current_node.parent\n-\n             ignored_nodes.insert(0, current_node)\n \n-            if current_node.prev_sibling is None and current_node.parent is not None:\n+            while current_node.prev_sibling is None and current_node.parent is not None:\n                 current_node = current_node.parent\n                 # Every child of the node we are climbing out of is now ignored, so\n                 # take the node itself instead. Converting only its leaves would\n@@ -989,22 +983,6 @@ def _generate_ignored_nodes_from_fmt_skip(\n                 # compare against children rather than leaves.\n                 if _children_lead_ignored_nodes(current_node, ignored_nodes):\n                     ignored_nodes[: len(current_node.children)] = [current_node]\n-                    # The collapsed node can be the first child of a parent that\n-                    # is now fully ignored as well (`a + b` in `a + b if c else d`).\n-                    # Collapse that parent too and keep walking from it. Stopping\n-                    # one level short leaves the parent's children in the list next\n-                    # to a sibling from the enclosing node, and the standalone\n-                    # comment then lands inside the parent while that sibling is\n-                    # removed from around it, turning e.g. a tuple into a call.\n-                    while (\n-                        current_node.prev_sibling is None\n-                        and current_node.parent is not None\n-                        and _children_lead_ignored_nodes(\n-                            current_node.parent, ignored_nodes\n-                        )\n-                    ):\n-                        current_node = current_node.parent\n-                        ignored_nodes[: len(current_node.children)] = [current_node]\n \n         # Special handling for compound statements with semicolon-separated bodies\n         if isinstance(parent, Node):\ndiff --git a/src/black/linegen.py b/src/black/linegen.py\nindex ca3961e..1cf4bdb 100644\n--- a/src/black/linegen.py\n+++ b/src/black/linegen.py\n@@ -181,6 +181,13 @@ def visit_default(self, node: LN) -> Iterator[Line]:\n     def visit_test(self, node: Node) -> Iterator[Line]:\n         \"\"\"Visit an `x if y else z` test\"\"\"\n \n+        if len(node.children) == 1:\n+            # A fmt: skip block can hide the conditional prefix, leaving only\n+            # the rest of its last branch. Parentheses here would turn that\n+            # continuation into a call on the hidden closing bracket.\n+            yield from self.visit_default(node)\n+            return\n+\n         already_parenthesized = (\n             node.prev_sibling and node.prev_sibling.type == token.LPAR\n         )\ndiff --git a/tests/data/cases/fmtskip_opening_bracket_nested_with.py b/tests/data/cases/fmtskip_opening_bracket_nested_with.py\nnew file mode 100644\nindex 0000000..f62909f\n--- /dev/null\n+++ b/tests/data/cases/fmtskip_opening_bracket_nested_with.py\n@@ -0,0 +1,82 @@\n+with [  # fmt: skip\n+    1,  2\n+] + other(  3 ) as value:\n+    body(  4 )\n+\n+with first(  0 ), base + [  # fmt: skip\n+    1,  2\n+] + other(  3 ) as value:\n+    body(  4 )\n+\n+\n+async def f():\n+    async with [  # fmt: skip\n+        1,  2\n+    ] + other(  3 ) as value:\n+        body(  4 )\n+\n+    async with first(  0 ), base + [  # fmt: skip\n+        1,  2\n+    ] + other(  3 ) as value:\n+        body(  4 )\n+\n+with a if b else [  # fmt: skip\n+    1,  2\n+] + other(  3 ) as value:\n+    body(  4 )\n+\n+\n+async def conditional():\n+    async with a if b else [  # fmt: skip\n+        1,  2\n+    ] or other(  3 ) as value:\n+        body(  4 )\n+\n+# output\n+\n+with [  # fmt: skip\n+    1,  2\n+] + other(\n+    3\n+) as value:\n+    body(4)\n+\n+with first(  0 ), base + [  # fmt: skip\n+    1,  2\n+] + other(\n+    3\n+) as value:\n+    body(4)\n+\n+\n+async def f():\n+    async with [  # fmt: skip\n+        1,  2\n+    ] + other(\n+        3\n+    ) as value:\n+        body(4)\n+\n+    async with first(  0 ), base + [  # fmt: skip\n+        1,  2\n+    ] + other(\n+        3\n+    ) as value:\n+        body(4)\n+\n+\n+with a if b else [  # fmt: skip\n+    1,  2\n+] + other(\n+    3\n+) as value:\n+    body(4)\n+\n+\n+async def conditional():\n+    async with a if b else [  # fmt: skip\n+        1,  2\n+    ] or other(\n+        3\n+    ) as value:\n+        body(4)\ndiff --git a/tests/data/cases/fmtskip_opening_bracket_nested_yield.py b/tests/data/cases/fmtskip_opening_bracket_nested_yield.py\nnew file mode 100644\nindex 0000000..31caa86\n--- /dev/null\n+++ b/tests/data/cases/fmtskip_opening_bracket_nested_yield.py\n@@ -0,0 +1,75 @@\n+def f():\n+    yield [  # fmt: skip\n+        1,  2\n+    ] * factor + other(  3 )\n+    after(  4 )\n+\n+    yield factor * (  # fmt: skip\n+        value\n+    ) + other(  3 )\n+    after(  4 )\n+\n+    yield (  # fmt: skip\n+        value\n+    ) * factor + other(  3 )\n+    after(  4 )\n+\n+    yield [  # fmt: skip\n+        1,  2\n+    ] + other(  3 )\n+    after(  4 )\n+\n+    yield a if b else [  # fmt: skip\n+        1,  2\n+    ] + other(  3 )\n+    after(  4 )\n+\n+    yield a if b else [  # fmt: skip\n+        1,  2\n+    ] if condition else other(  3 )\n+    after(  4 )\n+\n+# output\n+\n+def f():\n+    yield [  # fmt: skip\n+        1,  2\n+    ] * factor + other(\n+        3\n+    )\n+    after(4)\n+\n+    yield factor * (  # fmt: skip\n+        value\n+    ) + other(\n+        3\n+    )\n+    after(4)\n+\n+    yield (  # fmt: skip\n+        value\n+    ) * factor + other(\n+        3\n+    )\n+    after(4)\n+\n+    yield [  # fmt: skip\n+        1,  2\n+    ] + other(\n+        3\n+    )\n+    after(4)\n+\n+    yield a if b else [  # fmt: skip\n+        1,  2\n+    ] + other(\n+        3\n+    )\n+    after(4)\n+\n+    yield a if b else [  # fmt: skip\n+        1,  2\n+    ] if condition else other(\n+        3\n+    )\n+    after(4)\n",
+    "proposal": "Fix fmt: skip in nested with and yield expressions\n\nCorrect skipped-node traversal and conditional continuation handling to prevent invalid or AST-changing output. Preserve skipped text while formatting surrounding code. Add focused `with`, `async with`, and `yield` fixtures and a changelog entry.\n\nVerified offline:\n\n- Formatter selection (`fmtskip or conditional`): 38 passed.\n- 77 expression combinations passed AST and idempotence checks.\n- Compilation, source formatting, and `git diff --check` passed.\n- Independent review completed without remaining findings.\n\nChanges remain in the checkout. Full repository tests and CI were not run."
+  },
+  "assessor_costs": [
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 518452,
+        "cachedInputTokens": 473344,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 4299,
+        "reasoningOutputTokens": 1203,
+        "totalTokens": 522751
+      },
+      "threads": 1,
+      "usd_estimate": 0.1805404
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 369599,
+        "cachedInputTokens": 338560,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2982,
+        "reasoningOutputTokens": 464,
+        "totalTokens": 372581
+      },
+      "threads": 1,
+      "usd_estimate": 0.125754
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 438201,
+        "cachedInputTokens": 407040,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 3541,
+        "reasoningOutputTokens": 1022,
+        "totalTokens": 441742
+      },
+      "threads": 1,
+      "usd_estimate": 0.138436
+    }
+  ],
+  "observations": []
+}
