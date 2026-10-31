@@ -5,7 +5,7 @@ The [run](../run.json) identifies each pinned base and merge. The [submissions](
 | Flagged role | Evidence | Result and limit |
 | --- | --- | --- |
 | SymPy Develop | [Preservation probe](sympy/preserve-probe.py), [witness](sympy/witness.py), [baseline](sympy/baseline-preserve-probe.log), [subject](sympy/subject-preserve-probe.log) | The pinned Python worker passed the base and raised `NotImplementedError` on the subject for a tuple point. The Point3D controls passed both. |
-| Libarchive Develop | [Preprocessing script](libarchive/reproduce.sh), [ruling](libarchive/ruling.json), target logs in this directory | Both Windows-target preprocessing checks passed the base and rejected the subject’s two-argument `fcntl` call. Missing SDK headers were skipped. No complete Windows build or link ran. |
+| Libarchive Develop | [Preprocessing script](libarchive/reproduce.sh), [ruling](libarchive/ruling.json), target logs in this directory | Both Windows-target preprocessing checks passed the base and rejected the subject's two-argument `fcntl` call. Missing SDK headers were skipped. No complete Windows build or link ran. |
 | Packaging merge | [Witness](packaging/witness.py), [result](packaging/evidence.json) | The pinned Python worker accepted invalid replacement fields while the valid control passed. The base has no replacement API. |
 | Pytest merge | [Witness](pytest/witness.py), [result](pytest/evidence.json) | The complete patch lacks the claimed constructor and test file. The public constructor emitted no warning. Runtime import used a generated version fixture in an isolated copy. Intent remains unknown. |
 

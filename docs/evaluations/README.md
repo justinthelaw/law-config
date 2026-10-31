@@ -1,6 +1,6 @@
 # Develop evaluations
 
-Stock Codex averaged **85.44/100** across 20 historical PR tasks. Standalone Develop averaged **78.69/100**. Stock delivered 18 functional PRs and Develop delivered 17. Across all attempts, Develop took 23m 06s on average versus stock’s 15m 16s. Total cost is unknown because both arms have an unmetered timeout. [Current results and per-repository table](runs/pr-quality-pytest-entry-natural-v1/lean-c-standalone-historical20-01-9726b39f2227/README.md) · [Prior Develop with Superpowers](runs/pr-quality-pytest-entry-natural-v1/README.md) · [Earlier primary and recovery](runs/pr-quality-panel-v2/README.md)
+Stock Codex averaged **85.44/100** across 20 historical PR tasks. Standalone Develop averaged **78.69/100**. Stock delivered 18 functional PRs and Develop delivered 17. Across all attempts, Develop took 23m 06s on average versus stock's 15m 16s. Total cost is unknown because both arms have an unmetered timeout. [Current results and per-repository table](runs/pr-quality-pytest-entry-natural-v1/lean-c-standalone-historical20-01-9726b39f2227/README.md) · [Prior Develop with Superpowers](runs/pr-quality-pytest-entry-natural-v1/README.md) · [Earlier primary and recovery](runs/pr-quality-panel-v2/README.md)
 
 ## Read results offline
 
