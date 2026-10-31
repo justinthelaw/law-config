@@ -43,7 +43,7 @@ Default runs compare stock Codex with reference Develop and pinned Superpowers 6
 | Replay a published caller check | `python3 -B "$e/tools/replay_caller.py" caller-werkzeug-01 public-warnings`. Add `--run NAME` for another pilot on the same task. |
 | Recover primary capacity failures | `python3 -B "$e/benchmark.py" recover PRIMARY NEW_NAME`. Report recovery pairs separately. |
 
-The baseline exposed both splits. Use those cases for tuning and regression checks. Use fresh cases for promotion. [Published pilots](runs/tuning/) · [Historical tuning policy](runs/pr-quality-panel-v2/tuning.json) · [Current promotion criteria](develop-benchmark/panel/rubric.md)
+The baseline exposed both splits. Use those cases for tuning and regression checks. Use fresh cases for promotion. [Published pilots](runs/tuning/) · [Same-C companion diagnostic](runs/tuning/c-companion-commander-01/README.md) · [Historical tuning policy](runs/pr-quality-panel-v2/tuning.json) · [Current promotion criteria](develop-benchmark/panel/rubric.md)
 
 ## How scoring works
 

@@ -1,0 +1,1366 @@
+{
+  "format": "law-config.eval-pilot/v1",
+  "name": "c-companion-commander-01",
+  "case": "commander",
+  "repository": "tj/commander.js",
+  "pr": 2653,
+  "evaluator_protocol": "pr-quality-pytest-entry-natural-v1",
+  "registration": {
+    "protocol": "develop-efficiency-pilot-v1",
+    "name": "c-companion-commander-01",
+    "case": "commander",
+    "plans": {
+      "prior": {
+        "path": "runs/c-companion-commander-01-prior/plan.json",
+        "sha256": "de87d9c3cf233b7bf6395db0bcb407ebc000a95f640792c22fdcea4f589e474b"
+      },
+      "candidate": {
+        "path": "runs/c-companion-commander-01-candidate/plan.json",
+        "sha256": "7765531a7d21352f61368f7510466d6fba50faa2a920614400ba566b2417cb46"
+      }
+    },
+    "evaluator_protocol": "pr-quality-pytest-entry-natural-v1",
+    "operator_sha256": "f1d19e987d916272efe8c9302527a114759af9dcc95c6bd9f9e0d18c38945dd2",
+    "cpus": [
+      6,
+      7
+    ],
+    "order": [
+      [
+        "candidate",
+        "develop"
+      ],
+      [
+        "prior",
+        "develop"
+      ],
+      [
+        "candidate",
+        "control"
+      ]
+    ],
+    "hypothesis": "c-optional-companion-diagnostic-v1",
+    "evaluator_binding": {
+      "protocol": "pr-quality-pytest-entry-natural-v1",
+      "source_sha256": "51a4740fa2bc38f96e006d6c904b3ab9037f4151e3295c42a2293237b3c67691",
+      "case": "commander",
+      "fixture_sha256": "4336a487ab29aaf24ec998deaa844138a4ebc7f426cf50f54a5bfca302c93408"
+    },
+    "tuning_policy_sha256": "589902e5ac1b940405e6f65707f3890987e02e4cc0986132382143fb494cce11",
+    "hypothesis_sha256": "a4d7532d7dc3f18b841ece01f88e40486c1866fdc37c982f6e30050a7a2e78be",
+    "falsifier": "A companion efficiency benefit is unestablished if required behavior regresses, metering is incomplete or either complete proposal cost or checkout time fails to improve over standalone C. Soft prior quality remains unknown; n=1 does not establish broad benefit. Reject lost prior verified behavior or required review, failure of either strict prior cost or wall improvement, non-ready candidate, or full-PR loss to pure. Missing measures or unverifiable review leave the comparison unestablished.",
+    "quality": "Three blind candidate/pure/merge rotations. Prior Develop soft PR quality is unknown.",
+    "goal": "A ready Develop PR strictly wins the full rubric against a terminal pure proposal at complete cost <= pure.",
+    "attempts": "One proposal per registered slot. All allocations including technical failures remain in the ledger."
+  },
+  "registration_sha256": "619ed4e467789d562b2534b822a6a6affd9267e163a55cd095b9e7a16a0c4233",
+  "result_sha256": "a8be7fe243c633cc6cfc1c0a4a465b54994e3dda1ae28467bf4c8c1bae01f7f2",
+  "treatments": {
+    "prior": "0085f2ad8d61c0b153d7909f12b2e80f320676494e2bbe2fe83d1e6f07a7bd04",
+    "candidate": "864acbdfe9a5913751c64b339a0c07ada73a5ab14251c377ccbc65bb3a344ca6"
+  },
+  "treatment_components": {
+    "prior": {
+      "label": "lean-c-standalone-historical-v1",
+      "package_sha256": "0085f2ad8d61c0b153d7909f12b2e80f320676494e2bbe2fe83d1e6f07a7bd04",
+      "plugin_hook_sha256": "cdcc69d4812a7cef7baeabe9fa79b876c631e3f16ad5111c34669aee134b9cbe",
+      "hook_sha256": {
+        "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+        "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+      }
+    },
+    "candidate": {
+      "label": "c-companion-diagnostic-v1",
+      "package_sha256": "0085f2ad8d61c0b153d7909f12b2e80f320676494e2bbe2fe83d1e6f07a7bd04",
+      "plugin_hook_sha256": "cdcc69d4812a7cef7baeabe9fa79b876c631e3f16ad5111c34669aee134b9cbe",
+      "hook_sha256": {
+        "pre_tool_use": "577de816fa43a06f65e002de2a4c9b2a495d03170ba103334b40e9b62bb18368",
+        "post_tool_use": "23adcfd4b4d58ca43a6609e83228ecc2822681fd1349ecb31bfc2a0d6d91020c"
+      },
+      "companion": {
+        "source": "https://github.com/openai/plugins",
+        "source_commit": "0722921d5542fc593105c27bd52630babd8b8c2a",
+        "source_path": "plugins/superpowers",
+        "version": "6.3.0",
+        "manifest_sha256": "18eb497a5c3c5aade93fe1982db0fbd2ab23d4a428fc552da6ee3cc520c9706d",
+        "package_sha256": "819308376b259ec99111ff44593b7196d9bf08666be5bc6b6f8124b100a5642c",
+        "skills": {
+          "brainstorming": "74edf03ea6d24ef53db48677b93558d14a979bdf052ca3f57ecdca0c66791608",
+          "dispatching-parallel-agents": "1968923066f3b707eb01d1992cdf4c42284c3855f70253b9cd5000ff45fca13c",
+          "executing-plans": "c4c3d8b628c51114cd165fb8246fe02744cd8be180032328391252e653028d9b",
+          "finishing-a-development-branch": "8db5a922b242dd4e1bf824cb91c13b3e8d8e8a86d6ceaf7f0774eb9cce909d65",
+          "receiving-code-review": "091df1629510af1b92fc4abd6f96732ebedb4cb2c0f3457e8f2740b0504a2438",
+          "requesting-code-review": "d71cc01ba56d2325cf8af5f7c11837819b63ecd57de0bfdb812f7f3ff7751df8",
+          "subagent-driven-development": "8dd1b8e698edec3700c6d89517dbe96febd3bacd3f6ea21c1a3569c62ea104b5",
+          "systematic-debugging": "808fc5717aa88ad65efff312b11c186294d3e6ee301afb584e2f86599b137787",
+          "test-driven-development": "bf1b8216e523851a411e91d429a7c1c2a173e79d88957bc78e348218d50edd54",
+          "using-git-worktrees": "8cfb86f121269e8f7f12361e6795c4f6738828340e28964c9229d365666c9edd",
+          "using-superpowers": "30f2ab78e20ddc27ee7158ae8d4a2abe161c360981c7cc3548070913142d3dc3",
+          "verification-before-completion": "2befe7fc55bcadaa3d97dd9e8efeb633d2561c0ebe74c5a8b17c4d9e7e4520b3",
+          "writing-plans": "48508f44bbfd7d24b029fbf3a314f3cd14c9615599059366e922f47b8dc08cf2",
+          "writing-skills": "d34db5c8aed6a4e0440132bd0613aace70a693ec7819d5637ad77481d8e10d1b"
+        }
+      }
+    }
+  },
+  "base": "c807ce933836d0d99719bac82ee477f3d7eb4268",
+  "merged": "1536d5bb9da38d1d94926aedfa31c8ece1f7dce5",
+  "prompt": "Implement the following task in this checkout and add relevant tests. Use your natural local workflow and verification tools. I waive interactive review of the local implementation plan and authorize you to proceed unattended. Follow all applicable repository requirements and complete any required independent review of consequential design or public contracts. Work offline and leave the proposed changes in the checkout. In your final message, put a concise PR title on the first line, followed by a blank line and a PR body explaining the change, motivation, verification actually performed and any material gaps.\n\nFix getOptionValueSourceWithGlobals when a parent has an option value with an unknown source. Its undefined source must mask a same-named child source, consistently with the value returned by optsWithGlobals. Preserve recognized global sources, child-only values and nesting. Add regression coverage.\n\nAvailable offline verification commands:\nnode --check lib/command.js\nnode --test tests/options.optsWithGlobals.test.js",
+  "prompt_sha256": "c74f1b494d97ca2e6f6993c17708b3fc9beedeb85de571d048f3ac96cca2346a",
+  "runtime_sha256": "51a4740fa2bc38f96e006d6c904b3ab9037f4151e3295c42a2293237b3c67691",
+  "rubric_sha256": "a47aa29e89ca55d12fd48031fa7ca5073d449caafefd1b17353a917ebe76a3c3",
+  "model": "gpt-6.1-sol",
+  "effort": "medium",
+  "rates": {
+    "uncached_input": 2,
+    "cached_input": 0.1,
+    "output": 10
+  },
+  "profiles": {
+    "candidate/develop": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "hooks",
+        "marketplaces",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {},
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [
+        "develop@law-config",
+        "superpowers@superpowers-local"
+      ],
+      "ephemeral": false,
+      "inventory_sha256": "5bae5d8c9815f4eec8fa7add73b3305021f69045a37db7791c8006cda9fc58ad",
+      "input_sha256": "527a443462d208221e9f24e0615a5c669016fe57bd8533d6fdadd7365294b73f",
+      "config_sha256": "9c8dfe711128dee11d468b8f8e2f36889b216a7939633b7a34ddd7da1c270a7b"
+    },
+    "prior/develop": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "hooks",
+        "marketplaces",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {},
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [
+        "develop@law-config"
+      ],
+      "ephemeral": false,
+      "inventory_sha256": "342621b57634e83b8d9c55416c9c18e3e0b7ca4ab452870aa616b2e89c3ea136",
+      "input_sha256": "8a7686ad7f8758ef1ae8bf081f6415f569b4a8dad90b17044a2b9ffe973c5712",
+      "config_sha256": "b458ba94fd10666d8f79a776b88908a8e0e1cabfbb2503c5766017b78b822063"
+    },
+    "candidate/control": {
+      "apps": [],
+      "mcp": [],
+      "config_layers": [
+        "user",
+        "enterpriseManaged",
+        "system"
+      ],
+      "profile_keys": [
+        "approval_policy",
+        "features",
+        "model",
+        "model_reasoning_effort",
+        "plugins",
+        "projects",
+        "sandbox_mode",
+        "web_search"
+      ],
+      "repository_instructions_sha256": {},
+      "global_instructions": [],
+      "stock_skills": [
+        "imagegen",
+        "openai-docs",
+        "review-agent",
+        "skill-creator",
+        "skill-installer"
+      ],
+      "plugins": [],
+      "ephemeral": false,
+      "inventory_sha256": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+      "input_sha256": "c2eee5722416b5722c5b0b66989d876405e9a0171a0cdf13fd1aa467e135a022",
+      "config_sha256": "32729b72488a4021f1d965438fdd7fd4632912e70f833c8487d8c1faac8e97ef"
+    }
+  },
+  "comparisons": {
+    "develop_control": {
+      "verdict": "tie",
+      "reason": "blinded rubric",
+      "score_delta": 0.0,
+      "votes": [
+        "tie",
+        "control",
+        "tie"
+      ],
+      "order_sensitive": true
+    },
+    "develop_upstream": {
+      "verdict": "develop",
+      "reason": "blinded rubric",
+      "score_delta": 36.25,
+      "votes": [
+        "develop",
+        "develop",
+        "develop"
+      ],
+      "order_sensitive": false
+    },
+    "control_upstream": {
+      "verdict": "control",
+      "reason": "blinded rubric",
+      "score_delta": 40.0,
+      "votes": [
+        "control",
+        "control",
+        "control"
+      ],
+      "order_sensitive": false
+    }
+  },
+  "goal_win": false,
+  "submissions": {
+    "control": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "7765531a7d21352f61368f7510466d6fba50faa2a920614400ba566b2417cb46",
+      "case_id": "commander",
+      "role": "control",
+      "state": "completed",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "node --check lib/command.js",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "48e57bc26ecd5a8722997aee45d9b78e88907b3e2853dd1fd4de2b4a581554aa",
+          "command": "node --test tests/options.optsWithGlobals.test.js",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "b110d3ecc2ce8984b950cea470412b1eb7b2cd133950b56965bcfd6a9019a97d",
+          "command": "node /oracle/probe.mjs",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "2b0d798c73929514d1d7085fa931909b37dc7234403caf2a16e1543140f4cd14",
+          "command": "node /oracle/probe.mjs",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/lib/command.js b/lib/command.js\nindex 8ed77a2..1196893 100644\n--- a/lib/command.js\n+++ b/lib/command.js\n@@ -975,7 +975,10 @@ Expecting one of '${allowedValues.join(\"', '\")}'`);\n     // global overwrites local, like optsWithGlobals\n     let source;\n     this._getCommandAndAncestors().forEach((cmd) => {\n-      if (cmd.getOptionValueSource(key) !== undefined) {\n+      if (\n+        cmd.getOptionValueSource(key) !== undefined ||\n+        Object.hasOwn(cmd.opts(), key)\n+      ) {\n         source = cmd.getOptionValueSource(key);\n       }\n     });\ndiff --git a/tests/options.optsWithGlobals.test.js b/tests/options.optsWithGlobals.test.js\nindex 0f84454..19d1f43 100644\n--- a/tests/options.optsWithGlobals.test.js\n+++ b/tests/options.optsWithGlobals.test.js\n@@ -68,6 +68,67 @@ describe('Command.optsWithGlobals()', () => {\n });\n \n describe('getOptionValueSourceWithGlobals', () => {\n+  for (const storeAsProperties of [false, true]) {\n+    describe(`with storeOptionsAsProperties(${storeAsProperties})`, () => {\n+      for (const globalValue of ['global value', undefined]) {\n+        test(`global value ${globalValue} with unknown source masks child source`, () => {\n+          const program = new commander.Command()\n+            .storeOptionsAsProperties(storeAsProperties)\n+            .option('--common <value>');\n+          const sub = program\n+            .command('sub')\n+            .storeOptionsAsProperties(storeAsProperties)\n+            .option('--common <value>');\n+          program.setOptionValue('common', globalValue);\n+          sub.setOptionValueWithSource('common', 'child value', 'cli');\n+\n+          assert.equal(sub.optsWithGlobals().common, globalValue);\n+          assert.equal(sub.getOptionValueSourceWithGlobals('common'), undefined);\n+        });\n+      }\n+\n+      test('unknown source masks nested child source while preserving child-only values', () => {\n+        const program = new commander.Command().storeOptionsAsProperties(\n+          storeAsProperties,\n+        );\n+        const sub = program\n+          .command('sub')\n+          .storeOptionsAsProperties(storeAsProperties)\n+          .option('--common <value>');\n+        const nested = sub\n+          .command('nested')\n+          .storeOptionsAsProperties(storeAsProperties)\n+          .option('--common <value>')\n+          .option('--local <value>');\n+        sub.setOptionValue('common', 'parent value');\n+        nested.setOptionValueWithSource('common', 'child value', 'cli');\n+        nested.setOptionValueWithSource('local', 'local value', 'env');\n+\n+        assert.deepEqual(nested.optsWithGlobals(), {\n+          common: 'parent value',\n+          local: 'local value',\n+        });\n+        assert.equal(nested.getOptionValueSourceWithGlobals('common'), undefined);\n+        assert.equal(nested.getOptionValueSourceWithGlobals('local'), 'env');\n+        assert.equal(nested.getOptionValueSourceWithGlobals('missing'), undefined);\n+      });\n+    });\n+  }\n+\n+  for (const source of ['default', 'config', 'env', 'cli', 'implied']) {\n+    test(`recognized global source ${source} overrides unknown source in nested command`, () => {\n+      const program = new commander.Command();\n+      const sub = program.command('sub');\n+      const nested = sub.command('nested');\n+      program.setOptionValueWithSource('common', 'global value', source);\n+      sub.setOptionValue('common', 'parent value');\n+      nested.setOptionValueWithSource('common', 'child value', 'cli');\n+\n+      assert.equal(nested.optsWithGlobals().common, 'global value');\n+      assert.equal(nested.getOptionValueSourceWithGlobals('common'), source);\n+    });\n+  }\n+\n   test('when option used with simple command then source is defined', () => {\n     const program = new commander.Command();\n     program.option('-g, --global');\n",
+      "patch_sha256": "406e88a555ea55a52bfda6b9de3b9fab31b3a5f809887ccaed9213d0061b0e1e",
+      "proposal": "Fix global option source masking for unknown sources\n\nMake parent-owned option values mask child sources even when the parent source is `undefined`, matching `optsWithGlobals()` precedence.\n\nAdd regressions for undefined values, nesting, recognized global sources, child-only values and both storage modes.\n\nVerified: syntax check, all 19 focused tests and `git diff --check` pass. Six regressions failed before the fix. Broader `npm test` and `npm run check` runs were stopped before completion; full-suite, type, lint and formatting checks remain unverified.",
+      "proposal_sha256": "5abc9e0cbee834892f27a3bc0eb2d35eefbd981dedd4180e5b4bd127692da8f1",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "406e88a555ea55a52bfda6b9de3b9fab31b3a5f809887ccaed9213d0061b0e1e",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "patch_sha256": "406e88a555ea55a52bfda6b9de3b9fab31b3a5f809887ccaed9213d0061b0e1e",
+            "proposal_sha256": "5abc9e0cbee834892f27a3bc0eb2d35eefbd981dedd4180e5b4bd127692da8f1",
+            "judgment_sha256": "68274fcdcd585327d36ba92e61c8354108a0ef8d6bc2ae3ff930f2650874c87b",
+            "mapping_sha256": "17a69d90de7a2bff9efc453c9b1034be45c0af22768a2a345b4701462df6f9cb",
+            "assessor_sha256": "607204247b3629c11c2e848c30b3d17e7de15dbc9286f55870fd952c65b68cc7",
+            "packet_sha256": "7385048e06e6d90cc06bbe207c77019f8d7a13292d3479e42734c1e7b47f0590",
+            "prompt_sha256": "543761190d0e0788a5c97f66814c0b18f16f7257727ca17c8047f8afd6592cec"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "patch_sha256": "406e88a555ea55a52bfda6b9de3b9fab31b3a5f809887ccaed9213d0061b0e1e",
+            "proposal_sha256": "5abc9e0cbee834892f27a3bc0eb2d35eefbd981dedd4180e5b4bd127692da8f1",
+            "judgment_sha256": "19f19923f82e1316a7d2ec8b70a2291e8f3b7eb3d2c91432685a12af80632ed9",
+            "mapping_sha256": "d8092820e150d970f390aa717bf2ba3aec420dbaabad405f715d9dbe160f6077",
+            "assessor_sha256": "969665c1b66836da04b9c68891a372a3aa9d7ce8379c8472ae5b3d531b47a139",
+            "packet_sha256": "f2a3bbcba616eb5a66e79c66768800e8f274898dc2db4efd5bc3f6b600e3cb05",
+            "prompt_sha256": "77f2e7560e441316c8dffe36ec85b1539869425e40c66b150d3abfb8544a2a49"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "patch_sha256": "406e88a555ea55a52bfda6b9de3b9fab31b3a5f809887ccaed9213d0061b0e1e",
+            "proposal_sha256": "5abc9e0cbee834892f27a3bc0eb2d35eefbd981dedd4180e5b4bd127692da8f1",
+            "judgment_sha256": "cac0b073eb6d91e2f0d6c4ac4b474500ccec5fe79b34f6a1e90240da3c5b6a30",
+            "mapping_sha256": "ccdebdb050c500b4c379ec890ad1a174353cb7ffdc4b38e7b0fe0115fc37ed19",
+            "assessor_sha256": "334e38f3ae0a6b545b409efe36e86b4b44342673ca5c0b79f4b2fde3431663d1",
+            "packet_sha256": "e825a01670e8440e265259a5f395fbf4d8b2fc429dc8c7d8cc4ea10634a5114f",
+            "prompt_sha256": "c1d7b8be6b48b240e790998e280c2508756b8233bf8fae204500aaae5e1f8303"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        "proposal_points_100": 96.25,
+        "diff_points_85": 85.0,
+        "rotation_points_85": {
+          "0": 85.0,
+          "1": 85.0,
+          "2": 78.75
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/A.patch changes lib/command.js to accept a defined source or an own key in cmd.opts(), aligning undefined-source masking with optsWithGlobals(), including property storage. The existing leaf-to-root traversal preserves recognized sources and nesting. Frozen task.json reports build/native/contract/preserve exit 0 within the selected syntax and focused-test scope.",
+              "tests": "packet/A.patch adds discriminating unknown-parent-source cases with string and undefined values in both storage modes, nested masking alongside child-only and missing keys, and all five recognized root sources overriding an unknown intermediate source. These assertions expose the starting defined-source-only condition. Existing tests and assertions remain; no protections are removed or weakened.",
+              "design": "The small lib/command.js condition uses the public opts() representation already consumed by optsWithGlobals(), including legacy property storage. It retains existing defined-source behavior and ancestor ordering, without unrelated production edits or API changes.",
+              "proposal": "packet/A.md precisely explains precedence and coverage and explicitly limits broader verification. Frozen evidence supports syntax and focused native success. Its exact test count, six pre-fix failures, diff check and interrupted broader runs have no supplied logs and receive no verification credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/C.patch changes lib/command.js:getOptionValueSourceWithGlobals to overwrite for recognized sources or own keys in opts(), matching optsWithGlobals value ownership when a source is undefined. Public-interface regressions cover defined and undefined values in both storage modes, nested unknown masking, child-only/missing keys and all five recognized root sources. Frozen build, native, contract and preserve checks all exit 0.",
+              "tests": "packet/C.patch adds focused tests/options.optsWithGlobals.test.js cases for both storage modes on parent and child, undefined parent values, nested parent masking while preserving child-only values, missing keys and recognized root sources overriding an unknown intermediate source. Unknown-source assertions distinguish the starting predicate, which retains cli. Existing assertions remain intact; frozen focused native and preservation checks pass.",
+              "design": "The localized predicate uses cmd.opts(), the same API merged by optsWithGlobals, while retaining recognized-source handling and ancestor traversal. Object.hasOwn handles undefined ownership without truthiness and is compatible with package.json Node >=22.12.0. Only lib/command.js and focused tests change; no protection is deleted or weakened.",
+              "proposal": "packet/C.md precisely describes behavior and coverage and explicitly limits full-suite, type, lint and formatting verification. Frozen syntax and focused native success support its central check report. The claimed diff check and six pre-fix failures lack supporting execution evidence and receive no credit. Interrupted broader runs are unavailable evidence rather than demonstrated failures."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 3,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/B.patch preserves the recognized-source condition and additionally checks Object.hasOwn(cmd.opts(), key), matching the value surface merged by lib/command.js:optsWithGlobals. This masks unknown parent sources, including own undefined values and property storage, while retaining child-only sources and ancestor traversal order. Added tests affirm both storage modes, undefined values, nested masking and all five recognized sources. packet/task.json records build, native, contract and preserve exit 0.",
+              "tests": "tests/options.optsWithGlobals.test.js in packet/B.patch adds setter-based unknown-source cases for string/undefined values in both storage modes, nested intermediate masking with child-only env values, missing keys, and five recognized root sources over an unknown intermediate source. Existing tests and assertions remain intact. Frozen native exit is 0. Coverage is broad, but every new unknown-source value uses setOptionValue, which already creates a source entry; these tests would also accept A and do not protect the distinct value-without-source-entry path addressed by the opts() ownership check.",
+              "design": "packet/B.patch changes only the source-selection predicate and focused tests. Reusing cmd.opts() follows the public value representation for both supported storage modes; the existing recognized-source branch and traversal remain intact. No validation bypass, deleted assertion, or weakened protection appears in the full patch.",
+              "proposal": "packet/B.md explains parent-value precedence, enumerates relevant regressions, and explicitly states that broader checks were interrupted and remain unverified. Syntax and focused-test success have frozen support in packet/task.json. The claimed exact test count, six before-fix failures and git diff --check outcome have no supplied execution evidence and receive no verification credit."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 511788,
+          "cachedInputTokens": 485376,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 3455,
+          "reasoningOutputTokens": 767,
+          "totalTokens": 515243
+        },
+        "estimated_usd": 0.1359116,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 219.6469499131199,
+        "prompt_to_terminal_seconds": 191.11854581604712,
+        "through_grading_seconds": 224.62090665916912,
+        "setup_seconds": 27.43561605992727,
+        "grading_seconds": 3.551826700102538,
+        "thread_count": 1,
+        "child_count": 0,
+        "root_tokens": {
+          "totalTokens": 515243,
+          "inputTokens": 511788,
+          "cachedInputTokens": 485376,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 3455,
+          "reasoningOutputTokens": 767
+        },
+        "descendant_tokens": {
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 0,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 0
+        },
+        "pricing": {
+          "policy": "natural-standard-v2",
+          "rate_card": {
+            "source": "https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing",
+            "verified_utc": "2026-10-30T12:41:43Z",
+            "basis": "Codex Standard USD per 1M tokens; estimate, not invoice",
+            "rates": {
+              "gpt-6.1-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.1,
+                "output": 10
+              },
+              "gpt-6.1-terra": {
+                "uncached_input": 1,
+                "cached_input": 0.05,
+                "output": 5
+              },
+              "gpt-6-astra": {
+                "uncached_input": 10,
+                "cached_input": 1,
+                "output": 50
+              },
+              "gpt-6-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 10
+              },
+              "gpt-6-luna": {
+                "uncached_input": 0.1,
+                "cached_input": 0.01,
+                "output": 0.5
+              },
+              "gpt-5.6-sol": {
+                "uncached_input": 4,
+                "cached_input": 0.4,
+                "output": 20
+              },
+              "gpt-5.6-terra": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 12
+              },
+              "gpt-5.6-luna": {
+                "uncached_input": 0.2,
+                "cached_input": 0.02,
+                "output": 1.2
+              },
+              "gpt-6-astra-law": {
+                "uncached_input": 12.5,
+                "cached_input": 1.25,
+                "output": 62.5
+              }
+            }
+          },
+          "model_tokens": {
+            "gpt-6.1-sol": {
+              "threads": 1,
+              "tokens": {
+                "totalTokens": 515243,
+                "inputTokens": 511788,
+                "cachedInputTokens": 485376,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 3455,
+                "reasoningOutputTokens": 767
+              }
+            }
+          },
+          "root_start": {
+            "thread": "6a735d472cabc40a1c2d723a5abe1a6feb4c94582c4a179e1b2924d57348db9b",
+            "requested_model": "gpt-6.1-sol",
+            "effective_model": "gpt-6.1-sol",
+            "requested_effort": "medium"
+          },
+          "root_default_verified": true,
+          "token_coverage": "complete",
+          "priced_tokens": {
+            "inputTokens": 511788,
+            "cachedInputTokens": 485376,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 3455,
+            "reasoningOutputTokens": 767,
+            "totalTokens": 515243
+          },
+          "unpriced_tokens": {
+            "inputTokens": 0,
+            "cachedInputTokens": 0,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 0,
+            "reasoningOutputTokens": 0,
+            "totalTokens": 0
+          },
+          "priced_threads": 1,
+          "unpriced_threads": 0,
+          "unpriced_reasons": {},
+          "known_usd_lower_bound": 0.1359116,
+          "terminal_proof": [
+            {
+              "thread": "6a735d472cabc40a1c2d723a5abe1a6feb4c94582c4a179e1b2924d57348db9b",
+              "bound": true,
+              "meter_consistent": true,
+              "model": "gpt-6.1-sol",
+              "tokens": {
+                "totalTokens": 515243,
+                "inputTokens": 511788,
+                "cachedInputTokens": 485376,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 3455,
+                "reasoningOutputTokens": 767
+              },
+              "start": {
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "parent": null
+              },
+              "trace_sha256": "cc0f3ea1536b81156743d1958a9a45560f2e3e000747f1cb0d0297e5dc4304da",
+              "turns": [
+                {
+                  "turn": "89273634d030f51259e85f9052eae7275de9e2a9233b2ece5bd8127ee856853b",
+                  "model": "gpt-6.1-sol",
+                  "effort": "medium",
+                  "message_seq": 1061,
+                  "usage_seq": 1062,
+                  "terminal_seq": 1067,
+                  "status": "completed",
+                  "total": {
+                    "totalTokens": 515243,
+                    "inputTokens": 511788,
+                    "cachedInputTokens": 485376,
+                    "cacheWriteInputTokens": 0,
+                    "outputTokens": 3455,
+                    "reasoningOutputTokens": 767
+                  }
+                }
+              ]
+            }
+          ],
+          "native_sha256": "e4c2b2ad9c43093e188c733e2f13af556eee0150260981172e9100a12a7a1435"
+        },
+        "observed_commands": 14,
+        "native_hook_receipts": 0
+      },
+      "receipt_sha256": {
+        "grade": "2548876fb141c0a57681b7ac18c3d9432f24d8446105df0ffbb32ec93dc2fcda",
+        "release": "f9b1ee2f3d2ae415eb8c5ded70f790d796be9c921270b23b4396f5e86678a980",
+        "native": "e4c2b2ad9c43093e188c733e2f13af556eee0150260981172e9100a12a7a1435",
+        "submission": "9f97758e8fb970678356c69f11dea22d9d2d1b6a9bc991ec736934cedaa051f4",
+        "result": "e5387073972fe51ea45c305dff9df4969d57542536abe0c84767f3878b261ab5",
+        "inventory": "cc8ae72ecbe48660e501f8ba83b41a80638ae70a42dddd4f865fae351fccaa72",
+        "turn-input": "c2eee5722416b5722c5b0b66989d876405e9a0171a0cdf13fd1aa467e135a022"
+      }
+    },
+    "develop": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "7765531a7d21352f61368f7510466d6fba50faa2a920614400ba566b2417cb46",
+      "case_id": "commander",
+      "role": "develop",
+      "state": "completed",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "node --check lib/command.js",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "86bcf023e59707b8c6d790c23fdaeaadbf9b546e16e35fbebc46a4c3211ed161",
+          "command": "node --test tests/options.optsWithGlobals.test.js",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "b110d3ecc2ce8984b950cea470412b1eb7b2cd133950b56965bcfd6a9019a97d",
+          "command": "node /oracle/probe.mjs",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "2b0d798c73929514d1d7085fa931909b37dc7234403caf2a16e1543140f4cd14",
+          "command": "node /oracle/probe.mjs",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/lib/command.js b/lib/command.js\nindex 8ed77a2..1196893 100644\n--- a/lib/command.js\n+++ b/lib/command.js\n@@ -975,7 +975,10 @@ Expecting one of '${allowedValues.join(\"', '\")}'`);\n     // global overwrites local, like optsWithGlobals\n     let source;\n     this._getCommandAndAncestors().forEach((cmd) => {\n-      if (cmd.getOptionValueSource(key) !== undefined) {\n+      if (\n+        cmd.getOptionValueSource(key) !== undefined ||\n+        Object.hasOwn(cmd.opts(), key)\n+      ) {\n         source = cmd.getOptionValueSource(key);\n       }\n     });\ndiff --git a/tests/options.optsWithGlobals.test.js b/tests/options.optsWithGlobals.test.js\nindex 0f84454..25c70b1 100644\n--- a/tests/options.optsWithGlobals.test.js\n+++ b/tests/options.optsWithGlobals.test.js\n@@ -68,6 +68,63 @@ describe('Command.optsWithGlobals()', () => {\n });\n \n describe('getOptionValueSourceWithGlobals', () => {\n+  for (const storeAsProperties of [false, true]) {\n+    for (const value of ['global value', false, 0, '', undefined]) {\n+      test(`unknown global source masks child source (properties: ${storeAsProperties}, value: ${value})`, () => {\n+        const program = new commander.Command()\n+          .storeOptionsAsProperties(storeAsProperties)\n+          .option('--common <value>');\n+        const sub = program.command('sub').option('--common <value>');\n+        program.setOptionValue('common', value);\n+        sub.setOptionValueWithSource('common', 'child value', 'cli');\n+\n+        assert.deepEqual(sub.optsWithGlobals(), { common: value });\n+        assert.equal(sub.getOptionValueSourceWithGlobals('common'), undefined);\n+      });\n+    }\n+  }\n+\n+  for (const source of ['default', 'config', 'env', 'cli', 'implied']) {\n+    test(`recognized global source ${source} is preserved`, () => {\n+      const program = new commander.Command();\n+      const sub = program.command('sub');\n+      program.setOptionValueWithSource('common', undefined, source);\n+      sub.setOptionValueWithSource('common', 'child value', 'cli');\n+\n+      assert.deepEqual(sub.optsWithGlobals(), { common: undefined });\n+      assert.equal(sub.getOptionValueSourceWithGlobals('common'), source);\n+    });\n+  }\n+\n+  test('ancestors without a value or source preserve child-only values', () => {\n+    const program = new commander.Command().option('--common <value>');\n+    const sub = program.command('sub').option('--common <value>');\n+    sub.setOptionValueWithSource('common', 'child value', 'cli');\n+\n+    assert.deepEqual(sub.optsWithGlobals(), { common: 'child value' });\n+    assert.equal(sub.getOptionValueSourceWithGlobals('common'), 'cli');\n+    assert.equal(sub.getOptionValueSourceWithGlobals('missing'), undefined);\n+  });\n+\n+  test('nested unknown source masks child source and can be overridden by root', () => {\n+    const program = new commander.Command();\n+    const sub = program.command('sub');\n+    const subsub = sub.command('subsub');\n+    subsub.setOptionValueWithSource('common', 'child value', 'cli');\n+    sub.setOptionValue('common', 'parent value');\n+\n+    assert.deepEqual(subsub.optsWithGlobals(), { common: 'parent value' });\n+    assert.equal(subsub.getOptionValueSourceWithGlobals('common'), undefined);\n+\n+    program.setOptionValueWithSource('common', 'root value', 'config');\n+    assert.deepEqual(subsub.optsWithGlobals(), { common: 'root value' });\n+    assert.equal(subsub.getOptionValueSourceWithGlobals('common'), 'config');\n+\n+    program.setOptionValue('common', 'unknown root value');\n+    assert.deepEqual(subsub.optsWithGlobals(), { common: 'unknown root value' });\n+    assert.equal(subsub.getOptionValueSourceWithGlobals('common'), undefined);\n+  });\n+\n   test('when option used with simple command then source is defined', () => {\n     const program = new commander.Command();\n     program.option('-g, --global');\n",
+      "patch_sha256": "938bc5ccccb94bfd6b8ea5273bba0e98d29f9c35478cdecb8aa0173f3901076c",
+      "proposal": "Fix global option source masking for unknown sources\n\nMake parent option values with an undefined source mask same-named child sources, matching `optsWithGlobals()`. Preserve recognized sources, child-only values, and nested precedence.\n\nAdded regressions covering both storage modes and falsey values. Independent review found no issues.\n\nVerification: syntax check, 25 focused tests, all 1,446 runtime tests, and `git diff --check` passed. Broader npm checks could not complete because `tsd` and `tsc` are unavailable; lint and format checks remain unverified.",
+      "proposal_sha256": "cb35b24c57f747ad58594218a82f168159b944fda0c076dcdc97c997a3a0b7a0",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "938bc5ccccb94bfd6b8ea5273bba0e98d29f9c35478cdecb8aa0173f3901076c",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "patch_sha256": "938bc5ccccb94bfd6b8ea5273bba0e98d29f9c35478cdecb8aa0173f3901076c",
+            "proposal_sha256": "cb35b24c57f747ad58594218a82f168159b944fda0c076dcdc97c997a3a0b7a0",
+            "judgment_sha256": "68274fcdcd585327d36ba92e61c8354108a0ef8d6bc2ae3ff930f2650874c87b",
+            "mapping_sha256": "17a69d90de7a2bff9efc453c9b1034be45c0af22768a2a345b4701462df6f9cb",
+            "assessor_sha256": "607204247b3629c11c2e848c30b3d17e7de15dbc9286f55870fd952c65b68cc7",
+            "packet_sha256": "7385048e06e6d90cc06bbe207c77019f8d7a13292d3479e42734c1e7b47f0590",
+            "prompt_sha256": "543761190d0e0788a5c97f66814c0b18f16f7257727ca17c8047f8afd6592cec"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "patch_sha256": "938bc5ccccb94bfd6b8ea5273bba0e98d29f9c35478cdecb8aa0173f3901076c",
+            "proposal_sha256": "cb35b24c57f747ad58594218a82f168159b944fda0c076dcdc97c997a3a0b7a0",
+            "judgment_sha256": "19f19923f82e1316a7d2ec8b70a2291e8f3b7eb3d2c91432685a12af80632ed9",
+            "mapping_sha256": "d8092820e150d970f390aa717bf2ba3aec420dbaabad405f715d9dbe160f6077",
+            "assessor_sha256": "969665c1b66836da04b9c68891a372a3aa9d7ce8379c8472ae5b3d531b47a139",
+            "packet_sha256": "f2a3bbcba616eb5a66e79c66768800e8f274898dc2db4efd5bc3f6b600e3cb05",
+            "prompt_sha256": "77f2e7560e441316c8dffe36ec85b1539869425e40c66b150d3abfb8544a2a49"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "patch_sha256": "938bc5ccccb94bfd6b8ea5273bba0e98d29f9c35478cdecb8aa0173f3901076c",
+            "proposal_sha256": "cb35b24c57f747ad58594218a82f168159b944fda0c076dcdc97c997a3a0b7a0",
+            "judgment_sha256": "cac0b073eb6d91e2f0d6c4ac4b474500ccec5fe79b34f6a1e90240da3c5b6a30",
+            "mapping_sha256": "ccdebdb050c500b4c379ec890ad1a174353cb7ffdc4b38e7b0fe0115fc37ed19",
+            "assessor_sha256": "334e38f3ae0a6b545b409efe36e86b4b44342673ca5c0b79f4b2fde3431663d1",
+            "packet_sha256": "e825a01670e8440e265259a5f395fbf4d8b2fc429dc8c7d8cc4ea10634a5114f",
+            "prompt_sha256": "c1d7b8be6b48b240e790998e280c2508756b8233bf8fae204500aaae5e1f8303"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 4,
+          "tests": 4,
+          "design": 4,
+          "proposal": 3
+        },
+        "proposal_points_100": 96.25,
+        "diff_points_85": 85.0,
+        "rotation_points_85": {
+          "0": 85.0,
+          "1": 85.0,
+          "2": 78.75
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "B",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/B.patch uses the same defined-source-or-own-opts-key condition in lib/command.js, aligning unknown-source masking with optsWithGlobals() while retaining recognized sources and ancestor precedence. Frozen task.json reports build/native/contract/preserve exit 0 within the selected syntax and focused-test scope.",
+              "tests": "packet/B.patch covers string, false, zero, empty string and undefined parent values across both storage modes; all five recognized sources with undefined values; absent ancestor values preserving child-only sources; and nested unknown, recognized root, then unknown root precedence. These assertions distinguish the original defect. All existing tests and assertions remain; no validation is weakened.",
+              "design": "The production change is a narrow condition using cmd.opts(), the value representation used by optsWithGlobals(). Original source lookup and ancestor ordering remain intact. Added tests stay in the relevant existing test file.",
+              "proposal": "packet/B.md explains the defect, precedence and coverage and identifies unverified type/lint/format checks. Frozen evidence supports syntax and focused native success only. Claimed 1,446 runtime tests, exact focused count, independent review, diff check and missing-tool explanation lack supporting observations and receive no credit; they are not established as false."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "A",
+            "scores": {
+              "contract": 4,
+              "tests": 4,
+              "design": 4,
+              "proposal": 2
+            },
+            "evidence": {
+              "contract": "packet/A.patch changes lib/command.js:getOptionValueSourceWithGlobals to overwrite for a recognized source or an own key in cmd.opts(). This matches optsWithGlobals value ownership, including undefined and falsey values, while retaining ancestor precedence. Public-interface assertions cover both storage modes, recognized sources, child-only values and nesting. packet/task.json records build, native, contract and preserve exits of 0.",
+              "tests": "packet/A.patch adds discriminating tests/options.optsWithGlobals.test.js assertions for string, false, 0, empty string and undefined parent values in both parent storage modes; all five recognized sources; child-only/missing values; and nested root overrides, including clearing an existing source. The starting implementation would retain the child cli source for the unknown-source cases. Existing assertions remain intact. Frozen native and preservation checks pass.",
+              "design": "The change is confined to the overwrite predicate and focused tests. cmd.opts() is the representation merged by optsWithGlobals. Starting opts() exposes declared undefined keys in property storage, so checking own keys rather than truthiness addresses value ownership. The recognized-source branch preserves prior source handling. No unrelated edits or weakened protections appear in packet/A.patch.",
+              "proposal": "packet/A.md precisely describes masking, precedence and coverage and identifies broader unverified checks. Syntax and focused native success have frozen support. The asserted independent review, all 1,446 runtime tests, diff check and missing-tool diagnosis have no supplied supporting evidence and receive no verification credit; this leaves a material part of the verification account unsubstantiated."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "C",
+            "scores": {
+              "contract": 4,
+              "tests": 3,
+              "design": 4,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/C.patch uses the same recognized-source-or-own-opts-value predicate as B in lib/command.js:getOptionValueSourceWithGlobals. Own unknown-source values therefore mask child sources consistently with optsWithGlobals, while recognized sources and existing ancestor traversal survive. Tests affirm falsey/undefined values, both parent storage modes, child-only values and nested root overrides. packet/task.json records build, native, contract and preserve exit 0.",
+              "tests": "packet/C.patch adds string, false, zero, empty-string and undefined parent values in both storage modes, all five recognized sources with undefined values, absent-parent ownership preserving child values, and successive intermediate/root precedence changes. Existing assertions remain intact and frozen native exit is 0. However, all populated unknown-source cases use setters that create source entries; none distinguishes ownership in opts() from ownership in _optionValueSources, so A would pass these additions too. The child-only absent-parent case is tested only in default storage mode.",
+              "design": "The production predicate in packet/C.patch is narrowly scoped and checks the same cmd.opts() representation used by optsWithGlobals while preserving the prior recognized-source branch. Tests are confined to the relevant file. Inspection of the full diff finds no removed validation or weakened existing assertions.",
+              "proposal": "packet/C.md precisely states masking, preserved behavior, regression coverage and unavailable type/lint/format checks. Frozen evidence supports syntax and focused native success. The claimed 1,446 runtime tests, exact focused count, independent review and git diff --check have no supporting observations in the packet and receive no credit; their truth cannot be established from the supplied evidence."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": {
+        "coverage": "complete",
+        "tokens": {
+          "inputTokens": 1968048,
+          "cachedInputTokens": 1883904,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 6713,
+          "reasoningOutputTokens": 1368,
+          "totalTokens": 1974761
+        },
+        "estimated_usd": 0.42380840000000003,
+        "billed_usd": null,
+        "checkout_to_proposal_seconds": 733.5236312060151,
+        "prompt_to_terminal_seconds": 696.2024712951388,
+        "through_grading_seconds": 738.8423203569837,
+        "setup_seconds": 36.206494559999555,
+        "grading_seconds": 3.7933449340052903,
+        "thread_count": 2,
+        "child_count": 1,
+        "root_tokens": {
+          "totalTokens": 1867071,
+          "inputTokens": 1860745,
+          "cachedInputTokens": 1814016,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 6326,
+          "reasoningOutputTokens": 1289
+        },
+        "descendant_tokens": {
+          "inputTokens": 107303,
+          "cachedInputTokens": 69888,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 387,
+          "reasoningOutputTokens": 79,
+          "totalTokens": 107690
+        },
+        "pricing": {
+          "policy": "natural-standard-v2",
+          "rate_card": {
+            "source": "https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing",
+            "verified_utc": "2026-10-30T12:41:43Z",
+            "basis": "Codex Standard USD per 1M tokens; estimate, not invoice",
+            "rates": {
+              "gpt-6.1-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.1,
+                "output": 10
+              },
+              "gpt-6.1-terra": {
+                "uncached_input": 1,
+                "cached_input": 0.05,
+                "output": 5
+              },
+              "gpt-6-astra": {
+                "uncached_input": 10,
+                "cached_input": 1,
+                "output": 50
+              },
+              "gpt-6-sol": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 10
+              },
+              "gpt-6-luna": {
+                "uncached_input": 0.1,
+                "cached_input": 0.01,
+                "output": 0.5
+              },
+              "gpt-5.6-sol": {
+                "uncached_input": 4,
+                "cached_input": 0.4,
+                "output": 20
+              },
+              "gpt-5.6-terra": {
+                "uncached_input": 2,
+                "cached_input": 0.2,
+                "output": 12
+              },
+              "gpt-5.6-luna": {
+                "uncached_input": 0.2,
+                "cached_input": 0.02,
+                "output": 1.2
+              },
+              "gpt-6-astra-law": {
+                "uncached_input": 12.5,
+                "cached_input": 1.25,
+                "output": 62.5
+              }
+            }
+          },
+          "model_tokens": {
+            "gpt-6.1-sol": {
+              "threads": 2,
+              "tokens": {
+                "totalTokens": 1974761,
+                "inputTokens": 1968048,
+                "cachedInputTokens": 1883904,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 6713,
+                "reasoningOutputTokens": 1368
+              }
+            }
+          },
+          "root_start": {
+            "thread": "0e8b4e8c027726cf7f45619b23ee6daff9f2a5bc0c078c82cadd8af6a9f33cd5",
+            "requested_model": "gpt-6.1-sol",
+            "effective_model": "gpt-6.1-sol",
+            "requested_effort": "medium"
+          },
+          "root_default_verified": true,
+          "token_coverage": "complete",
+          "priced_tokens": {
+            "inputTokens": 1968048,
+            "cachedInputTokens": 1883904,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 6713,
+            "reasoningOutputTokens": 1368,
+            "totalTokens": 1974761
+          },
+          "unpriced_tokens": {
+            "inputTokens": 0,
+            "cachedInputTokens": 0,
+            "cacheWriteInputTokens": 0,
+            "outputTokens": 0,
+            "reasoningOutputTokens": 0,
+            "totalTokens": 0
+          },
+          "priced_threads": 2,
+          "unpriced_threads": 0,
+          "unpriced_reasons": {},
+          "known_usd_lower_bound": 0.42380840000000003,
+          "terminal_proof": [
+            {
+              "thread": "0e8b4e8c027726cf7f45619b23ee6daff9f2a5bc0c078c82cadd8af6a9f33cd5",
+              "bound": true,
+              "meter_consistent": true,
+              "model": "gpt-6.1-sol",
+              "tokens": {
+                "totalTokens": 1867071,
+                "inputTokens": 1860745,
+                "cachedInputTokens": 1814016,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 6326,
+                "reasoningOutputTokens": 1289
+              },
+              "start": {
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "parent": null
+              },
+              "trace_sha256": "00995a3e6541409cdf1f4f61604e6fc9711c2128af4338d954c14ef5c2e3f425",
+              "turns": [
+                {
+                  "turn": "7dcb0d6fbe67fcc61a68b20ff454e375e8ada3394a0add3a669b45a18c108a81",
+                  "model": "gpt-6.1-sol",
+                  "effort": "medium",
+                  "message_seq": 1656,
+                  "usage_seq": 1657,
+                  "terminal_seq": 1662,
+                  "status": "completed",
+                  "total": {
+                    "totalTokens": 1867071,
+                    "inputTokens": 1860745,
+                    "cachedInputTokens": 1814016,
+                    "cacheWriteInputTokens": 0,
+                    "outputTokens": 6326,
+                    "reasoningOutputTokens": 1289
+                  }
+                }
+              ]
+            },
+            {
+              "thread": "01de839a006af32048984c0042df8e7088caae24cc329fa278fcad3315592a4f",
+              "bound": true,
+              "meter_consistent": true,
+              "model": "gpt-6.1-sol",
+              "tokens": {
+                "totalTokens": 107690,
+                "inputTokens": 107303,
+                "cachedInputTokens": 69888,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 387,
+                "reasoningOutputTokens": 79
+              },
+              "start": {
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "parent": "0e8b4e8c027726cf7f45619b23ee6daff9f2a5bc0c078c82cadd8af6a9f33cd5"
+              },
+              "trace_sha256": "138c404357c01c1242402db5414f1353741c51de2fdc0b4648bc613afc435c13",
+              "turns": [
+                {
+                  "turn": "a2357f3927f25b6deaf8024f802361dfbef72bd49938672915a4c8337b82c05b",
+                  "model": "gpt-6.1-sol",
+                  "effort": "medium",
+                  "message_seq": 873,
+                  "usage_seq": 874,
+                  "terminal_seq": 877,
+                  "status": "completed",
+                  "total": {
+                    "totalTokens": 107690,
+                    "inputTokens": 107303,
+                    "cachedInputTokens": 69888,
+                    "cacheWriteInputTokens": 0,
+                    "outputTokens": 387,
+                    "reasoningOutputTokens": 79
+                  }
+                }
+              ]
+            }
+          ],
+          "native_sha256": "2322ab8651366115314bd55b7282631b254d0e2f1dc27b97bf585c8212daf6ec"
+        },
+        "observed_commands": 30,
+        "native_hook_receipts": 84
+      },
+      "receipt_sha256": {
+        "grade": "4304ad6329b03d05622ef85d2f6a0cd9c39a43f616c67f2060155584c0ee4eae",
+        "release": "d380128efd48ae092646fac1a8b3993c70ad87f30a4b7c553ea57705030680b9",
+        "native": "2322ab8651366115314bd55b7282631b254d0e2f1dc27b97bf585c8212daf6ec",
+        "submission": "82b804fc8a642d38371341a159ee7aa7ca248ff9d238a9c991f5eb822ccc4eea",
+        "result": "ed24ff69aacb8a5d368e8780707aabd3132c17072af733cb2ef1463e6e01e189",
+        "inventory": "5bae5d8c9815f4eec8fa7add73b3305021f69045a37db7791c8006cda9fc58ad",
+        "turn-input": "527a443462d208221e9f24e0615a5c669016fe57bd8533d6fdadd7365294b73f"
+      }
+    },
+    "upstream": {
+      "format": "law-config.eval-submission/v1",
+      "plan_sha256": "7765531a7d21352f61368f7510466d6fba50faa2a920614400ba566b2417cb46",
+      "case_id": "commander",
+      "role": "upstream",
+      "state": "merged",
+      "readiness": "ready",
+      "executable_pass": true,
+      "failure_kind": null,
+      "stages": {
+        "build": {
+          "exit": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "command": "node --check lib/command.js",
+          "reason": null
+        },
+        "native": {
+          "exit": 0,
+          "log_sha256": "1acac88f76aa614999e7d8d6e0164d6e15c9322368c3c669a94a382ea51871be",
+          "command": "node --test tests/options.optsWithGlobals.test.js",
+          "reason": null
+        },
+        "contract": {
+          "exit": 0,
+          "log_sha256": "b110d3ecc2ce8984b950cea470412b1eb7b2cd133950b56965bcfd6a9019a97d",
+          "command": "node /oracle/probe.mjs",
+          "reason": null
+        },
+        "preserve": {
+          "exit": 0,
+          "log_sha256": "2b0d798c73929514d1d7085fa931909b37dc7234403caf2a16e1543140f4cd14",
+          "command": "node /oracle/probe.mjs",
+          "reason": null
+        }
+      },
+      "patch": "diff --git a/lib/command.js b/lib/command.js\nindex 8ed77a2..c57ea3a 100644\n--- a/lib/command.js\n+++ b/lib/command.js\n@@ -975,7 +975,7 @@ Expecting one of '${allowedValues.join(\"', '\")}'`);\n     // global overwrites local, like optsWithGlobals\n     let source;\n     this._getCommandAndAncestors().forEach((cmd) => {\n-      if (cmd.getOptionValueSource(key) !== undefined) {\n+      if (Object.hasOwn(cmd._optionValueSources, key)) {\n         source = cmd.getOptionValueSource(key);\n       }\n     });\ndiff --git a/tests/options.optsWithGlobals.test.js b/tests/options.optsWithGlobals.test.js\nindex 0f84454..8d7a93a 100644\n--- a/tests/options.optsWithGlobals.test.js\n+++ b/tests/options.optsWithGlobals.test.js\n@@ -100,7 +100,7 @@ describe('getOptionValueSourceWithGlobals', () => {\n     assert.equal(sub.getOptionValueSourceWithGlobals('local'), 'cli');\n   });\n \n-  test('when same named option in sub and program then source is defined by global', () => {\n+  test('when same named option used in sub CLI and program default value then source is defined by global', () => {\n     const program = new commander.Command();\n     program\n       .enablePositionalOptions()\n@@ -113,4 +113,19 @@ describe('getOptionValueSourceWithGlobals', () => {\n     program.parse(['sub', '--common', 'value'], { from: 'user' });\n     assert.equal(sub.getOptionValueSourceWithGlobals('common'), 'default');\n   });\n+\n+  test('when same named option used in sub CLI and program set value then source is defined by global', () => {\n+    const program = new commander.Command();\n+    program\n+      .enablePositionalOptions()\n+      .option('-c, --common <value>', 'description')\n+      .setOptionValueWithSource('common', 'from program'); // note: undefined source\n+    const sub = program\n+      .command('sub')\n+      .option('-c, --common <value>')\n+      .action(() => {});\n+\n+    program.parse(['sub', '--common', 'value'], { from: 'user' });\n+    assert.equal(sub.getOptionValueSourceWithGlobals('common'), undefined);\n+  });\n });\n",
+      "patch_sha256": "cc928085fa2a84fb6e461238625ee3521fd34a85e011941d2fba189148d2e611",
+      "proposal": "Fix option source masking when source is unknown (aka undefined)\n\n## Problem\n\nA global option value with an unknown source fails to mask the leaf option value source in `.getOptionValueSourceWithGlobals()`\n\nFixes: #2651\n\n## Solution\n\nUnlikely to happen in practice, but is not as intended and a simple code change.\n\nTest for presence of option value source, rather than value of option value source.\n\n## ChangeLog\n\n- fix: global option values with unknown source should mask local option value source in  `.getOptionValueSourceWithGlobals()`",
+      "proposal_sha256": "e39a00bd6599470cb4101c0ae2e897459d2b7f594823bf9b061d374b93a35f21",
+      "proposal_observation": "present",
+      "bindings": {
+        "grade_patch_sha256": "cc928085fa2a84fb6e461238625ee3521fd34a85e011941d2fba189148d2e611",
+        "judges": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "patch_sha256": "cc928085fa2a84fb6e461238625ee3521fd34a85e011941d2fba189148d2e611",
+            "proposal_sha256": "e39a00bd6599470cb4101c0ae2e897459d2b7f594823bf9b061d374b93a35f21",
+            "judgment_sha256": "68274fcdcd585327d36ba92e61c8354108a0ef8d6bc2ae3ff930f2650874c87b",
+            "mapping_sha256": "17a69d90de7a2bff9efc453c9b1034be45c0af22768a2a345b4701462df6f9cb",
+            "assessor_sha256": "607204247b3629c11c2e848c30b3d17e7de15dbc9286f55870fd952c65b68cc7",
+            "packet_sha256": "7385048e06e6d90cc06bbe207c77019f8d7a13292d3479e42734c1e7b47f0590",
+            "prompt_sha256": "543761190d0e0788a5c97f66814c0b18f16f7257727ca17c8047f8afd6592cec"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "patch_sha256": "cc928085fa2a84fb6e461238625ee3521fd34a85e011941d2fba189148d2e611",
+            "proposal_sha256": "e39a00bd6599470cb4101c0ae2e897459d2b7f594823bf9b061d374b93a35f21",
+            "judgment_sha256": "19f19923f82e1316a7d2ec8b70a2291e8f3b7eb3d2c91432685a12af80632ed9",
+            "mapping_sha256": "d8092820e150d970f390aa717bf2ba3aec420dbaabad405f715d9dbe160f6077",
+            "assessor_sha256": "969665c1b66836da04b9c68891a372a3aa9d7ce8379c8472ae5b3d531b47a139",
+            "packet_sha256": "f2a3bbcba616eb5a66e79c66768800e8f274898dc2db4efd5bc3f6b600e3cb05",
+            "prompt_sha256": "77f2e7560e441316c8dffe36ec85b1539869425e40c66b150d3abfb8544a2a49"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "patch_sha256": "cc928085fa2a84fb6e461238625ee3521fd34a85e011941d2fba189148d2e611",
+            "proposal_sha256": "e39a00bd6599470cb4101c0ae2e897459d2b7f594823bf9b061d374b93a35f21",
+            "judgment_sha256": "cac0b073eb6d91e2f0d6c4ac4b474500ccec5fe79b34f6a1e90240da3c5b6a30",
+            "mapping_sha256": "ccdebdb050c500b4c379ec890ad1a174353cb7ffdc4b38e7b0fe0115fc37ed19",
+            "assessor_sha256": "334e38f3ae0a6b545b409efe36e86b4b44342673ca5c0b79f4b2fde3431663d1",
+            "packet_sha256": "e825a01670e8440e265259a5f395fbf4d8b2fc429dc8c7d8cc4ea10634a5114f",
+            "prompt_sha256": "c1d7b8be6b48b240e790998e280c2508756b8233bf8fae204500aaae5e1f8303"
+          }
+        ]
+      },
+      "quality": {
+        "axes": {
+          "contract": 2,
+          "tests": 2,
+          "design": 3,
+          "proposal": 2
+        },
+        "proposal_points_100": 56.25,
+        "diff_points_85": 48.75,
+        "rotation_points_85": {
+          "0": 48.75,
+          "1": 48.75,
+          "2": 48.75
+        },
+        "assessments": [
+          {
+            "rotation": 0,
+            "label": "C",
+            "scores": {
+              "contract": 2,
+              "tests": 2,
+              "design": 3,
+              "proposal": 2
+            },
+            "evidence": {
+              "contract": "packet/C.patch handles setter-created unknown sources: starting lib/command.js setOptionValue delegates to setOptionValueWithSource, which creates a source entry even for undefined. Frozen build/native/contract/preserve checks all exit 0. However, checking only _optionValueSources misses values represented by opts() without an entry. Static counterexample: p = new Command().storeOptionsAsProperties().option(\"--common <value>\"); s = p.command(\"sub\").option(\"--common <value>\"); p.common = \"parent\"; s.setOptionValueWithSource(\"common\", \"child\", \"cli\"). opts() includes p.common, so s.optsWithGlobals().common is \"parent\", but C returns \"cli\" for its source instead of undefined. This follows from opts(), the setters and the changed condition; it was not executed.",
+              "tests": "packet/C.patch adds a meaningful CLI regression using setOptionValueWithSource with omitted source, distinguishing the starting defect. It retains the original global-default assertion under a clearer name and deletes no protection. Added coverage omits unknown values without source entries, legacy storage, undefined values and nested unknown-source precedence. Existing nesting tests exercise merged values rather than this source interaction.",
+              "design": "The own-source-entry check is minimal and fits the internal map and setter behavior. Its avoidable limitation is substituting source-map ownership for the value ownership used by optsWithGlobals(), leaving legacy property storage inconsistent. No unrelated edits or validation bypasses are present.",
+              "proposal": "packet/C.md accurately names the defect and explains the source-presence implementation. It reports no verification or limitations and does not explain preserved behavior or coverage. This is an observed communication omission, not unavailable historical text. Frozen passing checks are assessed separately from the proposal."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 1,
+            "label": "B",
+            "scores": {
+              "contract": 2,
+              "tests": 2,
+              "design": 3,
+              "proposal": 2
+            },
+            "evidence": {
+              "contract": "packet/B.patch fixes explicitly undefined entries made by setOptionValueWithSource or setOptionValue: starting lib/command.js records a source-map key for either setter. Frozen build/native/contract/preserve exits are 0. A value-ownership edge remains: create parent = new Command().storeOptionsAsProperties(true).option(\"--common <value>\"), set parent.common = \"parent\", create child = parent.command(\"sub\"), and call child.setOptionValueWithSource(\"common\", \"child\", \"cli\"). optsWithGlobals returns parent, but B returns cli because the parent has no source-map key. Leaving parent.common undefined also produces a mismatch. This follows mechanically from starting opts(), the setters and B's predicate; tests/options.opts.test.js establishes declared undefined property keys.",
+              "tests": "packet/B.patch adds one meaningful CLI regression in tests/options.optsWithGlobals.test.js using a parent value set with an omitted source, and clarifies an existing default-source test name without weakening its assertion. It omits the distinct property-storage path with an opts-owned key and no source entry, nesting, undefined values and broader recognized-source coverage. Frozen native success covers the reported focused slice.",
+              "design": "The one-line Object.hasOwn(_optionValueSources, key) change is small and fits source-map bookkeeping, with no unrelated edits. However, it couples masking to source-entry ownership rather than the value ownership used by optsWithGlobals, leaving the concrete compatibility edge described under contract. No existing validation or protection is removed.",
+              "proposal": "packet/B.md gives a precise title, explains the defect and accurately describes checking source-entry presence. It omits verification results and limitations and does not explain the value/source ownership boundary. Frozen checks are assessed separately and do not supply missing proposal content."
+            },
+            "flags": [],
+            "confidence": "high"
+          },
+          {
+            "rotation": 2,
+            "label": "A",
+            "scores": {
+              "contract": 2,
+              "tests": 2,
+              "design": 3,
+              "proposal": 3
+            },
+            "evidence": {
+              "contract": "packet/A.patch changes lib/command.js:getOptionValueSourceWithGlobals to require an own _optionValueSources entry. setOptionValueWithSource writes such an entry even for undefined, so the added CLI regression is repaired; packet/task.json records build, native, contract and preserve exit 0. A material boundary remains: with a parent using storeOptionsAsProperties().option(\"--common <value>\"), assign parent.common = \"parent\" and set the child common value/source to \"child\"/\"cli\". Starting opts() reads the parent property and optsWithGlobals() returns \"parent\", but A skips the parent because no source entry exists and returns \"cli\". This follows mechanically from lib/command.js:944-950, 977 and 1914-1939; it was not executed.",
+              "tests": "packet/A.patch adds one discriminating test in tests/options.optsWithGlobals.test.js: a parent setOptionValueWithSource call with omitted source must mask a child CLI source. It retains the existing default-global and child-only assertions and only clarifies one test name. It does not add nesting, property storage, undefined-value, or value-without-source-entry coverage. Frozen native exit is 0.",
+              "design": "The one-line own-property check is small and correctly distinguishes an explicitly stored undefined source from an absent source. However, using only _optionValueSources as the ownership authority does not fully match optsWithGlobals, which merges cmd.opts(); property-backed or directly populated option values can exist without source entries. No unrelated production changes or weakened protections appear in the full patch.",
+              "proposal": "packet/A.md precisely identifies unknown-source masking and explains the source-presence implementation. It makes no unsupported check claims, but supplies no verification account or limitations and describes the narrower source-entry approach rather than the full value-precedence boundary."
+            },
+            "flags": [],
+            "confidence": "high"
+          }
+        ]
+      },
+      "adjudication": null,
+      "effort": null,
+      "receipt_sha256": {
+        "grade": "3ebedec6fc87a629afd77cc6605d7eca1edf95f76e4907f647b0582a7b3b71c0"
+      }
+    }
+  },
+  "route_review": "Requires inspection of the recorded independent review events.",
+  "prior_develop": {
+    "state": "completed",
+    "effort": {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 478643,
+        "cachedInputTokens": 453376,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 3107,
+        "reasoningOutputTokens": 372,
+        "totalTokens": 481750
+      },
+      "estimated_usd": 0.12694160000000002,
+      "billed_usd": null,
+      "checkout_to_proposal_seconds": 210.10101711913012,
+      "prompt_to_terminal_seconds": 177.01086306083016,
+      "through_grading_seconds": 215.42238614615053,
+      "setup_seconds": 31.99894926114939,
+      "grading_seconds": 3.8424020640086383,
+      "thread_count": 1,
+      "child_count": 0,
+      "root_tokens": {
+        "totalTokens": 481750,
+        "inputTokens": 478643,
+        "cachedInputTokens": 453376,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 3107,
+        "reasoningOutputTokens": 372
+      },
+      "descendant_tokens": {
+        "inputTokens": 0,
+        "cachedInputTokens": 0,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 0,
+        "reasoningOutputTokens": 0,
+        "totalTokens": 0
+      },
+      "pricing": {
+        "policy": "natural-standard-v2",
+        "rate_card": {
+          "source": "https://help.openai.com/en/articles/20001415-chatgpt-rate-card-enterprise-token-based-pricing",
+          "verified_utc": "2026-10-30T12:41:43Z",
+          "basis": "Codex Standard USD per 1M tokens; estimate, not invoice",
+          "rates": {
+            "gpt-6.1-sol": {
+              "uncached_input": 2,
+              "cached_input": 0.1,
+              "output": 10
+            },
+            "gpt-6.1-terra": {
+              "uncached_input": 1,
+              "cached_input": 0.05,
+              "output": 5
+            },
+            "gpt-6-astra": {
+              "uncached_input": 10,
+              "cached_input": 1,
+              "output": 50
+            },
+            "gpt-6-sol": {
+              "uncached_input": 2,
+              "cached_input": 0.2,
+              "output": 10
+            },
+            "gpt-6-luna": {
+              "uncached_input": 0.1,
+              "cached_input": 0.01,
+              "output": 0.5
+            },
+            "gpt-5.6-sol": {
+              "uncached_input": 4,
+              "cached_input": 0.4,
+              "output": 20
+            },
+            "gpt-5.6-terra": {
+              "uncached_input": 2,
+              "cached_input": 0.2,
+              "output": 12
+            },
+            "gpt-5.6-luna": {
+              "uncached_input": 0.2,
+              "cached_input": 0.02,
+              "output": 1.2
+            },
+            "gpt-6-astra-law": {
+              "uncached_input": 12.5,
+              "cached_input": 1.25,
+              "output": 62.5
+            }
+          }
+        },
+        "model_tokens": {
+          "gpt-6.1-sol": {
+            "threads": 1,
+            "tokens": {
+              "totalTokens": 481750,
+              "inputTokens": 478643,
+              "cachedInputTokens": 453376,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 3107,
+              "reasoningOutputTokens": 372
+            }
+          }
+        },
+        "root_start": {
+          "thread": "aa3bdc0071c3ba77302ae8d997975c3d4de5a054a0c7f748cf46d3f1f018a92d",
+          "requested_model": "gpt-6.1-sol",
+          "effective_model": "gpt-6.1-sol",
+          "requested_effort": "medium"
+        },
+        "root_default_verified": true,
+        "token_coverage": "complete",
+        "priced_tokens": {
+          "inputTokens": 478643,
+          "cachedInputTokens": 453376,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 3107,
+          "reasoningOutputTokens": 372,
+          "totalTokens": 481750
+        },
+        "unpriced_tokens": {
+          "inputTokens": 0,
+          "cachedInputTokens": 0,
+          "cacheWriteInputTokens": 0,
+          "outputTokens": 0,
+          "reasoningOutputTokens": 0,
+          "totalTokens": 0
+        },
+        "priced_threads": 1,
+        "unpriced_threads": 0,
+        "unpriced_reasons": {},
+        "known_usd_lower_bound": 0.12694160000000002,
+        "terminal_proof": [
+          {
+            "thread": "aa3bdc0071c3ba77302ae8d997975c3d4de5a054a0c7f748cf46d3f1f018a92d",
+            "bound": true,
+            "meter_consistent": true,
+            "model": "gpt-6.1-sol",
+            "tokens": {
+              "totalTokens": 481750,
+              "inputTokens": 478643,
+              "cachedInputTokens": 453376,
+              "cacheWriteInputTokens": 0,
+              "outputTokens": 3107,
+              "reasoningOutputTokens": 372
+            },
+            "start": {
+              "model": "gpt-6.1-sol",
+              "effort": "medium",
+              "parent": null
+            },
+            "trace_sha256": "7e4953486b9d11992f8ca9edbcd1c19d968a8a1bbd4254ccc2733aa5e69bf420",
+            "turns": [
+              {
+                "turn": "d031cf4c1b4070266bcd3ceda3642ae41522185598a738d98e62424a2c925e8b",
+                "model": "gpt-6.1-sol",
+                "effort": "medium",
+                "message_seq": 754,
+                "usage_seq": 755,
+                "terminal_seq": 760,
+                "status": "completed",
+                "total": {
+                  "totalTokens": 481750,
+                  "inputTokens": 478643,
+                  "cachedInputTokens": 453376,
+                  "cacheWriteInputTokens": 0,
+                  "outputTokens": 3107,
+                  "reasoningOutputTokens": 372
+                }
+              }
+            ]
+          }
+        ],
+        "native_sha256": "8d3685739bb01274229ee229f129759aca4db3d7bb0aad10847275bc858d31a8"
+      },
+      "observed_commands": 15,
+      "native_hook_receipts": 36
+    },
+    "stage_exits": {
+      "build": 0,
+      "native": 0,
+      "contract": 0,
+      "preserve": 0
+    },
+    "patch_sha256": "0cf976836978e0344744d2c5955e9ae1f11f804ee288503810cbeac930a1688a",
+    "proposal_sha256": "51017bb9ac8afde1971dbff6c65cc2618086fbed861306b8b085809151786274",
+    "full_pr_score": null,
+    "patch": "diff --git a/lib/command.js b/lib/command.js\nindex 8ed77a2..2babacd 100644\n--- a/lib/command.js\n+++ b/lib/command.js\n@@ -975,8 +975,9 @@ Expecting one of '${allowedValues.join(\"', '\")}'`);\n     // global overwrites local, like optsWithGlobals\n     let source;\n     this._getCommandAndAncestors().forEach((cmd) => {\n-      if (cmd.getOptionValueSource(key) !== undefined) {\n-        source = cmd.getOptionValueSource(key);\n+      const cmdSource = cmd.getOptionValueSource(key);\n+      if (cmdSource !== undefined || Object.hasOwn(cmd.opts(), key)) {\n+        source = cmdSource;\n       }\n     });\n     return source;\ndiff --git a/tests/options.optsWithGlobals.test.js b/tests/options.optsWithGlobals.test.js\nindex 0f84454..4949636 100644\n--- a/tests/options.optsWithGlobals.test.js\n+++ b/tests/options.optsWithGlobals.test.js\n@@ -68,6 +68,64 @@ describe('Command.optsWithGlobals()', () => {\n });\n \n describe('getOptionValueSourceWithGlobals', () => {\n+  for (const storeAsProperties of [false, true]) {\n+    for (const globalValue of ['parent value', undefined]) {\n+      test(`unknown parent source masks child source (properties: ${storeAsProperties}, value: ${globalValue})`, () => {\n+        const program = new commander.Command()\n+          .storeOptionsAsProperties(storeAsProperties)\n+          .enablePositionalOptions()\n+          .option('--common <value>');\n+        program.setOptionValue('common', globalValue);\n+        const sub = program\n+          .command('sub')\n+          .option('--common <value>')\n+          .action(() => {});\n+\n+        program.parse(['sub', '--common', 'child value'], { from: 'user' });\n+\n+        assert.equal(sub.getOptionValueSource('common'), 'cli');\n+        assert.equal(sub.optsWithGlobals().common, globalValue);\n+        assert.equal(sub.getOptionValueSourceWithGlobals('common'), undefined);\n+      });\n+    }\n+  }\n+\n+  test('unknown source on intermediate ancestor masks child source through nesting', () => {\n+    const program = new commander.Command().enablePositionalOptions();\n+    const sub = program.command('sub').option('--common <value>');\n+    sub.setOptionValue('common', 'parent value');\n+    const leaf = sub\n+      .command('leaf')\n+      .option('--common <value>')\n+      .option('--local <value>')\n+      .action(() => {});\n+\n+    program.parse(['sub', 'leaf', '--common', 'child value', '--local', 'local'], {\n+      from: 'user',\n+    });\n+\n+    assert.deepEqual(leaf.optsWithGlobals(), {\n+      common: 'parent value',\n+      local: 'local',\n+    });\n+    assert.equal(leaf.getOptionValueSourceWithGlobals('common'), undefined);\n+    assert.equal(leaf.getOptionValueSourceWithGlobals('local'), 'cli');\n+\n+    program.setOptionValueWithSource('common', 'root value', 'config');\n+    assert.equal(leaf.optsWithGlobals().common, 'root value');\n+    assert.equal(leaf.getOptionValueSourceWithGlobals('common'), 'config');\n+  });\n+\n+  test('recognized global source is preserved without a corresponding opts property', () => {\n+    const program = new commander.Command().storeOptionsAsProperties();\n+    program.setOptionValueWithSource('common', 'parent value', 'config');\n+    const sub = program.command('sub');\n+    sub.setOptionValueWithSource('common', 'child value', 'cli');\n+\n+    assert.deepEqual(program.opts(), {});\n+    assert.equal(sub.getOptionValueSourceWithGlobals('common'), 'config');\n+  });\n+\n   test('when option used with simple command then source is defined', () => {\n     const program = new commander.Command();\n     program.option('-g, --global');\n",
+    "proposal": "Fix unknown parent option sources masking child sources\n\nUpdate `getOptionValueSourceWithGlobals()` so a parent\u2019s undefined source masks a same-named child source, matching `optsWithGlobals()`. Preserve recognized sources, child-only values, and nesting.\n\nAdd regressions covering both storage modes, undefined values, nested precedence, and recognized global sources.\n\nVerification: all 14 focused tests, `node --check lib/command.js`, and `git diff --check` passed. Broader `npm test` and `npm run check` attempts stalled and were interrupted; full-suite, lint, formatting, and type checks remain unverified."
+  },
+  "assessor_costs": [
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 234984,
+        "cachedInputTokens": 209664,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 2653,
+        "reasoningOutputTokens": 513,
+        "totalTokens": 237637
+      },
+      "threads": 1,
+      "usd_estimate": 0.0981364
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 375965,
+        "cachedInputTokens": 348672,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 4091,
+        "reasoningOutputTokens": 611,
+        "totalTokens": 380056
+      },
+      "threads": 1,
+      "usd_estimate": 0.1303632
+    },
+    {
+      "coverage": "complete",
+      "tokens": {
+        "inputTokens": 334667,
+        "cachedInputTokens": 308736,
+        "cacheWriteInputTokens": 0,
+        "outputTokens": 3974,
+        "reasoningOutputTokens": 321,
+        "totalTokens": 338641
+      },
+      "threads": 1,
+      "usd_estimate": 0.1224756
+    }
+  ],
+  "observations": []
+}
