@@ -39,11 +39,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1  # v7.1.0
         with:
-          # Upgrade deferred: Node 26 is Current; retain 24 LTS until its October 28 LTS transition.
+          # Node 26 entered active LTS on October 28, 2026.
           # https://github.com/nodejs/Release/blob/main/schedule.json
-          node-version: "24"
+          node-version: "26"
 
-      # Exact security patch; next-12 is 12.2.1 while latest remains 12.2.0.
+      # Pin the latest stable npm security patch.
       - name: Update npm
         run: npm install --global npm@12.2.1
 
