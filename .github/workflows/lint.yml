@@ -45,7 +45,7 @@ jobs:
 
       # Pin the latest stable npm security patch.
       - name: Update npm
-        run: npm install --global npm@12.2.1
+        run: npm install --global npm@12.2.2
 
       - name: Install Pre-Commit
         run: python -m pip install pre-commit==4.7.0
