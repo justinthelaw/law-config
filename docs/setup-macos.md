@@ -34,7 +34,7 @@ Use `uv venv` inside projects, not this configuration repository.
 ```bash
 export NVM_DIR="${XDG_CONFIG_HOME:-$HOME/.nvm}"
 [[ -z "${XDG_CONFIG_HOME:-}" ]] || NVM_DIR="$XDG_CONFIG_HOME/nvm"
-PROFILE=/dev/null bash -c 'curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.8/install.sh | bash'
+PROFILE=/dev/null bash -c 'curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.41.0/install.sh | bash'
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 nvm install --lts
 nvm alias default 'lts/*'
